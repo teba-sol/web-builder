@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
+import { getDefaultColorSchemeId } from '../data/colorSchemes'
 import type { SiteContent, TemplateId } from '../types'
 import { defaultContent, templateDefaults } from '../data/defaults'
 import { clearSavedSite, loadSavedSite, saveSite } from '../utils/storage'
@@ -8,7 +9,9 @@ type ListKey = 'stats' | 'services' | 'steps' | 'testimonials' | 'faqs' | 'team'
 interface WebsiteContextValue {
   templateId: TemplateId | null
   content: SiteContent
+  colorSchemeId: string
   selectTemplate: (id: TemplateId) => void
+  setColorScheme: (schemeId: string) => void
   updateContent: (updates: Partial<SiteContent>) => void
   updateListItem: (
     list: ListKey,
@@ -21,23 +24,39 @@ interface WebsiteContextValue {
 
 const WebsiteContext = createContext<WebsiteContextValue | null>(null)
 
-function getInitialState(): { templateId: TemplateId | null; content: SiteContent } {
+function getInitialState(): {
+  templateId: TemplateId | null
+  content: SiteContent
+  colorSchemeId: string
+} {
   const saved = loadSavedSite()
-  if (saved) return { templateId: saved.templateId, content: saved.content }
-  return { templateId: null, content: defaultContent }
+  if (saved) {
+    return {
+      templateId: saved.templateId,
+      content: saved.content,
+      colorSchemeId: saved.colorSchemeId,
+    }
+  }
+  return { templateId: null, content: defaultContent, colorSchemeId: '' }
 }
 
 export function WebsiteProvider({ children }: { children: ReactNode }) {
   const [templateId, setTemplateId] = useState<TemplateId | null>(() => getInitialState().templateId)
   const [content, setContent] = useState<SiteContent>(() => getInitialState().content)
+  const [colorSchemeId, setColorSchemeId] = useState<string>(() => getInitialState().colorSchemeId)
 
   useEffect(() => {
-    if (templateId) saveSite(templateId, content)
-  }, [templateId, content])
+    if (templateId) saveSite(templateId, content, colorSchemeId || getDefaultColorSchemeId(templateId))
+  }, [templateId, content, colorSchemeId])
 
   const selectTemplate = (id: TemplateId) => {
     setTemplateId(id)
     setContent({ ...templateDefaults[id] })
+    setColorSchemeId(getDefaultColorSchemeId(id))
+  }
+
+  const setColorScheme = (schemeId: string) => {
+    setColorSchemeId(schemeId)
   }
 
   const updateContent = (updates: Partial<SiteContent>) => {
@@ -60,12 +79,22 @@ export function WebsiteProvider({ children }: { children: ReactNode }) {
   const reset = () => {
     setTemplateId(null)
     setContent(defaultContent)
+    setColorSchemeId('')
     clearSavedSite()
   }
 
   return (
     <WebsiteContext.Provider
-      value={{ templateId, content, selectTemplate, updateContent, updateListItem, reset }}
+      value={{
+        templateId,
+        content,
+        colorSchemeId,
+        selectTemplate,
+        setColorScheme,
+        updateContent,
+        updateListItem,
+        reset,
+      }}
     >
       {children}
     </WebsiteContext.Provider>

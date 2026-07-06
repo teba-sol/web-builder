@@ -10,7 +10,7 @@ import { isValidTemplateId } from '../data/templateIds'
 export function EditorPage() {
   const { templateId } = useParams<{ templateId: string }>()
   const navigate = useNavigate()
-  const { selectTemplate, templateId: selectedId, content } = useWebsite()
+  const { selectTemplate, templateId: selectedId, content, colorSchemeId } = useWebsite()
 
   const id = templateId ?? ''
   const template = isValidTemplateId(id) ? templates.find((t) => t.id === id) : undefined
@@ -54,7 +54,7 @@ export function EditorPage() {
           >
             Preview
           </Link>
-          <DownloadButton templateId={id} content={content} />
+          <DownloadButton templateId={id} content={content} colorSchemeId={colorSchemeId} />
         </div>
       </header>
 
@@ -84,7 +84,7 @@ export function EditorPage() {
               </button>
             </div>
             <div className="flex-1 overflow-y-auto">
-              <TemplateRenderer templateId={id} content={content} />
+              <TemplateRenderer templateId={id} content={content} colorSchemeId={colorSchemeId} />
             </div>
           </div>
         </main>

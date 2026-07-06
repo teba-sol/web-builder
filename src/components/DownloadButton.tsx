@@ -5,17 +5,18 @@ import type { SiteContent, TemplateId } from '../types'
 interface Props {
   templateId: TemplateId
   content: SiteContent
+  colorSchemeId?: string
   className?: string
   label?: string
 }
 
-export function DownloadButton({ templateId, content, className, label = 'Download Website (.zip)' }: Props) {
+export function DownloadButton({ templateId, content, colorSchemeId, className, label = 'Download Website (.zip)' }: Props) {
   const [status, setStatus] = useState<'idle' | 'loading' | 'done'>('idle')
 
   const handleDownload = async () => {
     setStatus('loading')
     try {
-      await downloadWebsiteZip(templateId, content)
+      await downloadWebsiteZip(templateId, content, colorSchemeId)
       setStatus('done')
       setTimeout(() => setStatus('idle'), 3000)
     } catch {

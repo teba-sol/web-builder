@@ -1,11 +1,13 @@
 import type { ReactNode } from 'react'
+import { getDefaultColorSchemeId } from '../data/colorSchemes'
 import { getTemplateMeta } from '../data/defaults'
 import { useWebsite } from '../context/WebsiteContext'
 import type { ContactFieldKey } from '../types'
+import { ColorSchemePicker } from './ColorSchemePicker'
 import { ImagePicker } from './ImagePicker'
 
 export function ContentForm() {
-  const { templateId, content, updateContent, updateListItem } = useWebsite()
+  const { templateId, content, colorSchemeId, setColorScheme, updateContent, updateListItem } = useWebsite()
   const template = templateId ? getTemplateMeta(templateId) : null
 
   const setContact = (key: ContactFieldKey, value: string) => {
@@ -14,6 +16,14 @@ export function ContentForm() {
 
   return (
     <div className="space-y-8">
+      {templateId && (
+        <ColorSchemePicker
+          templateId={templateId}
+          activeSchemeId={colorSchemeId || getDefaultColorSchemeId(templateId)}
+          onChange={setColorScheme}
+        />
+      )}
+
       <FormSection title="Hero">
         <Field label="Business Name" value={content.businessName} onChange={(v) => updateContent({ businessName: v })} />
         <Field label="Headline / Tagline" value={content.tagline} onChange={(v) => updateContent({ tagline: v })} />

@@ -9,8 +9,12 @@ function slugify(name: string): string {
     .replace(/^-|-$/g, '')
 }
 
-export async function downloadWebsiteZip(templateId: TemplateId, content: SiteContent) {
-  const { html, assets } = generateHtml(templateId, content)
+export async function downloadWebsiteZip(
+  templateId: TemplateId,
+  content: SiteContent,
+  colorSchemeId?: string,
+) {
+  const { html, assets } = generateHtml(templateId, content, colorSchemeId)
   const zip = new JSZip()
 
   zip.file('index.html', html)

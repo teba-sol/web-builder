@@ -1,11 +1,13 @@
 import type { ReactNode } from 'react'
 import { getTemplateMeta } from '../data/defaults'
 import type { ContactFieldKey, SiteContent, TemplateId } from '../types'
-import { sectionOrders, themes, type SectionId } from './themes'
+import { getTheme } from './getTheme'
+import { sectionOrders, type SectionId, type TemplateTheme } from './themes'
 
 interface Props {
   variant: TemplateId
   content: SiteContent
+  colorSchemeId?: string
 }
 
 const NAV_LINKS = [
@@ -17,8 +19,8 @@ const NAV_LINKS = [
   { href: '#contact', label: 'Contact' },
 ]
 
-export function RichTemplateLayout({ variant, content: c }: Props) {
-  const t = themes[variant]
+export function RichTemplateLayout({ variant, content: c, colorSchemeId }: Props) {
+  const t = getTheme(variant, colorSchemeId)
   const order = sectionOrders[variant]
   const meta = getTemplateMeta(variant)
 
@@ -47,7 +49,7 @@ export function RichTemplateLayout({ variant, content: c }: Props) {
   )
 }
 
-function NavSection({ c, t, variant }: { c: SiteContent; t: typeof themes.business; variant: TemplateId }) {
+function NavSection({ c, t, variant }: { c: SiteContent; t: TemplateTheme; variant: TemplateId }) {
   const darkNav = ['creative', 'realtor', 'photography'].includes(variant)
   return (
     <nav className={t.nav}>
@@ -64,7 +66,7 @@ function NavSection({ c, t, variant }: { c: SiteContent; t: typeof themes.busine
   )
 }
 
-function HeroSection({ c, t, variant }: { c: SiteContent; t: typeof themes.business; variant: TemplateId }) {
+function HeroSection({ c, t, variant }: { c: SiteContent; t: TemplateTheme; variant: TemplateId }) {
   const hasOverlay = ['creative', 'restaurant', 'fitness', 'realtor', 'photography'].includes(variant)
 
   return (
@@ -94,7 +96,7 @@ function HeroSection({ c, t, variant }: { c: SiteContent; t: typeof themes.busin
   )
 }
 
-function StatsSection({ c, t }: { c: SiteContent; t: typeof themes.business }) {
+function StatsSection({ c, t }: { c: SiteContent; t: TemplateTheme }) {
   return (
     <section className={t.stats}>
       <div className="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-6 md:grid-cols-4 text-center">
@@ -109,7 +111,7 @@ function StatsSection({ c, t }: { c: SiteContent; t: typeof themes.business }) {
   )
 }
 
-function AboutSection({ c, t }: { c: SiteContent; t: typeof themes.business }) {
+function AboutSection({ c, t }: { c: SiteContent; t: TemplateTheme }) {
   return (
     <section id="about" className={t.section}>
       <div className="mx-auto max-w-6xl px-6">
@@ -130,7 +132,7 @@ function AboutSection({ c, t }: { c: SiteContent; t: typeof themes.business }) {
   )
 }
 
-function ServicesSection({ c, t, meta }: { c: SiteContent; t: typeof themes.business; meta?: string }) {
+function ServicesSection({ c, t, meta }: { c: SiteContent; t: TemplateTheme; meta?: string }) {
   return (
     <section id="services" className={t.sectionAlt}>
       <div className="mx-auto max-w-6xl px-6">
@@ -152,7 +154,7 @@ function ServicesSection({ c, t, meta }: { c: SiteContent; t: typeof themes.busi
   )
 }
 
-function StepsSection({ c, t }: { c: SiteContent; t: typeof themes.business }) {
+function StepsSection({ c, t }: { c: SiteContent; t: TemplateTheme }) {
   return (
     <section className={t.section}>
       <div className="mx-auto max-w-6xl px-6">
@@ -171,7 +173,7 @@ function StepsSection({ c, t }: { c: SiteContent; t: typeof themes.business }) {
   )
 }
 
-function GallerySection({ c, t }: { c: SiteContent; t: typeof themes.business }) {
+function GallerySection({ c, t }: { c: SiteContent; t: TemplateTheme }) {
   const images = c.galleryImages.filter(Boolean)
   if (images.length === 0) return null
   return (
@@ -188,7 +190,7 @@ function GallerySection({ c, t }: { c: SiteContent; t: typeof themes.business })
   )
 }
 
-function TestimonialsSection({ c, t }: { c: SiteContent; t: typeof themes.business }) {
+function TestimonialsSection({ c, t }: { c: SiteContent; t: TemplateTheme }) {
   return (
     <section id="testimonials" className={t.section}>
       <div className="mx-auto max-w-6xl px-6">
@@ -207,7 +209,7 @@ function TestimonialsSection({ c, t }: { c: SiteContent; t: typeof themes.busine
   )
 }
 
-function TeamSection({ c, t }: { c: SiteContent; t: typeof themes.business }) {
+function TeamSection({ c, t }: { c: SiteContent; t: TemplateTheme }) {
   const members = c.team.filter((m) => m.name)
   if (members.length === 0) return null
   return (
@@ -230,7 +232,7 @@ function TeamSection({ c, t }: { c: SiteContent; t: typeof themes.business }) {
   )
 }
 
-function FaqSection({ c, t }: { c: SiteContent; t: typeof themes.business }) {
+function FaqSection({ c, t }: { c: SiteContent; t: TemplateTheme }) {
   return (
     <section id="faq" className={t.section}>
       <div className="mx-auto max-w-3xl px-6">
@@ -248,7 +250,7 @@ function FaqSection({ c, t }: { c: SiteContent; t: typeof themes.business }) {
   )
 }
 
-function CtaBannerSection({ c, t }: { c: SiteContent; t: typeof themes.business }) {
+function CtaBannerSection({ c, t }: { c: SiteContent; t: TemplateTheme }) {
   return (
     <section className={t.ctaBanner}>
       <div className="mx-auto max-w-3xl px-6 text-center">
@@ -260,7 +262,7 @@ function CtaBannerSection({ c, t }: { c: SiteContent; t: typeof themes.business 
   )
 }
 
-function ContactSection({ c, t, variant }: { c: SiteContent; t: typeof themes.business; variant: TemplateId }) {
+function ContactSection({ c, t, variant }: { c: SiteContent; t: TemplateTheme; variant: TemplateId }) {
   const meta = getTemplateMeta(variant)
   if (!meta) return null
 
@@ -290,7 +292,7 @@ function ContactSection({ c, t, variant }: { c: SiteContent; t: typeof themes.bu
   )
 }
 
-function FooterSection({ c, t }: { c: SiteContent; t: typeof themes.business }) {
+function FooterSection({ c, t }: { c: SiteContent; t: TemplateTheme }) {
   return (
     <footer className={t.footer}>
       <div className="mx-auto max-w-6xl px-6">

@@ -1,3 +1,4 @@
+import { getColorSchemes } from '../data/colorSchemes'
 import { getTemplateMeta } from '../data/defaults'
 import type { SiteContent, TemplateId } from '../types'
 import { escapeHtml, resolveImageForExport, type ImageAsset } from './imageUtils'
@@ -6,7 +7,12 @@ import { tailwindHead } from './htmlShared'
 export function generateHtml(
   templateId: TemplateId,
   content: SiteContent,
+  colorSchemeId?: string,
 ): { html: string; assets: ImageAsset[] } {
+  const scheme = getColorSchemes(templateId).find((s) => s.id === colorSchemeId)
+    ?? getColorSchemes(templateId)[0]
+  const accent = scheme.swatches[1]
+  const accentDark = scheme.swatches[0]
   const assets: ImageAsset[] = []
   const hero = resolveImageForExport(content.heroImage, 'hero', assets)
   const aboutImg = content.aboutImage
@@ -58,7 +64,7 @@ export function generateHtml(
 <body class="bg-white text-slate-800">
   <nav class="sticky top-0 z-50 border-b bg-white/90 backdrop-blur px-6 py-4 flex justify-between items-center max-w-6xl mx-auto w-full">
     <span class="text-xl font-bold">${escapeHtml(content.businessName)}</span>
-    <a href="${escapeHtml(content.ctaLink)}" class="bg-indigo-600 text-white px-5 py-2 rounded-lg text-sm font-semibold">${escapeHtml(content.ctaText)}</a>
+    <a href="${escapeHtml(content.ctaLink)}" class="text-white px-5 py-2 rounded-lg text-sm font-semibold" style="background-color:${accent}">${escapeHtml(content.ctaText)}</a>
   </nav>
 
   <header class="bg-slate-900 text-white py-24">
@@ -72,7 +78,7 @@ export function generateHtml(
     </div>
   </header>
 
-  <section class="py-16 bg-indigo-600 text-white">
+  <section class="py-16 text-white" style="background-color:${accent}">
     <div class="max-w-6xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8">${statsHtml}</div>
   </section>
 
@@ -81,7 +87,7 @@ export function generateHtml(
       <div>
         <h2 class="text-3xl font-bold mb-6">${escapeHtml(content.aboutTitle)}</h2>
         <p class="text-lg leading-relaxed text-slate-600 mb-6">${escapeHtml(content.about)}</p>
-        ${content.missionStatement ? `<p class="border-l-4 border-indigo-600 pl-6 italic text-slate-600">${escapeHtml(content.missionStatement)}</p>` : ''}
+        ${content.missionStatement ? `<p class="border-l-4 pl-6 italic text-slate-600" style="border-color:${accent}">${escapeHtml(content.missionStatement)}</p>` : ''}
       </div>
       ${aboutImg ? `<img src="${aboutImg}" class="rounded-2xl w-full" />` : ''}
     </div>
@@ -120,11 +126,11 @@ export function generateHtml(
     </div>
   </section>
 
-  <section class="bg-indigo-600 text-white py-20 text-center">
+  <section class="text-white py-20 text-center" style="background-color:${accentDark}">
     <div class="max-w-3xl mx-auto px-6">
       <h2 class="text-3xl font-bold mb-4">${escapeHtml(content.ctaBannerTitle)}</h2>
-      <p class="text-indigo-100 mb-8 text-lg">${escapeHtml(content.ctaBannerText)}</p>
-      <a href="${escapeHtml(content.ctaLink)}" class="inline-block bg-white text-indigo-600 px-8 py-3 rounded-lg font-semibold">${escapeHtml(content.ctaText)}</a>
+      <p class="mb-8 text-lg opacity-80">${escapeHtml(content.ctaBannerText)}</p>
+      <a href="${escapeHtml(content.ctaLink)}" class="inline-block bg-white px-8 py-3 rounded-lg font-semibold" style="color:${accentDark}">${escapeHtml(content.ctaText)}</a>
     </div>
   </section>
 
