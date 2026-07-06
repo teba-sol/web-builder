@@ -6,17 +6,18 @@ interface Props {
   templateId: TemplateId
   content: SiteContent
   colorSchemeId?: string
+  layoutVariantId?: string
   className?: string
   label?: string
 }
 
-export function DownloadButton({ templateId, content, colorSchemeId, className, label = 'Download Website (.zip)' }: Props) {
+export function DownloadButton({ templateId, content, colorSchemeId, layoutVariantId, className, label = 'Download Website (.zip)' }: Props) {
   const [status, setStatus] = useState<'idle' | 'loading' | 'done'>('idle')
 
   const handleDownload = async () => {
     setStatus('loading')
     try {
-      await downloadWebsiteZip(templateId, content, colorSchemeId)
+      await downloadWebsiteZip(templateId, content, colorSchemeId, layoutVariantId)
       setStatus('done')
       setTimeout(() => setStatus('idle'), 3000)
     } catch {

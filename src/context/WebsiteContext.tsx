@@ -1,24 +1,34 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
 import { getDefaultColorSchemeId } from '../data/colorSchemes'
-import type { SiteContent, TemplateId } from '../types'
+import { getDefaultLayoutVariantId } from '../data/layoutVariants'
+import type { SiteContent, TemplateId, ToggleableSection } from '../types'
 import { defaultContent, templateDefaults } from '../data/defaults'
+import {
+  createEmptyListItem,
+  LIST_MAX_COUNT,
+  LIST_MIN_COUNT,
+  type ContentListKey,
+} from '../data/listDefaults'
 import { clearSavedSite, loadSavedSite, saveSite } from '../utils/storage'
-
-type ListKey = 'stats' | 'services' | 'steps' | 'testimonials' | 'faqs' | 'team' | 'galleryImages'
 
 interface WebsiteContextValue {
   templateId: TemplateId | null
   content: SiteContent
   colorSchemeId: string
+  layoutVariantId: string
   selectTemplate: (id: TemplateId) => void
   setColorScheme: (schemeId: string) => void
+  setLayoutVariant: (variantId: string) => void
   updateContent: (updates: Partial<SiteContent>) => void
   updateListItem: (
-    list: ListKey,
+    list: ContentListKey,
     index: number,
     field: string,
     value: string,
   ) => void
+  addListItem: (list: ContentListKey) => void
+  removeListItem: (list: ContentListKey, index: number) => void
+  toggleSectionVisibility: (section: ToggleableSection) => void
   reset: () => void
 }
 
@@ -28,6 +38,7 @@ function getInitialState(): {
   templateId: TemplateId | null
   content: SiteContent
   colorSchemeId: string
+  layoutVariantId: string
 } {
   const saved = loadSavedSite()
   if (saved) {
@@ -35,35 +46,49 @@ function getInitialState(): {
       templateId: saved.templateId,
       content: saved.content,
       colorSchemeId: saved.colorSchemeId,
+      layoutVariantId: saved.layoutVariantId,
     }
   }
-  return { templateId: null, content: defaultContent, colorSchemeId: '' }
+  return { templateId: null, content: defaultContent, colorSchemeId: '', layoutVariantId: '' }
 }
 
 export function WebsiteProvider({ children }: { children: ReactNode }) {
   const [templateId, setTemplateId] = useState<TemplateId | null>(() => getInitialState().templateId)
   const [content, setContent] = useState<SiteContent>(() => getInitialState().content)
   const [colorSchemeId, setColorSchemeId] = useState<string>(() => getInitialState().colorSchemeId)
+  const [layoutVariantId, setLayoutVariantId] = useState<string>(() => getInitialState().layoutVariantId)
 
   useEffect(() => {
-    if (templateId) saveSite(templateId, content, colorSchemeId || getDefaultColorSchemeId(templateId))
-  }, [templateId, content, colorSchemeId])
+    if (templateId) {
+      saveSite(
+        templateId,
+        content,
+        colorSchemeId || getDefaultColorSchemeId(templateId),
+        layoutVariantId || getDefaultLayoutVariantId(templateId),
+      )
+    }
+  }, [templateId, content, colorSchemeId, layoutVariantId])
 
   const selectTemplate = (id: TemplateId) => {
     setTemplateId(id)
     setContent({ ...templateDefaults[id] })
     setColorSchemeId(getDefaultColorSchemeId(id))
+    setLayoutVariantId(getDefaultLayoutVariantId(id))
   }
 
   const setColorScheme = (schemeId: string) => {
     setColorSchemeId(schemeId)
   }
 
+  const setLayoutVariant = (variantId: string) => {
+    setLayoutVariantId(variantId)
+  }
+
   const updateContent = (updates: Partial<SiteContent>) => {
     setContent((prev) => ({ ...prev, ...updates }))
   }
 
-  const updateListItem = (list: ListKey, index: number, field: string, value: string) => {
+  const updateListItem = (list: ContentListKey, index: number, field: string, value: string) => {
     setContent((prev) => {
       if (list === 'galleryImages') {
         const images = [...prev.galleryImages]
@@ -76,10 +101,39 @@ export function WebsiteProvider({ children }: { children: ReactNode }) {
     })
   }
 
+  const addListItem = (list: ContentListKey) => {
+    setContent((prev) => {
+      const current = prev[list] as unknown[]
+      if (current.length >= LIST_MAX_COUNT) return prev
+      const item = createEmptyListItem(list)
+      return { ...prev, [list]: [...current, item] as typeof prev[typeof list] }
+    })
+  }
+
+  const removeListItem = (list: ContentListKey, index: number) => {
+    setContent((prev) => {
+      const current = [...prev[list]] as unknown[]
+      if (current.length <= LIST_MIN_COUNT[list]) return prev
+      current.splice(index, 1)
+      return { ...prev, [list]: current as typeof prev[typeof list] }
+    })
+  }
+
+  const toggleSectionVisibility = (section: ToggleableSection) => {
+    setContent((prev) => ({
+      ...prev,
+      sectionVisibility: {
+        ...prev.sectionVisibility,
+        [section]: !prev.sectionVisibility[section],
+      },
+    }))
+  }
+
   const reset = () => {
     setTemplateId(null)
     setContent(defaultContent)
     setColorSchemeId('')
+    setLayoutVariantId('')
     clearSavedSite()
   }
 
@@ -89,10 +143,15 @@ export function WebsiteProvider({ children }: { children: ReactNode }) {
         templateId,
         content,
         colorSchemeId,
+        layoutVariantId,
         selectTemplate,
         setColorScheme,
+        setLayoutVariant,
         updateContent,
         updateListItem,
+        addListItem,
+        removeListItem,
+        toggleSectionVisibility,
         reset,
       }}
     >

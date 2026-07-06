@@ -10,7 +10,7 @@ import type { TemplateId } from '../types'
 export function PreviewPage() {
   const { templateId } = useParams<{ templateId: string }>()
   const navigate = useNavigate()
-  const { content, templateId: selectedId, colorSchemeId } = useWebsite()
+  const { content, templateId: selectedId, colorSchemeId, layoutVariantId } = useWebsite()
 
   const id = templateId ?? ''
   const saved = loadSavedSite()
@@ -25,6 +25,7 @@ export function PreviewPage() {
 
   const activeContent = selectedId === id ? content : saved!.content
   const activeSchemeId = selectedId === id ? colorSchemeId : saved!.colorSchemeId
+  const activeLayoutVariantId = selectedId === id ? layoutVariantId : saved!.layoutVariantId
   const templateIdTyped = id as TemplateId
 
   const openFullscreen = () => {
@@ -51,7 +52,7 @@ export function PreviewPage() {
           >
             Full Window Preview
           </button>
-          <DownloadButton templateId={templateIdTyped} content={activeContent} colorSchemeId={activeSchemeId} />
+          <DownloadButton templateId={templateIdTyped} content={activeContent} colorSchemeId={activeSchemeId} layoutVariantId={activeLayoutVariantId} />
           <Link
             to="/"
             className="rounded-lg border border-white/20 px-4 py-2 text-sm font-medium text-white hover:bg-white/10 transition-colors"
@@ -62,7 +63,7 @@ export function PreviewPage() {
       </div>
 
       <div className="pt-14">
-        <TemplateRenderer templateId={templateIdTyped} content={activeContent} colorSchemeId={activeSchemeId} />
+        <TemplateRenderer templateId={templateIdTyped} content={activeContent} colorSchemeId={activeSchemeId} layoutVariantId={activeLayoutVariantId} />
       </div>
 
       <div className="fixed bottom-6 left-1/2 z-[100] -translate-x-1/2 rounded-full border border-emerald-500/30 bg-emerald-950/90 px-6 py-3 text-sm text-emerald-100 shadow-xl backdrop-blur-md">

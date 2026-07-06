@@ -414,4 +414,22 @@ export const templateDefaults: Record<TemplateId, SiteContent> = {
   }),
 }
 
+import { defaultShowcaseByTemplate, defaultSectionVisibility, showcaseConfigByTemplate } from './sectionConfig'
+import { enrichForTemplate } from './richDefaults'
+import { TEMPLATE_IDS } from './templateIds'
+
+for (const id of TEMPLATE_IDS) {
+  const cfg = showcaseConfigByTemplate[id]
+  templateDefaults[id] = enrichForTemplate(id, {
+    ...templateDefaults[id],
+    showcaseSectionTitle: cfg.sectionTitle,
+    showcaseSectionSubtitle: cfg.sectionSubtitle,
+    showcaseItems: defaultShowcaseByTemplate[id],
+    sectionVisibility: {
+      ...defaultSectionVisibility,
+      ...(id === 'saas' ? { team: false } : {}),
+    },
+  })
+}
+
 export { templates, getTemplateMeta } from './templates'

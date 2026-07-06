@@ -24,6 +24,11 @@ export interface TemplateTheme {
   mission: string
   stepNum: string
   gallery: string
+  showcase: string
+  showcaseCard: string
+  showcaseImage: string
+  showcasePrice: string
+  showcaseTag: string
   testimonial: string
   faq: string
   teamCard: string
@@ -59,6 +64,11 @@ export const themes: Record<TemplateId, TemplateTheme> = {
     mission: 'border-l-4 border-blue-600 pl-6 italic text-slate-600 text-lg',
     stepNum: 'flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 text-white font-bold',
     gallery: 'rounded-xl overflow-hidden aspect-[4/3] object-cover w-full hover:scale-105 transition-transform',
+    showcase: 'bg-slate-50 py-20',
+    showcaseCard: 'rounded-xl border border-slate-200 bg-white overflow-hidden shadow-sm hover:shadow-lg transition-shadow group',
+    showcaseImage: 'w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-300',
+    showcasePrice: 'text-lg font-bold text-blue-600',
+    showcaseTag: 'text-xs font-semibold uppercase tracking-wider text-slate-400',
     testimonial: 'rounded-xl bg-white border border-slate-200 p-8 shadow-sm',
     faq: 'border-b border-slate-200 py-6',
     teamCard: 'text-center',
@@ -92,6 +102,11 @@ export const themes: Record<TemplateId, TemplateTheme> = {
     mission: 'text-violet-400 text-xl font-medium italic',
     stepNum: 'text-5xl font-black text-zinc-800',
     gallery: 'w-full aspect-square object-cover',
+    showcase: 'border-t border-zinc-800 py-24',
+    showcaseCard: 'border border-zinc-800 rounded-2xl overflow-hidden hover:border-violet-500/50 transition-colors group',
+    showcaseImage: 'w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-500',
+    showcasePrice: 'text-violet-400 font-bold',
+    showcaseTag: 'text-xs uppercase tracking-widest text-zinc-500',
     testimonial: 'border border-zinc-800 p-8 rounded-2xl',
     faq: 'border-t border-zinc-800 py-6',
     teamCard: 'text-center',
@@ -125,6 +140,11 @@ export const themes: Record<TemplateId, TemplateTheme> = {
     mission: 'font-serif italic text-red-800 text-lg border-l-4 border-amber-400 pl-6',
     stepNum: 'text-3xl',
     gallery: 'rounded-2xl w-full aspect-[4/3] object-cover',
+    showcase: 'bg-white py-20',
+    showcaseCard: 'rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow group text-left',
+    showcaseImage: 'w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform',
+    showcasePrice: 'font-serif text-xl font-bold text-red-900',
+    showcaseTag: 'text-xs uppercase tracking-wider text-amber-600',
     testimonial: 'bg-white rounded-2xl p-8 shadow-sm text-center',
     faq: 'border-b border-amber-200 py-6',
     teamCard: 'text-center',
@@ -158,6 +178,11 @@ export const themes: Record<TemplateId, TemplateTheme> = {
     mission: 'text-indigo-300 text-lg',
     stepNum: 'flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600 font-bold text-sm',
     gallery: 'rounded-xl border border-white/10 w-full object-cover',
+    showcase: 'py-24 border-y border-white/10',
+    showcaseCard: 'rounded-2xl border border-white/10 bg-white/5 overflow-hidden hover:border-indigo-500/50 transition-colors',
+    showcaseImage: 'w-full aspect-video object-cover',
+    showcasePrice: 'text-2xl font-bold text-cyan-400',
+    showcaseTag: 'text-xs text-indigo-300 uppercase tracking-wider',
     testimonial: 'rounded-2xl border border-white/10 p-8',
     faq: 'border-b border-white/10 py-6',
     teamCard: 'text-center',
@@ -191,6 +216,11 @@ export const themes: Record<TemplateId, TemplateTheme> = {
     mission: 'text-orange-500 font-bold uppercase text-lg',
     stepNum: 'text-4xl font-black text-orange-500',
     gallery: 'w-full aspect-video object-cover rounded-lg',
+    showcase: 'bg-gray-900 py-20',
+    showcaseCard: 'border border-gray-800 rounded-lg overflow-hidden hover:border-orange-500/50 transition-colors',
+    showcaseImage: 'w-full aspect-video object-cover',
+    showcasePrice: 'text-2xl font-black text-orange-500',
+    showcaseTag: 'text-xs uppercase tracking-wider text-gray-500',
     testimonial: 'border-l-4 border-orange-500 pl-6 py-4',
     faq: 'border-b border-gray-800 py-6',
     teamCard: 'text-center',
@@ -224,6 +254,11 @@ export const themes: Record<TemplateId, TemplateTheme> = {
     mission: 'font-serif italic text-rose-800 text-lg text-center',
     stepNum: 'text-rose-300 text-2xl',
     gallery: 'w-full aspect-[3/4] object-cover',
+    showcase: 'bg-white py-20',
+    showcaseCard: 'group text-left',
+    showcaseImage: 'w-full aspect-[3/4] object-cover mb-4 group-hover:opacity-90 transition-opacity',
+    showcasePrice: 'text-sm font-medium text-stone-800 tracking-wide',
+    showcaseTag: 'text-xs uppercase tracking-[0.2em] text-rose-400',
     testimonial: 'text-center font-serif italic text-stone-600 px-8',
     faq: 'border-b border-rose-100 py-6',
     teamCard: 'text-center',
@@ -235,10 +270,10 @@ export const themes: Record<TemplateId, TemplateTheme> = {
   },
   realtor: {
     page: 'bg-stone-100 text-stone-800',
-    nav: 'absolute top-0 z-50 w-full',
+    nav: 'fixed top-0 z-50 w-full bg-black/30 backdrop-blur-md',
     navLink: 'text-white/80 hover:text-amber-300',
     navCta: 'border border-amber-400/80 px-6 py-2 text-sm uppercase tracking-wider text-amber-300 hover:bg-amber-400 hover:text-stone-900',
-    hero: 'relative h-screen min-h-[650px]',
+    hero: 'relative min-h-screen flex flex-col justify-end',
     heroBadge: 'text-amber-400 uppercase tracking-[0.3em] text-sm',
     heroTitle: 'text-4xl md:text-6xl font-light text-white max-w-4xl leading-tight',
     heroText: 'text-white/80 text-lg mt-4 max-w-2xl',
@@ -257,6 +292,11 @@ export const themes: Record<TemplateId, TemplateTheme> = {
     mission: 'text-amber-800 italic text-lg',
     stepNum: 'text-amber-600 text-sm font-medium',
     gallery: 'w-full aspect-[4/3] object-cover',
+    showcase: 'bg-white py-24',
+    showcaseCard: 'overflow-hidden shadow-lg hover:shadow-2xl transition-shadow group',
+    showcaseImage: 'w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-500',
+    showcasePrice: 'text-xl font-light text-amber-700',
+    showcaseTag: 'text-xs uppercase tracking-wider text-stone-400',
     testimonial: 'border-l-2 border-amber-600 pl-8 py-4',
     faq: 'border-b border-stone-200 py-6',
     teamCard: 'text-center',
@@ -268,10 +308,10 @@ export const themes: Record<TemplateId, TemplateTheme> = {
   },
   photography: {
     page: 'bg-neutral-950 text-neutral-100',
-    nav: 'fixed top-0 z-50 w-full mix-blend-difference',
-    navLink: 'text-neutral-400 hover:text-white',
-    navCta: 'text-sm uppercase tracking-[0.2em] border-b border-white pb-0.5',
-    hero: 'relative h-screen',
+    nav: 'fixed top-0 z-50 w-full bg-neutral-950/40 backdrop-blur-sm',
+    navLink: 'text-neutral-300 hover:text-white',
+    navCta: 'text-sm uppercase tracking-[0.2em] border-b border-white pb-0.5 text-white',
+    hero: 'relative min-h-screen flex flex-col justify-end',
     heroBadge: 'text-xs uppercase tracking-[0.4em] text-neutral-400',
     heroTitle: 'text-4xl md:text-6xl lg:text-7xl font-light max-w-4xl leading-tight',
     heroText: 'text-neutral-400 text-lg mt-4',
@@ -290,6 +330,11 @@ export const themes: Record<TemplateId, TemplateTheme> = {
     mission: 'text-neutral-400 font-light italic text-lg',
     stepNum: 'text-neutral-700 text-sm',
     gallery: 'w-full aspect-[3/2] object-cover',
+    showcase: 'py-24',
+    showcaseCard: 'border-t border-neutral-800 pt-8 group',
+    showcaseImage: 'w-full aspect-[3/2] object-cover mb-6 group-hover:opacity-80 transition-opacity',
+    showcasePrice: 'text-lg font-light text-neutral-200',
+    showcaseTag: 'text-xs uppercase tracking-widest text-neutral-600',
     testimonial: 'text-center font-light text-neutral-400 px-8',
     faq: 'border-b border-neutral-800 py-6',
     teamCard: 'text-center',
@@ -323,6 +368,11 @@ export const themes: Record<TemplateId, TemplateTheme> = {
     mission: 'text-teal-700 font-medium text-lg border-l-4 border-teal-400 pl-6',
     stepNum: 'flex h-10 w-10 items-center justify-center rounded-full bg-teal-600 text-white font-bold text-sm',
     gallery: 'rounded-2xl w-full aspect-[4/3] object-cover',
+    showcase: 'bg-teal-50 py-20',
+    showcaseCard: 'rounded-2xl border border-teal-100 bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow',
+    showcaseImage: 'w-full aspect-[16/9] object-cover',
+    showcasePrice: 'text-teal-700 font-semibold',
+    showcaseTag: 'text-xs font-semibold uppercase tracking-wider text-teal-500',
     testimonial: 'bg-white rounded-2xl border border-teal-100 p-8 shadow-sm',
     faq: 'border-b border-teal-100 py-6',
     teamCard: 'text-center',
@@ -341,6 +391,7 @@ export type SectionId =
   | 'about'
   | 'services'
   | 'steps'
+  | 'showcase'
   | 'gallery'
   | 'testimonials'
   | 'team'
@@ -350,13 +401,13 @@ export type SectionId =
   | 'footer'
 
 export const sectionOrders: Record<TemplateId, SectionId[]> = {
-  business: ['nav', 'hero', 'stats', 'about', 'services', 'steps', 'testimonials', 'team', 'gallery', 'faq', 'cta', 'contact', 'footer'],
-  creative: ['nav', 'hero', 'gallery', 'stats', 'about', 'services', 'steps', 'testimonials', 'faq', 'cta', 'contact', 'footer'],
-  restaurant: ['nav', 'hero', 'stats', 'about', 'services', 'steps', 'gallery', 'testimonials', 'team', 'faq', 'cta', 'contact', 'footer'],
-  saas: ['nav', 'hero', 'stats', 'services', 'about', 'steps', 'gallery', 'testimonials', 'faq', 'cta', 'contact', 'footer'],
-  fitness: ['nav', 'hero', 'stats', 'services', 'about', 'steps', 'gallery', 'testimonials', 'team', 'faq', 'cta', 'contact', 'footer'],
-  boutique: ['nav', 'hero', 'about', 'gallery', 'services', 'stats', 'testimonials', 'steps', 'faq', 'cta', 'contact', 'footer'],
-  realtor: ['nav', 'hero', 'stats', 'services', 'about', 'gallery', 'steps', 'testimonials', 'team', 'faq', 'cta', 'contact', 'footer'],
-  photography: ['nav', 'hero', 'gallery', 'about', 'services', 'stats', 'testimonials', 'steps', 'faq', 'cta', 'contact', 'footer'],
-  medical: ['nav', 'hero', 'stats', 'about', 'services', 'team', 'steps', 'gallery', 'testimonials', 'faq', 'cta', 'contact', 'footer'],
+  business: ['nav', 'hero', 'stats', 'showcase', 'about', 'services', 'steps', 'testimonials', 'team', 'gallery', 'faq', 'cta', 'contact', 'footer'],
+  creative: ['nav', 'hero', 'gallery', 'showcase', 'stats', 'about', 'services', 'steps', 'testimonials', 'faq', 'cta', 'contact', 'footer'],
+  restaurant: ['nav', 'hero', 'stats', 'showcase', 'about', 'services', 'steps', 'gallery', 'testimonials', 'team', 'faq', 'cta', 'contact', 'footer'],
+  saas: ['nav', 'hero', 'stats', 'services', 'showcase', 'about', 'steps', 'gallery', 'testimonials', 'faq', 'cta', 'contact', 'footer'],
+  fitness: ['nav', 'hero', 'stats', 'services', 'showcase', 'about', 'steps', 'gallery', 'testimonials', 'team', 'faq', 'cta', 'contact', 'footer'],
+  boutique: ['nav', 'hero', 'showcase', 'about', 'gallery', 'services', 'stats', 'testimonials', 'steps', 'faq', 'cta', 'contact', 'footer'],
+  realtor: ['nav', 'hero', 'showcase', 'stats', 'services', 'about', 'gallery', 'steps', 'testimonials', 'team', 'faq', 'cta', 'contact', 'footer'],
+  photography: ['nav', 'hero', 'gallery', 'showcase', 'about', 'services', 'stats', 'testimonials', 'steps', 'faq', 'cta', 'contact', 'footer'],
+  medical: ['nav', 'hero', 'stats', 'about', 'services', 'showcase', 'team', 'steps', 'gallery', 'testimonials', 'faq', 'cta', 'contact', 'footer'],
 }

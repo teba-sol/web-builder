@@ -32,6 +32,29 @@ export type ContactFieldKey =
   | 'licenseNumber'
   | 'bookingUrl'
 
+export type ToggleableSection =
+  | 'stats'
+  | 'about'
+  | 'services'
+  | 'steps'
+  | 'showcase'
+  | 'gallery'
+  | 'team'
+  | 'faq'
+  | 'cta'
+
+export interface SectionVisibility {
+  stats: boolean
+  about: boolean
+  services: boolean
+  steps: boolean
+  showcase: boolean
+  gallery: boolean
+  team: boolean
+  faq: boolean
+  cta: boolean
+}
+
 export interface ServiceItem {
   title: string
   description: string
@@ -64,6 +87,15 @@ export interface TeamMember {
   image: string
 }
 
+export interface ShowcaseItem {
+  title: string
+  description: string
+  image: string
+  price: string
+  tag: string
+  link: string
+}
+
 export interface SiteContent {
   businessName: string
   tagline: string
@@ -73,12 +105,16 @@ export interface SiteContent {
   about: string
   aboutImage: string
   missionStatement: string
+  sectionVisibility: SectionVisibility
   stats: StatItem[]
   servicesSectionTitle: string
   servicesSectionSubtitle: string
   services: ServiceItem[]
   stepsSectionTitle: string
   steps: StepItem[]
+  showcaseSectionTitle: string
+  showcaseSectionSubtitle: string
+  showcaseItems: ShowcaseItem[]
   gallerySectionTitle: string
   galleryImages: string[]
   testimonialsSectionTitle: string
@@ -103,6 +139,10 @@ export interface SiteContent {
   reservationEmail: string
   licenseNumber: string
   bookingUrl: string
+  contactSectionTitle: string
+  contactFormTitle: string
+  contactFormUrl: string
+  contactFormButtonText: string
 }
 
 export interface ContactFieldDef {

@@ -13,8 +13,9 @@ export async function downloadWebsiteZip(
   templateId: TemplateId,
   content: SiteContent,
   colorSchemeId?: string,
+  layoutVariantId?: string,
 ) {
-  const { html, assets } = generateHtml(templateId, content, colorSchemeId)
+  const { html, assets } = generateHtml(templateId, content, colorSchemeId, layoutVariantId)
   const zip = new JSZip()
 
   zip.file('index.html', html)

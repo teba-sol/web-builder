@@ -1,19 +1,74 @@
 import { getColorSchemes } from '../data/colorSchemes'
 import { getTemplateMeta } from '../data/defaults'
-import type { SiteContent, TemplateId } from '../types'
+import { getLayoutVariant } from '../data/layoutVariants'
+import { getShowcaseConfig } from '../data/sectionConfig'
+import type { SectionVisibility, SiteContent, TemplateId } from '../types'
+import { type SectionId } from '../templates/themes'
+import { canEmbedForm, EMBED_FORM_HEIGHT, getEmbedFormUrl } from '../utils/formEmbed'
 import { escapeHtml, resolveImageForExport, type ImageAsset } from './imageUtils'
 import { tailwindHead } from './htmlShared'
+
+function isVisible(id: SectionId, v: SectionVisibility): boolean {
+  const map: Partial<Record<SectionId, keyof SectionVisibility>> = {
+    stats: 'stats', about: 'about', services: 'services', steps: 'steps',
+    showcase: 'showcase', gallery: 'gallery', team: 'team', faq: 'faq', cta: 'cta',
+  }
+  const key = map[id]
+  return !key || v[key]
+}
+
+function buildContactFormHtml(content: SiteContent, accent: string): string {
+  const formUrl = content.contactFormUrl.trim()
+  const embedUrl = getEmbedFormUrl(formUrl)
+  const mailTarget = content.email || content.reservationEmail || content.supportEmail
+  const inputCls = 'w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20'
+
+  const nativeForm = `<div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <form class="space-y-4" action="${formUrl ? escapeHtml(formUrl) : mailTarget ? `mailto:${escapeHtml(mailTarget)}` : '#'}" method="${formUrl ? 'get' : 'post'}"${formUrl ? ' target="_blank" rel="noopener noreferrer"' : ''}>
+      <div>
+        <label class="block text-sm font-medium text-slate-700 mb-1.5">Your Name</label>
+        <input name="name" type="text" required class="${inputCls}" placeholder="John Smith" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-slate-700 mb-1.5">Email Address</label>
+        <input name="email" type="email" required class="${inputCls}" placeholder="you@example.com" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-slate-700 mb-1.5">Message</label>
+        <textarea name="message" required rows="5" class="${inputCls}" placeholder="How can we help you?"></textarea>
+      </div>
+      <button type="submit" class="w-full text-white px-6 py-3 rounded-lg font-semibold" style="background-color:${accent}">${escapeHtml(content.contactFormButtonText || 'Send Message')}</button>
+    </form>
+    ${formUrl ? `<p class="mt-4 text-center text-sm text-slate-500">Or <a href="${escapeHtml(formUrl)}" target="_blank" rel="noopener noreferrer" class="text-indigo-600 underline font-medium">open the full form directly</a></p>` : ''}
+  </div>`
+
+  if (canEmbedForm(formUrl) && embedUrl) {
+    return `<div class="space-y-4">
+      <div class="rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-sm" style="height:${EMBED_FORM_HEIGHT}px">
+        <iframe src="${escapeHtml(embedUrl)}" title="${escapeHtml(content.contactFormTitle)}" width="100%" height="${EMBED_FORM_HEIGHT}" style="height:${EMBED_FORM_HEIGHT}px;border:0;display:block" loading="lazy" allow="fullscreen"></iframe>
+      </div>
+      <p class="text-center text-xs text-slate-500">Form not loading? <a href="${escapeHtml(formUrl)}" target="_blank" rel="noopener noreferrer" class="underline">Open in a new tab</a></p>
+    </div>`
+  }
+
+  return nativeForm
+}
 
 export function generateHtml(
   templateId: TemplateId,
   content: SiteContent,
   colorSchemeId?: string,
+  layoutVariantId?: string,
 ): { html: string; assets: ImageAsset[] } {
   const scheme = getColorSchemes(templateId).find((s) => s.id === colorSchemeId)
     ?? getColorSchemes(templateId)[0]
   const accent = scheme.swatches[1]
   const accentDark = scheme.swatches[0]
+  const layout = getLayoutVariant(templateId, layoutVariantId)
+  const visibility = content.sectionVisibility
+  const showcaseCfg = getShowcaseConfig(templateId)
   const assets: ImageAsset[] = []
+
   const hero = resolveImageForExport(content.heroImage, 'hero', assets)
   const aboutImg = content.aboutImage
     ? resolveImageForExport(content.aboutImage, 'about', assets)
@@ -31,24 +86,40 @@ export function generateHtml(
     .filter(Boolean)
     .join('') ?? ''
 
-  const statsHtml = content.stats.map((s) =>
+  const stats = content.stats.filter((s) => s.value)
+  const statsHtml = stats.map((s) =>
     `<div class="text-center"><p class="text-3xl font-bold">${escapeHtml(s.value)}</p><p class="text-sm opacity-70 mt-1">${escapeHtml(s.label)}</p></div>`
   ).join('')
 
-  const servicesHtml = content.services.map((s) =>
+  const services = content.services.filter((s) => s.title)
+  const servicesHtml = services.map((s) =>
     `<div class="rounded-xl border p-6"><h3 class="font-semibold text-lg mb-2">${escapeHtml(s.title)}</h3><p class="opacity-80">${escapeHtml(s.description)}</p></div>`
   ).join('')
 
-  const stepsHtml = content.steps.map((s, i) =>
+  const steps = content.steps.filter((s) => s.title)
+  const stepsHtml = steps.map((s, i) =>
     `<div><span class="text-2xl font-bold opacity-40">0${i + 1}</span><h3 class="font-semibold mt-2">${escapeHtml(s.title)}</h3><p class="opacity-80 mt-1">${escapeHtml(s.description)}</p></div>`
   ).join('')
+
+  const showcaseItems = content.showcaseItems.filter((item) => item.title)
+  const showcaseHtml = showcaseItems.map((item, i) => {
+    const img = item.image ? resolveImageForExport(item.image, `showcase-${i + 1}`, assets) : ''
+    const tag = showcaseCfg.showTag && item.tag ? `<p class="text-xs uppercase tracking-wider opacity-60 mb-2">${escapeHtml(item.tag)}</p>` : ''
+    const price = showcaseCfg.showPrice && item.price ? `<p class="text-lg font-bold mt-2" style="color:${accent}">${escapeHtml(item.price)}</p>` : ''
+    return `<a href="${escapeHtml(item.link || '#contact')}" class="block rounded-xl border overflow-hidden hover:shadow-lg transition-shadow">
+      ${img ? `<img src="${img}" alt="" class="w-full aspect-[4/3] object-cover" />` : ''}
+      <div class="p-6">${tag}<h3 class="font-semibold text-lg mb-2">${escapeHtml(item.title)}</h3><p class="opacity-80">${escapeHtml(item.description)}</p>${price}</div>
+    </a>`
+  }).join('')
 
   const galleryHtml = gallery.map((g) =>
     `<img src="${g}" alt="" class="w-full rounded-xl aspect-[4/3] object-cover" />`
   ).join('')
 
-  const testimonialsHtml = content.testimonials.map((t) =>
-    `<div class="border rounded-xl p-6"><p class="italic mb-4">"${escapeHtml(t.quote)}"</p><p class="font-semibold">${escapeHtml(t.author)}</p><p class="text-sm opacity-70">${escapeHtml(t.role)}</p></div>`
+  const testimonials = content.testimonials.filter((t) => t.quote)
+  const stars = '<div class="text-amber-400 mb-3">★★★★★</div>'
+  const testimonialsHtml = testimonials.map((t) =>
+    `<div class="border rounded-xl p-6">${stars}<p class="italic mb-4 text-lg">"${escapeHtml(t.quote)}"</p><p class="font-semibold">${escapeHtml(t.author)}</p><p class="text-sm opacity-70">${escapeHtml(t.role)}</p></div>`
   ).join('')
 
   const teamHtml = content.team.filter((m) => m.name).map((m) => {
@@ -56,94 +127,66 @@ export function generateHtml(
     return `<div class="text-center">${img ? `<img src="${img}" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover" />` : ''}<h3 class="font-semibold">${escapeHtml(m.name)}</h3><p class="opacity-70">${escapeHtml(m.role)}</p></div>`
   }).join('')
 
-  const faqHtml = content.faqs.map((f) =>
+  const faqs = content.faqs.filter((f) => f.question)
+  const faqHtml = faqs.map((f) =>
     `<div class="border-b py-5"><h3 class="font-semibold mb-2">${escapeHtml(f.question)}</h3><p class="opacity-80">${escapeHtml(f.answer)}</p></div>`
   ).join('')
 
+  const contactFormBlock = buildContactFormHtml(content, accent)
+  const contactTitle = escapeHtml(content.contactSectionTitle || 'Get in Touch')
+
+  const navLinks: string[] = []
+  if (visibility.showcase) navLinks.push(`<a href="#showcase" class="hover:underline opacity-70">${escapeHtml(showcaseCfg.navLabel)}</a>`)
+  if (visibility.about) navLinks.push('<a href="#about" class="hover:underline opacity-70">About</a>')
+  if (visibility.services) navLinks.push('<a href="#services" class="hover:underline opacity-70">Services</a>')
+  if (visibility.gallery && gallery.length) navLinks.push('<a href="#gallery" class="hover:underline opacity-70">Gallery</a>')
+  navLinks.push('<a href="#testimonials" class="hover:underline opacity-70">Reviews</a>')
+  if (visibility.faq) navLinks.push('<a href="#faq" class="hover:underline opacity-70">FAQ</a>')
+  navLinks.push('<a href="#contact" class="hover:underline opacity-70">Contact</a>')
+
+  const contactSectionHtml = layout.contactLayout === 'split' || layout.contactLayout === 'form-focus'
+    ? `<section id="contact" class="py-20"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold mb-10">${contactTitle}</h2><div class="grid lg:grid-cols-2 gap-12 items-start"><div><h3 class="text-xl font-semibold mb-6">${escapeHtml(content.contactFormTitle)}</h3><div class="grid sm:grid-cols-2 gap-6">${contactHtml}</div></div><div>${contactFormBlock}</div></div></section>`
+    : `<section id="contact" class="py-20"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold mb-10">${contactTitle}</h2><div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">${contactHtml}</div><h3 class="text-xl font-semibold mb-6">${escapeHtml(content.contactFormTitle)}</h3>${contactFormBlock}</section>`
+
+  const sectionHtml: Record<SectionId, string> = {
+    nav: `<nav class="sticky top-0 z-50 border-b bg-white/90 backdrop-blur px-6 py-4 flex justify-between items-center max-w-6xl mx-auto w-full">
+      <span class="text-xl font-bold">${escapeHtml(content.businessName)}</span>
+      <div class="hidden md:flex gap-6 text-sm">${navLinks.join('')}</div>
+      <a href="${escapeHtml(content.ctaLink)}" class="text-white px-5 py-2 rounded-lg text-sm font-semibold" style="background-color:${accent}">${escapeHtml(content.ctaText)}</a>
+    </nav>`,
+    hero: `<header class="bg-slate-900 text-white py-24">
+      <div class="max-w-6xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
+        <div>
+          <h1 class="text-4xl md:text-5xl font-bold mb-6">${escapeHtml(content.tagline)}</h1>
+          <p class="text-slate-300 text-lg mb-8">${escapeHtml(content.heroSubtext)}</p>
+          <a href="${escapeHtml(content.ctaLink)}" class="inline-block bg-white text-slate-900 px-6 py-3 rounded-lg font-semibold">${escapeHtml(content.ctaText)}</a>
+        </div>
+        ${hero ? `<img src="${hero}" class="rounded-2xl w-full" />` : ''}
+      </div>
+    </header>`,
+    stats: stats.length ? `<section class="py-16 text-white" style="background-color:${accent}"><div class="max-w-6xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8">${statsHtml}</div></section>` : '',
+    about: `<section id="about" class="py-20"><div class="max-w-6xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center"><div><h2 class="text-3xl font-bold mb-6">${escapeHtml(content.aboutTitle)}</h2><p class="text-lg leading-relaxed text-slate-600 mb-6">${escapeHtml(content.about)}</p>${content.missionStatement ? `<p class="border-l-4 pl-6 italic text-slate-600" style="border-color:${accent}">${escapeHtml(content.missionStatement)}</p>` : ''}</div>${aboutImg ? `<img src="${aboutImg}" class="rounded-2xl w-full" />` : ''}</div></section>`,
+    services: services.length ? `<section id="services" class="bg-slate-50 py-20"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold text-center mb-4">${escapeHtml(content.servicesSectionTitle)}</h2><p class="text-center text-slate-600 mb-12">${escapeHtml(content.servicesSectionSubtitle)}</p><div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">${servicesHtml}</div></div></section>` : '',
+    steps: steps.length ? `<section class="py-20"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold text-center mb-12">${escapeHtml(content.stepsSectionTitle)}</h2><div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">${stepsHtml}</div></div></section>` : '',
+    showcase: showcaseItems.length ? `<section id="showcase" class="bg-slate-50 py-20"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold text-center mb-4">${escapeHtml(content.showcaseSectionTitle || showcaseCfg.sectionTitle)}</h2><p class="text-center text-slate-600 mb-12">${escapeHtml(content.showcaseSectionSubtitle || showcaseCfg.sectionSubtitle)}</p><div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">${showcaseHtml}</div></div></section>` : '',
+    gallery: gallery.length ? `<section id="gallery" class="py-20"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold text-center mb-12">${escapeHtml(content.gallerySectionTitle)}</h2><div class="grid md:grid-cols-3 gap-4">${galleryHtml}</div></div></section>` : '',
+    testimonials: `<section id="testimonials" class="bg-slate-50 py-20"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold text-center mb-4">${escapeHtml(content.testimonialsSectionTitle)}</h2><p class="text-center text-slate-600 mb-12">What our clients say about us</p>${testimonials.length ? `<div class="grid md:grid-cols-3 gap-6">${testimonialsHtml}</div>` : '<p class="text-center text-slate-500">Client reviews</p>'}</div></section>`,
+    team: teamHtml ? `<section class="py-20"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold text-center mb-12">${escapeHtml(content.teamSectionTitle)}</h2><div class="grid md:grid-cols-3 gap-8">${teamHtml}</div></div></section>` : '',
+    faq: faqs.length ? `<section id="faq" class="py-20"><div class="max-w-3xl mx-auto px-6"><h2 class="text-3xl font-bold text-center mb-12">${escapeHtml(content.faqSectionTitle)}</h2>${faqHtml}</div></section>` : '',
+    cta: `<section class="text-white py-20 text-center" style="background-color:${accentDark}"><div class="max-w-3xl mx-auto px-6"><h2 class="text-3xl font-bold mb-4">${escapeHtml(content.ctaBannerTitle)}</h2><p class="mb-8 text-lg opacity-80">${escapeHtml(content.ctaBannerText)}</p><a href="${escapeHtml(content.ctaLink)}" class="inline-block bg-white px-8 py-3 rounded-lg font-semibold" style="color:${accentDark}">${escapeHtml(content.ctaText)}</a></div></section>`,
+    contact: contactSectionHtml,
+    footer: `<footer class="border-t py-8 text-center text-sm text-slate-500"><div class="mb-4 flex flex-wrap justify-center gap-6">${navLinks.join('')}</div>© ${new Date().getFullYear()} ${escapeHtml(content.businessName)}</footer>`,
+  }
+
+  const body = layout.sectionOrder
+    .filter((id) => isVisible(id, visibility))
+    .map((id) => sectionHtml[id])
+    .filter(Boolean)
+    .join('\n')
+
   const html = `${tailwindHead(content.businessName)}
 <body class="bg-white text-slate-800">
-  <nav class="sticky top-0 z-50 border-b bg-white/90 backdrop-blur px-6 py-4 flex justify-between items-center max-w-6xl mx-auto w-full">
-    <span class="text-xl font-bold">${escapeHtml(content.businessName)}</span>
-    <a href="${escapeHtml(content.ctaLink)}" class="text-white px-5 py-2 rounded-lg text-sm font-semibold" style="background-color:${accent}">${escapeHtml(content.ctaText)}</a>
-  </nav>
-
-  <header class="bg-slate-900 text-white py-24">
-    <div class="max-w-6xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
-      <div>
-        <h1 class="text-4xl md:text-5xl font-bold mb-6">${escapeHtml(content.tagline)}</h1>
-        <p class="text-slate-300 text-lg mb-8">${escapeHtml(content.heroSubtext)}</p>
-        <a href="${escapeHtml(content.ctaLink)}" class="inline-block bg-white text-slate-900 px-6 py-3 rounded-lg font-semibold">${escapeHtml(content.ctaText)}</a>
-      </div>
-      ${hero ? `<img src="${hero}" class="rounded-2xl w-full" />` : ''}
-    </div>
-  </header>
-
-  <section class="py-16 text-white" style="background-color:${accent}">
-    <div class="max-w-6xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8">${statsHtml}</div>
-  </section>
-
-  <section id="about" class="py-20">
-    <div class="max-w-6xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
-      <div>
-        <h2 class="text-3xl font-bold mb-6">${escapeHtml(content.aboutTitle)}</h2>
-        <p class="text-lg leading-relaxed text-slate-600 mb-6">${escapeHtml(content.about)}</p>
-        ${content.missionStatement ? `<p class="border-l-4 pl-6 italic text-slate-600" style="border-color:${accent}">${escapeHtml(content.missionStatement)}</p>` : ''}
-      </div>
-      ${aboutImg ? `<img src="${aboutImg}" class="rounded-2xl w-full" />` : ''}
-    </div>
-  </section>
-
-  <section id="services" class="bg-slate-50 py-20">
-    <div class="max-w-6xl mx-auto px-6">
-      <h2 class="text-3xl font-bold text-center mb-4">${escapeHtml(content.servicesSectionTitle)}</h2>
-      <p class="text-center text-slate-600 mb-12">${escapeHtml(content.servicesSectionSubtitle)}</p>
-      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">${servicesHtml}</div>
-    </div>
-  </section>
-
-  <section class="py-20">
-    <div class="max-w-6xl mx-auto px-6">
-      <h2 class="text-3xl font-bold text-center mb-12">${escapeHtml(content.stepsSectionTitle)}</h2>
-      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">${stepsHtml}</div>
-    </div>
-  </section>
-
-  ${gallery.length ? `<section id="gallery" class="bg-slate-50 py-20"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold text-center mb-12">${escapeHtml(content.gallerySectionTitle)}</h2><div class="grid md:grid-cols-3 gap-4">${galleryHtml}</div></div></section>` : ''}
-
-  <section id="testimonials" class="py-20">
-    <div class="max-w-6xl mx-auto px-6">
-      <h2 class="text-3xl font-bold text-center mb-12">${escapeHtml(content.testimonialsSectionTitle)}</h2>
-      <div class="grid md:grid-cols-3 gap-6">${testimonialsHtml}</div>
-    </div>
-  </section>
-
-  ${teamHtml ? `<section class="bg-slate-50 py-20"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold text-center mb-12">${escapeHtml(content.teamSectionTitle)}</h2><div class="grid md:grid-cols-3 gap-8">${teamHtml}</div></div></section>` : ''}
-
-  <section id="faq" class="py-20">
-    <div class="max-w-3xl mx-auto px-6">
-      <h2 class="text-3xl font-bold text-center mb-12">${escapeHtml(content.faqSectionTitle)}</h2>
-      ${faqHtml}
-    </div>
-  </section>
-
-  <section class="text-white py-20 text-center" style="background-color:${accentDark}">
-    <div class="max-w-3xl mx-auto px-6">
-      <h2 class="text-3xl font-bold mb-4">${escapeHtml(content.ctaBannerTitle)}</h2>
-      <p class="mb-8 text-lg opacity-80">${escapeHtml(content.ctaBannerText)}</p>
-      <a href="${escapeHtml(content.ctaLink)}" class="inline-block bg-white px-8 py-3 rounded-lg font-semibold" style="color:${accentDark}">${escapeHtml(content.ctaText)}</a>
-    </div>
-  </section>
-
-  <section id="contact" class="py-20">
-    <div class="max-w-6xl mx-auto px-6">
-      <h2 class="text-3xl font-bold mb-10">Get in Touch</h2>
-      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">${contactHtml}</div>
-    </div>
-  </section>
-
-  <footer class="border-t py-8 text-center text-sm text-slate-500">
-    © ${new Date().getFullYear()} ${escapeHtml(content.businessName)}
-  </footer>
+${body}
 </body></html>`
 
   return { html, assets }

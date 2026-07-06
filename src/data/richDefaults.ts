@@ -1,5 +1,11 @@
 import type { SiteContent } from '../types'
 import { emptyContacts } from './contacts'
+import {
+  defaultSectionVisibility,
+  defaultShowcaseByTemplate,
+  showcaseConfigByTemplate,
+} from './sectionConfig'
+import type { TemplateId } from '../types'
 
 export const baseRichContent: SiteContent = {
   businessName: '',
@@ -10,6 +16,7 @@ export const baseRichContent: SiteContent = {
   about: '',
   aboutImage: '',
   missionStatement: '',
+  sectionVisibility: { ...defaultSectionVisibility },
   stats: [
     { value: '500+', label: 'Happy Clients' },
     { value: '15+', label: 'Years Experience' },
@@ -31,8 +38,11 @@ export const baseRichContent: SiteContent = {
     { title: 'Execution', description: 'We deliver with precision, keeping you informed every step.' },
     { title: 'Growth', description: 'We measure results and optimize for continuous improvement.' },
   ],
+  showcaseSectionTitle: 'Featured Items',
+  showcaseSectionSubtitle: '',
+  showcaseItems: defaultShowcaseByTemplate.business,
   gallerySectionTitle: 'Our Work',
-  galleryImages: ['', '', ''],
+  galleryImages: ['', '', '', '', '', ''],
   testimonialsSectionTitle: 'What Clients Say',
   testimonials: [
     { quote: 'Outstanding service and incredible results. Highly recommended!', author: 'Sarah Johnson', role: 'CEO, TechStart' },
@@ -62,15 +72,29 @@ export const baseRichContent: SiteContent = {
 export function mergeRichContent(overrides: Partial<SiteContent>): SiteContent {
   return {
     ...baseRichContent,
+    ...emptyContacts,
     ...overrides,
+    sectionVisibility: { ...defaultSectionVisibility, ...overrides.sectionVisibility },
     stats: overrides.stats ?? baseRichContent.stats,
     services: overrides.services ?? baseRichContent.services,
     steps: overrides.steps ?? baseRichContent.steps,
+    showcaseItems: overrides.showcaseItems ?? baseRichContent.showcaseItems,
     galleryImages: overrides.galleryImages ?? baseRichContent.galleryImages,
     testimonials: overrides.testimonials ?? baseRichContent.testimonials,
     faqs: overrides.faqs ?? baseRichContent.faqs,
     team: overrides.team ?? baseRichContent.team,
-    ...emptyContacts,
-    ...overrides,
+  }
+}
+
+export function enrichForTemplate(templateId: TemplateId, content: SiteContent): SiteContent {
+  const cfg = showcaseConfigByTemplate[templateId]
+  return {
+    ...content,
+    showcaseSectionTitle: content.showcaseSectionTitle || cfg.sectionTitle,
+    showcaseSectionSubtitle: content.showcaseSectionSubtitle || cfg.sectionSubtitle,
+    showcaseItems: content.showcaseItems?.some((i) => i.title)
+      ? content.showcaseItems
+      : defaultShowcaseByTemplate[templateId],
+    sectionVisibility: content.sectionVisibility ?? defaultSectionVisibility,
   }
 }

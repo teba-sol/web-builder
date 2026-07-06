@@ -46,8 +46,8 @@ export function HomePage() {
             Build your website in minutes
           </h1>
           <p className="mx-auto max-w-2xl text-lg text-slate-600">
-            Browse {templates.length} templates by business type, preview any design, fill in your
-            content, and download a ready-to-publish website.
+            Browse {templates.length} templates by business type — each with multiple layout styles,
+            built-in reviews, and contact form support. Preview, customize, and download.
           </p>
         </div>
 
