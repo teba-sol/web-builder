@@ -1,0 +1,61 @@
+import { getColorSchemes } from '../../data/colorSchemes'
+import { getLayoutVariant } from '../../data/layoutVariants'
+import { getShowcaseConfig } from '../../data/sectionConfig'
+import type { SiteContent, TemplateId } from '../../types'
+import type { ImageAsset } from '../imageUtils'
+
+export interface SiteExportPayload {
+  templateId: TemplateId
+  colorSchemeId: string
+  layoutVariantId: string
+  accent: string
+  accentDark: string
+  showcaseConfig: ReturnType<typeof getShowcaseConfig>
+  layout: ReturnType<typeof getLayoutVariant>
+  content: SiteContent
+  assetMap: Record<string, string>
+}
+
+export function buildExportPayload(
+  templateId: TemplateId,
+  content: SiteContent,
+  colorSchemeId: string | undefined,
+  layoutVariantId: string | undefined,
+  assets: ImageAsset[],
+): SiteExportPayload {
+  const scheme =
+    getColorSchemes(templateId).find((s) => s.id === colorSchemeId) ??
+    getColorSchemes(templateId)[0]
+  const layout = getLayoutVariant(templateId, layoutVariantId)
+
+  const assetMap: Record<string, string> = {}
+  for (const asset of assets) {
+    assetMap[asset.htmlPath] = asset.zipPath.replace(/^assets\//, '')
+  }
+
+  return {
+    templateId,
+    colorSchemeId: scheme.id,
+    layoutVariantId: layout.id,
+    accent: scheme.swatches[1],
+    accentDark: scheme.swatches[0],
+    showcaseConfig: getShowcaseConfig(templateId),
+    layout,
+    content,
+    assetMap,
+  }
+}
+
+export function resolveAssetPath(
+  imageUrl: string,
+  assetName: string,
+  assetMap: Record<string, string>,
+): string {
+  if (!imageUrl) return ''
+  if (imageUrl.startsWith('data:')) {
+    const ext = imageUrl.includes('jpeg') ? 'jpg' : 'png'
+    const filename = assetMap[`assets/${assetName}.${ext}`] ?? ''
+    return filename ? `assets/${filename}` : ''
+  }
+  return imageUrl
+}

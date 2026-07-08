@@ -24,10 +24,11 @@ function moveSection(order: SectionId[], section: SectionId, after: SectionId): 
 }
 
 function ensureReviewsBeforeContact(order: SectionId[]): SectionId[] {
-  const next: SectionId[] = order.filter((s) => s !== 'testimonials')
+  const pinned: SectionId[] = ['testimonials', 'blog']
+  const next: SectionId[] = order.filter((s) => !pinned.includes(s))
   const contactIdx = next.indexOf('contact')
-  if (contactIdx === -1) return [...next, 'testimonials']
-  next.splice(contactIdx, 0, 'testimonials')
+  if (contactIdx === -1) return [...next, ...pinned]
+  next.splice(contactIdx, 0, ...pinned)
   return next
 }
 
@@ -98,6 +99,41 @@ const variantBuilders: Record<TemplateId, LayoutVariant[]> = {
     buildVariant('medical', 'classic', 'Classic', 'Trust-building care services flow', 'split', 'grid', 'stacked', (o) => o),
     buildVariant('medical', 'modern', 'Modern', 'Programs and team up front, split form', 'split', 'list', 'split', (o) => moveSection(moveSection(o, 'showcase', 'services'), 'team', 'showcase')),
     buildVariant('medical', 'bold', 'Bold', 'Welcoming hero with patient spotlight', 'split', 'featured', 'form-focus', (o) => moveSection(o, 'testimonials', 'about')),
+  ],
+  lawfirm: [
+    buildVariant('lawfirm', 'classic', 'Classic', 'Practice areas and attorneys upfront', 'split', 'grid', 'stacked', (o) => o),
+    buildVariant('lawfirm', 'modern', 'Modern', 'Case results first, split consultation form', 'split', 'list', 'split', (o) => moveSection(moveSection(o, 'showcase', 'services'), 'team', 'showcase')),
+    buildVariant('lawfirm', 'bold', 'Bold', 'Commanding hero with client spotlight', 'immersive', 'featured', 'form-focus', (o) => moveSection(o, 'testimonials', 'about')),
+  ],
+  salon: [
+    buildVariant('salon', 'classic', 'Classic', 'Service menu and gallery focused', 'centered', 'grid', 'stacked', (o) => o),
+    buildVariant('salon', 'modern', 'Modern', 'Treatments first, split booking form', 'centered', 'list', 'split', (o) => moveSection(moveSection(o, 'showcase', 'hero'), 'gallery', 'showcase')),
+    buildVariant('salon', 'bold', 'Bold', 'Dreamy hero with featured client glow-up', 'centered', 'featured', 'form-focus', (o) => moveSection(o, 'testimonials', 'gallery')),
+  ],
+  noir: [
+    buildVariant('noir', 'classic', 'Classic', 'Gallery-first editorial runway flow', 'immersive', 'list', 'stacked', (o) => o),
+    buildVariant('noir', 'modern', 'Modern', 'Collection spotlight with split contact', 'immersive', 'featured', 'split', (o) => moveSection(moveSection(o, 'showcase', 'gallery'), 'about', 'showcase')),
+    buildVariant('noir', 'bold', 'Bold', 'Full-bleed hero with featured press quote', 'immersive', 'featured', 'form-focus', (o) => moveSection(o, 'testimonials', 'showcase')),
+  ],
+  terra: [
+    buildVariant('terra', 'classic', 'Classic', 'Story-first artisan journey', 'split', 'grid', 'stacked', (o) => o),
+    buildVariant('terra', 'modern', 'Modern', 'Shop collection early, split contact', 'centered', 'list', 'split', (o) => moveSection(moveSection(o, 'showcase', 'about'), 'gallery', 'showcase')),
+    buildVariant('terra', 'bold', 'Bold', 'Immersive craft hero with maker spotlight', 'immersive', 'featured', 'form-focus', (o) => moveSection(o, 'testimonials', 'about')),
+  ],
+  coastal: [
+    buildVariant('coastal', 'classic', 'Classic', 'Resort experiences and suites first', 'immersive', 'grid', 'stacked', (o) => o),
+    buildVariant('coastal', 'modern', 'Modern', 'Gallery-led escape, split booking', 'immersive', 'list', 'split', (o) => moveSection(moveSection(o, 'gallery', 'showcase'), 'about', 'gallery')),
+    buildVariant('coastal', 'bold', 'Bold', 'Sunset hero with guest spotlight', 'immersive', 'featured', 'form-focus', (o) => moveSection(o, 'testimonials', 'showcase')),
+  ],
+  vineyard: [
+    buildVariant('vineyard', 'classic', 'Classic', 'Estate story and wine programs', 'immersive', 'grid', 'stacked', (o) => o),
+    buildVariant('vineyard', 'modern', 'Modern', 'Tasting menu up front, split contact', 'immersive', 'list', 'split', (o) => moveSection(moveSection(o, 'showcase', 'about'), 'team', 'showcase')),
+    buildVariant('vineyard', 'bold', 'Bold', 'Vineyard panorama with sommelier quote', 'immersive', 'featured', 'form-focus', (o) => moveSection(o, 'testimonials', 'about')),
+  ],
+  arcade: [
+    buildVariant('arcade', 'classic', 'Classic', 'Neon showcase and event grid', 'immersive', 'grid', 'stacked', (o) => o),
+    buildVariant('arcade', 'modern', 'Modern', 'Gallery-first hype, split contact', 'immersive', 'list', 'split', (o) => moveSection(moveSection(o, 'gallery', 'hero'), 'showcase', 'gallery')),
+    buildVariant('arcade', 'bold', 'Bold', 'Full-screen hero with player spotlight', 'immersive', 'featured', 'form-focus', (o) => moveSection(o, 'testimonials', 'showcase')),
   ],
 }
 

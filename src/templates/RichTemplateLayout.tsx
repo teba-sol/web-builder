@@ -1,8 +1,10 @@
 import type { ReactNode } from 'react'
+import { Link } from 'react-router-dom'
 import { getTemplateMeta } from '../data/defaults'
 import { getLayoutVariant, type ContactLayout, type HeroLayout, type TestimonialLayout } from '../data/layoutVariants'
 import { getShowcaseConfig } from '../data/sectionConfig'
-import type { ContactFieldKey, SectionVisibility, SiteContent, TemplateId } from '../types'
+import { getSiteNavItems, resolveSiteHref, sitePath, type SiteNavItem, type SitePageId } from '../data/siteNav'
+import type { BlogPostItem, ContactFieldKey, SiteContent, TemplateId } from '../types'
 import { ContactFormBlock } from './ContactFormBlock'
 import { getTheme } from './getTheme'
 import { type SectionId, type TemplateTheme } from './themes'
@@ -10,77 +12,66 @@ import { type SectionId, type TemplateTheme } from './themes'
 interface Props {
   variant: TemplateId
   content: SiteContent
+  basePath?: string
+  page?: SitePageId
+  blogSlug?: string
   colorSchemeId?: string
   layoutVariantId?: string
 }
 
-interface NavLink {
-  href: string
-  label: string
-  section: SectionId
+type PageSectionId = SectionId | 'blog-teaser' | 'blog-post'
+
+const PAGE_SECTIONS: Record<SitePageId, PageSectionId[]> = {
+  home: ['nav', 'hero', 'stats', 'blog-teaser', 'cta', 'footer'],
+  about: ['nav', 'about', 'team', 'footer'],
+  services: ['nav', 'services', 'steps', 'showcase', 'footer'],
+  gallery: ['nav', 'gallery', 'footer'],
+  reviews: ['nav', 'testimonials', 'footer'],
+  blog: ['nav', 'blog', 'footer'],
+  'blog-post': ['nav', 'blog-post', 'footer'],
+  faq: ['nav', 'faq', 'footer'],
+  contact: ['nav', 'contact', 'footer'],
 }
 
-function getNavLinks(variant: TemplateId, visibility: SectionVisibility): NavLink[] {
-  const showcaseCfg = getShowcaseConfig(variant)
-  const links: NavLink[] = []
-
-  if (visibility.showcase) links.push({ href: '#showcase', label: showcaseCfg.navLabel, section: 'showcase' })
-  if (visibility.about) links.push({ href: '#about', label: 'About', section: 'about' })
-  if (visibility.services) links.push({ href: '#services', label: 'Services', section: 'services' })
-  if (visibility.gallery) links.push({ href: '#gallery', label: 'Gallery', section: 'gallery' })
-  links.push({ href: '#testimonials', label: 'Reviews', section: 'testimonials' })
-  if (visibility.faq) links.push({ href: '#faq', label: 'FAQ', section: 'faq' })
-  links.push({ href: '#contact', label: 'Contact', section: 'contact' })
-
-  return links
-}
-
-function isSectionVisible(id: SectionId, visibility: SectionVisibility): boolean {
-  const map: Partial<Record<SectionId, keyof SectionVisibility>> = {
-    stats: 'stats',
-    about: 'about',
-    services: 'services',
-    steps: 'steps',
-    showcase: 'showcase',
-    gallery: 'gallery',
-    team: 'team',
-    faq: 'faq',
-    cta: 'cta',
-  }
-  const key = map[id]
-  if (!key) return true
-  return visibility[key]
-}
-
-export function RichTemplateLayout({ variant, content: c, colorSchemeId, layoutVariantId }: Props) {
+export function RichTemplateLayout({
+  variant,
+  content: c,
+  basePath = '/',
+  page = 'home',
+  blogSlug,
+  colorSchemeId,
+  layoutVariantId,
+}: Props) {
   const t = getTheme(variant, colorSchemeId)
   const layout = getLayoutVariant(variant, layoutVariantId)
-  const order = layout.sectionOrder
   const meta = getTemplateMeta(variant)
   const visibility = c.sectionVisibility
-  const navLinks = getNavLinks(variant, visibility)
+  const navItems = getSiteNavItems(variant, visibility)
+  const order = PAGE_SECTIONS[page]
 
-  const sections: Record<SectionId, ReactNode> = {
-    nav: <NavSection c={c} t={t} variant={variant} navLinks={navLinks} />,
-    hero: <HeroSection c={c} t={t} variant={variant} heroLayout={layout.heroLayout} />,
-    stats: <StatsSection c={c} t={t} />,
+  const sections: Record<PageSectionId, ReactNode> = {
+    nav: <NavSection c={c} t={t} variant={variant} navItems={navItems} basePath={basePath} />,
+    hero: <HeroSection c={c} t={t} variant={variant} heroLayout={layout.heroLayout} basePath={basePath} />,
+    stats: visibility.stats ? <StatsSection c={c} t={t} /> : null,
     about: <AboutSection c={c} t={t} />,
-    services: <ServicesSection c={c} t={t} meta={meta?.servicesLabel} />,
-    steps: <StepsSection c={c} t={t} />,
-    showcase: <ShowcaseSection c={c} t={t} variant={variant} />,
+    services: visibility.services ? <ServicesSection c={c} t={t} meta={meta?.servicesLabel} /> : null,
+    steps: visibility.steps ? <StepsSection c={c} t={t} /> : null,
+    showcase: visibility.showcase ? <ShowcaseSection c={c} t={t} variant={variant} basePath={basePath} /> : null,
     gallery: <GallerySection c={c} t={t} />,
     testimonials: <TestimonialsSection c={c} t={t} layout={layout.testimonialLayout} />,
-    team: <TeamSection c={c} t={t} />,
+    blog: <BlogSection c={c} t={t} basePath={basePath} />,
+    'blog-teaser': visibility.blog ? <BlogTeaserSection c={c} t={t} basePath={basePath} /> : null,
+    'blog-post': <BlogPostSection c={c} t={t} basePath={basePath} slug={blogSlug ?? ''} />,
+    team: visibility.team ? <TeamSection c={c} t={t} /> : null,
     faq: <FaqSection c={c} t={t} />,
-    cta: <CtaBannerSection c={c} t={t} />,
-    contact: <ContactSection c={c} t={t} variant={variant} layout={layout.contactLayout} />,
-    footer: <FooterSection c={c} t={t} navLinks={navLinks} />,
+    cta: visibility.cta ? <CtaBannerSection c={c} t={t} basePath={basePath} /> : null,
+    contact: <ContactSection c={c} t={t} variant={variant} layout={layout.contactLayout} basePath={basePath} />,
+    footer: <FooterSection c={c} t={t} navItems={navItems} basePath={basePath} />,
   }
 
   return (
     <div className={`min-h-screen ${t.page}`}>
       {order.map((id) => {
-        if (!isSectionVisible(id, visibility)) return null
         const node = sections[id]
         if (node === null) return null
         return <div key={id}>{node}</div>
@@ -90,24 +81,26 @@ export function RichTemplateLayout({ variant, content: c, colorSchemeId, layoutV
 }
 
 function NavSection({
-  c, t, variant, navLinks,
+  c, t, variant, navItems, basePath,
 }: {
   c: SiteContent
   t: TemplateTheme
   variant: TemplateId
-  navLinks: NavLink[]
+  navItems: SiteNavItem[]
+  basePath: string
 }) {
-  const darkNav = ['creative', 'realtor', 'photography', 'fitness', 'saas'].includes(variant)
+  const darkNav = ['creative', 'realtor', 'photography', 'fitness', 'saas', 'noir', 'arcade', 'vineyard'].includes(variant)
+  const ctaHref = resolveSiteHref(basePath, c.ctaLink || 'contact')
   return (
     <nav className={t.nav}>
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <span className={`text-xl font-bold ${darkNav ? 'text-white' : ''}`}>{c.businessName}</span>
+        <Link to={basePath} className={`text-xl font-bold ${darkNav ? 'text-white' : ''}`}>{c.businessName}</Link>
         <div className="hidden gap-6 text-sm font-medium lg:flex">
-          {navLinks.map((l) => (
-            <a key={l.href} href={l.href} className={t.navLink}>{l.label}</a>
+          {navItems.map((item) => (
+            <Link key={item.page} to={sitePath(basePath, item.segment)} className={t.navLink}>{item.label}</Link>
           ))}
         </div>
-        <a href={c.ctaLink} className={t.navCta}>{c.ctaText}</a>
+        <Link to={ctaHref} className={t.navCta}>{c.ctaText}</Link>
       </div>
     </nav>
   )
@@ -136,31 +129,52 @@ function heroContentClass(variant: TemplateId, heroLayout: HeroLayout): string {
       return base
     case 'fitness':
       return `${base} py-28`
+    case 'noir':
+    case 'coastal':
+    case 'vineyard':
+    case 'arcade':
+      return `${base} pb-20 pt-28`
+    case 'terra':
+      return `${base} grid lg:grid-cols-2 gap-12 items-center py-24`
     default:
       return `${base} py-32`
   }
 }
 
-function HeroSection({ c, t, variant, heroLayout }: { c: SiteContent; t: TemplateTheme; variant: TemplateId; heroLayout: HeroLayout }) {
-  const hasOverlay = ['creative', 'restaurant', 'fitness', 'realtor', 'photography'].includes(variant)
+function HeroSection({ c, t, variant, heroLayout, basePath }: { c: SiteContent; t: TemplateTheme; variant: TemplateId; heroLayout: HeroLayout; basePath: string }) {
+  const ctaHref = resolveSiteHref(basePath, c.ctaLink || 'contact')
+  const hasOverlay = ['creative', 'restaurant', 'fitness', 'realtor', 'photography', 'noir', 'coastal', 'vineyard', 'arcade'].includes(variant)
     || heroLayout === 'immersive'
 
   return (
-    <header className={`relative ${t.hero} ${heroLayout === 'immersive' && !['restaurant', 'realtor', 'photography', 'creative', 'fitness'].includes(variant) ? 'min-h-[85vh] flex flex-col justify-center' : ''}`}>
+    <header className={`relative ${t.hero} ${heroLayout === 'immersive' && !['restaurant', 'realtor', 'photography', 'creative', 'fitness', 'noir', 'coastal', 'vineyard', 'arcade'].includes(variant) ? 'min-h-[85vh] flex flex-col justify-center' : ''}`}>
       {hasOverlay && c.heroImage && (
         <>
-          <img src={c.heroImage} alt="" className="absolute inset-0 h-full w-full object-cover" />
-          <div className={`absolute inset-0 ${variant === 'creative' ? 'bg-gradient-to-t from-zinc-950 via-zinc-950/70 to-transparent' : variant === 'restaurant' ? 'bg-gradient-to-t from-black/70 via-black/30 to-transparent' : variant === 'fitness' ? 'bg-gradient-to-r from-black via-black/80 to-transparent' : variant === 'realtor' ? 'bg-black/40' : 'bg-black/30'}`} />
+          <img src={c.heroImage} alt="" className={`absolute inset-0 h-full w-full object-cover ${variant === 'noir' ? 'grayscale contrast-125' : ''}`} />
+          <div className={`absolute inset-0 ${
+            variant === 'creative' ? 'bg-gradient-to-t from-zinc-950 via-zinc-950/70 to-transparent'
+              : variant === 'restaurant' ? 'bg-gradient-to-t from-black/70 via-black/30 to-transparent'
+                : variant === 'fitness' ? 'bg-gradient-to-r from-black via-black/80 to-transparent'
+                  : variant === 'realtor' ? 'bg-black/40'
+                    : variant === 'noir' ? 'bg-gradient-to-t from-neutral-950 via-neutral-950/80 to-neutral-950/30'
+                      : variant === 'coastal' ? 'bg-gradient-to-t from-sky-950/90 via-sky-900/40 to-transparent'
+                        : variant === 'vineyard' ? 'bg-gradient-to-r from-rose-950/90 via-rose-900/50 to-transparent'
+                          : variant === 'arcade' ? 'bg-gradient-to-br from-fuchsia-950/80 via-black/70 to-lime-950/40'
+                            : 'bg-black/30'
+          }`} />
         </>
       )}
       <div className={heroContentClass(variant, heroLayout)}>
-        {variant !== 'restaurant' && variant !== 'photography' && (
+        {variant !== 'restaurant' && variant !== 'photography' && variant !== 'coastal' && (
+          <p className={`mb-4 ${t.heroBadge}`}>{c.businessName}</p>
+        )}
+        {variant === 'coastal' && (
           <p className={`mb-4 ${t.heroBadge}`}>{c.businessName}</p>
         )}
         {variant === 'restaurant' && <p className={`mb-3 ${t.heroBadge}`}>Est. 2010</p>}
         <h1 className={`mb-6 ${t.heroTitle}`}>{c.tagline}</h1>
         <p className={`mb-8 ${t.heroText}`}>{c.heroSubtext || c.about.slice(0, 160)}</p>
-        <a href={c.ctaLink} className={`inline-block ${t.heroCta}`}>{c.ctaText} →</a>
+        <Link to={ctaHref} className={`inline-block ${t.heroCta}`}>{c.ctaText} →</Link>
         {!hasOverlay && c.heroImage && variant !== 'boutique' && (
           <img src={c.heroImage} alt="" className="rounded-2xl shadow-2xl w-full mt-8 lg:mt-0" />
         )}
@@ -255,7 +269,7 @@ function StepsSection({ c, t }: { c: SiteContent; t: TemplateTheme }) {
   )
 }
 
-function ShowcaseSection({ c, t, variant }: { c: SiteContent; t: TemplateTheme; variant: TemplateId }) {
+function ShowcaseSection({ c, t, variant, basePath }: { c: SiteContent; t: TemplateTheme; variant: TemplateId; basePath: string }) {
   const cfg = getShowcaseConfig(variant)
   const items = c.showcaseItems.filter((item) => item.title)
   if (items.length === 0) return null
@@ -268,23 +282,34 @@ function ShowcaseSection({ c, t, variant }: { c: SiteContent; t: TemplateTheme; 
           <p className={t.sectionSubtitle}>{c.showcaseSectionSubtitle || cfg.sectionSubtitle}</p>
         </div>
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {items.map((item, i) => (
-            <a key={i} href={item.link || '#contact'} className={`block ${t.showcaseCard}`}>
-              {item.image && (
-                <img src={item.image} alt="" className={t.showcaseImage} />
-              )}
-              <div className="p-6">
-                {cfg.showTag && item.tag && (
-                  <p className={`mb-2 ${t.showcaseTag}`}>{item.tag}</p>
+          {items.map((item, i) => {
+            const card = (
+              <>
+                {item.image && (
+                  <img src={item.image} alt="" className={t.showcaseImage} />
                 )}
-                <h3 className={`mb-2 ${t.cardTitle}`}>{item.title}</h3>
-                <p className={`mb-4 ${t.cardText}`}>{item.description}</p>
-                {cfg.showPrice && item.price && (
-                  <p className={t.showcasePrice}>{item.price}</p>
-                )}
-              </div>
-            </a>
-          ))}
+                <div className="p-6">
+                  {cfg.showTag && item.tag && (
+                    <p className={`mb-2 ${t.showcaseTag}`}>{item.tag}</p>
+                  )}
+                  <h3 className={`mb-2 ${t.cardTitle}`}>{item.title}</h3>
+                  <p className={`mb-4 ${t.cardText}`}>{item.description}</p>
+                  {cfg.showPrice && item.price && (
+                    <p className={t.showcasePrice}>{item.price}</p>
+                  )}
+                </div>
+              </>
+            )
+            const cls = `block ${t.showcaseCard}`
+            if (item.link?.startsWith('http')) {
+              return <a key={i} href={item.link} className={cls}>{card}</a>
+            }
+            return (
+              <Link key={i} to={resolveSiteHref(basePath, item.link || 'contact')} className={cls}>
+                {card}
+              </Link>
+            )
+          })}
         </div>
       </div>
     </section>
@@ -380,6 +405,131 @@ function TestimonialsSection({ c, t, layout }: { c: SiteContent; t: TemplateThem
   )
 }
 
+function formatBlogDate(date: string): string {
+  if (!date) return ''
+  const parsed = new Date(date)
+  if (Number.isNaN(parsed.getTime())) return date
+  return parsed.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+}
+
+function blogPostSlug(post: BlogPostItem): string {
+  return post.slug || post.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')
+}
+
+function BlogCard({ post, t, basePath }: { post: BlogPostItem; t: TemplateTheme; basePath: string }) {
+  const slug = blogPostSlug(post)
+  return (
+    <Link to={sitePath(basePath, `blog/${slug}`)} className={`${t.showcaseCard} block`}>
+      {post.image && (
+        <img src={post.image} alt="" className={t.showcaseImage} />
+      )}
+      <div className="p-6">
+        {post.date && (
+          <p className={`mb-2 text-xs uppercase tracking-wider ${t.showcaseTag}`}>
+            {formatBlogDate(post.date)}
+          </p>
+        )}
+        <h3 className={`mb-2 text-lg font-semibold ${t.cardTitle}`}>{post.title}</h3>
+        <p className={`mb-4 line-clamp-3 ${t.cardText}`}>{post.excerpt}</p>
+        {post.author && (
+          <p className={`text-sm font-medium ${t.cardTitle}`}>By {post.author}</p>
+        )}
+        <span className={`mt-3 inline-block text-sm font-semibold ${t.showcasePrice}`}>
+          Read more →
+        </span>
+      </div>
+    </Link>
+  )
+}
+
+function BlogSection({ c, t, basePath }: { c: SiteContent; t: TemplateTheme; basePath: string }) {
+  const posts = c.blogPosts.filter((post) => post.title)
+  if (posts.length === 0) return null
+  return (
+    <section className={t.sectionAlt}>
+      <div className="mx-auto max-w-6xl px-6">
+        <div className="mb-14 text-center">
+          <h2 className={t.sectionTitle}>{c.blogSectionTitle}</h2>
+          {c.blogSectionSubtitle && (
+            <p className={`mx-auto mt-3 max-w-2xl ${t.sectionSubtitle}`}>{c.blogSectionSubtitle}</p>
+          )}
+        </div>
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {posts.map((post, i) => (
+            <BlogCard key={i} post={post} t={t} basePath={basePath} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function BlogTeaserSection({ c, t, basePath }: { c: SiteContent; t: TemplateTheme; basePath: string }) {
+  const posts = c.blogPosts.filter((post) => post.title).slice(0, 3)
+  if (posts.length === 0) return null
+  return (
+    <section className={t.sectionAlt}>
+      <div className="mx-auto max-w-6xl px-6">
+        <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <h2 className={t.sectionTitle}>{c.blogSectionTitle}</h2>
+            {c.blogSectionSubtitle && (
+              <p className={`mt-2 ${t.sectionSubtitle}`}>{c.blogSectionSubtitle}</p>
+            )}
+          </div>
+          <Link to={sitePath(basePath, 'blog')} className={`text-sm font-semibold ${t.showcasePrice}`}>
+            View all posts →
+          </Link>
+        </div>
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {posts.map((post, i) => (
+            <BlogCard key={i} post={post} t={t} basePath={basePath} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function BlogPostSection({ c, t, basePath, slug }: { c: SiteContent; t: TemplateTheme; basePath: string; slug: string }) {
+  const post = c.blogPosts.find((p) => p.title && blogPostSlug(p) === slug)
+  if (!post) {
+    return (
+      <section className={t.section}>
+        <div className="mx-auto max-w-3xl px-6 py-20 text-center">
+          <h1 className={`mb-4 ${t.sectionTitle}`}>Post not found</h1>
+          <Link to={sitePath(basePath, 'blog')} className={t.showcasePrice}>← Back to blog</Link>
+        </div>
+      </section>
+    )
+  }
+  return (
+    <section className={t.section}>
+      <div className="mx-auto max-w-3xl px-6 py-12">
+        <Link to={sitePath(basePath, 'blog')} className={`mb-8 inline-block text-sm opacity-70 hover:underline`}>
+          ← Back to blog
+        </Link>
+        {post.date && (
+          <p className={`mb-3 text-sm uppercase tracking-wider ${t.showcaseTag}`}>{formatBlogDate(post.date)}</p>
+        )}
+        <h1 className={`mb-4 text-4xl font-bold ${t.cardTitle}`}>{post.title}</h1>
+        {post.author && <p className={`mb-8 ${t.cardText}`}>By {post.author}</p>}
+        {post.image && (
+          <img src={post.image} alt="" className="mb-10 w-full rounded-2xl aspect-[16/9] object-cover" />
+        )}
+        {post.excerpt && (
+          <p className={`mb-8 border-l-4 pl-6 text-lg italic ${t.cardText}`}>{post.excerpt}</p>
+        )}
+        <div className={`space-y-6 text-lg leading-relaxed ${t.cardText}`}>
+          {post.body.split('\n\n').map((para, i) => (
+            <p key={i}>{para}</p>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
 function TeamSection({ c, t }: { c: SiteContent; t: TemplateTheme }) {
   const members = c.team.filter((m) => m.name)
   if (members.length === 0) return null
@@ -423,13 +573,14 @@ function FaqSection({ c, t }: { c: SiteContent; t: TemplateTheme }) {
   )
 }
 
-function CtaBannerSection({ c, t }: { c: SiteContent; t: TemplateTheme }) {
+function CtaBannerSection({ c, t, basePath }: { c: SiteContent; t: TemplateTheme; basePath: string }) {
+  const ctaHref = resolveSiteHref(basePath, c.ctaLink || 'contact')
   return (
     <section className={t.ctaBanner}>
       <div className="mx-auto max-w-3xl px-6 text-center">
         <h2 className="text-3xl font-bold mb-4">{c.ctaBannerTitle}</h2>
         <p className="mb-8 opacity-80 text-lg">{c.ctaBannerText}</p>
-        <a href={c.ctaLink} className={`inline-block ${t.ctaBannerBtn}`}>{c.ctaText}</a>
+        <Link to={ctaHref} className={`inline-block ${t.ctaBannerBtn}`}>{c.ctaText}</Link>
       </div>
     </section>
   )
@@ -456,7 +607,7 @@ function ContactInfo({ c, t, variant, meta, centered }: {
   )
 }
 
-function ContactSection({ c, t, variant, layout }: { c: SiteContent; t: TemplateTheme; variant: TemplateId; layout: ContactLayout }) {
+function ContactSection({ c, t, variant, layout, basePath = '/' }: { c: SiteContent; t: TemplateTheme; variant: TemplateId; layout: ContactLayout; basePath?: string }) {
   const meta = getTemplateMeta(variant)
   if (!meta) return null
 
@@ -473,7 +624,7 @@ function ContactSection({ c, t, variant, layout }: { c: SiteContent; t: Template
               <h3 className={`mb-6 text-xl font-semibold ${t.cardTitle}`}>{c.contactFormTitle}</h3>
               <ContactInfo c={c} t={t} variant={variant} meta={meta} />
               <div className="mt-8">
-                <a href={c.ctaLink} className={t.navCta}>{c.ctaText}</a>
+                <Link to={resolveSiteHref(basePath, c.ctaLink || 'contact')} className={t.navCta}>{c.ctaText}</Link>
               </div>
             </div>
             <ContactFormBlock c={c} t={t} layout={layout} />
@@ -513,20 +664,20 @@ function ContactSection({ c, t, variant, layout }: { c: SiteContent; t: Template
           <ContactFormBlock c={c} t={t} layout={layout} />
         </div>
         <div className={`mt-10 ${centered ? 'text-center' : ''}`}>
-          <a href={c.ctaLink} className={t.navCta}>{c.ctaText}</a>
+          {basePath && <Link to={resolveSiteHref(basePath, c.ctaLink || 'contact')} className={t.navCta}>{c.ctaText}</Link>}
         </div>
       </div>
     </section>
   )
 }
 
-function FooterSection({ c, t, navLinks }: { c: SiteContent; t: TemplateTheme; navLinks: NavLink[] }) {
+function FooterSection({ c, t, navItems, basePath }: { c: SiteContent; t: TemplateTheme; navItems: SiteNavItem[]; basePath: string }) {
   return (
     <footer className={t.footer}>
       <div className="mx-auto max-w-6xl px-6">
         <div className="mb-4 flex flex-wrap justify-center gap-6 text-sm">
-          {navLinks.map((l) => (
-            <a key={l.href} href={l.href} className="hover:underline opacity-70">{l.label}</a>
+          {navItems.map((item) => (
+            <Link key={item.page} to={sitePath(basePath, item.segment)} className="hover:underline opacity-70">{item.label}</Link>
           ))}
         </div>
         <p>© {new Date().getFullYear()} {c.businessName}. All rights reserved.</p>

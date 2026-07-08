@@ -12,10 +12,10 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/demo/:templateId" element={<TemplateDemoPage />} />
+          <Route path="/demo/:templateId/*" element={<TemplateDemoPage />} />
           <Route path="/editor/:templateId" element={<EditorPage />} />
-          <Route path="/preview/:templateId" element={<PreviewPage />} />
-          <Route path="/site/:templateId" element={<SiteViewPage />} />
+          <Route path="/preview/:templateId/*" element={<PreviewPage />} />
+          <Route path="/site/:templateId/*" element={<SiteViewPage />} />
         </Routes>
       </BrowserRouter>
     </WebsiteProvider>

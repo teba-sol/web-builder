@@ -5,6 +5,7 @@ import { LIST_MAX_COUNT, LIST_MIN_COUNT, listAddLabels } from '../data/listDefau
 import { getShowcaseConfig } from '../data/sectionConfig'
 import { useWebsite } from '../context/WebsiteContext'
 import type { ContactFieldKey } from '../types'
+import { slugify } from '../utils/slugify'
 import type { ContentListKey } from '../data/listDefaults'
 import { getDefaultLayoutVariantId } from '../data/layoutVariants'
 import { ColorSchemePicker } from './ColorSchemePicker'
@@ -124,7 +125,7 @@ export function ContentForm() {
               {showcaseCfg.showTag && (
                 <Field label={showcaseCfg.tagLabel} value={item.tag} onChange={(v) => updateListItem('showcaseItems', i, 'tag', v)} />
               )}
-              <Field label="Link" value={item.link} onChange={(v) => updateListItem('showcaseItems', i, 'link', v)} placeholder="#contact" />
+              <Field label="Link" value={item.link} onChange={(v) => updateListItem('showcaseItems', i, 'link', v)} placeholder="contact" />
             </ItemCard>
           ))}
         </FormSection>
@@ -175,6 +176,38 @@ export function ContentForm() {
         ))}
       </FormSection>
 
+      {content.sectionVisibility.blog && (
+        <FormSection title="Blog" {...listControls('blogPosts', 'Add Post')}>
+          <Field label="Section Title" value={content.blogSectionTitle} onChange={(v) => updateContent({ blogSectionTitle: v })} />
+          <Field label="Section Subtitle" value={content.blogSectionSubtitle} onChange={(v) => updateContent({ blogSectionSubtitle: v })} />
+          {content.blogPosts.map((post, i) => (
+            <ItemCard
+              key={i}
+              label={`Post ${i + 1}`}
+              canRemove={listControls('blogPosts').canRemove()}
+              onRemove={() => listControls('blogPosts').onRemove(i)}
+            >
+              <Field
+                label="Title"
+                value={post.title}
+                onChange={(v) => {
+                  const nextSlug = !post.slug || post.slug === slugify(post.title) ? slugify(v) : post.slug
+                  const posts = [...content.blogPosts]
+                  posts[i] = { ...posts[i], title: v, slug: nextSlug }
+                  updateContent({ blogPosts: posts })
+                }}
+              />
+              <Field label="URL Slug" value={post.slug} onChange={(v) => updateListItem('blogPosts', i, 'slug', slugify(v))} placeholder="my-post-title" />
+              <Field label="Excerpt" value={post.excerpt} onChange={(v) => updateListItem('blogPosts', i, 'excerpt', v)} multiline rows={2} />
+              <Field label="Full Content" value={post.body} onChange={(v) => updateListItem('blogPosts', i, 'body', v)} multiline rows={6} />
+              <ImagePicker label="Cover Image" value={post.image} onChange={(v) => updateListItem('blogPosts', i, 'image', v)} />
+              <Field label="Author" value={post.author} onChange={(v) => updateListItem('blogPosts', i, 'author', v)} />
+              <Field label="Publish Date" value={post.date} onChange={(v) => updateListItem('blogPosts', i, 'date', v)} placeholder="2026-03-15" />
+            </ItemCard>
+          ))}
+        </FormSection>
+      )}
+
       <FormSection title="Team" {...listControls('team')}>
         <Field label="Section Title" value={content.teamSectionTitle} onChange={(v) => updateContent({ teamSectionTitle: v })} />
         {content.team.map((m, i) => (
@@ -210,7 +243,7 @@ export function ContentForm() {
         <Field label="Banner Title" value={content.ctaBannerTitle} onChange={(v) => updateContent({ ctaBannerTitle: v })} />
         <Field label="Banner Text" value={content.ctaBannerText} onChange={(v) => updateContent({ ctaBannerText: v })} multiline />
         <Field label="Button Text" value={content.ctaText} onChange={(v) => updateContent({ ctaText: v })} />
-        <Field label="Button Link" value={content.ctaLink} onChange={(v) => updateContent({ ctaLink: v })} placeholder="#contact" />
+        <Field label="Button Link" value={content.ctaLink} onChange={(v) => updateContent({ ctaLink: v })} placeholder="contact" />
       </FormSection>
 
       <FormSection title="Contact Form">

@@ -17,6 +17,13 @@ export type TemplateId =
   | 'realtor'
   | 'photography'
   | 'medical'
+  | 'lawfirm'
+  | 'salon'
+  | 'noir'
+  | 'terra'
+  | 'coastal'
+  | 'vineyard'
+  | 'arcade'
 
 export type ContactFieldKey =
   | 'email'
@@ -40,6 +47,7 @@ export type ToggleableSection =
   | 'showcase'
   | 'gallery'
   | 'team'
+  | 'blog'
   | 'faq'
   | 'cta'
 
@@ -51,6 +59,7 @@ export interface SectionVisibility {
   showcase: boolean
   gallery: boolean
   team: boolean
+  blog: boolean
   faq: boolean
   cta: boolean
 }
@@ -96,6 +105,16 @@ export interface ShowcaseItem {
   link: string
 }
 
+export interface BlogPostItem {
+  title: string
+  slug: string
+  excerpt: string
+  body: string
+  image: string
+  author: string
+  date: string
+}
+
 export interface SiteContent {
   businessName: string
   tagline: string
@@ -123,6 +142,9 @@ export interface SiteContent {
   faqs: FaqItem[]
   teamSectionTitle: string
   team: TeamMember[]
+  blogSectionTitle: string
+  blogSectionSubtitle: string
+  blogPosts: BlogPostItem[]
   ctaBannerTitle: string
   ctaBannerText: string
   ctaText: string

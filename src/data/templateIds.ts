@@ -10,6 +10,13 @@ export const TEMPLATE_IDS: TemplateId[] = [
   'realtor',
   'photography',
   'medical',
+  'lawfirm',
+  'salon',
+  'noir',
+  'terra',
+  'coastal',
+  'vineyard',
+  'arcade',
 ]
 
 export function isValidTemplateId(id: string): id is TemplateId {

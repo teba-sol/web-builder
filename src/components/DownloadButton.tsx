@@ -11,7 +11,7 @@ interface Props {
   label?: string
 }
 
-export function DownloadButton({ templateId, content, colorSchemeId, layoutVariantId, className, label = 'Download Website (.zip)' }: Props) {
+export function DownloadButton({ templateId, content, colorSchemeId, layoutVariantId, className, label = 'Download Full Stack (.zip)' }: Props) {
   const [status, setStatus] = useState<'idle' | 'loading' | 'done'>('idle')
 
   const handleDownload = async () => {

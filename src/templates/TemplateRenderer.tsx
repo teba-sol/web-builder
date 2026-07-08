@@ -1,18 +1,20 @@
 import type { SiteContent, TemplateId } from '../types'
-import { RichTemplateLayout } from './RichTemplateLayout'
+import { SiteApp } from './SiteApp'
 
 interface Props {
   templateId: TemplateId
   content: SiteContent
+  basePath: string
   colorSchemeId?: string
   layoutVariantId?: string
 }
 
-export function TemplateRenderer({ templateId, content, colorSchemeId, layoutVariantId }: Props) {
+export function TemplateRenderer({ templateId, content, basePath, colorSchemeId, layoutVariantId }: Props) {
   return (
-    <RichTemplateLayout
-      variant={templateId}
+    <SiteApp
+      templateId={templateId}
       content={content}
+      basePath={basePath}
       colorSchemeId={colorSchemeId}
       layoutVariantId={layoutVariantId}
     />

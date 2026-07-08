@@ -47,7 +47,7 @@ export function TemplateDemoPage() {
           </Link>
         </div>
       </div>
-      <TemplateRenderer templateId={id as TemplateId} content={content} />
+      <TemplateRenderer templateId={id as TemplateId} content={content} basePath={`/demo/${id}`} />
     </div>
   )
 }

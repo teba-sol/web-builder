@@ -37,7 +37,7 @@ export function SiteViewPage() {
   const layoutVariantId = isDemo ? undefined : saved?.layoutVariantId
 
   if (chromeless) {
-    return <TemplateRenderer templateId={typedId} content={content} colorSchemeId={schemeId} layoutVariantId={layoutVariantId} />
+    return <TemplateRenderer templateId={typedId} content={content} basePath={`/site/${id}`} colorSchemeId={schemeId} layoutVariantId={layoutVariantId} />
   }
 
   const openFullscreen = () => {
@@ -65,7 +65,7 @@ export function SiteViewPage() {
           Open Full Window
         </button>
       </div>
-      <TemplateRenderer templateId={typedId} content={content} colorSchemeId={schemeId} layoutVariantId={layoutVariantId} />
+      <TemplateRenderer templateId={typedId} content={content} basePath={`/site/${id}`} colorSchemeId={schemeId} layoutVariantId={layoutVariantId} />
     </div>
   )
 }

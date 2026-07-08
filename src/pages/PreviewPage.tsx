@@ -63,7 +63,7 @@ export function PreviewPage() {
       </div>
 
       <div className="pt-14">
-        <TemplateRenderer templateId={templateIdTyped} content={activeContent} colorSchemeId={activeSchemeId} layoutVariantId={activeLayoutVariantId} />
+        <TemplateRenderer templateId={templateIdTyped} content={activeContent} basePath={`/preview/${id}`} colorSchemeId={activeSchemeId} layoutVariantId={activeLayoutVariantId} />
       </div>
 
       <div className="fixed bottom-6 left-1/2 z-[100] -translate-x-1/2 rounded-full border border-emerald-500/30 bg-emerald-950/90 px-6 py-3 text-sm text-emerald-100 shadow-xl backdrop-blur-md">

@@ -13,6 +13,7 @@ export function migrateContent(raw: Partial<SiteContent>, templateId?: TemplateI
 
   const legacyVisibility = { ...raw.sectionVisibility } as Record<string, boolean | undefined>
   delete legacyVisibility.testimonials
+  if (legacyVisibility.blog === undefined) legacyVisibility.blog = true
 
   return {
     ...merged,
@@ -29,6 +30,9 @@ export function migrateContent(raw: Partial<SiteContent>, templateId?: TemplateI
     galleryImages: raw.galleryImages?.length
       ? raw.galleryImages
       : merged.galleryImages,
+    blogSectionTitle: raw.blogSectionTitle || merged.blogSectionTitle,
+    blogSectionSubtitle: raw.blogSectionSubtitle || merged.blogSectionSubtitle,
+    blogPosts: raw.blogPosts?.length ? raw.blogPosts : merged.blogPosts,
   }
 }
 

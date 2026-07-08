@@ -57,6 +57,37 @@ export const baseRichContent: SiteContent = {
     { question: 'Do you offer ongoing support?', answer: 'Yes! We provide continued support and maintenance to ensure long-term success.' },
   ],
   teamSectionTitle: 'Meet the Team',
+  blogSectionTitle: 'Latest from Our Blog',
+  blogSectionSubtitle: 'Insights, tips, and updates from our team',
+  blogPosts: [
+    {
+      title: '5 Strategies to Grow Your Business This Year',
+      slug: '5-strategies-to-grow-your-business',
+      excerpt: 'Practical steps you can take today to build momentum and reach more customers.',
+      body: 'Growing a business takes focus, consistency, and a willingness to adapt. Start by clarifying your core offer, then double down on the channels that already bring results.\n\nReview your customer journey from first touch to repeat purchase. Small improvements at each step compound into meaningful revenue gains. Finally, invest in relationships — referrals and retention often outperform cold outreach.',
+      image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80',
+      author: 'Alex Morgan',
+      date: '2026-03-12',
+    },
+    {
+      title: 'What Clients Are Asking Us Right Now',
+      slug: 'what-clients-are-asking-us',
+      excerpt: 'A quick roundup of the most common questions we hear — and how we answer them.',
+      body: 'Every season brings a new set of priorities. Lately, clients ask about pricing transparency, faster turnaround times, and how to stand out in crowded markets.\n\nOur advice stays grounded in fundamentals: deliver exceptional value, communicate clearly, and measure what matters. When in doubt, talk to your customers — their feedback is the best roadmap.',
+      image: 'https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80',
+      author: 'Jordan Lee',
+      date: '2026-02-28',
+    },
+    {
+      title: 'Behind the Scenes: How We Work',
+      slug: 'behind-the-scenes-how-we-work',
+      excerpt: 'Take a peek at our process, tools, and the principles that guide every project.',
+      body: 'We believe great outcomes come from clear goals, collaborative planning, and disciplined execution. Every engagement starts with listening — understanding where you are and where you want to go.\n\nFrom there we build a tailored plan with milestones you can track. Throughout delivery we keep communication open so there are no surprises, only steady progress toward results you can measure.',
+      image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80',
+      author: 'Taylor Brooks',
+      date: '2026-01-15',
+    },
+  ],
   team: [
     { name: 'Alex Morgan', role: 'Founder & CEO', image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80' },
     { name: 'Jordan Lee', role: 'Creative Director', image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80' },
@@ -65,7 +96,7 @@ export const baseRichContent: SiteContent = {
   ctaBannerTitle: 'Ready to get started?',
   ctaBannerText: 'Join hundreds of satisfied clients. Let us help you achieve your goals today.',
   ctaText: '',
-  ctaLink: '#contact',
+  ctaLink: 'contact',
   ...emptyContacts,
 }
 
@@ -81,6 +112,7 @@ export function mergeRichContent(overrides: Partial<SiteContent>): SiteContent {
     showcaseItems: overrides.showcaseItems ?? baseRichContent.showcaseItems,
     galleryImages: overrides.galleryImages ?? baseRichContent.galleryImages,
     testimonials: overrides.testimonials ?? baseRichContent.testimonials,
+    blogPosts: overrides.blogPosts ?? baseRichContent.blogPosts,
     faqs: overrides.faqs ?? baseRichContent.faqs,
     team: overrides.team ?? baseRichContent.team,
   }

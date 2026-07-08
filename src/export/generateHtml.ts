@@ -2,16 +2,28 @@ import { getColorSchemes } from '../data/colorSchemes'
 import { getTemplateMeta } from '../data/defaults'
 import { getLayoutVariant } from '../data/layoutVariants'
 import { getShowcaseConfig } from '../data/sectionConfig'
-import type { SectionVisibility, SiteContent, TemplateId } from '../types'
+import type { BlogPostItem, SectionVisibility, SiteContent, TemplateId } from '../types'
 import { type SectionId } from '../templates/themes'
 import { canEmbedForm, EMBED_FORM_HEIGHT, getEmbedFormUrl } from '../utils/formEmbed'
 import { escapeHtml, resolveImageForExport, type ImageAsset } from './imageUtils'
 import { tailwindHead } from './htmlShared'
 
+function formatBlogDate(date: string): string {
+  if (!date) return ''
+  const parsed = new Date(date)
+  if (Number.isNaN(parsed.getTime())) return date
+  return parsed.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+}
+
+function blogPostHref(post: BlogPostItem): string {
+  const slug = post.slug || post.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')
+  return `blog/${slug}.html`
+}
+
 function isVisible(id: SectionId, v: SectionVisibility): boolean {
   const map: Partial<Record<SectionId, keyof SectionVisibility>> = {
     stats: 'stats', about: 'about', services: 'services', steps: 'steps',
-    showcase: 'showcase', gallery: 'gallery', team: 'team', faq: 'faq', cta: 'cta',
+    showcase: 'showcase', gallery: 'gallery', team: 'team', blog: 'blog', faq: 'faq', cta: 'cta',
   }
   const key = map[id]
   return !key || v[key]
@@ -132,6 +144,17 @@ export function generateHtml(
     `<div class="border-b py-5"><h3 class="font-semibold mb-2">${escapeHtml(f.question)}</h3><p class="opacity-80">${escapeHtml(f.answer)}</p></div>`
   ).join('')
 
+  const blogPosts = content.blogPosts.filter((p) => p.title)
+  const blogHtml = blogPosts.map((post, i) => {
+    const img = post.image ? resolveImageForExport(post.image, `blog-${post.slug || i + 1}`, assets) : ''
+    const date = post.date ? `<p class="text-xs uppercase tracking-wider opacity-60 mb-2">${escapeHtml(formatBlogDate(post.date))}</p>` : ''
+    const author = post.author ? `<p class="text-sm font-medium mt-3">By ${escapeHtml(post.author)}</p>` : ''
+    return `<a href="${escapeHtml(blogPostHref(post))}" class="block rounded-xl border overflow-hidden hover:shadow-lg transition-shadow bg-white">
+      ${img ? `<img src="${img}" alt="" class="w-full aspect-[4/3] object-cover" />` : ''}
+      <div class="p-6">${date}<h3 class="font-semibold text-lg mb-2">${escapeHtml(post.title)}</h3><p class="opacity-80 line-clamp-3">${escapeHtml(post.excerpt)}</p>${author}<span class="inline-block mt-3 text-sm font-semibold" style="color:${accent}">Read more →</span></div>
+    </a>`
+  }).join('')
+
   const contactFormBlock = buildContactFormHtml(content, accent)
   const contactTitle = escapeHtml(content.contactSectionTitle || 'Get in Touch')
 
@@ -141,6 +164,7 @@ export function generateHtml(
   if (visibility.services) navLinks.push('<a href="#services" class="hover:underline opacity-70">Services</a>')
   if (visibility.gallery && gallery.length) navLinks.push('<a href="#gallery" class="hover:underline opacity-70">Gallery</a>')
   navLinks.push('<a href="#testimonials" class="hover:underline opacity-70">Reviews</a>')
+  if (visibility.blog && blogPosts.length) navLinks.push('<a href="#blog" class="hover:underline opacity-70">Blog</a>')
   if (visibility.faq) navLinks.push('<a href="#faq" class="hover:underline opacity-70">FAQ</a>')
   navLinks.push('<a href="#contact" class="hover:underline opacity-70">Contact</a>')
 
@@ -171,6 +195,7 @@ export function generateHtml(
     showcase: showcaseItems.length ? `<section id="showcase" class="bg-slate-50 py-20"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold text-center mb-4">${escapeHtml(content.showcaseSectionTitle || showcaseCfg.sectionTitle)}</h2><p class="text-center text-slate-600 mb-12">${escapeHtml(content.showcaseSectionSubtitle || showcaseCfg.sectionSubtitle)}</p><div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">${showcaseHtml}</div></div></section>` : '',
     gallery: gallery.length ? `<section id="gallery" class="py-20"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold text-center mb-12">${escapeHtml(content.gallerySectionTitle)}</h2><div class="grid md:grid-cols-3 gap-4">${galleryHtml}</div></div></section>` : '',
     testimonials: `<section id="testimonials" class="bg-slate-50 py-20"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold text-center mb-4">${escapeHtml(content.testimonialsSectionTitle)}</h2><p class="text-center text-slate-600 mb-12">What our clients say about us</p>${testimonials.length ? `<div class="grid md:grid-cols-3 gap-6">${testimonialsHtml}</div>` : '<p class="text-center text-slate-500">Client reviews</p>'}</div></section>`,
+    blog: blogPosts.length ? `<section id="blog" class="bg-slate-50 py-20"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold text-center mb-4">${escapeHtml(content.blogSectionTitle)}</h2><p class="text-center text-slate-600 mb-12">${escapeHtml(content.blogSectionSubtitle)}</p><div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">${blogHtml}</div></div></section>` : '',
     team: teamHtml ? `<section class="py-20"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold text-center mb-12">${escapeHtml(content.teamSectionTitle)}</h2><div class="grid md:grid-cols-3 gap-8">${teamHtml}</div></div></section>` : '',
     faq: faqs.length ? `<section id="faq" class="py-20"><div class="max-w-3xl mx-auto px-6"><h2 class="text-3xl font-bold text-center mb-12">${escapeHtml(content.faqSectionTitle)}</h2>${faqHtml}</div></section>` : '',
     cta: `<section class="text-white py-20 text-center" style="background-color:${accentDark}"><div class="max-w-3xl mx-auto px-6"><h2 class="text-3xl font-bold mb-4">${escapeHtml(content.ctaBannerTitle)}</h2><p class="mb-8 text-lg opacity-80">${escapeHtml(content.ctaBannerText)}</p><a href="${escapeHtml(content.ctaLink)}" class="inline-block bg-white px-8 py-3 rounded-lg font-semibold" style="color:${accentDark}">${escapeHtml(content.ctaText)}</a></div></section>`,
