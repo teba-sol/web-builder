@@ -21,17 +21,18 @@ const LIST_MODELS = [
   { name: 'TeamMember', table: 'team_members', fields: ['name', 'role', 'image'] },
   { name: 'Testimonial', table: 'testimonials', fields: ['quote', 'author', 'role'] },
   { name: 'BlogPost', table: 'blog_posts', fields: ['title', 'slug', 'excerpt', 'body', 'image', 'author', 'is_published', 'published_at'] },
+  { name: 'NewsPost', table: 'news_posts', fields: ['title', 'slug', 'excerpt', 'body', 'image', 'author', 'is_published', 'published_at'] },
   { name: 'Faq', table: 'faqs', fields: ['question', 'answer'] },
 ] as const
 
-function generateBlogPostModel(): string {
+function generatePostModel(className: string): string {
   return `<?php
 
 namespace App\\Models;
 
 use Illuminate\\Database\\Eloquent\\Model;
 
-class BlogPost extends Model
+class ${className} extends Model
 {
     protected $fillable = [
         'title', 'slug', 'excerpt', 'body', 'image', 'author',
@@ -46,7 +47,7 @@ class BlogPost extends Model
 `
 }
 
-function generateBlogPostMigration(): string {
+function generatePostMigration(table: string): string {
   return `<?php
 
 use Illuminate\\Database\\Migrations\\Migration;
@@ -57,7 +58,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('blog_posts', function (Blueprint $table) {
+        Schema::create('${table}', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->string('slug')->unique();
@@ -74,7 +75,7 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('blog_posts');
+        Schema::dropIfExists('${table}');
     }
 };
 `
@@ -143,13 +144,11 @@ function adminEmailLocal(businessName: string): string {
   return `admin@${slug}.local`
 }
 
-function generateSeeder(payload: SiteExportPayload): string {
+function buildSettingsRecord(payload: SiteExportPayload): Record<string, unknown> {
   const { content: c, assetMap } = payload
-  const defaultAdminEmail = adminEmailLocal(c.businessName)
-
   const mapImage = (url: string, name: string) => resolveAssetPath(url, name, assetMap)
 
-  const settings = {
+  return {
     business_name: c.businessName,
     tagline: c.tagline,
     hero_subtext: c.heroSubtext,
@@ -158,7 +157,14 @@ function generateSeeder(payload: SiteExportPayload): string {
     about: c.about,
     about_image: mapImage(c.aboutImage, 'about'),
     mission_statement: c.missionStatement,
+    page_visibility: c.pageVisibility,
     section_visibility: c.sectionVisibility,
+    news_section_title: c.newsSectionTitle,
+    news_section_subtitle: c.newsSectionSubtitle,
+    pricing_section_title: c.pricingSectionTitle,
+    terms_section_title: c.termsSectionTitle,
+    terms_content: c.termsContent,
+    cookie_banner_text: c.cookieBannerText,
     services_section_title: c.servicesSectionTitle,
     services_section_subtitle: c.servicesSectionSubtitle,
     steps_section_title: c.stepsSectionTitle,
@@ -185,6 +191,56 @@ function generateSeeder(payload: SiteExportPayload): string {
     color_scheme_id: payload.colorSchemeId,
     layout_variant_id: payload.layoutVariantId,
   }
+}
+
+function generateSiteSettingModel(payload: SiteExportPayload): string {
+  const defaults = jsonForPhp(buildSettingsRecord(payload))
+
+  return `<?php
+
+namespace App\\Models;
+
+use Illuminate\\Database\\Eloquent\\Model;
+
+class SiteSetting extends Model
+{
+    protected $fillable = [
+        'business_name', 'tagline', 'hero_subtext', 'hero_image',
+        'about_title', 'about', 'about_image', 'mission_statement',
+        'page_visibility', 'section_visibility', 'services_section_title', 'services_section_subtitle',
+        'news_section_title', 'news_section_subtitle', 'pricing_section_title',
+        'terms_section_title', 'terms_content', 'cookie_banner_text',
+        'steps_section_title', 'showcase_section_title', 'showcase_section_subtitle',
+        'gallery_section_title', 'testimonials_section_title',
+        'blog_section_title', 'blog_section_subtitle', 'faq_section_title',
+        'team_section_title', 'cta_banner_title', 'cta_banner_text',
+        'cta_text', 'cta_link', 'email', 'phone', 'address', 'hours',
+        'contact_section_title', 'contact_form_title', 'contact_form_button_text',
+        'template_id', 'color_scheme_id', 'layout_variant_id',
+    ];
+
+    protected $casts = ['page_visibility' => 'array', 'section_visibility' => 'array'];
+
+    public static function current(): self
+    {
+        $settings = static::query()->first();
+        if ($settings) {
+            return $settings;
+        }
+
+        return static::create(json_decode('${defaults}', true));
+    }
+}
+`
+}
+
+function generateSeeder(payload: SiteExportPayload): string {
+  const { content: c, assetMap } = payload
+  const defaultAdminEmail = adminEmailLocal(c.businessName)
+
+  const mapImage = (url: string, name: string) => resolveAssetPath(url, name, assetMap)
+
+  const settings = buildSettingsRecord(payload)
 
   const listData = {
     stats: c.stats.filter((s) => s.value),
@@ -215,6 +271,18 @@ function generateSeeder(payload: SiteExportPayload): string {
         is_published: true,
         published_at: post.date || null,
       })),
+    news_posts: c.newsPosts
+      .filter((p) => p.title)
+      .map((post, i) => ({
+        title: post.title,
+        slug: post.slug || post.title.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+        excerpt: post.excerpt,
+        body: post.body,
+        author: post.author,
+        image: mapImage(post.image, `news-${post.slug || i + 1}`),
+        is_published: true,
+        published_at: post.date || null,
+      })),
     faqs: c.faqs.filter((f) => f.question),
   }
 
@@ -223,6 +291,7 @@ function generateSeeder(payload: SiteExportPayload): string {
 namespace Database\\Seeders;
 
 use App\\Models\\BlogPost;
+use App\\Models\\NewsPost;
 use App\\Models\\ContactMessage;
 use App\\Models\\Faq;
 use App\\Models\\GalleryImage;
@@ -260,6 +329,7 @@ class DatabaseSeeder extends Seeder
         $this->seedList(TeamMember::class, json_decode('${jsonForPhp(listData.team)}', true));
         $this->seedList(Testimonial::class, json_decode('${jsonForPhp(listData.testimonials)}', true));
         $this->seedList(BlogPost::class, json_decode('${jsonForPhp(listData.blog_posts)}', true));
+        $this->seedList(NewsPost::class, json_decode('${jsonForPhp(listData.news_posts)}', true));
         $this->seedList(Faq::class, json_decode('${jsonForPhp(listData.faqs)}', true));
     }
 
@@ -392,6 +462,7 @@ $app->handleRequest(Request::capture());
 
 use App\\Http\\Controllers\\BlogController;
 use App\\Http\\Controllers\\ContactController;
+use App\\Http\\Controllers\\NewsController;
 use App\\Http\\Controllers\\DoctorController;
 use App\\Http\\Controllers\\PageController;
 use App\\Http\\Controllers\\SiteController;
@@ -400,12 +471,13 @@ use Illuminate\\Support\\Facades\\Route;
 Route::get('/', [SiteController::class, 'index'])->name('home');
 Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/services', [PageController::class, 'services'])->name('services');
+Route::get('/portfolio', [PageController::class, 'portfolio'])->name('portfolio');
 Route::get('/gallery', [PageController::class, 'gallery'])->name('gallery');
-Route::get('/reviews', [PageController::class, 'reviews'])->name('reviews');
-Route::get('/faq', [PageController::class, 'faq'])->name('faq');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
+Route::get('/news', [NewsController::class, 'index'])->name('news.index');
+Route::get('/news/{slug}', [NewsController::class, 'show'])->name('news.show');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
 Route::get('/doctor', [DoctorController::class, 'index'])->name('doctor.index');
@@ -515,30 +587,7 @@ class User extends Authenticatable implements FilamentUser
 }
 `,
 
-    'app/Models/SiteSetting.php': `<?php
-
-namespace App\\Models;
-
-use Illuminate\\Database\\Eloquent\\Model;
-
-class SiteSetting extends Model
-{
-    protected $fillable = [
-        'business_name', 'tagline', 'hero_subtext', 'hero_image',
-        'about_title', 'about', 'about_image', 'mission_statement',
-        'section_visibility', 'services_section_title', 'services_section_subtitle',
-        'steps_section_title', 'showcase_section_title', 'showcase_section_subtitle',
-        'gallery_section_title', 'testimonials_section_title',
-        'blog_section_title', 'blog_section_subtitle', 'faq_section_title',
-        'team_section_title', 'cta_banner_title', 'cta_banner_text',
-        'cta_text', 'cta_link', 'email', 'phone', 'address', 'hours',
-        'contact_section_title', 'contact_form_title', 'contact_form_button_text',
-        'template_id', 'color_scheme_id', 'layout_variant_id',
-    ];
-
-    protected $casts = ['section_visibility' => 'array'];
-}
-`,
+    'app/Models/SiteSetting.php': generateSiteSettingModel(payload),
 
     'app/Models/ContactMessage.php': `<?php
 
@@ -552,11 +601,40 @@ class ContactMessage extends Model
 }
 `,
 
+    'app/Http/Controllers/NewsController.php': `<?php
+
+namespace App\\Http\\Controllers;
+
+use App\\Models\\NewsPost;
+use App\\Models\\SiteSetting;
+use Illuminate\\View\\View;
+
+class NewsController extends Controller
+{
+    public function index(): View
+    {
+        return view('site.news', [
+            'settings' => SiteSetting::current(),
+            'newsPosts' => NewsPost::where('is_published', true)->orderByDesc('published_at')->orderBy('sort_order')->get(),
+        ]);
+    }
+
+    public function show(string $slug): View
+    {
+        return view('site.news-post', [
+            'settings' => SiteSetting::current(),
+            'post' => NewsPost::where('slug', $slug)->where('is_published', true)->firstOrFail(),
+        ]);
+    }
+}
+`,
+
     'app/Http/Controllers/BlogController.php': `<?php
 
 namespace App\\Http\\Controllers;
 
 use App\\Models\\BlogPost;
+use App\\Models\\NewsPost;
 use App\\Models\\SiteSetting;
 use Illuminate\\View\\View;
 
@@ -565,7 +643,7 @@ class BlogController extends Controller
     public function index(): View
     {
         return view('site.blog', [
-            'settings' => SiteSetting::firstOrFail(),
+            'settings' => SiteSetting::current(),
             'blogPosts' => BlogPost::where('is_published', true)->orderByDesc('published_at')->orderBy('sort_order')->get(),
         ]);
     }
@@ -573,7 +651,7 @@ class BlogController extends Controller
     public function show(string $slug): View
     {
         return view('site.blog-post', [
-            'settings' => SiteSetting::firstOrFail(),
+            'settings' => SiteSetting::current(),
             'post' => BlogPost::where('slug', $slug)->where('is_published', true)->firstOrFail(),
         ]);
     }
@@ -591,7 +669,6 @@ use App\\Models\\ShowcaseItem;
 use App\\Models\\SiteSetting;
 use App\\Models\\Step;
 use App\\Models\\TeamMember;
-use App\\Models\\Testimonial;
 use Illuminate\\View\\View;
 
 class PageController extends Controller
@@ -599,7 +676,7 @@ class PageController extends Controller
     public function about(): View
     {
         return view('site.about', [
-            'settings' => SiteSetting::firstOrFail(),
+            'settings' => SiteSetting::current(),
             'team' => TeamMember::orderBy('sort_order')->get(),
         ]);
     }
@@ -607,9 +684,16 @@ class PageController extends Controller
     public function services(): View
     {
         return view('site.services', [
-            'settings' => SiteSetting::firstOrFail(),
+            'settings' => SiteSetting::current(),
             'services' => Service::orderBy('sort_order')->get(),
             'steps' => Step::orderBy('sort_order')->get(),
+        ]);
+    }
+
+    public function portfolio(): View
+    {
+        return view('site.portfolio', [
+            'settings' => SiteSetting::current(),
             'showcaseItems' => ShowcaseItem::orderBy('sort_order')->get(),
         ]);
     }
@@ -617,31 +701,16 @@ class PageController extends Controller
     public function gallery(): View
     {
         return view('site.gallery', [
-            'settings' => SiteSetting::firstOrFail(),
+            'settings' => SiteSetting::current(),
             'galleryImages' => GalleryImage::orderBy('sort_order')->get(),
-        ]);
-    }
-
-    public function reviews(): View
-    {
-        return view('site.reviews', [
-            'settings' => SiteSetting::firstOrFail(),
-            'testimonials' => Testimonial::orderBy('sort_order')->get(),
-        ]);
-    }
-
-    public function faq(): View
-    {
-        return view('site.faq', [
-            'settings' => SiteSetting::firstOrFail(),
-            'faqs' => Faq::orderBy('sort_order')->get(),
         ]);
     }
 
     public function contact(): View
     {
         return view('site.contact', [
-            'settings' => SiteSetting::firstOrFail(),
+            'settings' => SiteSetting::current(),
+            'faqs' => Faq::orderBy('sort_order')->get(),
         ]);
     }
 }
@@ -652,6 +721,7 @@ class PageController extends Controller
 namespace App\\Http\\Controllers;
 
 use App\\Models\\BlogPost;
+use App\\Models\\NewsPost;
 use App\\Models\\SiteSetting;
 use App\\Models\\Stat;
 use Illuminate\\View\\View;
@@ -661,9 +731,10 @@ class SiteController extends Controller
     public function index(): View
     {
         return view('site.index', [
-            'settings' => SiteSetting::firstOrFail(),
+            'settings' => SiteSetting::current(),
             'stats' => Stat::orderBy('sort_order')->get(),
             'blogPosts' => BlogPost::where('is_published', true)->orderByDesc('published_at')->orderBy('sort_order')->get(),
+            'newsPosts' => NewsPost::where('is_published', true)->orderByDesc('published_at')->orderBy('sort_order')->get(),
         ]);
     }
 }
@@ -872,7 +943,14 @@ return new class extends Migration
             $table->text('about')->nullable();
             $table->string('about_image')->nullable();
             $table->text('mission_statement')->nullable();
+            $table->json('page_visibility')->nullable();
             $table->json('section_visibility')->nullable();
+            $table->string('news_section_title')->nullable();
+            $table->string('news_section_subtitle')->nullable();
+            $table->string('pricing_section_title')->nullable();
+            $table->string('terms_section_title')->nullable();
+            $table->text('terms_content')->nullable();
+            $table->text('cookie_banner_text')->nullable();
             $table->string('services_section_title')->nullable();
             $table->string('services_section_subtitle')->nullable();
             $table->string('steps_section_title')->nullable();
@@ -1146,14 +1224,16 @@ export function generateBackend(
 
   for (const model of LIST_MODELS) {
     files[`app/Models/${model.name}.php`] =
-      model.name === 'BlogPost' ? generateBlogPostModel() : generateModel(model.name, [...model.fields])
+      model.name === 'BlogPost' || model.name === 'NewsPost'
+        ? generatePostModel(model.name)
+        : generateModel(model.name, [...model.fields])
     files[`database/migrations/0001_01_01_1000_create_${model.table}_table.php`] =
-      model.table === 'blog_posts'
-        ? generateBlogPostMigration()
+      model.table === 'blog_posts' || model.table === 'news_posts'
+        ? generatePostMigration(model.table)
         : generateMigration(model.table, [...model.fields])
   }
 
-  Object.assign(files, generateFilamentFiles(content.sectionVisibility))
+  Object.assign(files, generateFilamentFiles(content.sectionVisibility, content.pageVisibility))
 
   return files
 }

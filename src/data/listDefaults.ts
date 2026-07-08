@@ -1,6 +1,8 @@
 import type {
   BlogPostItem,
   FaqItem,
+  NewsItem,
+  PricingItem,
   ServiceItem,
   ShowcaseItem,
   StatItem,
@@ -16,6 +18,8 @@ export type ContentListKey =
   | 'steps'
   | 'testimonials'
   | 'blogPosts'
+  | 'newsPosts'
+  | 'pricing'
   | 'faqs'
   | 'team'
   | 'galleryImages'
@@ -27,6 +31,8 @@ export const LIST_MIN_COUNT: Record<ContentListKey, number> = {
   steps: 1,
   testimonials: 1,
   blogPosts: 0,
+  newsPosts: 0,
+  pricing: 0,
   faqs: 1,
   team: 0,
   galleryImages: 0,
@@ -56,6 +62,22 @@ export const emptyBlogPost = (): BlogPostItem => ({
   author: '',
   date: '',
 })
+export const emptyNewsPost = (): NewsItem => ({
+  title: '',
+  slug: '',
+  excerpt: '',
+  body: '',
+  image: '',
+  author: '',
+  date: '',
+})
+export const emptyPricing = (): PricingItem => ({
+  title: '',
+  description: '',
+  price: '',
+  tag: '',
+  featured: false,
+})
 export const emptyFaq = (): FaqItem => ({ question: '', answer: '' })
 export const emptyTeamMember = (): TeamMember => ({ name: '', role: '', image: '' })
 
@@ -67,6 +89,8 @@ export function createEmptyListItem(list: ContentListKey): unknown {
     case 'showcaseItems': return emptyShowcase()
     case 'testimonials': return emptyTestimonial()
     case 'blogPosts': return emptyBlogPost()
+    case 'newsPosts': return emptyNewsPost()
+    case 'pricing': return emptyPricing()
     case 'faqs': return emptyFaq()
     case 'team': return emptyTeamMember()
     case 'galleryImages': return ''
@@ -80,6 +104,8 @@ export const listAddLabels: Record<ContentListKey, string> = {
   showcaseItems: 'Add Item',
   testimonials: 'Add Review',
   blogPosts: 'Add Post',
+  newsPosts: 'Add News Item',
+  pricing: 'Add Plan',
   faqs: 'Add Question',
   team: 'Add Member',
   galleryImages: 'Add Image',

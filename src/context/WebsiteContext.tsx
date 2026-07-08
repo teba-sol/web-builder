@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
 import { getDefaultColorSchemeId } from '../data/colorSchemes'
 import { getDefaultLayoutVariantId } from '../data/layoutVariants'
-import type { SiteContent, TemplateId, ToggleableSection } from '../types'
+import type { PageVisibility, SiteContent, TemplateId, ToggleableSection } from '../types'
 import { defaultContent, templateDefaults } from '../data/defaults'
 import {
   createEmptyListItem,
@@ -9,6 +9,7 @@ import {
   LIST_MIN_COUNT,
   type ContentListKey,
 } from '../data/listDefaults'
+import { sanitizeContentLinks } from '../utils/linkResolver'
 import { clearSavedSite, loadSavedSite, saveSite } from '../utils/storage'
 
 interface WebsiteContextValue {
@@ -29,6 +30,7 @@ interface WebsiteContextValue {
   addListItem: (list: ContentListKey) => void
   removeListItem: (list: ContentListKey, index: number) => void
   toggleSectionVisibility: (section: ToggleableSection) => void
+  togglePageVisibility: (page: keyof PageVisibility) => void
   reset: () => void
 }
 
@@ -71,7 +73,7 @@ export function WebsiteProvider({ children }: { children: ReactNode }) {
 
   const selectTemplate = (id: TemplateId) => {
     setTemplateId(id)
-    setContent({ ...templateDefaults[id] })
+    setContent(sanitizeContentLinks({ ...templateDefaults[id] }))
     setColorSchemeId(getDefaultColorSchemeId(id))
     setLayoutVariantId(getDefaultLayoutVariantId(id))
   }
@@ -129,6 +131,16 @@ export function WebsiteProvider({ children }: { children: ReactNode }) {
     }))
   }
 
+  const togglePageVisibility = (page: keyof PageVisibility) => {
+    setContent((prev) => ({
+      ...prev,
+      pageVisibility: {
+        ...prev.pageVisibility,
+        [page]: !prev.pageVisibility[page],
+      },
+    }))
+  }
+
   const reset = () => {
     setTemplateId(null)
     setContent(defaultContent)
@@ -152,6 +164,7 @@ export function WebsiteProvider({ children }: { children: ReactNode }) {
         addListItem,
         removeListItem,
         toggleSectionVisibility,
+        togglePageVisibility,
         reset,
       }}
     >

@@ -1,4 +1,4 @@
-import type { SectionVisibility } from '../../types'
+import type { PageVisibility, SectionVisibility } from '../../types'
 import { phpStr } from './phpUtils'
 
 interface ResourceDef {
@@ -110,6 +110,23 @@ const RESOURCE_DEFS: ResourceDef[] = [
     ],
   },
   {
+    name: 'NewsPost',
+    model: 'NewsPost',
+    icon: 'heroicon-o-megaphone',
+    label: 'News Posts',
+    fields: [
+      { name: 'title', type: 'text', label: 'Title' },
+      { name: 'slug', type: 'text', label: 'URL Slug' },
+      { name: 'excerpt', type: 'textarea', label: 'Excerpt' },
+      { name: 'body', type: 'textarea', label: 'Content' },
+      { name: 'image', type: 'image', label: 'Cover Image' },
+      { name: 'author', type: 'text', label: 'Author' },
+      { name: 'is_published', type: 'boolean', label: 'Published' },
+      { name: 'published_at', type: 'date', label: 'Publish Date' },
+      { name: 'sort_order', type: 'number', label: 'Sort Order' },
+    ],
+  },
+  {
     name: 'Faq',
     model: 'Faq',
     icon: 'heroicon-o-question-mark-circle',
@@ -122,15 +139,18 @@ const RESOURCE_DEFS: ResourceDef[] = [
   },
 ]
 
-const VISIBILITY_MAP: Record<string, keyof SectionVisibility> = {
-  Stat: 'stats',
+const PAGE_VISIBILITY_MAP: Record<string, keyof PageVisibility> = {
   Service: 'services',
-  Step: 'steps',
-  ShowcaseItem: 'showcase',
+  ShowcaseItem: 'portfolio',
   GalleryImage: 'gallery',
-  TeamMember: 'team',
-  Testimonial: 'stats', // testimonials always shown
   BlogPost: 'blog',
+  NewsPost: 'news',
+}
+
+const SECTION_VISIBILITY_MAP: Record<string, keyof SectionVisibility> = {
+  Stat: 'stats',
+  Step: 'steps',
+  TeamMember: 'team',
   Faq: 'faq',
 }
 
@@ -427,7 +447,10 @@ class ContactMessageResource extends Resource
 `
 }
 
-export function generateFilamentFiles(visibility: SectionVisibility): Record<string, string> {
+export function generateFilamentFiles(
+  sectionVisibility: SectionVisibility,
+  pageVisibility: PageVisibility,
+): Record<string, string> {
   const files: Record<string, string> = {}
 
   files['app/Filament/Resources/SiteSettingResource.php'] = generateSiteSettingsResource()
@@ -447,7 +470,7 @@ class ManageSiteSettings extends EditRecord
 
     public function mount(int|string $record = null): void
     {
-        $this->record = SiteSetting::firstOrCreate([]);
+        $this->record = SiteSetting::current();
         parent::mount($this->record->getKey());
     }
 }
@@ -486,8 +509,13 @@ class ViewContactMessage extends ViewRecord
 `
 
   for (const def of RESOURCE_DEFS) {
-    const visKey = VISIBILITY_MAP[def.name]
-    if (def.name === 'Testimonial' || def.name === 'BlogPost' || (visKey && visibility[visKey])) {
+    const pageKey = PAGE_VISIBILITY_MAP[def.name]
+    const sectionKey = SECTION_VISIBILITY_MAP[def.name]
+    const include =
+      def.name === 'Testimonial'
+      || (pageKey && pageVisibility[pageKey])
+      || (sectionKey && sectionVisibility[sectionKey])
+    if (include) {
       files[`app/Filament/Resources/${def.name}Resource.php`] = generateResource(def)
       Object.assign(files, generateResourcePages(def))
     }

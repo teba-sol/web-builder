@@ -11,6 +11,7 @@ import { getDefaultLayoutVariantId } from '../data/layoutVariants'
 import { ColorSchemePicker } from './ColorSchemePicker'
 import { ImagePicker } from './ImagePicker'
 import { LayoutVariantPicker } from './LayoutVariantPicker'
+import { PageVisibilityPicker } from './PageVisibilityPicker'
 import { SectionVisibilityPicker } from './SectionVisibilityPicker'
 
 export function ContentForm() {
@@ -18,6 +19,7 @@ export function ContentForm() {
     templateId, content, colorSchemeId, layoutVariantId, setColorScheme, setLayoutVariant,
     updateContent, updateListItem, addListItem, removeListItem,
     toggleSectionVisibility,
+    togglePageVisibility,
   } = useWebsite()
   const template = templateId ? getTemplateMeta(templateId) : null
   const showcaseCfg = templateId ? getShowcaseConfig(templateId) : null
@@ -55,6 +57,11 @@ export function ContentForm() {
           />
         </>
       )}
+
+      <PageVisibilityPicker
+        visibility={content.pageVisibility}
+        onToggle={togglePageVisibility}
+      />
 
       <SectionVisibilityPicker
         visibility={content.sectionVisibility}
@@ -105,8 +112,8 @@ export function ContentForm() {
         ))}
       </FormSection>
 
-      {showcaseCfg && content.sectionVisibility.showcase && (
-        <FormSection title={showcaseCfg.sectionTitle} {...listControls('showcaseItems', showcaseAddLabel)}>
+      {showcaseCfg && content.pageVisibility.portfolio && (
+        <FormSection title={`Portfolio — ${showcaseCfg.sectionTitle}`} {...listControls('showcaseItems', showcaseAddLabel)}>
           <Field label="Section Title" value={content.showcaseSectionTitle} onChange={(v) => updateContent({ showcaseSectionTitle: v })} />
           <Field label="Section Subtitle" value={content.showcaseSectionSubtitle} onChange={(v) => updateContent({ showcaseSectionSubtitle: v })} />
           {content.showcaseItems.map((item, i) => (
@@ -176,7 +183,7 @@ export function ContentForm() {
         ))}
       </FormSection>
 
-      {content.sectionVisibility.blog && (
+      {content.pageVisibility.blog && (
         <FormSection title="Blog" {...listControls('blogPosts', 'Add Post')}>
           <Field label="Section Title" value={content.blogSectionTitle} onChange={(v) => updateContent({ blogSectionTitle: v })} />
           <Field label="Section Subtitle" value={content.blogSectionSubtitle} onChange={(v) => updateContent({ blogSectionSubtitle: v })} />
@@ -203,6 +210,70 @@ export function ContentForm() {
               <ImagePicker label="Cover Image" value={post.image} onChange={(v) => updateListItem('blogPosts', i, 'image', v)} />
               <Field label="Author" value={post.author} onChange={(v) => updateListItem('blogPosts', i, 'author', v)} />
               <Field label="Publish Date" value={post.date} onChange={(v) => updateListItem('blogPosts', i, 'date', v)} placeholder="2026-03-15" />
+            </ItemCard>
+          ))}
+        </FormSection>
+      )}
+
+      {content.pageVisibility.news && (
+        <FormSection title="News" {...listControls('newsPosts', 'Add News Item')}>
+          <Field label="Section Title" value={content.newsSectionTitle} onChange={(v) => updateContent({ newsSectionTitle: v })} />
+          <Field label="Section Subtitle" value={content.newsSectionSubtitle} onChange={(v) => updateContent({ newsSectionSubtitle: v })} />
+          {content.newsPosts.map((post, i) => (
+            <ItemCard
+              key={i}
+              label={`News ${i + 1}`}
+              canRemove={listControls('newsPosts').canRemove()}
+              onRemove={() => listControls('newsPosts').onRemove(i)}
+            >
+              <Field
+                label="Title"
+                value={post.title}
+                onChange={(v) => {
+                  const nextSlug = !post.slug || post.slug === slugify(post.title) ? slugify(v) : post.slug
+                  const posts = [...content.newsPosts]
+                  posts[i] = { ...posts[i], title: v, slug: nextSlug }
+                  updateContent({ newsPosts: posts })
+                }}
+              />
+              <Field label="URL Slug" value={post.slug} onChange={(v) => updateListItem('newsPosts', i, 'slug', slugify(v))} />
+              <Field label="Excerpt" value={post.excerpt} onChange={(v) => updateListItem('newsPosts', i, 'excerpt', v)} multiline rows={2} />
+              <Field label="Full Content" value={post.body} onChange={(v) => updateListItem('newsPosts', i, 'body', v)} multiline rows={6} />
+              <ImagePicker label="Cover Image" value={post.image} onChange={(v) => updateListItem('newsPosts', i, 'image', v)} />
+              <Field label="Author" value={post.author} onChange={(v) => updateListItem('newsPosts', i, 'author', v)} />
+              <Field label="Date" value={post.date} onChange={(v) => updateListItem('newsPosts', i, 'date', v)} placeholder="2026-03-15" />
+            </ItemCard>
+          ))}
+        </FormSection>
+      )}
+
+      {content.sectionVisibility.pricing && (
+        <FormSection title="Pricing" {...listControls('pricing', 'Add Plan')}>
+          <Field label="Section Title" value={content.pricingSectionTitle} onChange={(v) => updateContent({ pricingSectionTitle: v })} />
+          {content.pricing.map((plan, i) => (
+            <ItemCard
+              key={i}
+              label={`Plan ${i + 1}`}
+              canRemove={listControls('pricing').canRemove()}
+              onRemove={() => listControls('pricing').onRemove(i)}
+            >
+              <Field label="Title" value={plan.title} onChange={(v) => updateListItem('pricing', i, 'title', v)} />
+              <Field label="Price" value={plan.price} onChange={(v) => updateListItem('pricing', i, 'price', v)} />
+              <Field label="Tag" value={plan.tag} onChange={(v) => updateListItem('pricing', i, 'tag', v)} placeholder="Most popular" />
+              <Field label="Description" value={plan.description} onChange={(v) => updateListItem('pricing', i, 'description', v)} multiline />
+              <label className="mt-2 flex items-center gap-2 text-sm">
+                <input
+                  type="checkbox"
+                  checked={plan.featured}
+                  onChange={(e) => {
+                    const plans = [...content.pricing]
+                    plans[i] = { ...plans[i], featured: e.target.checked }
+                    updateContent({ pricing: plans })
+                  }}
+                  className="h-4 w-4 rounded border-slate-300 text-indigo-600"
+                />
+                Highlight as featured plan
+              </label>
             </ItemCard>
           ))}
         </FormSection>
@@ -245,6 +316,19 @@ export function ContentForm() {
         <Field label="Button Text" value={content.ctaText} onChange={(v) => updateContent({ ctaText: v })} />
         <Field label="Button Link" value={content.ctaLink} onChange={(v) => updateContent({ ctaLink: v })} placeholder="contact" />
       </FormSection>
+
+      {content.sectionVisibility.terms && (
+        <FormSection title="Terms & Conditions">
+          <Field label="Section Title" value={content.termsSectionTitle} onChange={(v) => updateContent({ termsSectionTitle: v })} />
+          <Field label="Terms Content" value={content.termsContent} onChange={(v) => updateContent({ termsContent: v })} multiline rows={8} />
+        </FormSection>
+      )}
+
+      {content.sectionVisibility.cookieBanner && (
+        <FormSection title="Cookie Notice">
+          <Field label="Banner Text" value={content.cookieBannerText} onChange={(v) => updateContent({ cookieBannerText: v })} multiline />
+        </FormSection>
+      )}
 
       <FormSection title="Contact Form">
         <Field label="Section Title" value={content.contactSectionTitle} onChange={(v) => updateContent({ contactSectionTitle: v })} />

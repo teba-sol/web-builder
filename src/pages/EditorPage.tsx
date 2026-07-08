@@ -84,7 +84,7 @@ export function EditorPage() {
               </button>
             </div>
             <div className="flex-1 overflow-y-auto">
-              <TemplateRenderer templateId={id} content={content} basePath={`/preview/${id}`} colorSchemeId={colorSchemeId} layoutVariantId={layoutVariantId} />
+              <TemplateRenderer templateId={id} content={content} basePath={`/editor/${id}`} colorSchemeId={colorSchemeId} layoutVariantId={layoutVariantId} />
             </div>
           </div>
         </main>

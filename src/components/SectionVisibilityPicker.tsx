@@ -9,8 +9,8 @@ interface Props {
 export function SectionVisibilityPicker({ visibility, onToggle }: Props) {
   return (
     <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-      <p className="mb-1 text-sm font-bold uppercase tracking-wider text-slate-500">Page Sections</p>
-      <p className="mb-4 text-xs text-slate-400">Choose which sections appear on your site</p>
+      <p className="mb-1 text-sm font-bold uppercase tracking-wider text-slate-500">Optional Sections</p>
+      <p className="mb-4 text-xs text-slate-400">Toggle extra sections within your pages (stats, FAQ, pricing, etc.)</p>
       <div className="grid gap-2 sm:grid-cols-2">
         {sectionMetas.map((meta) => (
           <label

@@ -41,27 +41,35 @@ export type ContactFieldKey =
 
 export type ToggleableSection =
   | 'stats'
-  | 'about'
-  | 'services'
-  | 'steps'
-  | 'showcase'
-  | 'gallery'
   | 'team'
-  | 'blog'
+  | 'steps'
   | 'faq'
   | 'cta'
+  | 'testimonials'
+  | 'pricing'
+  | 'terms'
+  | 'cookieBanner'
 
 export interface SectionVisibility {
   stats: boolean
-  about: boolean
-  services: boolean
-  steps: boolean
-  showcase: boolean
-  gallery: boolean
   team: boolean
-  blog: boolean
+  steps: boolean
   faq: boolean
   cta: boolean
+  testimonials: boolean
+  pricing: boolean
+  terms: boolean
+  cookieBanner: boolean
+}
+
+export interface PageVisibility {
+  about: boolean
+  services: boolean
+  portfolio: boolean
+  blog: boolean
+  news: boolean
+  gallery: boolean
+  contact: boolean
 }
 
 export interface ServiceItem {
@@ -115,6 +123,24 @@ export interface BlogPostItem {
   date: string
 }
 
+export interface NewsItem {
+  title: string
+  slug: string
+  excerpt: string
+  body: string
+  image: string
+  author: string
+  date: string
+}
+
+export interface PricingItem {
+  title: string
+  description: string
+  price: string
+  tag: string
+  featured: boolean
+}
+
 export interface SiteContent {
   businessName: string
   tagline: string
@@ -124,6 +150,7 @@ export interface SiteContent {
   about: string
   aboutImage: string
   missionStatement: string
+  pageVisibility: PageVisibility
   sectionVisibility: SectionVisibility
   stats: StatItem[]
   servicesSectionTitle: string
@@ -145,6 +172,14 @@ export interface SiteContent {
   blogSectionTitle: string
   blogSectionSubtitle: string
   blogPosts: BlogPostItem[]
+  newsSectionTitle: string
+  newsSectionSubtitle: string
+  newsPosts: NewsItem[]
+  pricingSectionTitle: string
+  pricing: PricingItem[]
+  termsSectionTitle: string
+  termsContent: string
+  cookieBannerText: string
   ctaBannerTitle: string
   ctaBannerText: string
   ctaText: string

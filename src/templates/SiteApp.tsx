@@ -1,6 +1,7 @@
-import { Route, Routes, useParams } from 'react-router-dom'
-import type { SiteContent, TemplateId } from '../types'
+import { Navigate, Route, Routes, useParams } from 'react-router-dom'
+import { canLinkToPage } from '../data/siteNav'
 import type { SitePageId } from '../data/siteNav'
+import type { SiteContent, TemplateId } from '../types'
 import { RichTemplateLayout } from './RichTemplateLayout'
 
 interface Props {
@@ -11,11 +12,32 @@ interface Props {
   layoutVariantId?: string
 }
 
+const PAGE_ROUTE_GUARD: Partial<Record<SitePageId, keyof SiteContent['pageVisibility']>> = {
+  about: 'about',
+  services: 'services',
+  portfolio: 'portfolio',
+  gallery: 'gallery',
+  blog: 'blog',
+  news: 'news',
+  contact: 'contact',
+}
+
 function SitePage({
   page,
-  blogSlug,
+  postSlug,
   ...rest
-}: Props & { page: SitePageId; blogSlug?: string }) {
+}: Props & { page: SitePageId; postSlug?: string }) {
+  const guardKey = PAGE_ROUTE_GUARD[page]
+  if (guardKey && !canLinkToPage(guardKey, rest.content)) {
+    return <Navigate to={rest.basePath} replace />
+  }
+  if (page === 'blog-post' && !canLinkToPage('blog', rest.content)) {
+    return <Navigate to={rest.basePath} replace />
+  }
+  if (page === 'news-post' && !canLinkToPage('news', rest.content)) {
+    return <Navigate to={rest.basePath} replace />
+  }
+
   return (
     <RichTemplateLayout
       variant={rest.templateId}
@@ -24,7 +46,7 @@ function SitePage({
       layoutVariantId={rest.layoutVariantId}
       page={page}
       basePath={rest.basePath}
-      blogSlug={blogSlug}
+      postSlug={postSlug}
     />
   )
 }
@@ -36,17 +58,19 @@ export function SiteApp({ templateId, content, basePath, colorSchemeId, layoutVa
       <Route index element={<SitePage page="home" {...shared} />} />
       <Route path="about" element={<SitePage page="about" {...shared} />} />
       <Route path="services" element={<SitePage page="services" {...shared} />} />
+      <Route path="portfolio" element={<SitePage page="portfolio" {...shared} />} />
       <Route path="gallery" element={<SitePage page="gallery" {...shared} />} />
-      <Route path="reviews" element={<SitePage page="reviews" {...shared} />} />
       <Route path="blog" element={<SitePage page="blog" {...shared} />} />
-      <Route path="blog/:slug" element={<BlogPostRoute {...shared} />} />
-      <Route path="faq" element={<SitePage page="faq" {...shared} />} />
+      <Route path="blog/:slug" element={<PostRoute page="blog-post" {...shared} />} />
+      <Route path="news" element={<SitePage page="news" {...shared} />} />
+      <Route path="news/:slug" element={<PostRoute page="news-post" {...shared} />} />
       <Route path="contact" element={<SitePage page="contact" {...shared} />} />
+      <Route path="*" element={<Navigate to={basePath} replace />} />
     </Routes>
   )
 }
 
-function BlogPostRoute(props: Props) {
+function PostRoute({ page, ...props }: Props & { page: SitePageId }) {
   const { slug = '' } = useParams<{ slug: string }>()
-  return <SitePage page="blog-post" blogSlug={slug} {...props} />
+  return <SitePage page={page} postSlug={slug} {...props} />
 }

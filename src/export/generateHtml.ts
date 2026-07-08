@@ -2,9 +2,11 @@ import { getColorSchemes } from '../data/colorSchemes'
 import { getTemplateMeta } from '../data/defaults'
 import { getLayoutVariant } from '../data/layoutVariants'
 import { getShowcaseConfig } from '../data/sectionConfig'
-import type { BlogPostItem, SectionVisibility, SiteContent, TemplateId } from '../types'
+import { resolveStaticHref } from '../data/siteNav'
+import type { BlogPostItem, PageVisibility, SectionVisibility, SiteContent, TemplateId } from '../types'
 import { type SectionId } from '../templates/themes'
 import { canEmbedForm, EMBED_FORM_HEIGHT, getEmbedFormUrl } from '../utils/formEmbed'
+import { buildStaticHeroHtml } from './heroExport'
 import { escapeHtml, resolveImageForExport, type ImageAsset } from './imageUtils'
 import { tailwindHead } from './htmlShared'
 
@@ -20,13 +22,17 @@ function blogPostHref(post: BlogPostItem): string {
   return `blog/${slug}.html`
 }
 
-function isVisible(id: SectionId, v: SectionVisibility): boolean {
-  const map: Partial<Record<SectionId, keyof SectionVisibility>> = {
-    stats: 'stats', about: 'about', services: 'services', steps: 'steps',
-    showcase: 'showcase', gallery: 'gallery', team: 'team', blog: 'blog', faq: 'faq', cta: 'cta',
+function isVisible(id: SectionId, sv: SectionVisibility, pv: PageVisibility): boolean {
+  const pageMap: Partial<Record<SectionId, keyof PageVisibility>> = {
+    about: 'about', services: 'services', showcase: 'portfolio', gallery: 'gallery', blog: 'blog',
   }
-  const key = map[id]
-  return !key || v[key]
+  const sectionMap: Partial<Record<SectionId, keyof SectionVisibility>> = {
+    stats: 'stats', steps: 'steps', team: 'team', faq: 'faq', cta: 'cta', testimonials: 'testimonials',
+  }
+  const pageKey = pageMap[id]
+  if (pageKey && !pv[pageKey]) return false
+  const sectionKey = sectionMap[id]
+  return !sectionKey || sv[sectionKey]
 }
 
 function buildContactFormHtml(content: SiteContent, accent: string): string {
@@ -78,6 +84,7 @@ export function generateHtml(
   const accentDark = scheme.swatches[0]
   const layout = getLayoutVariant(templateId, layoutVariantId)
   const visibility = content.sectionVisibility
+  const pageVisibility = content.pageVisibility
   const showcaseCfg = getShowcaseConfig(templateId)
   const assets: ImageAsset[] = []
 
@@ -118,7 +125,8 @@ export function generateHtml(
     const img = item.image ? resolveImageForExport(item.image, `showcase-${i + 1}`, assets) : ''
     const tag = showcaseCfg.showTag && item.tag ? `<p class="text-xs uppercase tracking-wider opacity-60 mb-2">${escapeHtml(item.tag)}</p>` : ''
     const price = showcaseCfg.showPrice && item.price ? `<p class="text-lg font-bold mt-2" style="color:${accent}">${escapeHtml(item.price)}</p>` : ''
-    return `<a href="${escapeHtml(item.link || '#contact')}" class="block rounded-xl border overflow-hidden hover:shadow-lg transition-shadow">
+    const itemHref = item.link?.startsWith('http') ? item.link : resolveStaticHref(item.link || 'contact', content)
+    return `<a href="${escapeHtml(itemHref)}" class="block rounded-xl border overflow-hidden hover:shadow-lg transition-shadow">
       ${img ? `<img src="${img}" alt="" class="w-full aspect-[4/3] object-cover" />` : ''}
       <div class="p-6">${tag}<h3 class="font-semibold text-lg mb-2">${escapeHtml(item.title)}</h3><p class="opacity-80">${escapeHtml(item.description)}</p>${price}</div>
     </a>`
@@ -157,16 +165,15 @@ export function generateHtml(
 
   const contactFormBlock = buildContactFormHtml(content, accent)
   const contactTitle = escapeHtml(content.contactSectionTitle || 'Get in Touch')
+  const ctaHref = resolveStaticHref(content.ctaLink || 'contact', content)
 
   const navLinks: string[] = []
-  if (visibility.showcase) navLinks.push(`<a href="#showcase" class="hover:underline opacity-70">${escapeHtml(showcaseCfg.navLabel)}</a>`)
-  if (visibility.about) navLinks.push('<a href="#about" class="hover:underline opacity-70">About</a>')
-  if (visibility.services) navLinks.push('<a href="#services" class="hover:underline opacity-70">Services</a>')
-  if (visibility.gallery && gallery.length) navLinks.push('<a href="#gallery" class="hover:underline opacity-70">Gallery</a>')
-  navLinks.push('<a href="#testimonials" class="hover:underline opacity-70">Reviews</a>')
-  if (visibility.blog && blogPosts.length) navLinks.push('<a href="#blog" class="hover:underline opacity-70">Blog</a>')
-  if (visibility.faq) navLinks.push('<a href="#faq" class="hover:underline opacity-70">FAQ</a>')
-  navLinks.push('<a href="#contact" class="hover:underline opacity-70">Contact</a>')
+  if (pageVisibility.portfolio) navLinks.push(`<a href="portfolio.html" class="hover:underline opacity-70">${escapeHtml(showcaseCfg.navLabel)}</a>`)
+  if (pageVisibility.about) navLinks.push('<a href="about.html" class="hover:underline opacity-70">About</a>')
+  if (pageVisibility.services) navLinks.push('<a href="services.html" class="hover:underline opacity-70">Services</a>')
+  if (pageVisibility.gallery && gallery.length) navLinks.push('<a href="gallery.html" class="hover:underline opacity-70">Gallery</a>')
+  if (pageVisibility.blog && blogPosts.length) navLinks.push('<a href="blog/index.html" class="hover:underline opacity-70">Blog</a>')
+  if (pageVisibility.contact) navLinks.push('<a href="contact.html" class="hover:underline opacity-70">Contact</a>')
 
   const contactSectionHtml = layout.contactLayout === 'split' || layout.contactLayout === 'form-focus'
     ? `<section id="contact" class="py-20"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold mb-10">${contactTitle}</h2><div class="grid lg:grid-cols-2 gap-12 items-start"><div><h3 class="text-xl font-semibold mb-6">${escapeHtml(content.contactFormTitle)}</h3><div class="grid sm:grid-cols-2 gap-6">${contactHtml}</div></div><div>${contactFormBlock}</div></div></section>`
@@ -176,18 +183,18 @@ export function generateHtml(
     nav: `<nav class="sticky top-0 z-50 border-b bg-white/90 backdrop-blur px-6 py-4 flex justify-between items-center max-w-6xl mx-auto w-full">
       <span class="text-xl font-bold">${escapeHtml(content.businessName)}</span>
       <div class="hidden md:flex gap-6 text-sm">${navLinks.join('')}</div>
-      <a href="${escapeHtml(content.ctaLink)}" class="text-white px-5 py-2 rounded-lg text-sm font-semibold" style="background-color:${accent}">${escapeHtml(content.ctaText)}</a>
+      <a href="${escapeHtml(ctaHref)}" class="text-white px-5 py-2 rounded-lg text-sm font-semibold" style="background-color:${accent}">${escapeHtml(content.ctaText)}</a>
     </nav>`,
-    hero: `<header class="bg-slate-900 text-white py-24">
-      <div class="max-w-6xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
-        <div>
-          <h1 class="text-4xl md:text-5xl font-bold mb-6">${escapeHtml(content.tagline)}</h1>
-          <p class="text-slate-300 text-lg mb-8">${escapeHtml(content.heroSubtext)}</p>
-          <a href="${escapeHtml(content.ctaLink)}" class="inline-block bg-white text-slate-900 px-6 py-3 rounded-lg font-semibold">${escapeHtml(content.ctaText)}</a>
-        </div>
-        ${hero ? `<img src="${hero}" class="rounded-2xl w-full" />` : ''}
-      </div>
-    </header>`,
+    hero: buildStaticHeroHtml({
+      templateId,
+      heroLayout: layout.heroLayout,
+      heroImage: hero,
+      businessName: content.businessName,
+      tagline: content.tagline,
+      heroSubtext: content.heroSubtext,
+      ctaText: content.ctaText,
+      ctaHref,
+    }),
     stats: stats.length ? `<section class="py-16 text-white" style="background-color:${accent}"><div class="max-w-6xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8">${statsHtml}</div></section>` : '',
     about: `<section id="about" class="py-20"><div class="max-w-6xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center"><div><h2 class="text-3xl font-bold mb-6">${escapeHtml(content.aboutTitle)}</h2><p class="text-lg leading-relaxed text-slate-600 mb-6">${escapeHtml(content.about)}</p>${content.missionStatement ? `<p class="border-l-4 pl-6 italic text-slate-600" style="border-color:${accent}">${escapeHtml(content.missionStatement)}</p>` : ''}</div>${aboutImg ? `<img src="${aboutImg}" class="rounded-2xl w-full" />` : ''}</div></section>`,
     services: services.length ? `<section id="services" class="bg-slate-50 py-20"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold text-center mb-4">${escapeHtml(content.servicesSectionTitle)}</h2><p class="text-center text-slate-600 mb-12">${escapeHtml(content.servicesSectionSubtitle)}</p><div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">${servicesHtml}</div></div></section>` : '',
@@ -198,13 +205,13 @@ export function generateHtml(
     blog: blogPosts.length ? `<section id="blog" class="bg-slate-50 py-20"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold text-center mb-4">${escapeHtml(content.blogSectionTitle)}</h2><p class="text-center text-slate-600 mb-12">${escapeHtml(content.blogSectionSubtitle)}</p><div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">${blogHtml}</div></div></section>` : '',
     team: teamHtml ? `<section class="py-20"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold text-center mb-12">${escapeHtml(content.teamSectionTitle)}</h2><div class="grid md:grid-cols-3 gap-8">${teamHtml}</div></div></section>` : '',
     faq: faqs.length ? `<section id="faq" class="py-20"><div class="max-w-3xl mx-auto px-6"><h2 class="text-3xl font-bold text-center mb-12">${escapeHtml(content.faqSectionTitle)}</h2>${faqHtml}</div></section>` : '',
-    cta: `<section class="text-white py-20 text-center" style="background-color:${accentDark}"><div class="max-w-3xl mx-auto px-6"><h2 class="text-3xl font-bold mb-4">${escapeHtml(content.ctaBannerTitle)}</h2><p class="mb-8 text-lg opacity-80">${escapeHtml(content.ctaBannerText)}</p><a href="${escapeHtml(content.ctaLink)}" class="inline-block bg-white px-8 py-3 rounded-lg font-semibold" style="color:${accentDark}">${escapeHtml(content.ctaText)}</a></div></section>`,
+    cta: `<section class="text-white py-20 text-center" style="background-color:${accentDark}"><div class="max-w-3xl mx-auto px-6"><h2 class="text-3xl font-bold mb-4">${escapeHtml(content.ctaBannerTitle)}</h2><p class="mb-8 text-lg opacity-80">${escapeHtml(content.ctaBannerText)}</p><a href="${escapeHtml(ctaHref)}" class="inline-block bg-white px-8 py-3 rounded-lg font-semibold" style="color:${accentDark}">${escapeHtml(content.ctaText)}</a></div></section>`,
     contact: contactSectionHtml,
     footer: `<footer class="border-t py-8 text-center text-sm text-slate-500"><div class="mb-4 flex flex-wrap justify-center gap-6">${navLinks.join('')}</div>© ${new Date().getFullYear()} ${escapeHtml(content.businessName)}</footer>`,
   }
 
   const body = layout.sectionOrder
-    .filter((id) => isVisible(id, visibility))
+    .filter((id) => isVisible(id, visibility, pageVisibility))
     .map((id) => sectionHtml[id])
     .filter(Boolean)
     .join('\n')

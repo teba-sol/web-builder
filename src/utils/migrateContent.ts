@@ -1,27 +1,65 @@
+import { defaultPageVisibility } from '../data/pageConfig'
 import { mergeRichContent } from '../data/richDefaults'
 import {
   defaultSectionVisibility,
   defaultShowcaseByTemplate,
   showcaseConfigByTemplate,
 } from '../data/sectionConfig'
-import type { SiteContent, TemplateId } from '../types'
+import type { PageVisibility, SectionVisibility, SiteContent, TemplateId } from '../types'
+import { sanitizeContentLinks } from './linkResolver'
+
+function migrateSectionVisibility(raw: Partial<SectionVisibility> & Record<string, boolean | undefined>): SectionVisibility {
+  const legacy = { ...raw }
+  return {
+    stats: legacy.stats ?? true,
+    team: legacy.team ?? true,
+    steps: legacy.steps ?? true,
+    faq: legacy.faq ?? true,
+    cta: legacy.cta ?? true,
+    testimonials: legacy.testimonials ?? true,
+    pricing: legacy.pricing ?? false,
+    terms: legacy.terms ?? false,
+    cookieBanner: legacy.cookieBanner ?? true,
+  }
+}
+
+function migratePageVisibility(
+  rawContent: Partial<SiteContent>,
+  legacySections: Record<string, boolean | undefined>,
+): PageVisibility {
+  const existing = rawContent.pageVisibility
+  if (existing) {
+    return { ...defaultPageVisibility, ...existing }
+  }
+  return {
+    about: legacySections.about ?? true,
+    services: legacySections.services ?? true,
+    portfolio: legacySections.showcase ?? legacySections.portfolio ?? true,
+    blog: legacySections.blog ?? true,
+    news: legacySections.news ?? true,
+    gallery: legacySections.gallery ?? true,
+    contact: legacySections.contact ?? true,
+  }
+}
 
 export function migrateContent(raw: Partial<SiteContent>, templateId?: TemplateId): SiteContent {
   const merged = mergeRichContent(raw)
   const id = templateId ?? 'business'
   const cfg = showcaseConfigByTemplate[id]
 
-  const legacyVisibility = { ...raw.sectionVisibility } as Record<string, boolean | undefined>
-  delete legacyVisibility.testimonials
-  if (legacyVisibility.blog === undefined) legacyVisibility.blog = true
+  const legacyVisibility = { ...(raw.sectionVisibility as Record<string, boolean | undefined> | undefined) }
 
-  return {
+  const result: SiteContent = {
     ...merged,
     contactSectionTitle: raw.contactSectionTitle || merged.contactSectionTitle,
     contactFormTitle: raw.contactFormTitle || merged.contactFormTitle,
     contactFormUrl: raw.contactFormUrl ?? merged.contactFormUrl,
     contactFormButtonText: raw.contactFormButtonText || merged.contactFormButtonText,
-    sectionVisibility: { ...defaultSectionVisibility, ...legacyVisibility },
+    pageVisibility: migratePageVisibility(raw, legacyVisibility),
+    sectionVisibility: migrateSectionVisibility({
+      ...defaultSectionVisibility,
+      ...legacyVisibility,
+    }),
     showcaseSectionTitle: raw.showcaseSectionTitle || cfg.sectionTitle,
     showcaseSectionSubtitle: raw.showcaseSectionSubtitle || cfg.sectionSubtitle,
     showcaseItems: raw.showcaseItems?.length
@@ -33,7 +71,17 @@ export function migrateContent(raw: Partial<SiteContent>, templateId?: TemplateI
     blogSectionTitle: raw.blogSectionTitle || merged.blogSectionTitle,
     blogSectionSubtitle: raw.blogSectionSubtitle || merged.blogSectionSubtitle,
     blogPosts: raw.blogPosts?.length ? raw.blogPosts : merged.blogPosts,
+    newsSectionTitle: raw.newsSectionTitle || merged.newsSectionTitle,
+    newsSectionSubtitle: raw.newsSectionSubtitle || merged.newsSectionSubtitle,
+    newsPosts: raw.newsPosts?.length ? raw.newsPosts : merged.newsPosts,
+    pricingSectionTitle: raw.pricingSectionTitle || merged.pricingSectionTitle,
+    pricing: raw.pricing?.length ? raw.pricing : merged.pricing,
+    termsSectionTitle: raw.termsSectionTitle || merged.termsSectionTitle,
+    termsContent: raw.termsContent || merged.termsContent,
+    cookieBannerText: raw.cookieBannerText || merged.cookieBannerText,
   }
+
+  return sanitizeContentLinks(result)
 }
 
 export function migrateContentWithTemplate(saved: { templateId: TemplateId; content: Partial<SiteContent> }) {

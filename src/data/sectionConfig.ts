@@ -19,28 +19,26 @@ export interface SectionMeta {
 
 export const defaultSectionVisibility: SectionVisibility = {
   stats: true,
-  about: true,
-  services: true,
-  steps: true,
-  showcase: true,
-  gallery: true,
   team: true,
-  blog: true,
+  steps: true,
   faq: true,
   cta: true,
+  testimonials: true,
+  pricing: false,
+  terms: false,
+  cookieBanner: true,
 }
 
 export const sectionMetas: SectionMeta[] = [
-  { key: 'showcase', label: 'Featured Items', description: 'Products, listings, menu, or plans' },
-  { key: 'stats', label: 'Stats Bar', description: 'Key numbers and achievements' },
-  { key: 'about', label: 'About', description: 'Story, mission, and second image' },
-  { key: 'services', label: 'Services', description: 'What you offer' },
-  { key: 'steps', label: 'Process', description: 'How it works step-by-step' },
-  { key: 'gallery', label: 'Gallery', description: 'Photo showcase grid' },
-  { key: 'team', label: 'Team', description: 'People behind the business' },
-  { key: 'blog', label: 'Blog', description: 'News, insights, and articles' },
-  { key: 'faq', label: 'FAQ', description: 'Common questions' },
+  { key: 'stats', label: 'Stats Bar', description: 'Key numbers on the home page' },
+  { key: 'steps', label: 'Process', description: 'How-it-works steps on services page' },
+  { key: 'team', label: 'Team', description: 'Team members on the about page' },
+  { key: 'testimonials', label: 'Testimonials', description: 'Client reviews on home or about' },
+  { key: 'pricing', label: 'Pricing', description: 'Pricing plans on services page' },
+  { key: 'faq', label: 'FAQ', description: 'Common questions on contact page' },
   { key: 'cta', label: 'CTA Banner', description: 'Mid-page call to action' },
+  { key: 'terms', label: 'Terms & Conditions', description: 'Legal terms on contact page' },
+  { key: 'cookieBanner', label: 'Cookie Notice', description: 'Cookie consent banner sitewide' },
 ]
 
 export const showcaseConfigByTemplate: Record<TemplateId, ShowcaseConfig> = {

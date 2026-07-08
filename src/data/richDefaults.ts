@@ -1,5 +1,6 @@
 import type { SiteContent } from '../types'
 import { emptyContacts } from './contacts'
+import { defaultPageVisibility } from './pageConfig'
 import {
   defaultSectionVisibility,
   defaultShowcaseByTemplate,
@@ -16,6 +17,7 @@ export const baseRichContent: SiteContent = {
   about: '',
   aboutImage: '',
   missionStatement: '',
+  pageVisibility: { ...defaultPageVisibility },
   sectionVisibility: { ...defaultSectionVisibility },
   stats: [
     { value: '500+', label: 'Happy Clients' },
@@ -59,6 +61,46 @@ export const baseRichContent: SiteContent = {
   teamSectionTitle: 'Meet the Team',
   blogSectionTitle: 'Latest from Our Blog',
   blogSectionSubtitle: 'Insights, tips, and updates from our team',
+  newsSectionTitle: 'News & Updates',
+  newsSectionSubtitle: 'Announcements, press releases, and company news',
+  newsPosts: [
+    {
+      title: 'We Are Expanding to Serve You Better',
+      slug: 'expanding-to-serve-you-better',
+      excerpt: 'New locations, extended hours, and more ways to connect with our team.',
+      body: 'We are thrilled to announce expanded service hours and a new consultation space designed around your comfort and convenience.\n\nThis investment reflects our commitment to accessibility and excellence. Thank you for being part of our journey — we cannot wait to welcome you.',
+      image: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80',
+      author: 'Press Team',
+      date: '2026-04-01',
+    },
+    {
+      title: 'Award Recognizes Our Commitment to Quality',
+      slug: 'award-quality-commitment',
+      excerpt: 'Industry leaders honored our team for outstanding client satisfaction.',
+      body: 'Receiving this recognition is a testament to the people behind our work — dedicated professionals who show up every day with care and craft.\n\nWe share this award with every client who trusted us with their goals. Your feedback shapes how we grow and improve.',
+      image: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80',
+      author: 'Communications',
+      date: '2026-03-18',
+    },
+    {
+      title: 'Partnership Opens New Opportunities',
+      slug: 'partnership-new-opportunities',
+      excerpt: 'Strategic collaboration brings enhanced offerings to our community.',
+      body: 'Our new partnership combines complementary strengths to deliver more value, faster turnaround, and broader expertise under one roof.\n\nStay tuned for launch events and early-access opportunities for existing clients.',
+      image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80',
+      author: 'Leadership',
+      date: '2026-02-05',
+    },
+  ],
+  pricingSectionTitle: 'Pricing Plans',
+  pricing: [
+    { title: 'Starter', description: 'Essential features for individuals and small teams getting started.', price: '$29/mo', tag: 'Most popular', featured: false },
+    { title: 'Professional', description: 'Advanced tools, priority support, and integrations for growing businesses.', price: '$79/mo', tag: 'Best value', featured: true },
+    { title: 'Enterprise', description: 'Custom solutions, dedicated account management, and SLA guarantees.', price: 'Custom', tag: 'Contact us', featured: false },
+  ],
+  termsSectionTitle: 'Terms & Conditions',
+  termsContent: 'By using our website and services, you agree to these terms. We reserve the right to update policies as needed. Contact us with any questions about privacy, billing, or service agreements.',
+  cookieBannerText: 'We use cookies to improve your experience. By continuing to browse, you accept our cookie policy.',
   blogPosts: [
     {
       title: '5 Strategies to Grow Your Business This Year',
@@ -105,6 +147,7 @@ export function mergeRichContent(overrides: Partial<SiteContent>): SiteContent {
     ...baseRichContent,
     ...emptyContacts,
     ...overrides,
+    pageVisibility: { ...defaultPageVisibility, ...overrides.pageVisibility },
     sectionVisibility: { ...defaultSectionVisibility, ...overrides.sectionVisibility },
     stats: overrides.stats ?? baseRichContent.stats,
     services: overrides.services ?? baseRichContent.services,
@@ -113,6 +156,8 @@ export function mergeRichContent(overrides: Partial<SiteContent>): SiteContent {
     galleryImages: overrides.galleryImages ?? baseRichContent.galleryImages,
     testimonials: overrides.testimonials ?? baseRichContent.testimonials,
     blogPosts: overrides.blogPosts ?? baseRichContent.blogPosts,
+    newsPosts: overrides.newsPosts ?? baseRichContent.newsPosts,
+    pricing: overrides.pricing ?? baseRichContent.pricing,
     faqs: overrides.faqs ?? baseRichContent.faqs,
     team: overrides.team ?? baseRichContent.team,
   }
@@ -127,6 +172,7 @@ export function enrichForTemplate(templateId: TemplateId, content: SiteContent):
     showcaseItems: content.showcaseItems?.some((i) => i.title)
       ? content.showcaseItems
       : defaultShowcaseByTemplate[templateId],
+    pageVisibility: content.pageVisibility ?? defaultPageVisibility,
     sectionVisibility: content.sectionVisibility ?? defaultSectionVisibility,
   }
 }
