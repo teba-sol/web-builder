@@ -24,8 +24,6 @@ This repository is the **builder app itself** (React + Vite). It is not the gene
 - [Tech stack](#tech-stack)
 - [Local development](#local-development)
 - [Deploy (cPanel + GitHub Actions)](#deploy-cpanel--github-actions)
-- [Key concepts for other teams](#key-concepts-for-other-teams)
-- [Related docs](#related-docs)
 
 ---
 
@@ -250,62 +248,4 @@ flowchart LR
   V -->|no| X[Fail job]
 ```
 
-### Does a push to `main` deploy?
 
-**Yes.** The workflow [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) runs on:
-
-| Event | Deploys? |
-|-------|----------|
-| **Push / merge into `main`** | Yes — automatic |
-| **Manual** (Actions → *Deploy to cPanel* → Run workflow) | Yes — optional dry-run |
-
-It does **not** run on pushes to feature branches alone.
-
-### Requirements for a successful deploy
-
-1. Workflow file is already on `main` (first time: merge the workflow PR, then subsequent pushes deploy).
-2. GitHub **repository secrets** are set (`FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD`, …).
-3. Without secrets, the job fails early with a clear “missing secret” error — it will not silently skip.
-
-Full credentials and troubleshooting: **[docs/DEPLOY.md](docs/DEPLOY.md)**.
-
----
-
-## Key concepts for other teams
-
-### `SiteContent`
-
-Single content model for the whole site (business name, hero, services, blog posts, room types, SEO, page/section visibility, …). Defined in `src/types/index.ts`. Templates and export both read this shape.
-
-### Templates vs content
-
-- **Template** = visual shell, default copy, available sections/pages, color/layout options.
-- **Content** = what the user typed; survives template defaults after `selectTemplate`.
-
-### Visibility toggles
-
-Users can hide pages (`PageVisibility`) and sections (`SectionVisibility`) without deleting content. Export respects the same flags.
-
-### No backend for the builder
-
-The builder has no Node/PHP API. All generation is client-side. Customer backends only appear inside the downloaded ZIP.
-
-### Preview 404s on shared hosting
-
-Apache looks for real files for `/preview/...`. Without rewrite rules, refresh → 404. Fixed by deploying `dist/.htaccess` from `public/.htaccess`.
-
----
-
-## Related docs
-
-| Doc | Contents |
-|-----|----------|
-| [docs/DEPLOY.md](docs/DEPLOY.md) | FTP secrets, cPanel paths, dry-run, troubleshooting |
-| ZIP `README.txt` (generated) | Instructions shipped to customers with each download |
-| Generated `backend/README.md` | Laravel setup / Site Doctor (inside export) |
-
----
-
-## License
-
-Private / internal — see organization policy for `CDIWork-LLC`.
