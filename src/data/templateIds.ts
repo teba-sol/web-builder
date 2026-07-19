@@ -17,6 +17,14 @@ export const TEMPLATE_IDS: TemplateId[] = [
   'coastal',
   'vineyard',
   'arcade',
+  'coffee',
+  'hotel',
+  'guesthouse',
+  'alpine',
+  'ryokan',
+  'desert',
+  'nordic',
+  'jungle',
 ]
 
 export function isValidTemplateId(id: string): id is TemplateId {

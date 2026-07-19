@@ -1,27 +1,42 @@
 import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
+import { getColorSchemes } from '../data/colorSchemes'
 import { getTemplateMeta } from '../data/defaults'
-import { getLayoutVariant, type ContactLayout, type HeroLayout, type TestimonialLayout } from '../data/layoutVariants'
+import { getLayoutVariant, type HeroLayout, type TestimonialLayout } from '../data/layoutVariants'
 
+import { DEFAULT_HOME_SECTIONS } from '../data/homePageConfig'
 import { getSiteNavItems, resolveSiteHref, sitePath, type SiteNavItem, type SitePageId } from '../data/siteNav'
-import type { ContactFieldKey, SiteContent, TemplateId } from '../types'
-import { ContactFormBlock } from './ContactFormBlock'
+import { TemplateNav } from './navLayouts'
+import './templateShells.css'
+import type { SiteContent, TemplateId } from '../types'
+import { ContactSectionView, ExploreSectionView, FaqSectionView } from './sectionLayouts'
 import { getTheme } from './getTheme'
 import {
   BlogListPage,
   BlogPostPage,
+  AboutTeaser,
   BlogTeaser,
   CookieBanner,
+
   GalleryPage,
   NewsListPage,
   NewsPostPage,
   NewsTeaser,
   PortfolioPage,
   PortfolioTeaser,
+  ServicesTeaser,
   PricingSection,
   TermsSection,
 } from './PageLayoutSections'
+import {
+  BookPage,
+  BookingConfirmPage,
+  RoomDetailPage,
+  RoomsPage,
+} from './booking/BookingPages'
 import { type TemplateTheme } from './themes'
+import { topLevelRoomTypes } from '../data/bookingPreview'
+import { formatMoney, parseRoomPrice } from '../data/hospitality'
 
 interface Props {
   variant: TemplateId
@@ -35,14 +50,15 @@ interface Props {
 
 type PageSectionId =
   | 'nav' | 'hero' | 'stats' | 'about' | 'services' | 'steps' | 'team' | 'testimonials' | 'faq' | 'cta' | 'contact' | 'footer'
-  | 'blog-teaser' | 'news-teaser' | 'portfolio-teaser'
+  | 'blog-teaser' | 'news-teaser' | 'portfolio-teaser' | 'services-teaser' | 'about-teaser' | 'rooms-teaser' | 'explore'
   | 'blog-page' | 'blog-post-page'
   | 'news-page' | 'news-post-page'
   | 'gallery-page' | 'portfolio-page'
+  | 'rooms-page' | 'room-detail-page' | 'book-page' | 'booking-confirm-page'
   | 'pricing' | 'terms' | 'cookie'
 
 const PAGE_SECTIONS: Record<SitePageId, PageSectionId[]> = {
-  home: ['nav', 'hero', 'stats', 'portfolio-teaser', 'blog-teaser', 'news-teaser', 'testimonials', 'cta', 'footer', 'cookie'],
+  home: [...DEFAULT_HOME_SECTIONS] as PageSectionId[],
   about: ['nav', 'about', 'team', 'testimonials', 'footer', 'cookie'],
   services: ['nav', 'services', 'steps', 'pricing', 'footer', 'cookie'],
   portfolio: ['nav', 'portfolio-page', 'footer', 'cookie'],
@@ -52,6 +68,10 @@ const PAGE_SECTIONS: Record<SitePageId, PageSectionId[]> = {
   news: ['nav', 'news-page', 'footer', 'cookie'],
   'news-post': ['nav', 'news-post-page', 'footer', 'cookie'],
   contact: ['nav', 'contact', 'faq', 'terms', 'footer', 'cookie'],
+  rooms: ['nav', 'rooms-page', 'footer', 'cookie'],
+  'room-detail': ['nav', 'room-detail-page', 'footer', 'cookie'],
+  book: ['nav', 'book-page', 'footer', 'cookie'],
+  'booking-confirm': ['nav', 'booking-confirm-page', 'footer', 'cookie'],
 }
 
 export function RichTemplateLayout({
@@ -68,70 +88,56 @@ export function RichTemplateLayout({
   const meta = getTemplateMeta(variant)
   const visibility = c.sectionVisibility
   const navItems = getSiteNavItems(variant, c)
-  const order = PAGE_SECTIONS[page]
+  const order = PAGE_SECTIONS[page] ?? PAGE_SECTIONS.home
   const layoutProps = { c, t, variant, basePath }
+  const scheme =
+    getColorSchemes(variant).find((s) => s.id === colorSchemeId) ?? getColorSchemes(variant)[0]
+  const accent = scheme?.swatches[1] ?? '#2563eb'
+  const bookingProps = { content: c, basePath, theme: t, templateId: variant, accent }
 
   const sections: Record<PageSectionId, ReactNode> = {
-    nav: <NavSection c={c} t={t} variant={variant} navItems={navItems} basePath={basePath} />,
+    nav: <TemplateNav c={c} t={t} variant={variant} navItems={navItems} basePath={basePath} />,
     hero: <HeroSection c={c} t={t} variant={variant} heroLayout={layout.heroLayout} basePath={basePath} />,
-    stats: visibility.stats ? <StatsSection c={c} t={t} /> : null,
+    stats: visibility.stats ? <StatsSection c={c} t={t} variant={variant} /> : null,
     about: <AboutSection c={c} t={t} />,
     services: <ServicesSection c={c} t={t} meta={meta?.servicesLabel} />,
     steps: visibility.steps ? <StepsSection c={c} t={t} /> : null,
     testimonials: visibility.testimonials ? <TestimonialsSection c={c} t={t} layout={layout.testimonialLayout} /> : null,
     'blog-teaser': c.pageVisibility.blog ? <BlogTeaser {...layoutProps} /> : null,
     'news-teaser': c.pageVisibility.news ? <NewsTeaser {...layoutProps} /> : null,
+    'services-teaser': c.pageVisibility.services ? <ServicesTeaser {...layoutProps} /> : null,
     'portfolio-teaser': c.pageVisibility.portfolio ? <PortfolioTeaser {...layoutProps} /> : null,
+    'about-teaser': c.pageVisibility.about ? <AboutTeaser {...layoutProps} /> : null,
+    'rooms-teaser': c.pageVisibility.rooms ? <RoomsTeaser c={c} t={t} basePath={basePath} accent={accent} /> : null,
+    explore: <ExploreSectionView {...layoutProps} />,
     'blog-page': <BlogListPage {...layoutProps} />,
     'blog-post-page': <BlogPostPage {...layoutProps} slug={postSlug ?? ''} />,
     'news-page': <NewsListPage {...layoutProps} />,
     'news-post-page': <NewsPostPage {...layoutProps} slug={postSlug ?? ''} />,
     'gallery-page': <GalleryPage {...layoutProps} />,
     'portfolio-page': <PortfolioPage {...layoutProps} />,
+    'rooms-page': <RoomsPage {...bookingProps} />,
+    'room-detail-page': <RoomDetailPage {...bookingProps} />,
+    'book-page': <BookPage {...bookingProps} />,
+    'booking-confirm-page': <BookingConfirmPage {...bookingProps} />,
     pricing: visibility.pricing ? <PricingSection c={c} t={t} /> : null,
     team: visibility.team ? <TeamSection c={c} t={t} /> : null,
-    faq: visibility.faq ? <FaqSection c={c} t={t} /> : null,
+    faq: visibility.faq ? <FaqSectionView c={c} t={t} variant={variant} /> : null,
     terms: visibility.terms ? <TermsSection c={c} t={t} /> : null,
     cta: visibility.cta ? <CtaBannerSection c={c} t={t} basePath={basePath} /> : null,
-    contact: <ContactSection c={c} t={t} variant={variant} layout={layout.contactLayout} basePath={basePath} />,
+    contact: <ContactSectionView c={c} t={t} variant={variant} layout={layout.contactLayout} basePath={basePath} />,
     cookie: visibility.cookieBanner ? <CookieBanner c={c} t={t} /> : null,
     footer: <FooterSection c={c} t={t} navItems={navItems} basePath={basePath} />,
   }
 
   return (
-    <div className={`min-h-screen ${t.page}`}>
+    <div className={`min-h-screen tpl-${variant} ${t.page}`}>
       {order.map((id) => {
         const node = sections[id]
         if (node === null) return null
         return <div key={id}>{node}</div>
       })}
     </div>
-  )
-}
-
-function NavSection({
-  c, t, variant, navItems, basePath,
-}: {
-  c: SiteContent
-  t: TemplateTheme
-  variant: TemplateId
-  navItems: SiteNavItem[]
-  basePath: string
-}) {
-  const darkNav = ['creative', 'realtor', 'photography', 'fitness', 'saas', 'noir', 'arcade', 'vineyard'].includes(variant)
-  const ctaHref = resolveSiteHref(basePath, c.ctaLink || 'contact', c)
-  return (
-    <nav className={t.nav}>
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <Link to={basePath} className={`text-xl font-bold ${darkNav ? 'text-white' : ''}`}>{c.businessName}</Link>
-        <div className="hidden gap-6 text-sm font-medium lg:flex">
-          {navItems.map((item) => (
-            <Link key={item.page} to={sitePath(basePath, item.segment)} className={t.navLink}>{item.label}</Link>
-          ))}
-        </div>
-        <Link to={ctaHref} className={t.navCta}>{c.ctaText}</Link>
-      </div>
-    </nav>
   )
 }
 
@@ -160,9 +166,17 @@ function heroContentClass(variant: TemplateId, heroLayout: HeroLayout): string {
       return `${base} py-28`
     case 'noir':
     case 'coastal':
+    case 'hotel':
+    case 'alpine':
+    case 'ryokan':
+    case 'desert':
+    case 'nordic':
+    case 'jungle':
     case 'vineyard':
     case 'arcade':
-      return `${base} pb-20 pt-28`
+    case 'coffee':
+      return `${base} pb-20 pt-28 text-center`
+    case 'guesthouse':
     case 'terra':
       return `${base} grid lg:grid-cols-2 gap-12 items-center py-24`
     default:
@@ -170,13 +184,64 @@ function heroContentClass(variant: TemplateId, heroLayout: HeroLayout): string {
   }
 }
 
+function RoomsTeaser({
+  c,
+  t,
+  basePath,
+  accent,
+}: {
+  c: SiteContent
+  t: TemplateTheme
+  basePath: string
+  accent: string
+}) {
+  const rooms = topLevelRoomTypes(c.roomTypes).slice(0, 3)
+  if (!rooms.length) return null
+  return (
+    <section className={`${t.sectionAlt || t.section} py-20`}>
+      <div className="mx-auto max-w-6xl px-6">
+        <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <h2 className={t.sectionTitle}>{c.roomsSectionTitle || 'Rooms & Suites'}</h2>
+            <p className={t.sectionSubtitle}>{c.roomsSectionSubtitle}</p>
+          </div>
+          <Link to={sitePath(basePath, 'book')} className="text-sm font-semibold" style={{ color: accent }}>
+            Check availability →
+          </Link>
+        </div>
+        <div className="grid gap-6 md:grid-cols-3">
+          {rooms.map((room) => (
+            <Link
+              key={room.slug}
+              to={sitePath(basePath, `rooms/${room.slug}`)}
+              className="block overflow-hidden rounded-xl border bg-white hover:shadow-lg"
+            >
+              {room.image ? (
+                <img src={room.image} alt="" className="aspect-[4/3] w-full object-cover" />
+              ) : null}
+              <div className="p-5">
+                <h3 className="font-semibold">{room.name}</h3>
+                <p className="mt-1 line-clamp-2 text-sm opacity-70">{room.shortDescription}</p>
+                <p className="mt-3 font-bold" style={{ color: accent }}>
+                  {formatMoney(parseRoomPrice(room.basePrice), room.currency)}{' '}
+                  <span className="text-sm font-normal opacity-60">/ night</span>
+                </p>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
 function HeroSection({ c, t, variant, heroLayout, basePath }: { c: SiteContent; t: TemplateTheme; variant: TemplateId; heroLayout: HeroLayout; basePath: string }) {
-  const ctaHref = resolveSiteHref(basePath, c.ctaLink || 'contact', c)
-  const hasOverlay = ['creative', 'restaurant', 'fitness', 'realtor', 'photography', 'noir', 'coastal', 'vineyard', 'arcade'].includes(variant)
+  const ctaHref = resolveSiteHref(basePath, c.ctaLink || (c.pageVisibility.rooms ? 'book' : 'contact'), c)
+  const hasOverlay = ['creative', 'restaurant', 'fitness', 'realtor', 'photography', 'noir', 'coastal', 'vineyard', 'arcade', 'coffee', 'hotel', 'guesthouse', 'alpine', 'ryokan', 'desert', 'nordic', 'jungle'].includes(variant)
     || heroLayout === 'immersive'
 
   return (
-    <header className={`relative ${t.hero} ${heroLayout === 'immersive' && !['restaurant', 'realtor', 'photography', 'creative', 'fitness', 'noir', 'coastal', 'vineyard', 'arcade'].includes(variant) ? 'min-h-[85vh] flex flex-col justify-center' : ''}`}>
+    <header className={`relative ${t.hero} ${heroLayout === 'immersive' && !['restaurant', 'realtor', 'photography', 'creative', 'fitness', 'noir', 'coastal', 'hotel', 'alpine', 'ryokan', 'desert', 'nordic', 'jungle', 'vineyard', 'arcade'].includes(variant) ? 'min-h-[85vh] flex flex-col justify-center' : ''}`}>
       {hasOverlay && c.heroImage && (
         <>
           <img src={c.heroImage} alt="" className={`absolute inset-0 h-full w-full object-cover ${variant === 'noir' ? 'grayscale contrast-125' : ''}`} />
@@ -186,18 +251,21 @@ function HeroSection({ c, t, variant, heroLayout, basePath }: { c: SiteContent; 
                 : variant === 'fitness' ? 'bg-gradient-to-r from-black via-black/80 to-transparent'
                   : variant === 'realtor' ? 'bg-black/40'
                     : variant === 'noir' ? 'bg-gradient-to-t from-neutral-950 via-neutral-950/80 to-neutral-950/30'
-                      : variant === 'coastal' ? 'bg-gradient-to-t from-sky-950/90 via-sky-900/40 to-transparent'
-                        : variant === 'vineyard' ? 'bg-gradient-to-r from-rose-950/90 via-rose-900/50 to-transparent'
-                          : variant === 'arcade' ? 'bg-gradient-to-br from-fuchsia-950/80 via-black/70 to-lime-950/40'
-                            : 'bg-black/30'
+                      : variant === 'coastal' || variant === 'hotel' ? 'bg-gradient-to-t from-sky-950/90 via-sky-900/40 to-transparent'
+                        : variant === 'alpine' ? 'bg-gradient-to-t from-slate-950 via-slate-900/50 to-transparent'
+                          : variant === 'ryokan' ? 'bg-gradient-to-t from-stone-950 via-stone-900/60 to-transparent'
+                            : variant === 'desert' ? 'bg-gradient-to-t from-amber-950/95 via-orange-900/40 to-transparent'
+                              : variant === 'nordic' ? 'bg-gradient-to-t from-teal-950/90 via-slate-900/40 to-transparent'
+                                : variant === 'jungle' ? 'bg-gradient-to-t from-emerald-950 via-lime-950/50 to-transparent'
+                                  : variant === 'vineyard' ? 'bg-gradient-to-r from-rose-950/90 via-rose-900/50 to-transparent'
+                                    : variant === 'arcade' ? 'bg-gradient-to-br from-fuchsia-950/80 via-black/70 to-lime-950/40'
+                                      : variant === 'coffee' || variant === 'guesthouse' ? 'bg-gradient-to-t from-[#2d1810]/90 via-[#2d1810]/45 to-[#2d1810]/15'
+                                        : 'bg-black/30'
           }`} />
         </>
       )}
       <div className={heroContentClass(variant, heroLayout)}>
-        {variant !== 'restaurant' && variant !== 'photography' && variant !== 'coastal' && (
-          <p className={`mb-4 ${t.heroBadge}`}>{c.businessName}</p>
-        )}
-        {variant === 'coastal' && (
+        {variant !== 'restaurant' && variant !== 'photography' && (
           <p className={`mb-4 ${t.heroBadge}`}>{c.businessName}</p>
         )}
         {variant === 'restaurant' && <p className={`mb-3 ${t.heroBadge}`}>Est. 2010</p>}
@@ -215,12 +283,34 @@ function HeroSection({ c, t, variant, heroLayout, basePath }: { c: SiteContent; 
   )
 }
 
-function StatsSection({ c, t }: { c: SiteContent; t: TemplateTheme }) {
+function statsGridClass(variant: TemplateId): string {
+  switch (variant) {
+    case 'realtor':
+    case 'lawfirm':
+      return 'grid grid-cols-2 gap-8 md:grid-cols-4 text-left'
+    case 'photography':
+      return 'flex flex-wrap justify-around gap-8 py-4'
+    case 'medical':
+      return 'grid grid-cols-2 gap-6 md:grid-cols-4'
+    case 'salon':
+      return 'flex flex-wrap justify-center gap-4'
+    case 'fitness':
+    case 'arcade':
+      return 'grid grid-cols-2 gap-6 md:grid-cols-4 text-center uppercase tracking-wide'
+    default:
+      return 'grid grid-cols-2 gap-8 md:grid-cols-4 text-center'
+  }
+}
+
+function StatsSection({ c, t, variant }: { c: SiteContent; t: TemplateTheme; variant: TemplateId }) {
   const stats = c.stats.filter((s) => s.value)
   if (stats.length === 0) return null
   return (
     <section className={t.stats}>
-      <div className="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-6 md:grid-cols-4 text-center">
+      <div className="mx-auto max-w-6xl px-6 pb-4 text-center">
+        <p className="text-sm font-semibold uppercase tracking-widest opacity-80">Trust signals</p>
+      </div>
+      <div className={`tpl-stats-inner mx-auto max-w-6xl px-6 ${statsGridClass(variant)}`}>
         {stats.map((s, i) => (
           <div key={i}>
             <p className={t.statValue}>{s.value}</p>
@@ -393,26 +483,6 @@ function TeamSection({ c, t }: { c: SiteContent; t: TemplateTheme }) {
   )
 }
 
-function FaqSection({ c, t }: { c: SiteContent; t: TemplateTheme }) {
-  const faqs = c.faqs.filter((faq) => faq.question)
-  if (faqs.length === 0) return null
-  return (
-    <section id="faq" className={t.section}>
-      <div className="mx-auto max-w-3xl px-6">
-        <h2 className={`mb-14 text-center ${t.sectionTitle}`}>{c.faqSectionTitle}</h2>
-        <div>
-          {faqs.map((faq, i) => (
-            <div key={i} className={t.faq}>
-              <h3 className={`mb-3 font-semibold ${t.cardTitle}`}>{faq.question}</h3>
-              <p className={t.cardText}>{faq.answer}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
-
 function CtaBannerSection({ c, t, basePath }: { c: SiteContent; t: TemplateTheme; basePath: string }) {
   const ctaHref = resolveSiteHref(basePath, c.ctaLink || 'contact', c)
   return (
@@ -421,91 +491,6 @@ function CtaBannerSection({ c, t, basePath }: { c: SiteContent; t: TemplateTheme
         <h2 className="text-3xl font-bold mb-4">{c.ctaBannerTitle}</h2>
         <p className="mb-8 opacity-80 text-lg">{c.ctaBannerText}</p>
         <Link to={ctaHref} className={`inline-block ${t.ctaBannerBtn}`}>{c.ctaText}</Link>
-      </div>
-    </section>
-  )
-}
-
-function ContactInfo({ c, t, variant, meta, centered }: {
-  c: SiteContent
-  t: TemplateTheme
-  variant: TemplateId
-  meta: NonNullable<ReturnType<typeof getTemplateMeta>>
-  centered?: boolean
-}) {
-  const fields = meta.contactFields.filter((field) => c[field.key as ContactFieldKey])
-  if (fields.length === 0) return null
-  return (
-    <div className={`grid gap-6 sm:grid-cols-2 ${centered ? 'text-center max-w-3xl mx-auto' : ''} ${variant === 'boutique' || variant === 'restaurant' ? 'lg:grid-cols-2' : 'lg:grid-cols-2'}`}>
-      {fields.map((field) => (
-        <div key={field.key}>
-          <p className={`mb-1 ${t.contactLabel}`}>{field.label}</p>
-          <p className="break-all">{c[field.key as ContactFieldKey]}</p>
-        </div>
-      ))}
-    </div>
-  )
-}
-
-function ContactSection({ c, t, variant, layout, basePath = '/' }: { c: SiteContent; t: TemplateTheme; variant: TemplateId; layout: ContactLayout; basePath?: string }) {
-  const meta = getTemplateMeta(variant)
-  if (!meta) return null
-
-  const centered = variant === 'boutique' || variant === 'restaurant'
-  const title = c.contactSectionTitle || 'Get in Touch'
-
-  if (layout === 'split') {
-    return (
-      <section id="contact" className={t.contact}>
-        <div className="mx-auto max-w-6xl px-6">
-          <h2 className={`mb-10 text-3xl font-bold ${centered ? 'text-center' : ''}`}>{title}</h2>
-          <div className="grid gap-12 lg:grid-cols-2 lg:items-start">
-            <div>
-              <h3 className={`mb-6 text-xl font-semibold ${t.cardTitle}`}>{c.contactFormTitle}</h3>
-              <ContactInfo c={c} t={t} variant={variant} meta={meta} />
-              <div className="mt-8">
-                <Link to={resolveSiteHref(basePath, c.ctaLink || 'contact', c)} className={t.navCta}>{c.ctaText}</Link>
-              </div>
-            </div>
-            <ContactFormBlock c={c} t={t} layout={layout} />
-          </div>
-        </div>
-      </section>
-    )
-  }
-
-  if (layout === 'form-focus') {
-    return (
-      <section id="contact" className={t.contact}>
-        <div className="mx-auto max-w-6xl px-6">
-          <div className="grid gap-12 lg:grid-cols-[1fr_1.4fr] lg:items-start">
-            <div>
-              <h2 className={`mb-4 text-3xl font-bold ${centered ? 'text-center lg:text-left' : ''}`}>{title}</h2>
-              <p className={`mb-8 ${t.cardText}`}>We would love to hear from you. Reach out using the form or contact details below.</p>
-              <ContactInfo c={c} t={t} variant={variant} meta={meta} />
-            </div>
-            <div>
-              <h3 className={`mb-4 text-xl font-semibold ${t.cardTitle}`}>{c.contactFormTitle}</h3>
-              <ContactFormBlock c={c} t={t} layout={layout} />
-            </div>
-          </div>
-        </div>
-      </section>
-    )
-  }
-
-  return (
-    <section id="contact" className={t.contact}>
-      <div className="mx-auto max-w-6xl px-6">
-        <h2 className={`mb-10 text-3xl font-bold ${centered ? 'text-center' : ''}`}>{title}</h2>
-        <ContactInfo c={c} t={t} variant={variant} meta={meta} centered={centered} />
-        <div className={`mt-12 ${centered ? 'max-w-3xl mx-auto' : ''}`}>
-          <h3 className={`mb-6 text-xl font-semibold ${t.cardTitle} ${centered ? 'text-center' : ''}`}>{c.contactFormTitle}</h3>
-          <ContactFormBlock c={c} t={t} layout={layout} />
-        </div>
-        <div className={`mt-10 ${centered ? 'text-center' : ''}`}>
-          {basePath && <Link to={resolveSiteHref(basePath, c.ctaLink || 'contact', c)} className={t.navCta}>{c.ctaText}</Link>}
-        </div>
       </div>
     </section>
   )

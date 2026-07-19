@@ -31,8 +31,16 @@ const layouts: Record<TemplateId, TemplatePageLayouts> = {
   noir: { blog: 'magazine', blogPost: 'editorial', news: 'compact', newsPost: 'press', gallery: 'masonry', portfolio: 'case-study' },
   terra: { blog: 'minimal', blogPost: 'classic', news: 'timeline', newsPost: 'classic', gallery: 'grid', portfolio: 'cards' },
   coastal: { blog: 'magazine', blogPost: 'editorial', news: 'grid', newsPost: 'split', gallery: 'rows', portfolio: 'showcase' },
+  hotel: { blog: 'grid', blogPost: 'classic', news: 'grid', newsPost: 'classic', gallery: 'rows', portfolio: 'showcase' },
+  guesthouse: { blog: 'magazine', blogPost: 'editorial', news: 'timeline', newsPost: 'classic', gallery: 'masonry', portfolio: 'cards' },
+  alpine: { blog: 'grid', blogPost: 'split', news: 'compact', newsPost: 'classic', gallery: 'rows', portfolio: 'showcase' },
+  ryokan: { blog: 'minimal', blogPost: 'editorial', news: 'timeline', newsPost: 'press', gallery: 'masonry', portfolio: 'case-study' },
+  desert: { blog: 'magazine', blogPost: 'editorial', news: 'grid', newsPost: 'split', gallery: 'rows', portfolio: 'showcase' },
+  nordic: { blog: 'grid', blogPost: 'classic', news: 'timeline', newsPost: 'classic', gallery: 'grid', portfolio: 'cards' },
+  jungle: { blog: 'magazine', blogPost: 'editorial', news: 'compact', newsPost: 'split', gallery: 'masonry', portfolio: 'showcase' },
   vineyard: { blog: 'minimal', blogPost: 'split', news: 'timeline', newsPost: 'press', gallery: 'rows', portfolio: 'case-study' },
   arcade: { blog: 'grid', blogPost: 'split', news: 'compact', newsPost: 'split', gallery: 'grid', portfolio: 'showcase' },
+  coffee: { blog: 'magazine', blogPost: 'editorial', news: 'timeline', newsPost: 'classic', gallery: 'masonry', portfolio: 'showcase' },
 }
 
 export function getPageLayouts(templateId: TemplateId): TemplatePageLayouts {

@@ -13,6 +13,14 @@ const OVERLAY_VARIANTS: TemplateId[] = [
   'coastal',
   'vineyard',
   'arcade',
+  'coffee',
+  'hotel',
+  'guesthouse',
+  'alpine',
+  'ryokan',
+  'desert',
+  'nordic',
+  'jungle',
 ]
 
 export function heroUsesBackgroundImage(templateId: TemplateId, heroLayout: HeroLayout): boolean {
@@ -32,11 +40,25 @@ function overlayGradient(templateId: TemplateId): string {
     case 'noir':
       return 'bg-gradient-to-t from-neutral-950 via-neutral-950/80 to-neutral-950/30'
     case 'coastal':
+    case 'hotel':
       return 'bg-gradient-to-t from-sky-950/90 via-sky-900/40 to-transparent'
+    case 'alpine':
+      return 'bg-gradient-to-t from-slate-950 via-slate-900/50 to-transparent'
+    case 'ryokan':
+      return 'bg-gradient-to-t from-stone-950 via-stone-900/60 to-transparent'
+    case 'desert':
+      return 'bg-gradient-to-t from-amber-950/95 via-orange-900/40 to-transparent'
+    case 'nordic':
+      return 'bg-gradient-to-t from-teal-950/90 via-slate-900/40 to-transparent'
+    case 'jungle':
+      return 'bg-gradient-to-t from-emerald-950 via-lime-950/50 to-transparent'
     case 'vineyard':
       return 'bg-gradient-to-r from-rose-950/90 via-rose-900/50 to-transparent'
     case 'arcade':
       return 'bg-gradient-to-br from-fuchsia-950/80 via-black/70 to-lime-950/40'
+    case 'coffee':
+    case 'guesthouse':
+      return 'bg-gradient-to-r from-[#1a0f08]/95 via-[#2d1810]/75 to-[#1a0f08]/40'
     default:
       return 'bg-black/30'
   }

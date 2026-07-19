@@ -1,22 +1,52 @@
+import { generateBladeSectionPartials } from '../bladeSectionPartials'
 import { buildBladeHeroHtml } from '../heroExport'
 import type { SiteExportPayload } from './exportPayload'
+import type { TemplateId } from '../../types'
+import { hasBookingFeature } from './generateBooking'
+
+const NAV_LINKS = `@if($settings->page_visibility['about'] ?? false)<a href="{{ route('about') }}" class="hover:underline opacity-80">About</a>@endif
+    @if($settings->page_visibility['services'] ?? false)<a href="{{ route('services') }}" class="hover:underline opacity-80">Services</a>@endif
+    @if($settings->page_visibility['portfolio'] ?? false)<a href="{{ route('portfolio') }}" class="hover:underline opacity-80">Portfolio</a>@endif
+    @if($settings->page_visibility['rooms'] ?? false)<a href="{{ route('rooms.index') }}" class="hover:underline opacity-80">Rooms</a>@endif
+    @if($settings->page_visibility['rooms'] ?? false)<a href="{{ route('book') }}" class="hover:underline opacity-80">Book</a>@endif
+    @if($settings->page_visibility['blog'] ?? false)<a href="{{ route('blog.index') }}" class="hover:underline opacity-80">Blog</a>@endif
+    @if($settings->page_visibility['news'] ?? false)<a href="{{ route('news.index') }}" class="hover:underline opacity-80">News</a>@endif
+    @if($settings->page_visibility['gallery'] ?? false)<a href="{{ route('gallery') }}" class="hover:underline opacity-80">Gallery</a>@endif
+    @if($settings->page_visibility['contact'] ?? false)<a href="{{ route('contact') }}" class="hover:underline opacity-80">Contact</a>@endif`
 
 function navPartial(payload: SiteExportPayload): string {
-  const { accent } = payload
-  return `<nav class="sticky top-0 z-50 border-b bg-white/90 backdrop-blur px-6 py-4 flex justify-between items-center max-w-6xl mx-auto w-full">
-  <a href="{{ route('home') }}" class="text-xl font-bold">{{ $settings->business_name }}</a>
-  <div class="hidden md:flex gap-6 text-sm">
-    <a href="{{ route('home') }}" class="hover:underline opacity-70">Home</a>
-    @if($settings->page_visibility['about'] ?? false)<a href="{{ route('about') }}" class="hover:underline opacity-70">About</a>@endif
-    @if($settings->page_visibility['services'] ?? false)<a href="{{ route('services') }}" class="hover:underline opacity-70">Services</a>@endif
-    @if($settings->page_visibility['portfolio'] ?? false)<a href="{{ route('portfolio') }}" class="hover:underline opacity-70">Portfolio</a>@endif
-    @if($settings->page_visibility['blog'] ?? false)<a href="{{ route('blog.index') }}" class="hover:underline opacity-70">Blog</a>@endif
-    @if($settings->page_visibility['news'] ?? false)<a href="{{ route('news.index') }}" class="hover:underline opacity-70">News</a>@endif
-    @if($settings->page_visibility['gallery'] ?? false)<a href="{{ route('gallery') }}" class="hover:underline opacity-70">Gallery</a>@endif
-    @if($settings->page_visibility['contact'] ?? false)<a href="{{ route('contact') }}" class="hover:underline opacity-70">Contact</a>@endif
-  </div>
-  <a href="{{ route('contact') }}" class="text-white px-5 py-2 rounded-lg text-sm font-semibold" style="background-color:${accent}">{{ $settings->cta_text }}</a>
-</nav>`
+  const { accent, templateId } = payload
+  const ctaRoute = hasBookingFeature(payload.content) ? 'book' : 'contact'
+  const cta = `<a href="{{ route('${ctaRoute}') }}" class="text-white px-5 py-2 rounded-lg text-sm font-semibold shrink-0" style="background-color:${accent}">{{ $settings->cta_text }}</a>`
+
+  const shells: Record<TemplateId, string> = {
+    business: `<nav class="sticky top-0 z-50 border-b bg-white/90 backdrop-blur px-6 py-4"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4"><a href="{{ route('home') }}" class="text-xl font-bold">{{ $settings->business_name }}</a><div class="hidden lg:flex gap-6 text-sm font-medium">${NAV_LINKS}</div>${cta}</div></nav>`,
+    creative: `<nav class="fixed top-0 z-50 w-full bg-zinc-950/85 backdrop-blur-lg text-white px-6 py-5"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4"><a href="{{ route('home') }}" class="text-lg font-black uppercase tracking-widest">{{ $settings->business_name }}</a><div class="hidden lg:flex gap-8 text-xs font-semibold uppercase tracking-wider">${NAV_LINKS}</div>${cta}</div></nav>`,
+    restaurant: `<nav class="sticky top-0 z-50 bg-black/80 text-white px-6 py-5 backdrop-blur"><div class="max-w-6xl mx-auto flex items-center justify-between border-b border-white/10 pb-4 gap-4"><div class="hidden lg:flex flex-1 gap-6 text-sm">${NAV_LINKS}</div><a href="{{ route('home') }}" class="px-4 text-center font-serif text-2xl font-semibold">{{ $settings->business_name }}</a><div class="flex flex-1 justify-end items-center gap-6 text-sm">${cta}</div></div></nav>`,
+    saas: `<nav class="sticky top-0 z-50 border-b bg-white/90 backdrop-blur px-6 py-4"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4"><a href="{{ route('home') }}" class="text-lg font-bold">{{ $settings->business_name }}</a><div class="hidden lg:flex items-center gap-3 text-sm">${NAV_LINKS}</div>${cta}</div></nav>`,
+    fitness: `<nav class="sticky top-0 z-50 bg-black/70 text-white backdrop-blur px-6 py-4"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4"><a href="{{ route('home') }}" class="text-xl font-bold uppercase tracking-wide">{{ $settings->business_name }}</a><div class="hidden lg:flex gap-7 text-sm font-medium uppercase tracking-wide">${NAV_LINKS}</div>${cta}</div></nav>`,
+    boutique: `<nav class="relative border-b bg-white/95 px-6 py-6 text-center"><a href="{{ route('home') }}" class="font-serif text-2xl font-light tracking-wide">{{ $settings->business_name }}</a><div class="mt-4 hidden lg:flex flex-wrap justify-center gap-x-8 gap-y-2 text-sm">${NAV_LINKS}</div><div class="mt-4 lg:absolute lg:right-6 lg:top-6 lg:mt-0">${cta}</div></nav>`,
+    realtor: `<nav class="sticky top-0 z-50 bg-black/75 text-white backdrop-blur px-6 py-4"><div class="max-w-6xl mx-auto border-b border-amber-600/30 pb-3 flex items-center justify-between gap-4"><div><a href="{{ route('home') }}" class="text-lg font-bold uppercase tracking-wide">{{ $settings->business_name }}</a><p class="mt-0.5 text-xs uppercase tracking-widest text-amber-400/80">Luxury Real Estate</p></div><div class="hidden lg:flex gap-8 text-sm">${NAV_LINKS}</div>${cta}</div></nav>`,
+    photography: `<nav class="sticky top-0 z-50 bg-black/50 text-white backdrop-blur border-b border-white/10 px-6 py-5"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4"><a href="{{ route('home') }}" class="text-sm font-light uppercase tracking-[0.3em]">{{ $settings->business_name }}</a><div class="hidden lg:flex gap-10 text-xs uppercase tracking-widest">${NAV_LINKS}</div>${cta}</div></nav>`,
+    medical: `<nav class="sticky top-0 z-50 border-b bg-white/95 backdrop-blur"><div class="border-b border-teal-100 bg-teal-50/80 px-6 py-1.5 text-center text-xs font-medium text-teal-800">Compassionate care · Same-week appointments</div><div class="max-w-6xl mx-auto flex items-center justify-between gap-4 px-6 py-4"><a href="{{ route('home') }}" class="text-lg font-semibold text-teal-900">{{ $settings->business_name }}</a><div class="hidden lg:flex gap-6 text-sm font-medium">${NAV_LINKS}</div>${cta}</div></nav>`,
+    lawfirm: `<nav class="sticky top-0 z-50 border-b bg-white/95 backdrop-blur px-6 py-5"><div class="max-w-6xl mx-auto flex items-center gap-8"><a href="{{ route('home') }}" class="shrink-0 font-serif text-xl font-semibold">{{ $settings->business_name }}</a><div class="hidden h-8 w-px bg-stone-300 lg:block"></div><div class="hidden lg:flex flex-1 items-center justify-between"><div class="flex gap-8 text-sm">${NAV_LINKS}</div>${cta}</div></div></nav>`,
+    salon: `<nav class="sticky top-0 z-50 border-b bg-pink-50/90 backdrop-blur px-6 py-5"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4"><div class="hidden lg:flex flex-1 justify-end gap-6 text-sm">${NAV_LINKS}</div><a href="{{ route('home') }}" class="font-serif text-2xl font-light tracking-wide text-pink-900">{{ $settings->business_name }}</a><div class="flex flex-1 justify-end items-center gap-6 text-sm">${cta}</div></div></nav>`,
+    noir: `<nav class="fixed top-0 z-50 w-full bg-neutral-950/90 backdrop-blur text-amber-100 border-b border-amber-500/40 px-6 py-4"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4"><a href="{{ route('home') }}" class="font-serif text-lg font-semibold uppercase tracking-[0.2em]">{{ $settings->business_name }}</a><div class="hidden lg:flex gap-8 text-xs font-semibold uppercase tracking-widest">${NAV_LINKS}</div>${cta}</div></nav>`,
+    terra: `<nav class="sticky top-0 z-50 bg-orange-50/95 backdrop-blur px-6 py-4"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4 rounded-full border border-orange-200 bg-orange-50/90 px-6 py-3 shadow-sm"><a href="{{ route('home') }}" class="text-lg font-bold text-orange-950">{{ $settings->business_name }}</a><div class="hidden lg:flex gap-6 text-sm font-medium">${NAV_LINKS}</div>${cta}</div></nav>`,
+    coastal: `<nav class="sticky top-0 z-50 bg-sky-50/95 backdrop-blur px-6 py-4"><div class="max-w-6xl mx-auto border-b-2 border-sky-300/50 pb-3 flex items-center justify-between gap-4"><a href="{{ route('home') }}" class="text-xl font-bold text-sky-950"><span class="border-b-2 border-sky-400 pb-0.5">{{ $settings->business_name }}</span></a><div class="hidden lg:flex gap-7 text-sm font-medium text-sky-900">${NAV_LINKS}</div>${cta}</div></nav>`,
+    vineyard: `<nav class="sticky top-0 z-50 bg-rose-50/95 backdrop-blur px-6 py-5"><div class="max-w-6xl mx-auto flex items-center justify-between border-b border-rose-900/20 pb-4"><a href="{{ route('home') }}" class="font-serif text-2xl font-semibold text-rose-950">{{ $settings->business_name }}</a><div class="hidden lg:flex items-center gap-8 text-sm">${NAV_LINKS}${cta}</div></div></nav>`,
+    arcade: `<nav class="sticky top-0 z-50 bg-black text-lime-300 border-b-2 border-lime-400/60 shadow-[0_4px_24px_rgba(163,230,53,0.15)] px-6 py-4"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4"><a href="{{ route('home') }}" class="text-lg font-black uppercase tracking-wider">{{ $settings->business_name }}</a><div class="hidden lg:flex gap-6 text-xs font-bold uppercase tracking-widest">${NAV_LINKS}</div>${cta}</div></nav>`,
+    coffee: `<nav class="sticky top-0 z-50 border-b border-amber-900/10 bg-[#faf6f0]/85 backdrop-blur-xl px-6 py-4"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4"><a href="{{ route('home') }}" class="font-serif text-2xl font-semibold text-[#2d1810]">{{ $settings->business_name }}</a><div class="hidden lg:flex gap-8 text-sm">${NAV_LINKS}</div>${cta}</div></nav>`,
+    hotel: `<nav class="sticky top-0 z-50 border-b bg-stone-950/95 text-amber-50 backdrop-blur px-6 py-4"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4"><a href="{{ route('home') }}" class="text-lg font-semibold tracking-[0.15em] uppercase">{{ $settings->business_name }}</a><div class="hidden lg:flex gap-7 text-sm font-medium">${NAV_LINKS}</div>${cta}</div></nav>`,
+    guesthouse: `<nav class="sticky top-0 z-50 border-b border-stone-200 bg-[#f7f3ec]/95 backdrop-blur px-6 py-4"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4"><a href="{{ route('home') }}" class="font-serif text-2xl text-stone-900">{{ $settings->business_name }}</a><div class="hidden lg:flex gap-6 text-sm">${NAV_LINKS}</div>${cta}</div></nav>`,
+    alpine: `<nav class="sticky top-0 z-50 bg-slate-950/90 text-sky-50 backdrop-blur border-b border-sky-400/20 px-6 py-4"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4"><a href="{{ route('home') }}" class="text-lg font-light tracking-[0.2em] uppercase">{{ $settings->business_name }}</a><div class="hidden lg:flex gap-7 text-sm font-medium">${NAV_LINKS}</div>${cta}</div></nav>`,
+    ryokan: `<nav class="sticky top-0 z-50 bg-[#f3efe6]/95 backdrop-blur border-b border-stone-300 px-6 py-4"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4"><a href="{{ route('home') }}" class="font-serif text-xl tracking-wide text-stone-900">{{ $settings->business_name }}</a><div class="hidden lg:flex gap-8 text-sm">${NAV_LINKS}</div>${cta}</div></nav>`,
+    desert: `<nav class="sticky top-0 z-50 bg-[#1c1410]/95 text-amber-50 backdrop-blur border-b border-amber-700/40 px-6 py-4"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4"><a href="{{ route('home') }}" class="text-lg font-light tracking-wide">{{ $settings->business_name }}</a><div class="hidden lg:flex gap-7 text-sm font-medium">${NAV_LINKS}</div>${cta}</div></nav>`,
+    nordic: `<nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-200/80 px-6 py-4"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4"><a href="{{ route('home') }}" class="text-lg font-light tracking-wide text-slate-800">{{ $settings->business_name }}</a><div class="hidden lg:flex gap-7 text-sm font-medium">${NAV_LINKS}</div>${cta}</div></nav>`,
+    jungle: `<nav class="sticky top-0 z-50 bg-[#0a120c]/90 backdrop-blur border-b border-lime-700/30 text-lime-50 px-6 py-4"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4"><a href="{{ route('home') }}" class="text-lg font-medium tracking-wide">{{ $settings->business_name }}</a><div class="hidden lg:flex gap-7 text-sm font-medium">${NAV_LINKS}</div>${cta}</div></nav>`,
+  }
+
+  return shells[templateId]
 }
 
 function footerPartial(): string {
@@ -26,6 +56,8 @@ function footerPartial(): string {
     @if($settings->page_visibility['about'] ?? false)<a href="{{ route('about') }}" class="hover:underline opacity-70">About</a>@endif
     @if($settings->page_visibility['services'] ?? false)<a href="{{ route('services') }}" class="hover:underline opacity-70">Services</a>@endif
     @if($settings->page_visibility['portfolio'] ?? false)<a href="{{ route('portfolio') }}" class="hover:underline opacity-70">Portfolio</a>@endif
+    @if($settings->page_visibility['rooms'] ?? false)<a href="{{ route('rooms.index') }}" class="hover:underline opacity-70">Rooms</a>@endif
+    @if($settings->page_visibility['rooms'] ?? false)<a href="{{ route('book') }}" class="hover:underline opacity-70">Book</a>@endif
     @if($settings->page_visibility['blog'] ?? false)<a href="{{ route('blog.index') }}" class="hover:underline opacity-70">Blog</a>@endif
     @if($settings->page_visibility['news'] ?? false)<a href="{{ route('news.index') }}" class="hover:underline opacity-70">News</a>@endif
     @if($settings->page_visibility['gallery'] ?? false)<a href="{{ route('gallery') }}" class="hover:underline opacity-70">Gallery</a>@endif
@@ -35,32 +67,17 @@ function footerPartial(): string {
 </footer>`
 }
 
-function contactFormPartial(payload: SiteExportPayload): string {
-  const { accent } = payload
-  return `@if(session('contact_success'))
-<div class="rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 mb-4">{{ session('contact_success') }}</div>
-@endif
-<div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-  <form class="space-y-4" action="{{ route('contact.store') }}" method="POST">
-    @csrf
-    <div><label class="block text-sm font-medium text-slate-700 mb-1.5">Your Name</label><input name="name" type="text" required class="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm" /></div>
-    <div><label class="block text-sm font-medium text-slate-700 mb-1.5">Email</label><input name="email" type="email" required class="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm" /></div>
-    <div><label class="block text-sm font-medium text-slate-700 mb-1.5">Message</label><textarea name="message" required rows="5" class="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm"></textarea></div>
-    <button type="submit" class="w-full text-white px-6 py-3 rounded-lg font-semibold" style="background-color:${accent}">{{ $settings->contact_form_button_text }}</button>
-  </form>
-</div>`
-}
-
 export function generateBladePartials(payload: SiteExportPayload): Record<string, string> {
   return {
     'resources/views/partials/nav.blade.php': navPartial(payload),
     'resources/views/partials/footer.blade.php': footerPartial(),
-    'resources/views/partials/contact-form.blade.php': contactFormPartial(payload),
+    ...generateBladeSectionPartials(payload),
   }
 }
 
 export function generateBladeView(payload: SiteExportPayload): string {
-  const { accent, accentDark, templateId, layout } = payload
+  const { accent, templateId, layout } = payload
+  const heroCta = hasBookingFeature(payload.content) ? 'book' : 'contact'
   const heroSection = buildBladeHeroHtml({
     templateId,
     heroLayout: layout.heroLayout,
@@ -69,15 +86,26 @@ export function generateBladeView(payload: SiteExportPayload): string {
     tagline: payload.content.tagline,
     heroSubtext: payload.content.heroSubtext,
     ctaText: payload.content.ctaText,
-    ctaHref: 'contact',
+    ctaHref: heroCta,
   })
+  const roomsTeaser = hasBookingFeature(payload.content)
+    ? `
+@if($settings->page_visibility['rooms'] ?? false)
+<section class="py-20 bg-slate-50"><div class="max-w-6xl mx-auto px-6">
+  <div class="flex flex-wrap justify-between items-end gap-4 mb-10"><div><h2 class="text-3xl font-bold">{{ $settings->rooms_section_title ?? 'Rooms & Suites' }}</h2><p class="text-slate-600 mt-2">{{ $settings->rooms_section_subtitle }}</p></div><a href="{{ route('book') }}" class="text-sm font-semibold" style="color:${accent}">Check availability →</a></div>
+  <div class="grid md:grid-cols-3 gap-6">@foreach(\\App\\Models\\RoomType::where('is_active', true)->whereNull('parent_id')->orderBy('sort_order')->take(3)->get() as $room)<a href="{{ route('rooms.show', $room->slug) }}" class="block rounded-xl border overflow-hidden bg-white hover:shadow-lg">@if($room->image)<img src="{{ \\App\\Support\\PublicAsset::url($room->image) }}" class="w-full aspect-[4/3] object-cover" alt="" />@endif<div class="p-5"><h3 class="font-semibold">{{ $room->name }}</h3><p class="text-sm opacity-70 mt-1 line-clamp-2">{{ $room->short_description }}</p><p class="mt-3 font-bold" style="color:${accent}">{{ number_format($room->base_price, 0) }} {{ $room->currency }} <span class="text-sm font-normal opacity-60">/ night</span></p></div></a>@endforeach</div>
+</div></section>
+@endif`
+    : ''
   return `@extends('layouts.site')
 
 @section('content')
 ${heroSection}
+${roomsTeaser}
 
 @if(($settings->section_visibility['stats'] ?? false) && $stats->isNotEmpty())
 <section class="py-16 text-white" style="background-color:${accent}">
+  <div class="max-w-6xl mx-auto px-6 pb-2 text-center"><p class="text-sm font-semibold uppercase tracking-widest opacity-80">Trust signals</p></div>
   <div class="max-w-6xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8">
     @foreach($stats as $stat)
     <div class="text-center"><p class="text-3xl font-bold">{{ $stat->value }}</p><p class="text-sm opacity-70 mt-1">{{ $stat->label }}</p></div>
@@ -86,42 +114,53 @@ ${heroSection}
 </section>
 @endif
 
-@if(($settings->page_visibility['blog'] ?? false) && $blogPosts->isNotEmpty())
-<section class="bg-slate-50 py-20">
-  <div class="max-w-6xl mx-auto px-6">
-    <div class="flex flex-wrap justify-between items-end gap-4 mb-10">
-      <div>
-        <h2 class="text-3xl font-bold">{{ $settings->blog_section_title }}</h2>
-        <p class="text-slate-600 mt-2">{{ $settings->blog_section_subtitle }}</p>
-      </div>
-      <a href="{{ route('blog.index') }}" class="text-sm font-semibold" style="color:${accent}">View all posts →</a>
-    </div>
-    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-      @foreach($blogPosts->take(3) as $post)
-      <a href="{{ route('blog.show', $post->slug) }}" class="block rounded-xl border overflow-hidden hover:shadow-lg bg-white">
-        @if($post->image)<img src="{{ \\App\\Support\\PublicAsset::url($post->image) }}" class="w-full aspect-[4/3] object-cover" alt="" />@endif
-        <div class="p-6">
-          @if($post->published_at)<p class="text-xs uppercase tracking-wider opacity-60 mb-2">{{ $post->published_at->format('F j, Y') }}</p>@endif
-          <h3 class="font-semibold text-lg mb-2">{{ $post->title }}</h3>
-          <p class="opacity-80 line-clamp-3">{{ $post->excerpt }}</p>
-          <span class="inline-block mt-3 text-sm font-semibold" style="color:${accent}">Read more →</span>
-        </div>
-      </a>
-      @endforeach
-    </div>
-  </div>
-</section>
+@if(($settings->page_visibility['services'] ?? false) && $services->isNotEmpty())
+<section class="py-20"><div class="max-w-6xl mx-auto px-6">
+  <div class="flex flex-wrap justify-between items-end gap-4 mb-10"><div><h2 class="text-3xl font-bold">{{ $settings->services_section_title }}</h2><p class="text-slate-600 mt-2">{{ $settings->services_section_subtitle }}</p></div><a href="{{ route('services') }}" class="text-sm font-semibold" style="color:${accent}">Explore all →</a></div>
+  <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">@foreach($services->take(4) as $service)<a href="{{ route('services') }}" class="block rounded-xl border p-6 hover:shadow-md"><h3 class="font-semibold text-lg mb-2">{{ $service->title }}</h3><p class="opacity-80 line-clamp-3">{{ $service->description }}</p></a>@endforeach</div>
+</div></section>
 @endif
 
-@if($settings->section_visibility['cta'] ?? false)
-<section class="text-white py-20 text-center" style="background-color:${accentDark}">
-  <div class="max-w-3xl mx-auto px-6">
-    <h2 class="text-3xl font-bold mb-4">{{ $settings->cta_banner_title }}</h2>
-    <p class="mb-8 text-lg opacity-80">{{ $settings->cta_banner_text }}</p>
-    <a href="{{ route('contact') }}" class="inline-block bg-white px-8 py-3 rounded-lg font-semibold" style="color:${accentDark}">{{ $settings->cta_text }}</a>
-  </div>
-</section>
+@if(($settings->page_visibility['portfolio'] ?? false) && $showcaseItems->isNotEmpty())
+<section class="bg-slate-50 py-20"><div class="max-w-6xl mx-auto px-6">
+  <div class="flex flex-wrap justify-between items-end gap-4 mb-10"><div><h2 class="text-3xl font-bold">{{ $settings->showcase_section_title }}</h2><p class="text-slate-600 mt-2">{{ $settings->showcase_section_subtitle }}</p></div><a href="{{ route('portfolio') }}" class="text-sm font-semibold" style="color:${accent}">Explore all →</a></div>
+  <div class="grid sm:grid-cols-3 gap-8">@foreach($showcaseItems->take(3) as $item)<a href="{{ route('portfolio') }}" class="block rounded-xl border overflow-hidden bg-white hover:shadow-lg">@if($item->image)<img src="{{ \\App\\Support\\PublicAsset::url($item->image) }}" class="w-full aspect-[4/3] object-cover" alt="" />@endif<div class="p-6"><h3 class="font-semibold">{{ $item->title }}</h3><p class="opacity-80 line-clamp-2 mt-2">{{ $item->description }}</p></div></a>@endforeach</div>
+</div></section>
 @endif
+
+@if(($settings->page_visibility['blog'] ?? false) && $blogPosts->isNotEmpty())
+<section class="py-20"><div class="max-w-6xl mx-auto px-6">
+  <div class="flex flex-wrap justify-between items-end gap-4 mb-10"><div><h2 class="text-3xl font-bold">{{ $settings->blog_section_title }}</h2><p class="text-slate-600 mt-2">{{ $settings->blog_section_subtitle }}</p></div><a href="{{ route('blog.index') }}" class="text-sm font-semibold" style="color:${accent}">Explore all posts →</a></div>
+  <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">@foreach($blogPosts->take(3) as $post)<a href="{{ route('blog.show', $post->slug) }}" class="block rounded-xl border overflow-hidden hover:shadow-lg bg-white">@if($post->image)<img src="{{ \\App\\Support\\PublicAsset::url($post->image) }}" class="w-full aspect-[4/3] object-cover" alt="" />@endif<div class="p-6">@if($post->published_at)<p class="text-xs uppercase tracking-wider opacity-60 mb-2">{{ $post->published_at->format('F j, Y') }}</p>@endif<h3 class="font-semibold text-lg mb-2">{{ $post->title }}</h3><p class="opacity-80 line-clamp-3">{{ $post->excerpt }}</p></div></a>@endforeach</div>
+</div></section>
+@endif
+
+@if(($settings->page_visibility['news'] ?? false) && $newsPosts->isNotEmpty())
+<section class="bg-slate-50 py-20"><div class="max-w-6xl mx-auto px-6">
+  <div class="flex flex-wrap justify-between items-end gap-4 mb-10"><div><h2 class="text-3xl font-bold">{{ $settings->news_section_title }}</h2><p class="text-slate-600 mt-2">{{ $settings->news_section_subtitle }}</p></div><a href="{{ route('news.index') }}" class="text-sm font-semibold" style="color:${accent}">Explore all news →</a></div>
+  <div class="grid sm:grid-cols-3 gap-8">@foreach($newsPosts->take(3) as $post)<a href="{{ route('news.show', $post->slug) }}" class="block rounded-xl border overflow-hidden hover:shadow-lg bg-white">@if($post->image)<img src="{{ \\App\\Support\\PublicAsset::url($post->image) }}" class="w-full aspect-[4/3] object-cover" alt="" />@endif<div class="p-6">@if($post->published_at)<p class="text-xs uppercase tracking-wider opacity-60 mb-2">{{ $post->published_at->format('F j, Y') }}</p>@endif<h3 class="font-semibold text-lg mb-2">{{ $post->title }}</h3><p class="opacity-80 line-clamp-3">{{ $post->excerpt }}</p></div></a>@endforeach</div>
+</div></section>
+@endif
+
+@if($settings->section_visibility['testimonials'] ?? false)
+<section class="py-20"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold text-center mb-4">{{ $settings->testimonials_section_title }}</h2><p class="text-center text-slate-600 mb-12">What our clients say about us</p>
+  @if($testimonials->isNotEmpty())<div class="grid md:grid-cols-3 gap-6">@foreach($testimonials->take(3) as $item)<div class="rounded-xl border bg-white p-8"><p class="text-lg mb-6">"{{ $item->quote }}"</p><p class="font-semibold">{{ $item->author }}</p><p class="text-sm opacity-70">{{ $item->role }}</p></div>@endforeach</div>@else<p class="text-center text-slate-500">Client reviews</p>@endif
+</div></section>
+@endif
+
+@if($settings->page_visibility['about'] ?? false)
+<section class="bg-slate-50 py-20"><div class="max-w-6xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center"><div><h2 class="text-3xl font-bold mb-6">{{ $settings->about_title }}</h2><p class="text-lg leading-relaxed text-slate-600 mb-6">{{ Str::limit($settings->about, 280) }}</p>@if($settings->mission_statement)<p class="border-l-4 pl-6 italic text-slate-600" style="border-color:${accent}">{{ $settings->mission_statement }}</p>@endif<a href="{{ route('about') }}" class="inline-block mt-8 text-sm font-semibold" style="color:${accent}">Learn more about us →</a></div>@if($settings->about_image)<img src="{{ \\App\\Support\\PublicAsset::url($settings->about_image) }}" class="rounded-2xl w-full" alt="" />@endif</div></section>
+@endif
+
+@if(($settings->section_visibility['faq'] ?? false) && $faqs->isNotEmpty())
+@include('partials.home-faq')
+@endif
+
+@if($settings->page_visibility['contact'] ?? false)
+@include('partials.home-contact')
+@endif
+
+@include('partials.home-explore')
 @endsection`
 }
 
@@ -246,12 +285,31 @@ export function generateContactView(): string {
 
 export function generateSiteLayout(payload: SiteExportPayload): string {
   const title = payload.content.businessName || 'My Website'
+  const c = payload.content
+  const seoBlock = c.seoEnabled
+    ? `@php $settings = $settings ?? \\App\\Models\\SiteSetting::current(); @endphp
+  @if($settings->seo_enabled)
+  <meta name="description" content="{{ $settings->seo_description }}" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  @if($settings->seo_keywords)<meta name="keywords" content="{{ $settings->seo_keywords }}" />@endif
+  @if($settings->seo_site_url)<link rel="canonical" href="{{ rtrim($settings->seo_site_url, '/') }}{{ request()->getPathInfo() === '/' ? '' : request()->getPathInfo() }}" />@endif
+  <meta property="og:type" content="@yield('og_type', 'website')" />
+  <meta property="og:title" content="@yield('title', $settings->seo_title ?: $settings->business_name)" />
+  <meta property="og:description" content="@yield('meta_description', $settings->seo_description)" />
+  <meta property="og:site_name" content="{{ $settings->business_name }}" />
+  @if($settings->hero_image)<meta property="og:image" content="{{ asset($settings->hero_image) }}" /><meta name="twitter:image" content="{{ asset($settings->hero_image) }}" />@endif
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="@yield('title', $settings->seo_title ?: $settings->business_name)" />
+  <meta name="twitter:description" content="@yield('meta_description', $settings->seo_description)" />
+  @endif`
+    : ''
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>@yield('title', '${title}')</title>
+  ${seoBlock}
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-white text-slate-800">

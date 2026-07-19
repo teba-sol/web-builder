@@ -98,6 +98,11 @@ export const baseRichContent: SiteContent = {
     { title: 'Professional', description: 'Advanced tools, priority support, and integrations for growing businesses.', price: '$79/mo', tag: 'Best value', featured: true },
     { title: 'Enterprise', description: 'Custom solutions, dedicated account management, and SLA guarantees.', price: 'Custom', tag: 'Contact us', featured: false },
   ],
+  roomsSectionTitle: 'Rooms & Suites',
+  roomsSectionSubtitle: 'Explore our accommodations and reserve your stay',
+  bookingSectionTitle: 'Book Your Stay',
+  bookingSectionSubtitle: 'Select dates, guests, and your preferred room type',
+  roomTypes: [],
   termsSectionTitle: 'Terms & Conditions',
   termsContent: 'By using our website and services, you agree to these terms. We reserve the right to update policies as needed. Contact us with any questions about privacy, billing, or service agreements.',
   cookieBannerText: 'We use cookies to improve your experience. By continuing to browse, you accept our cookie policy.',
@@ -139,6 +144,11 @@ export const baseRichContent: SiteContent = {
   ctaBannerText: 'Join hundreds of satisfied clients. Let us help you achieve your goals today.',
   ctaText: '',
   ctaLink: 'contact',
+  seoEnabled: false,
+  seoTitle: '',
+  seoDescription: '',
+  seoKeywords: '',
+  seoSiteUrl: '',
   ...emptyContacts,
 }
 
@@ -158,6 +168,7 @@ export function mergeRichContent(overrides: Partial<SiteContent>): SiteContent {
     blogPosts: overrides.blogPosts ?? baseRichContent.blogPosts,
     newsPosts: overrides.newsPosts ?? baseRichContent.newsPosts,
     pricing: overrides.pricing ?? baseRichContent.pricing,
+    roomTypes: overrides.roomTypes ?? baseRichContent.roomTypes,
     faqs: overrides.faqs ?? baseRichContent.faqs,
     team: overrides.team ?? baseRichContent.team,
   }

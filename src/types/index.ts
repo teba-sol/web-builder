@@ -6,6 +6,7 @@ export type TemplateCategory =
   | 'tech'
   | 'retail'
   | 'realestate'
+  | 'hospitality'
 
 export type TemplateId =
   | 'business'
@@ -24,6 +25,14 @@ export type TemplateId =
   | 'coastal'
   | 'vineyard'
   | 'arcade'
+  | 'coffee'
+  | 'hotel'
+  | 'guesthouse'
+  | 'alpine'
+  | 'ryokan'
+  | 'desert'
+  | 'nordic'
+  | 'jungle'
 
 export type ContactFieldKey =
   | 'email'
@@ -70,6 +79,38 @@ export interface PageVisibility {
   news: boolean
   gallery: boolean
   contact: boolean
+  /** Rooms catalogue + online booking (hospitality) */
+  rooms: boolean
+}
+
+/**
+ * Standard hospitality room catalogue entry.
+ * Use parentSlug to model sub-types (e.g. Deluxe → Ocean View Deluxe).
+ * unitCount seeds physical inventory rooms in the exported admin/backend.
+ */
+export interface RoomTypeItem {
+  name: string
+  slug: string
+  /** Empty = top-level type; set to another type's slug for a subtype */
+  parentSlug: string
+  description: string
+  shortDescription: string
+  /** Nightly rate as number string, e.g. "250" */
+  basePrice: string
+  currency: string
+  maxAdults: string
+  maxChildren: string
+  maxOccupancy: string
+  bedConfiguration: string
+  sizeSqm: string
+  /** Comma-separated amenities */
+  amenities: string
+  image: string
+  /** How many bookable room units to create for this type */
+  unitCount: string
+  /** Prefix for unit codes, e.g. "DLX-" → DLX-101 */
+  unitPrefix: string
+  isActive: boolean
 }
 
 export interface ServiceItem {
@@ -177,6 +218,11 @@ export interface SiteContent {
   newsPosts: NewsItem[]
   pricingSectionTitle: string
   pricing: PricingItem[]
+  roomsSectionTitle: string
+  roomsSectionSubtitle: string
+  bookingSectionTitle: string
+  bookingSectionSubtitle: string
+  roomTypes: RoomTypeItem[]
   termsSectionTitle: string
   termsContent: string
   cookieBannerText: string
@@ -200,6 +246,11 @@ export interface SiteContent {
   contactFormTitle: string
   contactFormUrl: string
   contactFormButtonText: string
+  seoEnabled: boolean
+  seoTitle: string
+  seoDescription: string
+  seoKeywords: string
+  seoSiteUrl: string
 }
 
 export interface ContactFieldDef {
@@ -223,4 +274,5 @@ export interface TemplateMeta {
   accentColor: string
   contactFields: ContactFieldDef[]
   servicesLabel: string
+  premium?: boolean
 }

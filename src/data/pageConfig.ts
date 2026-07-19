@@ -12,6 +12,10 @@ export type SitePageId =
   | 'news-post'
   | 'gallery'
   | 'contact'
+  | 'rooms'
+  | 'room-detail'
+  | 'book'
+  | 'booking-confirm'
 
 export interface PageMeta {
   key: keyof PageVisibility
@@ -25,6 +29,7 @@ export const pageMetas: PageMeta[] = [
   { key: 'about', label: 'About', description: 'Company story, mission, and team', segment: 'about' },
   { key: 'services', label: 'Services / Products', description: 'What you offer and how you work', segment: 'services' },
   { key: 'portfolio', label: 'Portfolio / Case Studies', description: 'Featured work, products, or listings', segment: 'portfolio' },
+  { key: 'rooms', label: 'Rooms & Booking', description: 'Room types, availability search, and online reservations', segment: 'rooms' },
   { key: 'blog', label: 'Blog', description: 'Long-form articles and insights', segment: 'blog' },
   { key: 'news', label: 'News', description: 'Announcements, press, and updates', segment: 'news' },
   { key: 'gallery', label: 'Gallery', description: 'Photo and media showcase', segment: 'gallery' },
@@ -39,6 +44,7 @@ export const defaultPageVisibility: PageVisibility = {
   news: true,
   gallery: true,
   contact: true,
+  rooms: false,
 }
 
 export function getPageNavLabel(templateId: TemplateId, key: keyof PageVisibility): string {
@@ -46,6 +52,7 @@ export function getPageNavLabel(templateId: TemplateId, key: keyof PageVisibilit
   switch (key) {
     case 'services': return cfg.navLabel === 'Menu' ? 'Menu' : 'Services'
     case 'portfolio': return cfg.navLabel
+    case 'rooms': return 'Rooms'
     default: return pageMetas.find((p) => p.key === key)?.label ?? key
   }
 }
@@ -55,6 +62,7 @@ export function pageHasContent(key: keyof PageVisibility, content: SiteContent):
     case 'about': return Boolean(content.about?.trim())
     case 'services': return content.services.some((s) => s.title)
     case 'portfolio': return content.showcaseItems.some((i) => i.title)
+    case 'rooms': return content.roomTypes.some((r) => r.name && r.isActive)
     case 'blog': return content.blogPosts.some((p) => p.title)
     case 'news': return content.newsPosts.some((p) => p.title)
     case 'gallery': return content.galleryImages.some(Boolean)
@@ -76,12 +84,23 @@ export function getSiteNavItems(templateId: TemplateId, content: SiteContent): S
   for (const meta of pageMetas) {
     if (!pv[meta.key]) continue
     if (!pageHasContent(meta.key, content) && meta.key !== 'contact') continue
+    // Prefer Book CTA over listing "Rooms" label when hospitality booking is on
+    const label =
+      meta.key === 'rooms'
+        ? 'Rooms'
+        : getPageNavLabel(templateId, meta.key)
     items.push({
       page: meta.segment as SitePageId,
-      label: getPageNavLabel(templateId, meta.key),
+      label,
       segment: meta.segment,
     })
   }
+
+  // Secondary booking entry when rooms page is enabled
+  if (pv.rooms && pageHasContent('rooms', content)) {
+    items.push({ page: 'book', label: 'Book', segment: 'book' })
+  }
+
   return items
 }
 
@@ -98,6 +117,10 @@ export function staticSitePath(page: SitePageId, fromNested = false): string {
     'news-post': `${prefix}/news/index.html`,
     gallery: `${prefix}/gallery.html`,
     contact: `${prefix}/contact.html`,
+    rooms: `${prefix}/rooms/index.html`,
+    'room-detail': `${prefix}/rooms/index.html`,
+    book: `${prefix}/book/index.html`,
+    'booking-confirm': `${prefix}/book/index.html`,
   }
   return map[page] ?? `${prefix}/index.html`
 }

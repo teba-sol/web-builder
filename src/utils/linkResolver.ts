@@ -10,9 +10,10 @@ const PAGE_SEGMENTS: Record<keyof PageVisibility, string> = {
   news: 'news',
   gallery: 'gallery',
   contact: 'contact',
+  rooms: 'rooms',
 }
 
-const LEGACY_HASH_TARGETS: Record<string, keyof PageVisibility | 'home'> = {
+const LEGACY_HASH_TARGETS: Record<string, keyof PageVisibility | 'home' | 'book'> = {
   contact: 'contact',
   about: 'about',
   services: 'services',
@@ -21,6 +22,9 @@ const LEGACY_HASH_TARGETS: Record<string, keyof PageVisibility | 'home'> = {
   gallery: 'gallery',
   blog: 'blog',
   news: 'news',
+  rooms: 'rooms',
+  book: 'book',
+  booking: 'book',
   home: 'home',
   testimonials: 'home',
   reviews: 'home',
@@ -40,7 +44,8 @@ export function normalizeLinkTarget(href: string): string {
     const key = trimmed.slice(1).toLowerCase()
     const mapped = LEGACY_HASH_TARGETS[key]
     if (mapped === 'home') return ''
-    if (mapped) return PAGE_SEGMENTS[mapped]
+    if (mapped === 'book') return 'book'
+    if (mapped && mapped in PAGE_SEGMENTS) return PAGE_SEGMENTS[mapped as keyof PageVisibility]
     return key
   }
 
@@ -76,6 +81,21 @@ export function resolveSiteHref(basePath: string, href: string, content: SiteCon
       return sitePath(basePath, fallbackPage(content))
     }
     return sitePath(basePath, `${kind}/${slug}`)
+  }
+
+  const roomMatch = target.match(/^rooms\/(.+)$/)
+  if (roomMatch) {
+    if (!isPageReachable('rooms', content)) {
+      return sitePath(basePath, fallbackPage(content))
+    }
+    return sitePath(basePath, target)
+  }
+
+  if (target === 'book' || target.startsWith('book/')) {
+    if (!isPageReachable('rooms', content)) {
+      return sitePath(basePath, fallbackPage(content))
+    }
+    return sitePath(basePath, target)
   }
 
   const pageKey = Object.entries(PAGE_SEGMENTS).find(([, seg]) => seg === target)?.[0] as

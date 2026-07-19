@@ -1,8 +1,10 @@
+import { emptyRoomType } from './hospitality'
 import type {
   BlogPostItem,
   FaqItem,
   NewsItem,
   PricingItem,
+  RoomTypeItem,
   ServiceItem,
   ShowcaseItem,
   StatItem,
@@ -24,6 +26,7 @@ export type ContentListKey =
   | 'team'
   | 'galleryImages'
   | 'showcaseItems'
+  | 'roomTypes'
 
 export const LIST_MIN_COUNT: Record<ContentListKey, number> = {
   stats: 1,
@@ -37,6 +40,7 @@ export const LIST_MIN_COUNT: Record<ContentListKey, number> = {
   team: 0,
   galleryImages: 0,
   showcaseItems: 0,
+  roomTypes: 0,
 }
 
 export const LIST_MAX_COUNT = 24
@@ -80,6 +84,8 @@ export const emptyPricing = (): PricingItem => ({
 })
 export const emptyFaq = (): FaqItem => ({ question: '', answer: '' })
 export const emptyTeamMember = (): TeamMember => ({ name: '', role: '', image: '' })
+export { emptyRoomType }
+export type { RoomTypeItem }
 
 export function createEmptyListItem(list: ContentListKey): unknown {
   switch (list) {
@@ -94,6 +100,7 @@ export function createEmptyListItem(list: ContentListKey): unknown {
     case 'faqs': return emptyFaq()
     case 'team': return emptyTeamMember()
     case 'galleryImages': return ''
+    case 'roomTypes': return emptyRoomType()
   }
 }
 
@@ -109,4 +116,5 @@ export const listAddLabels: Record<ContentListKey, string> = {
   faqs: 'Add Question',
   team: 'Add Member',
   galleryImages: 'Add Image',
+  roomTypes: 'Add Room Type',
 }

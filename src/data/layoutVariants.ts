@@ -125,6 +125,41 @@ const variantBuilders: Record<TemplateId, LayoutVariant[]> = {
     buildVariant('coastal', 'modern', 'Modern', 'Gallery-led escape, split booking', 'immersive', 'list', 'split', (o) => moveSection(moveSection(o, 'gallery', 'showcase'), 'about', 'gallery')),
     buildVariant('coastal', 'bold', 'Bold', 'Sunset hero with guest spotlight', 'immersive', 'featured', 'form-focus', (o) => moveSection(o, 'testimonials', 'showcase')),
   ],
+  hotel: [
+    buildVariant('hotel', 'classic', 'Classic', 'Skyline hero with suites and services', 'immersive', 'grid', 'stacked', (o) => o),
+    buildVariant('hotel', 'modern', 'Modern', 'Gallery-first property tour, split contact', 'immersive', 'list', 'split', (o) => moveSection(moveSection(o, 'gallery', 'showcase'), 'about', 'gallery')),
+    buildVariant('hotel', 'bold', 'Bold', 'Dramatic lobby hero with guest reviews', 'immersive', 'featured', 'form-focus', (o) => moveSection(o, 'testimonials', 'showcase')),
+  ],
+  guesthouse: [
+    buildVariant('guesthouse', 'classic', 'Classic', 'Story-first countryside welcome', 'split', 'grid', 'stacked', (o) => o),
+    buildVariant('guesthouse', 'modern', 'Modern', 'Rooms early, garden gallery, split contact', 'centered', 'list', 'split', (o) => moveSection(moveSection(o, 'showcase', 'about'), 'gallery', 'showcase')),
+    buildVariant('guesthouse', 'bold', 'Bold', 'Immersive home hero with guest love', 'immersive', 'featured', 'form-focus', (o) => moveSection(o, 'testimonials', 'about')),
+  ],
+  alpine: [
+    buildVariant('alpine', 'classic', 'Classic', 'Peak hero with rooms and mountain services', 'immersive', 'grid', 'stacked', (o) => o),
+    buildVariant('alpine', 'modern', 'Modern', 'Gallery-led lodge tour, split contact', 'immersive', 'list', 'split', (o) => moveSection(moveSection(o, 'gallery', 'hero'), 'showcase', 'gallery')),
+    buildVariant('alpine', 'bold', 'Bold', 'Full-bleed summit with guest spotlight', 'immersive', 'featured', 'form-focus', (o) => moveSection(o, 'testimonials', 'showcase')),
+  ],
+  ryokan: [
+    buildVariant('ryokan', 'classic', 'Classic', 'Story-first zen welcome', 'immersive', 'grid', 'stacked', (o) => o),
+    buildVariant('ryokan', 'modern', 'Modern', 'Rooms early, garden gallery', 'centered', 'list', 'split', (o) => moveSection(moveSection(o, 'showcase', 'about'), 'gallery', 'showcase')),
+    buildVariant('ryokan', 'bold', 'Bold', 'Dramatic garden hero with guest reflections', 'immersive', 'featured', 'form-focus', (o) => moveSection(o, 'testimonials', 'about')),
+  ],
+  desert: [
+    buildVariant('desert', 'classic', 'Classic', 'Dune hero with suites first', 'immersive', 'grid', 'stacked', (o) => o),
+    buildVariant('desert', 'modern', 'Modern', 'Gallery-led oasis, split booking', 'immersive', 'list', 'split', (o) => moveSection(moveSection(o, 'gallery', 'showcase'), 'about', 'gallery')),
+    buildVariant('desert', 'bold', 'Bold', 'Sunset hero with guest voices', 'immersive', 'featured', 'form-focus', (o) => moveSection(o, 'testimonials', 'showcase')),
+  ],
+  nordic: [
+    buildVariant('nordic', 'classic', 'Classic', 'Calm hero with wellness and rooms', 'immersive', 'grid', 'stacked', (o) => o),
+    buildVariant('nordic', 'modern', 'Modern', 'About and spa early, split contact', 'centered', 'list', 'split', (o) => moveSection(moveSection(o, 'about', 'hero'), 'services', 'about')),
+    buildVariant('nordic', 'bold', 'Bold', 'Fjord panorama with featured review', 'immersive', 'featured', 'form-focus', (o) => moveSection(o, 'testimonials', 'stats')),
+  ],
+  jungle: [
+    buildVariant('jungle', 'classic', 'Classic', 'Canopy hero with gallery and cabins', 'immersive', 'grid', 'stacked', (o) => o),
+    buildVariant('jungle', 'modern', 'Modern', 'Experiences first, split contact', 'immersive', 'list', 'split', (o) => moveSection(moveSection(o, 'services', 'hero'), 'gallery', 'services')),
+    buildVariant('jungle', 'bold', 'Bold', 'Immersive forest with guest notes', 'immersive', 'featured', 'form-focus', (o) => moveSection(o, 'testimonials', 'showcase')),
+  ],
   vineyard: [
     buildVariant('vineyard', 'classic', 'Classic', 'Estate story and wine programs', 'immersive', 'grid', 'stacked', (o) => o),
     buildVariant('vineyard', 'modern', 'Modern', 'Tasting menu up front, split contact', 'immersive', 'list', 'split', (o) => moveSection(moveSection(o, 'showcase', 'about'), 'team', 'showcase')),
@@ -134,6 +169,11 @@ const variantBuilders: Record<TemplateId, LayoutVariant[]> = {
     buildVariant('arcade', 'classic', 'Classic', 'Neon showcase and event grid', 'immersive', 'grid', 'stacked', (o) => o),
     buildVariant('arcade', 'modern', 'Modern', 'Gallery-first hype, split contact', 'immersive', 'list', 'split', (o) => moveSection(moveSection(o, 'gallery', 'hero'), 'showcase', 'gallery')),
     buildVariant('arcade', 'bold', 'Bold', 'Full-screen hero with player spotlight', 'immersive', 'featured', 'form-focus', (o) => moveSection(o, 'testimonials', 'showcase')),
+  ],
+  coffee: [
+    buildVariant('coffee', 'classic', 'Classic', 'Immersive hero with signature menu upfront', 'immersive', 'grid', 'stacked', (o) => o),
+    buildVariant('coffee', 'modern', 'Modern', 'Gallery-first café atmosphere, split contact', 'immersive', 'list', 'split', (o) => moveSection(moveSection(o, 'gallery', 'hero'), 'showcase', 'gallery')),
+    buildVariant('coffee', 'bold', 'Bold', 'Dramatic hero with featured guest review', 'immersive', 'featured', 'form-focus', (o) => moveSection(o, 'testimonials', 'showcase')),
   ],
 }
 

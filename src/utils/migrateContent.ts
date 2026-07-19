@@ -39,6 +39,7 @@ function migratePageVisibility(
     news: legacySections.news ?? true,
     gallery: legacySections.gallery ?? true,
     contact: legacySections.contact ?? true,
+    rooms: legacySections.rooms ?? false,
   }
 }
 
@@ -76,9 +77,19 @@ export function migrateContent(raw: Partial<SiteContent>, templateId?: TemplateI
     newsPosts: raw.newsPosts?.length ? raw.newsPosts : merged.newsPosts,
     pricingSectionTitle: raw.pricingSectionTitle || merged.pricingSectionTitle,
     pricing: raw.pricing?.length ? raw.pricing : merged.pricing,
+    roomsSectionTitle: raw.roomsSectionTitle || merged.roomsSectionTitle,
+    roomsSectionSubtitle: raw.roomsSectionSubtitle || merged.roomsSectionSubtitle,
+    bookingSectionTitle: raw.bookingSectionTitle || merged.bookingSectionTitle,
+    bookingSectionSubtitle: raw.bookingSectionSubtitle || merged.bookingSectionSubtitle,
+    roomTypes: raw.roomTypes?.length ? raw.roomTypes : merged.roomTypes,
     termsSectionTitle: raw.termsSectionTitle || merged.termsSectionTitle,
     termsContent: raw.termsContent || merged.termsContent,
     cookieBannerText: raw.cookieBannerText || merged.cookieBannerText,
+    seoEnabled: raw.seoEnabled ?? merged.seoEnabled ?? false,
+    seoTitle: raw.seoTitle ?? merged.seoTitle ?? '',
+    seoDescription: raw.seoDescription ?? merged.seoDescription ?? '',
+    seoKeywords: raw.seoKeywords ?? merged.seoKeywords ?? '',
+    seoSiteUrl: raw.seoSiteUrl ?? merged.seoSiteUrl ?? '',
   }
 
   return sanitizeContentLinks(result)

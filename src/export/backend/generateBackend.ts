@@ -1,7 +1,14 @@
 import type { SiteContent, TemplateId } from '../../types'
 import type { ImageAsset } from '../imageUtils'
+import { buildRobotsTxt, buildSitemapXml, collectLaravelSitemapPaths } from '../seoExport'
 import { buildExportPayload, resolveAssetPath, type SiteExportPayload } from './exportPayload'
 import { generateAllBladeViews } from './generateBlade'
+import {
+  bookingRouteLines,
+  bookingSettingsFields,
+  generateBookingFiles,
+  hasBookingFeature,
+} from './generateBooking'
 import { generateFilamentFiles } from './generateFilament'
 import { generateSetupFiles, generateSetupToken } from './generateSetup'
 import { phpStr } from './phpUtils'
@@ -162,6 +169,7 @@ function buildSettingsRecord(payload: SiteExportPayload): Record<string, unknown
     news_section_title: c.newsSectionTitle,
     news_section_subtitle: c.newsSectionSubtitle,
     pricing_section_title: c.pricingSectionTitle,
+    ...bookingSettingsFields(c),
     terms_section_title: c.termsSectionTitle,
     terms_content: c.termsContent,
     cookie_banner_text: c.cookieBannerText,
@@ -190,6 +198,11 @@ function buildSettingsRecord(payload: SiteExportPayload): Record<string, unknown
     template_id: payload.templateId,
     color_scheme_id: payload.colorSchemeId,
     layout_variant_id: payload.layoutVariantId,
+    seo_enabled: c.seoEnabled,
+    seo_title: c.seoTitle,
+    seo_description: c.seoDescription,
+    seo_keywords: c.seoKeywords,
+    seo_site_url: c.seoSiteUrl,
   }
 }
 
@@ -209,6 +222,8 @@ class SiteSetting extends Model
         'about_title', 'about', 'about_image', 'mission_statement',
         'page_visibility', 'section_visibility', 'services_section_title', 'services_section_subtitle',
         'news_section_title', 'news_section_subtitle', 'pricing_section_title',
+        'rooms_section_title', 'rooms_section_subtitle',
+        'booking_section_title', 'booking_section_subtitle',
         'terms_section_title', 'terms_content', 'cookie_banner_text',
         'steps_section_title', 'showcase_section_title', 'showcase_section_subtitle',
         'gallery_section_title', 'testimonials_section_title',
@@ -217,9 +232,14 @@ class SiteSetting extends Model
         'cta_text', 'cta_link', 'email', 'phone', 'address', 'hours',
         'contact_section_title', 'contact_form_title', 'contact_form_button_text',
         'template_id', 'color_scheme_id', 'layout_variant_id',
+        'seo_enabled', 'seo_title', 'seo_description', 'seo_keywords', 'seo_site_url',
     ];
 
-    protected $casts = ['page_visibility' => 'array', 'section_visibility' => 'array'];
+    protected $casts = [
+        'page_visibility' => 'array',
+        'section_visibility' => 'array',
+        'seo_enabled' => 'boolean',
+    ];
 
     public static function current(): self
     {
@@ -331,6 +351,7 @@ class DatabaseSeeder extends Seeder
         $this->seedList(BlogPost::class, json_decode('${jsonForPhp(listData.blog_posts)}', true));
         $this->seedList(NewsPost::class, json_decode('${jsonForPhp(listData.news_posts)}', true));
         $this->seedList(Faq::class, json_decode('${jsonForPhp(listData.faqs)}', true));
+${hasBookingFeature(payload.content) ? "\n        $this->call(HospitalitySeeder::class);\n" : ''}
     }
 
     private function seedList(string $model, array $items): void
@@ -479,7 +500,7 @@ Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
 Route::get('/news', [NewsController::class, 'index'])->name('news.index');
 Route::get('/news/{slug}', [NewsController::class, 'show'])->name('news.show');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
-
+${hasBookingFeature(payload.content) ? bookingRouteLines() : ''}
 Route::get('/doctor', [DoctorController::class, 'index'])->name('doctor.index');
 Route::post('/doctor/run', [DoctorController::class, 'run'])->name('doctor.run');
 `,
@@ -539,8 +560,11 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->colors(['primary' => Color::Indigo])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\\\Filament\\\\Resources')
+            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\\\Filament\\\\Widgets')
             ->pages([Pages\\Dashboard::class])
-            ->widgets([Widgets\\AccountWidget::class])
+            ->widgets([
+                Widgets\\AccountWidget::class,
+            ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -721,9 +745,13 @@ class PageController extends Controller
 namespace App\\Http\\Controllers;
 
 use App\\Models\\BlogPost;
+use App\\Models\\Faq;
 use App\\Models\\NewsPost;
+use App\\Models\\Service;
+use App\\Models\\ShowcaseItem;
 use App\\Models\\SiteSetting;
 use App\\Models\\Stat;
+use App\\Models\\Testimonial;
 use Illuminate\\View\\View;
 
 class SiteController extends Controller
@@ -733,8 +761,12 @@ class SiteController extends Controller
         return view('site.index', [
             'settings' => SiteSetting::current(),
             'stats' => Stat::orderBy('sort_order')->get(),
+            'services' => Service::orderBy('sort_order')->get(),
+            'showcaseItems' => ShowcaseItem::orderBy('sort_order')->get(),
             'blogPosts' => BlogPost::where('is_published', true)->orderByDesc('published_at')->orderBy('sort_order')->get(),
             'newsPosts' => NewsPost::where('is_published', true)->orderByDesc('published_at')->orderBy('sort_order')->get(),
+            'testimonials' => Testimonial::orderBy('sort_order')->get(),
+            'faqs' => Faq::orderBy('sort_order')->get(),
         ]);
     }
 }
@@ -948,6 +980,10 @@ return new class extends Migration
             $table->string('news_section_title')->nullable();
             $table->string('news_section_subtitle')->nullable();
             $table->string('pricing_section_title')->nullable();
+            $table->string('rooms_section_title')->nullable();
+            $table->string('rooms_section_subtitle')->nullable();
+            $table->string('booking_section_title')->nullable();
+            $table->string('booking_section_subtitle')->nullable();
             $table->string('terms_section_title')->nullable();
             $table->text('terms_content')->nullable();
             $table->text('cookie_banner_text')->nullable();
@@ -976,6 +1012,11 @@ return new class extends Migration
             $table->string('template_id')->nullable();
             $table->string('color_scheme_id')->nullable();
             $table->string('layout_variant_id')->nullable();
+            $table->boolean('seo_enabled')->default(false);
+            $table->string('seo_title')->nullable();
+            $table->text('seo_description')->nullable();
+            $table->text('seo_keywords')->nullable();
+            $table->string('seo_site_url')->nullable();
             $table->timestamps();
         });
     }
@@ -1190,6 +1231,24 @@ ${Object.entries(payload.content.sectionVisibility)
 - Contact Messages (form submissions)
 - Testimonials (always available)
 - Blog Posts (always available)
+${hasBookingFeature(payload.content) ? `
+## Hospitality booking
+
+This site includes a full property management booking stack:
+
+- **Room Types** — categories and subtypes (parent/child) with pricing, occupancy, amenities
+- **Room Units** — physical inventory (codes, status: available / maintenance / out of service)
+- **Seasonal Rates** — date-range price overrides per room type
+- **Reservations** — guest stays with status workflow (pending → confirmed → checked in → checked out / cancelled / no-show)
+
+Public pages:
+- \`/rooms\` — catalogue
+- \`/rooms/{slug}\` — detail
+- \`/book\` — availability search + reserve
+- \`/book/confirm/{code}\` — confirmation
+
+Only free units can be booked for overlapping dates. Manage inventory and stays in **Admin → Hospitality**.
+` : ''}
 
 ## Deploying to production
 
@@ -1234,6 +1293,12 @@ export function generateBackend(
   }
 
   Object.assign(files, generateFilamentFiles(content.sectionVisibility, content.pageVisibility))
+  Object.assign(files, generateBookingFiles(payload))
+
+  if (content.seoEnabled) {
+    files['public/robots.txt'] = buildRobotsTxt(content.seoSiteUrl)
+    files['public/sitemap.xml'] = buildSitemapXml(content.seoSiteUrl, collectLaravelSitemapPaths(content))
+  }
 
   return files
 }

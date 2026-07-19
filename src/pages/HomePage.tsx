@@ -18,6 +18,7 @@ export function HomePage() {
       business: 0,
       creative: 0,
       food: 0,
+      hospitality: 0,
       health: 0,
       tech: 0,
       retail: 0,

@@ -1,0 +1,189 @@
+# Deploy the production build to cPanel shared hosting over FTPS.
+#
+# Triggers:
+#   - push / merge to main
+#   - manual run (Actions → Deploy to cPanel → Run workflow)
+#
+# Required GitHub secrets: see docs/DEPLOY.md
+
+name: Deploy to cPanel
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "List files that would be uploaded without changing the server"
+        type: boolean
+        default: false
+      skip_lint:
+        description: "Skip oxlint (not recommended)"
+        type: boolean
+        default: false
+
+concurrency:
+  # One deploy at a time; a newer push cancels an in-flight deploy.
+  group: deploy-cpanel-production
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  NODE_VERSION: "22"
+  # Relative path under the FTP home that maps to the site document root.
+  # Override with secret FTP_SERVER_DIR (e.g. public_html/ or public_html/app/).
+  DEFAULT_SERVER_DIR: public_html/
+
+jobs:
+  build-and-deploy:
+    name: Build & deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate deploy secrets
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+        run: |
+          missing=0
+          for name in FTP_SERVER FTP_USERNAME FTP_PASSWORD; do
+            if [ -z "${!name}" ]; then
+              echo "::error::Missing required secret: $name — see docs/DEPLOY.md"
+              missing=1
+            fi
+          done
+          if [ "$missing" -ne 0 ]; then
+            exit 1
+          fi
+          echo "Required FTP secrets are present."
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        if: ${{ github.event_name != 'workflow_dispatch' || inputs.skip_lint != true }}
+        run: npm run lint
+
+      - name: Build production bundle
+        run: npm run build
+        env:
+          # Fail the build on TypeScript / Vite errors (already the default for tsc -b)
+          CI: true
+
+      - name: Verify build output
+        run: |
+          set -euo pipefail
+          test -f dist/index.html || { echo "::error::dist/index.html missing"; exit 1; }
+          test -f dist/.htaccess || {
+            echo "::error::dist/.htaccess missing — SPA routes will 404 on Apache."
+            echo "Ensure public/.htaccess exists so Vite copies it into dist/."
+            exit 1
+          }
+          echo "Build artifacts:"
+          find dist -type f | sort | head -50
+          echo "---"
+          ls -la dist/
+          echo "---"
+          echo ".htaccess present (first lines):"
+          head -n 20 dist/.htaccess
+
+      - name: Resolve FTP settings
+        id: ftp
+        env:
+          FTP_SERVER_DIR: ${{ secrets.FTP_SERVER_DIR }}
+          FTP_PROTOCOL: ${{ secrets.FTP_PROTOCOL }}
+          FTP_PORT: ${{ secrets.FTP_PORT }}
+        run: |
+          server_dir="${FTP_SERVER_DIR:-${{ env.DEFAULT_SERVER_DIR }}}"
+          # Ensure trailing slash (required by FTP-Deploy-Action)
+          case "$server_dir" in
+            */) ;;
+            *) server_dir="${server_dir}/" ;;
+          esac
+
+          protocol="${FTP_PROTOCOL:-ftps}"
+          protocol="$(echo "$protocol" | tr '[:upper:]' '[:lower:]')"
+          case "$protocol" in
+            ftp|ftps|ftps-legacy) ;;
+            *)
+              echo "::error::FTP_PROTOCOL must be ftp, ftps, or ftps-legacy (got: $protocol)"
+              exit 1
+              ;;
+          esac
+
+          port="${FTP_PORT:-}"
+          if [ -z "$port" ]; then
+            if [ "$protocol" = "ftp" ]; then
+              port="21"
+            else
+              port="21"
+            fi
+          fi
+
+          {
+            echo "server-dir=$server_dir"
+            echo "protocol=$protocol"
+            echo "port=$port"
+          } >> "$GITHUB_OUTPUT"
+
+          echo "Deploy target: protocol=$protocol port=$port server-dir=$server_dir"
+
+      - name: Deploy to cPanel (FTP)
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ${{ steps.ftp.outputs.protocol }}
+          port: ${{ steps.ftp.outputs.port }}
+          local-dir: ./dist/
+          server-dir: ${{ steps.ftp.outputs.server-dir }}
+          # Only upload what changed; state file lives on the server for faster deploys.
+          dangerous-clean-slate: false
+          # Exclude nothing from dist — it is already the production artifact only.
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+          # Only true for manual runs with the dry_run checkbox enabled
+          dry-run: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run == true }}
+          log-level: standard
+          # Timeout per file transfer (ms) — large assets on slow hosts
+          timeout: 60000
+
+      - name: Deployment summary
+        if: success()
+        env:
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run == true }}
+        run: |
+          {
+            echo "## Deploy summary"
+            echo ""
+            echo "| | |"
+            echo "|---|---|"
+            echo "| **Branch** | \`${{ github.ref_name }}\` |"
+            echo "| **Commit** | \`${{ github.sha }}\` |"
+            echo "| **Protocol** | \`${{ steps.ftp.outputs.protocol }}\` |"
+            echo "| **Server dir** | \`${{ steps.ftp.outputs.server-dir }}\` |"
+            if [ "$DRY_RUN" = "true" ]; then
+              echo "| **Mode** | dry-run (no files written) |"
+            else
+              echo "| **Mode** | live deploy |"
+            fi
+            echo ""
+            echo "SPA routes (\`/preview/*\`, \`/editor/*\`, etc.) are handled by \`dist/.htaccess\`."
+          } >> "$GITHUB_STEP_SUMMARY"

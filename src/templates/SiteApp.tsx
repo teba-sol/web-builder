@@ -20,6 +20,10 @@ const PAGE_ROUTE_GUARD: Partial<Record<SitePageId, keyof SiteContent['pageVisibi
   blog: 'blog',
   news: 'news',
   contact: 'contact',
+  rooms: 'rooms',
+  'room-detail': 'rooms',
+  book: 'rooms',
+  'booking-confirm': 'rooms',
 }
 
 function SitePage({
@@ -60,6 +64,10 @@ export function SiteApp({ templateId, content, basePath, colorSchemeId, layoutVa
       <Route path="services" element={<SitePage page="services" {...shared} />} />
       <Route path="portfolio" element={<SitePage page="portfolio" {...shared} />} />
       <Route path="gallery" element={<SitePage page="gallery" {...shared} />} />
+      <Route path="rooms" element={<SitePage page="rooms" {...shared} />} />
+      <Route path="rooms/:slug" element={<SitePage page="room-detail" {...shared} />} />
+      <Route path="book" element={<SitePage page="book" {...shared} />} />
+      <Route path="book/confirm/:code" element={<SitePage page="booking-confirm" {...shared} />} />
       <Route path="blog" element={<SitePage page="blog" {...shared} />} />
       <Route path="blog/:slug" element={<PostRoute page="blog-post" {...shared} />} />
       <Route path="news" element={<SitePage page="news" {...shared} />} />

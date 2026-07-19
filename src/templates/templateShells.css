@@ -1,0 +1,28 @@
+/* Per-template shell — distinct section rhythm without shared “samey” grids */
+
+.tpl-business .tpl-stats-inner { border-top: 3px solid #2563eb; }
+.tpl-creative .tpl-stats-inner { border-left: 4px solid #a855f7; padding-left: 1.5rem; }
+.tpl-restaurant .tpl-stats-inner { font-family: var(--font-serif); }
+.tpl-saas .tpl-stats-inner > div { border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 1rem; padding: 1.25rem; }
+.tpl-fitness .tpl-stats-inner { text-transform: uppercase; letter-spacing: 0.05em; }
+.tpl-boutique .tpl-stats-inner > div { border-bottom: 1px solid #e7e5e4; padding-bottom: 1rem; }
+.tpl-realtor .tpl-stats-inner > div { border-left: 2px solid #b45309; padding-left: 1rem; text-align: left; }
+.tpl-photography .tpl-stats-inner { border-y: 1px solid #404040; }
+.tpl-medical .tpl-stats-inner > div { background: rgba(13, 148, 136, 0.08); border-radius: 0.75rem; padding: 1rem; }
+.tpl-lawfirm .tpl-stats-inner { font-family: var(--font-serif); }
+.tpl-salon .tpl-stats-inner > div { border-radius: 9999px; background: rgba(219, 39, 119, 0.06); padding: 0.75rem 1rem; }
+.tpl-noir .tpl-stats-inner { border: 1px solid rgba(212, 175, 55, 0.25); }
+.tpl-terra .tpl-stats-inner > div { border: 1px dashed #c2410c; border-radius: 0.5rem; padding: 1rem; }
+.tpl-coastal .tpl-stats-inner { background: linear-gradient(90deg, transparent, rgba(2, 132, 199, 0.08), transparent); }
+.tpl-vineyard .tpl-stats-inner { font-family: var(--font-serif); }
+.tpl-arcade .tpl-stats-inner > div { box-shadow: 0 0 20px rgba(163, 230, 53, 0.15); }
+.tpl-coffee .tpl-stats-inner > div { border: 1px solid rgba(120, 72, 48, 0.15); border-radius: 1rem; padding: 1rem; }
+
+.tpl-creative .tpl-teaser-heading,
+.tpl-noir .tpl-teaser-heading,
+.tpl-arcade .tpl-teaser-heading { text-transform: uppercase; letter-spacing: 0.12em; }
+.tpl-boutique .tpl-teaser-heading,
+.tpl-salon .tpl-teaser-heading,
+.tpl-vineyard .tpl-teaser-heading,
+.tpl-coffee .tpl-teaser-heading { font-family: var(--font-serif); }
+.tpl-saas .tpl-teaser-heading { font-weight: 800; }

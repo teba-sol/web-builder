@@ -558,6 +558,168 @@ export const colorSchemesByTemplate: Record<TemplateId, ColorSchemeOption[]> = {
       },
     },
   ],
+  hotel: [
+    { id: 'midnight-gold', name: 'Midnight Gold', swatches: ['#1c1917', '#b45309', '#fafaf9'], overrides: {} },
+    {
+      id: 'slate-brass',
+      name: 'Slate Brass',
+      swatches: ['#0f172a', '#ca8a04', '#f8fafc'],
+      overrides: {
+        navCta: 'rounded-sm bg-yellow-600 px-6 py-2.5 text-white hover:bg-yellow-500',
+        heroCta: 'rounded-sm bg-yellow-600 px-8 py-3 text-white hover:bg-yellow-500',
+        ctaBanner: 'bg-slate-900 text-amber-50 py-24',
+        showcasePrice: 'text-yellow-700',
+      },
+    },
+    {
+      id: 'emerald-city',
+      name: 'Emerald City',
+      swatches: ['#064e3b', '#059669', '#ecfdf5'],
+      overrides: {
+        navCta: 'rounded-sm bg-emerald-700 px-6 py-2.5 text-white hover:bg-emerald-600',
+        ctaBanner: 'bg-emerald-900 text-emerald-50 py-24',
+        showcasePrice: 'text-emerald-700',
+      },
+    },
+  ],
+  guesthouse: [
+    { id: 'linen', name: 'Linen & Clay', swatches: ['#57534e', '#a8a29e', '#fafaf9'], overrides: {} },
+    {
+      id: 'sage-cottage',
+      name: 'Sage Cottage',
+      swatches: ['#3f6212', '#65a30d', '#f7fee7'],
+      overrides: {
+        navCta: 'rounded-full bg-lime-700 px-6 py-2.5 text-white hover:bg-lime-600',
+        ctaBanner: 'bg-lime-900 text-lime-50 py-20',
+        showcasePrice: 'text-lime-800',
+      },
+    },
+    {
+      id: 'rose-garden',
+      name: 'Rose Garden',
+      swatches: ['#9f1239', '#e11d48', '#fff1f2'],
+      overrides: {
+        navCta: 'rounded-full bg-rose-700 px-6 py-2.5 text-white hover:bg-rose-600',
+        ctaBanner: 'bg-rose-900 text-rose-50 py-20',
+        showcasePrice: 'text-rose-700',
+      },
+    },
+  ],
+  alpine: [
+    { id: 'glacier', name: 'Glacier Ice', swatches: ['#0f172a', '#38bdf8', '#e2e8f0'], overrides: {} },
+    {
+      id: 'pine-snow',
+      name: 'Pine Snow',
+      swatches: ['#14532d', '#4ade80', '#f0fdf4'],
+      overrides: {
+        navCta: 'rounded-none border border-green-400/60 bg-green-500/20 px-6 py-2.5 text-green-100',
+        ctaBanner: 'bg-emerald-950 text-emerald-50 py-24',
+        showcasePrice: 'text-emerald-700',
+      },
+    },
+    {
+      id: 'ember-lodge',
+      name: 'Ember Lodge',
+      swatches: ['#1c1917', '#f59e0b', '#fffbeb'],
+      overrides: {
+        navCta: 'rounded-none border border-amber-400/60 bg-amber-500/20 px-6 py-2.5 text-amber-100',
+        ctaBanner: 'bg-stone-950 text-amber-50 py-24',
+        showcasePrice: 'text-amber-700',
+      },
+    },
+  ],
+  ryokan: [
+    { id: 'vermillion', name: 'Vermillion Ink', swatches: ['#1c1917', '#b91c1c', '#f3efe6'], overrides: {} },
+    {
+      id: 'indigo-zen',
+      name: 'Indigo Zen',
+      swatches: ['#1e1b4b', '#4f46e5', '#eef2ff'],
+      overrides: {
+        navCta: 'rounded-none bg-indigo-800 px-6 py-2.5 text-white hover:bg-indigo-700',
+        ctaBanner: 'bg-indigo-950 text-indigo-50 py-24',
+        showcasePrice: 'text-indigo-800',
+      },
+    },
+    {
+      id: 'moss-garden',
+      name: 'Moss Garden',
+      swatches: ['#14532d', '#166534', '#f0fdf4'],
+      overrides: {
+        navCta: 'rounded-none bg-green-800 px-6 py-2.5 text-white hover:bg-green-700',
+        ctaBanner: 'bg-green-950 text-green-50 py-24',
+        showcasePrice: 'text-green-800',
+      },
+    },
+  ],
+  desert: [
+    { id: 'dune-gold', name: 'Dune Gold', swatches: ['#1c1410', '#d97706', '#faf3e8'], overrides: {} },
+    {
+      id: 'terracotta',
+      name: 'Terracotta',
+      swatches: ['#7c2d12', '#ea580c', '#fff7ed'],
+      overrides: {
+        navCta: 'rounded-full bg-orange-600 px-6 py-2.5 text-white hover:bg-orange-500',
+        ctaBanner: 'bg-gradient-to-r from-orange-800 to-red-700 text-orange-50 py-24',
+        showcasePrice: 'text-orange-700',
+      },
+    },
+    {
+      id: 'midnight-sand',
+      name: 'Midnight Sand',
+      swatches: ['#0c0a09', '#a8a29e', '#fafaf9'],
+      overrides: {
+        navCta: 'rounded-full bg-stone-200 px-6 py-2.5 text-stone-900 hover:bg-white',
+        ctaBanner: 'bg-stone-900 text-stone-100 py-24',
+        showcasePrice: 'text-stone-700',
+      },
+    },
+  ],
+  nordic: [
+    { id: 'fjord-teal', name: 'Fjord Teal', swatches: ['#134e4a', '#0f766e', '#f4f6f5'], overrides: {} },
+    {
+      id: 'arctic-blue',
+      name: 'Arctic Blue',
+      swatches: ['#1e3a5f', '#3b82f6', '#f8fafc'],
+      overrides: {
+        navCta: 'rounded-full bg-blue-700 px-6 py-2.5 text-white hover:bg-blue-600',
+        ctaBanner: 'bg-blue-900 text-blue-50 py-24',
+        showcasePrice: 'text-blue-800',
+      },
+    },
+    {
+      id: 'birch',
+      name: 'Birch Wood',
+      swatches: ['#44403c', '#a8a29e', '#fafaf9'],
+      overrides: {
+        navCta: 'rounded-full bg-stone-800 px-6 py-2.5 text-white hover:bg-stone-700',
+        ctaBanner: 'bg-stone-800 text-stone-50 py-24',
+        showcasePrice: 'text-stone-700',
+      },
+    },
+  ],
+  jungle: [
+    { id: 'canopy', name: 'Canopy Green', swatches: ['#052e16', '#65a30d', '#0f1a12'], overrides: {} },
+    {
+      id: 'macaw',
+      name: 'Macaw Gold',
+      swatches: ['#14532d', '#eab308', '#0f1a12'],
+      overrides: {
+        navCta: 'rounded-full bg-yellow-400 px-6 py-2.5 text-emerald-950 hover:bg-yellow-300',
+        ctaBanner: 'bg-gradient-to-r from-emerald-900 to-yellow-700 text-yellow-50 py-24',
+        showcasePrice: 'text-yellow-400',
+      },
+    },
+    {
+      id: 'orchid',
+      name: 'Orchid Night',
+      swatches: ['#4a044e', '#d946ef', '#0f1a12'],
+      overrides: {
+        navCta: 'rounded-full bg-fuchsia-500 px-6 py-2.5 text-white hover:bg-fuchsia-400',
+        ctaBanner: 'bg-gradient-to-r from-purple-950 to-fuchsia-800 text-fuchsia-50 py-24',
+        showcasePrice: 'text-fuchsia-400',
+      },
+    },
+  ],
   vineyard: [
     { id: 'burgundy', name: 'Burgundy Estate', swatches: ['#4c0519', '#881337', '#faf8f5'], overrides: {} },
     {
@@ -625,6 +787,52 @@ export const colorSchemesByTemplate: Record<TemplateId, ColorSchemeOption[]> = {
         showcasePrice: 'text-pink-400',
         ctaBanner: 'bg-gradient-to-r from-pink-700 via-rose-900 to-fuchsia-800',
         contactLabel: 'text-pink-400',
+      },
+    },
+  ],
+  coffee: [
+    {
+      id: 'espresso',
+      name: 'Espresso Gold',
+      swatches: ['#2d1810', '#c9a66b', '#faf6f0'],
+      overrides: {
+        navCta: 'bg-gradient-to-r from-amber-700 to-amber-900 text-amber-50',
+        heroCta: 'bg-amber-500 text-[#1a0f08]',
+        statValue: 'text-amber-300',
+        showcasePrice: 'text-amber-800',
+        cardTitle: 'text-[#2d1810]',
+      },
+    },
+    {
+      id: 'latte',
+      name: 'Cream Latte',
+      swatches: ['#5c4033', '#e8d4b8', '#fffdf9'],
+      overrides: {
+        page: 'bg-[#fffdf9] text-[#3d2914]',
+        nav: 'bg-[#fffdf9]/85 border-amber-800/10',
+        navCta: 'bg-[#5c4033] text-amber-50',
+        heroCta: 'bg-[#5c4033] text-amber-50',
+        stats: 'bg-[#5c4033] text-amber-50',
+        statValue: 'text-amber-200',
+        sectionAlt: 'bg-amber-50/50',
+      },
+    },
+    {
+      id: 'midnight',
+      name: 'Midnight Roast',
+      swatches: ['#0f0a08', '#8b5e3c', '#1a120e'],
+      overrides: {
+        page: 'bg-[#1a120e] text-amber-100',
+        nav: 'bg-[#1a120e]/90 border-amber-900/20',
+        navLink: 'text-amber-200/80 hover:text-amber-400',
+        section: 'py-20 text-amber-100',
+        sectionAlt: 'py-20 bg-[#0f0a08]/50',
+        sectionTitle: 'text-amber-50 font-serif',
+        sectionSubtitle: 'text-amber-300/70',
+        card: 'coffee-card-hover rounded-2xl border border-amber-900/30 bg-[#2d1810] p-8',
+        cardText: 'text-amber-200/80',
+        showcase: 'bg-[#0f0a08]/30',
+        showcaseCard: 'coffee-card-hover border-amber-800/30 bg-[#2d1810]',
       },
     },
   ],

@@ -8,6 +8,7 @@ import type { ContactFieldKey } from '../types'
 import { slugify } from '../utils/slugify'
 import type { ContentListKey } from '../data/listDefaults'
 import { getDefaultLayoutVariantId } from '../data/layoutVariants'
+import { optimizeSiteSeo } from '../utils/seoOptimizer'
 import { ColorSchemePicker } from './ColorSchemePicker'
 import { ImagePicker } from './ImagePicker'
 import { LayoutVariantPicker } from './LayoutVariantPicker'
@@ -68,6 +69,38 @@ export function ContentForm() {
         onToggle={toggleSectionVisibility}
       />
 
+      <FormSection title="SEO">
+        <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-emerald-200 bg-emerald-50/80 p-4">
+          <input
+            type="checkbox"
+            checked={content.seoEnabled}
+            onChange={(e) => {
+              if (e.target.checked) {
+                updateContent(optimizeSiteSeo(content, templateId ?? undefined))
+              } else {
+                updateContent({ seoEnabled: false })
+              }
+            }}
+            className="mt-0.5 h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+          />
+          <span>
+            <span className="block text-sm font-semibold text-emerald-900">Optimize SEO</span>
+            <span className="mt-1 block text-xs text-emerald-800/80">
+              Auto-generates meta title, description, keywords, slugs, sitemap, robots.txt, Open Graph tags, and structured data on export.
+            </span>
+          </span>
+        </label>
+        {content.seoEnabled && (
+          <div className="space-y-4 rounded-xl border border-slate-200 bg-slate-50 p-4">
+            <Field label="Meta Title" value={content.seoTitle} onChange={(v) => updateContent({ seoTitle: v })} placeholder="Business Name | Tagline" />
+            <Field label="Meta Description" value={content.seoDescription} onChange={(v) => updateContent({ seoDescription: v })} multiline rows={3} placeholder="155-character summary for search results" />
+            <Field label="Keywords" value={content.seoKeywords} onChange={(v) => updateContent({ seoKeywords: v })} placeholder="service, location, industry" />
+            <Field label="Live Site URL (for canonical links & sitemap)" value={content.seoSiteUrl} onChange={(v) => updateContent({ seoSiteUrl: v })} placeholder="https://www.yourbusiness.com" />
+            <p className="text-xs text-slate-500">Tip: add your real domain before exporting so canonical URLs and sitemap entries point to production.</p>
+          </div>
+        )}
+      </FormSection>
+
       <FormSection title="Hero">
         <Field label="Business Name" value={content.businessName} onChange={(v) => updateContent({ businessName: v })} />
         <Field label="Headline / Tagline" value={content.tagline} onChange={(v) => updateContent({ tagline: v })} />
@@ -111,6 +144,72 @@ export function ContentForm() {
           </ItemCard>
         ))}
       </FormSection>
+
+      {content.pageVisibility.rooms && (
+        <FormSection title="Rooms & Booking" {...listControls('roomTypes', 'Add Room Type')}>
+          <p className="mb-3 text-xs text-slate-500">
+            Define room types and optional subtypes (set Parent slug). Unit count seeds inventory in the exported admin. Guests can only book available units.
+          </p>
+          <Field label="Rooms Section Title" value={content.roomsSectionTitle} onChange={(v) => updateContent({ roomsSectionTitle: v })} />
+          <Field label="Rooms Section Subtitle" value={content.roomsSectionSubtitle} onChange={(v) => updateContent({ roomsSectionSubtitle: v })} />
+          <Field label="Booking Page Title" value={content.bookingSectionTitle} onChange={(v) => updateContent({ bookingSectionTitle: v })} />
+          <Field label="Booking Page Subtitle" value={content.bookingSectionSubtitle} onChange={(v) => updateContent({ bookingSectionSubtitle: v })} />
+          {content.roomTypes.map((room, i) => (
+            <ItemCard
+              key={i}
+              label={room.name ? room.name : `Room type ${i + 1}`}
+              canRemove={listControls('roomTypes').canRemove()}
+              onRemove={() => listControls('roomTypes').onRemove(i)}
+            >
+              <Field
+                label="Name"
+                value={room.name}
+                onChange={(v) => {
+                  const nextSlug = !room.slug || room.slug === slugify(room.name) ? slugify(v) : room.slug
+                  const rooms = [...content.roomTypes]
+                  rooms[i] = { ...rooms[i], name: v, slug: nextSlug }
+                  updateContent({ roomTypes: rooms })
+                }}
+              />
+              <Field label="URL Slug" value={room.slug} onChange={(v) => updateListItem('roomTypes', i, 'slug', slugify(v))} placeholder="deluxe-suite" />
+              <Field
+                label="Parent slug (subtype of…)"
+                value={room.parentSlug}
+                onChange={(v) => updateListItem('roomTypes', i, 'parentSlug', slugify(v))}
+                placeholder="leave empty for top-level type"
+              />
+              <Field label="Short description" value={room.shortDescription} onChange={(v) => updateListItem('roomTypes', i, 'shortDescription', v)} />
+              <Field label="Full description" value={room.description} onChange={(v) => updateListItem('roomTypes', i, 'description', v)} multiline rows={3} />
+              <div className="grid grid-cols-2 gap-3">
+                <Field label="Nightly price" value={room.basePrice} onChange={(v) => updateListItem('roomTypes', i, 'basePrice', v)} placeholder="250" />
+                <Field label="Currency" value={room.currency} onChange={(v) => updateListItem('roomTypes', i, 'currency', v)} placeholder="USD" />
+                <Field label="Max adults" value={room.maxAdults} onChange={(v) => updateListItem('roomTypes', i, 'maxAdults', v)} />
+                <Field label="Max children" value={room.maxChildren} onChange={(v) => updateListItem('roomTypes', i, 'maxChildren', v)} />
+                <Field label="Max occupancy" value={room.maxOccupancy} onChange={(v) => updateListItem('roomTypes', i, 'maxOccupancy', v)} />
+                <Field label="Size (m²)" value={room.sizeSqm} onChange={(v) => updateListItem('roomTypes', i, 'sizeSqm', v)} />
+                <Field label="Beds" value={room.bedConfiguration} onChange={(v) => updateListItem('roomTypes', i, 'bedConfiguration', v)} placeholder="1 King" />
+                <Field label="Unit count" value={room.unitCount} onChange={(v) => updateListItem('roomTypes', i, 'unitCount', v)} placeholder="4" />
+                <Field label="Unit code prefix" value={room.unitPrefix} onChange={(v) => updateListItem('roomTypes', i, 'unitPrefix', v)} placeholder="DLX-" />
+              </div>
+              <Field label="Amenities (comma-separated)" value={room.amenities} onChange={(v) => updateListItem('roomTypes', i, 'amenities', v)} placeholder="Wi-Fi, Mini bar, Safe" />
+              <ImagePicker label="Image" value={room.image} onChange={(v) => updateListItem('roomTypes', i, 'image', v)} />
+              <label className="mt-2 flex items-center gap-2 text-sm">
+                <input
+                  type="checkbox"
+                  checked={room.isActive}
+                  onChange={(e) => {
+                    const rooms = [...content.roomTypes]
+                    rooms[i] = { ...rooms[i], isActive: e.target.checked }
+                    updateContent({ roomTypes: rooms })
+                  }}
+                  className="h-4 w-4 rounded border-slate-300 text-indigo-600"
+                />
+                Active (bookable on the public site)
+              </label>
+            </ItemCard>
+          ))}
+        </FormSection>
+      )}
 
       {showcaseCfg && content.pageVisibility.portfolio && (
         <FormSection title={`Portfolio — ${showcaseCfg.sectionTitle}`} {...listControls('showcaseItems', showcaseAddLabel)}>

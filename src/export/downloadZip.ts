@@ -16,12 +16,15 @@ export async function downloadWebsiteZip(
   colorSchemeId?: string,
   layoutVariantId?: string,
 ) {
-  const { pages, assets } = buildAllSitePages(templateId, content, colorSchemeId, layoutVariantId)
+  const { pages, assets, seoFiles } = buildAllSitePages(templateId, content, colorSchemeId, layoutVariantId)
   const zip = new JSZip()
 
   // Static frontend (works without PHP) — multi-page site
   for (const [path, html] of Object.entries(pages)) {
     zip.file(`frontend/${path}`, html)
+  }
+  for (const [path, file] of Object.entries(seoFiles)) {
+    zip.file(`frontend/${path}`, file)
   }
   for (const asset of assets) {
     zip.file(`frontend/${asset.zipPath}`, asset.data)
@@ -48,6 +51,7 @@ This export includes BOTH a static frontend and a dynamic Laravel + Filament bac
 FOLDERS:
 --------
 frontend/     Multi-page static site (index.html, about.html, blog/, etc.)
+              When SEO is enabled: robots.txt + sitemap.xml included
 backend/      Laravel 11 + Filament 3 admin — dynamic content, contact form, deploy-ready
 
 STATIC FRONTEND (quick preview):

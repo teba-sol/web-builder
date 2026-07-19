@@ -355,6 +355,13 @@ class SiteSettingResource extends Resource
                     Forms\\Components\\TextInput::make('team_section_title'),
                     Forms\\Components\\TextInput::make('faq_section_title'),
                 ]),
+                Forms\\Components\\Tabs\\Tab::make('SEO')->schema([
+                    Forms\\Components\\Toggle::make('seo_enabled')->label('Optimize SEO'),
+                    Forms\\Components\\TextInput::make('seo_title')->label('Meta Title'),
+                    Forms\\Components\\Textarea::make('seo_description')->label('Meta Description')->rows(3),
+                    Forms\\Components\\Textarea::make('seo_keywords')->label('Keywords')->rows(2),
+                    Forms\\Components\\TextInput::make('seo_site_url')->label('Live Site URL')->url(),
+                ]),
                 Forms\\Components\\Tabs\\Tab::make('CTA & Contact')->schema([
                     Forms\\Components\\TextInput::make('cta_text'),
                     Forms\\Components\\TextInput::make('cta_link'),
@@ -447,6 +454,186 @@ class ContactMessageResource extends Resource
 `
 }
 
+interface DashboardStatDef {
+  model: string
+  label: string
+  icon: string
+  color: string
+  description: string
+  countExpr: string
+  always?: boolean
+  pageKey?: keyof PageVisibility
+  sectionKey?: keyof SectionVisibility
+}
+
+const DASHBOARD_STATS: DashboardStatDef[] = [
+  { model: 'ContactMessage', label: 'Contact Messages', icon: 'heroicon-m-inbox', color: 'primary', description: 'Inbox total', countExpr: 'ContactMessage::count()', always: true },
+  { model: 'BlogPost', label: 'Blog Posts', icon: 'heroicon-m-newspaper', color: 'success', description: 'Published posts', countExpr: "BlogPost::where('is_published', true)->count()", pageKey: 'blog' },
+  { model: 'NewsPost', label: 'News Posts', icon: 'heroicon-m-megaphone', color: 'info', description: 'Published articles', countExpr: "NewsPost::where('is_published', true)->count()", pageKey: 'news' },
+  { model: 'Service', label: 'Services', icon: 'heroicon-m-briefcase', color: 'warning', description: 'Listed services', countExpr: 'Service::count()', pageKey: 'services' },
+  { model: 'ShowcaseItem', label: 'Portfolio Items', icon: 'heroicon-m-star', color: 'warning', description: 'Showcase entries', countExpr: 'ShowcaseItem::count()', pageKey: 'portfolio' },
+  { model: 'GalleryImage', label: 'Gallery Images', icon: 'heroicon-m-photo', color: 'gray', description: 'Gallery photos', countExpr: 'GalleryImage::count()', pageKey: 'gallery' },
+  { model: 'Testimonial', label: 'Testimonials', icon: 'heroicon-m-chat-bubble-left-right', color: 'success', description: 'Client reviews', countExpr: 'Testimonial::count()', always: true },
+  { model: 'TeamMember', label: 'Team Members', icon: 'heroicon-m-user-group', color: 'info', description: 'Team profiles', countExpr: 'TeamMember::count()', sectionKey: 'team' },
+  { model: 'Faq', label: 'FAQs', icon: 'heroicon-m-question-mark-circle', color: 'gray', description: 'Help articles', countExpr: 'Faq::count()', sectionKey: 'faq' },
+]
+
+function isDashboardStatEnabled(
+  def: DashboardStatDef,
+  sectionVisibility: SectionVisibility,
+  pageVisibility: PageVisibility,
+): boolean {
+  if (def.always) return true
+  if (def.pageKey) return pageVisibility[def.pageKey]
+  if (def.sectionKey) return sectionVisibility[def.sectionKey]
+  return false
+}
+
+function generateSiteStatsOverview(
+  sectionVisibility: SectionVisibility,
+  pageVisibility: PageVisibility,
+): string {
+  const stats = DASHBOARD_STATS.filter((d) => isDashboardStatEnabled(d, sectionVisibility, pageVisibility))
+  const models = [...new Set(stats.map((s) => s.model))]
+  const imports = models.map((m) => `use App\\Models\\${m};`).join('\n')
+  const statLines = stats
+    .map(
+      (s) => `            Stat::make('${phpStr(s.label)}', ${s.countExpr})
+                ->description('${phpStr(s.description)}')
+                ->descriptionIcon('${s.icon}')
+                ->color('${s.color}'),`,
+    )
+    .join('\n')
+
+  return `<?php
+
+namespace App\\Filament\\Widgets;
+
+${imports}
+use Filament\\Widgets\\StatsOverviewWidget as BaseWidget;
+use Filament\\Widgets\\StatsOverviewWidget\\Stat;
+
+class SiteStatsOverview extends BaseWidget
+{
+    protected static ?int $sort = 1;
+
+    protected function getStats(): array
+    {
+        return [
+${statLines}
+        ];
+    }
+}
+`
+}
+
+function generateContactMessagesChart(): string {
+  return `<?php
+
+namespace App\\Filament\\Widgets;
+
+use App\\Models\\ContactMessage;
+use Filament\\Widgets\\ChartWidget;
+
+class ContactMessagesChart extends ChartWidget
+{
+    protected static ?string $heading = 'Contact Form Activity';
+
+    protected static ?int $sort = 2;
+
+    protected int|string|array $columnSpan = 'full';
+
+    protected function getData(): array
+    {
+        $labels = [];
+        $data = [];
+
+        for ($i = 5; $i >= 0; $i--) {
+            $month = now()->subMonths($i);
+            $labels[] = $month->format('M Y');
+            $data[] = ContactMessage::query()
+                ->whereYear('created_at', $month->year)
+                ->whereMonth('created_at', $month->month)
+                ->count();
+        }
+
+        return [
+            'datasets' => [
+                [
+                    'label' => 'Messages received',
+                    'data' => $data,
+                    'borderColor' => '#6366f1',
+                    'backgroundColor' => 'rgba(99, 102, 241, 0.15)',
+                    'fill' => true,
+                    'tension' => 0.3,
+                ],
+            ],
+            'labels' => $labels,
+        ];
+    }
+
+    protected function getType(): string
+    {
+        return 'line';
+    }
+}
+`
+}
+
+function generateContentOverviewChart(
+  sectionVisibility: SectionVisibility,
+  pageVisibility: PageVisibility,
+): string | null {
+  const chartItems = DASHBOARD_STATS.filter(
+    (d) => d.model !== 'ContactMessage' && isDashboardStatEnabled(d, sectionVisibility, pageVisibility),
+  )
+  if (chartItems.length < 2) return null
+
+  const models = [...new Set(chartItems.map((s) => s.model))]
+  const imports = models.map((m) => `use App\\Models\\${m};`).join('\n')
+  const labels = chartItems.map((s) => `'${phpStr(s.label)}'`).join(', ')
+  const data = chartItems.map((s) => s.countExpr).join(', ')
+
+  return `<?php
+
+namespace App\\Filament\\Widgets;
+
+${imports}
+use Filament\\Widgets\\ChartWidget;
+
+class ContentOverviewChart extends ChartWidget
+{
+    protected static ?string $heading = 'Content Overview';
+
+    protected static ?int $sort = 3;
+
+    protected int|string|array $columnSpan = 'full';
+
+    protected function getData(): array
+    {
+        return [
+            'datasets' => [
+                [
+                    'label' => 'Items',
+                    'data' => [${data}],
+                    'backgroundColor' => [
+                        '#6366f1', '#22c55e', '#0ea5e9', '#f59e0b',
+                        '#a855f7', '#64748b', '#14b8a6', '#ef4444',
+                    ],
+                ],
+            ],
+            'labels' => [${labels}],
+        ];
+    }
+
+    protected function getType(): string
+    {
+        return 'bar';
+    }
+}
+`
+}
+
 export function generateFilamentFiles(
   sectionVisibility: SectionVisibility,
   pageVisibility: PageVisibility,
@@ -519,6 +706,13 @@ class ViewContactMessage extends ViewRecord
       files[`app/Filament/Resources/${def.name}Resource.php`] = generateResource(def)
       Object.assign(files, generateResourcePages(def))
     }
+  }
+
+  files['app/Filament/Widgets/SiteStatsOverview.php'] = generateSiteStatsOverview(sectionVisibility, pageVisibility)
+  files['app/Filament/Widgets/ContactMessagesChart.php'] = generateContactMessagesChart()
+  const contentChart = generateContentOverviewChart(sectionVisibility, pageVisibility)
+  if (contentChart) {
+    files['app/Filament/Widgets/ContentOverviewChart.php'] = contentChart
   }
 
   return files

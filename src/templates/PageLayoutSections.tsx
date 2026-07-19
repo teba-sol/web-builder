@@ -362,7 +362,7 @@ export function BlogTeaser({ c, t, basePath }: Omit<LayoutProps, 'variant'>) {
       <div className="mx-auto max-w-6xl px-6">
         <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
           <div>
-            <h2 className={t.sectionTitle}>{c.blogSectionTitle}</h2>
+            <h2 className={`tpl-teaser-heading ${t.sectionTitle}`}>{c.blogSectionTitle}</h2>
             {c.blogSectionSubtitle && <p className={`mt-2 ${t.sectionSubtitle}`}>{c.blogSectionSubtitle}</p>}
           </div>
           <Link to={resolveSiteHref(basePath, 'blog', c)} className={`text-sm font-semibold ${t.showcasePrice}`}>View all posts →</Link>
@@ -383,7 +383,7 @@ export function NewsTeaser({ c, t, basePath }: Omit<LayoutProps, 'variant'>) {
       <div className="mx-auto max-w-6xl px-6">
         <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
           <div>
-            <h2 className={t.sectionTitle}>{c.newsSectionTitle}</h2>
+            <h2 className={`tpl-teaser-heading ${t.sectionTitle}`}>{c.newsSectionTitle}</h2>
             {c.newsSectionSubtitle && <p className={`mt-2 ${t.sectionSubtitle}`}>{c.newsSectionSubtitle}</p>}
           </div>
           <Link to={resolveSiteHref(basePath, 'news', c)} className={`text-sm font-semibold ${t.showcasePrice}`}>All news →</Link>
@@ -396,6 +396,57 @@ export function NewsTeaser({ c, t, basePath }: Omit<LayoutProps, 'variant'>) {
   )
 }
 
+export function ServicesTeaser({ c, t, basePath }: LayoutProps) {
+  const services = c.services.filter((s) => s.title).slice(0, 4)
+  if (services.length === 0 || !canLinkToPage('services', c)) return null
+  const servicesHref = resolveSiteHref(basePath, 'services', c)
+  return (
+    <section className={t.section}>
+      <div className="mx-auto max-w-6xl px-6">
+        <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <h2 className={`tpl-teaser-heading ${t.sectionTitle}`}>{c.servicesSectionTitle}</h2>
+            {c.servicesSectionSubtitle && <p className={`mt-2 ${t.sectionSubtitle}`}>{c.servicesSectionSubtitle}</p>}
+          </div>
+          <Link to={servicesHref} className={`text-sm font-semibold ${t.showcasePrice}`}>Explore all →</Link>
+        </div>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          {services.map((service, i) => (
+            <Link key={i} to={servicesHref} className={`block ${t.card}`}>
+              <div className={`mb-3 ${t.stepNum}`}>{i + 1}</div>
+              <h3 className={`mb-2 ${t.cardTitle}`}>{service.title}</h3>
+              <p className={`line-clamp-3 ${t.cardText}`}>{service.description}</p>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+export function AboutTeaser({ c, t, basePath }: Omit<LayoutProps, 'variant'>) {
+  if (!canLinkToPage('about', c) || !c.about?.trim()) return null
+  const aboutHref = resolveSiteHref(basePath, 'about', c)
+  const excerpt = c.about.length > 280 ? `${c.about.slice(0, 280).trim()}…` : c.about
+  return (
+    <section className={t.section}>
+      <div className="mx-auto max-w-6xl px-6">
+        <div className="grid items-center gap-12 lg:grid-cols-2">
+          <div>
+            <h2 className={`tpl-teaser-heading ${t.sectionTitle}`}>{c.aboutTitle}</h2>
+            <p className={`mt-6 text-lg leading-relaxed ${t.cardText}`}>{excerpt}</p>
+            {c.missionStatement && <p className={`mt-6 ${t.mission}`}>{c.missionStatement}</p>}
+            <Link to={aboutHref} className={`mt-8 inline-block text-sm font-semibold ${t.showcasePrice}`}>Learn more about us →</Link>
+          </div>
+          {c.aboutImage && <img src={c.aboutImage} alt="" className={t.aboutImage} />}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+export { ExploreSectionView as ExploreSection } from './sectionLayouts'
+
 export function PortfolioTeaser({ c, t, variant, basePath }: LayoutProps) {
   const cfg = getShowcaseConfig(variant)
   const items = c.showcaseItems.filter((i) => i.title).slice(0, 3)
@@ -406,10 +457,10 @@ export function PortfolioTeaser({ c, t, variant, basePath }: LayoutProps) {
       <div className="mx-auto max-w-6xl px-6">
         <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
           <div>
-            <h2 className={t.sectionTitle}>{c.showcaseSectionTitle || cfg.sectionTitle}</h2>
+            <h2 className={`tpl-teaser-heading ${t.sectionTitle}`}>{c.showcaseSectionTitle || cfg.sectionTitle}</h2>
             <p className={`mt-2 ${t.sectionSubtitle}`}>{c.showcaseSectionSubtitle || cfg.sectionSubtitle}</p>
           </div>
-          <Link to={portfolioHref} className={`text-sm font-semibold ${t.showcasePrice}`}>View all →</Link>
+          <Link to={portfolioHref} className={`text-sm font-semibold ${t.showcasePrice}`}>Explore all →</Link>
         </div>
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((item, i) => {
