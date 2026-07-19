@@ -33,9 +33,7 @@ permissions:
 
 env:
   NODE_VERSION: "22"
-  # Relative path under the FTP home that maps to the site document root.
-  # Override with secret FTP_SERVER_DIR (e.g. public_html/ or public_html/app/).
-  DEFAULT_SERVER_DIR: public_html/
+  DEFAULT_SERVER_DIR: ./
 
 jobs:
   build-and-deploy:
