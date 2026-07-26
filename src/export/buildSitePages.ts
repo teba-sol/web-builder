@@ -31,6 +31,8 @@ interface SiteHtmlContext {
   accentDark: string
   assets: ImageAsset[]
   fromNested?: boolean
+  /** classic | modern | luxury shell class */
+  layoutShellClass?: string
 }
 
 function buildNav(ctx: SiteHtmlContext): string {
@@ -62,8 +64,9 @@ function pageSeo(ctx: SiteHtmlContext, title: string, path: string, extra?: Part
 }
 
 function wrapPage(ctx: SiteHtmlContext, title: string, body: string, seo?: PageSeoInput): string {
+  const shell = ctx.layoutShellClass ?? 'layout-classic'
   return `${tailwindHead(title, seo)}
-<body class="bg-white text-slate-800">
+<body class="bg-white text-slate-800 ${shell}">
 ${buildNav(ctx)}
 ${body}
 ${buildFooter(ctx)}
@@ -142,7 +145,14 @@ export function buildAllSitePages(
   const showcaseCfg = getShowcaseConfig(templateId)
   const layouts = getPageLayouts(templateId)
   const assets: ImageAsset[] = []
-  const ctx: SiteHtmlContext = { templateId, content, accent, accentDark, assets }
+  const ctx: SiteHtmlContext = {
+    templateId,
+    content,
+    accent,
+    accentDark,
+    assets,
+    layoutShellClass: layout.shellClass,
+  }
   const pages: Record<string, string> = {}
 
   const hero = resolveImageForExport(content.heroImage, 'hero', assets)

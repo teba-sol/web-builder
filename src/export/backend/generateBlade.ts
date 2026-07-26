@@ -1,7 +1,9 @@
+import { LAYOUT_VARIANT_IDS, LAYOUT_VARIANT_PRESETS } from '../../data/layoutVariants'
+import type { TemplateId } from '../../types'
 import { generateBladeSectionPartials } from '../bladeSectionPartials'
 import { buildBladeHeroHtml } from '../heroExport'
+import { LAYOUT_SHELL_CSS } from '../htmlShared'
 import type { SiteExportPayload } from './exportPayload'
-import type { TemplateId } from '../../types'
 import { hasBookingFeature } from './generateBooking'
 
 const NAV_LINKS = `@if($settings->page_visibility['about'] ?? false)<a href="{{ route('about') }}" class="hover:underline opacity-80">About</a>@endif
@@ -67,27 +69,108 @@ function footerPartial(): string {
 </footer>`
 }
 
+function generateHeroPartials(payload: SiteExportPayload): Record<string, string> {
+  const heroCta = hasBookingFeature(payload.content) ? 'book' : 'contact'
+  const files: Record<string, string> = {}
+
+  for (const id of LAYOUT_VARIANT_IDS) {
+    const preset = LAYOUT_VARIANT_PRESETS[id]
+    files[`resources/views/partials/heroes/${id}.blade.php`] = buildBladeHeroHtml({
+      templateId: payload.templateId,
+      heroLayout: preset.heroLayout,
+      heroImage: 'hero',
+      businessName: payload.content.businessName,
+      tagline: payload.content.tagline,
+      heroSubtext: payload.content.heroSubtext,
+      ctaText: payload.content.ctaText,
+      ctaHref: heroCta,
+    })
+  }
+
+  // Runtime switcher — all three variants ship; admin picks via layout_variant_id
+  files['resources/views/partials/hero.blade.php'] = `{{-- classic / modern / luxury heroes all export; active from Site Settings --}}
+@php
+    $layoutId = \\App\\Support\\LayoutVariants::normalize($settings->layout_variant_id ?? 'classic');
+@endphp
+@include('partials.heroes.' . $layoutId)
+`
+
+  return files
+}
+
+function testimonialsPartial(): string {
+  return `@if($settings->section_visibility['testimonials'] ?? false)
+<section class="py-20"><div class="max-w-6xl mx-auto px-6">
+  <h2 class="text-3xl font-bold text-center mb-4">{{ $settings->testimonials_section_title }}</h2>
+  <p class="text-center text-slate-600 mb-12">What our clients say about us</p>
+  @if($testimonials->isEmpty())
+    <p class="text-center text-slate-500">Client reviews</p>
+  @else
+    @php $tLayout = \\App\\Support\\LayoutVariants::testimonialLayout($settings->layout_variant_id); @endphp
+    @if($tLayout === 'featured')
+      <div class="space-y-8">
+        @php $first = $testimonials->first(); $rest = $testimonials->slice(1)->take(3); @endphp
+        <div class="mx-auto max-w-3xl rounded-xl border bg-white p-10 text-center">
+          <div class="mb-4 text-amber-400">★★★★★</div>
+          <p class="mb-6 text-2xl leading-relaxed">"{{ $first->quote }}"</p>
+          <p class="text-lg font-semibold">{{ $first->author }}</p>
+          <p class="text-sm opacity-70">{{ $first->role }}</p>
+        </div>
+        @if($rest->isNotEmpty())
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          @foreach($rest as $item)
+          <div class="rounded-xl border bg-white p-8">
+            <div class="mb-3 text-amber-400">★★★★★</div>
+            <p class="mb-6 text-lg">"{{ $item->quote }}"</p>
+            <p class="font-semibold">{{ $item->author }}</p>
+            <p class="text-sm opacity-70">{{ $item->role }}</p>
+          </div>
+          @endforeach
+        </div>
+        @endif
+      </div>
+    @elseif($tLayout === 'list')
+      <div class="mx-auto max-w-3xl space-y-6">
+        @foreach($testimonials->take(6) as $item)
+        <div class="flex flex-col gap-4 rounded-xl border bg-white p-6 sm:flex-row sm:items-start">
+          <div class="shrink-0 text-2xl text-amber-400">★★★★★</div>
+          <div>
+            <p class="mb-3 text-lg leading-relaxed">"{{ $item->quote }}"</p>
+            <p class="font-semibold">{{ $item->author }}</p>
+            <p class="text-sm opacity-70">{{ $item->role }}</p>
+          </div>
+        </div>
+        @endforeach
+      </div>
+    @else
+      <div class="grid md:grid-cols-3 gap-6">
+        @foreach($testimonials->take(3) as $item)
+        <div class="rounded-xl border bg-white p-8">
+          <div class="mb-3 text-amber-400">★★★★★</div>
+          <p class="mb-6 text-lg">"{{ $item->quote }}"</p>
+          <p class="font-semibold">{{ $item->author }}</p>
+          <p class="text-sm opacity-70">{{ $item->role }}</p>
+        </div>
+        @endforeach
+      </div>
+    @endif
+  @endif
+</div></section>
+@endif`
+}
+
 export function generateBladePartials(payload: SiteExportPayload): Record<string, string> {
   return {
     'resources/views/partials/nav.blade.php': navPartial(payload),
     'resources/views/partials/footer.blade.php': footerPartial(),
+    'resources/views/partials/testimonials.blade.php': testimonialsPartial(),
+    ...generateHeroPartials(payload),
     ...generateBladeSectionPartials(payload),
   }
 }
 
 export function generateBladeView(payload: SiteExportPayload): string {
-  const { accent, templateId, layout } = payload
-  const heroCta = hasBookingFeature(payload.content) ? 'book' : 'contact'
-  const heroSection = buildBladeHeroHtml({
-    templateId,
-    heroLayout: layout.heroLayout,
-    heroImage: 'hero',
-    businessName: payload.content.businessName,
-    tagline: payload.content.tagline,
-    heroSubtext: payload.content.heroSubtext,
-    ctaText: payload.content.ctaText,
-    ctaHref: heroCta,
-  })
+  const { accent } = payload
   const roomsTeaser = hasBookingFeature(payload.content)
     ? `
 @if($settings->page_visibility['rooms'] ?? false)
@@ -100,7 +183,7 @@ export function generateBladeView(payload: SiteExportPayload): string {
   return `@extends('layouts.site')
 
 @section('content')
-${heroSection}
+@include('partials.hero')
 ${roomsTeaser}
 
 @if(($settings->section_visibility['stats'] ?? false) && $stats->isNotEmpty())
@@ -142,11 +225,7 @@ ${roomsTeaser}
 </div></section>
 @endif
 
-@if($settings->section_visibility['testimonials'] ?? false)
-<section class="py-20"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold text-center mb-4">{{ $settings->testimonials_section_title }}</h2><p class="text-center text-slate-600 mb-12">What our clients say about us</p>
-  @if($testimonials->isNotEmpty())<div class="grid md:grid-cols-3 gap-6">@foreach($testimonials->take(3) as $item)<div class="rounded-xl border bg-white p-8"><p class="text-lg mb-6">"{{ $item->quote }}"</p><p class="font-semibold">{{ $item->author }}</p><p class="text-sm opacity-70">{{ $item->role }}</p></div>@endforeach</div>@else<p class="text-center text-slate-500">Client reviews</p>@endif
-</div></section>
-@endif
+@include('partials.testimonials')
 
 @if($settings->page_visibility['about'] ?? false)
 <section class="bg-slate-50 py-20"><div class="max-w-6xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center"><div><h2 class="text-3xl font-bold mb-6">{{ $settings->about_title }}</h2><p class="text-lg leading-relaxed text-slate-600 mb-6">{{ Str::limit($settings->about, 280) }}</p>@if($settings->mission_statement)<p class="border-l-4 pl-6 italic text-slate-600" style="border-color:${accent}">{{ $settings->mission_statement }}</p>@endif<a href="{{ route('about') }}" class="inline-block mt-8 text-sm font-semibold" style="color:${accent}">Learn more about us →</a></div>@if($settings->about_image)<img src="{{ \\App\\Support\\PublicAsset::url($settings->about_image) }}" class="rounded-2xl w-full" alt="" />@endif</div></section>
@@ -212,7 +291,7 @@ export function generateGalleryView(): string {
 export function generateReviewsView(): string {
   return `@extends('layouts.site')
 @section('content')
-<section class="bg-slate-50 py-20"><div class="max-w-6xl mx-auto px-6"><h1 class="text-4xl font-bold text-center mb-4">{{ $settings->testimonials_section_title }}</h1><p class="text-center text-slate-600 mb-12">What our clients say about us</p>@if($testimonials->isNotEmpty())<div class="grid md:grid-cols-3 gap-6">@foreach($testimonials as $t)<div class="border rounded-xl p-6"><div class="text-amber-400 mb-3">★★★★★</div><p class="italic mb-4 text-lg">"{{ $t->quote }}"</p><p class="font-semibold">{{ $t->author }}</p><p class="text-sm opacity-70">{{ $t->role }}</p></div>@endforeach</div>@endif</div></section>
+@include('partials.testimonials')
 @endsection`
 }
 
@@ -287,8 +366,7 @@ export function generateSiteLayout(payload: SiteExportPayload): string {
   const title = payload.content.businessName || 'My Website'
   const c = payload.content
   const seoBlock = c.seoEnabled
-    ? `@php $settings = $settings ?? \\App\\Models\\SiteSetting::current(); @endphp
-  @if($settings->seo_enabled)
+    ? `@if(($settings->seo_enabled ?? false))
   <meta name="description" content="{{ $settings->seo_description }}" />
   <meta name="robots" content="index, follow, max-image-preview:large" />
   @if($settings->seo_keywords)<meta name="keywords" content="{{ $settings->seo_keywords }}" />@endif
@@ -309,10 +387,15 @@ export function generateSiteLayout(payload: SiteExportPayload): string {
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>@yield('title', '${title}')</title>
+  @php
+    $settings = $settings ?? \\App\\Models\\SiteSetting::current();
+    $layoutShell = \\App\\Support\\LayoutVariants::shellClass($settings->layout_variant_id ?? null);
+  @endphp
   ${seoBlock}
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>${LAYOUT_SHELL_CSS}</style>
 </head>
-<body class="bg-white text-slate-800">
+<body class="bg-white text-slate-800 {{ $layoutShell }}">
   @include('partials.nav')
   @yield('content')
   @include('partials.footer')

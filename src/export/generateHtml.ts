@@ -217,7 +217,7 @@ export function generateHtml(
     .join('\n')
 
   const html = `${tailwindHead(content.businessName)}
-<body class="bg-white text-slate-800">
+<body class="bg-white text-slate-800 ${layout.shellClass}">
 ${body}
 </body></html>`
 

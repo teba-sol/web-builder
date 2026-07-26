@@ -1,6 +1,10 @@
 import { defaultContent } from '../data/defaults'
 import { getDefaultColorSchemeId } from '../data/colorSchemes'
-import { getDefaultLayoutVariantId, isValidLayoutVariant } from '../data/layoutVariants'
+import {
+  getDefaultLayoutVariantId,
+  isValidLayoutVariant,
+  normalizeLayoutVariantId,
+} from '../data/layoutVariants'
 import type { SiteContent, TemplateId } from '../types'
 import { migrateContent } from './migrateContent'
 
@@ -19,10 +23,11 @@ export function loadSavedSite(): SavedSite | null {
     if (!raw) return null
     const parsed = JSON.parse(raw) as Partial<SavedSite>
     if (parsed.templateId && parsed.content) {
-      const layoutVariantId = parsed.layoutVariantId
-        && isValidLayoutVariant(parsed.templateId, parsed.layoutVariantId)
-        ? parsed.layoutVariantId
-        : getDefaultLayoutVariantId(parsed.templateId)
+      // Normalize legacy ids (e.g. "bold" → "luxury") so every template has classic / modern / luxury
+      const layoutVariantId =
+        parsed.layoutVariantId && isValidLayoutVariant(parsed.templateId, parsed.layoutVariantId)
+          ? normalizeLayoutVariantId(parsed.layoutVariantId)
+          : getDefaultLayoutVariantId(parsed.templateId)
       return {
         templateId: parsed.templateId,
         content: migrateContent(parsed.content, parsed.templateId),

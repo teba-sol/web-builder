@@ -131,7 +131,7 @@ export function RichTemplateLayout({
   }
 
   return (
-    <div className={`min-h-screen tpl-${variant} ${t.page}`}>
+    <div className={`min-h-screen tpl-${variant} ${layout.shellClass} ${t.page}`}>
       {order.map((id) => {
         const node = sections[id]
         if (node === null) return null

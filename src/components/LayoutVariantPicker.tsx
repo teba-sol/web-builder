@@ -7,14 +7,23 @@ interface Props {
   onChange: (variantId: string) => void
 }
 
+const FEEL_LABELS: Record<string, string> = {
+  classic: 'Timeless · balanced',
+  modern: 'Clean · geometric',
+  luxury: 'Premium · spacious',
+}
+
 export function LayoutVariantPicker({ templateId, activeVariantId, onChange }: Props) {
   const variants = getLayoutVariants(templateId)
 
   return (
     <div>
-      <h3 className="mb-3 text-sm font-bold uppercase tracking-wider text-slate-500">
-        Layout Style
+      <h3 className="mb-1 text-sm font-bold uppercase tracking-wider text-slate-500">
+        Look & Feel
       </h3>
+      <p className="mb-3 text-xs text-slate-400">
+        Changes presentation only — same content, theme colors, and template.
+      </p>
       <div className="grid gap-3">
         {variants.map((variant) => {
           const active = variant.id === activeVariantId
@@ -37,13 +46,13 @@ export function LayoutVariantPicker({ templateId, activeVariantId, onChange }: P
                   <p className="mt-1 text-xs text-slate-500">{variant.description}</p>
                   <div className="mt-2 flex flex-wrap gap-1.5">
                     <span className="rounded bg-slate-100 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-slate-500">
+                      {FEEL_LABELS[variant.id] ?? variant.id}
+                    </span>
+                    <span className="rounded bg-slate-100 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-slate-500">
                       {variant.heroLayout} hero
                     </span>
                     <span className="rounded bg-slate-100 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-slate-500">
                       {variant.testimonialLayout} reviews
-                    </span>
-                    <span className="rounded bg-slate-100 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-slate-500">
-                      {variant.contactLayout} contact
                     </span>
                   </div>
                 </div>
