@@ -1,3 +1,8 @@
+import {
+  LAYOUT_VARIANT_IDS,
+  LAYOUT_VARIANT_PRESETS,
+  type LayoutVariantId,
+} from '../../data/layoutVariants'
 import type { SiteContent, TemplateId } from '../../types'
 import type { ImageAsset } from '../imageUtils'
 import { buildRobotsTxt, buildSitemapXml, collectLaravelSitemapPaths } from '../seoExport'
@@ -206,6 +211,88 @@ function buildSettingsRecord(payload: SiteExportPayload): Record<string, unknown
   }
 }
 
+function generateLayoutVariantsPhp(): string {
+  const optionsPhp = LAYOUT_VARIANT_IDS.map((id: LayoutVariantId) => {
+    const p = LAYOUT_VARIANT_PRESETS[id]
+    return `        '${id}' => [
+            'name' => '${phpStr(p.name)}',
+            'description' => '${phpStr(p.description)}',
+            'hero' => '${p.heroLayout}',
+            'testimonials' => '${p.testimonialLayout}',
+            'contact' => '${p.contactLayout}',
+            'shell' => '${p.shellClass}',
+        ],`
+  }).join('\n')
+
+  const selectLabels: Record<LayoutVariantId, string> = {
+    classic: 'Classic — timeless & balanced',
+    modern: 'Modern — clean & geometric',
+    luxury: 'Luxury — premium & spacious',
+  }
+  const selectPhp = LAYOUT_VARIANT_IDS.map(
+    (id: LayoutVariantId) => `            '${id}' => '${phpStr(selectLabels[id])}',`,
+  ).join('\n')
+
+  return `<?php
+
+namespace App\\Support;
+
+/**
+ * Look-and-feel variants shipped with every export.
+ * Admins can switch between classic / modern / luxury without changing content or colors.
+ */
+class LayoutVariants
+{
+    public const OPTIONS = [
+${optionsPhp}
+    ];
+
+    public static function normalize(?string $id): string
+    {
+        if ($id === 'bold' || $id === 'lexury' || $id === 'luxe') {
+            return 'luxury';
+        }
+
+        return array_key_exists((string) $id, self::OPTIONS) ? (string) $id : 'classic';
+    }
+
+    /** @return array{name: string, description: string, hero: string, testimonials: string, contact: string, shell: string} */
+    public static function get(?string $id): array
+    {
+        return self::OPTIONS[self::normalize($id)];
+    }
+
+    /** Options for Filament select fields. */
+    public static function selectOptions(): array
+    {
+        return [
+${selectPhp}
+        ];
+    }
+
+    public static function shellClass(?string $id): string
+    {
+        return self::get($id)['shell'];
+    }
+
+    public static function heroLayout(?string $id): string
+    {
+        return self::get($id)['hero'];
+    }
+
+    public static function testimonialLayout(?string $id): string
+    {
+        return self::get($id)['testimonials'];
+    }
+
+    public static function contactLayout(?string $id): string
+    {
+        return self::get($id)['contact'];
+    }
+}
+`
+}
+
 function generateSiteSettingModel(payload: SiteExportPayload): string {
   const defaults = jsonForPhp(buildSettingsRecord(payload))
 
@@ -213,6 +300,7 @@ function generateSiteSettingModel(payload: SiteExportPayload): string {
 
 namespace App\\Models;
 
+use App\\Support\\LayoutVariants;
 use Illuminate\\Database\\Eloquent\\Model;
 
 class SiteSetting extends Model
@@ -249,6 +337,32 @@ class SiteSetting extends Model
         }
 
         return static::create(json_decode('${defaults}', true));
+    }
+
+    /** Active look-and-feel id: classic | modern | luxury */
+    public function layoutVariantId(): string
+    {
+        return LayoutVariants::normalize($this->layout_variant_id);
+    }
+
+    public function layoutShellClass(): string
+    {
+        return LayoutVariants::shellClass($this->layout_variant_id);
+    }
+
+    public function heroLayout(): string
+    {
+        return LayoutVariants::heroLayout($this->layout_variant_id);
+    }
+
+    public function testimonialLayout(): string
+    {
+        return LayoutVariants::testimonialLayout($this->layout_variant_id);
+    }
+
+    public function contactLayout(): string
+    {
+        return LayoutVariants::contactLayout($this->layout_variant_id);
     }
 }
 `
@@ -617,6 +731,8 @@ class User extends Authenticatable implements FilamentUser
 `,
 
     'app/Models/SiteSetting.php': generateSiteSettingModel(payload),
+
+    'app/Support/LayoutVariants.php': generateLayoutVariantsPhp(),
 
     'app/Models/ContactMessage.php': `<?php
 
@@ -1187,6 +1303,7 @@ This folder is a **deploy-ready** Laravel 11 + Filament 3 admin panel, pre-fille
 
 - **Public website** at \`/\` — dynamic Blade template powered by your database
 - **Filament admin** at \`/admin\` — full styled dashboard to manage content
+- **3 look-and-feel variants** — Classic, Modern, and Luxury ship with every export; switch anytime under **Admin → Site Settings → Look & Feel**
 - **MySQL by default** — configure credentials in \`.env\` before migrate/seed
 
 ## Quick start — browser setup (no terminal)
@@ -1237,6 +1354,16 @@ Set these in your \`.env\` before running migrate/seed:
 - **ADMIN_PASSWORD:** \`password\`
 
 Change \`ADMIN_PASSWORD\` immediately after first login, then re-run **Migrate & Seed** from Site Doctor (or \`php artisan db:seed\`).
+
+## Look & Feel (layout variants)
+
+Every export includes **Classic**, **Modern**, and **Luxury** presentation styles.
+
+1. Open **Admin → Site Settings → General**
+2. Change **Look & Feel**
+3. Save — the public site updates immediately (hero layout, review layout, spacing/radius)
+
+This does **not** change your content or color theme. The style chosen in the WebBuilder export is the default seed value.
 
 ## Filament resources (based on your template)
 

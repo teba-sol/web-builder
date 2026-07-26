@@ -20,7 +20,7 @@ export function TemplateCard({ template }: Props) {
             {categoryLabel}
           </span>
           <span className="inline-block rounded-full bg-white/20 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
-            {layoutCount} layouts
+            {layoutCount} styles
           </span>
           {template.premium && (
             <span className="inline-block rounded-full bg-amber-400/90 px-3 py-1 text-xs font-bold text-amber-950 backdrop-blur-sm">
