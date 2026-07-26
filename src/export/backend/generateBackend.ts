@@ -413,7 +413,12 @@ APP_URL=http://localhost:8000
 LOG_CHANNEL=stack
 LOG_LEVEL=debug
 
-DB_CONNECTION=sqlite
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=laravel
+DB_USERNAME=root
+DB_PASSWORD=
 
 CACHE_STORE=file
 SESSION_DRIVER=file
@@ -822,13 +827,8 @@ return [
     'config/database.php': `<?php
 
 return [
-    'default' => env('DB_CONNECTION', 'sqlite'),
+    'default' => env('DB_CONNECTION', 'mysql'),
     'connections' => [
-        'sqlite' => [
-            'driver' => 'sqlite',
-            'database' => database_path('database.sqlite'),
-            'prefix' => '',
-        ],
         'mysql' => [
             'driver' => 'mysql',
             'host' => env('DB_HOST', '127.0.0.1'),
@@ -838,6 +838,13 @@ return [
             'password' => env('DB_PASSWORD', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'strict' => true,
+            'engine' => null,
+        ],
+        'sqlite' => [
+            'driver' => 'sqlite',
+            'database' => env('DB_DATABASE', database_path('database.sqlite')),
             'prefix' => '',
         ],
     ],
@@ -1147,7 +1154,13 @@ php artisan key:generate --force
 
 echo "==> Creating required directories..."
 mkdir -p bootstrap/cache storage/framework/{cache/data,sessions,views} database
-touch database/database.sqlite
+
+echo ""
+echo "Make sure MySQL is running and credentials in .env are correct:"
+echo "  DB_HOST, DB_PORT, DB_DATABASE, DB_USERNAME, DB_PASSWORD"
+echo "Create the database if it does not exist, e.g.:"
+echo "  mysql -u root -e \\"CREATE DATABASE IF NOT EXISTS laravel CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;\\""
+echo ""
 
 echo "==> Running migrations & seeding your content..."
 php artisan migrate --seed --force
@@ -1174,17 +1187,22 @@ This folder is a **deploy-ready** Laravel 11 + Filament 3 admin panel, pre-fille
 
 - **Public website** at \`/\` — dynamic Blade template powered by your database
 - **Filament admin** at \`/admin\` — full styled dashboard to manage content
-- **SQLite by default** — zero-config local setup (switch to MySQL in \`.env\` for production)
+- **MySQL by default** — configure credentials in \`.env\` before migrate/seed
 
 ## Quick start — browser setup (no terminal)
 
 1. Upload the \`backend/\` folder to your host
 2. Run \`composer install\` once (or upload vendor folder)
-3. Copy \`.env.example\` to \`.env\`
-4. Visit **\`/doctor?token=YOUR_DOCTOR_TOKEN\`** (token is in \`.env\` as \`DOCTOR_TOKEN\`)
-5. Click **Run All Recommended Steps**
+3. Copy \`.env.example\` to \`.env\` and set MySQL credentials (\`DB_*\`)
+4. Create the MySQL database named in \`DB_DATABASE\`
+5. Visit **\`/doctor?token=YOUR_DOCTOR_TOKEN\`** (token is in \`.env\` as \`DOCTOR_TOKEN\`)
+6. Click **Run All Recommended Steps**
 
 ## Quick start — terminal
+
+1. Ensure MySQL is running and create a database (default name: \`laravel\`)
+2. Edit \`.env\` (created by setup) with your \`DB_*\` credentials if needed
+3. Run:
 
 \`\`\`bash
 cd backend
@@ -1199,9 +1217,9 @@ php artisan serve
 cd backend
 composer install
 cp .env.example .env
+# Edit .env: set DB_HOST, DB_DATABASE, DB_USERNAME, DB_PASSWORD
 php artisan key:generate
 mkdir -p bootstrap/cache storage/framework/{cache/data,sessions,views}
-touch database/database.sqlite
 php artisan migrate --seed
 php artisan storage:link
 php artisan filament:assets   # required — publishes Filament CSS/JS
@@ -1253,7 +1271,7 @@ Only free units can be booked for overlapping dates. Manage inventory and stays 
 ## Deploying to production
 
 1. Set \`APP_ENV=production\` and \`APP_DEBUG=false\` in \`.env\`
-2. Configure MySQL or PostgreSQL in \`.env\`
+2. Set production MySQL credentials in \`.env\` (\`DB_HOST\`, \`DB_DATABASE\`, \`DB_USERNAME\`, \`DB_PASSWORD\`)
 3. Run \`php artisan migrate --seed\`
 4. Run \`php artisan storage:link\`
 5. Run \`php artisan filament:assets\`
