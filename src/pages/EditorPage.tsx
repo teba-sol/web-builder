@@ -4,8 +4,9 @@ import { ContentForm } from '../components/ContentForm'
 import { DownloadButton } from '../components/DownloadButton'
 import { useWebsite } from '../context/WebsiteContext'
 import { TemplateRenderer } from '../templates/TemplateRenderer'
-import { templates } from '../data/defaults'
+import { getTemplateDefaults, getTemplateMeta } from '../data/defaults'
 import { isValidTemplateId } from '../data/templateIds'
+import { buildSiteDocument, downloadSiteDocument } from '../siteDocument/io'
 
 export function EditorPage() {
   const { templateId } = useParams<{ templateId: string }>()
@@ -13,7 +14,7 @@ export function EditorPage() {
   const { selectTemplate, templateId: selectedId, content, colorSchemeId, layoutVariantId } = useWebsite()
 
   const id = templateId ?? ''
-  const template = isValidTemplateId(id) ? templates.find((t) => t.id === id) : undefined
+  const template = isValidTemplateId(id) ? getTemplateMeta(id) : undefined
 
   useEffect(() => {
     if (!isValidTemplateId(id)) {
@@ -22,8 +23,13 @@ export function EditorPage() {
     }
     if (selectedId !== id) {
       selectTemplate(id)
+      return
     }
-  }, [id, selectedId, selectTemplate, navigate])
+    const sample = getTemplateDefaults(id)
+    if (!content.businessName?.trim() && sample.businessName?.trim()) {
+      selectTemplate(id)
+    }
+  }, [id, selectedId, content.businessName, selectTemplate, navigate])
 
   if (!template || !isValidTemplateId(id)) return null
 
@@ -33,7 +39,7 @@ export function EditorPage() {
 
   return (
     <div className="flex h-screen flex-col bg-slate-100">
-      <header className="flex shrink-0 items-center justify-between border-b border-slate-200 bg-white px-4 py-3">
+      <header className="relative z-[200] flex shrink-0 items-center justify-between border-b border-slate-200 bg-white px-4 py-3">
         <div className="flex items-center gap-4">
           <Link to="/" className="text-sm font-medium text-slate-500 hover:text-slate-800 transition-colors">
             ← Back
@@ -54,6 +60,13 @@ export function EditorPage() {
           >
             Preview
           </Link>
+          <button
+            type="button"
+            onClick={() => downloadSiteDocument(buildSiteDocument(id, content, colorSchemeId, layoutVariantId))}
+            className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors"
+          >
+            Save site JSON
+          </button>
           <DownloadButton templateId={id} content={content} colorSchemeId={colorSchemeId} layoutVariantId={layoutVariantId} />
         </div>
       </header>
@@ -83,7 +96,7 @@ export function EditorPage() {
                 ⛶
               </button>
             </div>
-            <div className="flex-1 overflow-y-auto">
+            <div className="editor-site-preview relative min-h-0 flex-1 overflow-y-auto">
               <TemplateRenderer templateId={id} content={content} basePath={`/editor/${id}`} colorSchemeId={colorSchemeId} layoutVariantId={layoutVariantId} />
             </div>
           </div>

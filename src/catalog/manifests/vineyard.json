@@ -1,0 +1,571 @@
+{
+  "schemaVersion": 1,
+  "id": "vineyard",
+  "name": "Ch\u00e2teau Vine",
+  "description": "Old-world wine estate \u2014 burgundy depths, olive groves, and tasting-room elegance.",
+  "category": "food",
+  "previewGradient": "from-red-950 via-rose-900 to-lime-900",
+  "accentColor": "#881337",
+  "sortOrder": 14,
+  "features": [
+    "cms"
+  ],
+  "pages": {
+    "about": true,
+    "services": true,
+    "portfolio": true,
+    "blog": true,
+    "news": true,
+    "gallery": true,
+    "contact": true,
+    "rooms": false
+  },
+  "homeSections": [
+    "nav",
+    "hero",
+    "stats",
+    "rooms-teaser",
+    "services-teaser",
+    "portfolio-teaser",
+    "blog-teaser",
+    "news-teaser",
+    "testimonials",
+    "about-teaser",
+    "faq",
+    "contact",
+    "explore",
+    "footer"
+  ],
+  "sectionOrder": [
+    "nav",
+    "hero",
+    "stats",
+    "about",
+    "showcase",
+    "services",
+    "gallery",
+    "team",
+    "testimonials",
+    "blog",
+    "steps",
+    "faq",
+    "cta",
+    "contact",
+    "footer"
+  ],
+  "theme": {
+    "page": "bg-[#faf8f5] text-stone-800",
+    "nav": "sticky top-0 z-50 border-b border-stone-200 bg-[#faf8f5]/95 backdrop-blur-sm",
+    "navLink": "text-stone-600 hover:text-rose-900 font-medium tracking-wide",
+    "navCta": "rounded-sm bg-rose-900 px-6 py-2.5 text-sm font-semibold text-amber-50 uppercase tracking-wider hover:bg-rose-950",
+    "hero": "relative min-h-[80vh] flex items-center text-amber-50",
+    "heroBadge": "text-amber-200/90 uppercase tracking-[0.45em] text-xs",
+    "heroTitle": "text-5xl md:text-6xl font-serif font-medium leading-tight",
+    "heroText": "text-amber-100/80 text-lg max-w-xl font-light mt-4 leading-relaxed",
+    "heroCta": "rounded-sm bg-amber-600 px-8 py-3 font-semibold text-rose-950 uppercase tracking-wider text-sm hover:bg-amber-500",
+    "stats": "bg-rose-950 text-amber-100 py-16",
+    "statValue": "text-4xl font-serif text-amber-300",
+    "statLabel": "text-rose-300/70 text-xs uppercase tracking-widest mt-1",
+    "section": "py-20",
+    "sectionAlt": "bg-white py-20 border-y border-stone-200",
+    "sectionTitle": "text-4xl font-serif text-rose-950",
+    "sectionSubtitle": "text-stone-500 mt-2 italic font-serif",
+    "card": "rounded-lg border border-stone-200 bg-white p-8 hover:border-rose-200 transition-colors",
+    "cardTitle": "text-xl font-serif text-rose-900",
+    "cardText": "text-stone-600 leading-relaxed",
+    "aboutImage": "rounded-lg shadow-2xl shadow-rose-900/20",
+    "mission": "border-l-4 border-rose-900 pl-6 italic text-rose-900/80 font-serif text-lg",
+    "stepNum": "font-serif text-2xl text-rose-800 font-bold",
+    "gallery": "rounded-lg w-full aspect-[4/3] object-cover shadow-md",
+    "showcase": "bg-rose-950/5 py-20",
+    "showcaseCard": "rounded-lg border border-stone-200 bg-white overflow-hidden hover:shadow-xl transition-shadow group",
+    "showcaseImage": "w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform",
+    "showcasePrice": "text-rose-900 font-serif font-semibold",
+    "showcaseTag": "text-xs uppercase tracking-wider text-lime-800",
+    "testimonial": "rounded-lg bg-white border-l-4 border-rose-900 p-8 shadow-sm italic font-serif",
+    "faq": "border-b border-stone-200 py-6",
+    "teamCard": "text-center",
+    "ctaBanner": "bg-rose-950 text-amber-100 py-20 text-center border-t-4 border-amber-600",
+    "ctaBannerBtn": "rounded-sm bg-amber-600 px-8 py-3 font-semibold uppercase tracking-wider text-rose-950 hover:bg-amber-500",
+    "contact": "bg-stone-900 text-amber-50 py-20",
+    "contactLabel": "text-amber-400 text-xs uppercase tracking-widest",
+    "footer": "border-t border-stone-200 py-8 text-center text-sm text-stone-500 bg-[#faf8f5]"
+  },
+  "colorSchemes": [
+    {
+      "id": "burgundy",
+      "name": "Burgundy Estate",
+      "swatches": [
+        "#4c0519",
+        "#881337",
+        "#faf8f5"
+      ],
+      "overrides": {}
+    },
+    {
+      "id": "champagne",
+      "name": "Champagne Harvest",
+      "swatches": [
+        "#78350f",
+        "#ca8a04",
+        "#fffbeb"
+      ],
+      "overrides": {
+        "navCta": "rounded-sm bg-amber-700 px-6 py-2.5 text-white uppercase tracking-wider hover:bg-amber-800",
+        "heroCta": "rounded-sm bg-amber-700 px-8 py-3 text-white hover:bg-amber-800",
+        "stats": "bg-amber-900 text-amber-100 py-16",
+        "statValue": "text-amber-300",
+        "ctaBanner": "bg-amber-950 text-amber-100 border-t-4 border-amber-500",
+        "ctaBannerBtn": "bg-amber-500 text-amber-950 hover:bg-amber-400"
+      }
+    },
+    {
+      "id": "olive",
+      "name": "Olive Grove",
+      "swatches": [
+        "#365314",
+        "#65a30d",
+        "#f7fee7"
+      ],
+      "overrides": {
+        "navCta": "rounded-sm bg-lime-800 px-6 py-2.5 text-white hover:bg-lime-900",
+        "heroCta": "rounded-sm bg-lime-700 px-8 py-3 text-white hover:bg-lime-800",
+        "stats": "bg-lime-950 text-lime-100 py-16",
+        "statValue": "text-lime-300",
+        "sectionTitle": "text-lime-950",
+        "ctaBanner": "bg-lime-950 text-lime-100 border-t-4 border-lime-600",
+        "ctaBannerBtn": "bg-lime-600 text-lime-950 hover:bg-lime-500"
+      }
+    }
+  ],
+  "defaultColorSchemeId": "burgundy",
+  "defaultLayoutVariantId": "classic",
+  "sectionVariants": {
+    "faq": "cards",
+    "explore": "magazine",
+    "contactShell": "vineyard-reserve",
+    "contactForm": "elegant-serif",
+    "exploreTitle": "Estate",
+    "exploreSubtitle": "Wines, tastings, events, and visits",
+    "exploreLinkLabel": "Taste"
+  },
+  "showcase": {
+    "sectionTitle": "Wine & Tastings",
+    "sectionSubtitle": "Estate-grown varietals and guided tastings in our century-old cellar",
+    "navLabel": "Tastings",
+    "itemLabel": "Experience",
+    "showPrice": true,
+    "priceLabel": "Per guest",
+    "showTag": true,
+    "tagLabel": "Duration"
+  },
+  "defaultShowcase": [
+    {
+      "title": "Estate Reserve Cabernet",
+      "description": "2019 single-vineyard cabernet \u2014 dark fruit, cedar, and a long silky finish.",
+      "image": "https://images.unsplash.com/photo-1510812431400-5740104b0a3a?w=600&q=80",
+      "price": "$85",
+      "tag": "Bottle",
+      "link": "contact"
+    },
+    {
+      "title": "Classic Tasting Flight",
+      "description": "Five estate wines with artisan cheese board in our stone tasting room.",
+      "image": "https://images.unsplash.com/photo-1553361371-9b22f78e2b35?w=600&q=80",
+      "price": "$45",
+      "tag": "45 min",
+      "link": "contact"
+    },
+    {
+      "title": "Vineyard Tour & Lunch",
+      "description": "Guided walk through the vines, cellar visit, and farm-to-table lunch.",
+      "image": "https://images.unsplash.com/photo-1506377247377-5ecb8f951b1e?w=600&q=80",
+      "price": "$95",
+      "tag": "Half day",
+      "link": "contact"
+    },
+    {
+      "title": "Private Barrel Tasting",
+      "description": "Exclusive access to barrel samples with our head winemaker.",
+      "image": "https://images.unsplash.com/photo-1506377585624-bedcbb027afc?w=600&q=80",
+      "price": "$150",
+      "tag": "Private",
+      "link": "contact"
+    },
+    {
+      "title": "Ros\u00e9 Collection",
+      "description": "Three ros\u00e9s from our coastal block \u2014 strawberry, citrus, and mineral notes.",
+      "image": "https://images.unsplash.com/photo-1510812431400-5740104b0a3a?w=600&q=80",
+      "price": "$38",
+      "tag": "Flight",
+      "link": "contact"
+    },
+    {
+      "title": "Harvest Celebration",
+      "description": "Annual harvest dinner under the oaks \u2014 live music and library wine pours.",
+      "image": "https://images.unsplash.com/photo-1474722883778-792e7990302f?w=600&q=80",
+      "price": "$175",
+      "tag": "Event",
+      "link": "contact"
+    }
+  ],
+  "navShell": "vineyard",
+  "contactFields": [
+    {
+      "key": "email",
+      "label": "Tasting Room Email",
+      "placeholder": "tasting@chateauvine.com"
+    },
+    {
+      "key": "phone",
+      "label": "Phone",
+      "placeholder": "(707) 555-0192"
+    },
+    {
+      "key": "address",
+      "label": "Estate Address",
+      "placeholder": "1200 Silverado Trail, Napa"
+    },
+    {
+      "key": "hours",
+      "label": "Tasting Hours",
+      "placeholder": "Thu\u2013Mon 11am\u20135pm"
+    },
+    {
+      "key": "reservationEmail",
+      "label": "Event Inquiries",
+      "placeholder": "events@chateauvine.com"
+    }
+  ],
+  "servicesLabel": "Wine Programs",
+  "pageLayouts": {
+    "blog": "minimal",
+    "blogPost": "split",
+    "news": "timeline",
+    "newsPost": "press",
+    "gallery": "rows",
+    "portfolio": "case-study"
+  },
+  "hero": {
+    "overlay": true,
+    "overlayGradient": "bg-gradient-to-r from-rose-950/90 via-rose-900/50 to-transparent",
+    "splitColumns": false,
+    "badge": "name",
+    "grayscaleImage": false
+  },
+  "defaults": {
+    "businessName": "Ch\u00e2teau Vine",
+    "tagline": "Wine is sunlight held together by water",
+    "heroSubtext": "A family estate in Napa Valley since 1987 \u2014 estate-grown wines, ancient oaks, and tastings in our stone cellar.",
+    "heroImage": "https://images.unsplash.com/photo-1506377247377-5ecb8f951b1e?w=1200&q=80",
+    "aboutTitle": "The Estate",
+    "about": "Three generations of the Vine family have tended these hills. Our 120 acres produce cabernet, merlot, and ros\u00e9 of remarkable character \u2014 guided by sustainable farming and patience in the cellar.",
+    "aboutImage": "https://images.unsplash.com/photo-1506377585624-bedcbb027afc?w=800&q=80",
+    "missionStatement": "Great wine is grown, not manufactured.",
+    "pageVisibility": {
+      "about": true,
+      "services": true,
+      "portfolio": true,
+      "blog": true,
+      "news": true,
+      "gallery": true,
+      "contact": true,
+      "rooms": false
+    },
+    "sectionVisibility": {
+      "stats": true,
+      "team": true,
+      "steps": true,
+      "faq": true,
+      "cta": true,
+      "testimonials": true,
+      "pricing": false
+    },
+    "stats": [
+      {
+        "value": "120",
+        "label": "Estate Acres"
+      },
+      {
+        "value": "1987",
+        "label": "Founded"
+      },
+      {
+        "value": "6",
+        "label": "Wine Varietals"
+      },
+      {
+        "value": "12k",
+        "label": "Cases Annually"
+      }
+    ],
+    "servicesSectionTitle": "Visit Us",
+    "servicesSectionSubtitle": "Tastings, tours, and celebrations among the vines",
+    "services": [
+      {
+        "title": "Tasting Room",
+        "description": "Walk-in and reserved flights in our historic stone cellar."
+      },
+      {
+        "title": "Vineyard Tours",
+        "description": "Guided walks through the vines with our viticulturist."
+      },
+      {
+        "title": "Wine Club",
+        "description": "Quarterly shipments and members-only barrel tastings."
+      },
+      {
+        "title": "Private Events",
+        "description": "Weddings and corporate gatherings under the century oaks."
+      }
+    ],
+    "stepsSectionTitle": "How It Works",
+    "steps": [
+      {
+        "title": "Consultation",
+        "description": "We learn about your goals and challenges in a discovery session."
+      },
+      {
+        "title": "Strategy",
+        "description": "Our team crafts a tailored plan designed for your success."
+      },
+      {
+        "title": "Execution",
+        "description": "We deliver with precision, keeping you informed every step."
+      },
+      {
+        "title": "Growth",
+        "description": "We measure results and optimize for continuous improvement."
+      }
+    ],
+    "showcaseSectionTitle": "Wine & Tastings",
+    "showcaseSectionSubtitle": "Estate-grown varietals and guided tastings in our century-old cellar",
+    "showcaseItems": [
+      {
+        "title": "Estate Reserve Cabernet",
+        "description": "2019 single-vineyard cabernet \u2014 dark fruit, cedar, and a long silky finish.",
+        "image": "https://images.unsplash.com/photo-1510812431400-5740104b0a3a?w=600&q=80",
+        "price": "$85",
+        "tag": "Bottle",
+        "link": "contact"
+      },
+      {
+        "title": "Classic Tasting Flight",
+        "description": "Five estate wines with artisan cheese board in our stone tasting room.",
+        "image": "https://images.unsplash.com/photo-1553361371-9b22f78e2b35?w=600&q=80",
+        "price": "$45",
+        "tag": "45 min",
+        "link": "contact"
+      },
+      {
+        "title": "Vineyard Tour & Lunch",
+        "description": "Guided walk through the vines, cellar visit, and farm-to-table lunch.",
+        "image": "https://images.unsplash.com/photo-1506377247377-5ecb8f951b1e?w=600&q=80",
+        "price": "$95",
+        "tag": "Half day",
+        "link": "contact"
+      },
+      {
+        "title": "Private Barrel Tasting",
+        "description": "Exclusive access to barrel samples with our head winemaker.",
+        "image": "https://images.unsplash.com/photo-1506377585624-bedcbb027afc?w=600&q=80",
+        "price": "$150",
+        "tag": "Private",
+        "link": "contact"
+      },
+      {
+        "title": "Ros\u00e9 Collection",
+        "description": "Three ros\u00e9s from our coastal block \u2014 strawberry, citrus, and mineral notes.",
+        "image": "https://images.unsplash.com/photo-1510812431400-5740104b0a3a?w=600&q=80",
+        "price": "$38",
+        "tag": "Flight",
+        "link": "contact"
+      },
+      {
+        "title": "Harvest Celebration",
+        "description": "Annual harvest dinner under the oaks \u2014 live music and library wine pours.",
+        "image": "https://images.unsplash.com/photo-1474722883778-792e7990302f?w=600&q=80",
+        "price": "$175",
+        "tag": "Event",
+        "link": "contact"
+      }
+    ],
+    "gallerySectionTitle": "Among the Vines",
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1506377247377-5ecb8f951b1e?w=600&q=80",
+      "https://images.unsplash.com/photo-1510812431400-5740104b0a3a?w=600&q=80",
+      "https://images.unsplash.com/photo-1474722883778-792e7990302f?w=600&q=80"
+    ],
+    "testimonialsSectionTitle": "Wine Club Voices",
+    "testimonials": [
+      {
+        "quote": "Outstanding service and incredible results. Highly recommended!",
+        "author": "Sarah Johnson",
+        "role": "CEO, TechStart"
+      },
+      {
+        "quote": "They transformed our business. Professional, creative, and reliable.",
+        "author": "Michael Chen",
+        "role": "Founder, Bloom Co"
+      },
+      {
+        "quote": "The best decision we made this year. Exceeded every expectation.",
+        "author": "Emily Rodriguez",
+        "role": "Director, Apex Group"
+      }
+    ],
+    "faqSectionTitle": "Frequently Asked Questions",
+    "faqs": [
+      {
+        "question": "How do I get started?",
+        "answer": "Simply reach out via our contact form or give us a call. We offer a free initial consultation."
+      },
+      {
+        "question": "What are your pricing options?",
+        "answer": "We offer flexible packages tailored to your needs and budget. Contact us for a custom quote."
+      },
+      {
+        "question": "How long does a typical project take?",
+        "answer": "Timelines vary by scope, but most projects are completed within 2\u20138 weeks."
+      },
+      {
+        "question": "Do you offer ongoing support?",
+        "answer": "Yes! We provide continued support and maintenance to ensure long-term success."
+      }
+    ],
+    "teamSectionTitle": "The Family",
+    "blogSectionTitle": "Latest from Our Blog",
+    "blogSectionSubtitle": "Insights, tips, and updates from our team",
+    "newsSectionTitle": "News & Updates",
+    "newsSectionSubtitle": "Announcements, press releases, and company news",
+    "newsPosts": [
+      {
+        "title": "We Are Expanding to Serve You Better",
+        "slug": "expanding-to-serve-you-better",
+        "excerpt": "New locations, extended hours, and more ways to connect with our team.",
+        "body": "We are thrilled to announce expanded service hours and a new consultation space designed around your comfort and convenience.\n\nThis investment reflects our commitment to accessibility and excellence. Thank you for being part of our journey \u2014 we cannot wait to welcome you.",
+        "image": "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80",
+        "author": "Press Team",
+        "date": "2026-04-01"
+      },
+      {
+        "title": "Award Recognizes Our Commitment to Quality",
+        "slug": "award-quality-commitment",
+        "excerpt": "Industry leaders honored our team for outstanding client satisfaction.",
+        "body": "Receiving this recognition is a testament to the people behind our work \u2014 dedicated professionals who show up every day with care and craft.\n\nWe share this award with every client who trusted us with their goals. Your feedback shapes how we grow and improve.",
+        "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80",
+        "author": "Communications",
+        "date": "2026-03-18"
+      },
+      {
+        "title": "Partnership Opens New Opportunities",
+        "slug": "partnership-new-opportunities",
+        "excerpt": "Strategic collaboration brings enhanced offerings to our community.",
+        "body": "Our new partnership combines complementary strengths to deliver more value, faster turnaround, and broader expertise under one roof.\n\nStay tuned for launch events and early-access opportunities for existing clients.",
+        "image": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80",
+        "author": "Leadership",
+        "date": "2026-02-05"
+      }
+    ],
+    "pricingSectionTitle": "Pricing Plans",
+    "pricing": [
+      {
+        "title": "Starter",
+        "description": "Essential features for individuals and small teams getting started.",
+        "price": "$29/mo",
+        "tag": "Most popular",
+        "featured": false
+      },
+      {
+        "title": "Professional",
+        "description": "Advanced tools, priority support, and integrations for growing businesses.",
+        "price": "$79/mo",
+        "tag": "Best value",
+        "featured": true
+      },
+      {
+        "title": "Enterprise",
+        "description": "Custom solutions, dedicated account management, and SLA guarantees.",
+        "price": "Custom",
+        "tag": "Contact us",
+        "featured": false
+      }
+    ],
+    "roomsSectionTitle": "Rooms & Suites",
+    "roomsSectionSubtitle": "Explore our accommodations and reserve your stay",
+    "bookingSectionTitle": "Book Your Stay",
+    "bookingSectionSubtitle": "Select dates, guests, and your preferred room type",
+    "roomTypes": [],
+    "blogPosts": [
+      {
+        "title": "5 Strategies to Grow Your Business This Year",
+        "slug": "5-strategies-to-grow-your-business",
+        "excerpt": "Practical steps you can take today to build momentum and reach more customers.",
+        "body": "Growing a business takes focus, consistency, and a willingness to adapt. Start by clarifying your core offer, then double down on the channels that already bring results.\n\nReview your customer journey from first touch to repeat purchase. Small improvements at each step compound into meaningful revenue gains. Finally, invest in relationships \u2014 referrals and retention often outperform cold outreach.",
+        "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
+        "author": "Alex Morgan",
+        "date": "2026-03-12"
+      },
+      {
+        "title": "What Clients Are Asking Us Right Now",
+        "slug": "what-clients-are-asking-us",
+        "excerpt": "A quick roundup of the most common questions we hear \u2014 and how we answer them.",
+        "body": "Every season brings a new set of priorities. Lately, clients ask about pricing transparency, faster turnaround times, and how to stand out in crowded markets.\n\nOur advice stays grounded in fundamentals: deliver exceptional value, communicate clearly, and measure what matters. When in doubt, talk to your customers \u2014 their feedback is the best roadmap.",
+        "image": "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80",
+        "author": "Jordan Lee",
+        "date": "2026-02-28"
+      },
+      {
+        "title": "Behind the Scenes: How We Work",
+        "slug": "behind-the-scenes-how-we-work",
+        "excerpt": "Take a peek at our process, tools, and the principles that guide every project.",
+        "body": "We believe great outcomes come from clear goals, collaborative planning, and disciplined execution. Every engagement starts with listening \u2014 understanding where you are and where you want to go.\n\nFrom there we build a tailored plan with milestones you can track. Throughout delivery we keep communication open so there are no surprises, only steady progress toward results you can measure.",
+        "image": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80",
+        "author": "Taylor Brooks",
+        "date": "2026-01-15"
+      }
+    ],
+    "team": [
+      {
+        "name": "Robert Vine",
+        "role": "Founder & Winemaker",
+        "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80"
+      },
+      {
+        "name": "Claire Vine",
+        "role": "Estate Director",
+        "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
+      },
+      {
+        "name": "Daniel Vine",
+        "role": "Viticulturist",
+        "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80"
+      }
+    ],
+    "ctaBannerTitle": "Reserve your tasting",
+    "ctaBannerText": "Weekend slots fill quickly \u2014 book your cellar experience today.",
+    "ctaText": "Book Tasting",
+    "ctaLink": "contact",
+    "seoEnabled": false,
+    "seoTitle": "",
+    "seoDescription": "",
+    "seoKeywords": "",
+    "seoSiteUrl": "",
+    "email": "tasting@chateauvine.com",
+    "phone": "(707) 555-0192",
+    "address": "1200 Silverado Trail, Napa, CA",
+    "hours": "Thu\u2013Mon 11am\u20135pm",
+    "instagram": "",
+    "website": "",
+    "linkedin": "",
+    "whatsapp": "",
+    "supportEmail": "",
+    "reservationEmail": "events@chateauvine.com",
+    "licenseNumber": "",
+    "bookingUrl": "",
+    "contactSectionTitle": "Get in Touch",
+    "contactFormTitle": "Send Us a Message",
+    "contactFormUrl": "",
+    "contactFormButtonText": "Open Contact Form"
+  }
+}

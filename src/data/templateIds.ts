@@ -1,32 +1,7 @@
-import type { TemplateId } from '../types'
+import { isValidTemplateId as catalogHas, listTemplateIds } from '../catalog/catalog'
 
-export const TEMPLATE_IDS: TemplateId[] = [
-  'business',
-  'creative',
-  'restaurant',
-  'saas',
-  'fitness',
-  'boutique',
-  'realtor',
-  'photography',
-  'medical',
-  'lawfirm',
-  'salon',
-  'noir',
-  'terra',
-  'coastal',
-  'vineyard',
-  'arcade',
-  'coffee',
-  'hotel',
-  'guesthouse',
-  'alpine',
-  'ryokan',
-  'desert',
-  'nordic',
-  'jungle',
-]
+export const TEMPLATE_IDS: string[] = listTemplateIds()
 
-export function isValidTemplateId(id: string): id is TemplateId {
-  return TEMPLATE_IDS.includes(id as TemplateId)
+export function isValidTemplateId(id: string): boolean {
+  return catalogHas(id)
 }

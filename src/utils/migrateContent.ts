@@ -18,8 +18,6 @@ function migrateSectionVisibility(raw: Partial<SectionVisibility> & Record<strin
     cta: legacy.cta ?? true,
     testimonials: legacy.testimonials ?? true,
     pricing: legacy.pricing ?? false,
-    terms: legacy.terms ?? false,
-    cookieBanner: legacy.cookieBanner ?? true,
   }
 }
 
@@ -82,9 +80,13 @@ export function migrateContent(raw: Partial<SiteContent>, templateId?: TemplateI
     bookingSectionTitle: raw.bookingSectionTitle || merged.bookingSectionTitle,
     bookingSectionSubtitle: raw.bookingSectionSubtitle || merged.bookingSectionSubtitle,
     roomTypes: raw.roomTypes?.length ? raw.roomTypes : merged.roomTypes,
-    termsSectionTitle: raw.termsSectionTitle || merged.termsSectionTitle,
-    termsContent: raw.termsContent || merged.termsContent,
-    cookieBannerText: raw.cookieBannerText || merged.cookieBannerText,
+    logo: raw.logo ?? merged.logo ?? '',
+    logoShowName: raw.logoShowName ?? merged.logoShowName ?? true,
+    brandPrimary: raw.brandPrimary ?? merged.brandPrimary ?? '',
+    brandSecondary: raw.brandSecondary ?? merged.brandSecondary ?? '',
+    brandAccent: raw.brandAccent ?? merged.brandAccent ?? '',
+    fontHeading: raw.fontHeading ?? merged.fontHeading ?? '',
+    fontBody: raw.fontBody ?? merged.fontBody ?? '',
     seoEnabled: raw.seoEnabled ?? merged.seoEnabled ?? false,
     seoTitle: raw.seoTitle ?? merged.seoTitle ?? '',
     seoDescription: raw.seoDescription ?? merged.seoDescription ?? '',

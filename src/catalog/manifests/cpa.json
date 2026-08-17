@@ -1,0 +1,621 @@
+{
+  "schemaVersion": 1,
+  "id": "cpa",
+  "name": "Hartwell Tax",
+  "description": "Trust-first CPA layout for tax firms, accountants, and financial advisors — services, industries, and consultation-ready.",
+  "category": "finance",
+  "previewGradient": "from-slate-950 via-emerald-950 to-amber-900",
+  "accentColor": "#0f766e",
+  "sortOrder": 24,
+  "features": [
+    "cms"
+  ],
+  "pages": {
+    "about": true,
+    "services": true,
+    "portfolio": true,
+    "blog": true,
+    "news": true,
+    "gallery": true,
+    "contact": true,
+    "rooms": false
+  },
+  "homeSections": [
+    "nav",
+    "hero",
+    "stats",
+    "rooms-teaser",
+    "services-teaser",
+    "portfolio-teaser",
+    "blog-teaser",
+    "news-teaser",
+    "testimonials",
+    "about-teaser",
+    "faq",
+    "contact",
+    "explore",
+    "footer"
+  ],
+  "sectionOrder": [
+    "nav",
+    "hero",
+    "stats",
+    "services",
+    "about",
+    "showcase",
+    "steps",
+    "testimonials",
+    "team",
+    "blog",
+    "gallery",
+    "faq",
+    "cta",
+    "contact",
+    "footer"
+  ],
+  "theme": {
+    "page": "bg-[#f7f4ee] text-slate-800",
+    "nav": "sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur-md",
+    "navLink": "text-slate-600 hover:text-teal-800 font-medium",
+    "navCta": "rounded-sm bg-teal-800 px-5 py-2.5 text-sm font-semibold text-white hover:bg-teal-900",
+    "hero": "bg-gradient-to-br from-slate-950 via-slate-900 to-teal-950 text-white py-24",
+    "heroBadge": "text-teal-300 uppercase tracking-[0.28em] text-xs font-semibold",
+    "heroTitle": "text-4xl md:text-5xl lg:text-6xl font-serif font-bold leading-tight",
+    "heroText": "text-lg text-slate-300 max-w-2xl",
+    "heroCta": "rounded-sm bg-amber-600 px-8 py-3 font-semibold text-white hover:bg-amber-700",
+    "stats": "bg-slate-950 text-white py-16 border-y-4 border-teal-700",
+    "statValue": "text-4xl font-serif font-bold text-amber-400",
+    "statLabel": "text-slate-400 text-sm mt-1 uppercase tracking-wider",
+    "section": "py-20",
+    "sectionAlt": "bg-white py-20",
+    "sectionTitle": "text-3xl font-serif font-bold text-slate-900",
+    "sectionSubtitle": "text-slate-600 mt-2",
+    "card": "rounded-lg border border-slate-200 bg-white p-8 shadow-sm hover:border-teal-300 hover:shadow-md transition-all",
+    "cardTitle": "text-xl font-serif font-semibold text-slate-900",
+    "cardText": "text-slate-600 leading-relaxed",
+    "aboutImage": "rounded-lg shadow-2xl",
+    "mission": "border-l-4 border-teal-700 pl-6 italic text-slate-700 text-lg font-serif",
+    "stepNum": "flex h-10 w-10 items-center justify-center rounded-sm bg-slate-950 text-amber-400 font-bold text-sm",
+    "gallery": "rounded-lg w-full aspect-[4/3] object-cover shadow-md",
+    "showcase": "bg-slate-100 py-20",
+    "showcaseCard": "rounded-lg border border-slate-200 bg-white overflow-hidden shadow-sm hover:shadow-lg transition-shadow group",
+    "showcaseImage": "w-full aspect-[16/10] object-cover group-hover:scale-105 transition-transform duration-300",
+    "showcasePrice": "text-teal-800 font-semibold",
+    "showcaseTag": "text-xs font-bold uppercase tracking-wider text-teal-700",
+    "testimonial": "rounded-lg bg-white border-l-4 border-teal-700 p-8 shadow-sm",
+    "faq": "border-b border-slate-200 py-6",
+    "teamCard": "text-center",
+    "ctaBanner": "bg-slate-950 text-white py-20 border-t-4 border-amber-600",
+    "ctaBannerBtn": "rounded-sm bg-amber-600 px-8 py-3 font-semibold text-white hover:bg-amber-700",
+    "contact": "bg-slate-900 text-white py-20",
+    "contactLabel": "text-teal-300 text-xs uppercase tracking-wider font-semibold",
+    "footer": "border-t border-slate-200 py-8 text-center text-sm text-slate-500 bg-white"
+  },
+  "colorSchemes": [
+    {
+      "id": "navy-ledger",
+      "name": "Navy Ledger",
+      "swatches": [
+        "#0b1f3a",
+        "#0f766e",
+        "#f7f4ee"
+      ],
+      "overrides": {}
+    },
+    {
+      "id": "forest-trust",
+      "name": "Forest Trust",
+      "swatches": [
+        "#14532d",
+        "#047857",
+        "#f4f7f1"
+      ],
+      "overrides": {
+        "page": "bg-[#f4f7f1] text-slate-800",
+        "navLink": "text-slate-600 hover:text-emerald-800 font-medium",
+        "navCta": "rounded-sm bg-emerald-800 px-5 py-2.5 text-sm font-semibold text-white hover:bg-emerald-900",
+        "hero": "bg-gradient-to-br from-emerald-950 via-slate-900 to-emerald-950 text-white py-24",
+        "heroBadge": "text-emerald-300 uppercase tracking-[0.28em] text-xs font-semibold",
+        "heroCta": "rounded-sm bg-emerald-700 px-8 py-3 font-semibold text-white hover:bg-emerald-800",
+        "stats": "bg-emerald-950 text-white py-16 border-y-4 border-emerald-600",
+        "statValue": "text-4xl font-serif font-bold text-lime-200",
+        "mission": "border-l-4 border-emerald-700 pl-6 italic text-slate-700 text-lg font-serif",
+        "stepNum": "flex h-10 w-10 items-center justify-center rounded-sm bg-emerald-900 text-lime-200 font-bold text-sm",
+        "showcasePrice": "text-emerald-800 font-semibold",
+        "showcaseTag": "text-xs font-bold uppercase tracking-wider text-emerald-700",
+        "testimonial": "rounded-lg bg-white border-l-4 border-emerald-700 p-8 shadow-sm",
+        "ctaBanner": "bg-emerald-950 text-white py-20 border-t-4 border-lime-600",
+        "ctaBannerBtn": "rounded-sm bg-emerald-700 px-8 py-3 font-semibold text-white hover:bg-emerald-800",
+        "contact": "bg-emerald-950 text-white py-20",
+        "contactLabel": "text-lime-200 text-xs uppercase tracking-wider font-semibold"
+      }
+    },
+    {
+      "id": "ink-teal",
+      "name": "Ink & Teal",
+      "swatches": [
+        "#0f172a",
+        "#0e7490",
+        "#f8fafc"
+      ],
+      "overrides": {
+        "page": "bg-slate-50 text-slate-800",
+        "navLink": "text-slate-600 hover:text-cyan-800 font-medium",
+        "navCta": "rounded-sm bg-cyan-800 px-5 py-2.5 text-sm font-semibold text-white hover:bg-cyan-900",
+        "hero": "bg-gradient-to-br from-slate-950 via-slate-900 to-cyan-950 text-white py-24",
+        "heroBadge": "text-cyan-300 uppercase tracking-[0.28em] text-xs font-semibold",
+        "heroCta": "rounded-sm bg-cyan-700 px-8 py-3 font-semibold text-white hover:bg-cyan-800",
+        "stats": "bg-slate-900 text-white py-16 border-y-4 border-cyan-600",
+        "statValue": "text-4xl font-serif font-bold text-cyan-300",
+        "mission": "border-l-4 border-cyan-700 pl-6 italic text-slate-700 text-lg font-serif",
+        "stepNum": "flex h-10 w-10 items-center justify-center rounded-sm bg-slate-900 text-cyan-300 font-bold text-sm",
+        "showcasePrice": "text-cyan-800 font-semibold",
+        "showcaseTag": "text-xs font-bold uppercase tracking-wider text-cyan-700",
+        "testimonial": "rounded-lg bg-white border-l-4 border-cyan-700 p-8 shadow-sm",
+        "ctaBanner": "bg-slate-950 text-white py-20 border-t-4 border-cyan-500",
+        "ctaBannerBtn": "rounded-sm bg-cyan-700 px-8 py-3 font-semibold text-white hover:bg-cyan-800",
+        "contact": "bg-slate-950 text-white py-20",
+        "contactLabel": "text-cyan-300 text-xs uppercase tracking-wider font-semibold"
+      }
+    }
+  ],
+  "defaultColorSchemeId": "navy-ledger",
+  "defaultLayoutVariantId": "classic",
+  "sectionVariants": {
+    "faq": "numbered",
+    "explore": "magazine",
+    "contactShell": "formal-columns",
+    "contactForm": "minimal-border",
+    "exploreTitle": "Client Resources",
+    "exploreSubtitle": "Services, industries we serve, tax insights, and consultations",
+    "exploreLinkLabel": "Open"
+  },
+  "showcase": {
+    "sectionTitle": "Who We Serve",
+    "sectionSubtitle": "We match each client with an advisor who already knows their industry",
+    "navLabel": "Industries",
+    "itemLabel": "Industry",
+    "showPrice": false,
+    "priceLabel": "Engagement",
+    "showTag": true,
+    "tagLabel": "Focus"
+  },
+  "defaultShowcase": [
+    {
+      "title": "Real Estate",
+      "description": "Investors, brokers, developers, and property managers \u2014 cost segregation, 1031 exchanges, and entity structure.",
+      "image": "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80",
+      "price": "",
+      "tag": "Investors",
+      "link": "contact"
+    },
+    {
+      "title": "Small Business",
+      "description": "Owners who need clean books, quarterly estimates, and a tax plan that does not wait until April.",
+      "image": "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=600&q=80",
+      "price": "",
+      "tag": "Owners",
+      "link": "contact"
+    },
+    {
+      "title": "Healthcare",
+      "description": "Practices, groups, and licensed professionals with complex deductions, payroll, and retirement plans.",
+      "image": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&q=80",
+      "price": "",
+      "tag": "Practices",
+      "link": "contact"
+    },
+    {
+      "title": "Entertainment",
+      "description": "Actors, creators, agents, and production companies \u2014 multi-state filing and deduction strategy.",
+      "image": "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=600&q=80",
+      "price": "",
+      "tag": "Creatives",
+      "link": "contact"
+    },
+    {
+      "title": "Nonprofits",
+      "description": "Form 990, grant compliance, and board-ready reporting for organizations that cannot afford surprises.",
+      "image": "https://images.unsplash.com/photo-1531206716517-69b0e4f0aee1?w=600&q=80",
+      "price": "",
+      "tag": "990",
+      "link": "contact"
+    },
+    {
+      "title": "Technology",
+      "description": "Founders, contractors, and growing software teams \u2014 R&D credits, equity events, and multi-state nexus.",
+      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80",
+      "price": "",
+      "tag": "Founders",
+      "link": "contact"
+    }
+  ],
+  "navShell": "cpa",
+  "contactFields": [
+    {
+      "key": "phone",
+      "label": "Office Phone",
+      "placeholder": "(555) 212-1040"
+    },
+    {
+      "key": "email",
+      "label": "Email",
+      "placeholder": "hello@hartwellcpa.com"
+    },
+    {
+      "key": "address",
+      "label": "Office Address",
+      "placeholder": "1200 Ledger Plaza, Suite 400"
+    },
+    {
+      "key": "hours",
+      "label": "Office Hours",
+      "placeholder": "Mon\u2013Fri 8:30am\u20135:30pm"
+    },
+    {
+      "key": "licenseNumber",
+      "label": "CPA / Firm License",
+      "placeholder": "AICPA \u00b7 CPA License #C-44821"
+    },
+    {
+      "key": "linkedin",
+      "label": "LinkedIn",
+      "placeholder": "https://linkedin.com/company/hartwell"
+    }
+  ],
+  "servicesLabel": "Tax Services",
+  "pageLayouts": {
+    "blog": "minimal",
+    "blogPost": "split",
+    "news": "compact",
+    "newsPost": "press",
+    "gallery": "rows",
+    "portfolio": "cards"
+  },
+  "hero": {
+    "overlay": false,
+    "overlayGradient": "bg-black/30",
+    "splitColumns": true,
+    "badge": "name",
+    "grayscaleImage": false
+  },
+  "defaults": {
+    "businessName": "Hartwell & Associates",
+    "tagline": "Trusted tax preparation and advisory for individuals and growing businesses.",
+    "heroSubtext": "CPAs who file accurately, plan year-round, and keep more of what you earn \u2014 without the April scramble.",
+    "heroImage": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&q=80",
+    "logo": "",
+    "logoShowName": true,
+    "brandPrimary": "",
+    "brandSecondary": "",
+    "brandAccent": "",
+    "fontHeading": "",
+    "fontBody": "",
+    "aboutTitle": "A firm built for calm tax seasons",
+    "about": "Hartwell & Associates has advised families, owners, and professional practices since 1978. We grew from a single-desk practice into a full-service tax and accounting firm because clients asked us to stay after the return was filed. Today we prepare thousands of individual and business returns each year, and we treat tax season as the midpoint of the relationship \u2014 not the whole job.\n\nOur CPAs combine meticulous compliance with practical planning: estimated taxes, entity choice, retirement contributions, and IRS correspondence. You work with a named advisor, not a seasonal call center.",
+    "aboutImage": "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&q=80",
+    "missionStatement": "Accurate filings, ethical strategy, and advice you can act on before the year is over.",
+    "pageVisibility": {
+      "about": true,
+      "services": true,
+      "portfolio": true,
+      "blog": true,
+      "news": true,
+      "gallery": true,
+      "contact": true,
+      "rooms": false
+    },
+    "sectionVisibility": {
+      "stats": true,
+      "team": true,
+      "steps": true,
+      "faq": true,
+      "cta": true,
+      "testimonials": true,
+      "pricing": false
+    },
+    "stats": [
+      {
+        "value": "45+",
+        "label": "Years in Practice"
+      },
+      {
+        "value": "12,000+",
+        "label": "Returns Filed"
+      },
+      {
+        "value": "4.9\u2605",
+        "label": "Client Rating"
+      },
+      {
+        "value": "Year-Round",
+        "label": "Tax Planning"
+      }
+    ],
+    "servicesSectionTitle": "Tax & Accounting Services",
+    "servicesSectionSubtitle": "Preparation, planning, and resolution \u2014 for households and the businesses they run",
+    "services": [
+      {
+        "title": "Individual Tax",
+        "description": "Personal returns, multi-state filing, and a deduction review that goes beyond last year\u2019s forms."
+      },
+      {
+        "title": "Business Tax",
+        "description": "S-corps, partnerships, and corporations \u2014 entity strategy, estimated taxes, and year-end planning."
+      },
+      {
+        "title": "Bookkeeping & Accounting",
+        "description": "Monthly books, payroll support, and statements your banker and your CPA can both trust."
+      },
+      {
+        "title": "Tax Planning & Advisory",
+        "description": "Proactive strategies throughout the year so April is a checkpoint, not a surprise."
+      },
+      {
+        "title": "Tax Resolution",
+        "description": "Notices, back taxes, liens, and installment agreements handled with the IRS and state agencies."
+      },
+      {
+        "title": "Entity Formation",
+        "description": "Choose, form, and maintain the right structure \u2014 LLC, S-corp, or nonprofit \u2014 before you file."
+      }
+    ],
+    "stepsSectionTitle": "How an engagement works",
+    "steps": [
+      {
+        "title": "Discovery call",
+        "description": "Share your goals, last return, and any notices. We tell you plainly whether we are the right fit."
+      },
+      {
+        "title": "Document review",
+        "description": "A secure checklist and a named advisor review income, entities, and opportunities you may be missing."
+      },
+      {
+        "title": "Custom tax strategy",
+        "description": "You leave with a written plan for this year and next \u2014 filings, estimates, and entity decisions."
+      },
+      {
+        "title": "Year-round support",
+        "description": "Questions, quarterly check-ins, and filing \u2014 so you are never waiting until March to get organized."
+      }
+    ],
+    "showcaseSectionTitle": "Who We Serve",
+    "showcaseSectionSubtitle": "We match each client with an advisor who already knows their industry",
+    "showcaseItems": [
+      {
+        "title": "Real Estate",
+        "description": "Investors, brokers, developers, and property managers \u2014 cost segregation, 1031 exchanges, and entity structure.",
+        "image": "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80",
+        "price": "",
+        "tag": "Investors",
+        "link": "contact"
+      },
+      {
+        "title": "Small Business",
+        "description": "Owners who need clean books, quarterly estimates, and a tax plan that does not wait until April.",
+        "image": "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=600&q=80",
+        "price": "",
+        "tag": "Owners",
+        "link": "contact"
+      },
+      {
+        "title": "Healthcare",
+        "description": "Practices, groups, and licensed professionals with complex deductions, payroll, and retirement plans.",
+        "image": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&q=80",
+        "price": "",
+        "tag": "Practices",
+        "link": "contact"
+      },
+      {
+        "title": "Entertainment",
+        "description": "Actors, creators, agents, and production companies \u2014 multi-state filing and deduction strategy.",
+        "image": "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=600&q=80",
+        "price": "",
+        "tag": "Creatives",
+        "link": "contact"
+      },
+      {
+        "title": "Nonprofits",
+        "description": "Form 990, grant compliance, and board-ready reporting for organizations that cannot afford surprises.",
+        "image": "https://images.unsplash.com/photo-1531206716517-69b0e4f0aee1?w=600&q=80",
+        "price": "",
+        "tag": "990",
+        "link": "contact"
+      },
+      {
+        "title": "Technology",
+        "description": "Founders, contractors, and growing software teams \u2014 R&D credits, equity events, and multi-state nexus.",
+        "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80",
+        "price": "",
+        "tag": "Founders",
+        "link": "contact"
+      }
+    ],
+    "gallerySectionTitle": "Our Offices",
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80",
+      "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&q=80",
+      "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600&q=80",
+      "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=600&q=80"
+    ],
+    "testimonialsSectionTitle": "Client stories",
+    "testimonials": [
+      {
+        "quote": "I came in with three years of unfiled returns and a stack of IRS letters. Hartwell built a plan, talked to the agency, and I slept through tax season for the first time in years.",
+        "author": "Alex Rivera",
+        "role": "Owner, Eastside Hospitality Group"
+      },
+      {
+        "quote": "They treat tax planning like part of running the business, not a once-a-year fire drill. Our quarterly estimates finally match reality.",
+        "author": "Priya Shah",
+        "role": "Founder, Shoreline Clinics"
+      },
+      {
+        "quote": "Multi-state rental properties used to mean a pile of guesswork. The team mapped every entity and found deductions our previous preparer never mentioned.",
+        "author": "Daniel Cho",
+        "role": "Real estate investor"
+      }
+    ],
+    "faqSectionTitle": "Tax questions we hear first",
+    "faqs": [
+      {
+        "question": "When should I start working with a CPA?",
+        "answer": "Anytime \u2014 but the best savings happen before December 31. New clients often start with a mid-year review so we can still change withholding, estimates, retirement contributions, and entity decisions."
+      },
+      {
+        "question": "Do you only prepare returns, or do you plan year-round?",
+        "answer": "Both. Compliance is the floor. Most clients stay on a year-round advisory cadence with quarterly check-ins so April is a filing event, not a strategy session."
+      },
+      {
+        "question": "Can you help with IRS notices, back taxes, or liens?",
+        "answer": "Yes. We review the notice, reconstruct filings if needed, and represent you with the IRS or state. Resolution options include installment agreements, penalty relief, and currently-not-collectible status when they apply."
+      },
+      {
+        "question": "Do you work with clients outside your city?",
+        "answer": "Yes. We meet in person at our offices and virtually nationwide. Multi-state returns are a regular part of the practice."
+      },
+      {
+        "question": "What should I bring to a first consultation?",
+        "answer": "Last year\u2019s return if you have it, a list of income sources, any IRS or state letters, and the questions keeping you up at night. We will tell you what else we need before we propose an engagement."
+      },
+      {
+        "question": "How do you charge?",
+        "answer": "Individual and business returns are quoted after we understand complexity. Advisory and resolution work can be a flat project fee or a monthly retainer. We put the fee in writing before we start."
+      }
+    ],
+    "teamSectionTitle": "Our CPAs",
+    "blogSectionTitle": "Tax insights",
+    "blogSectionSubtitle": "Practical guidance for owners, households, and anyone who would rather not overpay",
+    "newsSectionTitle": "Firm news",
+    "newsSectionSubtitle": "Tax-season hours, law changes, and updates from the partners",
+    "newsPosts": [
+      {
+        "title": "Extended hours through April 15",
+        "slug": "tax-season-extended-hours",
+        "excerpt": "Evening and Saturday appointments are open through filing deadline. Book a slot before the calendar fills.",
+        "body": "Tax season is here. In addition to weekday hours, Hartwell & Associates will be open selected evenings and Saturdays through April 15 so you can review documents without missing work.\n\nExisting clients can book through the usual advisor. New clients should request a consultation \u2014 we still take a limited number of new individual and business returns each season.",
+        "image": "https://images.unsplash.com/photo-1434626881859-194d67b2b86f?w=800&q=80",
+        "author": "Front Desk",
+        "date": "2026-02-02"
+      },
+      {
+        "title": "New retirement contribution limits for this year",
+        "slug": "retirement-contribution-limits",
+        "excerpt": "Higher 401(k) and IRA ceilings change the year-end planning conversation. Here is what we are telling clients.",
+        "body": "Contribution limits moved again. If you are self-employed or run payroll, the new ceilings affect both this year\u2019s estimates and next year\u2019s withholding.\n\nWe are reviewing every advisory client\u2019s plan in Q1. If you are not yet on a planning cadence, schedule a mid-year review before you lock in profit distributions.",
+        "image": "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&q=80",
+        "author": "Elena Hartwell, CPA",
+        "date": "2026-01-20"
+      },
+      {
+        "title": "Hartwell named among the city\u2019s top accounting firms",
+        "slug": "readers-choice-accounting-firm",
+        "excerpt": "Thank you to the clients who keep sending neighbors, partners, and their own books our way.",
+        "body": "We are honored to be recognized again as a readers\u2019 choice accounting firm. Awards are nice. What matters more is that clients stay, refer, and come back when the IRS writes.\n\nThis year we are investing in secure document collection and additional tax-season staff so the experience stays calm as we grow.",
+        "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80",
+        "author": "Communications",
+        "date": "2026-03-04"
+      }
+    ],
+    "pricingSectionTitle": "Engagement options",
+    "pricing": [
+      {
+        "title": "Individual Return",
+        "description": "Personal federal and state returns with a deduction review and a planning note for next year.",
+        "price": "Quoted",
+        "tag": "Households",
+        "featured": false
+      },
+      {
+        "title": "Business Return",
+        "description": "Entity returns, K-1s, and a year-end strategy session for S-corps, partnerships, and corporations.",
+        "price": "Quoted",
+        "tag": "Most requested",
+        "featured": true
+      },
+      {
+        "title": "Year-Round Advisory",
+        "description": "Quarterly reviews, estimated taxes, and a dedicated CPA throughout the year.",
+        "price": "Monthly",
+        "tag": "Planning",
+        "featured": false
+      }
+    ],
+    "roomsSectionTitle": "Rooms & Suites",
+    "roomsSectionSubtitle": "Explore our accommodations and reserve your stay",
+    "bookingSectionTitle": "Book Your Stay",
+    "bookingSectionSubtitle": "Select dates, guests, and your preferred room type",
+    "roomTypes": [],
+    "blogPosts": [
+      {
+        "title": "The small-business deduction checklist we actually use",
+        "slug": "small-business-deduction-checklist",
+        "excerpt": "Home office, vehicles, retirement, and the expenses owners forget until the IRS has already closed the year.",
+        "body": "Most overpaid tax bills are not about exotic strategies. They are about incomplete books and decisions made after December 31.\n\nStart with a clean profit-and-loss, then walk vehicle use, home office, retirement contributions, health premiums, and estimated payments. If you take an owner draw instead of a reasonable salary from an S-corp, fix that before you file.\n\nBring this list to your next review. We will tell you what still moves the needle this year and what has to wait until January.",
+        "image": "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&q=80",
+        "author": "Marcus Adeyemi, CPA",
+        "date": "2026-03-10"
+      },
+      {
+        "title": "You received an IRS letter. Here is the first week.",
+        "slug": "irs-letter-first-week",
+        "excerpt": "Do not ignore it, and do not call the number on the notice in a panic. A calm sequence works better.",
+        "body": "Open the envelope. Note the notice number, the tax year, and the deadline. Then send us the PDF. Most letters are math mismatches, missing forms, or identity checks \u2014 not audits.\n\nWe reply on your behalf, request transcripts when needed, and only escalate to representation if the facts require it. Waiting rarely improves the outcome. Guessing on the phone often makes it worse.",
+        "image": "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&q=80",
+        "author": "Priya Nair, CPA",
+        "date": "2026-02-18"
+      },
+      {
+        "title": "Estimated taxes for freelancers who hate surprises",
+        "slug": "estimated-taxes-for-freelancers",
+        "excerpt": "A simple quarterly rhythm so April does not wipe out a good year.",
+        "body": "If you receive 1099 income, the IRS expects payments through the year. We set estimates from your current books, not last year\u2019s guess, and we adjust after a strong or slow quarter.\n\nPair estimates with a retirement contribution plan and an entity review. Plenty of freelancers overpay because they never looked at an S-corp or a SEP IRA until the return was already prepared.",
+        "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
+        "author": "Elena Hartwell, CPA",
+        "date": "2026-01-28"
+      }
+    ],
+    "team": [
+      {
+        "name": "Elena Hartwell, CPA",
+        "role": "Managing Partner \u2014 Tax Strategy",
+        "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
+      },
+      {
+        "name": "Marcus Adeyemi, CPA",
+        "role": "Partner \u2014 Business Tax",
+        "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80"
+      },
+      {
+        "name": "Priya Nair, CPA",
+        "role": "Director \u2014 Tax Resolution",
+        "image": "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80"
+      }
+    ],
+    "ctaBannerTitle": "Stop overpaying. Start planning.",
+    "ctaBannerText": "Schedule a complimentary consultation. Bring last year\u2019s return \u2014 or the notices you have been avoiding.",
+    "ctaText": "Schedule a Consultation",
+    "ctaLink": "contact",
+    "seoEnabled": false,
+    "seoTitle": "",
+    "seoDescription": "",
+    "seoKeywords": "",
+    "seoSiteUrl": "",
+    "email": "hello@hartwellcpa.com",
+    "phone": "(555) 212-1040",
+    "address": "1200 Ledger Plaza, Suite 400, Atlanta, GA",
+    "hours": "Mon\u2013Fri 8:30am\u20135:30pm \u00b7 Extended Jan\u2013Apr",
+    "instagram": "",
+    "website": "",
+    "linkedin": "https://linkedin.com/company/hartwell-associates",
+    "whatsapp": "",
+    "supportEmail": "",
+    "reservationEmail": "",
+    "licenseNumber": "AICPA \u00b7 CPA License #C-44821",
+    "bookingUrl": "",
+    "contactSectionTitle": "Request a consultation",
+    "contactFormTitle": "Tell us about your tax situation",
+    "contactFormUrl": "",
+    "contactFormButtonText": "Send Consultation Request"
+  }
+}

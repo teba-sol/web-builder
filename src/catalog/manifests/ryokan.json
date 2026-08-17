@@ -1,0 +1,622 @@
+{
+  "schemaVersion": 1,
+  "id": "ryokan",
+  "name": "Kasumi Ryokan",
+  "description": "Kyoto-inspired ryokan \u2014 ink, washi, and vermillion calm with tatami rooms and onsen stays.",
+  "category": "hospitality",
+  "previewGradient": "from-stone-950 via-red-950 to-stone-200",
+  "accentColor": "#b91c1c",
+  "sortOrder": 20,
+  "features": [
+    "cms",
+    "hospitality"
+  ],
+  "pages": {
+    "about": true,
+    "services": true,
+    "portfolio": true,
+    "blog": true,
+    "news": false,
+    "gallery": true,
+    "contact": true,
+    "rooms": true
+  },
+  "homeSections": [
+    "nav",
+    "hero",
+    "stats",
+    "rooms-teaser",
+    "services-teaser",
+    "portfolio-teaser",
+    "blog-teaser",
+    "news-teaser",
+    "testimonials",
+    "about-teaser",
+    "faq",
+    "contact",
+    "explore",
+    "footer"
+  ],
+  "sectionOrder": [
+    "nav",
+    "hero",
+    "about",
+    "showcase",
+    "services",
+    "gallery",
+    "stats",
+    "testimonials",
+    "blog",
+    "steps",
+    "faq",
+    "cta",
+    "contact",
+    "footer"
+  ],
+  "theme": {
+    "page": "bg-[#f3efe6] text-stone-900",
+    "nav": "sticky top-0 z-50 bg-[#f3efe6]/95 backdrop-blur border-b border-stone-300",
+    "navLink": "text-stone-600 hover:text-red-800 font-medium tracking-wide",
+    "navCta": "rounded-none bg-red-800 px-6 py-2.5 text-sm font-semibold text-amber-50 hover:bg-red-900",
+    "hero": "relative min-h-[85vh] flex items-center text-amber-50",
+    "heroBadge": "text-red-200/90 uppercase tracking-[0.55em] text-xs",
+    "heroTitle": "text-5xl md:text-6xl font-serif font-light leading-tight",
+    "heroText": "text-amber-100/85 text-lg max-w-xl font-light mt-4 leading-relaxed",
+    "heroCta": "rounded-none border border-amber-100/80 px-8 py-3 text-sm font-semibold text-amber-50 hover:bg-amber-50 hover:text-stone-900",
+    "stats": "bg-stone-900 text-amber-50 py-16",
+    "statValue": "text-4xl font-serif text-red-300",
+    "statLabel": "text-stone-400 text-xs uppercase tracking-[0.3em] mt-1",
+    "section": "py-20",
+    "sectionAlt": "bg-white/70 py-20 border-y border-stone-200",
+    "sectionTitle": "text-4xl font-serif text-stone-900",
+    "sectionSubtitle": "text-stone-500 mt-2 font-light",
+    "card": "rounded-none border border-stone-300 bg-[#faf8f3] p-8 hover:border-red-800/40 transition-colors",
+    "cardTitle": "text-xl font-serif text-stone-900",
+    "cardText": "text-stone-600 leading-relaxed",
+    "aboutImage": "rounded-none shadow-xl",
+    "mission": "text-red-900 font-serif italic text-xl text-center max-w-2xl mx-auto",
+    "stepNum": "text-red-800 text-2xl font-serif",
+    "gallery": "rounded-none w-full aspect-[4/3] object-cover",
+    "showcase": "bg-stone-200/40 py-20",
+    "showcaseCard": "rounded-none bg-white overflow-hidden border border-stone-200 hover:shadow-lg transition-all group",
+    "showcaseImage": "w-full aspect-[4/3] object-cover group-hover:opacity-90 transition-opacity",
+    "showcasePrice": "text-red-800 font-semibold text-lg",
+    "showcaseTag": "text-xs uppercase tracking-widest text-stone-500",
+    "testimonial": "text-center font-serif italic text-stone-600 px-8 text-lg",
+    "faq": "border-b border-stone-300 py-6",
+    "teamCard": "text-center",
+    "ctaBanner": "bg-stone-900 text-amber-50 py-24 text-center",
+    "ctaBannerBtn": "rounded-none bg-red-800 px-10 py-3 font-semibold text-amber-50 hover:bg-red-700",
+    "contact": "bg-[#e8e2d4] text-stone-900 py-20",
+    "contactLabel": "text-red-800 text-xs uppercase tracking-wider",
+    "footer": "py-8 text-center text-sm text-stone-500 border-t border-stone-300"
+  },
+  "colorSchemes": [
+    {
+      "id": "vermillion",
+      "name": "Vermillion Ink",
+      "swatches": [
+        "#1c1917",
+        "#b91c1c",
+        "#f3efe6"
+      ],
+      "overrides": {}
+    },
+    {
+      "id": "indigo-zen",
+      "name": "Indigo Zen",
+      "swatches": [
+        "#1e1b4b",
+        "#4f46e5",
+        "#eef2ff"
+      ],
+      "overrides": {
+        "navCta": "rounded-none bg-indigo-800 px-6 py-2.5 text-white hover:bg-indigo-700",
+        "ctaBanner": "bg-indigo-950 text-indigo-50 py-24",
+        "showcasePrice": "text-indigo-800"
+      }
+    },
+    {
+      "id": "moss-garden",
+      "name": "Moss Garden",
+      "swatches": [
+        "#14532d",
+        "#166534",
+        "#f0fdf4"
+      ],
+      "overrides": {
+        "navCta": "rounded-none bg-green-800 px-6 py-2.5 text-white hover:bg-green-700",
+        "ctaBanner": "bg-green-950 text-green-50 py-24",
+        "showcasePrice": "text-green-800"
+      }
+    }
+  ],
+  "defaultColorSchemeId": "vermillion",
+  "defaultLayoutVariantId": "classic",
+  "sectionVariants": {
+    "faq": "minimal",
+    "explore": "magazine",
+    "contactShell": "noir-gold",
+    "contactForm": "elegant-serif",
+    "exploreTitle": "The Ryokan",
+    "exploreSubtitle": "Rooms, onsen, garden, and reserve",
+    "exploreLinkLabel": "Enter"
+  },
+  "showcase": {
+    "sectionTitle": "Seasonal Moments",
+    "sectionSubtitle": "Kaiseki, onsen, and garden rituals for a quiet stay",
+    "navLabel": "Moments",
+    "itemLabel": "Moment",
+    "showPrice": true,
+    "priceLabel": "From",
+    "showTag": true,
+    "tagLabel": "Season"
+  },
+  "defaultShowcase": [
+    {
+      "title": "Kaiseki Dinner",
+      "description": "Seasonal multi-course meal in a private dining room.",
+      "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80",
+      "price": "\u00a518,000",
+      "tag": "Dining",
+      "link": "contact"
+    },
+    {
+      "title": "Private Onsen",
+      "description": "Reserved rotenburo bath for 60 minutes.",
+      "image": "https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80",
+      "price": "\u00a58,000",
+      "tag": "Onsen",
+      "link": "contact"
+    },
+    {
+      "title": "Tea Ceremony",
+      "description": "Matcha and sweets in our garden pavilion.",
+      "image": "https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=600&q=80",
+      "price": "\u00a56,000",
+      "tag": "Ritual",
+      "link": "contact"
+    },
+    {
+      "title": "Temple Morning",
+      "description": "Early walk with concierge to quiet temple paths.",
+      "image": "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=600&q=80",
+      "price": "Included",
+      "tag": "Culture",
+      "link": "contact"
+    },
+    {
+      "title": "Washitsu Stay",
+      "description": "Tatami room with breakfast and onsen access.",
+      "image": "https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=600&q=80",
+      "price": "\u00a528,000",
+      "tag": "Room",
+      "link": "contact"
+    },
+    {
+      "title": "Garden Walk",
+      "description": "Private tour of seasonal plantings with our gardener.",
+      "image": "https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80",
+      "price": "\u00a53,000",
+      "tag": "Garden",
+      "link": "contact"
+    }
+  ],
+  "navShell": "ryokan",
+  "contactFields": [
+    {
+      "key": "reservationEmail",
+      "label": "Reservations",
+      "placeholder": "yoyaku@kasumi.jp"
+    },
+    {
+      "key": "phone",
+      "label": "Front Desk",
+      "placeholder": "+81 75 555 0100"
+    },
+    {
+      "key": "address",
+      "label": "Address",
+      "placeholder": "Higashiyama, Kyoto"
+    },
+    {
+      "key": "hours",
+      "label": "Check-in",
+      "placeholder": "3pm\u20137pm"
+    },
+    {
+      "key": "email",
+      "label": "Email",
+      "placeholder": "hello@kasumi.jp"
+    }
+  ],
+  "servicesLabel": "Omotenashi",
+  "pageLayouts": {
+    "blog": "minimal",
+    "blogPost": "editorial",
+    "news": "timeline",
+    "newsPost": "press",
+    "gallery": "masonry",
+    "portfolio": "case-study"
+  },
+  "hero": {
+    "overlay": true,
+    "overlayGradient": "bg-gradient-to-t from-stone-950 via-stone-900/60 to-transparent",
+    "splitColumns": false,
+    "badge": "name",
+    "grayscaleImage": false
+  },
+  "defaults": {
+    "businessName": "Kasumi Ryokan",
+    "tagline": "Stillness between mountains and mist",
+    "heroSubtext": "A contemporary Kyoto ryokan \u2014 tatami, shoji light, and private onsen \u2014 with seamless online reservations.",
+    "heroImage": "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=1200&q=80",
+    "aboutTitle": "The Ryokan",
+    "about": "Kasumi blends centuries of omotenashi with modern comfort. Guests remove shoes at the genkan, bathe in mineral waters, and wake to garden silence in Higashiyama.",
+    "aboutImage": "https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=800&q=80",
+    "missionStatement": "Hospitality as a practiced art \u2014 quiet, precise, generous.",
+    "pageVisibility": {
+      "about": true,
+      "services": true,
+      "portfolio": true,
+      "blog": true,
+      "news": false,
+      "gallery": true,
+      "contact": true,
+      "rooms": true
+    },
+    "sectionVisibility": {
+      "stats": true,
+      "team": true,
+      "steps": true,
+      "faq": true,
+      "cta": true,
+      "testimonials": true,
+      "pricing": false
+    },
+    "stats": [
+      {
+        "value": "18",
+        "label": "Rooms"
+      },
+      {
+        "value": "1924",
+        "label": "Family Roots"
+      },
+      {
+        "value": "2",
+        "label": "Onsen Baths"
+      },
+      {
+        "value": "Kaiseki",
+        "label": "Dinner"
+      }
+    ],
+    "servicesSectionTitle": "Omotenashi",
+    "servicesSectionSubtitle": "The rituals of a considered stay",
+    "services": [
+      {
+        "title": "Kaiseki Dining",
+        "description": "Seasonal multi-course meals prepared by our head chef."
+      },
+      {
+        "title": "Onsen Experience",
+        "description": "Communal and private baths with mineral spring water."
+      },
+      {
+        "title": "Tea Ceremony",
+        "description": "Optional matcha ceremony in our garden pavilion."
+      },
+      {
+        "title": "Temple Concierge",
+        "description": "Early access and quiet paths to nearby temples."
+      }
+    ],
+    "stepsSectionTitle": "How It Works",
+    "steps": [
+      {
+        "title": "Consultation",
+        "description": "We learn about your goals and challenges in a discovery session."
+      },
+      {
+        "title": "Strategy",
+        "description": "Our team crafts a tailored plan designed for your success."
+      },
+      {
+        "title": "Execution",
+        "description": "We deliver with precision, keeping you informed every step."
+      },
+      {
+        "title": "Growth",
+        "description": "We measure results and optimize for continuous improvement."
+      }
+    ],
+    "showcaseSectionTitle": "Seasonal Moments",
+    "showcaseSectionSubtitle": "Kaiseki, onsen, and garden rituals for a quiet stay",
+    "showcaseItems": [
+      {
+        "title": "Kaiseki Dinner",
+        "description": "Seasonal multi-course meal in a private dining room.",
+        "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80",
+        "price": "\u00a518,000",
+        "tag": "Dining",
+        "link": "contact"
+      },
+      {
+        "title": "Private Onsen",
+        "description": "Reserved rotenburo bath for 60 minutes.",
+        "image": "https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80",
+        "price": "\u00a58,000",
+        "tag": "Onsen",
+        "link": "contact"
+      },
+      {
+        "title": "Tea Ceremony",
+        "description": "Matcha and sweets in our garden pavilion.",
+        "image": "https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=600&q=80",
+        "price": "\u00a56,000",
+        "tag": "Ritual",
+        "link": "contact"
+      },
+      {
+        "title": "Temple Morning",
+        "description": "Early walk with concierge to quiet temple paths.",
+        "image": "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=600&q=80",
+        "price": "Included",
+        "tag": "Culture",
+        "link": "contact"
+      },
+      {
+        "title": "Washitsu Stay",
+        "description": "Tatami room with breakfast and onsen access.",
+        "image": "https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=600&q=80",
+        "price": "\u00a528,000",
+        "tag": "Room",
+        "link": "contact"
+      },
+      {
+        "title": "Garden Walk",
+        "description": "Private tour of seasonal plantings with our gardener.",
+        "image": "https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80",
+        "price": "\u00a53,000",
+        "tag": "Garden",
+        "link": "contact"
+      }
+    ],
+    "gallerySectionTitle": "Garden & Halls",
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=600&q=80",
+      "https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=600&q=80",
+      "https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80"
+    ],
+    "testimonialsSectionTitle": "Guests Reflect",
+    "testimonials": [
+      {
+        "quote": "Outstanding service and incredible results. Highly recommended!",
+        "author": "Sarah Johnson",
+        "role": "CEO, TechStart"
+      },
+      {
+        "quote": "They transformed our business. Professional, creative, and reliable.",
+        "author": "Michael Chen",
+        "role": "Founder, Bloom Co"
+      },
+      {
+        "quote": "The best decision we made this year. Exceeded every expectation.",
+        "author": "Emily Rodriguez",
+        "role": "Director, Apex Group"
+      }
+    ],
+    "faqSectionTitle": "Frequently Asked Questions",
+    "faqs": [
+      {
+        "question": "How do I get started?",
+        "answer": "Simply reach out via our contact form or give us a call. We offer a free initial consultation."
+      },
+      {
+        "question": "What are your pricing options?",
+        "answer": "We offer flexible packages tailored to your needs and budget. Contact us for a custom quote."
+      },
+      {
+        "question": "How long does a typical project take?",
+        "answer": "Timelines vary by scope, but most projects are completed within 2\u20138 weeks."
+      },
+      {
+        "question": "Do you offer ongoing support?",
+        "answer": "Yes! We provide continued support and maintenance to ensure long-term success."
+      }
+    ],
+    "teamSectionTitle": "Meet the Team",
+    "blogSectionTitle": "Latest from Our Blog",
+    "blogSectionSubtitle": "Insights, tips, and updates from our team",
+    "newsSectionTitle": "News & Updates",
+    "newsSectionSubtitle": "Announcements, press releases, and company news",
+    "newsPosts": [
+      {
+        "title": "We Are Expanding to Serve You Better",
+        "slug": "expanding-to-serve-you-better",
+        "excerpt": "New locations, extended hours, and more ways to connect with our team.",
+        "body": "We are thrilled to announce expanded service hours and a new consultation space designed around your comfort and convenience.\n\nThis investment reflects our commitment to accessibility and excellence. Thank you for being part of our journey \u2014 we cannot wait to welcome you.",
+        "image": "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80",
+        "author": "Press Team",
+        "date": "2026-04-01"
+      },
+      {
+        "title": "Award Recognizes Our Commitment to Quality",
+        "slug": "award-quality-commitment",
+        "excerpt": "Industry leaders honored our team for outstanding client satisfaction.",
+        "body": "Receiving this recognition is a testament to the people behind our work \u2014 dedicated professionals who show up every day with care and craft.\n\nWe share this award with every client who trusted us with their goals. Your feedback shapes how we grow and improve.",
+        "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80",
+        "author": "Communications",
+        "date": "2026-03-18"
+      },
+      {
+        "title": "Partnership Opens New Opportunities",
+        "slug": "partnership-new-opportunities",
+        "excerpt": "Strategic collaboration brings enhanced offerings to our community.",
+        "body": "Our new partnership combines complementary strengths to deliver more value, faster turnaround, and broader expertise under one roof.\n\nStay tuned for launch events and early-access opportunities for existing clients.",
+        "image": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80",
+        "author": "Leadership",
+        "date": "2026-02-05"
+      }
+    ],
+    "pricingSectionTitle": "Pricing Plans",
+    "pricing": [
+      {
+        "title": "Starter",
+        "description": "Essential features for individuals and small teams getting started.",
+        "price": "$29/mo",
+        "tag": "Most popular",
+        "featured": false
+      },
+      {
+        "title": "Professional",
+        "description": "Advanced tools, priority support, and integrations for growing businesses.",
+        "price": "$79/mo",
+        "tag": "Best value",
+        "featured": true
+      },
+      {
+        "title": "Enterprise",
+        "description": "Custom solutions, dedicated account management, and SLA guarantees.",
+        "price": "Custom",
+        "tag": "Contact us",
+        "featured": false
+      }
+    ],
+    "roomsSectionTitle": "Rooms",
+    "roomsSectionSubtitle": "Tatami washitsu, private onsen, and honkan suites",
+    "bookingSectionTitle": "Reserve Your Stay",
+    "bookingSectionSubtitle": "Select dates and room type \u2014 inventory is limited",
+    "roomTypes": [
+      {
+        "name": "Washitsu",
+        "slug": "washitsu",
+        "parentSlug": "",
+        "description": "Traditional tatami room with futon bedding, shoji screens, and garden views. Kaiseki dinner optional.",
+        "shortDescription": "Tatami \u00b7 Garden view \u00b7 22 m\u00b2",
+        "basePrice": "280",
+        "currency": "JPY",
+        "maxAdults": "2",
+        "maxChildren": "1",
+        "maxOccupancy": "3",
+        "bedConfiguration": "Futon (2)",
+        "sizeSqm": "22",
+        "amenities": "Yukata, Onsen access, Tea set, Garden view, Kaiseki optional",
+        "image": "https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=900&q=80",
+        "unitCount": "6",
+        "unitPrefix": "WA-",
+        "isActive": true
+      },
+      {
+        "name": "Washitsu \u00b7 Private Onsen",
+        "slug": "washitsu-private-onsen",
+        "parentSlug": "washitsu",
+        "description": "Tatami suite with a private open-air bath (rotenburo) and cedar interiors.",
+        "shortDescription": "Private onsen \u00b7 Cedar bath \u00b7 28 m\u00b2",
+        "basePrice": "480",
+        "currency": "JPY",
+        "maxAdults": "2",
+        "maxChildren": "0",
+        "maxOccupancy": "2",
+        "bedConfiguration": "Futon (2)",
+        "sizeSqm": "28",
+        "amenities": "Private rotenburo, Yukata, Tea set, Kaiseki, Garden",
+        "image": "https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=900&q=80",
+        "unitCount": "3",
+        "unitPrefix": "ON-",
+        "isActive": true
+      },
+      {
+        "name": "Honkan Suite",
+        "slug": "honkan-suite",
+        "parentSlug": "",
+        "description": "Main-building suite combining tatami living with a western bed and veranda over the pond.",
+        "shortDescription": "Veranda \u00b7 Pond \u00b7 40 m\u00b2",
+        "basePrice": "620",
+        "currency": "JPY",
+        "maxAdults": "3",
+        "maxChildren": "1",
+        "maxOccupancy": "4",
+        "bedConfiguration": "1 King + futon",
+        "sizeSqm": "40",
+        "amenities": "Onsen access, Veranda, Tea ceremony set, Kaiseki, Concierge",
+        "image": "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=900&q=80",
+        "unitCount": "2",
+        "unitPrefix": "HN-",
+        "isActive": true
+      }
+    ],
+    "blogPosts": [
+      {
+        "title": "5 Strategies to Grow Your Business This Year",
+        "slug": "5-strategies-to-grow-your-business",
+        "excerpt": "Practical steps you can take today to build momentum and reach more customers.",
+        "body": "Growing a business takes focus, consistency, and a willingness to adapt. Start by clarifying your core offer, then double down on the channels that already bring results.\n\nReview your customer journey from first touch to repeat purchase. Small improvements at each step compound into meaningful revenue gains. Finally, invest in relationships \u2014 referrals and retention often outperform cold outreach.",
+        "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
+        "author": "Alex Morgan",
+        "date": "2026-03-12"
+      },
+      {
+        "title": "What Clients Are Asking Us Right Now",
+        "slug": "what-clients-are-asking-us",
+        "excerpt": "A quick roundup of the most common questions we hear \u2014 and how we answer them.",
+        "body": "Every season brings a new set of priorities. Lately, clients ask about pricing transparency, faster turnaround times, and how to stand out in crowded markets.\n\nOur advice stays grounded in fundamentals: deliver exceptional value, communicate clearly, and measure what matters. When in doubt, talk to your customers \u2014 their feedback is the best roadmap.",
+        "image": "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80",
+        "author": "Jordan Lee",
+        "date": "2026-02-28"
+      },
+      {
+        "title": "Behind the Scenes: How We Work",
+        "slug": "behind-the-scenes-how-we-work",
+        "excerpt": "Take a peek at our process, tools, and the principles that guide every project.",
+        "body": "We believe great outcomes come from clear goals, collaborative planning, and disciplined execution. Every engagement starts with listening \u2014 understanding where you are and where you want to go.\n\nFrom there we build a tailored plan with milestones you can track. Throughout delivery we keep communication open so there are no surprises, only steady progress toward results you can measure.",
+        "image": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80",
+        "author": "Taylor Brooks",
+        "date": "2026-01-15"
+      }
+    ],
+    "team": [
+      {
+        "name": "Alex Morgan",
+        "role": "Founder & CEO",
+        "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80"
+      },
+      {
+        "name": "Jordan Lee",
+        "role": "Creative Director",
+        "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
+      },
+      {
+        "name": "Taylor Brooks",
+        "role": "Operations Lead",
+        "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80"
+      }
+    ],
+    "ctaBannerTitle": "Reserve your room",
+    "ctaBannerText": "Book a washitsu or private onsen suite. Check-in from 3pm.",
+    "ctaText": "Book Stay",
+    "ctaLink": "book",
+    "seoEnabled": false,
+    "seoTitle": "",
+    "seoDescription": "",
+    "seoKeywords": "",
+    "seoSiteUrl": "",
+    "email": "hello@kasumi.jp",
+    "phone": "+81 75 555 0100",
+    "address": "Higashiyama, Kyoto, Japan",
+    "hours": "Check-in 3pm\u20137pm",
+    "instagram": "",
+    "website": "",
+    "linkedin": "",
+    "whatsapp": "",
+    "supportEmail": "",
+    "reservationEmail": "yoyaku@kasumi.jp",
+    "licenseNumber": "",
+    "bookingUrl": "",
+    "contactSectionTitle": "Get in Touch",
+    "contactFormTitle": "Send Us a Message",
+    "contactFormUrl": "",
+    "contactFormButtonText": "Open Contact Form"
+  }
+}

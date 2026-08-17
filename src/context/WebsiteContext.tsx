@@ -2,14 +2,16 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from '
 import { getDefaultColorSchemeId } from '../data/colorSchemes'
 import { getDefaultLayoutVariantId } from '../data/layoutVariants'
 import type { PageVisibility, SiteContent, TemplateId, ToggleableSection } from '../types'
-import { defaultContent, templateDefaults } from '../data/defaults'
+import { defaultContent, getEditorContent } from '../data/defaults'
 import {
   createEmptyListItem,
   LIST_MAX_COUNT,
   LIST_MIN_COUNT,
   type ContentListKey,
 } from '../data/listDefaults'
+import type { SiteDocument } from '../siteDocument/types'
 import { sanitizeContentLinks } from '../utils/linkResolver'
+import { migrateContent } from '../utils/migrateContent'
 import { clearSavedSite, loadSavedSite, saveSite } from '../utils/storage'
 
 interface WebsiteContextValue {
@@ -31,6 +33,7 @@ interface WebsiteContextValue {
   removeListItem: (list: ContentListKey, index: number) => void
   toggleSectionVisibility: (section: ToggleableSection) => void
   togglePageVisibility: (page: keyof PageVisibility) => void
+  restoreSite: (document: SiteDocument) => void
   reset: () => void
 }
 
@@ -46,7 +49,7 @@ function getInitialState(): {
   if (saved) {
     return {
       templateId: saved.templateId,
-      content: saved.content,
+      content: migrateContent(saved.content, saved.templateId),
       colorSchemeId: saved.colorSchemeId,
       layoutVariantId: saved.layoutVariantId,
     }
@@ -73,7 +76,7 @@ export function WebsiteProvider({ children }: { children: ReactNode }) {
 
   const selectTemplate = (id: TemplateId) => {
     setTemplateId(id)
-    setContent(sanitizeContentLinks({ ...templateDefaults[id] }))
+    setContent(sanitizeContentLinks({ ...getEditorContent(id) }))
     setColorSchemeId(getDefaultColorSchemeId(id))
     setLayoutVariantId(getDefaultLayoutVariantId(id))
   }
@@ -141,6 +144,13 @@ export function WebsiteProvider({ children }: { children: ReactNode }) {
     }))
   }
 
+  const restoreSite = (document: SiteDocument) => {
+    setTemplateId(document.templateId)
+    setContent(sanitizeContentLinks(migrateContent(document.content, document.templateId)))
+    setColorSchemeId(document.colorSchemeId || getDefaultColorSchemeId(document.templateId))
+    setLayoutVariantId(document.layoutVariantId || getDefaultLayoutVariantId(document.templateId))
+  }
+
   const reset = () => {
     setTemplateId(null)
     setContent(defaultContent)
@@ -165,6 +175,7 @@ export function WebsiteProvider({ children }: { children: ReactNode }) {
         removeListItem,
         toggleSectionVisibility,
         togglePageVisibility,
+        restoreSite,
         reset,
       }}
     >

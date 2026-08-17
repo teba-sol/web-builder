@@ -1,13 +1,12 @@
 import { Link, useParams } from 'react-router-dom'
-import { templateDefaults, templates } from '../data/defaults'
+import { getTemplateDefaults, getTemplateMeta } from '../data/defaults'
 import { isValidTemplateId } from '../data/templateIds'
 import { TemplateRenderer } from '../templates/TemplateRenderer'
-import type { TemplateId } from '../types'
 
 export function TemplateDemoPage() {
   const { templateId } = useParams<{ templateId: string }>()
   const id = templateId ?? ''
-  const template = isValidTemplateId(id) ? templates.find((t) => t.id === id) : undefined
+  const template = isValidTemplateId(id) ? getTemplateMeta(id) : undefined
 
   if (!isValidTemplateId(id) || !template) {
     return (
@@ -17,7 +16,7 @@ export function TemplateDemoPage() {
     )
   }
 
-  const content = templateDefaults[id as TemplateId]
+  const content = getTemplateDefaults(id)
 
   return (
     <div className="relative">
@@ -47,7 +46,7 @@ export function TemplateDemoPage() {
           </Link>
         </div>
       </div>
-      <TemplateRenderer templateId={id as TemplateId} content={content} basePath={`/demo/${id}`} />
+      <TemplateRenderer templateId={id} content={content} basePath={`/demo/${id}`} />
     </div>
   )
 }

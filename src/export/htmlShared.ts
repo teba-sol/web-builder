@@ -1,3 +1,4 @@
+import { brandCss, brandFontHref } from '../data/brand'
 import type { SiteContent } from '../types'
 import { escapeHtml } from './imageUtils'
 import { buildSeoMetaTags, resolveDocumentTitle, type PageSeoInput } from './seoExport'
@@ -18,9 +19,11 @@ export const LAYOUT_SHELL_CSS = `
 .layout-luxury section,.layout-luxury header { padding-top: 6rem; padding-bottom: 6rem; }
 `.trim()
 
-export function tailwindHead(title: string, seo?: PageSeoInput): string {
+export function tailwindHead(title: string, seo?: PageSeoInput, content?: SiteContent): string {
   const docTitle = seo ? resolveDocumentTitle(seo) : title
   const seoTags = seo ? buildSeoMetaTags(seo) : ''
+  const fontHref = content ? brandFontHref(content) : 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap'
+  const extraCss = content ? brandCss(content) : ''
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -30,9 +33,10 @@ export function tailwindHead(title: string, seo?: PageSeoInput): string {
   <title>${escapeHtml(docTitle)}</title>
   ${seoTags ? `${seoTags}\n  ` : ''}<script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="${fontHref || 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap'}" rel="stylesheet" />
   <style>body { font-family: Inter, system-ui, sans-serif; }
 ${LAYOUT_SHELL_CSS}
+${extraCss}
 </style>
 </head>`
 }

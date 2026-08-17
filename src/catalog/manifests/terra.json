@@ -1,0 +1,578 @@
+{
+  "schemaVersion": 1,
+  "id": "terra",
+  "name": "Terra & Tide",
+  "description": "Earthy organic warmth \u2014 terracotta, sage, and handcrafted textures for artisan brands.",
+  "category": "creative",
+  "previewGradient": "from-amber-800 via-orange-900 to-emerald-900",
+  "accentColor": "#c2410c",
+  "sortOrder": 12,
+  "features": [
+    "cms"
+  ],
+  "pages": {
+    "about": true,
+    "services": true,
+    "portfolio": true,
+    "blog": true,
+    "news": true,
+    "gallery": true,
+    "contact": true,
+    "rooms": false
+  },
+  "homeSections": [
+    "nav",
+    "hero",
+    "stats",
+    "rooms-teaser",
+    "services-teaser",
+    "portfolio-teaser",
+    "blog-teaser",
+    "news-teaser",
+    "testimonials",
+    "about-teaser",
+    "faq",
+    "contact",
+    "explore",
+    "footer"
+  ],
+  "sectionOrder": [
+    "nav",
+    "hero",
+    "stats",
+    "about",
+    "showcase",
+    "gallery",
+    "services",
+    "steps",
+    "testimonials",
+    "blog",
+    "team",
+    "faq",
+    "cta",
+    "contact",
+    "footer"
+  ],
+  "theme": {
+    "page": "bg-[#f7f3ed] text-stone-800",
+    "nav": "sticky top-0 z-50 border-b border-stone-200/80 bg-[#f7f3ed]/90 backdrop-blur-md",
+    "navLink": "text-stone-600 hover:text-orange-800 font-medium",
+    "navCta": "rounded-full bg-orange-800 px-6 py-2.5 text-sm font-semibold text-amber-50 shadow-md hover:bg-orange-900",
+    "hero": "relative bg-gradient-to-br from-amber-100/60 via-[#f7f3ed] to-emerald-100/40 py-28",
+    "heroBadge": "text-orange-800/80 uppercase tracking-[0.3em] text-xs font-semibold",
+    "heroTitle": "text-4xl md:text-6xl font-serif text-stone-800 leading-tight",
+    "heroText": "text-stone-600 text-lg max-w-2xl leading-relaxed",
+    "heroCta": "rounded-full bg-orange-800 px-8 py-3 font-semibold text-amber-50 hover:bg-orange-900 shadow-lg",
+    "stats": "bg-emerald-900/90 text-amber-50 py-16",
+    "statValue": "text-4xl font-serif text-amber-100",
+    "statLabel": "text-emerald-200/80 text-xs uppercase tracking-widest mt-1",
+    "section": "py-20",
+    "sectionAlt": "bg-white/70 py-20 border-y border-stone-200/60",
+    "sectionTitle": "text-3xl md:text-4xl font-serif text-stone-800",
+    "sectionSubtitle": "text-stone-500 mt-2",
+    "card": "rounded-2xl bg-white border border-stone-200/80 p-8 shadow-sm hover:shadow-md hover:border-orange-200 transition-all",
+    "cardTitle": "text-xl font-serif text-orange-900",
+    "cardText": "text-stone-600 leading-relaxed",
+    "aboutImage": "rounded-3xl shadow-xl shadow-orange-900/10",
+    "mission": "bg-orange-50 border border-orange-100 rounded-2xl p-8 italic text-orange-900/90 font-serif text-lg",
+    "stepNum": "flex h-10 w-10 items-center justify-center rounded-full bg-orange-100 text-orange-800 font-serif font-bold",
+    "gallery": "rounded-2xl w-full aspect-square object-cover shadow-md hover:scale-[1.02] transition-transform",
+    "showcase": "bg-gradient-to-b from-white/50 to-orange-50/30 py-20",
+    "showcaseCard": "rounded-2xl bg-white border border-stone-200 overflow-hidden shadow-sm hover:shadow-xl transition-shadow group",
+    "showcaseImage": "w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-500",
+    "showcasePrice": "text-orange-800 font-semibold",
+    "showcaseTag": "text-xs uppercase tracking-wider text-emerald-700",
+    "testimonial": "rounded-2xl bg-white border border-stone-200 p-8 shadow-sm",
+    "faq": "border-b border-stone-200 py-6",
+    "teamCard": "text-center",
+    "ctaBanner": "bg-emerald-900 text-amber-50 py-20 text-center",
+    "ctaBannerBtn": "rounded-full bg-amber-100 px-8 py-3 font-semibold text-emerald-900 hover:bg-white",
+    "contact": "bg-stone-800 text-amber-50 py-20",
+    "contactLabel": "text-orange-300 text-xs uppercase tracking-wider font-semibold",
+    "footer": "py-8 text-center text-sm text-stone-500 border-t border-stone-200"
+  },
+  "colorSchemes": [
+    {
+      "id": "clay",
+      "name": "Terracotta Clay",
+      "swatches": [
+        "#7c2d12",
+        "#c2410c",
+        "#f7f3ed"
+      ],
+      "overrides": {}
+    },
+    {
+      "id": "sage",
+      "name": "Sage & Stone",
+      "swatches": [
+        "#14532d",
+        "#4ade80",
+        "#f0fdf4"
+      ],
+      "overrides": {
+        "page": "bg-emerald-50/50 text-stone-800",
+        "navCta": "rounded-full bg-emerald-800 px-6 py-2.5 text-sm font-semibold text-white hover:bg-emerald-900",
+        "hero": "relative bg-gradient-to-br from-emerald-100/50 via-emerald-50 to-stone-100 py-28",
+        "heroBadge": "text-emerald-800 uppercase tracking-[0.3em] text-xs",
+        "heroCta": "rounded-full bg-emerald-800 px-8 py-3 text-white hover:bg-emerald-900",
+        "stats": "bg-emerald-800 text-white py-16",
+        "statValue": "text-4xl font-serif text-emerald-100",
+        "cardTitle": "text-emerald-900",
+        "mission": "bg-emerald-50 border border-emerald-100 text-emerald-900",
+        "stepNum": "bg-emerald-100 text-emerald-800",
+        "showcasePrice": "text-emerald-800",
+        "ctaBanner": "bg-emerald-900 text-white py-20",
+        "ctaBannerBtn": "bg-emerald-100 text-emerald-900"
+      }
+    },
+    {
+      "id": "sand",
+      "name": "Desert Sand",
+      "swatches": [
+        "#92400e",
+        "#f59e0b",
+        "#fffbeb"
+      ],
+      "overrides": {
+        "page": "bg-amber-50 text-stone-800",
+        "navCta": "rounded-full bg-amber-700 px-6 py-2.5 text-white hover:bg-amber-800",
+        "hero": "bg-gradient-to-br from-amber-100 to-orange-50 py-28",
+        "stats": "bg-amber-800 text-amber-50 py-16",
+        "cardTitle": "text-amber-900",
+        "showcasePrice": "text-amber-800",
+        "ctaBanner": "bg-amber-900 text-amber-50 py-20"
+      }
+    }
+  ],
+  "defaultColorSchemeId": "clay",
+  "defaultLayoutVariantId": "classic",
+  "sectionVariants": {
+    "faq": "boxed",
+    "explore": "bento",
+    "contactShell": "terra-pill",
+    "contactForm": "bold-outline",
+    "exploreTitle": "Land & Craft",
+    "exploreSubtitle": "Workshops, goods, stories, and visits",
+    "exploreLinkLabel": "Explore"
+  },
+  "showcase": {
+    "sectionTitle": "Handcrafted Goods",
+    "sectionSubtitle": "Small-batch ceramics, textiles, and goods made with natural materials",
+    "navLabel": "Shop",
+    "itemLabel": "Product",
+    "showPrice": true,
+    "priceLabel": "Price",
+    "showTag": true,
+    "tagLabel": "Material"
+  },
+  "defaultShowcase": [
+    {
+      "title": "Stoneware Dinner Set",
+      "description": "Twelve-piece set glazed in volcanic ash \u2014 dishwasher safe, oven proof.",
+      "image": "https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=600&q=80",
+      "price": "$185",
+      "tag": "Ceramic",
+      "link": "contact"
+    },
+    {
+      "title": "Hand-Loomed Linen Throw",
+      "description": "Naturally dyed flax linen \u2014 woven on a traditional floor loom.",
+      "image": "https://images.unsplash.com/photo-1584100936595-c0654b55a2e6?w=600&q=80",
+      "price": "$145",
+      "tag": "Textile",
+      "link": "contact"
+    },
+    {
+      "title": "Botanical Candle Trio",
+      "description": "Beeswax candles with sage, cedar, and wildflower \u2014 40-hour burn each.",
+      "image": "https://images.unsplash.com/photo-1602607243803-3fc35d0b8b1e?w=600&q=80",
+      "price": "$48",
+      "tag": "Home",
+      "link": "contact"
+    },
+    {
+      "title": "Terracotta Planter Set",
+      "description": "Three graduated planters with drainage \u2014 perfect for herbs and succulents.",
+      "image": "https://images.unsplash.com/photo-1485955900006-10f4d324bdeb?w=600&q=80",
+      "price": "$72",
+      "tag": "Garden",
+      "link": "contact"
+    },
+    {
+      "title": "Wheel-Thrown Mug",
+      "description": "Each mug unique \u2014 speckled clay body with a soft matte glaze.",
+      "image": "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=600&q=80",
+      "price": "$32",
+      "tag": "Ceramic",
+      "link": "contact"
+    },
+    {
+      "title": "Maker Workshop",
+      "description": "Half-day pottery class \u2014 leave with two finished pieces fired in our kiln.",
+      "image": "https://images.unsplash.com/photo-1565193567171-5de8b5d0c3b3?w=600&q=80",
+      "price": "$120",
+      "tag": "Workshop",
+      "link": "contact"
+    }
+  ],
+  "navShell": "terra",
+  "contactFields": [
+    {
+      "key": "email",
+      "label": "Email",
+      "placeholder": "hello@terratide.com"
+    },
+    {
+      "key": "phone",
+      "label": "Phone",
+      "placeholder": "(555) 204-8891"
+    },
+    {
+      "key": "address",
+      "label": "Studio & Shop",
+      "placeholder": "14 Clay Street, Portland"
+    },
+    {
+      "key": "hours",
+      "label": "Open Hours",
+      "placeholder": "Wed\u2013Sun 10am\u20136pm"
+    },
+    {
+      "key": "instagram",
+      "label": "Instagram",
+      "placeholder": "@terratide"
+    }
+  ],
+  "servicesLabel": "Craft",
+  "pageLayouts": {
+    "blog": "minimal",
+    "blogPost": "classic",
+    "news": "timeline",
+    "newsPost": "classic",
+    "gallery": "grid",
+    "portfolio": "cards"
+  },
+  "hero": {
+    "overlay": false,
+    "overlayGradient": "bg-black/30",
+    "splitColumns": true,
+    "badge": "name",
+    "grayscaleImage": false
+  },
+  "defaults": {
+    "businessName": "Terra & Tide",
+    "tagline": "Crafted by hand, rooted in earth",
+    "heroSubtext": "A Portland studio and shop celebrating slow-made goods \u2014 ceramics, textiles, and objects that age beautifully.",
+    "heroImage": "https://images.unsplash.com/photo-1565193567171-5de8b5d0c3b3?w=1200&q=80",
+    "aboutTitle": "Our Story",
+    "about": "Terra & Tide began at a farmer's market table with a wheel, a kiln, and a belief that everyday objects deserve beauty. Today our collective of twelve makers ships worldwide \u2014 always small batch, always honest materials.",
+    "aboutImage": "https://images.unsplash.com/photo-1452860606248-bfe878b077f5?w=800&q=80",
+    "missionStatement": "Slow craft for a fast world.",
+    "pageVisibility": {
+      "about": true,
+      "services": true,
+      "portfolio": true,
+      "blog": true,
+      "news": true,
+      "gallery": true,
+      "contact": true,
+      "rooms": false
+    },
+    "sectionVisibility": {
+      "stats": true,
+      "team": true,
+      "steps": true,
+      "faq": true,
+      "cta": true,
+      "testimonials": true,
+      "pricing": false
+    },
+    "stats": [
+      {
+        "value": "12",
+        "label": "Resident Makers"
+      },
+      {
+        "value": "100%",
+        "label": "Natural Materials"
+      },
+      {
+        "value": "2,400+",
+        "label": "Happy Customers"
+      },
+      {
+        "value": "0",
+        "label": "Mass Production"
+      }
+    ],
+    "servicesSectionTitle": "What We Make",
+    "servicesSectionSubtitle": "Handcrafted goods and experiences from our studio",
+    "services": [
+      {
+        "title": "Ceramics",
+        "description": "Wheel-thrown and hand-built stoneware \u2014 functional art for daily rituals."
+      },
+      {
+        "title": "Textiles",
+        "description": "Naturally dyed linens and wool throws woven on traditional looms."
+      },
+      {
+        "title": "Home Fragrance",
+        "description": "Beeswax candles and room sprays with botanical essential oils."
+      },
+      {
+        "title": "Workshops",
+        "description": "Weekly classes in pottery, weaving, and natural dyeing for all levels."
+      }
+    ],
+    "stepsSectionTitle": "How It Works",
+    "steps": [
+      {
+        "title": "Consultation",
+        "description": "We learn about your goals and challenges in a discovery session."
+      },
+      {
+        "title": "Strategy",
+        "description": "Our team crafts a tailored plan designed for your success."
+      },
+      {
+        "title": "Execution",
+        "description": "We deliver with precision, keeping you informed every step."
+      },
+      {
+        "title": "Growth",
+        "description": "We measure results and optimize for continuous improvement."
+      }
+    ],
+    "showcaseSectionTitle": "Handcrafted Goods",
+    "showcaseSectionSubtitle": "Small-batch ceramics, textiles, and goods made with natural materials",
+    "showcaseItems": [
+      {
+        "title": "Stoneware Dinner Set",
+        "description": "Twelve-piece set glazed in volcanic ash \u2014 dishwasher safe, oven proof.",
+        "image": "https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=600&q=80",
+        "price": "$185",
+        "tag": "Ceramic",
+        "link": "contact"
+      },
+      {
+        "title": "Hand-Loomed Linen Throw",
+        "description": "Naturally dyed flax linen \u2014 woven on a traditional floor loom.",
+        "image": "https://images.unsplash.com/photo-1584100936595-c0654b55a2e6?w=600&q=80",
+        "price": "$145",
+        "tag": "Textile",
+        "link": "contact"
+      },
+      {
+        "title": "Botanical Candle Trio",
+        "description": "Beeswax candles with sage, cedar, and wildflower \u2014 40-hour burn each.",
+        "image": "https://images.unsplash.com/photo-1602607243803-3fc35d0b8b1e?w=600&q=80",
+        "price": "$48",
+        "tag": "Home",
+        "link": "contact"
+      },
+      {
+        "title": "Terracotta Planter Set",
+        "description": "Three graduated planters with drainage \u2014 perfect for herbs and succulents.",
+        "image": "https://images.unsplash.com/photo-1485955900006-10f4d324bdeb?w=600&q=80",
+        "price": "$72",
+        "tag": "Garden",
+        "link": "contact"
+      },
+      {
+        "title": "Wheel-Thrown Mug",
+        "description": "Each mug unique \u2014 speckled clay body with a soft matte glaze.",
+        "image": "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=600&q=80",
+        "price": "$32",
+        "tag": "Ceramic",
+        "link": "contact"
+      },
+      {
+        "title": "Maker Workshop",
+        "description": "Half-day pottery class \u2014 leave with two finished pieces fired in our kiln.",
+        "image": "https://images.unsplash.com/photo-1565193567171-5de8b5d0c3b3?w=600&q=80",
+        "price": "$120",
+        "tag": "Workshop",
+        "link": "contact"
+      }
+    ],
+    "gallerySectionTitle": "The Studio",
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=600&q=80",
+      "https://images.unsplash.com/photo-1565193567171-5de8b5d0c3b3?w=600&q=80",
+      "https://images.unsplash.com/photo-1452860606248-bfe878b077f5?w=600&q=80"
+    ],
+    "testimonialsSectionTitle": "Maker Love",
+    "testimonials": [
+      {
+        "quote": "Outstanding service and incredible results. Highly recommended!",
+        "author": "Sarah Johnson",
+        "role": "CEO, TechStart"
+      },
+      {
+        "quote": "They transformed our business. Professional, creative, and reliable.",
+        "author": "Michael Chen",
+        "role": "Founder, Bloom Co"
+      },
+      {
+        "quote": "The best decision we made this year. Exceeded every expectation.",
+        "author": "Emily Rodriguez",
+        "role": "Director, Apex Group"
+      }
+    ],
+    "faqSectionTitle": "Frequently Asked Questions",
+    "faqs": [
+      {
+        "question": "How do I get started?",
+        "answer": "Simply reach out via our contact form or give us a call. We offer a free initial consultation."
+      },
+      {
+        "question": "What are your pricing options?",
+        "answer": "We offer flexible packages tailored to your needs and budget. Contact us for a custom quote."
+      },
+      {
+        "question": "How long does a typical project take?",
+        "answer": "Timelines vary by scope, but most projects are completed within 2\u20138 weeks."
+      },
+      {
+        "question": "Do you offer ongoing support?",
+        "answer": "Yes! We provide continued support and maintenance to ensure long-term success."
+      }
+    ],
+    "teamSectionTitle": "The Collective",
+    "blogSectionTitle": "Latest from Our Blog",
+    "blogSectionSubtitle": "Insights, tips, and updates from our team",
+    "newsSectionTitle": "News & Updates",
+    "newsSectionSubtitle": "Announcements, press releases, and company news",
+    "newsPosts": [
+      {
+        "title": "We Are Expanding to Serve You Better",
+        "slug": "expanding-to-serve-you-better",
+        "excerpt": "New locations, extended hours, and more ways to connect with our team.",
+        "body": "We are thrilled to announce expanded service hours and a new consultation space designed around your comfort and convenience.\n\nThis investment reflects our commitment to accessibility and excellence. Thank you for being part of our journey \u2014 we cannot wait to welcome you.",
+        "image": "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80",
+        "author": "Press Team",
+        "date": "2026-04-01"
+      },
+      {
+        "title": "Award Recognizes Our Commitment to Quality",
+        "slug": "award-quality-commitment",
+        "excerpt": "Industry leaders honored our team for outstanding client satisfaction.",
+        "body": "Receiving this recognition is a testament to the people behind our work \u2014 dedicated professionals who show up every day with care and craft.\n\nWe share this award with every client who trusted us with their goals. Your feedback shapes how we grow and improve.",
+        "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80",
+        "author": "Communications",
+        "date": "2026-03-18"
+      },
+      {
+        "title": "Partnership Opens New Opportunities",
+        "slug": "partnership-new-opportunities",
+        "excerpt": "Strategic collaboration brings enhanced offerings to our community.",
+        "body": "Our new partnership combines complementary strengths to deliver more value, faster turnaround, and broader expertise under one roof.\n\nStay tuned for launch events and early-access opportunities for existing clients.",
+        "image": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80",
+        "author": "Leadership",
+        "date": "2026-02-05"
+      }
+    ],
+    "pricingSectionTitle": "Pricing Plans",
+    "pricing": [
+      {
+        "title": "Starter",
+        "description": "Essential features for individuals and small teams getting started.",
+        "price": "$29/mo",
+        "tag": "Most popular",
+        "featured": false
+      },
+      {
+        "title": "Professional",
+        "description": "Advanced tools, priority support, and integrations for growing businesses.",
+        "price": "$79/mo",
+        "tag": "Best value",
+        "featured": true
+      },
+      {
+        "title": "Enterprise",
+        "description": "Custom solutions, dedicated account management, and SLA guarantees.",
+        "price": "Custom",
+        "tag": "Contact us",
+        "featured": false
+      }
+    ],
+    "roomsSectionTitle": "Rooms & Suites",
+    "roomsSectionSubtitle": "Explore our accommodations and reserve your stay",
+    "bookingSectionTitle": "Book Your Stay",
+    "bookingSectionSubtitle": "Select dates, guests, and your preferred room type",
+    "roomTypes": [],
+    "blogPosts": [
+      {
+        "title": "5 Strategies to Grow Your Business This Year",
+        "slug": "5-strategies-to-grow-your-business",
+        "excerpt": "Practical steps you can take today to build momentum and reach more customers.",
+        "body": "Growing a business takes focus, consistency, and a willingness to adapt. Start by clarifying your core offer, then double down on the channels that already bring results.\n\nReview your customer journey from first touch to repeat purchase. Small improvements at each step compound into meaningful revenue gains. Finally, invest in relationships \u2014 referrals and retention often outperform cold outreach.",
+        "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
+        "author": "Alex Morgan",
+        "date": "2026-03-12"
+      },
+      {
+        "title": "What Clients Are Asking Us Right Now",
+        "slug": "what-clients-are-asking-us",
+        "excerpt": "A quick roundup of the most common questions we hear \u2014 and how we answer them.",
+        "body": "Every season brings a new set of priorities. Lately, clients ask about pricing transparency, faster turnaround times, and how to stand out in crowded markets.\n\nOur advice stays grounded in fundamentals: deliver exceptional value, communicate clearly, and measure what matters. When in doubt, talk to your customers \u2014 their feedback is the best roadmap.",
+        "image": "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80",
+        "author": "Jordan Lee",
+        "date": "2026-02-28"
+      },
+      {
+        "title": "Behind the Scenes: How We Work",
+        "slug": "behind-the-scenes-how-we-work",
+        "excerpt": "Take a peek at our process, tools, and the principles that guide every project.",
+        "body": "We believe great outcomes come from clear goals, collaborative planning, and disciplined execution. Every engagement starts with listening \u2014 understanding where you are and where you want to go.\n\nFrom there we build a tailored plan with milestones you can track. Throughout delivery we keep communication open so there are no surprises, only steady progress toward results you can measure.",
+        "image": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80",
+        "author": "Taylor Brooks",
+        "date": "2026-01-15"
+      }
+    ],
+    "team": [
+      {
+        "name": "Riley Chen",
+        "role": "Founder & Potter",
+        "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
+      },
+      {
+        "name": "Sam Okonkwo",
+        "role": "Textile Artist",
+        "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80"
+      },
+      {
+        "name": "Maya Patel",
+        "role": "Shop Curator",
+        "image": "https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?w=400&q=80"
+      }
+    ],
+    "ctaBannerTitle": "Visit the studio",
+    "ctaBannerText": "Walk our shop floor, meet the makers, and take home something made this week.",
+    "ctaText": "Get Directions",
+    "ctaLink": "contact",
+    "seoEnabled": false,
+    "seoTitle": "",
+    "seoDescription": "",
+    "seoKeywords": "",
+    "seoSiteUrl": "",
+    "email": "hello@terratide.com",
+    "phone": "(555) 204-8891",
+    "address": "14 Clay Street, Portland, OR",
+    "hours": "Wed\u2013Sun 10am\u20136pm",
+    "instagram": "@terratide",
+    "website": "",
+    "linkedin": "",
+    "whatsapp": "",
+    "supportEmail": "",
+    "reservationEmail": "",
+    "licenseNumber": "",
+    "bookingUrl": "",
+    "contactSectionTitle": "Get in Touch",
+    "contactFormTitle": "Send Us a Message",
+    "contactFormUrl": "",
+    "contactFormButtonText": "Open Contact Form"
+  }
+}

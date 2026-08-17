@@ -1,0 +1,573 @@
+{
+  "schemaVersion": 1,
+  "id": "business",
+  "name": "Business Pro",
+  "description": "Polished corporate layout for consulting firms, law offices, and B2B services.",
+  "category": "business",
+  "previewGradient": "from-slate-800 to-blue-900",
+  "accentColor": "#2563eb",
+  "sortOrder": 0,
+  "features": [
+    "cms"
+  ],
+  "pages": {
+    "about": true,
+    "services": true,
+    "portfolio": true,
+    "blog": true,
+    "news": true,
+    "gallery": true,
+    "contact": true,
+    "rooms": false
+  },
+  "homeSections": [
+    "nav",
+    "hero",
+    "stats",
+    "rooms-teaser",
+    "services-teaser",
+    "portfolio-teaser",
+    "blog-teaser",
+    "news-teaser",
+    "testimonials",
+    "about-teaser",
+    "faq",
+    "contact",
+    "explore",
+    "footer"
+  ],
+  "sectionOrder": [
+    "nav",
+    "hero",
+    "stats",
+    "showcase",
+    "about",
+    "services",
+    "steps",
+    "testimonials",
+    "blog",
+    "team",
+    "gallery",
+    "faq",
+    "cta",
+    "contact",
+    "footer"
+  ],
+  "theme": {
+    "page": "bg-white text-slate-800",
+    "nav": "sticky top-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur-md",
+    "navLink": "text-slate-600 hover:text-blue-600",
+    "navCta": "rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-blue-700",
+    "hero": "bg-gradient-to-br from-slate-900 to-blue-900 text-white",
+    "heroBadge": "text-blue-300 uppercase tracking-widest text-sm font-semibold",
+    "heroTitle": "text-4xl md:text-5xl lg:text-6xl font-bold leading-tight",
+    "heroText": "text-lg text-slate-300",
+    "heroCta": "rounded-lg bg-white px-6 py-3 font-semibold text-slate-900 hover:bg-slate-100",
+    "stats": "bg-blue-600 text-white py-16",
+    "statValue": "text-4xl font-bold",
+    "statLabel": "text-blue-100 text-sm mt-1",
+    "section": "py-20",
+    "sectionAlt": "bg-slate-50 py-20",
+    "sectionTitle": "text-3xl font-bold text-slate-900",
+    "sectionSubtitle": "text-slate-600 mt-2",
+    "card": "rounded-xl border border-slate-200 bg-white p-8 shadow-sm hover:shadow-md transition-shadow",
+    "cardTitle": "text-xl font-semibold text-slate-900",
+    "cardText": "text-slate-600",
+    "aboutImage": "rounded-2xl shadow-xl",
+    "mission": "border-l-4 border-blue-600 pl-6 italic text-slate-600 text-lg",
+    "stepNum": "flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 text-white font-bold",
+    "gallery": "rounded-xl overflow-hidden aspect-[4/3] object-cover w-full hover:scale-105 transition-transform",
+    "showcase": "bg-slate-50 py-20",
+    "showcaseCard": "rounded-xl border border-slate-200 bg-white overflow-hidden shadow-sm hover:shadow-lg transition-shadow group",
+    "showcaseImage": "w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-300",
+    "showcasePrice": "text-lg font-bold text-blue-600",
+    "showcaseTag": "text-xs font-semibold uppercase tracking-wider text-slate-400",
+    "testimonial": "rounded-xl bg-white border border-slate-200 p-8 shadow-sm",
+    "faq": "border-b border-slate-200 py-6",
+    "teamCard": "text-center",
+    "ctaBanner": "bg-gradient-to-r from-slate-900 to-blue-900 text-white py-20",
+    "ctaBannerBtn": "rounded-lg bg-white px-8 py-3 font-semibold text-slate-900 hover:bg-slate-100",
+    "contact": "bg-slate-900 text-white py-20",
+    "contactLabel": "font-medium text-white",
+    "footer": "border-t border-slate-200 py-8 text-center text-sm text-slate-500"
+  },
+  "colorSchemes": [
+    {
+      "id": "ocean",
+      "name": "Ocean Blue",
+      "swatches": [
+        "#1e3a8a",
+        "#2563eb",
+        "#f8fafc"
+      ],
+      "overrides": {}
+    },
+    {
+      "id": "emerald",
+      "name": "Emerald Pro",
+      "swatches": [
+        "#064e3b",
+        "#059669",
+        "#ecfdf5"
+      ],
+      "overrides": {
+        "navLink": "text-slate-600 hover:text-emerald-600",
+        "navCta": "rounded-lg bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-emerald-700",
+        "hero": "bg-gradient-to-br from-slate-900 to-emerald-900 text-white",
+        "heroBadge": "text-emerald-300 uppercase tracking-widest text-sm font-semibold",
+        "stats": "bg-emerald-600 text-white py-16",
+        "statLabel": "text-emerald-100 text-sm mt-1",
+        "mission": "border-l-4 border-emerald-600 pl-6 italic text-slate-600 text-lg",
+        "stepNum": "flex h-10 w-10 items-center justify-center rounded-full bg-emerald-600 text-white font-bold",
+        "ctaBanner": "bg-gradient-to-r from-slate-900 to-emerald-900 text-white py-20",
+        "contact": "bg-emerald-950 text-white py-20"
+      }
+    },
+    {
+      "id": "violet",
+      "name": "Royal Violet",
+      "swatches": [
+        "#4c1d95",
+        "#7c3aed",
+        "#f5f3ff"
+      ],
+      "overrides": {
+        "navLink": "text-slate-600 hover:text-violet-600",
+        "navCta": "rounded-lg bg-violet-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-violet-700",
+        "hero": "bg-gradient-to-br from-slate-900 to-violet-900 text-white",
+        "heroBadge": "text-violet-300 uppercase tracking-widest text-sm font-semibold",
+        "stats": "bg-violet-600 text-white py-16",
+        "statLabel": "text-violet-100 text-sm mt-1",
+        "mission": "border-l-4 border-violet-600 pl-6 italic text-slate-600 text-lg",
+        "stepNum": "flex h-10 w-10 items-center justify-center rounded-full bg-violet-600 text-white font-bold",
+        "ctaBanner": "bg-gradient-to-r from-slate-900 to-violet-900 text-white py-20",
+        "contact": "bg-violet-950 text-white py-20"
+      }
+    }
+  ],
+  "defaultColorSchemeId": "ocean",
+  "defaultLayoutVariantId": "classic",
+  "sectionVariants": {
+    "faq": "stacked",
+    "explore": "card-grid",
+    "contactShell": "split-classic",
+    "contactForm": "standard",
+    "exploreTitle": "Company",
+    "exploreSubtitle": "Find services, case studies, and ways to work with us",
+    "exploreLinkLabel": "Open"
+  },
+  "showcase": {
+    "sectionTitle": "Client Success Stories",
+    "sectionSubtitle": "Real results from companies we have helped transform",
+    "navLabel": "Case Studies",
+    "itemLabel": "Case Study",
+    "showPrice": false,
+    "priceLabel": "ROI",
+    "showTag": true,
+    "tagLabel": "Industry"
+  },
+  "defaultShowcase": [
+    {
+      "title": "TechStart Growth Strategy",
+      "description": "Helped a SaaS startup triple ARR in 18 months through market repositioning and sales optimization.",
+      "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80",
+      "price": "",
+      "tag": "Technology",
+      "link": "contact"
+    },
+    {
+      "title": "Retail Chain Turnaround",
+      "description": "Reduced operational costs by 22% while improving customer satisfaction scores across 40 locations.",
+      "image": "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=600&q=80",
+      "price": "",
+      "tag": "Retail",
+      "link": "contact"
+    },
+    {
+      "title": "Healthcare Expansion",
+      "description": "Guided a regional clinic network through a successful multi-state expansion and EHR integration.",
+      "image": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&q=80",
+      "price": "",
+      "tag": "Healthcare",
+      "link": "contact"
+    },
+    {
+      "title": "Manufacturing Efficiency",
+      "description": "Implemented lean processes that cut production waste by 35% and improved on-time delivery to 98%.",
+      "image": "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&q=80",
+      "price": "",
+      "tag": "Manufacturing",
+      "link": "contact"
+    },
+    {
+      "title": "Financial Services Digital",
+      "description": "Led digital transformation for a credit union, increasing mobile adoption by 200% in one year.",
+      "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80",
+      "price": "",
+      "tag": "Finance",
+      "link": "contact"
+    },
+    {
+      "title": "Nonprofit Scale-Up",
+      "description": "Built fundraising and operations infrastructure that helped a nonprofit 5x its annual impact.",
+      "image": "https://images.unsplash.com/photo-1531206716517-69b0e4f0aee1?w=600&q=80",
+      "price": "",
+      "tag": "Nonprofit",
+      "link": "contact"
+    }
+  ],
+  "navShell": "business",
+  "contactFields": [
+    {
+      "key": "email",
+      "label": "Email",
+      "placeholder": "hello@example.com"
+    },
+    {
+      "key": "phone",
+      "label": "Phone",
+      "placeholder": "(555) 123-4567"
+    },
+    {
+      "key": "address",
+      "label": "Address",
+      "placeholder": "123 Main St, City"
+    },
+    {
+      "key": "hours",
+      "label": "Business Hours",
+      "placeholder": "Mon\u2013Fri 9am\u20136pm"
+    }
+  ],
+  "servicesLabel": "Services",
+  "pageLayouts": {
+    "blog": "grid",
+    "blogPost": "classic",
+    "news": "grid",
+    "newsPost": "classic",
+    "gallery": "grid",
+    "portfolio": "cards"
+  },
+  "hero": {
+    "overlay": false,
+    "overlayGradient": "bg-black/30",
+    "splitColumns": true,
+    "badge": "name",
+    "grayscaleImage": false
+  },
+  "defaults": {
+    "businessName": "Acme Consulting",
+    "tagline": "Strategic solutions for growing businesses",
+    "heroSubtext": "We help ambitious companies scale with data-driven strategy and operational excellence.",
+    "heroImage": "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80",
+    "aboutTitle": "Driving Results Since 2008",
+    "about": "Acme Consulting partners with mid-market and enterprise clients to solve complex business challenges. Our multidisciplinary team brings decades of experience across strategy, technology, and change management.",
+    "aboutImage": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80",
+    "missionStatement": "Our mission is to empower organizations to reach their full potential through insight, innovation, and integrity.",
+    "pageVisibility": {
+      "about": true,
+      "services": true,
+      "portfolio": true,
+      "blog": true,
+      "news": true,
+      "gallery": true,
+      "contact": true,
+      "rooms": false
+    },
+    "sectionVisibility": {
+      "stats": true,
+      "team": true,
+      "steps": true,
+      "faq": true,
+      "cta": true,
+      "testimonials": true,
+      "pricing": false
+    },
+    "stats": [
+      {
+        "value": "250+",
+        "label": "Clients Served"
+      },
+      {
+        "value": "15",
+        "label": "Years in Business"
+      },
+      {
+        "value": "$2B+",
+        "label": "Revenue Generated"
+      },
+      {
+        "value": "40",
+        "label": "Industry Awards"
+      }
+    ],
+    "servicesSectionTitle": "Our Expertise",
+    "servicesSectionSubtitle": "End-to-end consulting across every stage of growth",
+    "services": [
+      {
+        "title": "Strategy & Planning",
+        "description": "Market analysis, competitive positioning, and growth roadmaps."
+      },
+      {
+        "title": "Digital Transformation",
+        "description": "Technology adoption, process automation, and cloud migration."
+      },
+      {
+        "title": "Operations Excellence",
+        "description": "Supply chain optimization, lean processes, and cost reduction."
+      },
+      {
+        "title": "Performance Analytics",
+        "description": "KPI frameworks, dashboards, and predictive modeling."
+      }
+    ],
+    "stepsSectionTitle": "Our Process",
+    "steps": [
+      {
+        "title": "Discovery",
+        "description": "Deep-dive workshops to understand your business, goals, and challenges."
+      },
+      {
+        "title": "Analysis",
+        "description": "Data-driven assessment with actionable insights and benchmarks."
+      },
+      {
+        "title": "Strategy",
+        "description": "Custom roadmap with clear milestones, owners, and timelines."
+      },
+      {
+        "title": "Implementation",
+        "description": "Hands-on execution support with regular progress reviews."
+      }
+    ],
+    "showcaseSectionTitle": "Client Success Stories",
+    "showcaseSectionSubtitle": "Real results from companies we have helped transform",
+    "showcaseItems": [
+      {
+        "title": "TechStart Growth Strategy",
+        "description": "Helped a SaaS startup triple ARR in 18 months through market repositioning and sales optimization.",
+        "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80",
+        "price": "",
+        "tag": "Technology",
+        "link": "contact"
+      },
+      {
+        "title": "Retail Chain Turnaround",
+        "description": "Reduced operational costs by 22% while improving customer satisfaction scores across 40 locations.",
+        "image": "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=600&q=80",
+        "price": "",
+        "tag": "Retail",
+        "link": "contact"
+      },
+      {
+        "title": "Healthcare Expansion",
+        "description": "Guided a regional clinic network through a successful multi-state expansion and EHR integration.",
+        "image": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&q=80",
+        "price": "",
+        "tag": "Healthcare",
+        "link": "contact"
+      },
+      {
+        "title": "Manufacturing Efficiency",
+        "description": "Implemented lean processes that cut production waste by 35% and improved on-time delivery to 98%.",
+        "image": "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&q=80",
+        "price": "",
+        "tag": "Manufacturing",
+        "link": "contact"
+      },
+      {
+        "title": "Financial Services Digital",
+        "description": "Led digital transformation for a credit union, increasing mobile adoption by 200% in one year.",
+        "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80",
+        "price": "",
+        "tag": "Finance",
+        "link": "contact"
+      },
+      {
+        "title": "Nonprofit Scale-Up",
+        "description": "Built fundraising and operations infrastructure that helped a nonprofit 5x its annual impact.",
+        "image": "https://images.unsplash.com/photo-1531206716517-69b0e4f0aee1?w=600&q=80",
+        "price": "",
+        "tag": "Nonprofit",
+        "link": "contact"
+      }
+    ],
+    "gallerySectionTitle": "Case Highlights",
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80",
+      "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=600&q=80",
+      "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=600&q=80"
+    ],
+    "testimonialsSectionTitle": "Client Success Stories",
+    "testimonials": [
+      {
+        "quote": "Outstanding service and incredible results. Highly recommended!",
+        "author": "Sarah Johnson",
+        "role": "CEO, TechStart"
+      },
+      {
+        "quote": "They transformed our business. Professional, creative, and reliable.",
+        "author": "Michael Chen",
+        "role": "Founder, Bloom Co"
+      },
+      {
+        "quote": "The best decision we made this year. Exceeded every expectation.",
+        "author": "Emily Rodriguez",
+        "role": "Director, Apex Group"
+      }
+    ],
+    "faqSectionTitle": "Common Questions",
+    "faqs": [
+      {
+        "question": "How do I get started?",
+        "answer": "Simply reach out via our contact form or give us a call. We offer a free initial consultation."
+      },
+      {
+        "question": "What are your pricing options?",
+        "answer": "We offer flexible packages tailored to your needs and budget. Contact us for a custom quote."
+      },
+      {
+        "question": "How long does a typical project take?",
+        "answer": "Timelines vary by scope, but most projects are completed within 2\u20138 weeks."
+      },
+      {
+        "question": "Do you offer ongoing support?",
+        "answer": "Yes! We provide continued support and maintenance to ensure long-term success."
+      }
+    ],
+    "teamSectionTitle": "Leadership Team",
+    "blogSectionTitle": "Latest from Our Blog",
+    "blogSectionSubtitle": "Insights, tips, and updates from our team",
+    "newsSectionTitle": "News & Updates",
+    "newsSectionSubtitle": "Announcements, press releases, and company news",
+    "newsPosts": [
+      {
+        "title": "We Are Expanding to Serve You Better",
+        "slug": "expanding-to-serve-you-better",
+        "excerpt": "New locations, extended hours, and more ways to connect with our team.",
+        "body": "We are thrilled to announce expanded service hours and a new consultation space designed around your comfort and convenience.\n\nThis investment reflects our commitment to accessibility and excellence. Thank you for being part of our journey \u2014 we cannot wait to welcome you.",
+        "image": "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80",
+        "author": "Press Team",
+        "date": "2026-04-01"
+      },
+      {
+        "title": "Award Recognizes Our Commitment to Quality",
+        "slug": "award-quality-commitment",
+        "excerpt": "Industry leaders honored our team for outstanding client satisfaction.",
+        "body": "Receiving this recognition is a testament to the people behind our work \u2014 dedicated professionals who show up every day with care and craft.\n\nWe share this award with every client who trusted us with their goals. Your feedback shapes how we grow and improve.",
+        "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80",
+        "author": "Communications",
+        "date": "2026-03-18"
+      },
+      {
+        "title": "Partnership Opens New Opportunities",
+        "slug": "partnership-new-opportunities",
+        "excerpt": "Strategic collaboration brings enhanced offerings to our community.",
+        "body": "Our new partnership combines complementary strengths to deliver more value, faster turnaround, and broader expertise under one roof.\n\nStay tuned for launch events and early-access opportunities for existing clients.",
+        "image": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80",
+        "author": "Leadership",
+        "date": "2026-02-05"
+      }
+    ],
+    "pricingSectionTitle": "Pricing Plans",
+    "pricing": [
+      {
+        "title": "Starter",
+        "description": "Essential features for individuals and small teams getting started.",
+        "price": "$29/mo",
+        "tag": "Most popular",
+        "featured": false
+      },
+      {
+        "title": "Professional",
+        "description": "Advanced tools, priority support, and integrations for growing businesses.",
+        "price": "$79/mo",
+        "tag": "Best value",
+        "featured": true
+      },
+      {
+        "title": "Enterprise",
+        "description": "Custom solutions, dedicated account management, and SLA guarantees.",
+        "price": "Custom",
+        "tag": "Contact us",
+        "featured": false
+      }
+    ],
+    "roomsSectionTitle": "Rooms & Suites",
+    "roomsSectionSubtitle": "Explore our accommodations and reserve your stay",
+    "bookingSectionTitle": "Book Your Stay",
+    "bookingSectionSubtitle": "Select dates, guests, and your preferred room type",
+    "roomTypes": [],
+    "blogPosts": [
+      {
+        "title": "5 Strategies to Grow Your Business This Year",
+        "slug": "5-strategies-to-grow-your-business",
+        "excerpt": "Practical steps you can take today to build momentum and reach more customers.",
+        "body": "Growing a business takes focus, consistency, and a willingness to adapt. Start by clarifying your core offer, then double down on the channels that already bring results.\n\nReview your customer journey from first touch to repeat purchase. Small improvements at each step compound into meaningful revenue gains. Finally, invest in relationships \u2014 referrals and retention often outperform cold outreach.",
+        "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
+        "author": "Alex Morgan",
+        "date": "2026-03-12"
+      },
+      {
+        "title": "What Clients Are Asking Us Right Now",
+        "slug": "what-clients-are-asking-us",
+        "excerpt": "A quick roundup of the most common questions we hear \u2014 and how we answer them.",
+        "body": "Every season brings a new set of priorities. Lately, clients ask about pricing transparency, faster turnaround times, and how to stand out in crowded markets.\n\nOur advice stays grounded in fundamentals: deliver exceptional value, communicate clearly, and measure what matters. When in doubt, talk to your customers \u2014 their feedback is the best roadmap.",
+        "image": "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80",
+        "author": "Jordan Lee",
+        "date": "2026-02-28"
+      },
+      {
+        "title": "Behind the Scenes: How We Work",
+        "slug": "behind-the-scenes-how-we-work",
+        "excerpt": "Take a peek at our process, tools, and the principles that guide every project.",
+        "body": "We believe great outcomes come from clear goals, collaborative planning, and disciplined execution. Every engagement starts with listening \u2014 understanding where you are and where you want to go.\n\nFrom there we build a tailored plan with milestones you can track. Throughout delivery we keep communication open so there are no surprises, only steady progress toward results you can measure.",
+        "image": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80",
+        "author": "Taylor Brooks",
+        "date": "2026-01-15"
+      }
+    ],
+    "team": [
+      {
+        "name": "Alex Morgan",
+        "role": "Founder & CEO",
+        "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80"
+      },
+      {
+        "name": "Jordan Lee",
+        "role": "Creative Director",
+        "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
+      },
+      {
+        "name": "Taylor Brooks",
+        "role": "Operations Lead",
+        "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80"
+      }
+    ],
+    "ctaBannerTitle": "Ready to accelerate your growth?",
+    "ctaBannerText": "Schedule a free 30-minute strategy session with our senior consultants.",
+    "ctaText": "Schedule a Consultation",
+    "ctaLink": "contact",
+    "seoEnabled": false,
+    "seoTitle": "",
+    "seoDescription": "",
+    "seoKeywords": "",
+    "seoSiteUrl": "",
+    "email": "hello@acmeconsulting.com",
+    "phone": "(555) 123-4567",
+    "address": "100 Market Street, San Francisco, CA",
+    "hours": "Mon\u2013Fri 9am\u20136pm",
+    "instagram": "",
+    "website": "",
+    "linkedin": "",
+    "whatsapp": "",
+    "supportEmail": "",
+    "reservationEmail": "",
+    "licenseNumber": "",
+    "bookingUrl": "",
+    "contactSectionTitle": "Get in Touch",
+    "contactFormTitle": "Send Us a Message",
+    "contactFormUrl": "",
+    "contactFormButtonText": "Open Contact Form"
+  }
+}

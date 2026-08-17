@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { getManifest, isImportedTemplate, removeImportedManifest } from '../catalog/catalog'
 import { categories } from '../data/categories'
 import { getLayoutVariants } from '../data/layoutVariants'
 import type { TemplateMeta } from '../types'
@@ -10,37 +11,66 @@ interface Props {
 export function TemplateCard({ template }: Props) {
   const categoryLabel = categories.find((c) => c.id === template.category)?.label ?? template.category
   const layoutCount = getLayoutVariants(template.id).length
+  const imported = isImportedTemplate(template.id)
+  const manifest = getManifest(template.id)
+  const heroImage = manifest?.defaults.heroImage ?? ''
+  const tagline = manifest?.defaults.tagline || template.name
+  const businessName = manifest?.defaults.businessName || template.name
+  const overlay = Boolean(manifest?.hero.overlay)
+  const split = Boolean(manifest?.hero.splitColumns) && !overlay
+  const heroPanel = (manifest?.theme.hero ?? 'bg-slate-900 text-white')
+    .split(/\s+/)
+    .filter((cls) => !/^(p|px|py|pt|pb|pl|pr)-/.test(cls))
+    .join(' ')
 
   return (
     <div className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl">
-      <div className={`relative h-48 bg-gradient-to-br ${template.previewGradient} p-6`}>
-        <div className="absolute inset-0 bg-black/10" />
-        <div className="relative flex flex-wrap gap-2">
-          <span className="inline-block rounded-full bg-black/30 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
+      <div className="relative h-52 overflow-hidden bg-slate-900">
+        {split ? (
+          <div className="absolute inset-0 grid grid-cols-2">
+            <div className={`relative flex flex-col justify-end p-4 ${heroPanel}`}>
+              <p className="mb-1 line-clamp-1 text-[10px] font-semibold uppercase tracking-wider text-white/70">{businessName}</p>
+              <p className="line-clamp-3 text-sm font-bold leading-snug text-white">{tagline}</p>
+            </div>
+            {heroImage ? (
+              <img src={heroImage} alt="" className="h-full w-full object-cover" />
+            ) : (
+              <div className={`h-full w-full bg-gradient-to-br ${template.previewGradient}`} />
+            )}
+          </div>
+        ) : (
+          <>
+            {heroImage ? (
+              <img src={heroImage} alt="" className="absolute inset-0 h-full w-full object-cover" />
+            ) : (
+              <div className={`absolute inset-0 bg-gradient-to-br ${template.previewGradient}`} />
+            )}
+            <div className={`absolute inset-0 ${manifest?.hero.overlayGradient || 'bg-black/40'}`} />
+            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent p-4 pt-16">
+              <p className="mb-1 line-clamp-1 text-[10px] font-semibold uppercase tracking-wider text-white/70">{businessName}</p>
+              <p className="line-clamp-2 text-sm font-bold leading-snug text-white">{tagline}</p>
+            </div>
+          </>
+        )}
+
+        <div className="absolute left-3 top-3 z-10 flex flex-wrap gap-1.5">
+          <span className="inline-block rounded-full bg-black/45 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur-sm">
             {categoryLabel}
           </span>
-          <span className="inline-block rounded-full bg-white/20 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
+          <span className="inline-block rounded-full bg-white/20 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur-sm">
             {layoutCount} styles
           </span>
           {template.premium && (
-            <span className="inline-block rounded-full bg-amber-400/90 px-3 py-1 text-xs font-bold text-amber-950 backdrop-blur-sm">
+            <span className="inline-block rounded-full bg-amber-400/90 px-2.5 py-1 text-[11px] font-bold text-amber-950 backdrop-blur-sm">
               Premium
             </span>
           )}
+          {imported && (
+            <span className="inline-block rounded-full bg-emerald-400/90 px-2.5 py-1 text-[11px] font-bold text-emerald-950 backdrop-blur-sm">
+              Imported
+            </span>
+          )}
         </div>
-        <div className="relative mt-4 space-y-2">
-          <div className="h-3 w-24 rounded bg-white/30" />
-          <div className="h-6 w-40 rounded bg-white/50" />
-          <div className="mt-4 flex gap-2">
-            <div className="h-16 flex-1 rounded-lg bg-white/20" />
-            <div className="h-16 flex-1 rounded-lg bg-white/20" />
-            <div className="h-16 flex-1 rounded-lg bg-white/20" />
-          </div>
-        </div>
-        <div
-          className="absolute bottom-4 right-4 h-8 w-8 rounded-full opacity-80"
-          style={{ backgroundColor: template.accentColor }}
-        />
       </div>
       <div className="flex flex-1 flex-col p-6">
         <h3 className="mb-2 text-xl font-bold text-slate-900">{template.name}</h3>
@@ -60,6 +90,15 @@ export function TemplateCard({ template }: Props) {
             Use Template
           </Link>
         </div>
+        {imported && (
+          <button
+            type="button"
+            onClick={() => removeImportedManifest(template.id)}
+            className="mt-3 text-xs font-semibold text-red-600 hover:text-red-700"
+          >
+            Remove import
+          </button>
+        )}
       </div>
     </div>
   )

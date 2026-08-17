@@ -342,6 +342,15 @@ class SiteSettingResource extends Resource
                         ->required()
                         ->native(false),
                 ]),
+                Forms\\Components\\Tabs\\Tab::make('Brand')->schema([
+                    Forms\\Components\\FileUpload::make('logo')->image()->disk('public')->directory('uploads')->helperText('Shown in the site navigation.'),
+                    Forms\\Components\\Toggle::make('logo_show_name')->label('Show business name next to logo')->default(true),
+                    Forms\\Components\\ColorPicker::make('brand_primary')->label('Primary')->helperText('Buttons and calls to action.'),
+                    Forms\\Components\\ColorPicker::make('brand_secondary')->label('Secondary'),
+                    Forms\\Components\\ColorPicker::make('brand_accent')->label('Accent')->helperText('Links, prices, and highlights.'),
+                    Forms\\Components\\Select::make('font_heading')->label('Heading font')->options(\\App\\Support\\Brand::selectOptions())->native(false),
+                    Forms\\Components\\Select::make('font_body')->label('Body font')->options(\\App\\Support\\Brand::selectOptions())->native(false),
+                ]),
                 Forms\\Components\\Tabs\\Tab::make('About')->schema([
                     Forms\\Components\\TextInput::make('about_title'),
                     Forms\\Components\\Textarea::make('about'),
@@ -380,6 +389,10 @@ class SiteSettingResource extends Resource
                     Forms\\Components\\TextInput::make('phone'),
                     Forms\\Components\\TextInput::make('address'),
                     Forms\\Components\\TextInput::make('hours'),
+                    Forms\\Components\\TextInput::make('license_number')->label('License / credentials'),
+                    Forms\\Components\\TextInput::make('instagram')->label('Instagram')->url(),
+                    Forms\\Components\\TextInput::make('linkedin')->label('LinkedIn')->url(),
+                    Forms\\Components\\TextInput::make('website')->label('Website')->url(),
                 ]),
             ]),
         ]);

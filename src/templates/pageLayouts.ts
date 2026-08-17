@@ -1,3 +1,4 @@
+import { requireManifest } from '../catalog/catalog'
 import type { TemplateId } from '../types'
 
 export type BlogListLayout = 'grid' | 'magazine' | 'minimal'
@@ -16,33 +17,6 @@ export interface TemplatePageLayouts {
   portfolio: PortfolioLayout
 }
 
-const layouts: Record<TemplateId, TemplatePageLayouts> = {
-  business: { blog: 'grid', blogPost: 'classic', news: 'grid', newsPost: 'classic', gallery: 'grid', portfolio: 'cards' },
-  creative: { blog: 'magazine', blogPost: 'editorial', news: 'timeline', newsPost: 'press', gallery: 'masonry', portfolio: 'case-study' },
-  restaurant: { blog: 'minimal', blogPost: 'classic', news: 'compact', newsPost: 'classic', gallery: 'rows', portfolio: 'showcase' },
-  saas: { blog: 'grid', blogPost: 'split', news: 'grid', newsPost: 'split', gallery: 'grid', portfolio: 'cards' },
-  fitness: { blog: 'grid', blogPost: 'classic', news: 'compact', newsPost: 'classic', gallery: 'grid', portfolio: 'showcase' },
-  boutique: { blog: 'magazine', blogPost: 'editorial', news: 'timeline', newsPost: 'press', gallery: 'masonry', portfolio: 'case-study' },
-  realtor: { blog: 'minimal', blogPost: 'split', news: 'compact', newsPost: 'classic', gallery: 'rows', portfolio: 'showcase' },
-  photography: { blog: 'magazine', blogPost: 'editorial', news: 'timeline', newsPost: 'press', gallery: 'masonry', portfolio: 'case-study' },
-  medical: { blog: 'grid', blogPost: 'classic', news: 'grid', newsPost: 'classic', gallery: 'grid', portfolio: 'cards' },
-  lawfirm: { blog: 'minimal', blogPost: 'split', news: 'compact', newsPost: 'press', gallery: 'rows', portfolio: 'cards' },
-  salon: { blog: 'magazine', blogPost: 'editorial', news: 'timeline', newsPost: 'classic', gallery: 'masonry', portfolio: 'showcase' },
-  noir: { blog: 'magazine', blogPost: 'editorial', news: 'compact', newsPost: 'press', gallery: 'masonry', portfolio: 'case-study' },
-  terra: { blog: 'minimal', blogPost: 'classic', news: 'timeline', newsPost: 'classic', gallery: 'grid', portfolio: 'cards' },
-  coastal: { blog: 'magazine', blogPost: 'editorial', news: 'grid', newsPost: 'split', gallery: 'rows', portfolio: 'showcase' },
-  hotel: { blog: 'grid', blogPost: 'classic', news: 'grid', newsPost: 'classic', gallery: 'rows', portfolio: 'showcase' },
-  guesthouse: { blog: 'magazine', blogPost: 'editorial', news: 'timeline', newsPost: 'classic', gallery: 'masonry', portfolio: 'cards' },
-  alpine: { blog: 'grid', blogPost: 'split', news: 'compact', newsPost: 'classic', gallery: 'rows', portfolio: 'showcase' },
-  ryokan: { blog: 'minimal', blogPost: 'editorial', news: 'timeline', newsPost: 'press', gallery: 'masonry', portfolio: 'case-study' },
-  desert: { blog: 'magazine', blogPost: 'editorial', news: 'grid', newsPost: 'split', gallery: 'rows', portfolio: 'showcase' },
-  nordic: { blog: 'grid', blogPost: 'classic', news: 'timeline', newsPost: 'classic', gallery: 'grid', portfolio: 'cards' },
-  jungle: { blog: 'magazine', blogPost: 'editorial', news: 'compact', newsPost: 'split', gallery: 'masonry', portfolio: 'showcase' },
-  vineyard: { blog: 'minimal', blogPost: 'split', news: 'timeline', newsPost: 'press', gallery: 'rows', portfolio: 'case-study' },
-  arcade: { blog: 'grid', blogPost: 'split', news: 'compact', newsPost: 'split', gallery: 'grid', portfolio: 'showcase' },
-  coffee: { blog: 'magazine', blogPost: 'editorial', news: 'timeline', newsPost: 'classic', gallery: 'masonry', portfolio: 'showcase' },
-}
-
 export function getPageLayouts(templateId: TemplateId): TemplatePageLayouts {
-  return layouts[templateId]
+  return requireManifest(templateId).pageLayouts
 }

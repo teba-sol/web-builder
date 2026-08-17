@@ -16,6 +16,7 @@ import {
 } from './generateBooking'
 import { generateFilamentFiles } from './generateFilament'
 import { generateSetupFiles, generateSetupToken } from './generateSetup'
+import { FONT_OPTIONS } from '../../data/brand'
 import { phpStr } from './phpUtils'
 
 export type BackendFileMap = Record<string, string>
@@ -165,6 +166,13 @@ function buildSettingsRecord(payload: SiteExportPayload): Record<string, unknown
     tagline: c.tagline,
     hero_subtext: c.heroSubtext,
     hero_image: mapImage(c.heroImage, 'hero'),
+    logo: mapImage(c.logo, 'logo'),
+    logo_show_name: c.logoShowName !== false,
+    brand_primary: c.brandPrimary,
+    brand_secondary: c.brandSecondary,
+    brand_accent: c.brandAccent,
+    font_heading: c.fontHeading,
+    font_body: c.fontBody,
     about_title: c.aboutTitle,
     about: c.about,
     about_image: mapImage(c.aboutImage, 'about'),
@@ -175,9 +183,6 @@ function buildSettingsRecord(payload: SiteExportPayload): Record<string, unknown
     news_section_subtitle: c.newsSectionSubtitle,
     pricing_section_title: c.pricingSectionTitle,
     ...bookingSettingsFields(c),
-    terms_section_title: c.termsSectionTitle,
-    terms_content: c.termsContent,
-    cookie_banner_text: c.cookieBannerText,
     services_section_title: c.servicesSectionTitle,
     services_section_subtitle: c.servicesSectionSubtitle,
     steps_section_title: c.stepsSectionTitle,
@@ -197,6 +202,10 @@ function buildSettingsRecord(payload: SiteExportPayload): Record<string, unknown
     phone: c.phone,
     address: c.address,
     hours: c.hours,
+    license_number: c.licenseNumber,
+    instagram: c.instagram,
+    linkedin: c.linkedin,
+    website: c.website,
     contact_section_title: c.contactSectionTitle,
     contact_form_title: c.contactFormTitle,
     contact_form_button_text: c.contactFormButtonText,
@@ -293,6 +302,106 @@ ${selectPhp}
 `
 }
 
+function generateBrandPhp(): string {
+  const fontsPhp = FONT_OPTIONS.map(
+    (font) => `        '${phpStr(font.id)}' => [
+            'label' => '${phpStr(font.label)}',
+            'family' => '${phpStr(font.family)}',
+            'google' => '${phpStr(font.google)}',
+        ],`,
+  ).join('\n')
+
+  return `<?php
+
+namespace App\\Support;
+
+class Brand
+{
+    public const FONTS = [
+${fontsPhp}
+    ];
+
+    public static function selectOptions(): array
+    {
+        $options = ['' => 'Template default'];
+        foreach (self::FONTS as $id => $font) {
+            $options[$id] = $font['label'];
+        }
+
+        return $options;
+    }
+
+    /** @return array{label: string, family: string, google: string}|null */
+    public static function font(?string $id): ?array
+    {
+        $id = (string) $id;
+
+        return self::FONTS[$id] ?? null;
+    }
+
+    public static function fontHref(?string $heading, ?string $body): string
+    {
+        $families = [];
+        foreach ([$heading, $body] as $id) {
+            $font = self::font(is_string($id) ? $id : null);
+            if ($font && ! in_array($font['google'], $families, true)) {
+                $families[] = $font['google'];
+            }
+        }
+
+        if ($families === []) {
+            return 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap';
+        }
+
+        $query = implode('&', array_map(static fn (string $family) => 'family=' . $family, $families));
+
+        return 'https://fonts.googleapis.com/css2?' . $query . '&display=swap';
+    }
+
+    public static function isHex(?string $value): bool
+    {
+        return is_string($value) && (bool) preg_match('/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/', trim($value));
+    }
+
+    public static function css(object $settings): string
+    {
+        $heading = self::font($settings->font_heading ?? null);
+        $body = self::font($settings->font_body ?? null);
+        $primary = self::isHex($settings->brand_primary ?? null) ? trim((string) $settings->brand_primary) : '';
+        $secondary = self::isHex($settings->brand_secondary ?? null) ? trim((string) $settings->brand_secondary) : '';
+        $accent = self::isHex($settings->brand_accent ?? null) ? trim((string) $settings->brand_accent) : '';
+
+        $lines = ['[data-site-brand] {'];
+        if ($primary) {
+            $lines[] = '  --brand-primary: ' . $primary . ';';
+        }
+        if ($secondary) {
+            $lines[] = '  --brand-secondary: ' . $secondary . ';';
+        }
+        if ($accent) {
+            $lines[] = '  --brand-accent: ' . $accent . ';';
+        }
+        if ($body) {
+            $lines[] = '  --font-body: ' . $body['family'] . ';';
+            $lines[] = '  font-family: var(--font-body);';
+        }
+        if ($heading) {
+            $lines[] = '  --font-heading: ' . $heading['family'] . ';';
+        }
+        $lines[] = '}';
+        if ($heading) {
+            $lines[] = '[data-site-brand] h1, [data-site-brand] h2, [data-site-brand] h3 { font-family: var(--font-heading); }';
+        }
+        if ($primary) {
+            $lines[] = '[data-site-brand] [data-brand-cta] { background-color: var(--brand-primary) !important; color: #fff !important; border-color: var(--brand-primary) !important; }';
+        }
+
+        return implode("\\n", $lines);
+    }
+}
+`
+}
+
 function generateSiteSettingModel(payload: SiteExportPayload): string {
   const defaults = jsonForPhp(buildSettingsRecord(payload))
 
@@ -307,17 +416,19 @@ class SiteSetting extends Model
 {
     protected $fillable = [
         'business_name', 'tagline', 'hero_subtext', 'hero_image',
+        'logo', 'logo_show_name', 'brand_primary', 'brand_secondary', 'brand_accent',
+        'font_heading', 'font_body',
         'about_title', 'about', 'about_image', 'mission_statement',
         'page_visibility', 'section_visibility', 'services_section_title', 'services_section_subtitle',
         'news_section_title', 'news_section_subtitle', 'pricing_section_title',
         'rooms_section_title', 'rooms_section_subtitle',
         'booking_section_title', 'booking_section_subtitle',
-        'terms_section_title', 'terms_content', 'cookie_banner_text',
         'steps_section_title', 'showcase_section_title', 'showcase_section_subtitle',
         'gallery_section_title', 'testimonials_section_title',
         'blog_section_title', 'blog_section_subtitle', 'faq_section_title',
         'team_section_title', 'cta_banner_title', 'cta_banner_text',
         'cta_text', 'cta_link', 'email', 'phone', 'address', 'hours',
+        'license_number', 'instagram', 'linkedin', 'website',
         'contact_section_title', 'contact_form_title', 'contact_form_button_text',
         'template_id', 'color_scheme_id', 'layout_variant_id',
         'seo_enabled', 'seo_title', 'seo_description', 'seo_keywords', 'seo_site_url',
@@ -326,6 +437,7 @@ class SiteSetting extends Model
     protected $casts = [
         'page_visibility' => 'array',
         'section_visibility' => 'array',
+        'logo_show_name' => 'boolean',
         'seo_enabled' => 'boolean',
     ];
 
@@ -733,6 +845,7 @@ class User extends Authenticatable implements FilamentUser
     'app/Models/SiteSetting.php': generateSiteSettingModel(payload),
 
     'app/Support/LayoutVariants.php': generateLayoutVariantsPhp(),
+    'app/Support/Brand.php': generateBrandPhp(),
 
     'app/Models/ContactMessage.php': `<?php
 
@@ -1094,6 +1207,13 @@ return new class extends Migration
             $table->string('tagline')->nullable();
             $table->text('hero_subtext')->nullable();
             $table->string('hero_image')->nullable();
+            $table->string('logo')->nullable();
+            $table->boolean('logo_show_name')->default(true);
+            $table->string('brand_primary')->nullable();
+            $table->string('brand_secondary')->nullable();
+            $table->string('brand_accent')->nullable();
+            $table->string('font_heading')->nullable();
+            $table->string('font_body')->nullable();
             $table->string('about_title')->nullable();
             $table->text('about')->nullable();
             $table->string('about_image')->nullable();
@@ -1107,9 +1227,6 @@ return new class extends Migration
             $table->string('rooms_section_subtitle')->nullable();
             $table->string('booking_section_title')->nullable();
             $table->string('booking_section_subtitle')->nullable();
-            $table->string('terms_section_title')->nullable();
-            $table->text('terms_content')->nullable();
-            $table->text('cookie_banner_text')->nullable();
             $table->string('services_section_title')->nullable();
             $table->string('services_section_subtitle')->nullable();
             $table->string('steps_section_title')->nullable();
@@ -1129,6 +1246,10 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->string('address')->nullable();
             $table->string('hours')->nullable();
+            $table->string('license_number')->nullable();
+            $table->string('instagram')->nullable();
+            $table->string('linkedin')->nullable();
+            $table->string('website')->nullable();
             $table->string('contact_section_title')->nullable();
             $table->string('contact_form_title')->nullable();
             $table->string('contact_form_button_text')->nullable();

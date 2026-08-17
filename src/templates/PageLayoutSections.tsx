@@ -481,7 +481,7 @@ export function PortfolioTeaser({ c, t, variant, basePath }: LayoutProps) {
   )
 }
 
-// ─── Pricing, Terms, Cookie ─────────────────────────────────────────────────
+// ─── Pricing ────────────────────────────────────────────────────────────────
 
 export function PricingSection({ c, t }: { c: SiteContent; t: TemplateTheme }) {
   const plans = c.pricing.filter((p) => p.title)
@@ -502,34 +502,6 @@ export function PricingSection({ c, t }: { c: SiteContent; t: TemplateTheme }) {
         </div>
       </div>
     </section>
-  )
-}
-
-export function TermsSection({ c, t }: { c: SiteContent; t: TemplateTheme }) {
-  if (!c.termsContent?.trim()) return null
-  return (
-    <section className={t.sectionAlt}>
-      <div className="mx-auto max-w-3xl px-6 py-12">
-        <h2 className={`mb-8 ${t.sectionTitle}`}>{c.termsSectionTitle}</h2>
-        <div className={`space-y-4 leading-relaxed ${t.cardText}`}>
-          {c.termsContent.split('\n\n').map((para, i) => <p key={i}>{para}</p>)}
-        </div>
-      </div>
-    </section>
-  )
-}
-
-export function CookieBanner({ c, t }: { c: SiteContent; t: TemplateTheme }) {
-  if (!c.cookieBannerText?.trim()) return null
-  return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 border-t bg-white/95 px-6 py-4 shadow-lg backdrop-blur">
-      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4">
-        <p className={`text-sm ${t.cardText}`}>{c.cookieBannerText}</p>
-        <button type="button" className={`shrink-0 rounded-lg px-5 py-2 text-sm font-semibold ${t.navCta}`} onClick={(e) => { (e.currentTarget.parentElement?.parentElement as HTMLElement).style.display = 'none' }}>
-          Accept
-        </button>
-      </div>
-    </div>
   )
 }
 

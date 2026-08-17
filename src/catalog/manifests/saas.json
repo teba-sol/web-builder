@@ -1,0 +1,572 @@
+{
+  "schemaVersion": 1,
+  "id": "saas",
+  "name": "SaaS Launch",
+  "description": "Modern product landing page with gradient hero for startups and software companies.",
+  "category": "tech",
+  "previewGradient": "from-indigo-600 to-cyan-500",
+  "accentColor": "#6366f1",
+  "sortOrder": 3,
+  "features": [
+    "cms"
+  ],
+  "pages": {
+    "about": true,
+    "services": true,
+    "portfolio": true,
+    "blog": true,
+    "news": true,
+    "gallery": true,
+    "contact": true,
+    "rooms": false
+  },
+  "homeSections": [
+    "nav",
+    "hero",
+    "stats",
+    "rooms-teaser",
+    "services-teaser",
+    "portfolio-teaser",
+    "blog-teaser",
+    "news-teaser",
+    "testimonials",
+    "about-teaser",
+    "faq",
+    "contact",
+    "explore",
+    "footer"
+  ],
+  "sectionOrder": [
+    "nav",
+    "hero",
+    "stats",
+    "services",
+    "showcase",
+    "about",
+    "steps",
+    "gallery",
+    "testimonials",
+    "blog",
+    "faq",
+    "cta",
+    "contact",
+    "footer"
+  ],
+  "theme": {
+    "page": "bg-slate-950 text-white",
+    "nav": "border-b border-white/10 bg-slate-950/80 backdrop-blur-xl sticky top-0 z-50",
+    "navLink": "text-slate-400 hover:text-indigo-400",
+    "navCta": "rounded-lg bg-indigo-600 px-5 py-2 text-sm font-semibold hover:bg-indigo-500",
+    "hero": "relative overflow-hidden py-28",
+    "heroBadge": "rounded-full border border-indigo-500/30 bg-indigo-500/10 px-4 py-1 text-xs text-indigo-300",
+    "heroTitle": "text-4xl md:text-5xl lg:text-6xl font-bold leading-tight",
+    "heroText": "text-lg text-slate-400",
+    "heroCta": "rounded-lg bg-gradient-to-r from-indigo-600 to-cyan-600 px-6 py-3 font-semibold",
+    "stats": "border-y border-white/10 py-16",
+    "statValue": "text-4xl font-bold text-cyan-400",
+    "statLabel": "text-slate-500 text-sm mt-1",
+    "section": "py-24",
+    "sectionAlt": "py-24",
+    "sectionTitle": "text-3xl font-bold",
+    "sectionSubtitle": "text-slate-400 mt-2",
+    "card": "rounded-2xl border border-white/10 bg-white/5 p-8",
+    "cardTitle": "text-xl font-semibold",
+    "cardText": "text-slate-400",
+    "aboutImage": "rounded-2xl border border-white/10",
+    "mission": "text-indigo-300 text-lg",
+    "stepNum": "flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600 font-bold text-sm",
+    "gallery": "rounded-xl border border-white/10 w-full object-cover",
+    "showcase": "py-24 border-y border-white/10",
+    "showcaseCard": "rounded-2xl border border-white/10 bg-white/5 overflow-hidden hover:border-indigo-500/50 transition-colors",
+    "showcaseImage": "w-full aspect-video object-cover",
+    "showcasePrice": "text-2xl font-bold text-cyan-400",
+    "showcaseTag": "text-xs text-indigo-300 uppercase tracking-wider",
+    "testimonial": "rounded-2xl border border-white/10 p-8",
+    "faq": "border-b border-white/10 py-6",
+    "teamCard": "text-center",
+    "ctaBanner": "bg-gradient-to-br from-indigo-950 to-slate-900 border-y border-white/10 py-20",
+    "ctaBannerBtn": "rounded-lg bg-cyan-500 px-8 py-3 font-bold text-slate-950",
+    "contact": "py-24",
+    "contactLabel": "text-xs uppercase text-indigo-400 font-bold",
+    "footer": "border-t border-white/10 py-8 text-center text-sm text-slate-500"
+  },
+  "colorSchemes": [
+    {
+      "id": "indigo",
+      "name": "Indigo Tech",
+      "swatches": [
+        "#312e81",
+        "#6366f1",
+        "#0f172a"
+      ],
+      "overrides": {}
+    },
+    {
+      "id": "emerald",
+      "name": "Emerald SaaS",
+      "swatches": [
+        "#064e3b",
+        "#10b981",
+        "#0f172a"
+      ],
+      "overrides": {
+        "navLink": "text-slate-400 hover:text-emerald-400",
+        "navCta": "rounded-lg bg-emerald-600 px-5 py-2 text-sm font-semibold hover:bg-emerald-500",
+        "heroBadge": "rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-1 text-xs text-emerald-300",
+        "heroCta": "rounded-lg bg-gradient-to-r from-emerald-600 to-teal-600 px-6 py-3 font-semibold",
+        "statValue": "text-4xl font-bold text-emerald-400",
+        "mission": "text-emerald-300 text-lg",
+        "stepNum": "flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-600 font-bold text-sm",
+        "ctaBanner": "bg-gradient-to-br from-emerald-950 to-slate-900 border-y border-white/10 py-20",
+        "ctaBannerBtn": "rounded-lg bg-emerald-500 px-8 py-3 font-bold text-slate-950",
+        "contactLabel": "text-xs uppercase text-emerald-400 font-bold"
+      }
+    },
+    {
+      "id": "sunset",
+      "name": "Sunset Gradient",
+      "swatches": [
+        "#9a3412",
+        "#f97316",
+        "#0f172a"
+      ],
+      "overrides": {
+        "navLink": "text-slate-400 hover:text-orange-400",
+        "navCta": "rounded-lg bg-orange-600 px-5 py-2 text-sm font-semibold hover:bg-orange-500",
+        "heroBadge": "rounded-full border border-orange-500/30 bg-orange-500/10 px-4 py-1 text-xs text-orange-300",
+        "heroCta": "rounded-lg bg-gradient-to-r from-orange-600 to-rose-600 px-6 py-3 font-semibold",
+        "statValue": "text-4xl font-bold text-orange-400",
+        "mission": "text-orange-300 text-lg",
+        "stepNum": "flex h-10 w-10 items-center justify-center rounded-lg bg-orange-600 font-bold text-sm",
+        "ctaBanner": "bg-gradient-to-br from-orange-950 to-slate-900 border-y border-white/10 py-20",
+        "ctaBannerBtn": "rounded-lg bg-orange-500 px-8 py-3 font-bold text-slate-950",
+        "contactLabel": "text-xs uppercase text-orange-400 font-bold"
+      }
+    }
+  ],
+  "defaultColorSchemeId": "indigo",
+  "defaultLayoutVariantId": "classic",
+  "sectionVariants": {
+    "faq": "two-column",
+    "explore": "list-arrows",
+    "contactShell": "sidebar-panel",
+    "contactForm": "minimal-border",
+    "exploreTitle": "Product",
+    "exploreSubtitle": "Features, pricing, docs, and product updates",
+    "exploreLinkLabel": "Go to"
+  },
+  "showcase": {
+    "sectionTitle": "Pricing Plans",
+    "sectionSubtitle": "Simple, transparent pricing for teams of every size",
+    "navLabel": "Pricing",
+    "itemLabel": "Plan",
+    "showPrice": true,
+    "priceLabel": "Price / mo",
+    "showTag": true,
+    "tagLabel": "Best for"
+  },
+  "defaultShowcase": [
+    {
+      "title": "Starter",
+      "description": "Perfect for small teams getting started. Tasks, boards, and basic automations.",
+      "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80",
+      "price": "$0",
+      "tag": "Up to 5 users",
+      "link": "contact"
+    },
+    {
+      "title": "Professional",
+      "description": "Advanced workflows, integrations, and reporting for growing teams.",
+      "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80",
+      "price": "$29",
+      "tag": "Up to 25 users",
+      "link": "contact"
+    },
+    {
+      "title": "Business",
+      "description": "Unlimited projects, priority support, and custom automations.",
+      "image": "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=600&q=80",
+      "price": "$79",
+      "tag": "Up to 100 users",
+      "link": "contact"
+    },
+    {
+      "title": "Enterprise",
+      "description": "SSO, audit logs, dedicated CSM, and SLA guarantees.",
+      "image": "https://images.unsplash.com/photo-1551434678-e076c223a692?w=600&q=80",
+      "price": "Custom",
+      "tag": "Unlimited",
+      "link": "contact"
+    },
+    {
+      "title": "Add-on: Analytics Pro",
+      "description": "Advanced dashboards, custom reports, and data export.",
+      "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80",
+      "price": "$15",
+      "tag": "Per user",
+      "link": "contact"
+    },
+    {
+      "title": "Add-on: Automation Pack",
+      "description": "500 additional automation runs per month.",
+      "image": "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=600&q=80",
+      "price": "$10",
+      "tag": "Per month",
+      "link": "contact"
+    }
+  ],
+  "navShell": "saas",
+  "contactFields": [
+    {
+      "key": "email",
+      "label": "Sales Email",
+      "placeholder": "sales@yourapp.com"
+    },
+    {
+      "key": "supportEmail",
+      "label": "Support Email",
+      "placeholder": "help@yourapp.com"
+    },
+    {
+      "key": "linkedin",
+      "label": "LinkedIn",
+      "placeholder": "linkedin.com/company/you"
+    },
+    {
+      "key": "bookingUrl",
+      "label": "Demo / Sign-up URL",
+      "placeholder": "https://app.yoursite.com"
+    }
+  ],
+  "servicesLabel": "Features",
+  "pageLayouts": {
+    "blog": "grid",
+    "blogPost": "split",
+    "news": "grid",
+    "newsPost": "split",
+    "gallery": "grid",
+    "portfolio": "cards"
+  },
+  "hero": {
+    "overlay": false,
+    "overlayGradient": "bg-black/30",
+    "splitColumns": true,
+    "badge": "name",
+    "grayscaleImage": false
+  },
+  "defaults": {
+    "businessName": "Flowstack",
+    "tagline": "Ship faster with the all-in-one project platform",
+    "heroSubtext": "Plan, build, and launch products 3x faster. Trusted by 2,000+ teams worldwide.",
+    "heroImage": "https://images.unsplash.com/photo-1551434678-e076c223a692?w=1200&q=80",
+    "aboutTitle": "Built for Modern Teams",
+    "about": "Flowstack replaces scattered tools with one unified workspace. From sprint planning to deployment tracking, everything your team needs lives in one beautifully designed platform.",
+    "aboutImage": "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800&q=80",
+    "missionStatement": "We exist to eliminate friction so teams can focus on what matters \u2014 building great products.",
+    "pageVisibility": {
+      "about": true,
+      "services": true,
+      "portfolio": true,
+      "blog": true,
+      "news": true,
+      "gallery": true,
+      "contact": true,
+      "rooms": false
+    },
+    "sectionVisibility": {
+      "stats": true,
+      "team": false,
+      "steps": true,
+      "faq": true,
+      "cta": true,
+      "testimonials": true,
+      "pricing": false
+    },
+    "stats": [
+      {
+        "value": "2,000+",
+        "label": "Teams"
+      },
+      {
+        "value": "99.9%",
+        "label": "Uptime"
+      },
+      {
+        "value": "3x",
+        "label": "Faster Shipping"
+      },
+      {
+        "value": "4.8\u2605",
+        "label": "G2 Rating"
+      }
+    ],
+    "servicesSectionTitle": "Powerful Features",
+    "servicesSectionSubtitle": "Everything you need, nothing you don't",
+    "services": [
+      {
+        "title": "Task Automation",
+        "description": "Automate repetitive workflows with custom triggers and actions."
+      },
+      {
+        "title": "Real-time Collaboration",
+        "description": "Live editing, comments, and @mentions keep everyone aligned."
+      },
+      {
+        "title": "Sprint Planning",
+        "description": "Kanban, scrum boards, and velocity tracking built in."
+      },
+      {
+        "title": "Analytics & Reporting",
+        "description": "Dashboards, burndown charts, and exportable reports."
+      }
+    ],
+    "stepsSectionTitle": "Get Started in Minutes",
+    "steps": [
+      {
+        "title": "Sign Up",
+        "description": "Create your workspace free \u2014 no credit card required."
+      },
+      {
+        "title": "Import",
+        "description": "Migrate from Jira, Asana, or Trello in one click."
+      },
+      {
+        "title": "Customize",
+        "description": "Set up workflows, automations, and team permissions."
+      },
+      {
+        "title": "Ship",
+        "description": "Start collaborating and watch your velocity soar."
+      }
+    ],
+    "showcaseSectionTitle": "Pricing Plans",
+    "showcaseSectionSubtitle": "Simple, transparent pricing for teams of every size",
+    "showcaseItems": [
+      {
+        "title": "Starter",
+        "description": "Perfect for small teams getting started. Tasks, boards, and basic automations.",
+        "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80",
+        "price": "$0",
+        "tag": "Up to 5 users",
+        "link": "contact"
+      },
+      {
+        "title": "Professional",
+        "description": "Advanced workflows, integrations, and reporting for growing teams.",
+        "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80",
+        "price": "$29",
+        "tag": "Up to 25 users",
+        "link": "contact"
+      },
+      {
+        "title": "Business",
+        "description": "Unlimited projects, priority support, and custom automations.",
+        "image": "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=600&q=80",
+        "price": "$79",
+        "tag": "Up to 100 users",
+        "link": "contact"
+      },
+      {
+        "title": "Enterprise",
+        "description": "SSO, audit logs, dedicated CSM, and SLA guarantees.",
+        "image": "https://images.unsplash.com/photo-1551434678-e076c223a692?w=600&q=80",
+        "price": "Custom",
+        "tag": "Unlimited",
+        "link": "contact"
+      },
+      {
+        "title": "Add-on: Analytics Pro",
+        "description": "Advanced dashboards, custom reports, and data export.",
+        "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80",
+        "price": "$15",
+        "tag": "Per user",
+        "link": "contact"
+      },
+      {
+        "title": "Add-on: Automation Pack",
+        "description": "500 additional automation runs per month.",
+        "image": "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=600&q=80",
+        "price": "$10",
+        "tag": "Per month",
+        "link": "contact"
+      }
+    ],
+    "gallerySectionTitle": "Product Screenshots",
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80",
+      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80",
+      "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=600&q=80"
+    ],
+    "testimonialsSectionTitle": "Loved by Teams",
+    "testimonials": [
+      {
+        "quote": "Outstanding service and incredible results. Highly recommended!",
+        "author": "Sarah Johnson",
+        "role": "CEO, TechStart"
+      },
+      {
+        "quote": "They transformed our business. Professional, creative, and reliable.",
+        "author": "Michael Chen",
+        "role": "Founder, Bloom Co"
+      },
+      {
+        "quote": "The best decision we made this year. Exceeded every expectation.",
+        "author": "Emily Rodriguez",
+        "role": "Director, Apex Group"
+      }
+    ],
+    "faqSectionTitle": "Product FAQ",
+    "faqs": [
+      {
+        "question": "How do I get started?",
+        "answer": "Simply reach out via our contact form or give us a call. We offer a free initial consultation."
+      },
+      {
+        "question": "What are your pricing options?",
+        "answer": "We offer flexible packages tailored to your needs and budget. Contact us for a custom quote."
+      },
+      {
+        "question": "How long does a typical project take?",
+        "answer": "Timelines vary by scope, but most projects are completed within 2\u20138 weeks."
+      },
+      {
+        "question": "Do you offer ongoing support?",
+        "answer": "Yes! We provide continued support and maintenance to ensure long-term success."
+      }
+    ],
+    "teamSectionTitle": "Meet the Team",
+    "blogSectionTitle": "Latest from Our Blog",
+    "blogSectionSubtitle": "Insights, tips, and updates from our team",
+    "newsSectionTitle": "News & Updates",
+    "newsSectionSubtitle": "Announcements, press releases, and company news",
+    "newsPosts": [
+      {
+        "title": "We Are Expanding to Serve You Better",
+        "slug": "expanding-to-serve-you-better",
+        "excerpt": "New locations, extended hours, and more ways to connect with our team.",
+        "body": "We are thrilled to announce expanded service hours and a new consultation space designed around your comfort and convenience.\n\nThis investment reflects our commitment to accessibility and excellence. Thank you for being part of our journey \u2014 we cannot wait to welcome you.",
+        "image": "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80",
+        "author": "Press Team",
+        "date": "2026-04-01"
+      },
+      {
+        "title": "Award Recognizes Our Commitment to Quality",
+        "slug": "award-quality-commitment",
+        "excerpt": "Industry leaders honored our team for outstanding client satisfaction.",
+        "body": "Receiving this recognition is a testament to the people behind our work \u2014 dedicated professionals who show up every day with care and craft.\n\nWe share this award with every client who trusted us with their goals. Your feedback shapes how we grow and improve.",
+        "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80",
+        "author": "Communications",
+        "date": "2026-03-18"
+      },
+      {
+        "title": "Partnership Opens New Opportunities",
+        "slug": "partnership-new-opportunities",
+        "excerpt": "Strategic collaboration brings enhanced offerings to our community.",
+        "body": "Our new partnership combines complementary strengths to deliver more value, faster turnaround, and broader expertise under one roof.\n\nStay tuned for launch events and early-access opportunities for existing clients.",
+        "image": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80",
+        "author": "Leadership",
+        "date": "2026-02-05"
+      }
+    ],
+    "pricingSectionTitle": "Pricing Plans",
+    "pricing": [
+      {
+        "title": "Starter",
+        "description": "Essential features for individuals and small teams getting started.",
+        "price": "$29/mo",
+        "tag": "Most popular",
+        "featured": false
+      },
+      {
+        "title": "Professional",
+        "description": "Advanced tools, priority support, and integrations for growing businesses.",
+        "price": "$79/mo",
+        "tag": "Best value",
+        "featured": true
+      },
+      {
+        "title": "Enterprise",
+        "description": "Custom solutions, dedicated account management, and SLA guarantees.",
+        "price": "Custom",
+        "tag": "Contact us",
+        "featured": false
+      }
+    ],
+    "roomsSectionTitle": "Rooms & Suites",
+    "roomsSectionSubtitle": "Explore our accommodations and reserve your stay",
+    "bookingSectionTitle": "Book Your Stay",
+    "bookingSectionSubtitle": "Select dates, guests, and your preferred room type",
+    "roomTypes": [],
+    "blogPosts": [
+      {
+        "title": "5 Strategies to Grow Your Business This Year",
+        "slug": "5-strategies-to-grow-your-business",
+        "excerpt": "Practical steps you can take today to build momentum and reach more customers.",
+        "body": "Growing a business takes focus, consistency, and a willingness to adapt. Start by clarifying your core offer, then double down on the channels that already bring results.\n\nReview your customer journey from first touch to repeat purchase. Small improvements at each step compound into meaningful revenue gains. Finally, invest in relationships \u2014 referrals and retention often outperform cold outreach.",
+        "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
+        "author": "Alex Morgan",
+        "date": "2026-03-12"
+      },
+      {
+        "title": "What Clients Are Asking Us Right Now",
+        "slug": "what-clients-are-asking-us",
+        "excerpt": "A quick roundup of the most common questions we hear \u2014 and how we answer them.",
+        "body": "Every season brings a new set of priorities. Lately, clients ask about pricing transparency, faster turnaround times, and how to stand out in crowded markets.\n\nOur advice stays grounded in fundamentals: deliver exceptional value, communicate clearly, and measure what matters. When in doubt, talk to your customers \u2014 their feedback is the best roadmap.",
+        "image": "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80",
+        "author": "Jordan Lee",
+        "date": "2026-02-28"
+      },
+      {
+        "title": "Behind the Scenes: How We Work",
+        "slug": "behind-the-scenes-how-we-work",
+        "excerpt": "Take a peek at our process, tools, and the principles that guide every project.",
+        "body": "We believe great outcomes come from clear goals, collaborative planning, and disciplined execution. Every engagement starts with listening \u2014 understanding where you are and where you want to go.\n\nFrom there we build a tailored plan with milestones you can track. Throughout delivery we keep communication open so there are no surprises, only steady progress toward results you can measure.",
+        "image": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80",
+        "author": "Taylor Brooks",
+        "date": "2026-01-15"
+      }
+    ],
+    "team": [
+      {
+        "name": "Alex Morgan",
+        "role": "Founder & CEO",
+        "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80"
+      },
+      {
+        "name": "Jordan Lee",
+        "role": "Creative Director",
+        "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
+      },
+      {
+        "name": "Taylor Brooks",
+        "role": "Operations Lead",
+        "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80"
+      }
+    ],
+    "ctaBannerTitle": "Start your free 14-day trial",
+    "ctaBannerText": "No credit card required. Full access to all features. Cancel anytime.",
+    "ctaText": "Start Free Trial",
+    "ctaLink": "contact",
+    "seoEnabled": false,
+    "seoTitle": "",
+    "seoDescription": "",
+    "seoKeywords": "",
+    "seoSiteUrl": "",
+    "email": "sales@flowstack.io",
+    "phone": "",
+    "address": "",
+    "hours": "",
+    "instagram": "",
+    "website": "",
+    "linkedin": "linkedin.com/company/flowstack",
+    "whatsapp": "",
+    "supportEmail": "help@flowstack.io",
+    "reservationEmail": "",
+    "licenseNumber": "",
+    "bookingUrl": "https://app.flowstack.io/signup",
+    "contactSectionTitle": "Get in Touch",
+    "contactFormTitle": "Send Us a Message",
+    "contactFormUrl": "",
+    "contactFormButtonText": "Open Contact Form"
+  }
+}

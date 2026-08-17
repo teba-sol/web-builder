@@ -1,0 +1,510 @@
+{
+  "schemaVersion": 1,
+  "id": "aureum",
+  "name": "Aureum Tax",
+  "description": "A calmer, more designed take on tax prep and refund advances \u2014 cream, wine, and gold with editorial type.",
+  "category": "finance",
+  "previewGradient": "from-[#2a211c] via-[#7a2e38] to-[#b8956a]",
+  "accentColor": "#7a2e38",
+  "sortOrder": 26,
+  "features": ["cms"],
+  "pages": {
+    "about": true,
+    "services": true,
+    "portfolio": true,
+    "blog": true,
+    "news": true,
+    "gallery": true,
+    "contact": true,
+    "rooms": false
+  },
+  "homeSections": [
+    "nav",
+    "hero",
+    "stats",
+    "rooms-teaser",
+    "services-teaser",
+    "portfolio-teaser",
+    "blog-teaser",
+    "news-teaser",
+    "testimonials",
+    "about-teaser",
+    "faq",
+    "contact",
+    "explore",
+    "footer"
+  ],
+  "sectionOrder": [
+    "nav",
+    "hero",
+    "stats",
+    "services",
+    "steps",
+    "about",
+    "showcase",
+    "testimonials",
+    "team",
+    "blog",
+    "gallery",
+    "faq",
+    "cta",
+    "contact",
+    "footer"
+  ],
+  "theme": {
+    "page": "bg-[#f4efe6] text-[#2a211c]",
+    "nav": "sticky top-0 z-40 border-b border-[#eadfce]/80 bg-[#f4efe6]/90 backdrop-blur-md",
+    "navLink": "text-[#2a211c]/80 hover:text-[#7a2e38] font-medium",
+    "navCta": "rounded-full bg-[#7a2e38] px-5 py-2.5 text-sm font-semibold text-white",
+    "hero": "bg-[#f4efe6] py-20",
+    "heroBadge": "text-[#7a2e38] text-xs font-semibold tracking-[0.28em] uppercase",
+    "heroTitle": "font-serif text-5xl md:text-6xl text-[#2a211c] leading-[1.05]",
+    "heroText": "text-lg text-[#5c5148] leading-relaxed",
+    "heroCta": "rounded-full bg-[#7a2e38] px-8 py-3.5 text-sm font-semibold text-white",
+    "stats": "bg-white py-10",
+    "statValue": "font-serif text-3xl text-[#7a2e38]",
+    "statLabel": "text-[11px] font-semibold tracking-[0.18em] uppercase text-[#8a7d72] mt-2",
+    "section": "py-20 bg-[#f4efe6]",
+    "sectionAlt": "py-20 bg-white",
+    "sectionTitle": "font-serif text-4xl text-[#2a211c]",
+    "sectionSubtitle": "text-[#5c5148] mt-2",
+    "card": "rounded-[1.5rem] bg-white p-8 ring-1 ring-[#eadfce] shadow-sm",
+    "cardTitle": "font-serif text-2xl text-[#2a211c]",
+    "cardText": "text-[#5c5148] leading-relaxed",
+    "aboutImage": "rounded-[1.75rem] w-full object-cover",
+    "mission": "border-l-2 border-[#b8956a] pl-5 font-serif text-xl text-[#2a211c]",
+    "stepNum": "font-serif text-3xl text-[#b8956a]",
+    "gallery": "rounded-[1.25rem] w-full aspect-[4/3] object-cover",
+    "showcase": "bg-[#f4efe6] py-20",
+    "showcaseCard": "rounded-[1.25rem] overflow-hidden bg-white ring-1 ring-[#eadfce]",
+    "showcaseImage": "w-full h-52 object-cover",
+    "showcasePrice": "text-[#7a2e38] font-semibold",
+    "showcaseTag": "text-xs tracking-wide text-[#b8956a]",
+    "testimonial": "rounded-[1.5rem] bg-white p-8 ring-1 ring-[#eadfce]",
+    "faq": "rounded-2xl bg-white ring-1 ring-[#eadfce]",
+    "teamCard": "text-center",
+    "ctaBanner": "bg-[#7a2e38] text-white py-20",
+    "ctaBannerBtn": "rounded-full bg-white px-8 py-3.5 font-semibold text-[#7a2e38]",
+    "contact": "bg-[#f4efe6] text-[#2a211c] py-20",
+    "contactLabel": "text-[#7a2e38] text-xs uppercase tracking-wider font-semibold",
+    "footer": "border-t border-[#eadfce] py-8 text-center text-sm text-[#8a7d72] bg-[#f4efe6]"
+  },
+  "colorSchemes": [
+    {
+      "id": "wine-cream",
+      "name": "Wine & Cream",
+      "swatches": ["#2a211c", "#7a2e38", "#b8956a"],
+      "overrides": {}
+    },
+    {
+      "id": "olive-gold",
+      "name": "Olive & Gold",
+      "swatches": ["#1f2a1c", "#4a5d3a", "#c4a574"],
+      "overrides": {
+        "navCta": "rounded-full bg-[#4a5d3a] px-5 py-2.5 text-sm font-semibold text-white",
+        "heroBadge": "text-[#4a5d3a] text-xs font-semibold tracking-[0.28em] uppercase",
+        "heroCta": "rounded-full bg-[#4a5d3a] px-8 py-3.5 text-sm font-semibold text-white",
+        "statValue": "font-serif text-3xl text-[#4a5d3a]",
+        "ctaBanner": "bg-[#4a5d3a] text-white py-20",
+        "ctaBannerBtn": "rounded-full bg-white px-8 py-3.5 font-semibold text-[#4a5d3a]",
+        "contactLabel": "text-[#4a5d3a] text-xs uppercase tracking-wider font-semibold"
+      }
+    },
+    {
+      "id": "ink-copper",
+      "name": "Ink & Copper",
+      "swatches": ["#1c1917", "#9a3412", "#e7d5c0"],
+      "overrides": {
+        "navCta": "rounded-full bg-[#9a3412] px-5 py-2.5 text-sm font-semibold text-white",
+        "heroBadge": "text-[#9a3412] text-xs font-semibold tracking-[0.28em] uppercase",
+        "heroCta": "rounded-full bg-[#9a3412] px-8 py-3.5 text-sm font-semibold text-white",
+        "statValue": "font-serif text-3xl text-[#9a3412]",
+        "ctaBanner": "bg-[#1c1917] text-white py-20",
+        "ctaBannerBtn": "rounded-full bg-[#e7d5c0] px-8 py-3.5 font-semibold text-[#1c1917]",
+        "contactLabel": "text-[#9a3412] text-xs uppercase tracking-wider font-semibold"
+      }
+    }
+  ],
+  "defaultColorSchemeId": "wine-cream",
+  "defaultLayoutVariantId": "classic",
+  "sectionVariants": {
+    "faq": "accordion",
+    "explore": "magazine",
+    "contactShell": "centered-elegant",
+    "contactForm": "elegant-serif",
+    "exploreTitle": "Start here",
+    "exploreSubtitle": "Services, neighborhoods, insights, and a quiet consultation",
+    "exploreLinkLabel": "Open"
+  },
+  "showcase": {
+    "sectionTitle": "Studios we serve",
+    "sectionSubtitle": "The same care in every Atlanta neighborhood",
+    "navLabel": "Locations",
+    "itemLabel": "Studio",
+    "showPrice": false,
+    "priceLabel": "Advance",
+    "showTag": true,
+    "tagLabel": "Area"
+  },
+  "defaultShowcase": [
+    {
+      "title": "Midtown",
+      "description": "A calm studio for Midtown apartments, creatives, and Georgia Tech households.",
+      "image": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&q=80",
+      "price": "",
+      "tag": "Midtown",
+      "link": "contact"
+    },
+    {
+      "title": "Buckhead",
+      "description": "Individual and entity returns for Buckhead Village and Northside clients.",
+      "image": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80",
+      "price": "",
+      "tag": "Buckhead",
+      "link": "contact"
+    },
+    {
+      "title": "Downtown",
+      "description": "Walk-in prep near the core \u2014 documents in, a clear plan out.",
+      "image": "https://images.unsplash.com/photo-1575917649705-5b59aaa12e6b?w=800&q=80",
+      "price": "",
+      "tag": "Downtown",
+      "link": "contact"
+    },
+    {
+      "title": "West Midtown",
+      "description": "Evening hours for founders and contractors around Star Metals.",
+      "image": "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=800&q=80",
+      "price": "",
+      "tag": "Westside",
+      "link": "contact"
+    },
+    {
+      "title": "Collier Heights",
+      "description": "Neighborhood filing, holiday advances, and referral bonuses.",
+      "image": "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80",
+      "price": "",
+      "tag": "West Atlanta",
+      "link": "contact"
+    },
+    {
+      "title": "Inman Park",
+      "description": "A quieter room for households who want the year planned, not rushed.",
+      "image": "https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=800&q=80",
+      "price": "",
+      "tag": "Eastside",
+      "link": "contact"
+    }
+  ],
+  "navShell": "aureum",
+  "contactFields": [
+    { "key": "phone", "label": "Studio phone", "placeholder": "(404) 555-0188" },
+    { "key": "email", "label": "Email", "placeholder": "hello@aureumtax.com" },
+    { "key": "address", "label": "Studio address", "placeholder": "88 Ponce Annex, Atlanta GA" },
+    { "key": "hours", "label": "Hours", "placeholder": "Tue\u2013Sat 10am\u20136pm" }
+  ],
+  "servicesLabel": "Services",
+  "pageLayouts": {
+    "blog": "magazine",
+    "blogPost": "editorial",
+    "news": "grid",
+    "newsPost": "classic",
+    "gallery": "masonry",
+    "portfolio": "showcase"
+  },
+  "hero": {
+    "overlay": false,
+    "overlayGradient": "bg-black/20",
+    "splitColumns": true,
+    "badge": "name",
+    "grayscaleImage": false
+  },
+  "defaults": {
+    "businessName": "Aureum Tax",
+    "tagline": "Tax prep and advances, without the fluorescent rush.",
+    "heroSubtext": "Same-week refund advances, year-round filing, and a studio that treats April like a conversation \u2014 not a queue.",
+    "heroImage": "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1400&q=80",
+    "logo": "",
+    "logoShowName": true,
+    "brandPrimary": "#7a2e38",
+    "brandSecondary": "#2a211c",
+    "brandAccent": "#b8956a",
+    "fontHeading": "fraunces",
+    "fontBody": "source-sans",
+    "aboutTitle": "A quieter room for a loud tax season",
+    "about": "Aureum is a tax studio for people who want the advance, the filing, and a plan \u2014 without the storefront noise. We prepare individual and business returns, arrange Holiday and Shield advances when they fit, and stay on the file if a notice arrives.\n\nYou sit with one advisor. Documents are reviewed before anyone talks numbers. If an advance is not the right move, we say so.",
+    "aboutImage": "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1000&q=80",
+    "missionStatement": "Accuracy first. Advances only when they serve you. The year after April matters as much as the week of it.",
+    "pageVisibility": {
+      "about": true,
+      "services": true,
+      "portfolio": true,
+      "blog": true,
+      "news": true,
+      "gallery": true,
+      "contact": true,
+      "rooms": false
+    },
+    "sectionVisibility": {
+      "stats": true,
+      "team": true,
+      "steps": true,
+      "faq": true,
+      "cta": true,
+      "testimonials": true,
+      "pricing": true
+    },
+    "stats": [
+      { "value": "18 yrs", "label": "In practice" },
+      { "value": "4.9", "label": "Client rating" },
+      { "value": "30 min", "label": "Fastest advance" }
+    ],
+    "servicesSectionTitle": "Three ways we help",
+    "servicesSectionSubtitle": "Preparation, capital when you need it, and a bench for the business behind the return.",
+    "services": [
+      {
+        "title": "Tax prep & refund advances",
+        "description": "A complete return, then a Holiday or Shield advance when the file supports it \u2014 often the same week."
+      },
+      {
+        "title": "Referrals, quietly rewarded",
+        "description": "Send someone you trust. When they file, you receive the season\u2019s bonus. No scripts, no pressure."
+      },
+      {
+        "title": "Business tax & audit care",
+        "description": "Schedule C and 1120 work, plus representation if the IRS writes. Existing clients are not billed for audit support."
+      }
+    ],
+    "stepsSectionTitle": "How an engagement feels",
+    "steps": [
+      {
+        "title": "Bring the file",
+        "description": "ID, SSN, W-2s or pay stubs, and dependent documents. We send a short list before you arrive."
+      },
+      {
+        "title": "Sit with an advisor",
+        "description": "One person reviews the year with you. No rotating seasonal desk."
+      },
+      {
+        "title": "Choose the advance",
+        "description": "If an advance fits, we walk the fees and the timeline. You can always wait for the IRS."
+      },
+      {
+        "title": "File, then stay in touch",
+        "description": "The return goes out. Quarterly notes follow so next April is quieter than this one."
+      }
+    ],
+    "showcaseSectionTitle": "Studios we serve",
+    "showcaseSectionSubtitle": "The same care in every Atlanta neighborhood",
+    "showcaseItems": [
+      {
+        "title": "Midtown",
+        "description": "A calm studio for Midtown apartments, creatives, and Georgia Tech households.",
+        "image": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&q=80",
+        "price": "",
+        "tag": "Midtown",
+        "link": "contact"
+      },
+      {
+        "title": "Buckhead",
+        "description": "Individual and entity returns for Buckhead Village and Northside clients.",
+        "image": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80",
+        "price": "",
+        "tag": "Buckhead",
+        "link": "contact"
+      },
+      {
+        "title": "Downtown",
+        "description": "Walk-in prep near the core \u2014 documents in, a clear plan out.",
+        "image": "https://images.unsplash.com/photo-1575917649705-5b59aaa12e6b?w=800&q=80",
+        "price": "",
+        "tag": "Downtown",
+        "link": "contact"
+      },
+      {
+        "title": "West Midtown",
+        "description": "Evening hours for founders and contractors around Star Metals.",
+        "image": "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=800&q=80",
+        "price": "",
+        "tag": "Westside",
+        "link": "contact"
+      },
+      {
+        "title": "Collier Heights",
+        "description": "Neighborhood filing, holiday advances, and referral bonuses.",
+        "image": "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80",
+        "price": "",
+        "tag": "West Atlanta",
+        "link": "contact"
+      },
+      {
+        "title": "Inman Park",
+        "description": "A quieter room for households who want the year planned, not rushed.",
+        "image": "https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=800&q=80",
+        "price": "",
+        "tag": "Eastside",
+        "link": "contact"
+      }
+    ],
+    "gallerySectionTitle": "The rooms",
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&q=80",
+      "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&q=80",
+      "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&q=80",
+      "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80"
+    ],
+    "testimonialsSectionTitle": "Clients, in their words",
+    "testimonials": [
+      {
+        "quote": "They explained the advance like a grown-up. I took less than I could have, and I am glad.",
+        "author": "Maya Ellison",
+        "role": "Independent designer"
+      },
+      {
+        "quote": "First time a tax office felt like a studio. Quiet room, same person, return done in a sitting.",
+        "author": "James Okoye",
+        "role": "Restaurant owner"
+      },
+      {
+        "quote": "The audit letter went to them. I did not have to become an expert overnight.",
+        "author": "Priya Raman",
+        "role": "Small practice"
+      }
+    ],
+    "faqSectionTitle": "A few calm answers",
+    "faqs": [
+      {
+        "question": "Do I have to take an advance?",
+        "answer": "No. Many clients file and wait for the IRS. We only size an advance after the return is complete, and you can decline it."
+      },
+      {
+        "question": "How fast can funds arrive?",
+        "answer": "When the file is clean, Holiday and Shield advances often fund the same week \u2014 sometimes the same day."
+      },
+      {
+        "question": "What should I bring?",
+        "answer": "Photo ID, Social Security numbers, W-2s or pay stubs, and documents for anyone you claim. We send a checklist when you book."
+      },
+      {
+        "question": "Do you handle business returns?",
+        "answer": "Yes. Sole proprietors and corporations, plus audit support. Existing clients are not charged if the IRS writes."
+      }
+    ],
+    "teamSectionTitle": "Advisors",
+    "blogSectionTitle": "Notes from the studio",
+    "blogSectionSubtitle": "Short writing on advances, April, and keeping the rest of the year quiet",
+    "newsSectionTitle": "Studio notes",
+    "newsSectionSubtitle": "Hours, advance windows, and neighborhood days",
+    "newsPosts": [
+      {
+        "title": "Holiday advances are open",
+        "slug": "holiday-advances-open",
+        "excerpt": "No studio fee on Holiday advances through April 15. Book a sitting before the calendar fills.",
+        "body": "Holiday advances carry no Aureum fee. Eligibility depends on the completed return. If you need a larger Shield advance, we will show bank fees before anything is processed.",
+        "image": "https://images.unsplash.com/photo-1482517967863-00e15c9b44be?w=800&q=80",
+        "author": "Studio",
+        "date": "2026-01-08"
+      },
+      {
+        "title": "Saturday sittings through filing week",
+        "slug": "saturday-sittings",
+        "excerpt": "A limited Saturday book is open. Midtown and Buckhead only.",
+        "body": "Weekday hours stay 10\u20136. Saturdays are reserved for complete files. Bring the checklist and we will not ask you to come back.",
+        "image": "https://images.unsplash.com/photo-1434626881859-194d67b2b86f?w=800&q=80",
+        "author": "Front desk",
+        "date": "2026-02-04"
+      }
+    ],
+    "pricingSectionTitle": "Advance options",
+    "pricing": [
+      {
+        "title": "Holiday advance",
+        "description": "No studio fee. Sized from the finished return, through April 15.",
+        "price": "No fee",
+        "tag": "Seasonal",
+        "featured": false
+      },
+      {
+        "title": "Shield advance",
+        "description": "Larger same-week capital when the file supports it. Fees disclosed first.",
+        "price": "Quoted",
+        "tag": "Most asked",
+        "featured": true
+      },
+      {
+        "title": "Wait for the IRS",
+        "description": "We still prepare the return. You keep the full refund when it posts.",
+        "price": "Your choice",
+        "tag": "No advance",
+        "featured": false
+      }
+    ],
+    "roomsSectionTitle": "Rooms & Suites",
+    "roomsSectionSubtitle": "Explore our accommodations and reserve your stay",
+    "bookingSectionTitle": "Book Your Stay",
+    "bookingSectionSubtitle": "Select dates, guests, and your preferred room type",
+    "roomTypes": [],
+    "blogPosts": [
+      {
+        "title": "An advance is not the refund",
+        "slug": "an-advance-is-not-the-refund",
+        "excerpt": "Why we size funds after the return, and why taking less is sometimes the better year.",
+        "body": "An advance is a short loan against a finished return. It is repaid when the IRS pays. Fees, if any, come out of that refund.\n\nWe do not quote a number until the file is done. That is how you avoid taking more than the year can carry.",
+        "image": "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=800&q=80",
+        "author": "Elena Voss",
+        "date": "2026-02-10"
+      },
+      {
+        "title": "What we ask you to bring",
+        "slug": "what-we-ask-you-to-bring",
+        "excerpt": "A short list that keeps the sitting to one visit.",
+        "body": "Photo ID. Social Security numbers. W-2s or pay stubs. Birth certificates for dependents, plus proof they lived with you.\n\nIf something is missing we will say so before we start, not after you have already sat down.",
+        "image": "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&q=80",
+        "author": "Studio",
+        "date": "2026-01-20"
+      }
+    ],
+    "team": [
+      {
+        "name": "Elena Voss, EA",
+        "role": "Principal advisor",
+        "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
+      },
+      {
+        "name": "Noah Pell",
+        "role": "Business returns",
+        "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80"
+      },
+      {
+        "name": "Amara Cole",
+        "role": "Client studio",
+        "image": "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80"
+      }
+    ],
+    "ctaBannerTitle": "Book a sitting. Leave with a plan.",
+    "ctaBannerText": "Tell us the year you are in. We will tell you whether an advance belongs in it.",
+    "ctaText": "Reserve a sitting",
+    "ctaLink": "contact",
+    "seoEnabled": true,
+    "seoTitle": "Aureum Tax \u2014 Tax prep and refund advances",
+    "seoDescription": "A calm Atlanta tax studio for preparation, Holiday and Shield advances, and business filings.",
+    "seoKeywords": "tax preparation, refund advance, Atlanta tax studio, Holiday advance",
+    "seoSiteUrl": "",
+    "email": "hello@aureumtax.com",
+    "phone": "(404) 555-0188",
+    "address": "88 Ponce Annex, Atlanta GA",
+    "hours": "Tue\u2013Sat 10am\u20136pm",
+    "instagram": "",
+    "website": "",
+    "linkedin": "",
+    "whatsapp": "",
+    "supportEmail": "",
+    "reservationEmail": "",
+    "licenseNumber": "",
+    "bookingUrl": "",
+    "contactSectionTitle": "Reserve a sitting",
+    "contactFormTitle": "Tell us about the year",
+    "contactFormUrl": "",
+    "contactFormButtonText": "Send"
+  }
+}

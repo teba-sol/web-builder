@@ -14,3 +14,18 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
 }
+
+/* Keep template navs inside the editor preview (some themes use position:fixed). */
+.editor-site-preview {
+  transform: translateZ(0);
+  isolation: isolate;
+  contain: layout paint;
+}
+
+.editor-site-preview nav {
+  position: sticky !important;
+  top: 0;
+  left: auto;
+  right: auto;
+  width: 100%;
+}

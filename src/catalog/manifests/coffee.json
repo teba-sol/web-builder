@@ -1,0 +1,586 @@
+{
+  "schemaVersion": 1,
+  "id": "coffee",
+  "name": "Ember & Grain",
+  "description": "Warm artisan caf\u00e9 aesthetic \u2014 immersive hero, signature menu showcase, and cozy hospitality.",
+  "category": "food",
+  "previewGradient": "from-amber-950 via-[#3d2314] to-amber-700",
+  "accentColor": "#c9a66b",
+  "premium": true,
+  "sortOrder": 16,
+  "features": [
+    "cms"
+  ],
+  "pages": {
+    "about": true,
+    "services": true,
+    "portfolio": true,
+    "blog": true,
+    "news": true,
+    "gallery": true,
+    "contact": true,
+    "rooms": false
+  },
+  "homeSections": [
+    "nav",
+    "hero",
+    "stats",
+    "rooms-teaser",
+    "services-teaser",
+    "portfolio-teaser",
+    "blog-teaser",
+    "news-teaser",
+    "testimonials",
+    "about-teaser",
+    "faq",
+    "contact",
+    "explore",
+    "footer"
+  ],
+  "sectionOrder": [
+    "nav",
+    "hero",
+    "stats",
+    "showcase",
+    "services",
+    "about",
+    "gallery",
+    "testimonials",
+    "blog",
+    "steps",
+    "faq",
+    "contact",
+    "footer"
+  ],
+  "theme": {
+    "page": "bg-[#faf6f0] text-[#2d1810]",
+    "nav": "sticky top-0 z-50 border-b border-amber-900/10 bg-[#faf6f0]/80 backdrop-blur-xl",
+    "navLink": "text-[#5c4033] hover:text-amber-700 text-sm font-medium tracking-wide transition-colors",
+    "navCta": "rounded-full bg-gradient-to-r from-amber-700 to-amber-900 px-6 py-2.5 text-sm font-semibold text-amber-50 shadow-lg shadow-amber-900/25 hover:shadow-amber-800/40 transition-shadow",
+    "hero": "relative min-h-[92vh] flex items-center text-amber-50",
+    "heroBadge": "text-amber-400/90 uppercase tracking-[0.35em] text-xs font-semibold",
+    "heroTitle": "text-4xl md:text-6xl lg:text-7xl font-serif font-semibold leading-[1.05]",
+    "heroText": "text-amber-100/85 text-lg max-w-lg leading-relaxed",
+    "heroCta": "rounded-full bg-amber-500 px-8 py-3.5 font-semibold text-[#1a0f08] shadow-xl shadow-amber-900/30 hover:bg-amber-400 transition-colors",
+    "stats": "bg-gradient-to-r from-[#2d1810] via-[#3d2314] to-[#2d1810] text-amber-50 py-16",
+    "statValue": "text-4xl font-serif font-semibold text-amber-300",
+    "statLabel": "text-amber-200/70 text-sm mt-1 tracking-wide",
+    "section": "py-20",
+    "sectionAlt": "py-20 bg-white/60",
+    "sectionTitle": "text-3xl md:text-4xl font-serif font-semibold text-[#2d1810]",
+    "sectionSubtitle": "text-[#5c4033]/80 mt-2",
+    "card": "coffee-card-hover rounded-2xl border border-amber-900/10 bg-white p-8 shadow-sm",
+    "cardTitle": "text-xl font-serif font-semibold text-[#2d1810]",
+    "cardText": "text-[#5c4033]/90 leading-relaxed",
+    "aboutImage": "rounded-2xl shadow-2xl shadow-amber-900/15 ring-1 ring-amber-900/10",
+    "mission": "border-l-4 border-amber-600 pl-6 italic text-[#5c4033] text-lg font-serif",
+    "stepNum": "flex h-10 w-10 items-center justify-center rounded-full bg-amber-800 text-amber-50 font-serif font-semibold",
+    "gallery": "rounded-xl overflow-hidden aspect-[4/3] object-cover w-full hover:scale-[1.03] transition-transform duration-500",
+    "showcase": "py-20 bg-gradient-to-b from-white/40 to-[#faf6f0]",
+    "showcaseCard": "coffee-card-hover rounded-2xl border border-amber-900/10 bg-white overflow-hidden shadow-md group",
+    "showcaseImage": "w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-700",
+    "showcasePrice": "text-amber-800 font-serif font-semibold text-lg",
+    "showcaseTag": "text-xs uppercase tracking-widest text-amber-700/70",
+    "testimonial": "rounded-2xl bg-white border border-amber-900/10 p-8 shadow-sm font-serif",
+    "faq": "border-b border-amber-900/10 py-6",
+    "teamCard": "text-center",
+    "ctaBanner": "bg-gradient-to-r from-[#2d1810] via-[#3d2314] to-[#2d1810] text-amber-50 py-20",
+    "ctaBannerBtn": "rounded-full bg-amber-500 px-8 py-3 font-semibold text-[#1a0f08] hover:bg-amber-400",
+    "contact": "bg-[#2d1810] text-amber-50 py-20",
+    "contactLabel": "text-amber-400/90 text-xs uppercase tracking-widest",
+    "footer": "border-t border-amber-900/10 py-8 text-center text-sm text-[#5c4033]/70 bg-[#faf6f0]"
+  },
+  "colorSchemes": [
+    {
+      "id": "espresso",
+      "name": "Espresso Gold",
+      "swatches": [
+        "#2d1810",
+        "#c9a66b",
+        "#faf6f0"
+      ],
+      "overrides": {
+        "navCta": "bg-gradient-to-r from-amber-700 to-amber-900 text-amber-50",
+        "heroCta": "bg-amber-500 text-[#1a0f08]",
+        "statValue": "text-amber-300",
+        "showcasePrice": "text-amber-800",
+        "cardTitle": "text-[#2d1810]"
+      }
+    },
+    {
+      "id": "latte",
+      "name": "Cream Latte",
+      "swatches": [
+        "#5c4033",
+        "#e8d4b8",
+        "#fffdf9"
+      ],
+      "overrides": {
+        "page": "bg-[#fffdf9] text-[#3d2914]",
+        "nav": "bg-[#fffdf9]/85 border-amber-800/10",
+        "navCta": "bg-[#5c4033] text-amber-50",
+        "heroCta": "bg-[#5c4033] text-amber-50",
+        "stats": "bg-[#5c4033] text-amber-50",
+        "statValue": "text-amber-200",
+        "sectionAlt": "bg-amber-50/50"
+      }
+    },
+    {
+      "id": "midnight",
+      "name": "Midnight Roast",
+      "swatches": [
+        "#0f0a08",
+        "#8b5e3c",
+        "#1a120e"
+      ],
+      "overrides": {
+        "page": "bg-[#1a120e] text-amber-100",
+        "nav": "bg-[#1a120e]/90 border-amber-900/20",
+        "navLink": "text-amber-200/80 hover:text-amber-400",
+        "section": "py-20 text-amber-100",
+        "sectionAlt": "py-20 bg-[#0f0a08]/50",
+        "sectionTitle": "text-amber-50 font-serif",
+        "sectionSubtitle": "text-amber-300/70",
+        "card": "coffee-card-hover rounded-2xl border border-amber-900/30 bg-[#2d1810] p-8",
+        "cardText": "text-amber-200/80",
+        "showcase": "bg-[#0f0a08]/30",
+        "showcaseCard": "coffee-card-hover border-amber-800/30 bg-[#2d1810]"
+      }
+    }
+  ],
+  "defaultColorSchemeId": "espresso",
+  "defaultLayoutVariantId": "classic",
+  "sectionVariants": {
+    "faq": "stacked",
+    "explore": "compass",
+    "contactShell": "coffee-warm",
+    "contactForm": "soft-rounded",
+    "exploreTitle": "The Caf\u00e9",
+    "exploreSubtitle": "Menu, beans, events, and visit us",
+    "exploreLinkLabel": "Order"
+  },
+  "showcase": {
+    "sectionTitle": "Signature Drinks",
+    "sectionSubtitle": "Single-origin pours, signature lattes, and seasonal specialties",
+    "navLabel": "Menu",
+    "itemLabel": "Drink",
+    "showPrice": true,
+    "priceLabel": "Price",
+    "showTag": true,
+    "tagLabel": "Roast"
+  },
+  "defaultShowcase": [
+    {
+      "title": "Ethiopian Yirgacheffe",
+      "description": "Bright floral notes with bergamot and honey \u2014 pour-over or espresso.",
+      "image": "https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=600&q=80",
+      "price": "$5.50",
+      "tag": "Light",
+      "link": "contact"
+    },
+    {
+      "title": "Velvet Oat Latte",
+      "description": "House espresso, oat milk microfoam, and a touch of vanilla bean.",
+      "image": "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=600&q=80",
+      "price": "$6.25",
+      "tag": "Signature",
+      "link": "contact"
+    },
+    {
+      "title": "Midnight Mocha",
+      "description": "72% dark chocolate, double shot, and whipped crema \u2014 indulgent and bold.",
+      "image": "https://images.unsplash.com/photo-1572442388796-11668a67e3d9?w=600&q=80",
+      "price": "$6.75",
+      "tag": "Dark",
+      "link": "contact"
+    },
+    {
+      "title": "Honey Cinnamon Cortado",
+      "description": "Equal parts espresso and steamed milk with raw honey and Ceylon cinnamon.",
+      "image": "https://images.unsplash.com/photo-1514434758858-3e2c5c8f8c0e?w=600&q=80",
+      "price": "$5.95",
+      "tag": "Seasonal",
+      "link": "contact"
+    },
+    {
+      "title": "Cold Brew Tonic",
+      "description": "18-hour steep, tonic water, and orange peel \u2014 crisp and refreshing.",
+      "image": "https://images.unsplash.com/photo-1517487881594-278fdf133cde?w=600&q=80",
+      "price": "$5.50",
+      "tag": "Iced",
+      "link": "contact"
+    },
+    {
+      "title": "Affogato Classico",
+      "description": "Double ristretto poured over artisan vanilla gelato.",
+      "image": "https://images.unsplash.com/photo-1559496417-e7f25cb247b3?w=600&q=80",
+      "price": "$7.50",
+      "tag": "Dessert",
+      "link": "contact"
+    }
+  ],
+  "navShell": "coffee",
+  "contactFields": [
+    {
+      "key": "email",
+      "label": "Email",
+      "placeholder": "hello@emberandgrain.coffee"
+    },
+    {
+      "key": "phone",
+      "label": "Phone",
+      "placeholder": "(555) 847-0921"
+    },
+    {
+      "key": "address",
+      "label": "Caf\u00e9 Address",
+      "placeholder": "42 Roastery Lane, Portland"
+    },
+    {
+      "key": "hours",
+      "label": "Opening Hours",
+      "placeholder": "Mon\u2013Sun 7am\u20136pm"
+    },
+    {
+      "key": "instagram",
+      "label": "Instagram",
+      "placeholder": "@emberandgrain"
+    },
+    {
+      "key": "bookingUrl",
+      "label": "Order Ahead URL",
+      "placeholder": "https://order.emberandgrain.coffee"
+    }
+  ],
+  "servicesLabel": "Experience",
+  "pageLayouts": {
+    "blog": "magazine",
+    "blogPost": "editorial",
+    "news": "timeline",
+    "newsPost": "classic",
+    "gallery": "masonry",
+    "portfolio": "showcase"
+  },
+  "hero": {
+    "overlay": true,
+    "overlayGradient": "bg-gradient-to-r from-[#1a0f08]/95 via-[#2d1810]/75 to-[#1a0f08]/40",
+    "splitColumns": false,
+    "badge": "name",
+    "grayscaleImage": false
+  },
+  "defaults": {
+    "businessName": "Ember & Grain",
+    "tagline": "Craft coffee, roasted with intention",
+    "heroSubtext": "Small-batch roasts, pour-over rituals, and a warm corner to slow down \u2014 from bean to cup, every detail matters.",
+    "heroImage": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1200&q=80",
+    "aboutTitle": "Our Roastery Story",
+    "about": "Ember & Grain began as a weekend market stall and grew into a neighborhood sanctuary for coffee lovers. We source directly from farmers we know by name, roast in micro-batches on our Probat, and serve each cup with the care it deserves.",
+    "aboutImage": "https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=800&q=80",
+    "missionStatement": "Great coffee is a conversation between soil, craft, and community.",
+    "pageVisibility": {
+      "about": true,
+      "services": true,
+      "portfolio": true,
+      "blog": true,
+      "news": true,
+      "gallery": true,
+      "contact": true,
+      "rooms": false
+    },
+    "sectionVisibility": {
+      "stats": true,
+      "team": true,
+      "steps": true,
+      "faq": true,
+      "cta": true,
+      "testimonials": true,
+      "pricing": false
+    },
+    "stats": [
+      {
+        "value": "12",
+        "label": "Origin Farms"
+      },
+      {
+        "value": "4.9\u2605",
+        "label": "Guest Rating"
+      },
+      {
+        "value": "48hr",
+        "label": "Roast-to-Cup"
+      },
+      {
+        "value": "100%",
+        "label": "Direct Trade"
+      }
+    ],
+    "servicesSectionTitle": "The Experience",
+    "servicesSectionSubtitle": "More than caffeine \u2014 a ritual worth savoring",
+    "services": [
+      {
+        "title": "Pour-Over Bar",
+        "description": "Single-origin beans brewed to order by our certified baristas."
+      },
+      {
+        "title": "Espresso Program",
+        "description": "Dialled daily \u2014 honey-sweet shots and silky microfoam."
+      },
+      {
+        "title": "Pastry & Bites",
+        "description": "Fresh croissants, sourdough toast, and seasonal small plates."
+      },
+      {
+        "title": "Beans to Go",
+        "description": "Take home whole-bean bags roasted within 48 hours."
+      }
+    ],
+    "stepsSectionTitle": "From Farm to Cup",
+    "steps": [
+      {
+        "title": "Source",
+        "description": "Ethically sourced beans from 12 partner farms across three continents."
+      },
+      {
+        "title": "Roast",
+        "description": "Profiled and roasted in 12kg batches for peak sweetness and clarity."
+      },
+      {
+        "title": "Brew",
+        "description": "Precision extraction on espresso, pour-over, and cold brew bars."
+      },
+      {
+        "title": "Savor",
+        "description": "Enjoy in our sunlit space or take your ritual to go."
+      }
+    ],
+    "showcaseSectionTitle": "Signature Drinks",
+    "showcaseSectionSubtitle": "Single-origin pours, signature lattes, and seasonal specialties",
+    "showcaseItems": [
+      {
+        "title": "Ethiopian Yirgacheffe",
+        "description": "Bright floral notes with bergamot and honey \u2014 pour-over or espresso.",
+        "image": "https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=600&q=80",
+        "price": "$5.50",
+        "tag": "Light",
+        "link": "contact"
+      },
+      {
+        "title": "Velvet Oat Latte",
+        "description": "House espresso, oat milk microfoam, and a touch of vanilla bean.",
+        "image": "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=600&q=80",
+        "price": "$6.25",
+        "tag": "Signature",
+        "link": "contact"
+      },
+      {
+        "title": "Midnight Mocha",
+        "description": "72% dark chocolate, double shot, and whipped crema \u2014 indulgent and bold.",
+        "image": "https://images.unsplash.com/photo-1572442388796-11668a67e3d9?w=600&q=80",
+        "price": "$6.75",
+        "tag": "Dark",
+        "link": "contact"
+      },
+      {
+        "title": "Honey Cinnamon Cortado",
+        "description": "Equal parts espresso and steamed milk with raw honey and Ceylon cinnamon.",
+        "image": "https://images.unsplash.com/photo-1514434758858-3e2c5c8f8c0e?w=600&q=80",
+        "price": "$5.95",
+        "tag": "Seasonal",
+        "link": "contact"
+      },
+      {
+        "title": "Cold Brew Tonic",
+        "description": "18-hour steep, tonic water, and orange peel \u2014 crisp and refreshing.",
+        "image": "https://images.unsplash.com/photo-1517487881594-278fdf133cde?w=600&q=80",
+        "price": "$5.50",
+        "tag": "Iced",
+        "link": "contact"
+      },
+      {
+        "title": "Affogato Classico",
+        "description": "Double ristretto poured over artisan vanilla gelato.",
+        "image": "https://images.unsplash.com/photo-1559496417-e7f25cb247b3?w=600&q=80",
+        "price": "$7.50",
+        "tag": "Dessert",
+        "link": "contact"
+      }
+    ],
+    "gallerySectionTitle": "Inside Ember & Grain",
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1501339847302-ac711a0a6587?w=600&q=80",
+      "https://images.unsplash.com/photo-1453614512568-c4024d13c247?w=600&q=80",
+      "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=600&q=80"
+    ],
+    "testimonialsSectionTitle": "Regulars Say",
+    "testimonials": [
+      {
+        "quote": "Outstanding service and incredible results. Highly recommended!",
+        "author": "Sarah Johnson",
+        "role": "CEO, TechStart"
+      },
+      {
+        "quote": "They transformed our business. Professional, creative, and reliable.",
+        "author": "Michael Chen",
+        "role": "Founder, Bloom Co"
+      },
+      {
+        "quote": "The best decision we made this year. Exceeded every expectation.",
+        "author": "Emily Rodriguez",
+        "role": "Director, Apex Group"
+      }
+    ],
+    "faqSectionTitle": "Coffee FAQ",
+    "faqs": [
+      {
+        "question": "How do I get started?",
+        "answer": "Simply reach out via our contact form or give us a call. We offer a free initial consultation."
+      },
+      {
+        "question": "What are your pricing options?",
+        "answer": "We offer flexible packages tailored to your needs and budget. Contact us for a custom quote."
+      },
+      {
+        "question": "How long does a typical project take?",
+        "answer": "Timelines vary by scope, but most projects are completed within 2\u20138 weeks."
+      },
+      {
+        "question": "Do you offer ongoing support?",
+        "answer": "Yes! We provide continued support and maintenance to ensure long-term success."
+      }
+    ],
+    "teamSectionTitle": "Meet the Baristas",
+    "blogSectionTitle": "Latest from Our Blog",
+    "blogSectionSubtitle": "Insights, tips, and updates from our team",
+    "newsSectionTitle": "News & Updates",
+    "newsSectionSubtitle": "Announcements, press releases, and company news",
+    "newsPosts": [
+      {
+        "title": "We Are Expanding to Serve You Better",
+        "slug": "expanding-to-serve-you-better",
+        "excerpt": "New locations, extended hours, and more ways to connect with our team.",
+        "body": "We are thrilled to announce expanded service hours and a new consultation space designed around your comfort and convenience.\n\nThis investment reflects our commitment to accessibility and excellence. Thank you for being part of our journey \u2014 we cannot wait to welcome you.",
+        "image": "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80",
+        "author": "Press Team",
+        "date": "2026-04-01"
+      },
+      {
+        "title": "Award Recognizes Our Commitment to Quality",
+        "slug": "award-quality-commitment",
+        "excerpt": "Industry leaders honored our team for outstanding client satisfaction.",
+        "body": "Receiving this recognition is a testament to the people behind our work \u2014 dedicated professionals who show up every day with care and craft.\n\nWe share this award with every client who trusted us with their goals. Your feedback shapes how we grow and improve.",
+        "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80",
+        "author": "Communications",
+        "date": "2026-03-18"
+      },
+      {
+        "title": "Partnership Opens New Opportunities",
+        "slug": "partnership-new-opportunities",
+        "excerpt": "Strategic collaboration brings enhanced offerings to our community.",
+        "body": "Our new partnership combines complementary strengths to deliver more value, faster turnaround, and broader expertise under one roof.\n\nStay tuned for launch events and early-access opportunities for existing clients.",
+        "image": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80",
+        "author": "Leadership",
+        "date": "2026-02-05"
+      }
+    ],
+    "pricingSectionTitle": "Pricing Plans",
+    "pricing": [
+      {
+        "title": "Starter",
+        "description": "Essential features for individuals and small teams getting started.",
+        "price": "$29/mo",
+        "tag": "Most popular",
+        "featured": false
+      },
+      {
+        "title": "Professional",
+        "description": "Advanced tools, priority support, and integrations for growing businesses.",
+        "price": "$79/mo",
+        "tag": "Best value",
+        "featured": true
+      },
+      {
+        "title": "Enterprise",
+        "description": "Custom solutions, dedicated account management, and SLA guarantees.",
+        "price": "Custom",
+        "tag": "Contact us",
+        "featured": false
+      }
+    ],
+    "roomsSectionTitle": "Rooms & Suites",
+    "roomsSectionSubtitle": "Explore our accommodations and reserve your stay",
+    "bookingSectionTitle": "Book Your Stay",
+    "bookingSectionSubtitle": "Select dates, guests, and your preferred room type",
+    "roomTypes": [],
+    "blogPosts": [
+      {
+        "title": "5 Strategies to Grow Your Business This Year",
+        "slug": "5-strategies-to-grow-your-business",
+        "excerpt": "Practical steps you can take today to build momentum and reach more customers.",
+        "body": "Growing a business takes focus, consistency, and a willingness to adapt. Start by clarifying your core offer, then double down on the channels that already bring results.\n\nReview your customer journey from first touch to repeat purchase. Small improvements at each step compound into meaningful revenue gains. Finally, invest in relationships \u2014 referrals and retention often outperform cold outreach.",
+        "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
+        "author": "Alex Morgan",
+        "date": "2026-03-12"
+      },
+      {
+        "title": "What Clients Are Asking Us Right Now",
+        "slug": "what-clients-are-asking-us",
+        "excerpt": "A quick roundup of the most common questions we hear \u2014 and how we answer them.",
+        "body": "Every season brings a new set of priorities. Lately, clients ask about pricing transparency, faster turnaround times, and how to stand out in crowded markets.\n\nOur advice stays grounded in fundamentals: deliver exceptional value, communicate clearly, and measure what matters. When in doubt, talk to your customers \u2014 their feedback is the best roadmap.",
+        "image": "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80",
+        "author": "Jordan Lee",
+        "date": "2026-02-28"
+      },
+      {
+        "title": "Behind the Scenes: How We Work",
+        "slug": "behind-the-scenes-how-we-work",
+        "excerpt": "Take a peek at our process, tools, and the principles that guide every project.",
+        "body": "We believe great outcomes come from clear goals, collaborative planning, and disciplined execution. Every engagement starts with listening \u2014 understanding where you are and where you want to go.\n\nFrom there we build a tailored plan with milestones you can track. Throughout delivery we keep communication open so there are no surprises, only steady progress toward results you can measure.",
+        "image": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80",
+        "author": "Taylor Brooks",
+        "date": "2026-01-15"
+      }
+    ],
+    "team": [
+      {
+        "name": "Maya Chen",
+        "role": "Head Roaster",
+        "image": "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80"
+      },
+      {
+        "name": "James Okonkwo",
+        "role": "Lead Barista",
+        "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80"
+      },
+      {
+        "name": "Sofia Reyes",
+        "role": "Pastry Chef",
+        "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
+      }
+    ],
+    "ctaBannerTitle": "Join us for a cup this morning",
+    "ctaBannerText": "Open daily from 7am \u2014 grab a seat by the window or order ahead.",
+    "ctaText": "Order Ahead",
+    "ctaLink": "contact",
+    "seoEnabled": false,
+    "seoTitle": "",
+    "seoDescription": "",
+    "seoKeywords": "",
+    "seoSiteUrl": "",
+    "email": "",
+    "phone": "(555) 847-0921",
+    "address": "42 Roastery Lane, Portland, OR",
+    "hours": "Mon\u2013Sun 7am\u20136pm",
+    "instagram": "@emberandgrain",
+    "website": "",
+    "linkedin": "",
+    "whatsapp": "",
+    "supportEmail": "",
+    "reservationEmail": "hello@emberandgrain.coffee",
+    "licenseNumber": "",
+    "bookingUrl": "",
+    "contactSectionTitle": "Get in Touch",
+    "contactFormTitle": "Send Us a Message",
+    "contactFormUrl": "",
+    "contactFormButtonText": "Open Contact Form"
+  }
+}

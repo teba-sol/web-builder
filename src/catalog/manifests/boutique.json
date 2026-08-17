@@ -1,0 +1,582 @@
+{
+  "schemaVersion": 1,
+  "id": "boutique",
+  "name": "Boutique Shop",
+  "description": "Soft, elegant retail design with serif typography for fashion and lifestyle brands.",
+  "category": "retail",
+  "previewGradient": "from-rose-300 to-stone-400",
+  "accentColor": "#be185d",
+  "sortOrder": 5,
+  "features": [
+    "cms"
+  ],
+  "pages": {
+    "about": true,
+    "services": true,
+    "portfolio": true,
+    "blog": true,
+    "news": true,
+    "gallery": true,
+    "contact": true,
+    "rooms": false
+  },
+  "homeSections": [
+    "nav",
+    "hero",
+    "stats",
+    "rooms-teaser",
+    "services-teaser",
+    "portfolio-teaser",
+    "blog-teaser",
+    "news-teaser",
+    "testimonials",
+    "about-teaser",
+    "faq",
+    "contact",
+    "explore",
+    "footer"
+  ],
+  "sectionOrder": [
+    "nav",
+    "hero",
+    "showcase",
+    "about",
+    "gallery",
+    "services",
+    "stats",
+    "testimonials",
+    "blog",
+    "steps",
+    "faq",
+    "cta",
+    "contact",
+    "footer"
+  ],
+  "theme": {
+    "page": "bg-rose-50 text-stone-800",
+    "nav": "border-b border-rose-200/60 bg-rose-50/90 backdrop-blur-sm sticky top-0 z-50",
+    "navLink": "text-stone-500 hover:text-rose-800",
+    "navCta": "border border-stone-800 px-6 py-2 text-xs uppercase tracking-[0.2em] hover:bg-stone-800 hover:text-rose-50",
+    "hero": "text-center py-24 px-6",
+    "heroBadge": "text-xs uppercase tracking-[0.4em] text-rose-400",
+    "heroTitle": "text-4xl md:text-6xl font-light italic leading-tight",
+    "heroText": "text-stone-600 text-lg max-w-2xl mx-auto mt-6",
+    "heroCta": "border border-stone-800 px-8 py-3 text-xs uppercase tracking-[0.2em] hover:bg-stone-800 hover:text-rose-50",
+    "stats": "bg-white py-16 border-y border-rose-100",
+    "statValue": "text-3xl font-light",
+    "statLabel": "text-stone-400 text-xs uppercase tracking-widest mt-1",
+    "section": "py-20",
+    "sectionAlt": "bg-white py-20",
+    "sectionTitle": "text-xs uppercase tracking-[0.4em] text-stone-400 text-center",
+    "sectionSubtitle": "font-serif text-2xl text-stone-800 mt-3 text-center",
+    "card": "text-center",
+    "cardTitle": "uppercase tracking-wider text-lg",
+    "cardText": "text-stone-500 text-sm leading-relaxed",
+    "aboutImage": "w-full",
+    "mission": "font-serif italic text-rose-800 text-lg text-center",
+    "stepNum": "text-rose-300 text-2xl",
+    "gallery": "w-full aspect-[3/4] object-cover",
+    "showcase": "bg-white py-20",
+    "showcaseCard": "group text-left",
+    "showcaseImage": "w-full aspect-[3/4] object-cover mb-4 group-hover:opacity-90 transition-opacity",
+    "showcasePrice": "text-sm font-medium text-stone-800 tracking-wide",
+    "showcaseTag": "text-xs uppercase tracking-[0.2em] text-rose-400",
+    "testimonial": "text-center font-serif italic text-stone-600 px-8",
+    "faq": "border-b border-rose-100 py-6",
+    "teamCard": "text-center",
+    "ctaBanner": "bg-stone-800 text-rose-50 py-20 text-center",
+    "ctaBannerBtn": "border border-rose-300 px-10 py-3 text-xs uppercase tracking-[0.2em]",
+    "contact": "bg-stone-800 text-rose-50 py-20 text-center",
+    "contactLabel": "text-rose-300 text-xs uppercase",
+    "footer": "py-8 text-center text-xs uppercase tracking-widest text-stone-400"
+  },
+  "colorSchemes": [
+    {
+      "id": "blush",
+      "name": "Soft Blush",
+      "swatches": [
+        "#9d174d",
+        "#fda4af",
+        "#fff1f2"
+      ],
+      "overrides": {}
+    },
+    {
+      "id": "noir",
+      "name": "Paris Noir",
+      "swatches": [
+        "#1c1917",
+        "#a8a29e",
+        "#fafaf9"
+      ],
+      "overrides": {
+        "page": "bg-stone-50 text-stone-800",
+        "nav": "border-b border-stone-200 bg-stone-50/90 backdrop-blur-sm sticky top-0 z-50",
+        "navLink": "text-stone-500 hover:text-stone-900",
+        "heroBadge": "text-xs uppercase tracking-[0.4em] text-stone-400",
+        "stats": "bg-stone-900 text-stone-50 py-16",
+        "statValue": "text-3xl font-light text-stone-50",
+        "statLabel": "text-stone-400 text-xs uppercase tracking-widest mt-1",
+        "mission": "font-serif italic text-stone-700 text-lg text-center",
+        "stepNum": "text-stone-400 text-2xl",
+        "ctaBanner": "bg-stone-900 text-stone-50 py-20 text-center",
+        "ctaBannerBtn": "border border-stone-400 px-10 py-3 text-xs uppercase tracking-[0.2em]",
+        "contact": "bg-stone-900 text-stone-50 py-20 text-center",
+        "contactLabel": "text-stone-400 text-xs uppercase"
+      }
+    },
+    {
+      "id": "lavender",
+      "name": "Lavender Dream",
+      "swatches": [
+        "#5b21b6",
+        "#c4b5fd",
+        "#faf5ff"
+      ],
+      "overrides": {
+        "page": "bg-violet-50 text-stone-800",
+        "nav": "border-b border-violet-200/60 bg-violet-50/90 backdrop-blur-sm sticky top-0 z-50",
+        "navLink": "text-stone-500 hover:text-violet-800",
+        "navCta": "border border-violet-800 px-6 py-2 text-xs uppercase tracking-[0.2em] hover:bg-violet-800 hover:text-violet-50",
+        "heroBadge": "text-xs uppercase tracking-[0.4em] text-violet-400",
+        "stats": "bg-white py-16 border-y border-violet-100",
+        "mission": "font-serif italic text-violet-800 text-lg text-center",
+        "stepNum": "text-violet-300 text-2xl",
+        "ctaBanner": "bg-violet-900 text-violet-50 py-20 text-center",
+        "ctaBannerBtn": "border border-violet-300 px-10 py-3 text-xs uppercase tracking-[0.2em]",
+        "contact": "bg-violet-900 text-violet-50 py-20 text-center",
+        "contactLabel": "text-violet-300 text-xs uppercase"
+      }
+    }
+  ],
+  "defaultColorSchemeId": "blush",
+  "defaultLayoutVariantId": "classic",
+  "sectionVariants": {
+    "faq": "minimal",
+    "explore": "magazine",
+    "contactShell": "boutique-luxe",
+    "contactForm": "elegant-serif",
+    "exploreTitle": "Collection",
+    "exploreSubtitle": "Curated pieces, lookbook, and personal styling",
+    "exploreLinkLabel": "Discover"
+  },
+  "showcase": {
+    "sectionTitle": "Shop Collection",
+    "sectionSubtitle": "Curated pieces from our latest arrivals",
+    "navLabel": "Shop",
+    "itemLabel": "Product",
+    "showPrice": true,
+    "priceLabel": "Price",
+    "showTag": true,
+    "tagLabel": "Category"
+  },
+  "defaultShowcase": [
+    {
+      "title": "Silk Midi Dress",
+      "description": "Fluid Italian silk in champagne \u2014 perfect for evening events.",
+      "image": "https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=600&q=80",
+      "price": "$285",
+      "tag": "Dresses",
+      "link": "contact"
+    },
+    {
+      "title": "Cashmere Wrap Coat",
+      "description": "Oversized camel coat, sustainably sourced Mongolian cashmere.",
+      "image": "https://images.unsplash.com/photo-1539533018447-63fcce2678e3?w=600&q=80",
+      "price": "$420",
+      "tag": "Outerwear",
+      "link": "contact"
+    },
+    {
+      "title": "Gold Hoop Earrings",
+      "description": "14k recycled gold, hand-crafted by Parisian artisans.",
+      "image": "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&q=80",
+      "price": "$165",
+      "tag": "Jewelry",
+      "link": "contact"
+    },
+    {
+      "title": "Linen Blazer",
+      "description": "Relaxed tailoring in natural ivory \u2014 a summer wardrobe essential.",
+      "image": "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=600&q=80",
+      "price": "$198",
+      "tag": "Blazers",
+      "link": "contact"
+    },
+    {
+      "title": "Leather Tote",
+      "description": "Vegetable-tanned leather, spacious interior, lifetime repair guarantee.",
+      "image": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=600&q=80",
+      "price": "$340",
+      "tag": "Bags",
+      "link": "contact"
+    },
+    {
+      "title": "Satin Slip Skirt",
+      "description": "Bias-cut midnight navy skirt \u2014 pairs with everything.",
+      "image": "https://images.unsplash.com/photo-1583497276230-9f401a8c0f94?w=600&q=80",
+      "price": "$145",
+      "tag": "Skirts",
+      "link": "contact"
+    }
+  ],
+  "navShell": "boutique",
+  "contactFields": [
+    {
+      "key": "email",
+      "label": "Email",
+      "placeholder": "shop@boutique.com"
+    },
+    {
+      "key": "phone",
+      "label": "Phone",
+      "placeholder": "(555) 444-2211"
+    },
+    {
+      "key": "address",
+      "label": "Store Address",
+      "placeholder": "12 Fashion Row, NYC"
+    },
+    {
+      "key": "hours",
+      "label": "Store Hours",
+      "placeholder": "Mon\u2013Sat 10am\u20138pm"
+    },
+    {
+      "key": "instagram",
+      "label": "Instagram",
+      "placeholder": "@yourboutique"
+    }
+  ],
+  "servicesLabel": "Collections",
+  "pageLayouts": {
+    "blog": "magazine",
+    "blogPost": "editorial",
+    "news": "timeline",
+    "newsPost": "press",
+    "gallery": "masonry",
+    "portfolio": "case-study"
+  },
+  "hero": {
+    "overlay": false,
+    "overlayGradient": "bg-black/30",
+    "splitColumns": false,
+    "badge": "name",
+    "grayscaleImage": false
+  },
+  "defaults": {
+    "businessName": "Maison Lumi\u00e8re",
+    "tagline": "Curated fashion for the modern woman",
+    "heroSubtext": "Handpicked pieces from emerging designers and timeless classics, chosen for quality and sustainability.",
+    "heroImage": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&q=80",
+    "aboutTitle": "Our Philosophy",
+    "about": "Maison Lumi\u00e8re was born from a love of slow fashion. We partner with independent designers across Paris, Milan, and New York to bring you pieces that are as ethical as they are beautiful. Every garment tells a story.",
+    "aboutImage": "https://images.unsplash.com/photo-1483985988350-763728e3685b?w=800&q=80",
+    "missionStatement": "Style with substance \u2014 fashion that respects people and planet.",
+    "pageVisibility": {
+      "about": true,
+      "services": true,
+      "portfolio": true,
+      "blog": true,
+      "news": true,
+      "gallery": true,
+      "contact": true,
+      "rooms": false
+    },
+    "sectionVisibility": {
+      "stats": true,
+      "team": true,
+      "steps": true,
+      "faq": true,
+      "cta": true,
+      "testimonials": true,
+      "pricing": false
+    },
+    "stats": [
+      {
+        "value": "200+",
+        "label": "Designers"
+      },
+      {
+        "value": "100%",
+        "label": "Sustainable Fabrics"
+      },
+      {
+        "value": "8",
+        "label": "Years Curating"
+      },
+      {
+        "value": "4.9\u2605",
+        "label": "Customer Rating"
+      }
+    ],
+    "servicesSectionTitle": "Collections",
+    "servicesSectionSubtitle": "Thoughtfully curated for every occasion",
+    "services": [
+      {
+        "title": "New Arrivals",
+        "description": "Fresh styles added weekly from our global designer network."
+      },
+      {
+        "title": "Seasonal Edit",
+        "description": "Cohesive collections for spring, summer, fall, and winter."
+      },
+      {
+        "title": "Personal Styling",
+        "description": "Complimentary one-on-one sessions with our style experts."
+      },
+      {
+        "title": "Alterations",
+        "description": "In-house tailoring for the perfect fit on every piece."
+      }
+    ],
+    "stepsSectionTitle": "How It Works",
+    "steps": [
+      {
+        "title": "Consultation",
+        "description": "We learn about your goals and challenges in a discovery session."
+      },
+      {
+        "title": "Strategy",
+        "description": "Our team crafts a tailored plan designed for your success."
+      },
+      {
+        "title": "Execution",
+        "description": "We deliver with precision, keeping you informed every step."
+      },
+      {
+        "title": "Growth",
+        "description": "We measure results and optimize for continuous improvement."
+      }
+    ],
+    "showcaseSectionTitle": "Shop Collection",
+    "showcaseSectionSubtitle": "Curated pieces from our latest arrivals",
+    "showcaseItems": [
+      {
+        "title": "Silk Midi Dress",
+        "description": "Fluid Italian silk in champagne \u2014 perfect for evening events.",
+        "image": "https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=600&q=80",
+        "price": "$285",
+        "tag": "Dresses",
+        "link": "contact"
+      },
+      {
+        "title": "Cashmere Wrap Coat",
+        "description": "Oversized camel coat, sustainably sourced Mongolian cashmere.",
+        "image": "https://images.unsplash.com/photo-1539533018447-63fcce2678e3?w=600&q=80",
+        "price": "$420",
+        "tag": "Outerwear",
+        "link": "contact"
+      },
+      {
+        "title": "Gold Hoop Earrings",
+        "description": "14k recycled gold, hand-crafted by Parisian artisans.",
+        "image": "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&q=80",
+        "price": "$165",
+        "tag": "Jewelry",
+        "link": "contact"
+      },
+      {
+        "title": "Linen Blazer",
+        "description": "Relaxed tailoring in natural ivory \u2014 a summer wardrobe essential.",
+        "image": "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=600&q=80",
+        "price": "$198",
+        "tag": "Blazers",
+        "link": "contact"
+      },
+      {
+        "title": "Leather Tote",
+        "description": "Vegetable-tanned leather, spacious interior, lifetime repair guarantee.",
+        "image": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=600&q=80",
+        "price": "$340",
+        "tag": "Bags",
+        "link": "contact"
+      },
+      {
+        "title": "Satin Slip Skirt",
+        "description": "Bias-cut midnight navy skirt \u2014 pairs with everything.",
+        "image": "https://images.unsplash.com/photo-1583497276230-9f401a8c0f94?w=600&q=80",
+        "price": "$145",
+        "tag": "Skirts",
+        "link": "contact"
+      }
+    ],
+    "gallerySectionTitle": "Lookbook",
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=600&q=80",
+      "https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=600&q=80",
+      "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&q=80"
+    ],
+    "testimonialsSectionTitle": "What Our Clients Say",
+    "testimonials": [
+      {
+        "quote": "Outstanding service and incredible results. Highly recommended!",
+        "author": "Sarah Johnson",
+        "role": "CEO, TechStart"
+      },
+      {
+        "quote": "They transformed our business. Professional, creative, and reliable.",
+        "author": "Michael Chen",
+        "role": "Founder, Bloom Co"
+      },
+      {
+        "quote": "The best decision we made this year. Exceeded every expectation.",
+        "author": "Emily Rodriguez",
+        "role": "Director, Apex Group"
+      }
+    ],
+    "faqSectionTitle": "Frequently Asked Questions",
+    "faqs": [
+      {
+        "question": "How do I get started?",
+        "answer": "Simply reach out via our contact form or give us a call. We offer a free initial consultation."
+      },
+      {
+        "question": "What are your pricing options?",
+        "answer": "We offer flexible packages tailored to your needs and budget. Contact us for a custom quote."
+      },
+      {
+        "question": "How long does a typical project take?",
+        "answer": "Timelines vary by scope, but most projects are completed within 2\u20138 weeks."
+      },
+      {
+        "question": "Do you offer ongoing support?",
+        "answer": "Yes! We provide continued support and maintenance to ensure long-term success."
+      }
+    ],
+    "teamSectionTitle": "Meet the Team",
+    "blogSectionTitle": "Latest from Our Blog",
+    "blogSectionSubtitle": "Insights, tips, and updates from our team",
+    "newsSectionTitle": "News & Updates",
+    "newsSectionSubtitle": "Announcements, press releases, and company news",
+    "newsPosts": [
+      {
+        "title": "We Are Expanding to Serve You Better",
+        "slug": "expanding-to-serve-you-better",
+        "excerpt": "New locations, extended hours, and more ways to connect with our team.",
+        "body": "We are thrilled to announce expanded service hours and a new consultation space designed around your comfort and convenience.\n\nThis investment reflects our commitment to accessibility and excellence. Thank you for being part of our journey \u2014 we cannot wait to welcome you.",
+        "image": "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80",
+        "author": "Press Team",
+        "date": "2026-04-01"
+      },
+      {
+        "title": "Award Recognizes Our Commitment to Quality",
+        "slug": "award-quality-commitment",
+        "excerpt": "Industry leaders honored our team for outstanding client satisfaction.",
+        "body": "Receiving this recognition is a testament to the people behind our work \u2014 dedicated professionals who show up every day with care and craft.\n\nWe share this award with every client who trusted us with their goals. Your feedback shapes how we grow and improve.",
+        "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80",
+        "author": "Communications",
+        "date": "2026-03-18"
+      },
+      {
+        "title": "Partnership Opens New Opportunities",
+        "slug": "partnership-new-opportunities",
+        "excerpt": "Strategic collaboration brings enhanced offerings to our community.",
+        "body": "Our new partnership combines complementary strengths to deliver more value, faster turnaround, and broader expertise under one roof.\n\nStay tuned for launch events and early-access opportunities for existing clients.",
+        "image": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80",
+        "author": "Leadership",
+        "date": "2026-02-05"
+      }
+    ],
+    "pricingSectionTitle": "Pricing Plans",
+    "pricing": [
+      {
+        "title": "Starter",
+        "description": "Essential features for individuals and small teams getting started.",
+        "price": "$29/mo",
+        "tag": "Most popular",
+        "featured": false
+      },
+      {
+        "title": "Professional",
+        "description": "Advanced tools, priority support, and integrations for growing businesses.",
+        "price": "$79/mo",
+        "tag": "Best value",
+        "featured": true
+      },
+      {
+        "title": "Enterprise",
+        "description": "Custom solutions, dedicated account management, and SLA guarantees.",
+        "price": "Custom",
+        "tag": "Contact us",
+        "featured": false
+      }
+    ],
+    "roomsSectionTitle": "Rooms & Suites",
+    "roomsSectionSubtitle": "Explore our accommodations and reserve your stay",
+    "bookingSectionTitle": "Book Your Stay",
+    "bookingSectionSubtitle": "Select dates, guests, and your preferred room type",
+    "roomTypes": [],
+    "blogPosts": [
+      {
+        "title": "5 Strategies to Grow Your Business This Year",
+        "slug": "5-strategies-to-grow-your-business",
+        "excerpt": "Practical steps you can take today to build momentum and reach more customers.",
+        "body": "Growing a business takes focus, consistency, and a willingness to adapt. Start by clarifying your core offer, then double down on the channels that already bring results.\n\nReview your customer journey from first touch to repeat purchase. Small improvements at each step compound into meaningful revenue gains. Finally, invest in relationships \u2014 referrals and retention often outperform cold outreach.",
+        "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
+        "author": "Alex Morgan",
+        "date": "2026-03-12"
+      },
+      {
+        "title": "What Clients Are Asking Us Right Now",
+        "slug": "what-clients-are-asking-us",
+        "excerpt": "A quick roundup of the most common questions we hear \u2014 and how we answer them.",
+        "body": "Every season brings a new set of priorities. Lately, clients ask about pricing transparency, faster turnaround times, and how to stand out in crowded markets.\n\nOur advice stays grounded in fundamentals: deliver exceptional value, communicate clearly, and measure what matters. When in doubt, talk to your customers \u2014 their feedback is the best roadmap.",
+        "image": "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80",
+        "author": "Jordan Lee",
+        "date": "2026-02-28"
+      },
+      {
+        "title": "Behind the Scenes: How We Work",
+        "slug": "behind-the-scenes-how-we-work",
+        "excerpt": "Take a peek at our process, tools, and the principles that guide every project.",
+        "body": "We believe great outcomes come from clear goals, collaborative planning, and disciplined execution. Every engagement starts with listening \u2014 understanding where you are and where you want to go.\n\nFrom there we build a tailored plan with milestones you can track. Throughout delivery we keep communication open so there are no surprises, only steady progress toward results you can measure.",
+        "image": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80",
+        "author": "Taylor Brooks",
+        "date": "2026-01-15"
+      }
+    ],
+    "team": [
+      {
+        "name": "Alex Morgan",
+        "role": "Founder & CEO",
+        "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80"
+      },
+      {
+        "name": "Jordan Lee",
+        "role": "Creative Director",
+        "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
+      },
+      {
+        "name": "Taylor Brooks",
+        "role": "Operations Lead",
+        "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80"
+      }
+    ],
+    "ctaBannerTitle": "Visit us this weekend",
+    "ctaBannerText": "New arrivals just landed. Complimentary styling with every purchase over $200.",
+    "ctaText": "Shop Collection",
+    "ctaLink": "contact",
+    "seoEnabled": false,
+    "seoTitle": "",
+    "seoDescription": "",
+    "seoKeywords": "",
+    "seoSiteUrl": "",
+    "email": "hello@maisonlumiere.com",
+    "phone": "(555) 444-2211",
+    "address": "12 Fashion Row, New York, NY",
+    "hours": "Mon\u2013Sat 10am\u20138pm, Sun 12pm\u20136pm",
+    "instagram": "@maisonlumiere",
+    "website": "",
+    "linkedin": "",
+    "whatsapp": "",
+    "supportEmail": "",
+    "reservationEmail": "",
+    "licenseNumber": "",
+    "bookingUrl": "",
+    "contactSectionTitle": "Get in Touch",
+    "contactFormTitle": "Send Us a Message",
+    "contactFormUrl": "",
+    "contactFormButtonText": "Open Contact Form"
+  }
+}

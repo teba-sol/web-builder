@@ -13,6 +13,13 @@ export const baseRichContent: SiteContent = {
   tagline: '',
   heroSubtext: '',
   heroImage: '',
+  logo: '',
+  logoShowName: true,
+  brandPrimary: '',
+  brandSecondary: '',
+  brandAccent: '',
+  fontHeading: '',
+  fontBody: '',
   aboutTitle: 'About Us',
   about: '',
   aboutImage: '',
@@ -103,9 +110,6 @@ export const baseRichContent: SiteContent = {
   bookingSectionTitle: 'Book Your Stay',
   bookingSectionSubtitle: 'Select dates, guests, and your preferred room type',
   roomTypes: [],
-  termsSectionTitle: 'Terms & Conditions',
-  termsContent: 'By using our website and services, you agree to these terms. We reserve the right to update policies as needed. Contact us with any questions about privacy, billing, or service agreements.',
-  cookieBannerText: 'We use cookies to improve your experience. By continuing to browse, you accept our cookie policy.',
   blogPosts: [
     {
       title: '5 Strategies to Grow Your Business This Year',

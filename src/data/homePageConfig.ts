@@ -14,7 +14,6 @@ export const DEFAULT_HOME_SECTIONS = [
   'contact',
   'explore',
   'footer',
-  'cookie',
 ] as const
 
 export type HomeSectionId = (typeof DEFAULT_HOME_SECTIONS)[number]

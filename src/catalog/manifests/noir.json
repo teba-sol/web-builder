@@ -1,0 +1,573 @@
+{
+  "schemaVersion": 1,
+  "id": "noir",
+  "name": "Maison Noir",
+  "description": "Editorial black-and-gold luxury \u2014 runway typography, dramatic contrast, haute couture energy.",
+  "category": "retail",
+  "previewGradient": "from-zinc-950 via-neutral-900 to-amber-950",
+  "accentColor": "#d4af37",
+  "sortOrder": 11,
+  "features": [
+    "cms"
+  ],
+  "pages": {
+    "about": true,
+    "services": true,
+    "portfolio": true,
+    "blog": true,
+    "news": true,
+    "gallery": true,
+    "contact": true,
+    "rooms": false
+  },
+  "homeSections": [
+    "nav",
+    "hero",
+    "stats",
+    "rooms-teaser",
+    "services-teaser",
+    "portfolio-teaser",
+    "blog-teaser",
+    "news-teaser",
+    "testimonials",
+    "about-teaser",
+    "faq",
+    "contact",
+    "explore",
+    "footer"
+  ],
+  "sectionOrder": [
+    "nav",
+    "hero",
+    "gallery",
+    "showcase",
+    "about",
+    "services",
+    "stats",
+    "testimonials",
+    "blog",
+    "team",
+    "faq",
+    "cta",
+    "contact",
+    "footer"
+  ],
+  "theme": {
+    "page": "bg-neutral-950 text-neutral-100",
+    "nav": "sticky top-0 z-50 border-b border-neutral-800/80 bg-neutral-950/90 backdrop-blur-md",
+    "navLink": "text-neutral-400 hover:text-amber-400 tracking-wide uppercase text-xs",
+    "navCta": "border border-amber-500/60 bg-transparent px-6 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-amber-400 hover:bg-amber-500/10",
+    "hero": "relative min-h-[90vh] flex items-center bg-neutral-950 text-neutral-50",
+    "heroBadge": "text-amber-500/90 uppercase tracking-[0.5em] text-[10px] font-medium",
+    "heroTitle": "text-5xl md:text-7xl font-serif font-light tracking-tight leading-[1.05]",
+    "heroText": "text-neutral-400 text-lg max-w-xl font-light leading-relaxed",
+    "heroCta": "mt-4 inline-block border-b-2 border-amber-500 pb-1 text-sm uppercase tracking-[0.3em] text-amber-400 hover:text-amber-300",
+    "stats": "border-y border-neutral-800 bg-neutral-900 py-20",
+    "statValue": "text-4xl font-serif font-light text-amber-400",
+    "statLabel": "text-neutral-500 text-[10px] uppercase tracking-[0.35em] mt-2",
+    "section": "py-24 bg-neutral-950",
+    "sectionAlt": "py-24 bg-neutral-900/50",
+    "sectionTitle": "text-4xl font-serif font-light text-neutral-50 tracking-tight",
+    "sectionSubtitle": "text-neutral-500 mt-3 font-light tracking-wide",
+    "card": "border border-neutral-800 bg-neutral-900/40 p-10 hover:border-amber-500/30 transition-colors",
+    "cardTitle": "text-xl font-serif text-amber-50",
+    "cardText": "text-neutral-400 leading-relaxed font-light",
+    "aboutImage": "grayscale contrast-125 rounded-none shadow-2xl shadow-black/50",
+    "mission": "text-amber-400/90 font-serif italic text-xl border-l border-amber-500/50 pl-8",
+    "stepNum": "text-amber-500 font-serif text-2xl font-light",
+    "gallery": "grayscale hover:grayscale-0 transition-all duration-700 w-full aspect-[3/4] object-cover",
+    "showcase": "bg-neutral-900 py-24",
+    "showcaseCard": "group border border-neutral-800 bg-neutral-950 overflow-hidden hover:border-amber-500/40 transition-all",
+    "showcaseImage": "w-full aspect-[3/4] object-cover grayscale group-hover:grayscale-0 transition-all duration-700",
+    "showcasePrice": "text-amber-400 font-serif tracking-wide",
+    "showcaseTag": "text-[10px] uppercase tracking-[0.4em] text-neutral-500",
+    "testimonial": "border-l border-amber-500/50 pl-10 py-6 font-serif italic text-neutral-300",
+    "faq": "border-b border-neutral-800 py-8",
+    "teamCard": "text-center",
+    "ctaBanner": "relative overflow-hidden bg-neutral-900 py-28 text-center border-y border-amber-500/20",
+    "ctaBannerBtn": "inline-block border border-amber-500 px-10 py-3 text-xs uppercase tracking-[0.35em] text-amber-400 hover:bg-amber-500/10",
+    "contact": "bg-black py-24 border-t border-neutral-800",
+    "contactLabel": "text-amber-500 text-[10px] uppercase tracking-[0.4em]",
+    "footer": "border-t border-neutral-800 py-10 text-center text-xs text-neutral-600 uppercase tracking-widest"
+  },
+  "colorSchemes": [
+    {
+      "id": "gold",
+      "name": "Midnight Gold",
+      "swatches": [
+        "#0a0a0a",
+        "#d4af37",
+        "#171717"
+      ],
+      "overrides": {}
+    },
+    {
+      "id": "silver",
+      "name": "Platinum Edit",
+      "swatches": [
+        "#18181b",
+        "#a1a1aa",
+        "#09090b"
+      ],
+      "overrides": {
+        "navLink": "text-neutral-400 hover:text-zinc-300 tracking-wide uppercase text-xs",
+        "navCta": "border border-zinc-400/60 text-zinc-300 hover:bg-zinc-400/10",
+        "heroTitle": "text-5xl md:text-7xl font-serif font-light tracking-tight text-zinc-100",
+        "statValue": "text-4xl font-serif font-light text-zinc-300",
+        "mission": "text-zinc-300 border-l border-zinc-500/50 pl-8",
+        "showcasePrice": "text-zinc-300 font-serif",
+        "ctaBannerBtn": "border border-zinc-400 text-zinc-300 hover:bg-zinc-400/10",
+        "contactLabel": "text-zinc-400"
+      }
+    },
+    {
+      "id": "crimson",
+      "name": "Noir Rouge",
+      "swatches": [
+        "#1a0505",
+        "#dc2626",
+        "#0a0a0a"
+      ],
+      "overrides": {
+        "navLink": "text-neutral-400 hover:text-red-400",
+        "navCta": "border border-red-500/60 text-red-400 hover:bg-red-500/10",
+        "statValue": "text-4xl font-serif text-red-400",
+        "mission": "text-red-400/90 border-l border-red-500/50",
+        "showcasePrice": "text-red-400",
+        "ctaBanner": "border-y border-red-500/20",
+        "ctaBannerBtn": "border border-red-500 text-red-400",
+        "contactLabel": "text-red-400"
+      }
+    }
+  ],
+  "defaultColorSchemeId": "gold",
+  "defaultLayoutVariantId": "classic",
+  "sectionVariants": {
+    "faq": "minimal",
+    "explore": "strips",
+    "contactShell": "noir-gold",
+    "contactForm": "dark-filled",
+    "exploreTitle": "Experience",
+    "exploreSubtitle": "Private offerings, gallery, and reservations",
+    "exploreLinkLabel": "Enter"
+  },
+  "showcase": {
+    "sectionTitle": "Current Collection",
+    "sectionSubtitle": "Limited pieces \u2014 each silhouette tells a story of contrast and craft",
+    "navLabel": "Collection",
+    "itemLabel": "Piece",
+    "showPrice": true,
+    "priceLabel": "From",
+    "showTag": true,
+    "tagLabel": "Season"
+  },
+  "defaultShowcase": [
+    {
+      "title": "Obsidian Column Gown",
+      "description": "Architectural silk column dress with hand-stitched gold thread detailing.",
+      "image": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80",
+      "price": "$2,400",
+      "tag": "FW26",
+      "link": "contact"
+    },
+    {
+      "title": "Velvet Midnight Blazer",
+      "description": "Structured shoulders, satin lapels \u2014 power dressing redefined.",
+      "image": "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=600&q=80",
+      "price": "$1,850",
+      "tag": "Essentials",
+      "link": "contact"
+    },
+    {
+      "title": "Gold Filigree Clutch",
+      "description": "Brass frame clutch with hand-hammered filigree \u2014 one of twelve made.",
+      "image": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=600&q=80",
+      "price": "$680",
+      "tag": "Accessories",
+      "link": "contact"
+    },
+    {
+      "title": "Noir Signature Fragrance",
+      "description": "Oud, black tea, and amber \u2014 an evening scent with lasting presence.",
+      "image": "https://images.unsplash.com/photo-1541643600914-78b084683601?w=600&q=80",
+      "price": "$220",
+      "tag": "Parfum",
+      "link": "contact"
+    },
+    {
+      "title": "Runway Styling Session",
+      "description": "Private fitting with our creative director \u2014 90 minutes of curated looks.",
+      "image": "https://images.unsplash.com/photo-1483985988350-763728e3685b?w=600&q=80",
+      "price": "$350",
+      "tag": "Service",
+      "link": "contact"
+    },
+    {
+      "title": "Archive Silk Scarf",
+      "description": "Limited reissue from our 1998 collection \u2014 numbered and signed.",
+      "image": "https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?w=600&q=80",
+      "price": "$295",
+      "tag": "Archive",
+      "link": "contact"
+    }
+  ],
+  "navShell": "noir",
+  "contactFields": [
+    {
+      "key": "email",
+      "label": "Atelier Email",
+      "placeholder": "maison@noir.studio"
+    },
+    {
+      "key": "phone",
+      "label": "Concierge",
+      "placeholder": "+33 1 42 00 00 00"
+    },
+    {
+      "key": "address",
+      "label": "Showroom",
+      "placeholder": "8 Rue du Faubourg, Paris"
+    },
+    {
+      "key": "instagram",
+      "label": "Instagram",
+      "placeholder": "@maisonnoir"
+    },
+    {
+      "key": "website",
+      "label": "Lookbook URL",
+      "placeholder": "https://lookbook.noirstudio.com"
+    }
+  ],
+  "servicesLabel": "Collections",
+  "pageLayouts": {
+    "blog": "magazine",
+    "blogPost": "editorial",
+    "news": "compact",
+    "newsPost": "press",
+    "gallery": "masonry",
+    "portfolio": "case-study"
+  },
+  "hero": {
+    "overlay": true,
+    "overlayGradient": "bg-gradient-to-t from-neutral-950 via-neutral-950/80 to-neutral-950/30",
+    "splitColumns": false,
+    "badge": "name",
+    "grayscaleImage": true
+  },
+  "defaults": {
+    "businessName": "Maison Noir",
+    "tagline": "Elegance in shadow",
+    "heroSubtext": "A Parisian atelier where silhouette meets silence \u2014 limited collections for those who dress with intention.",
+    "heroImage": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=80",
+    "aboutTitle": "The Atelier",
+    "about": "Founded in 2012, Maison Noir distills fashion to its essence: precise cuts, noble materials, and a palette of black, ivory, and gold. Each piece is produced in numbered editions \u2014 never mass, always considered.",
+    "aboutImage": "https://images.unsplash.com/photo-1483985988350-763728e3685b?w=800&q=80",
+    "missionStatement": "We do not follow trends. We compose them.",
+    "pageVisibility": {
+      "about": true,
+      "services": true,
+      "portfolio": true,
+      "blog": true,
+      "news": true,
+      "gallery": true,
+      "contact": true,
+      "rooms": false
+    },
+    "sectionVisibility": {
+      "stats": true,
+      "team": true,
+      "steps": true,
+      "faq": true,
+      "cta": true,
+      "testimonials": true,
+      "pricing": false
+    },
+    "stats": [
+      {
+        "value": "12",
+        "label": "Pieces Per Season"
+      },
+      {
+        "value": "Paris",
+        "label": "Atelier Since 2012"
+      },
+      {
+        "value": "48hr",
+        "label": "Private Fitting"
+      },
+      {
+        "value": "100%",
+        "label": "European Materials"
+      }
+    ],
+    "servicesSectionTitle": "Maison Services",
+    "servicesSectionSubtitle": "Bespoke experiences for our clientele",
+    "services": [
+      {
+        "title": "Private Fittings",
+        "description": "One-on-one sessions with our creative director in the Faubourg showroom."
+      },
+      {
+        "title": "Made-to-Order",
+        "description": "Select silhouettes tailored to your measurements in six weeks."
+      },
+      {
+        "title": "Archive Access",
+        "description": "Exclusive previews of past seasons and limited reissues."
+      },
+      {
+        "title": "Styling Consultation",
+        "description": "Wardrobe curation for events, editorials, and everyday refinement."
+      }
+    ],
+    "stepsSectionTitle": "How It Works",
+    "steps": [
+      {
+        "title": "Consultation",
+        "description": "We learn about your goals and challenges in a discovery session."
+      },
+      {
+        "title": "Strategy",
+        "description": "Our team crafts a tailored plan designed for your success."
+      },
+      {
+        "title": "Execution",
+        "description": "We deliver with precision, keeping you informed every step."
+      },
+      {
+        "title": "Growth",
+        "description": "We measure results and optimize for continuous improvement."
+      }
+    ],
+    "showcaseSectionTitle": "Current Collection",
+    "showcaseSectionSubtitle": "Limited pieces \u2014 each silhouette tells a story of contrast and craft",
+    "showcaseItems": [
+      {
+        "title": "Obsidian Column Gown",
+        "description": "Architectural silk column dress with hand-stitched gold thread detailing.",
+        "image": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80",
+        "price": "$2,400",
+        "tag": "FW26",
+        "link": "contact"
+      },
+      {
+        "title": "Velvet Midnight Blazer",
+        "description": "Structured shoulders, satin lapels \u2014 power dressing redefined.",
+        "image": "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=600&q=80",
+        "price": "$1,850",
+        "tag": "Essentials",
+        "link": "contact"
+      },
+      {
+        "title": "Gold Filigree Clutch",
+        "description": "Brass frame clutch with hand-hammered filigree \u2014 one of twelve made.",
+        "image": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=600&q=80",
+        "price": "$680",
+        "tag": "Accessories",
+        "link": "contact"
+      },
+      {
+        "title": "Noir Signature Fragrance",
+        "description": "Oud, black tea, and amber \u2014 an evening scent with lasting presence.",
+        "image": "https://images.unsplash.com/photo-1541643600914-78b084683601?w=600&q=80",
+        "price": "$220",
+        "tag": "Parfum",
+        "link": "contact"
+      },
+      {
+        "title": "Runway Styling Session",
+        "description": "Private fitting with our creative director \u2014 90 minutes of curated looks.",
+        "image": "https://images.unsplash.com/photo-1483985988350-763728e3685b?w=600&q=80",
+        "price": "$350",
+        "tag": "Service",
+        "link": "contact"
+      },
+      {
+        "title": "Archive Silk Scarf",
+        "description": "Limited reissue from our 1998 collection \u2014 numbered and signed.",
+        "image": "https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?w=600&q=80",
+        "price": "$295",
+        "tag": "Archive",
+        "link": "contact"
+      }
+    ],
+    "gallerySectionTitle": "Editorial",
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=600&q=80",
+      "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=600&q=80",
+      "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=600&q=80"
+    ],
+    "testimonialsSectionTitle": "Press & Patrons",
+    "testimonials": [
+      {
+        "quote": "Outstanding service and incredible results. Highly recommended!",
+        "author": "Sarah Johnson",
+        "role": "CEO, TechStart"
+      },
+      {
+        "quote": "They transformed our business. Professional, creative, and reliable.",
+        "author": "Michael Chen",
+        "role": "Founder, Bloom Co"
+      },
+      {
+        "quote": "The best decision we made this year. Exceeded every expectation.",
+        "author": "Emily Rodriguez",
+        "role": "Director, Apex Group"
+      }
+    ],
+    "faqSectionTitle": "Frequently Asked Questions",
+    "faqs": [
+      {
+        "question": "How do I get started?",
+        "answer": "Simply reach out via our contact form or give us a call. We offer a free initial consultation."
+      },
+      {
+        "question": "What are your pricing options?",
+        "answer": "We offer flexible packages tailored to your needs and budget. Contact us for a custom quote."
+      },
+      {
+        "question": "How long does a typical project take?",
+        "answer": "Timelines vary by scope, but most projects are completed within 2\u20138 weeks."
+      },
+      {
+        "question": "Do you offer ongoing support?",
+        "answer": "Yes! We provide continued support and maintenance to ensure long-term success."
+      }
+    ],
+    "teamSectionTitle": "Creative Team",
+    "blogSectionTitle": "Latest from Our Blog",
+    "blogSectionSubtitle": "Insights, tips, and updates from our team",
+    "newsSectionTitle": "News & Updates",
+    "newsSectionSubtitle": "Announcements, press releases, and company news",
+    "newsPosts": [
+      {
+        "title": "We Are Expanding to Serve You Better",
+        "slug": "expanding-to-serve-you-better",
+        "excerpt": "New locations, extended hours, and more ways to connect with our team.",
+        "body": "We are thrilled to announce expanded service hours and a new consultation space designed around your comfort and convenience.\n\nThis investment reflects our commitment to accessibility and excellence. Thank you for being part of our journey \u2014 we cannot wait to welcome you.",
+        "image": "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80",
+        "author": "Press Team",
+        "date": "2026-04-01"
+      },
+      {
+        "title": "Award Recognizes Our Commitment to Quality",
+        "slug": "award-quality-commitment",
+        "excerpt": "Industry leaders honored our team for outstanding client satisfaction.",
+        "body": "Receiving this recognition is a testament to the people behind our work \u2014 dedicated professionals who show up every day with care and craft.\n\nWe share this award with every client who trusted us with their goals. Your feedback shapes how we grow and improve.",
+        "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80",
+        "author": "Communications",
+        "date": "2026-03-18"
+      },
+      {
+        "title": "Partnership Opens New Opportunities",
+        "slug": "partnership-new-opportunities",
+        "excerpt": "Strategic collaboration brings enhanced offerings to our community.",
+        "body": "Our new partnership combines complementary strengths to deliver more value, faster turnaround, and broader expertise under one roof.\n\nStay tuned for launch events and early-access opportunities for existing clients.",
+        "image": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80",
+        "author": "Leadership",
+        "date": "2026-02-05"
+      }
+    ],
+    "pricingSectionTitle": "Pricing Plans",
+    "pricing": [
+      {
+        "title": "Starter",
+        "description": "Essential features for individuals and small teams getting started.",
+        "price": "$29/mo",
+        "tag": "Most popular",
+        "featured": false
+      },
+      {
+        "title": "Professional",
+        "description": "Advanced tools, priority support, and integrations for growing businesses.",
+        "price": "$79/mo",
+        "tag": "Best value",
+        "featured": true
+      },
+      {
+        "title": "Enterprise",
+        "description": "Custom solutions, dedicated account management, and SLA guarantees.",
+        "price": "Custom",
+        "tag": "Contact us",
+        "featured": false
+      }
+    ],
+    "roomsSectionTitle": "Rooms & Suites",
+    "roomsSectionSubtitle": "Explore our accommodations and reserve your stay",
+    "bookingSectionTitle": "Book Your Stay",
+    "bookingSectionSubtitle": "Select dates, guests, and your preferred room type",
+    "roomTypes": [],
+    "blogPosts": [
+      {
+        "title": "5 Strategies to Grow Your Business This Year",
+        "slug": "5-strategies-to-grow-your-business",
+        "excerpt": "Practical steps you can take today to build momentum and reach more customers.",
+        "body": "Growing a business takes focus, consistency, and a willingness to adapt. Start by clarifying your core offer, then double down on the channels that already bring results.\n\nReview your customer journey from first touch to repeat purchase. Small improvements at each step compound into meaningful revenue gains. Finally, invest in relationships \u2014 referrals and retention often outperform cold outreach.",
+        "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
+        "author": "Alex Morgan",
+        "date": "2026-03-12"
+      },
+      {
+        "title": "What Clients Are Asking Us Right Now",
+        "slug": "what-clients-are-asking-us",
+        "excerpt": "A quick roundup of the most common questions we hear \u2014 and how we answer them.",
+        "body": "Every season brings a new set of priorities. Lately, clients ask about pricing transparency, faster turnaround times, and how to stand out in crowded markets.\n\nOur advice stays grounded in fundamentals: deliver exceptional value, communicate clearly, and measure what matters. When in doubt, talk to your customers \u2014 their feedback is the best roadmap.",
+        "image": "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80",
+        "author": "Jordan Lee",
+        "date": "2026-02-28"
+      },
+      {
+        "title": "Behind the Scenes: How We Work",
+        "slug": "behind-the-scenes-how-we-work",
+        "excerpt": "Take a peek at our process, tools, and the principles that guide every project.",
+        "body": "We believe great outcomes come from clear goals, collaborative planning, and disciplined execution. Every engagement starts with listening \u2014 understanding where you are and where you want to go.\n\nFrom there we build a tailored plan with milestones you can track. Throughout delivery we keep communication open so there are no surprises, only steady progress toward results you can measure.",
+        "image": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80",
+        "author": "Taylor Brooks",
+        "date": "2026-01-15"
+      }
+    ],
+    "team": [
+      {
+        "name": "Isabelle Moreau",
+        "role": "Creative Director",
+        "image": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80"
+      },
+      {
+        "name": "Kenji Watanabe",
+        "role": "Head Tailor",
+        "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80"
+      },
+      {
+        "name": "Am\u00e9lie Duval",
+        "role": "Client Relations",
+        "image": "https://images.unsplash.com/photo-1580618672591-eb180b1a973f?w=400&q=80"
+      }
+    ],
+    "ctaBannerTitle": "Request a private viewing",
+    "ctaBannerText": "Our new collection is available by appointment only. Experience it before the world does.",
+    "ctaText": "Book Appointment",
+    "ctaLink": "contact",
+    "seoEnabled": false,
+    "seoTitle": "",
+    "seoDescription": "",
+    "seoKeywords": "",
+    "seoSiteUrl": "",
+    "email": "maison@noir.studio",
+    "phone": "+33 1 42 00 00 00",
+    "address": "8 Rue du Faubourg, 75008 Paris",
+    "hours": "",
+    "instagram": "@maisonnoir",
+    "website": "https://lookbook.noirstudio.com",
+    "linkedin": "",
+    "whatsapp": "",
+    "supportEmail": "",
+    "reservationEmail": "",
+    "licenseNumber": "",
+    "bookingUrl": "",
+    "contactSectionTitle": "Get in Touch",
+    "contactFormTitle": "Send Us a Message",
+    "contactFormUrl": "",
+    "contactFormButtonText": "Open Contact Form"
+  }
+}

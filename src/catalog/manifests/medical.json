@@ -1,0 +1,598 @@
+{
+  "schemaVersion": 1,
+  "id": "medical",
+  "name": "Wellness Clinic",
+  "description": "Clean, trustworthy healthcare design with appointment booking emphasis.",
+  "category": "health",
+  "previewGradient": "from-teal-600 to-emerald-800",
+  "accentColor": "#0d9488",
+  "sortOrder": 8,
+  "features": [
+    "cms"
+  ],
+  "pages": {
+    "about": true,
+    "services": true,
+    "portfolio": true,
+    "blog": true,
+    "news": true,
+    "gallery": true,
+    "contact": true,
+    "rooms": false
+  },
+  "homeSections": [
+    "nav",
+    "hero",
+    "stats",
+    "rooms-teaser",
+    "services-teaser",
+    "portfolio-teaser",
+    "blog-teaser",
+    "news-teaser",
+    "testimonials",
+    "about-teaser",
+    "faq",
+    "contact",
+    "explore",
+    "footer"
+  ],
+  "sectionOrder": [
+    "nav",
+    "hero",
+    "stats",
+    "about",
+    "services",
+    "showcase",
+    "team",
+    "steps",
+    "gallery",
+    "testimonials",
+    "blog",
+    "faq",
+    "cta",
+    "contact",
+    "footer"
+  ],
+  "theme": {
+    "page": "bg-white text-slate-700",
+    "nav": "sticky top-0 z-50 border-b border-teal-100 bg-white/95 backdrop-blur-sm shadow-sm",
+    "navLink": "text-slate-600 hover:text-teal-700",
+    "navCta": "rounded-full bg-teal-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-teal-700",
+    "hero": "bg-gradient-to-br from-teal-50 to-emerald-50 py-20",
+    "heroBadge": "rounded-full bg-teal-100 px-4 py-1 text-sm font-medium text-teal-800",
+    "heroTitle": "text-4xl md:text-5xl font-bold text-teal-900 leading-tight",
+    "heroText": "text-lg text-slate-600",
+    "heroCta": "rounded-full bg-teal-600 px-8 py-3 font-semibold text-white hover:bg-teal-700",
+    "stats": "bg-teal-900 text-white py-16",
+    "statValue": "text-4xl font-bold",
+    "statLabel": "text-teal-200 text-sm mt-1",
+    "section": "py-20",
+    "sectionAlt": "bg-slate-50 py-20",
+    "sectionTitle": "text-2xl font-bold text-teal-900",
+    "sectionSubtitle": "text-slate-600 mt-2",
+    "card": "rounded-2xl border border-teal-100 bg-teal-50/50 p-8",
+    "cardTitle": "text-lg font-semibold text-teal-900",
+    "cardText": "text-slate-600",
+    "aboutImage": "rounded-3xl shadow-xl shadow-teal-100",
+    "mission": "text-teal-700 font-medium text-lg border-l-4 border-teal-400 pl-6",
+    "stepNum": "flex h-10 w-10 items-center justify-center rounded-full bg-teal-600 text-white font-bold text-sm",
+    "gallery": "rounded-2xl w-full aspect-[4/3] object-cover",
+    "showcase": "bg-teal-50 py-20",
+    "showcaseCard": "rounded-2xl border border-teal-100 bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow",
+    "showcaseImage": "w-full aspect-[16/9] object-cover",
+    "showcasePrice": "text-teal-700 font-semibold",
+    "showcaseTag": "text-xs font-semibold uppercase tracking-wider text-teal-500",
+    "testimonial": "bg-white rounded-2xl border border-teal-100 p-8 shadow-sm",
+    "faq": "border-b border-teal-100 py-6",
+    "teamCard": "text-center",
+    "ctaBanner": "bg-teal-900 text-white py-20 text-center",
+    "ctaBannerBtn": "rounded-full bg-white px-8 py-3 font-semibold text-teal-900 hover:bg-teal-50",
+    "contact": "py-20",
+    "contactLabel": "text-xs font-semibold uppercase tracking-wider text-teal-300",
+    "footer": "border-t py-8 text-center text-sm text-slate-500"
+  },
+  "colorSchemes": [
+    {
+      "id": "teal",
+      "name": "Clinical Teal",
+      "swatches": [
+        "#134e4a",
+        "#0d9488",
+        "#f0fdfa"
+      ],
+      "overrides": {}
+    },
+    {
+      "id": "sky",
+      "name": "Sky Blue Care",
+      "swatches": [
+        "#0c4a6e",
+        "#0284c7",
+        "#f0f9ff"
+      ],
+      "overrides": {
+        "nav": "sticky top-0 z-50 border-b border-sky-100 bg-white/95 backdrop-blur-sm shadow-sm",
+        "navLink": "text-slate-600 hover:text-sky-700",
+        "navCta": "rounded-full bg-sky-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-sky-700",
+        "hero": "bg-gradient-to-br from-sky-50 to-blue-50 py-20",
+        "heroBadge": "rounded-full bg-sky-100 px-4 py-1 text-sm font-medium text-sky-800",
+        "heroTitle": "text-4xl md:text-5xl font-bold text-sky-900 leading-tight",
+        "heroCta": "rounded-full bg-sky-600 px-8 py-3 font-semibold text-white hover:bg-sky-700",
+        "stats": "bg-sky-900 text-white py-16",
+        "statLabel": "text-sky-200 text-sm mt-1",
+        "sectionTitle": "text-2xl font-bold text-sky-900",
+        "card": "rounded-2xl border border-sky-100 bg-sky-50/50 p-8",
+        "cardTitle": "text-lg font-semibold text-sky-900",
+        "mission": "text-sky-700 font-medium text-lg border-l-4 border-sky-400 pl-6",
+        "stepNum": "flex h-10 w-10 items-center justify-center rounded-full bg-sky-600 text-white font-bold text-sm",
+        "aboutImage": "rounded-3xl shadow-xl shadow-sky-100",
+        "testimonial": "bg-white rounded-2xl border border-sky-100 p-8 shadow-sm",
+        "faq": "border-b border-sky-100 py-6",
+        "ctaBanner": "bg-sky-900 text-white py-20 text-center",
+        "ctaBannerBtn": "rounded-full bg-white px-8 py-3 font-semibold text-sky-900 hover:bg-sky-50",
+        "contactLabel": "text-xs font-semibold uppercase tracking-wider text-sky-300"
+      }
+    },
+    {
+      "id": "sage",
+      "name": "Sage Wellness",
+      "swatches": [
+        "#365314",
+        "#65a30d",
+        "#f7fee7"
+      ],
+      "overrides": {
+        "nav": "sticky top-0 z-50 border-b border-lime-100 bg-white/95 backdrop-blur-sm shadow-sm",
+        "navLink": "text-slate-600 hover:text-lime-700",
+        "navCta": "rounded-full bg-lime-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-lime-700",
+        "hero": "bg-gradient-to-br from-lime-50 to-green-50 py-20",
+        "heroBadge": "rounded-full bg-lime-100 px-4 py-1 text-sm font-medium text-lime-800",
+        "heroTitle": "text-4xl md:text-5xl font-bold text-lime-900 leading-tight",
+        "heroCta": "rounded-full bg-lime-600 px-8 py-3 font-semibold text-white hover:bg-lime-700",
+        "stats": "bg-lime-800 text-white py-16",
+        "statLabel": "text-lime-200 text-sm mt-1",
+        "sectionTitle": "text-2xl font-bold text-lime-900",
+        "card": "rounded-2xl border border-lime-100 bg-lime-50/50 p-8",
+        "cardTitle": "text-lg font-semibold text-lime-900",
+        "mission": "text-lime-700 font-medium text-lg border-l-4 border-lime-400 pl-6",
+        "stepNum": "flex h-10 w-10 items-center justify-center rounded-full bg-lime-600 text-white font-bold text-sm",
+        "aboutImage": "rounded-3xl shadow-xl shadow-lime-100",
+        "testimonial": "bg-white rounded-2xl border border-lime-100 p-8 shadow-sm",
+        "faq": "border-b border-lime-100 py-6",
+        "ctaBanner": "bg-lime-800 text-white py-20 text-center",
+        "ctaBannerBtn": "rounded-full bg-white px-8 py-3 font-semibold text-lime-900 hover:bg-lime-50",
+        "contactLabel": "text-xs font-semibold uppercase tracking-wider text-lime-300"
+      }
+    }
+  ],
+  "defaultColorSchemeId": "teal",
+  "defaultLayoutVariantId": "classic",
+  "sectionVariants": {
+    "faq": "accordion",
+    "explore": "list-arrows",
+    "contactShell": "intake",
+    "contactForm": "soft-rounded",
+    "exploreTitle": "Patient Care",
+    "exploreSubtitle": "Services, providers, insurance, and appointments",
+    "exploreLinkLabel": "Learn"
+  },
+  "showcase": {
+    "sectionTitle": "Care Programs",
+    "sectionSubtitle": "Comprehensive health programs for every stage of life",
+    "navLabel": "Programs",
+    "itemLabel": "Program",
+    "showPrice": false,
+    "priceLabel": "Copay",
+    "showTag": true,
+    "tagLabel": "Type"
+  },
+  "defaultShowcase": [
+    {
+      "title": "Annual Wellness Exam",
+      "description": "Comprehensive physical, labs, preventive screening, and personalized health plan.",
+      "image": "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&q=80",
+      "price": "",
+      "tag": "Preventive",
+      "link": "contact"
+    },
+    {
+      "title": "Pediatric Care",
+      "description": "Well-child visits, immunizations, developmental assessments birth through 18.",
+      "image": "https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?w=600&q=80",
+      "price": "",
+      "tag": "Pediatrics",
+      "link": "contact"
+    },
+    {
+      "title": "Chronic Care Management",
+      "description": "Ongoing support for diabetes, hypertension, asthma, and heart disease.",
+      "image": "https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=600&q=80",
+      "price": "",
+      "tag": "Chronic",
+      "link": "contact"
+    },
+    {
+      "title": "Women's Health",
+      "description": "Annual exams, prenatal care, menopause management, and reproductive health.",
+      "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600&q=80",
+      "price": "",
+      "tag": "Women's",
+      "link": "contact"
+    },
+    {
+      "title": "Telehealth Visits",
+      "description": "Virtual consultations for follow-ups, prescriptions, and minor illnesses.",
+      "image": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&q=80",
+      "price": "",
+      "tag": "Virtual",
+      "link": "contact"
+    },
+    {
+      "title": "Senior Care Program",
+      "description": "Coordinated care for adults 65+ including fall prevention and medication review.",
+      "image": "https://images.unsplash.com/photo-1586773866498-ae9054135b1c?w=600&q=80",
+      "price": "",
+      "tag": "Seniors",
+      "link": "contact"
+    }
+  ],
+  "navShell": "medical",
+  "contactFields": [
+    {
+      "key": "phone",
+      "label": "Appointments Phone",
+      "placeholder": "(555) 111-2233"
+    },
+    {
+      "key": "email",
+      "label": "Email",
+      "placeholder": "care@clinic.com"
+    },
+    {
+      "key": "address",
+      "label": "Clinic Address",
+      "placeholder": "200 Health Park Dr"
+    },
+    {
+      "key": "hours",
+      "label": "Clinic Hours",
+      "placeholder": "Mon\u2013Fri 8am\u20136pm"
+    },
+    {
+      "key": "bookingUrl",
+      "label": "Online Booking URL",
+      "placeholder": "https://book.clinic.com"
+    }
+  ],
+  "servicesLabel": "Care Services",
+  "pageLayouts": {
+    "blog": "grid",
+    "blogPost": "classic",
+    "news": "grid",
+    "newsPost": "classic",
+    "gallery": "grid",
+    "portfolio": "cards"
+  },
+  "hero": {
+    "overlay": false,
+    "overlayGradient": "bg-black/30",
+    "splitColumns": true,
+    "badge": "name",
+    "grayscaleImage": false
+  },
+  "defaults": {
+    "businessName": "Harmony Wellness Clinic",
+    "tagline": "Compassionate care for your whole family",
+    "heroSubtext": "Board-certified physicians providing comprehensive primary and preventive care.",
+    "heroImage": "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=1200&q=80",
+    "aboutTitle": "Patient-Centered Care",
+    "about": "Harmony Wellness Clinic has served the Austin community for over a decade. Our integrated care model combines primary care, preventive medicine, and wellness coaching under one roof \u2014 so you spend less time navigating healthcare and more time living well.",
+    "aboutImage": "https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?w=800&q=80",
+    "missionStatement": "Healthcare should be personal, accessible, and focused on prevention \u2014 not just treatment.",
+    "pageVisibility": {
+      "about": true,
+      "services": true,
+      "portfolio": true,
+      "blog": true,
+      "news": true,
+      "gallery": true,
+      "contact": true,
+      "rooms": false
+    },
+    "sectionVisibility": {
+      "stats": true,
+      "team": true,
+      "steps": true,
+      "faq": true,
+      "cta": true,
+      "testimonials": true,
+      "pricing": false
+    },
+    "stats": [
+      {
+        "value": "10,000+",
+        "label": "Patients Served"
+      },
+      {
+        "value": "12",
+        "label": "Physicians"
+      },
+      {
+        "value": "4.9\u2605",
+        "label": "Patient Rating"
+      },
+      {
+        "value": "Same-Day",
+        "label": "Appointments"
+      }
+    ],
+    "servicesSectionTitle": "Care Services",
+    "servicesSectionSubtitle": "Comprehensive health services for all ages",
+    "services": [
+      {
+        "title": "Primary Care",
+        "description": "Annual physicals, sick visits, and chronic disease management."
+      },
+      {
+        "title": "Preventive Screenings",
+        "description": "Cancer screenings, cardiovascular assessments, and lab work."
+      },
+      {
+        "title": "Pediatric Care",
+        "description": "Well-child visits, immunizations, and developmental assessments."
+      },
+      {
+        "title": "Telehealth",
+        "description": "Virtual visits for follow-ups, prescriptions, and consultations."
+      }
+    ],
+    "stepsSectionTitle": "Your Visit, Step by Step",
+    "steps": [
+      {
+        "title": "Book",
+        "description": "Schedule online or call \u2014 same-day appointments often available."
+      },
+      {
+        "title": "Check In",
+        "description": "Minimal wait times with digital intake forms sent ahead."
+      },
+      {
+        "title": "Consult",
+        "description": "Unhurried appointments with your dedicated physician."
+      },
+      {
+        "title": "Follow Up",
+        "description": "Care plans, referrals, and portal access to your records."
+      }
+    ],
+    "showcaseSectionTitle": "Care Programs",
+    "showcaseSectionSubtitle": "Comprehensive health programs for every stage of life",
+    "showcaseItems": [
+      {
+        "title": "Annual Wellness Exam",
+        "description": "Comprehensive physical, labs, preventive screening, and personalized health plan.",
+        "image": "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&q=80",
+        "price": "",
+        "tag": "Preventive",
+        "link": "contact"
+      },
+      {
+        "title": "Pediatric Care",
+        "description": "Well-child visits, immunizations, developmental assessments birth through 18.",
+        "image": "https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?w=600&q=80",
+        "price": "",
+        "tag": "Pediatrics",
+        "link": "contact"
+      },
+      {
+        "title": "Chronic Care Management",
+        "description": "Ongoing support for diabetes, hypertension, asthma, and heart disease.",
+        "image": "https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=600&q=80",
+        "price": "",
+        "tag": "Chronic",
+        "link": "contact"
+      },
+      {
+        "title": "Women's Health",
+        "description": "Annual exams, prenatal care, menopause management, and reproductive health.",
+        "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600&q=80",
+        "price": "",
+        "tag": "Women's",
+        "link": "contact"
+      },
+      {
+        "title": "Telehealth Visits",
+        "description": "Virtual consultations for follow-ups, prescriptions, and minor illnesses.",
+        "image": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&q=80",
+        "price": "",
+        "tag": "Virtual",
+        "link": "contact"
+      },
+      {
+        "title": "Senior Care Program",
+        "description": "Coordinated care for adults 65+ including fall prevention and medication review.",
+        "image": "https://images.unsplash.com/photo-1586773866498-ae9054135b1c?w=600&q=80",
+        "price": "",
+        "tag": "Seniors",
+        "link": "contact"
+      }
+    ],
+    "gallerySectionTitle": "Our Facility",
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1516549655169-df83a0774514?w=600&q=80",
+      "https://images.unsplash.com/photo-1586773866498-ae9054135b1c?w=600&q=80",
+      "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&q=80"
+    ],
+    "testimonialsSectionTitle": "Patient Stories",
+    "testimonials": [
+      {
+        "quote": "Outstanding service and incredible results. Highly recommended!",
+        "author": "Sarah Johnson",
+        "role": "CEO, TechStart"
+      },
+      {
+        "quote": "They transformed our business. Professional, creative, and reliable.",
+        "author": "Michael Chen",
+        "role": "Founder, Bloom Co"
+      },
+      {
+        "quote": "The best decision we made this year. Exceeded every expectation.",
+        "author": "Emily Rodriguez",
+        "role": "Director, Apex Group"
+      }
+    ],
+    "faqSectionTitle": "Health FAQ",
+    "faqs": [
+      {
+        "question": "How do I get started?",
+        "answer": "Simply reach out via our contact form or give us a call. We offer a free initial consultation."
+      },
+      {
+        "question": "What are your pricing options?",
+        "answer": "We offer flexible packages tailored to your needs and budget. Contact us for a custom quote."
+      },
+      {
+        "question": "How long does a typical project take?",
+        "answer": "Timelines vary by scope, but most projects are completed within 2\u20138 weeks."
+      },
+      {
+        "question": "Do you offer ongoing support?",
+        "answer": "Yes! We provide continued support and maintenance to ensure long-term success."
+      }
+    ],
+    "teamSectionTitle": "Our Physicians",
+    "blogSectionTitle": "Latest from Our Blog",
+    "blogSectionSubtitle": "Insights, tips, and updates from our team",
+    "newsSectionTitle": "News & Updates",
+    "newsSectionSubtitle": "Announcements, press releases, and company news",
+    "newsPosts": [
+      {
+        "title": "We Are Expanding to Serve You Better",
+        "slug": "expanding-to-serve-you-better",
+        "excerpt": "New locations, extended hours, and more ways to connect with our team.",
+        "body": "We are thrilled to announce expanded service hours and a new consultation space designed around your comfort and convenience.\n\nThis investment reflects our commitment to accessibility and excellence. Thank you for being part of our journey \u2014 we cannot wait to welcome you.",
+        "image": "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80",
+        "author": "Press Team",
+        "date": "2026-04-01"
+      },
+      {
+        "title": "Award Recognizes Our Commitment to Quality",
+        "slug": "award-quality-commitment",
+        "excerpt": "Industry leaders honored our team for outstanding client satisfaction.",
+        "body": "Receiving this recognition is a testament to the people behind our work \u2014 dedicated professionals who show up every day with care and craft.\n\nWe share this award with every client who trusted us with their goals. Your feedback shapes how we grow and improve.",
+        "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80",
+        "author": "Communications",
+        "date": "2026-03-18"
+      },
+      {
+        "title": "Partnership Opens New Opportunities",
+        "slug": "partnership-new-opportunities",
+        "excerpt": "Strategic collaboration brings enhanced offerings to our community.",
+        "body": "Our new partnership combines complementary strengths to deliver more value, faster turnaround, and broader expertise under one roof.\n\nStay tuned for launch events and early-access opportunities for existing clients.",
+        "image": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80",
+        "author": "Leadership",
+        "date": "2026-02-05"
+      }
+    ],
+    "pricingSectionTitle": "Pricing Plans",
+    "pricing": [
+      {
+        "title": "Starter",
+        "description": "Essential features for individuals and small teams getting started.",
+        "price": "$29/mo",
+        "tag": "Most popular",
+        "featured": false
+      },
+      {
+        "title": "Professional",
+        "description": "Advanced tools, priority support, and integrations for growing businesses.",
+        "price": "$79/mo",
+        "tag": "Best value",
+        "featured": true
+      },
+      {
+        "title": "Enterprise",
+        "description": "Custom solutions, dedicated account management, and SLA guarantees.",
+        "price": "Custom",
+        "tag": "Contact us",
+        "featured": false
+      }
+    ],
+    "roomsSectionTitle": "Rooms & Suites",
+    "roomsSectionSubtitle": "Explore our accommodations and reserve your stay",
+    "bookingSectionTitle": "Book Your Stay",
+    "bookingSectionSubtitle": "Select dates, guests, and your preferred room type",
+    "roomTypes": [],
+    "blogPosts": [
+      {
+        "title": "5 Strategies to Grow Your Business This Year",
+        "slug": "5-strategies-to-grow-your-business",
+        "excerpt": "Practical steps you can take today to build momentum and reach more customers.",
+        "body": "Growing a business takes focus, consistency, and a willingness to adapt. Start by clarifying your core offer, then double down on the channels that already bring results.\n\nReview your customer journey from first touch to repeat purchase. Small improvements at each step compound into meaningful revenue gains. Finally, invest in relationships \u2014 referrals and retention often outperform cold outreach.",
+        "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
+        "author": "Alex Morgan",
+        "date": "2026-03-12"
+      },
+      {
+        "title": "What Clients Are Asking Us Right Now",
+        "slug": "what-clients-are-asking-us",
+        "excerpt": "A quick roundup of the most common questions we hear \u2014 and how we answer them.",
+        "body": "Every season brings a new set of priorities. Lately, clients ask about pricing transparency, faster turnaround times, and how to stand out in crowded markets.\n\nOur advice stays grounded in fundamentals: deliver exceptional value, communicate clearly, and measure what matters. When in doubt, talk to your customers \u2014 their feedback is the best roadmap.",
+        "image": "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80",
+        "author": "Jordan Lee",
+        "date": "2026-02-28"
+      },
+      {
+        "title": "Behind the Scenes: How We Work",
+        "slug": "behind-the-scenes-how-we-work",
+        "excerpt": "Take a peek at our process, tools, and the principles that guide every project.",
+        "body": "We believe great outcomes come from clear goals, collaborative planning, and disciplined execution. Every engagement starts with listening \u2014 understanding where you are and where you want to go.\n\nFrom there we build a tailored plan with milestones you can track. Throughout delivery we keep communication open so there are no surprises, only steady progress toward results you can measure.",
+        "image": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80",
+        "author": "Taylor Brooks",
+        "date": "2026-01-15"
+      }
+    ],
+    "team": [
+      {
+        "name": "Dr. Rachel Kim",
+        "role": "Family Medicine",
+        "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&q=80"
+      },
+      {
+        "name": "Dr. James Okafor",
+        "role": "Internal Medicine",
+        "image": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&q=80"
+      },
+      {
+        "name": "Dr. Maria Santos",
+        "role": "Pediatrics",
+        "image": "https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=400&q=80"
+      }
+    ],
+    "ctaBannerTitle": "Your health can't wait",
+    "ctaBannerText": "New patients welcome. Most insurance plans accepted. Book today.",
+    "ctaText": "Book Appointment",
+    "ctaLink": "contact",
+    "seoEnabled": false,
+    "seoTitle": "",
+    "seoDescription": "",
+    "seoKeywords": "",
+    "seoSiteUrl": "",
+    "email": "care@harmonyclinic.com",
+    "phone": "(555) 111-2233",
+    "address": "200 Health Park Drive, Austin, TX",
+    "hours": "Mon\u2013Fri 8am\u20136pm, Sat 9am\u20131pm",
+    "instagram": "",
+    "website": "",
+    "linkedin": "",
+    "whatsapp": "",
+    "supportEmail": "",
+    "reservationEmail": "",
+    "licenseNumber": "",
+    "bookingUrl": "https://book.harmonyclinic.com",
+    "contactSectionTitle": "Get in Touch",
+    "contactFormTitle": "Send Us a Message",
+    "contactFormUrl": "",
+    "contactFormButtonText": "Open Contact Form"
+  }
+}

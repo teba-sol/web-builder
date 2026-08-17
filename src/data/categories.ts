@@ -10,4 +10,5 @@ export const categories: CategoryMeta[] = [
   { id: 'tech', label: 'Technology', icon: '⚡' },
   { id: 'retail', label: 'Retail & Shop', icon: '🛍️' },
   { id: 'realestate', label: 'Real Estate', icon: '🏠' },
+  { id: 'finance', label: 'Finance & Tax', icon: '📊' },
 ]

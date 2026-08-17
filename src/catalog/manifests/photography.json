@@ -1,0 +1,576 @@
+{
+  "schemaVersion": 1,
+  "id": "photography",
+  "name": "Photo Portfolio",
+  "description": "Minimal fullscreen gallery style for photographers and visual artists.",
+  "category": "creative",
+  "previewGradient": "from-neutral-800 to-neutral-950",
+  "accentColor": "#fafafa",
+  "sortOrder": 7,
+  "features": [
+    "cms"
+  ],
+  "pages": {
+    "about": true,
+    "services": true,
+    "portfolio": true,
+    "blog": true,
+    "news": true,
+    "gallery": true,
+    "contact": true,
+    "rooms": false
+  },
+  "homeSections": [
+    "nav",
+    "hero",
+    "stats",
+    "rooms-teaser",
+    "services-teaser",
+    "portfolio-teaser",
+    "blog-teaser",
+    "news-teaser",
+    "testimonials",
+    "about-teaser",
+    "faq",
+    "contact",
+    "explore",
+    "footer"
+  ],
+  "sectionOrder": [
+    "nav",
+    "hero",
+    "gallery",
+    "showcase",
+    "about",
+    "services",
+    "stats",
+    "testimonials",
+    "blog",
+    "steps",
+    "faq",
+    "cta",
+    "contact",
+    "footer"
+  ],
+  "theme": {
+    "page": "bg-neutral-950 text-neutral-100",
+    "nav": "fixed top-0 z-50 w-full bg-neutral-950/40 backdrop-blur-sm",
+    "navLink": "text-neutral-300 hover:text-white",
+    "navCta": "text-sm uppercase tracking-[0.2em] border-b border-white pb-0.5 text-white",
+    "hero": "relative min-h-screen flex flex-col justify-end",
+    "heroBadge": "text-xs uppercase tracking-[0.4em] text-neutral-400",
+    "heroTitle": "text-4xl md:text-6xl lg:text-7xl font-light max-w-4xl leading-tight",
+    "heroText": "text-neutral-400 text-lg mt-4",
+    "heroCta": "border border-neutral-600 px-12 py-4 text-sm uppercase tracking-[0.2em] hover:bg-white hover:text-black",
+    "stats": "border-y border-neutral-800 py-16",
+    "statValue": "text-3xl font-light",
+    "statLabel": "text-neutral-600 text-xs uppercase tracking-widest mt-1",
+    "section": "py-24",
+    "sectionAlt": "bg-neutral-900 py-24",
+    "sectionTitle": "text-xs uppercase tracking-[0.5em] text-neutral-500",
+    "sectionSubtitle": "text-3xl font-light mt-4",
+    "card": "border-t border-neutral-800 py-8",
+    "cardTitle": "text-xl font-light",
+    "cardText": "text-neutral-500 text-sm",
+    "aboutImage": "w-full",
+    "mission": "text-neutral-400 font-light italic text-lg",
+    "stepNum": "text-neutral-700 text-sm",
+    "gallery": "w-full aspect-[3/2] object-cover",
+    "showcase": "py-24",
+    "showcaseCard": "border-t border-neutral-800 pt-8 group",
+    "showcaseImage": "w-full aspect-[3/2] object-cover mb-6 group-hover:opacity-80 transition-opacity",
+    "showcasePrice": "text-lg font-light text-neutral-200",
+    "showcaseTag": "text-xs uppercase tracking-widest text-neutral-600",
+    "testimonial": "text-center font-light text-neutral-400 px-8",
+    "faq": "border-b border-neutral-800 py-6",
+    "teamCard": "text-center",
+    "ctaBanner": "py-24 text-center border-y border-neutral-800",
+    "ctaBannerBtn": "border border-neutral-600 px-12 py-4 text-sm uppercase tracking-[0.2em] hover:bg-white hover:text-black",
+    "contact": "py-24",
+    "contactLabel": "text-xs uppercase tracking-widest text-neutral-600",
+    "footer": "py-8 text-center text-xs text-neutral-600 uppercase tracking-widest"
+  },
+  "colorSchemes": [
+    {
+      "id": "mono",
+      "name": "Classic Mono",
+      "swatches": [
+        "#171717",
+        "#737373",
+        "#fafafa"
+      ],
+      "overrides": {}
+    },
+    {
+      "id": "warm",
+      "name": "Warm Sepia",
+      "swatches": [
+        "#78350f",
+        "#d97706",
+        "#1c1917"
+      ],
+      "overrides": {
+        "page": "bg-stone-950 text-stone-100",
+        "nav": "fixed top-0 z-50 w-full",
+        "navLink": "text-stone-400 hover:text-amber-200",
+        "sectionAlt": "bg-stone-900 py-24",
+        "card": "border-t border-stone-800 py-8",
+        "mission": "text-amber-600/80 font-light italic text-lg",
+        "faq": "border-b border-stone-800 py-6",
+        "ctaBanner": "py-24 text-center border-y border-stone-800",
+        "ctaBannerBtn": "border border-amber-700 px-12 py-4 text-sm uppercase tracking-[0.2em] hover:bg-amber-200 hover:text-black",
+        "stats": "border-y border-stone-800 py-16"
+      }
+    },
+    {
+      "id": "cool",
+      "name": "Cool Slate",
+      "swatches": [
+        "#1e293b",
+        "#64748b",
+        "#f8fafc"
+      ],
+      "overrides": {
+        "page": "bg-slate-950 text-slate-100",
+        "sectionAlt": "bg-slate-900 py-24",
+        "card": "border-t border-slate-800 py-8",
+        "mission": "text-slate-400 font-light italic text-lg",
+        "faq": "border-b border-slate-800 py-6",
+        "ctaBanner": "py-24 text-center border-y border-slate-800",
+        "stats": "border-y border-slate-800 py-16",
+        "statLabel": "text-slate-500 text-xs uppercase tracking-widest mt-1",
+        "contactLabel": "text-xs uppercase tracking-widest text-slate-500"
+      }
+    }
+  ],
+  "defaultColorSchemeId": "mono",
+  "defaultLayoutVariantId": "classic",
+  "sectionVariants": {
+    "faq": "sidebar",
+    "explore": "tiles",
+    "contactShell": "minimal-split",
+    "contactForm": "underline",
+    "exploreTitle": "Archive",
+    "exploreSubtitle": "Portfolios, sessions, prints, and booking",
+    "exploreLinkLabel": "See"
+  },
+  "showcase": {
+    "sectionTitle": "Session Packages",
+    "sectionSubtitle": "Professional photography tailored to your needs",
+    "navLabel": "Packages",
+    "itemLabel": "Package",
+    "showPrice": true,
+    "priceLabel": "Starting at",
+    "showTag": true,
+    "tagLabel": "Duration"
+  },
+  "defaultShowcase": [
+    {
+      "title": "Wedding \u2014 Full Day",
+      "description": "10 hours coverage, engagement session, online gallery, and heirloom album.",
+      "image": "https://images.unsplash.com/photo-1519741497674-611481863552?w=600&q=80",
+      "price": "$4,500",
+      "tag": "10 hours",
+      "link": "contact"
+    },
+    {
+      "title": "Portrait Session",
+      "description": "1-hour session, 2 outfit changes, 25 edited high-res images.",
+      "image": "https://images.unsplash.com/photo-1554048612-b6a482b22f42?w=600&q=80",
+      "price": "$450",
+      "tag": "1 hour",
+      "link": "contact"
+    },
+    {
+      "title": "Commercial \u2014 Half Day",
+      "description": "Product or brand shoot, 4 hours, usage rights included.",
+      "image": "https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=600&q=80",
+      "price": "$2,200",
+      "tag": "4 hours",
+      "link": "contact"
+    },
+    {
+      "title": "Newborn & Family",
+      "description": "In-home or studio session, includes prints and digital gallery.",
+      "image": "https://images.unsplash.com/photo-1511895426328-dc8714191300?w=600&q=80",
+      "price": "$650",
+      "tag": "2 hours",
+      "link": "contact"
+    },
+    {
+      "title": "Event Coverage",
+      "description": "Corporate events, galas, and celebrations \u2014 flexible hourly packages.",
+      "image": "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600&q=80",
+      "price": "$350/hr",
+      "tag": "Hourly",
+      "link": "contact"
+    },
+    {
+      "title": "Elopement Package",
+      "description": "Intimate ceremony coverage, 4 hours, next-day sneak peek.",
+      "image": "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=600&q=80",
+      "price": "$2,800",
+      "tag": "4 hours",
+      "link": "contact"
+    }
+  ],
+  "navShell": "photography",
+  "contactFields": [
+    {
+      "key": "email",
+      "label": "Email",
+      "placeholder": "book@photographer.com"
+    },
+    {
+      "key": "phone",
+      "label": "Phone",
+      "placeholder": "(555) 222-8899"
+    },
+    {
+      "key": "instagram",
+      "label": "Instagram",
+      "placeholder": "@yourlens"
+    },
+    {
+      "key": "address",
+      "label": "Studio Location",
+      "placeholder": "Portland, OR"
+    },
+    {
+      "key": "bookingUrl",
+      "label": "Booking URL",
+      "placeholder": "https://calendly.com/you"
+    }
+  ],
+  "servicesLabel": "Specialties",
+  "pageLayouts": {
+    "blog": "magazine",
+    "blogPost": "editorial",
+    "news": "timeline",
+    "newsPost": "press",
+    "gallery": "masonry",
+    "portfolio": "case-study"
+  },
+  "hero": {
+    "overlay": true,
+    "overlayGradient": "bg-black/30",
+    "splitColumns": false,
+    "badge": "none",
+    "grayscaleImage": false
+  },
+  "defaults": {
+    "businessName": "Lens & Light",
+    "tagline": "Capturing moments that last forever",
+    "heroSubtext": "Award-winning photography for weddings, portraits, and commercial brands.",
+    "heroImage": "https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=1200&q=80",
+    "aboutTitle": "The Artist Behind the Lens",
+    "about": "With 10 years behind the camera, I've had the privilege of documenting over 200 weddings and countless brand campaigns. My approach blends photojournalism with fine art \u2014 candid, emotional, and timeless.",
+    "aboutImage": "https://images.unsplash.com/photo-1554048612-b6a482b22f42?w=800&q=80",
+    "missionStatement": "Every moment deserves to be remembered beautifully.",
+    "pageVisibility": {
+      "about": true,
+      "services": true,
+      "portfolio": true,
+      "blog": true,
+      "news": true,
+      "gallery": true,
+      "contact": true,
+      "rooms": false
+    },
+    "sectionVisibility": {
+      "stats": true,
+      "team": true,
+      "steps": true,
+      "faq": true,
+      "cta": true,
+      "testimonials": true,
+      "pricing": false
+    },
+    "stats": [
+      {
+        "value": "200+",
+        "label": "Weddings"
+      },
+      {
+        "value": "10",
+        "label": "Years Shooting"
+      },
+      {
+        "value": "15",
+        "label": "Awards Won"
+      },
+      {
+        "value": "30",
+        "label": "Countries"
+      }
+    ],
+    "servicesSectionTitle": "Specialties",
+    "servicesSectionSubtitle": "Tailored packages for every occasion",
+    "services": [
+      {
+        "title": "Weddings",
+        "description": "Full-day coverage with engagement sessions and heirloom albums."
+      },
+      {
+        "title": "Portraits",
+        "description": "Headshots, family, maternity, and creative portrait sessions."
+      },
+      {
+        "title": "Commercial",
+        "description": "Product, food, architecture, and brand photography."
+      },
+      {
+        "title": "Events",
+        "description": "Corporate events, galas, and private celebrations."
+      }
+    ],
+    "stepsSectionTitle": "Booking Process",
+    "steps": [
+      {
+        "title": "Consultation",
+        "description": "We learn about your goals and challenges in a discovery session."
+      },
+      {
+        "title": "Strategy",
+        "description": "Our team crafts a tailored plan designed for your success."
+      },
+      {
+        "title": "Execution",
+        "description": "We deliver with precision, keeping you informed every step."
+      },
+      {
+        "title": "Growth",
+        "description": "We measure results and optimize for continuous improvement."
+      }
+    ],
+    "showcaseSectionTitle": "Session Packages",
+    "showcaseSectionSubtitle": "Professional photography tailored to your needs",
+    "showcaseItems": [
+      {
+        "title": "Wedding \u2014 Full Day",
+        "description": "10 hours coverage, engagement session, online gallery, and heirloom album.",
+        "image": "https://images.unsplash.com/photo-1519741497674-611481863552?w=600&q=80",
+        "price": "$4,500",
+        "tag": "10 hours",
+        "link": "contact"
+      },
+      {
+        "title": "Portrait Session",
+        "description": "1-hour session, 2 outfit changes, 25 edited high-res images.",
+        "image": "https://images.unsplash.com/photo-1554048612-b6a482b22f42?w=600&q=80",
+        "price": "$450",
+        "tag": "1 hour",
+        "link": "contact"
+      },
+      {
+        "title": "Commercial \u2014 Half Day",
+        "description": "Product or brand shoot, 4 hours, usage rights included.",
+        "image": "https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=600&q=80",
+        "price": "$2,200",
+        "tag": "4 hours",
+        "link": "contact"
+      },
+      {
+        "title": "Newborn & Family",
+        "description": "In-home or studio session, includes prints and digital gallery.",
+        "image": "https://images.unsplash.com/photo-1511895426328-dc8714191300?w=600&q=80",
+        "price": "$650",
+        "tag": "2 hours",
+        "link": "contact"
+      },
+      {
+        "title": "Event Coverage",
+        "description": "Corporate events, galas, and celebrations \u2014 flexible hourly packages.",
+        "image": "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600&q=80",
+        "price": "$350/hr",
+        "tag": "Hourly",
+        "link": "contact"
+      },
+      {
+        "title": "Elopement Package",
+        "description": "Intimate ceremony coverage, 4 hours, next-day sneak peek.",
+        "image": "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=600&q=80",
+        "price": "$2,800",
+        "tag": "4 hours",
+        "link": "contact"
+      }
+    ],
+    "gallerySectionTitle": "Portfolio",
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1519741497674-611481863552?w=600&q=80",
+      "https://images.unsplash.com/photo-1520854221256-17451b1ee63b?w=600&q=80",
+      "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=600&q=80"
+    ],
+    "testimonialsSectionTitle": "Kind Words",
+    "testimonials": [
+      {
+        "quote": "Outstanding service and incredible results. Highly recommended!",
+        "author": "Sarah Johnson",
+        "role": "CEO, TechStart"
+      },
+      {
+        "quote": "They transformed our business. Professional, creative, and reliable.",
+        "author": "Michael Chen",
+        "role": "Founder, Bloom Co"
+      },
+      {
+        "quote": "The best decision we made this year. Exceeded every expectation.",
+        "author": "Emily Rodriguez",
+        "role": "Director, Apex Group"
+      }
+    ],
+    "faqSectionTitle": "Frequently Asked Questions",
+    "faqs": [
+      {
+        "question": "How do I get started?",
+        "answer": "Simply reach out via our contact form or give us a call. We offer a free initial consultation."
+      },
+      {
+        "question": "What are your pricing options?",
+        "answer": "We offer flexible packages tailored to your needs and budget. Contact us for a custom quote."
+      },
+      {
+        "question": "How long does a typical project take?",
+        "answer": "Timelines vary by scope, but most projects are completed within 2\u20138 weeks."
+      },
+      {
+        "question": "Do you offer ongoing support?",
+        "answer": "Yes! We provide continued support and maintenance to ensure long-term success."
+      }
+    ],
+    "teamSectionTitle": "Meet the Team",
+    "blogSectionTitle": "Latest from Our Blog",
+    "blogSectionSubtitle": "Insights, tips, and updates from our team",
+    "newsSectionTitle": "News & Updates",
+    "newsSectionSubtitle": "Announcements, press releases, and company news",
+    "newsPosts": [
+      {
+        "title": "We Are Expanding to Serve You Better",
+        "slug": "expanding-to-serve-you-better",
+        "excerpt": "New locations, extended hours, and more ways to connect with our team.",
+        "body": "We are thrilled to announce expanded service hours and a new consultation space designed around your comfort and convenience.\n\nThis investment reflects our commitment to accessibility and excellence. Thank you for being part of our journey \u2014 we cannot wait to welcome you.",
+        "image": "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80",
+        "author": "Press Team",
+        "date": "2026-04-01"
+      },
+      {
+        "title": "Award Recognizes Our Commitment to Quality",
+        "slug": "award-quality-commitment",
+        "excerpt": "Industry leaders honored our team for outstanding client satisfaction.",
+        "body": "Receiving this recognition is a testament to the people behind our work \u2014 dedicated professionals who show up every day with care and craft.\n\nWe share this award with every client who trusted us with their goals. Your feedback shapes how we grow and improve.",
+        "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80",
+        "author": "Communications",
+        "date": "2026-03-18"
+      },
+      {
+        "title": "Partnership Opens New Opportunities",
+        "slug": "partnership-new-opportunities",
+        "excerpt": "Strategic collaboration brings enhanced offerings to our community.",
+        "body": "Our new partnership combines complementary strengths to deliver more value, faster turnaround, and broader expertise under one roof.\n\nStay tuned for launch events and early-access opportunities for existing clients.",
+        "image": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80",
+        "author": "Leadership",
+        "date": "2026-02-05"
+      }
+    ],
+    "pricingSectionTitle": "Pricing Plans",
+    "pricing": [
+      {
+        "title": "Starter",
+        "description": "Essential features for individuals and small teams getting started.",
+        "price": "$29/mo",
+        "tag": "Most popular",
+        "featured": false
+      },
+      {
+        "title": "Professional",
+        "description": "Advanced tools, priority support, and integrations for growing businesses.",
+        "price": "$79/mo",
+        "tag": "Best value",
+        "featured": true
+      },
+      {
+        "title": "Enterprise",
+        "description": "Custom solutions, dedicated account management, and SLA guarantees.",
+        "price": "Custom",
+        "tag": "Contact us",
+        "featured": false
+      }
+    ],
+    "roomsSectionTitle": "Rooms & Suites",
+    "roomsSectionSubtitle": "Explore our accommodations and reserve your stay",
+    "bookingSectionTitle": "Book Your Stay",
+    "bookingSectionSubtitle": "Select dates, guests, and your preferred room type",
+    "roomTypes": [],
+    "blogPosts": [
+      {
+        "title": "5 Strategies to Grow Your Business This Year",
+        "slug": "5-strategies-to-grow-your-business",
+        "excerpt": "Practical steps you can take today to build momentum and reach more customers.",
+        "body": "Growing a business takes focus, consistency, and a willingness to adapt. Start by clarifying your core offer, then double down on the channels that already bring results.\n\nReview your customer journey from first touch to repeat purchase. Small improvements at each step compound into meaningful revenue gains. Finally, invest in relationships \u2014 referrals and retention often outperform cold outreach.",
+        "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
+        "author": "Alex Morgan",
+        "date": "2026-03-12"
+      },
+      {
+        "title": "What Clients Are Asking Us Right Now",
+        "slug": "what-clients-are-asking-us",
+        "excerpt": "A quick roundup of the most common questions we hear \u2014 and how we answer them.",
+        "body": "Every season brings a new set of priorities. Lately, clients ask about pricing transparency, faster turnaround times, and how to stand out in crowded markets.\n\nOur advice stays grounded in fundamentals: deliver exceptional value, communicate clearly, and measure what matters. When in doubt, talk to your customers \u2014 their feedback is the best roadmap.",
+        "image": "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80",
+        "author": "Jordan Lee",
+        "date": "2026-02-28"
+      },
+      {
+        "title": "Behind the Scenes: How We Work",
+        "slug": "behind-the-scenes-how-we-work",
+        "excerpt": "Take a peek at our process, tools, and the principles that guide every project.",
+        "body": "We believe great outcomes come from clear goals, collaborative planning, and disciplined execution. Every engagement starts with listening \u2014 understanding where you are and where you want to go.\n\nFrom there we build a tailored plan with milestones you can track. Throughout delivery we keep communication open so there are no surprises, only steady progress toward results you can measure.",
+        "image": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80",
+        "author": "Taylor Brooks",
+        "date": "2026-01-15"
+      }
+    ],
+    "team": [
+      {
+        "name": "Alex Morgan",
+        "role": "Founder & CEO",
+        "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80"
+      },
+      {
+        "name": "Jordan Lee",
+        "role": "Creative Director",
+        "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
+      },
+      {
+        "name": "Taylor Brooks",
+        "role": "Operations Lead",
+        "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80"
+      }
+    ],
+    "ctaBannerTitle": "Let's create something beautiful",
+    "ctaBannerText": "Limited dates available for 2026. Book your session today.",
+    "ctaText": "Book a Session",
+    "ctaLink": "contact",
+    "seoEnabled": false,
+    "seoTitle": "",
+    "seoDescription": "",
+    "seoKeywords": "",
+    "seoSiteUrl": "",
+    "email": "book@lensandlight.com",
+    "phone": "(555) 222-8899",
+    "address": "Portland, OR \u2014 Available worldwide",
+    "hours": "",
+    "instagram": "@lensandlight",
+    "website": "",
+    "linkedin": "",
+    "whatsapp": "",
+    "supportEmail": "",
+    "reservationEmail": "",
+    "licenseNumber": "",
+    "bookingUrl": "https://calendly.com/lensandlight",
+    "contactSectionTitle": "Get in Touch",
+    "contactFormTitle": "Send Us a Message",
+    "contactFormUrl": "",
+    "contactFormButtonText": "Open Contact Form"
+  }
+}

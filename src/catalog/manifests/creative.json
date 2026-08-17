@@ -1,0 +1,566 @@
+{
+  "schemaVersion": 1,
+  "id": "creative",
+  "name": "Creative Studio",
+  "description": "Bold dark aesthetic with striking typography for design agencies and studios.",
+  "category": "creative",
+  "previewGradient": "from-violet-600 to-fuchsia-600",
+  "accentColor": "#a855f7",
+  "sortOrder": 1,
+  "features": [
+    "cms"
+  ],
+  "pages": {
+    "about": true,
+    "services": true,
+    "portfolio": true,
+    "blog": true,
+    "news": true,
+    "gallery": true,
+    "contact": true,
+    "rooms": false
+  },
+  "homeSections": [
+    "nav",
+    "hero",
+    "stats",
+    "rooms-teaser",
+    "services-teaser",
+    "portfolio-teaser",
+    "blog-teaser",
+    "news-teaser",
+    "testimonials",
+    "about-teaser",
+    "faq",
+    "contact",
+    "explore",
+    "footer"
+  ],
+  "sectionOrder": [
+    "nav",
+    "hero",
+    "gallery",
+    "showcase",
+    "stats",
+    "about",
+    "services",
+    "steps",
+    "testimonials",
+    "blog",
+    "faq",
+    "cta",
+    "contact",
+    "footer"
+  ],
+  "theme": {
+    "page": "bg-zinc-950 text-white",
+    "nav": "fixed top-0 z-50 w-full bg-zinc-950/80 backdrop-blur-lg",
+    "navLink": "text-zinc-400 hover:text-violet-400",
+    "navCta": "rounded-full border border-violet-500/50 px-6 py-2 text-sm hover:bg-violet-500/10",
+    "hero": "relative min-h-screen flex items-center pt-20",
+    "heroBadge": "text-violet-400 uppercase tracking-widest text-sm",
+    "heroTitle": "text-5xl md:text-7xl lg:text-8xl font-black leading-none",
+    "heroText": "text-lg text-zinc-400",
+    "heroCta": "rounded-full bg-gradient-to-r from-violet-600 to-fuchsia-600 px-8 py-4 font-bold",
+    "stats": "border-y border-zinc-800 py-16",
+    "statValue": "text-4xl font-black text-violet-400",
+    "statLabel": "text-zinc-500 text-sm mt-1 uppercase tracking-wider",
+    "section": "py-24",
+    "sectionAlt": "border-t border-zinc-800 py-24",
+    "sectionTitle": "text-4xl font-black",
+    "sectionSubtitle": "text-zinc-500 mt-2",
+    "card": "border-t border-zinc-800 py-8",
+    "cardTitle": "text-2xl font-bold",
+    "cardText": "text-zinc-400",
+    "aboutImage": "rounded-none w-full",
+    "mission": "text-violet-400 text-xl font-medium italic",
+    "stepNum": "text-5xl font-black text-zinc-800",
+    "gallery": "w-full aspect-square object-cover",
+    "showcase": "border-t border-zinc-800 py-24",
+    "showcaseCard": "border border-zinc-800 rounded-2xl overflow-hidden hover:border-violet-500/50 transition-colors group",
+    "showcaseImage": "w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-500",
+    "showcasePrice": "text-violet-400 font-bold",
+    "showcaseTag": "text-xs uppercase tracking-widest text-zinc-500",
+    "testimonial": "border border-zinc-800 p-8 rounded-2xl",
+    "faq": "border-t border-zinc-800 py-6",
+    "teamCard": "text-center",
+    "ctaBanner": "bg-gradient-to-r from-violet-600 to-fuchsia-600 py-20",
+    "ctaBannerBtn": "rounded-full bg-white px-8 py-4 font-bold text-zinc-950",
+    "contact": "border-t border-zinc-800 py-24",
+    "contactLabel": "text-xs uppercase tracking-widest text-zinc-500",
+    "footer": "border-t border-zinc-800 py-8 text-center text-sm text-zinc-600"
+  },
+  "colorSchemes": [
+    {
+      "id": "violet",
+      "name": "Violet Pulse",
+      "swatches": [
+        "#581c87",
+        "#a855f7",
+        "#18181b"
+      ],
+      "overrides": {}
+    },
+    {
+      "id": "cyan",
+      "name": "Electric Cyan",
+      "swatches": [
+        "#164e63",
+        "#06b6d4",
+        "#18181b"
+      ],
+      "overrides": {
+        "navLink": "text-zinc-400 hover:text-cyan-400",
+        "navCta": "rounded-full border border-cyan-500/50 px-6 py-2 text-sm hover:bg-cyan-500/10",
+        "heroBadge": "text-cyan-400 uppercase tracking-widest text-sm",
+        "heroCta": "rounded-full bg-gradient-to-r from-cyan-600 to-blue-600 px-8 py-4 font-bold",
+        "statValue": "text-4xl font-black text-cyan-400",
+        "mission": "text-cyan-400 text-xl font-medium italic",
+        "ctaBanner": "bg-gradient-to-r from-cyan-600 to-blue-600 py-20"
+      }
+    },
+    {
+      "id": "rose",
+      "name": "Neon Rose",
+      "swatches": [
+        "#881337",
+        "#f43f5e",
+        "#18181b"
+      ],
+      "overrides": {
+        "navLink": "text-zinc-400 hover:text-rose-400",
+        "navCta": "rounded-full border border-rose-500/50 px-6 py-2 text-sm hover:bg-rose-500/10",
+        "heroBadge": "text-rose-400 uppercase tracking-widest text-sm",
+        "heroCta": "rounded-full bg-gradient-to-r from-rose-600 to-pink-600 px-8 py-4 font-bold",
+        "statValue": "text-4xl font-black text-rose-400",
+        "mission": "text-rose-400 text-xl font-medium italic",
+        "ctaBanner": "bg-gradient-to-r from-rose-600 to-pink-600 py-20"
+      }
+    }
+  ],
+  "defaultColorSchemeId": "violet",
+  "defaultLayoutVariantId": "classic",
+  "sectionVariants": {
+    "faq": "accordion",
+    "explore": "bento",
+    "contactShell": "full-bleed",
+    "contactForm": "underline",
+    "exploreTitle": "Studio",
+    "exploreSubtitle": "Jump between projects, process, and client stories",
+    "exploreLinkLabel": "View"
+  },
+  "showcase": {
+    "sectionTitle": "Featured Projects",
+    "sectionSubtitle": "A selection of our most impactful creative work",
+    "navLabel": "Projects",
+    "itemLabel": "Project",
+    "showPrice": false,
+    "priceLabel": "Budget",
+    "showTag": true,
+    "tagLabel": "Category"
+  },
+  "defaultShowcase": [
+    {
+      "title": "Nova Rebrand",
+      "description": "Complete brand identity for a fintech startup \u2014 logo, guidelines, and launch campaign.",
+      "image": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&q=80",
+      "price": "",
+      "tag": "Branding",
+      "link": "contact"
+    },
+    {
+      "title": "Bloom E-Commerce",
+      "description": "UI/UX design and development for a luxury skincare DTC brand.",
+      "image": "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600&q=80",
+      "price": "",
+      "tag": "Web Design",
+      "link": "contact"
+    },
+    {
+      "title": "Pulse Festival",
+      "description": "Visual identity, stage design, and social campaign for a 50,000-person music festival.",
+      "image": "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&q=80",
+      "price": "",
+      "tag": "Events",
+      "link": "contact"
+    },
+    {
+      "title": "Artisan Coffee Co.",
+      "description": "Packaging design and retail experience for a specialty coffee roaster.",
+      "image": "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=600&q=80",
+      "price": "",
+      "tag": "Packaging",
+      "link": "contact"
+    },
+    {
+      "title": "Motion Reel 2025",
+      "description": "Brand film and motion graphics for a global sportswear launch.",
+      "image": "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=600&q=80",
+      "price": "",
+      "tag": "Motion",
+      "link": "contact"
+    },
+    {
+      "title": "Urban Spaces",
+      "description": "Architectural photography and editorial layout for a design magazine feature.",
+      "image": "https://images.unsplash.com/photo-1487958449943-2429e8be8627?w=600&q=80",
+      "price": "",
+      "tag": "Editorial",
+      "link": "contact"
+    }
+  ],
+  "navShell": "creative",
+  "contactFields": [
+    {
+      "key": "email",
+      "label": "Email",
+      "placeholder": "hello@studio.com"
+    },
+    {
+      "key": "phone",
+      "label": "Phone",
+      "placeholder": "(555) 987-6543"
+    },
+    {
+      "key": "instagram",
+      "label": "Instagram",
+      "placeholder": "@studionova"
+    },
+    {
+      "key": "website",
+      "label": "Portfolio URL",
+      "placeholder": "https://behance.net/you"
+    }
+  ],
+  "servicesLabel": "What We Do",
+  "pageLayouts": {
+    "blog": "magazine",
+    "blogPost": "editorial",
+    "news": "timeline",
+    "newsPost": "press",
+    "gallery": "masonry",
+    "portfolio": "case-study"
+  },
+  "hero": {
+    "overlay": true,
+    "overlayGradient": "bg-gradient-to-t from-zinc-950 via-zinc-950/70 to-transparent",
+    "splitColumns": false,
+    "badge": "name",
+    "grayscaleImage": false
+  },
+  "defaults": {
+    "businessName": "Studio Nova",
+    "tagline": "Design that moves people",
+    "heroSubtext": "A creative studio obsessed with bold ideas, beautiful craft, and stories that resonate.",
+    "heroImage": "https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=1200&q=80",
+    "aboutTitle": "We Are Studio Nova",
+    "about": "Founded in Brooklyn in 2015, Studio Nova has grown into an award-winning creative agency serving global brands. We blend strategy, design, and technology to create work that doesn't just look good \u2014 it performs.",
+    "aboutImage": "https://images.unsplash.com/photo-1497215842964-222b430dc094?w=800&q=80",
+    "missionStatement": "We believe great design is invisible \u2014 it just feels right.",
+    "pageVisibility": {
+      "about": true,
+      "services": true,
+      "portfolio": true,
+      "blog": true,
+      "news": true,
+      "gallery": true,
+      "contact": true,
+      "rooms": false
+    },
+    "sectionVisibility": {
+      "stats": true,
+      "team": true,
+      "steps": true,
+      "faq": true,
+      "cta": true,
+      "testimonials": true,
+      "pricing": false
+    },
+    "stats": [
+      {
+        "value": "120+",
+        "label": "Projects Delivered"
+      },
+      {
+        "value": "35",
+        "label": "Design Awards"
+      },
+      {
+        "value": "18",
+        "label": "Countries Reached"
+      },
+      {
+        "value": "12",
+        "label": "Team Members"
+      }
+    ],
+    "servicesSectionTitle": "What We Do",
+    "servicesSectionSubtitle": "From concept to launch, we handle it all",
+    "services": [
+      {
+        "title": "Brand Identity",
+        "description": "Logos, visual systems, tone of voice, and brand guidelines."
+      },
+      {
+        "title": "Web & Product Design",
+        "description": "UI/UX design for websites, apps, and digital products."
+      },
+      {
+        "title": "Motion & Video",
+        "description": "Animations, explainers, and social content that captivates."
+      },
+      {
+        "title": "Campaign Strategy",
+        "description": "Integrated campaigns across print, digital, and experiential."
+      }
+    ],
+    "stepsSectionTitle": "Our Creative Process",
+    "steps": [
+      {
+        "title": "Consultation",
+        "description": "We learn about your goals and challenges in a discovery session."
+      },
+      {
+        "title": "Strategy",
+        "description": "Our team crafts a tailored plan designed for your success."
+      },
+      {
+        "title": "Execution",
+        "description": "We deliver with precision, keeping you informed every step."
+      },
+      {
+        "title": "Growth",
+        "description": "We measure results and optimize for continuous improvement."
+      }
+    ],
+    "showcaseSectionTitle": "Featured Projects",
+    "showcaseSectionSubtitle": "A selection of our most impactful creative work",
+    "showcaseItems": [
+      {
+        "title": "Nova Rebrand",
+        "description": "Complete brand identity for a fintech startup \u2014 logo, guidelines, and launch campaign.",
+        "image": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&q=80",
+        "price": "",
+        "tag": "Branding",
+        "link": "contact"
+      },
+      {
+        "title": "Bloom E-Commerce",
+        "description": "UI/UX design and development for a luxury skincare DTC brand.",
+        "image": "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600&q=80",
+        "price": "",
+        "tag": "Web Design",
+        "link": "contact"
+      },
+      {
+        "title": "Pulse Festival",
+        "description": "Visual identity, stage design, and social campaign for a 50,000-person music festival.",
+        "image": "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&q=80",
+        "price": "",
+        "tag": "Events",
+        "link": "contact"
+      },
+      {
+        "title": "Artisan Coffee Co.",
+        "description": "Packaging design and retail experience for a specialty coffee roaster.",
+        "image": "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=600&q=80",
+        "price": "",
+        "tag": "Packaging",
+        "link": "contact"
+      },
+      {
+        "title": "Motion Reel 2025",
+        "description": "Brand film and motion graphics for a global sportswear launch.",
+        "image": "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=600&q=80",
+        "price": "",
+        "tag": "Motion",
+        "link": "contact"
+      },
+      {
+        "title": "Urban Spaces",
+        "description": "Architectural photography and editorial layout for a design magazine feature.",
+        "image": "https://images.unsplash.com/photo-1487958449943-2429e8be8627?w=600&q=80",
+        "price": "",
+        "tag": "Editorial",
+        "link": "contact"
+      }
+    ],
+    "gallerySectionTitle": "Selected Work",
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&q=80",
+      "https://images.unsplash.com/photo-1634942537034-2531766767d1?w=600&q=80",
+      "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600&q=80"
+    ],
+    "testimonialsSectionTitle": "Client Love",
+    "testimonials": [
+      {
+        "quote": "Outstanding service and incredible results. Highly recommended!",
+        "author": "Sarah Johnson",
+        "role": "CEO, TechStart"
+      },
+      {
+        "quote": "They transformed our business. Professional, creative, and reliable.",
+        "author": "Michael Chen",
+        "role": "Founder, Bloom Co"
+      },
+      {
+        "quote": "The best decision we made this year. Exceeded every expectation.",
+        "author": "Emily Rodriguez",
+        "role": "Director, Apex Group"
+      }
+    ],
+    "faqSectionTitle": "Frequently Asked Questions",
+    "faqs": [
+      {
+        "question": "How do I get started?",
+        "answer": "Simply reach out via our contact form or give us a call. We offer a free initial consultation."
+      },
+      {
+        "question": "What are your pricing options?",
+        "answer": "We offer flexible packages tailored to your needs and budget. Contact us for a custom quote."
+      },
+      {
+        "question": "How long does a typical project take?",
+        "answer": "Timelines vary by scope, but most projects are completed within 2\u20138 weeks."
+      },
+      {
+        "question": "Do you offer ongoing support?",
+        "answer": "Yes! We provide continued support and maintenance to ensure long-term success."
+      }
+    ],
+    "teamSectionTitle": "Meet the Team",
+    "blogSectionTitle": "Latest from Our Blog",
+    "blogSectionSubtitle": "Insights, tips, and updates from our team",
+    "newsSectionTitle": "News & Updates",
+    "newsSectionSubtitle": "Announcements, press releases, and company news",
+    "newsPosts": [
+      {
+        "title": "We Are Expanding to Serve You Better",
+        "slug": "expanding-to-serve-you-better",
+        "excerpt": "New locations, extended hours, and more ways to connect with our team.",
+        "body": "We are thrilled to announce expanded service hours and a new consultation space designed around your comfort and convenience.\n\nThis investment reflects our commitment to accessibility and excellence. Thank you for being part of our journey \u2014 we cannot wait to welcome you.",
+        "image": "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80",
+        "author": "Press Team",
+        "date": "2026-04-01"
+      },
+      {
+        "title": "Award Recognizes Our Commitment to Quality",
+        "slug": "award-quality-commitment",
+        "excerpt": "Industry leaders honored our team for outstanding client satisfaction.",
+        "body": "Receiving this recognition is a testament to the people behind our work \u2014 dedicated professionals who show up every day with care and craft.\n\nWe share this award with every client who trusted us with their goals. Your feedback shapes how we grow and improve.",
+        "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80",
+        "author": "Communications",
+        "date": "2026-03-18"
+      },
+      {
+        "title": "Partnership Opens New Opportunities",
+        "slug": "partnership-new-opportunities",
+        "excerpt": "Strategic collaboration brings enhanced offerings to our community.",
+        "body": "Our new partnership combines complementary strengths to deliver more value, faster turnaround, and broader expertise under one roof.\n\nStay tuned for launch events and early-access opportunities for existing clients.",
+        "image": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80",
+        "author": "Leadership",
+        "date": "2026-02-05"
+      }
+    ],
+    "pricingSectionTitle": "Pricing Plans",
+    "pricing": [
+      {
+        "title": "Starter",
+        "description": "Essential features for individuals and small teams getting started.",
+        "price": "$29/mo",
+        "tag": "Most popular",
+        "featured": false
+      },
+      {
+        "title": "Professional",
+        "description": "Advanced tools, priority support, and integrations for growing businesses.",
+        "price": "$79/mo",
+        "tag": "Best value",
+        "featured": true
+      },
+      {
+        "title": "Enterprise",
+        "description": "Custom solutions, dedicated account management, and SLA guarantees.",
+        "price": "Custom",
+        "tag": "Contact us",
+        "featured": false
+      }
+    ],
+    "roomsSectionTitle": "Rooms & Suites",
+    "roomsSectionSubtitle": "Explore our accommodations and reserve your stay",
+    "bookingSectionTitle": "Book Your Stay",
+    "bookingSectionSubtitle": "Select dates, guests, and your preferred room type",
+    "roomTypes": [],
+    "blogPosts": [
+      {
+        "title": "5 Strategies to Grow Your Business This Year",
+        "slug": "5-strategies-to-grow-your-business",
+        "excerpt": "Practical steps you can take today to build momentum and reach more customers.",
+        "body": "Growing a business takes focus, consistency, and a willingness to adapt. Start by clarifying your core offer, then double down on the channels that already bring results.\n\nReview your customer journey from first touch to repeat purchase. Small improvements at each step compound into meaningful revenue gains. Finally, invest in relationships \u2014 referrals and retention often outperform cold outreach.",
+        "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
+        "author": "Alex Morgan",
+        "date": "2026-03-12"
+      },
+      {
+        "title": "What Clients Are Asking Us Right Now",
+        "slug": "what-clients-are-asking-us",
+        "excerpt": "A quick roundup of the most common questions we hear \u2014 and how we answer them.",
+        "body": "Every season brings a new set of priorities. Lately, clients ask about pricing transparency, faster turnaround times, and how to stand out in crowded markets.\n\nOur advice stays grounded in fundamentals: deliver exceptional value, communicate clearly, and measure what matters. When in doubt, talk to your customers \u2014 their feedback is the best roadmap.",
+        "image": "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80",
+        "author": "Jordan Lee",
+        "date": "2026-02-28"
+      },
+      {
+        "title": "Behind the Scenes: How We Work",
+        "slug": "behind-the-scenes-how-we-work",
+        "excerpt": "Take a peek at our process, tools, and the principles that guide every project.",
+        "body": "We believe great outcomes come from clear goals, collaborative planning, and disciplined execution. Every engagement starts with listening \u2014 understanding where you are and where you want to go.\n\nFrom there we build a tailored plan with milestones you can track. Throughout delivery we keep communication open so there are no surprises, only steady progress toward results you can measure.",
+        "image": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80",
+        "author": "Taylor Brooks",
+        "date": "2026-01-15"
+      }
+    ],
+    "team": [
+      {
+        "name": "Alex Morgan",
+        "role": "Founder & CEO",
+        "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80"
+      },
+      {
+        "name": "Jordan Lee",
+        "role": "Creative Director",
+        "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
+      },
+      {
+        "name": "Taylor Brooks",
+        "role": "Operations Lead",
+        "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80"
+      }
+    ],
+    "ctaBannerTitle": "Ready to get started?",
+    "ctaBannerText": "Join hundreds of satisfied clients. Let us help you achieve your goals today.",
+    "ctaText": "Start a Project",
+    "ctaLink": "contact",
+    "seoEnabled": false,
+    "seoTitle": "",
+    "seoDescription": "",
+    "seoKeywords": "",
+    "seoSiteUrl": "",
+    "email": "hello@studionova.design",
+    "phone": "(555) 987-6543",
+    "address": "",
+    "hours": "",
+    "instagram": "@studionova",
+    "website": "https://behance.net/studionova",
+    "linkedin": "",
+    "whatsapp": "",
+    "supportEmail": "",
+    "reservationEmail": "",
+    "licenseNumber": "",
+    "bookingUrl": "",
+    "contactSectionTitle": "Get in Touch",
+    "contactFormTitle": "Send Us a Message",
+    "contactFormUrl": "",
+    "contactFormButtonText": "Open Contact Form"
+  }
+}

@@ -1,19 +1,13 @@
+import { listManifests, templateHasFeature } from '../catalog/catalog'
 import type { RoomTypeItem, TemplateId } from '../types'
 
 /** Templates that ship with full room inventory + booking. */
-export const HOSPITALITY_TEMPLATE_IDS: TemplateId[] = [
-  'hotel',
-  'coastal',
-  'guesthouse',
-  'alpine',
-  'ryokan',
-  'desert',
-  'nordic',
-  'jungle',
-]
+export const HOSPITALITY_TEMPLATE_IDS: TemplateId[] = listManifests()
+  .filter((manifest) => manifest.features.includes('hospitality'))
+  .map((manifest) => manifest.id)
 
 export function isHospitalityTemplate(id: TemplateId | null | undefined): boolean {
-  return Boolean(id && HOSPITALITY_TEMPLATE_IDS.includes(id))
+  return templateHasFeature(id, 'hospitality')
 }
 
 export function emptyRoomType(): RoomTypeItem {

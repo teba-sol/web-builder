@@ -1,3 +1,4 @@
+import { resolveBrandAccent } from '../data/brand'
 import { getColorSchemes } from '../data/colorSchemes'
 import { getShowcaseConfig } from '../data/sectionConfig'
 import { canLinkToPage, getSiteNavItems, resolveStaticHref, staticPostPath, staticSitePath } from '../data/siteNav'
@@ -49,10 +50,7 @@ function buildFooter(ctx: SiteHtmlContext): string {
   return `<footer class="border-t py-8 text-center text-sm text-slate-500"><div class="mb-4 flex flex-wrap justify-center gap-6">${links}</div>© ${new Date().getFullYear()} ${escapeHtml(content.businessName)}</footer>`
 }
 
-function cookieBannerHtml(content: SiteContent, accent: string): string {
-  if (!content.sectionVisibility.cookieBanner || !content.cookieBannerText?.trim()) return ''
-  return `<div id="cookie-banner" class="fixed bottom-0 left-0 right-0 z-50 border-t bg-white/95 px-6 py-4 shadow-lg"><div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4"><p class="text-sm text-slate-600">${escapeHtml(content.cookieBannerText)}</p><button onclick="document.getElementById('cookie-banner').style.display='none'" class="shrink-0 rounded-lg px-5 py-2 text-sm font-semibold text-white" style="background-color:${accent}">Accept</button></div></div>`
-}
+
 
 function pageSeo(ctx: SiteHtmlContext, title: string, path: string, extra?: Partial<PageSeoInput>): PageSeoInput {
   return {
@@ -65,12 +63,11 @@ function pageSeo(ctx: SiteHtmlContext, title: string, path: string, extra?: Part
 
 function wrapPage(ctx: SiteHtmlContext, title: string, body: string, seo?: PageSeoInput): string {
   const shell = ctx.layoutShellClass ?? 'layout-classic'
-  return `${tailwindHead(title, seo)}
-<body class="bg-white text-slate-800 ${shell}">
+  return `${tailwindHead(title, seo, ctx.content)}
+<body data-site-brand class="bg-white text-slate-800 ${shell}">
 ${buildNav(ctx)}
 ${body}
 ${buildFooter(ctx)}
-${cookieBannerHtml(ctx.content, ctx.accent)}
 </body></html>`
 }
 
@@ -137,7 +134,7 @@ export function buildAllSitePages(
   layoutVariantId?: string,
 ): { pages: Record<string, string>; assets: ImageAsset[]; seoFiles: Record<string, string> } {
   const scheme = getColorSchemes(templateId).find((s) => s.id === colorSchemeId) ?? getColorSchemes(templateId)[0]
-  const accent = scheme.swatches[1]
+  const accent = resolveBrandAccent(content, scheme.swatches[1])
   const accentDark = scheme.swatches[0]
   const layout = getLayoutVariant(templateId, layoutVariantId)
   const pv = content.pageVisibility
@@ -156,6 +153,9 @@ export function buildAllSitePages(
   const pages: Record<string, string> = {}
 
   const hero = resolveImageForExport(content.heroImage, 'hero', assets)
+  const logo = resolveImageForExport(content.logo, 'logo', assets)
+  const exportContent: SiteContent = { ...content, logo, heroImage: hero || content.heroImage }
+  ctx.content = exportContent
   const heroHtml = buildStaticHeroHtml({
     templateId,
     heroLayout: layout.heroLayout,
@@ -165,6 +165,7 @@ export function buildAllSitePages(
     heroSubtext: content.heroSubtext,
     ctaText: content.ctaText,
     ctaHref: resolveStaticHref(content.ctaLink || 'contact', content),
+    stats: content.stats.filter((s) => s.value).slice(0, 3),
   })
   const blogPosts = content.blogPosts.filter((p) => p.title)
   const newsPosts = content.newsPosts.filter((p) => p.title)
@@ -261,13 +262,10 @@ ${pricingHtml ? `<section class="bg-slate-50 py-20"><div class="max-w-6xl mx-aut
 
   const contactForm = buildContactFormHtml(content, accent, templateId)
   const faqBlock = sv.faq ? buildFaqSectionHtml(content, templateId) : ''
-  const termsHtml = sv.terms && content.termsContent?.trim()
-    ? `<section class="bg-slate-50 py-16"><div class="max-w-3xl mx-auto px-6"><h2 class="text-2xl font-bold mb-6">${escapeHtml(content.termsSectionTitle)}</h2><div class="space-y-4 text-slate-600">${content.termsContent.split('\n\n').map((p) => `<p>${escapeHtml(p)}</p>`).join('')}</div></div></section>`
-    : ''
 
   if (pv.contact && canLinkToPage('contact', content)) {
     const contactBody = buildContactSectionHtml(templateId, content, contactForm)
-    pages['contact.html'] = wrapPage(ctx, `Contact — ${content.businessName}`, `${contactBody}${faqBlock}${termsHtml}`, pageSeo(ctx, `Contact — ${content.businessName}`, 'contact.html'))
+    pages['contact.html'] = wrapPage(ctx, `Contact — ${content.businessName}`, `${contactBody}${faqBlock}`, pageSeo(ctx, `Contact — ${content.businessName}`, 'contact.html'))
   }
 
   const seoFiles: Record<string, string> = {}

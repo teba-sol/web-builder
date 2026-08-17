@@ -1,10 +1,9 @@
 import { useEffect } from 'react'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
-import { templateDefaults } from '../data/defaults'
+import { getTemplateDefaults } from '../data/defaults'
 import { isValidTemplateId } from '../data/templateIds'
 import { TemplateRenderer } from '../templates/TemplateRenderer'
 import { loadSavedSite } from '../utils/storage'
-import type { TemplateId } from '../types'
 
 export function SiteViewPage() {
   const { templateId } = useParams<{ templateId: string }>()
@@ -18,7 +17,7 @@ export function SiteViewPage() {
   const hasUserContent = isValidTemplateId(id) && saved?.templateId === id
   const content = isValidTemplateId(id)
     ? isDemo
-      ? templateDefaults[id as TemplateId]
+      ? getTemplateDefaults(id)
       : hasUserContent
         ? saved.content
         : null
@@ -31,13 +30,11 @@ export function SiteViewPage() {
 
   if (!isValidTemplateId(id) || !content) return null
 
-  const typedId = id as TemplateId
-
   const schemeId = isDemo ? undefined : saved?.colorSchemeId
   const layoutVariantId = isDemo ? undefined : saved?.layoutVariantId
 
   if (chromeless) {
-    return <TemplateRenderer templateId={typedId} content={content} basePath={`/site/${id}`} colorSchemeId={schemeId} layoutVariantId={layoutVariantId} />
+    return <TemplateRenderer templateId={id} content={content} basePath={`/site/${id}`} colorSchemeId={schemeId} layoutVariantId={layoutVariantId} />
   }
 
   const openFullscreen = () => {
@@ -65,7 +62,7 @@ export function SiteViewPage() {
           Open Full Window
         </button>
       </div>
-      <TemplateRenderer templateId={typedId} content={content} basePath={`/site/${id}`} colorSchemeId={schemeId} layoutVariantId={layoutVariantId} />
+      <TemplateRenderer templateId={id} content={content} basePath={`/site/${id}`} colorSchemeId={schemeId} layoutVariantId={layoutVariantId} />
     </div>
   )
 }

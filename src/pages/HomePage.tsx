@@ -1,15 +1,17 @@
 import { useMemo, useState } from 'react'
-import { templates } from '../data/defaults'
+import { ImportTemplateButton } from '../components/ImportTemplateButton'
 import { TemplateCard } from '../components/TemplateCard'
 import { CategoryFilter } from '../components/CategoryFilter'
+import { useTemplateCatalog } from '../catalog/useTemplateCatalog'
 import type { TemplateCategory } from '../types'
 
 export function HomePage() {
+  const templates = useTemplateCatalog()
   const [category, setCategory] = useState<TemplateCategory | 'all'>('all')
 
   const filtered = useMemo(
     () => (category === 'all' ? templates : templates.filter((t) => t.category === category)),
-    [category],
+    [category, templates],
   )
 
   const counts = useMemo(() => {
@@ -23,10 +25,11 @@ export function HomePage() {
       tech: 0,
       retail: 0,
       realestate: 0,
+      finance: 0,
     }
     for (const t of templates) result[t.category]++
     return result
-  }, [])
+  }, [templates])
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
@@ -38,6 +41,7 @@ export function HomePage() {
             </div>
             <span className="text-lg font-bold text-slate-900">WebBuilder</span>
           </div>
+          <ImportTemplateButton />
         </div>
       </header>
 
@@ -47,8 +51,8 @@ export function HomePage() {
             Build your website in minutes
           </h1>
           <p className="mx-auto max-w-2xl text-lg text-slate-600">
-            Browse {templates.length} templates by business type — each with multiple layout styles,
-            built-in reviews, and contact form support. Preview, customize, and download.
+            Browse {templates.length} templates, edit your content, then download a working site.
+            Every export includes site.json — import that file later to restore your exact edits.
           </p>
         </div>
 

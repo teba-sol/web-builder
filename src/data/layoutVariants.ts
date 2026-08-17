@@ -1,5 +1,6 @@
+import { requireManifest } from '../catalog/catalog'
 import type { TemplateId } from '../types'
-import { sectionOrders, type SectionId } from '../templates/themes'
+import type { SectionId } from '../templates/themes'
 
 /** Shared look-and-feel variants — same set on every template. */
 export type LayoutVariantId = 'classic' | 'modern' | 'luxury'
@@ -84,7 +85,7 @@ export function normalizeLayoutVariantId(variantId?: string | null): LayoutVaria
 
 export function getLayoutVariants(templateId: TemplateId): LayoutVariant[] {
   // Section order is always the template’s base order — variants never reshuffle content.
-  const sectionOrder = ensureReviewsBeforeContact([...sectionOrders[templateId]])
+  const sectionOrder = ensureReviewsBeforeContact([...requireManifest(templateId).sectionOrder])
 
   return LAYOUT_VARIANT_IDS.map((id) => {
     const preset = LAYOUT_VARIANT_PRESETS[id]

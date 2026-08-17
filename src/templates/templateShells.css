@@ -140,4 +140,66 @@
 .tpl-salon .tpl-teaser-heading,
 .tpl-vineyard .tpl-teaser-heading,
 .tpl-coffee .tpl-teaser-heading { font-family: var(--font-serif); }
+.tpl-taxfighters {
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+.tpl-aureum {
+  font-family: "Source Sans 3", ui-sans-serif, system-ui, sans-serif;
+}
+.tpl-aureum h1,
+.tpl-aureum h2,
+.tpl-aureum h3 {
+  font-family: Fraunces, Georgia, serif;
+}
+.tpl-flux {
+  font-family: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+}
+.tpl-flux h1,
+.tpl-flux h2,
+.tpl-flux h3 {
+  letter-spacing: -0.04em;
+}
+.tpl-axiom h1,
+.tpl-axiom h2,
+.tpl-axiom h3 {
+  font-family: "Playfair Display", Georgia, serif;
+}
+.tpl-helix h1,
+.tpl-helix h2,
+.tpl-helix h3 {
+  letter-spacing: -0.035em;
+}
+.tpl-taxfighters h1,
+.tpl-taxfighters h2,
+.tpl-taxfighters h3 {
+  letter-spacing: -0.02em;
+}
 .tpl-saas .tpl-teaser-heading { font-weight: 800; }
+
+/* Granular block tokens (studio design controls) */
+.bd-density-compact { --bd-pad-y: 2.5rem; }
+.bd-density-regular { --bd-pad-y: 5rem; }
+.bd-density-spacious { --bd-pad-y: 7.5rem; }
+.bd-width-full > * { max-width: none; }
+.bd-width-wide > .mx-auto { max-width: 72rem; }
+.bd-width-narrow > .mx-auto { max-width: 42rem; }
+.bd-align-center { text-align: center; }
+.bd-align-right { text-align: right; }
+.bd-align-left { text-align: left; }
+.bd-density-compact section,
+.bd-density-compact header { padding-top: var(--bd-pad-y); padding-bottom: var(--bd-pad-y); }
+.bd-density-regular section,
+.bd-density-regular header { padding-top: var(--bd-pad-y); padding-bottom: var(--bd-pad-y); }
+.bd-density-spacious section,
+.bd-density-spacious header { padding-top: var(--bd-pad-y); padding-bottom: var(--bd-pad-y); }
+[data-hide-badge='true'] [data-part='badge'],
+[data-hide-title='true'] [data-part='title'],
+[data-hide-subtitle='true'] [data-part='subtitle'],
+[data-hide-cta='true'] [data-part='cta'],
+[data-hide-image='true'] [data-part='image'],
+[data-hide-heading='true'] [data-part='heading'],
+[data-hide-price='true'] [data-part='price'],
+[data-hide-form='true'] [data-part='form'],
+[data-hide-links='true'] [data-part='links'] {
+  display: none !important;
+}

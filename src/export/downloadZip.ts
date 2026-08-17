@@ -1,4 +1,5 @@
 import JSZip from 'jszip'
+import { buildSiteDocument, stringifySiteDocument } from '../siteDocument/io'
 import type { SiteContent, TemplateId } from '../types'
 import { generateBackend, mapAssetsForBackend } from './backend/generateBackend'
 import { buildAllSitePages } from './buildSitePages'
@@ -41,15 +42,20 @@ export async function downloadWebsiteZip(
     zip.file(`backend/${path}`, data)
   }
 
+  const siteDocument = buildSiteDocument(templateId, content, colorSchemeId, layoutVariantId)
+  zip.file('site.json', stringifySiteDocument(siteDocument))
+
   zip.file(
     'README.txt',
     `Your Full-Stack Website — ${content.businessName}
 =============================================
 
-This export includes BOTH a static frontend and a dynamic Laravel + Filament backend.
+This export includes a static frontend, a Laravel + Filament backend, and site.json.
 
-FOLDERS:
---------
+FOLDERS / FILES:
+----------------
+site.json     Checkpoint of this exact edit (template + content + colors).
+              Import it in WebBuilder to restore your work. Same schema every time.
 frontend/     Multi-page static site (index.html, about.html, blog/, etc.)
               When SEO is enabled: robots.txt + sitemap.xml included
 backend/      Laravel 11 + Filament 3 admin — dynamic content, contact form, deploy-ready

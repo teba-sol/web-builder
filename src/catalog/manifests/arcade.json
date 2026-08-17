@@ -1,0 +1,580 @@
+{
+  "schemaVersion": 1,
+  "id": "arcade",
+  "name": "Pixel District",
+  "description": "Neon cyber-noir \u2014 electric gradients, glitch energy, perfect for gaming and nightlife brands.",
+  "category": "tech",
+  "previewGradient": "from-fuchsia-600 via-violet-950 to-lime-400",
+  "accentColor": "#a3e635",
+  "sortOrder": 15,
+  "features": [
+    "cms"
+  ],
+  "pages": {
+    "about": true,
+    "services": true,
+    "portfolio": true,
+    "blog": true,
+    "news": true,
+    "gallery": true,
+    "contact": true,
+    "rooms": false
+  },
+  "homeSections": [
+    "nav",
+    "hero",
+    "stats",
+    "rooms-teaser",
+    "services-teaser",
+    "portfolio-teaser",
+    "blog-teaser",
+    "news-teaser",
+    "testimonials",
+    "about-teaser",
+    "faq",
+    "contact",
+    "explore",
+    "footer"
+  ],
+  "sectionOrder": [
+    "nav",
+    "hero",
+    "stats",
+    "showcase",
+    "gallery",
+    "about",
+    "services",
+    "steps",
+    "testimonials",
+    "blog",
+    "faq",
+    "cta",
+    "contact",
+    "footer"
+  ],
+  "theme": {
+    "page": "bg-[#0a0a12] text-zinc-100",
+    "nav": "sticky top-0 z-50 border-b border-fuchsia-500/20 bg-[#0a0a12]/90 backdrop-blur-md",
+    "navLink": "text-zinc-400 hover:text-lime-400 text-sm font-medium",
+    "navCta": "rounded-lg bg-gradient-to-r from-fuchsia-600 to-lime-500 px-5 py-2 text-sm font-bold text-black hover:opacity-90 shadow-lg shadow-fuchsia-500/20",
+    "hero": "relative min-h-[90vh] flex items-center overflow-hidden bg-[#0a0a12]",
+    "heroBadge": "text-fuchsia-400 uppercase tracking-[0.3em] text-xs font-bold",
+    "heroTitle": "text-5xl md:text-7xl font-black uppercase leading-[0.95] bg-gradient-to-r from-fuchsia-400 via-white to-lime-400 bg-clip-text text-transparent",
+    "heroText": "text-zinc-400 text-lg max-w-xl mt-4",
+    "heroCta": "rounded-lg bg-lime-400 px-8 py-3 font-black uppercase text-black hover:bg-lime-300 shadow-lg shadow-lime-400/30",
+    "stats": "border-y border-fuchsia-500/20 bg-gradient-to-r from-fuchsia-950/50 to-lime-950/30 py-16",
+    "statValue": "text-4xl font-black text-lime-400",
+    "statLabel": "text-fuchsia-300/70 text-xs uppercase tracking-widest mt-1",
+    "section": "py-20",
+    "sectionAlt": "py-20 bg-zinc-900/30 border-y border-fuchsia-500/10",
+    "sectionTitle": "text-3xl font-black uppercase tracking-tight text-white",
+    "sectionSubtitle": "text-fuchsia-300/80 mt-2 text-sm uppercase tracking-widest",
+    "card": "rounded-xl border border-fuchsia-500/20 bg-zinc-900/50 p-8 hover:border-lime-400/40 hover:shadow-lg hover:shadow-lime-400/5 transition-all",
+    "cardTitle": "text-xl font-bold text-lime-400",
+    "cardText": "text-zinc-400",
+    "aboutImage": "rounded-xl border-2 border-fuchsia-500/30 shadow-2xl shadow-fuchsia-500/10",
+    "mission": "text-fuchsia-300 font-bold uppercase text-sm tracking-widest border-l-4 border-lime-400 pl-6",
+    "stepNum": "flex h-10 w-10 items-center justify-center rounded-lg bg-fuchsia-600 text-black font-black text-sm",
+    "gallery": "rounded-xl w-full aspect-video object-cover border border-fuchsia-500/20 hover:border-lime-400/50 transition-colors",
+    "showcase": "py-20",
+    "showcaseCard": "rounded-xl border border-fuchsia-500/25 bg-zinc-900 overflow-hidden hover:border-lime-400/50 transition-all group",
+    "showcaseImage": "w-full aspect-video object-cover group-hover:scale-105 transition-transform",
+    "showcasePrice": "text-lime-400 font-black text-lg",
+    "showcaseTag": "text-xs uppercase tracking-wider text-fuchsia-400",
+    "testimonial": "rounded-xl border border-fuchsia-500/20 p-8 bg-zinc-900/60",
+    "faq": "border-b border-fuchsia-500/15 py-6",
+    "teamCard": "text-center",
+    "ctaBanner": "relative py-24 text-center bg-gradient-to-r from-fuchsia-700 via-violet-900 to-lime-700",
+    "ctaBannerBtn": "rounded-lg bg-black px-8 py-3 font-black uppercase text-lime-400 border-2 border-lime-400 hover:bg-lime-400 hover:text-black",
+    "contact": "bg-black py-20 border-t border-fuchsia-500/20",
+    "contactLabel": "text-lime-400 text-xs uppercase tracking-widest font-bold",
+    "footer": "border-t border-fuchsia-500/15 py-8 text-center text-xs text-zinc-600 uppercase tracking-widest"
+  },
+  "colorSchemes": [
+    {
+      "id": "neon",
+      "name": "Neon Default",
+      "swatches": [
+        "#701a75",
+        "#a3e635",
+        "#0a0a12"
+      ],
+      "overrides": {}
+    },
+    {
+      "id": "cyber",
+      "name": "Cyber Blue",
+      "swatches": [
+        "#0e7490",
+        "#22d3ee",
+        "#0a0a12"
+      ],
+      "overrides": {
+        "nav": "border-b border-cyan-500/20",
+        "navLink": "hover:text-cyan-400",
+        "navCta": "bg-gradient-to-r from-cyan-500 to-blue-500 text-black",
+        "heroBadge": "text-cyan-400",
+        "heroTitle": "bg-gradient-to-r from-cyan-400 via-white to-blue-400 bg-clip-text text-transparent",
+        "heroCta": "bg-cyan-400 text-black shadow-cyan-400/30",
+        "statValue": "text-cyan-400",
+        "cardTitle": "text-cyan-400",
+        "showcasePrice": "text-cyan-400",
+        "ctaBanner": "bg-gradient-to-r from-cyan-700 via-blue-900 to-cyan-700",
+        "ctaBannerBtn": "border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black",
+        "contactLabel": "text-cyan-400"
+      }
+    },
+    {
+      "id": "magenta",
+      "name": "Hot Magenta",
+      "swatches": [
+        "#9d174d",
+        "#f472b6",
+        "#0a0a12"
+      ],
+      "overrides": {
+        "nav": "border-b border-pink-500/20",
+        "navLink": "hover:text-pink-400",
+        "navCta": "bg-gradient-to-r from-pink-600 to-rose-500 text-white",
+        "heroBadge": "text-pink-400",
+        "heroTitle": "bg-gradient-to-r from-pink-400 via-white to-rose-400 bg-clip-text text-transparent",
+        "heroCta": "bg-pink-500 text-white shadow-pink-500/30",
+        "statValue": "text-pink-400",
+        "cardTitle": "text-pink-400",
+        "showcasePrice": "text-pink-400",
+        "ctaBanner": "bg-gradient-to-r from-pink-700 via-rose-900 to-fuchsia-800",
+        "contactLabel": "text-pink-400"
+      }
+    }
+  ],
+  "defaultColorSchemeId": "neon",
+  "defaultLayoutVariantId": "classic",
+  "sectionVariants": {
+    "faq": "numbered",
+    "explore": "pills",
+    "contactShell": "arcade-neon",
+    "contactForm": "neon-glow",
+    "exploreTitle": "Levels",
+    "exploreSubtitle": "Games, merch, news, and join the crew",
+    "exploreLinkLabel": "Play"
+  },
+  "showcase": {
+    "sectionTitle": "Events & Arenas",
+    "sectionSubtitle": "Tournaments, LAN nights, and immersive experiences under the neon lights",
+    "navLabel": "Events",
+    "itemLabel": "Event",
+    "showPrice": true,
+    "priceLabel": "Entry",
+    "showTag": true,
+    "tagLabel": "Date"
+  },
+  "defaultShowcase": [
+    {
+      "title": "Friday Night LAN",
+      "description": "Open-format LAN party \u2014 bring your rig or rent a station. Prizes at midnight.",
+      "image": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&q=80",
+      "price": "$25",
+      "tag": "Weekly",
+      "link": "contact"
+    },
+    {
+      "title": "Fighting Game Tournament",
+      "description": "Double-elimination bracket \u2014 $2,000 prize pool. All skill levels welcome.",
+      "image": "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?w=600&q=80",
+      "price": "$15",
+      "tag": "Monthly",
+      "link": "contact"
+    },
+    {
+      "title": "VR Arena Sessions",
+      "description": "Six-player free-roam VR \u2014 tactical shooters and cooperative adventures.",
+      "image": "https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?w=600&q=80",
+      "price": "$35",
+      "tag": "Per hour",
+      "link": "contact"
+    },
+    {
+      "title": "Retro Arcade Pass",
+      "description": "All-day access to 40+ restored cabinets \u2014 Pac-Man to modern indie.",
+      "image": "https://images.unsplash.com/photo-1511882150382-421056c89033?w=600&q=80",
+      "price": "$20",
+      "tag": "All day",
+      "link": "contact"
+    },
+    {
+      "title": "Neon Nights DJ Set",
+      "description": "Live DJs, laser show, and themed cocktails every Saturday after 10pm.",
+      "image": "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&q=80",
+      "price": "$12",
+      "tag": "Sat nights",
+      "link": "contact"
+    },
+    {
+      "title": "Esports Watch Party",
+      "description": "Giant screens, commentary booth, and team merch for major finals.",
+      "image": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&q=80",
+      "price": "Free",
+      "tag": "Special",
+      "link": "contact"
+    }
+  ],
+  "navShell": "arcade",
+  "contactFields": [
+    {
+      "key": "email",
+      "label": "General Email",
+      "placeholder": "hello@pixeldistrict.gg"
+    },
+    {
+      "key": "supportEmail",
+      "label": "Support Email",
+      "placeholder": "support@pixeldistrict.gg"
+    },
+    {
+      "key": "website",
+      "label": "Discord / Community",
+      "placeholder": "https://discord.gg/pixeldistrict"
+    },
+    {
+      "key": "bookingUrl",
+      "label": "Event Tickets URL",
+      "placeholder": "https://tickets.pixeldistrict.gg"
+    },
+    {
+      "key": "instagram",
+      "label": "Instagram",
+      "placeholder": "@pixeldistrict"
+    }
+  ],
+  "servicesLabel": "Experiences",
+  "pageLayouts": {
+    "blog": "grid",
+    "blogPost": "split",
+    "news": "compact",
+    "newsPost": "split",
+    "gallery": "grid",
+    "portfolio": "showcase"
+  },
+  "hero": {
+    "overlay": true,
+    "overlayGradient": "bg-gradient-to-br from-fuchsia-950/80 via-black/70 to-lime-950/40",
+    "splitColumns": false,
+    "badge": "name",
+    "grayscaleImage": false
+  },
+  "defaults": {
+    "businessName": "Pixel District",
+    "tagline": "Play louder. Stay later.",
+    "heroSubtext": "The city's premier gaming lounge \u2014 neon-lit arenas, retro cabinets, VR battles, and tournaments every weekend.",
+    "heroImage": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1200&q=80",
+    "aboutTitle": "Level Up",
+    "about": "Pixel District opened in 2021 as a love letter to gaming culture \u2014 from pixel art to esports. Our 15,000 sq ft space hosts LAN parties, indie showcases, and the rowdiest fighting game brackets on the West Coast.",
+    "aboutImage": "https://images.unsplash.com/photo-1511882150382-421056c89033?w=800&q=80",
+    "missionStatement": "Games bring people together. We just add neon.",
+    "pageVisibility": {
+      "about": true,
+      "services": true,
+      "portfolio": true,
+      "blog": true,
+      "news": true,
+      "gallery": true,
+      "contact": true,
+      "rooms": false
+    },
+    "sectionVisibility": {
+      "stats": true,
+      "team": true,
+      "steps": true,
+      "faq": true,
+      "cta": true,
+      "testimonials": true,
+      "pricing": false
+    },
+    "stats": [
+      {
+        "value": "40+",
+        "label": "Arcade Cabinets"
+      },
+      {
+        "value": "120",
+        "label": "LAN Stations"
+      },
+      {
+        "value": "$50k",
+        "label": "Prize Pools / Year"
+      },
+      {
+        "value": "18+",
+        "label": "After Dark"
+      }
+    ],
+    "servicesSectionTitle": "What We Offer",
+    "servicesSectionSubtitle": "Arenas, events, and experiences for every player",
+    "services": [
+      {
+        "title": "LAN Arena",
+        "description": "High-spec rigs, gigabit fiber, and tournament-ready setups."
+      },
+      {
+        "title": "Retro Floor",
+        "description": "Restored classics from the golden age \u2014 tokens and free play nights."
+      },
+      {
+        "title": "VR Battlespace",
+        "description": "Free-roam multiplayer VR \u2014 six players, zero wires, full chaos."
+      },
+      {
+        "title": "Private Events",
+        "description": "Birthday parties, team building, and custom tournaments."
+      }
+    ],
+    "stepsSectionTitle": "How It Works",
+    "steps": [
+      {
+        "title": "Consultation",
+        "description": "We learn about your goals and challenges in a discovery session."
+      },
+      {
+        "title": "Strategy",
+        "description": "Our team crafts a tailored plan designed for your success."
+      },
+      {
+        "title": "Execution",
+        "description": "We deliver with precision, keeping you informed every step."
+      },
+      {
+        "title": "Growth",
+        "description": "We measure results and optimize for continuous improvement."
+      }
+    ],
+    "showcaseSectionTitle": "Events & Arenas",
+    "showcaseSectionSubtitle": "Tournaments, LAN nights, and immersive experiences under the neon lights",
+    "showcaseItems": [
+      {
+        "title": "Friday Night LAN",
+        "description": "Open-format LAN party \u2014 bring your rig or rent a station. Prizes at midnight.",
+        "image": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&q=80",
+        "price": "$25",
+        "tag": "Weekly",
+        "link": "contact"
+      },
+      {
+        "title": "Fighting Game Tournament",
+        "description": "Double-elimination bracket \u2014 $2,000 prize pool. All skill levels welcome.",
+        "image": "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?w=600&q=80",
+        "price": "$15",
+        "tag": "Monthly",
+        "link": "contact"
+      },
+      {
+        "title": "VR Arena Sessions",
+        "description": "Six-player free-roam VR \u2014 tactical shooters and cooperative adventures.",
+        "image": "https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?w=600&q=80",
+        "price": "$35",
+        "tag": "Per hour",
+        "link": "contact"
+      },
+      {
+        "title": "Retro Arcade Pass",
+        "description": "All-day access to 40+ restored cabinets \u2014 Pac-Man to modern indie.",
+        "image": "https://images.unsplash.com/photo-1511882150382-421056c89033?w=600&q=80",
+        "price": "$20",
+        "tag": "All day",
+        "link": "contact"
+      },
+      {
+        "title": "Neon Nights DJ Set",
+        "description": "Live DJs, laser show, and themed cocktails every Saturday after 10pm.",
+        "image": "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&q=80",
+        "price": "$12",
+        "tag": "Sat nights",
+        "link": "contact"
+      },
+      {
+        "title": "Esports Watch Party",
+        "description": "Giant screens, commentary booth, and team merch for major finals.",
+        "image": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&q=80",
+        "price": "Free",
+        "tag": "Special",
+        "link": "contact"
+      }
+    ],
+    "gallerySectionTitle": "Inside the District",
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&q=80",
+      "https://images.unsplash.com/photo-1511882150382-421056c89033?w=600&q=80",
+      "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&q=80"
+    ],
+    "testimonialsSectionTitle": "Player Reviews",
+    "testimonials": [
+      {
+        "quote": "Outstanding service and incredible results. Highly recommended!",
+        "author": "Sarah Johnson",
+        "role": "CEO, TechStart"
+      },
+      {
+        "quote": "They transformed our business. Professional, creative, and reliable.",
+        "author": "Michael Chen",
+        "role": "Founder, Bloom Co"
+      },
+      {
+        "quote": "The best decision we made this year. Exceeded every expectation.",
+        "author": "Emily Rodriguez",
+        "role": "Director, Apex Group"
+      }
+    ],
+    "faqSectionTitle": "Frequently Asked Questions",
+    "faqs": [
+      {
+        "question": "How do I get started?",
+        "answer": "Simply reach out via our contact form or give us a call. We offer a free initial consultation."
+      },
+      {
+        "question": "What are your pricing options?",
+        "answer": "We offer flexible packages tailored to your needs and budget. Contact us for a custom quote."
+      },
+      {
+        "question": "How long does a typical project take?",
+        "answer": "Timelines vary by scope, but most projects are completed within 2\u20138 weeks."
+      },
+      {
+        "question": "Do you offer ongoing support?",
+        "answer": "Yes! We provide continued support and maintenance to ensure long-term success."
+      }
+    ],
+    "teamSectionTitle": "Meet the Team",
+    "blogSectionTitle": "Latest from Our Blog",
+    "blogSectionSubtitle": "Insights, tips, and updates from our team",
+    "newsSectionTitle": "News & Updates",
+    "newsSectionSubtitle": "Announcements, press releases, and company news",
+    "newsPosts": [
+      {
+        "title": "We Are Expanding to Serve You Better",
+        "slug": "expanding-to-serve-you-better",
+        "excerpt": "New locations, extended hours, and more ways to connect with our team.",
+        "body": "We are thrilled to announce expanded service hours and a new consultation space designed around your comfort and convenience.\n\nThis investment reflects our commitment to accessibility and excellence. Thank you for being part of our journey \u2014 we cannot wait to welcome you.",
+        "image": "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80",
+        "author": "Press Team",
+        "date": "2026-04-01"
+      },
+      {
+        "title": "Award Recognizes Our Commitment to Quality",
+        "slug": "award-quality-commitment",
+        "excerpt": "Industry leaders honored our team for outstanding client satisfaction.",
+        "body": "Receiving this recognition is a testament to the people behind our work \u2014 dedicated professionals who show up every day with care and craft.\n\nWe share this award with every client who trusted us with their goals. Your feedback shapes how we grow and improve.",
+        "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80",
+        "author": "Communications",
+        "date": "2026-03-18"
+      },
+      {
+        "title": "Partnership Opens New Opportunities",
+        "slug": "partnership-new-opportunities",
+        "excerpt": "Strategic collaboration brings enhanced offerings to our community.",
+        "body": "Our new partnership combines complementary strengths to deliver more value, faster turnaround, and broader expertise under one roof.\n\nStay tuned for launch events and early-access opportunities for existing clients.",
+        "image": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80",
+        "author": "Leadership",
+        "date": "2026-02-05"
+      }
+    ],
+    "pricingSectionTitle": "Pricing Plans",
+    "pricing": [
+      {
+        "title": "Starter",
+        "description": "Essential features for individuals and small teams getting started.",
+        "price": "$29/mo",
+        "tag": "Most popular",
+        "featured": false
+      },
+      {
+        "title": "Professional",
+        "description": "Advanced tools, priority support, and integrations for growing businesses.",
+        "price": "$79/mo",
+        "tag": "Best value",
+        "featured": true
+      },
+      {
+        "title": "Enterprise",
+        "description": "Custom solutions, dedicated account management, and SLA guarantees.",
+        "price": "Custom",
+        "tag": "Contact us",
+        "featured": false
+      }
+    ],
+    "roomsSectionTitle": "Rooms & Suites",
+    "roomsSectionSubtitle": "Explore our accommodations and reserve your stay",
+    "bookingSectionTitle": "Book Your Stay",
+    "bookingSectionSubtitle": "Select dates, guests, and your preferred room type",
+    "roomTypes": [],
+    "blogPosts": [
+      {
+        "title": "5 Strategies to Grow Your Business This Year",
+        "slug": "5-strategies-to-grow-your-business",
+        "excerpt": "Practical steps you can take today to build momentum and reach more customers.",
+        "body": "Growing a business takes focus, consistency, and a willingness to adapt. Start by clarifying your core offer, then double down on the channels that already bring results.\n\nReview your customer journey from first touch to repeat purchase. Small improvements at each step compound into meaningful revenue gains. Finally, invest in relationships \u2014 referrals and retention often outperform cold outreach.",
+        "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
+        "author": "Alex Morgan",
+        "date": "2026-03-12"
+      },
+      {
+        "title": "What Clients Are Asking Us Right Now",
+        "slug": "what-clients-are-asking-us",
+        "excerpt": "A quick roundup of the most common questions we hear \u2014 and how we answer them.",
+        "body": "Every season brings a new set of priorities. Lately, clients ask about pricing transparency, faster turnaround times, and how to stand out in crowded markets.\n\nOur advice stays grounded in fundamentals: deliver exceptional value, communicate clearly, and measure what matters. When in doubt, talk to your customers \u2014 their feedback is the best roadmap.",
+        "image": "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80",
+        "author": "Jordan Lee",
+        "date": "2026-02-28"
+      },
+      {
+        "title": "Behind the Scenes: How We Work",
+        "slug": "behind-the-scenes-how-we-work",
+        "excerpt": "Take a peek at our process, tools, and the principles that guide every project.",
+        "body": "We believe great outcomes come from clear goals, collaborative planning, and disciplined execution. Every engagement starts with listening \u2014 understanding where you are and where you want to go.\n\nFrom there we build a tailored plan with milestones you can track. Throughout delivery we keep communication open so there are no surprises, only steady progress toward results you can measure.",
+        "image": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80",
+        "author": "Taylor Brooks",
+        "date": "2026-01-15"
+      }
+    ],
+    "team": [
+      {
+        "name": "Alex Morgan",
+        "role": "Founder & CEO",
+        "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80"
+      },
+      {
+        "name": "Jordan Lee",
+        "role": "Creative Director",
+        "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
+      },
+      {
+        "name": "Taylor Brooks",
+        "role": "Operations Lead",
+        "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80"
+      }
+    ],
+    "ctaBannerTitle": "Join the next tournament",
+    "ctaBannerText": "Sign up for our newsletter \u2014 early bird brackets and exclusive event access.",
+    "ctaText": "Get Tickets",
+    "ctaLink": "contact",
+    "seoEnabled": false,
+    "seoTitle": "",
+    "seoDescription": "",
+    "seoKeywords": "",
+    "seoSiteUrl": "",
+    "email": "hello@pixeldistrict.gg",
+    "phone": "",
+    "address": "",
+    "hours": "",
+    "instagram": "@pixeldistrict",
+    "website": "https://discord.gg/pixeldistrict",
+    "linkedin": "",
+    "whatsapp": "",
+    "supportEmail": "support@pixeldistrict.gg",
+    "reservationEmail": "",
+    "licenseNumber": "",
+    "bookingUrl": "https://tickets.pixeldistrict.gg",
+    "contactSectionTitle": "Get in Touch",
+    "contactFormTitle": "Send Us a Message",
+    "contactFormUrl": "",
+    "contactFormButtonText": "Open Contact Form"
+  }
+}

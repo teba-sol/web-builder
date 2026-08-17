@@ -7,32 +7,10 @@ export type TemplateCategory =
   | 'retail'
   | 'realestate'
   | 'hospitality'
+  | 'finance'
 
-export type TemplateId =
-  | 'business'
-  | 'creative'
-  | 'restaurant'
-  | 'saas'
-  | 'fitness'
-  | 'boutique'
-  | 'realtor'
-  | 'photography'
-  | 'medical'
-  | 'lawfirm'
-  | 'salon'
-  | 'noir'
-  | 'terra'
-  | 'coastal'
-  | 'vineyard'
-  | 'arcade'
-  | 'coffee'
-  | 'hotel'
-  | 'guesthouse'
-  | 'alpine'
-  | 'ryokan'
-  | 'desert'
-  | 'nordic'
-  | 'jungle'
+/** Stable catalog id. New templates are JSON documents, not members of a union. */
+export type TemplateId = string
 
 export type ContactFieldKey =
   | 'email'
@@ -56,8 +34,6 @@ export type ToggleableSection =
   | 'cta'
   | 'testimonials'
   | 'pricing'
-  | 'terms'
-  | 'cookieBanner'
 
 export interface SectionVisibility {
   stats: boolean
@@ -67,8 +43,6 @@ export interface SectionVisibility {
   cta: boolean
   testimonials: boolean
   pricing: boolean
-  terms: boolean
-  cookieBanner: boolean
 }
 
 export interface PageVisibility {
@@ -187,6 +161,13 @@ export interface SiteContent {
   tagline: string
   heroSubtext: string
   heroImage: string
+  logo: string
+  logoShowName: boolean
+  brandPrimary: string
+  brandSecondary: string
+  brandAccent: string
+  fontHeading: string
+  fontBody: string
   aboutTitle: string
   about: string
   aboutImage: string
@@ -223,9 +204,6 @@ export interface SiteContent {
   bookingSectionTitle: string
   bookingSectionSubtitle: string
   roomTypes: RoomTypeItem[]
-  termsSectionTitle: string
-  termsContent: string
-  cookieBannerText: string
   ctaBannerTitle: string
   ctaBannerText: string
   ctaText: string

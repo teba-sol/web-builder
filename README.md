@@ -167,7 +167,8 @@ web-builder-exp/
 │   ├── pages/                     # Home, Editor, Preview, Demo, Site
 │   ├── components/                # Forms, pickers, cards, download
 │   ├── context/WebsiteContext.tsx # Global editor state + persistence
-│   ├── data/                      # Templates, defaults, schemes, nav config
+│   ├── catalog/                   # Template JSON manifests + loader
+│   ├── data/                      # Catalog-backed lookups, nav, form helpers
 │   ├── templates/                 # Per-industry React shells + SiteApp
 │   ├── export/                    # Static HTML + Laravel generators
 │   ├── types/                     # SiteContent, TemplateId, visibility, …
@@ -180,7 +181,7 @@ web-builder-exp/
 
 | Goal | Start here |
 |------|------------|
-| Add / rename a template | `src/types` (`TemplateId`), `src/data/templates.ts`, `src/data/defaults.ts`, `src/templates/*` |
+| Add a catalog template | Add `src/catalog/manifests/<id>.json` (design). Site edits export as `site.json` in the ZIP. |
 | Editor form fields | `src/components/ContentForm.tsx`, list helpers in `src/data/listDefaults.ts` |
 | Colors / layout variants | `src/data/colorSchemes.ts`, `src/data/layoutVariants.ts` |
 | Live multi-page site | `src/templates/SiteApp.tsx`, section layouts |

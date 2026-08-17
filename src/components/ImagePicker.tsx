@@ -5,9 +5,10 @@ interface Props {
   value: string
   onChange: (value: string) => void
   hint?: string
+  fit?: 'cover' | 'contain'
 }
 
-export function ImagePicker({ label, value, onChange, hint }: Props) {
+export function ImagePicker({ label, value, onChange, hint, fit = 'cover' }: Props) {
   const inputRef = useRef<HTMLInputElement>(null)
 
   const handleFile = (file: File) => {
@@ -25,7 +26,11 @@ export function ImagePicker({ label, value, onChange, hint }: Props) {
 
       {value && (
         <div className="relative overflow-hidden rounded-lg border border-slate-200">
-          <img src={value} alt="Preview" className="h-36 w-full object-cover" />
+          <img
+            src={value}
+            alt="Preview"
+            className={fit === 'contain' ? 'mx-auto h-24 w-auto max-w-full bg-slate-50 object-contain p-3' : 'h-36 w-full object-cover'}
+          />
           <button
             type="button"
             onClick={() => onChange('')}

@@ -1,0 +1,622 @@
+{
+  "schemaVersion": 1,
+  "id": "nordic",
+  "name": "Fjord Light",
+  "description": "Scandinavian spa hotel \u2014 pale oak, soft light, and hygge wellness with fjord-facing rooms.",
+  "category": "hospitality",
+  "previewGradient": "from-slate-200 via-teal-100 to-stone-50",
+  "accentColor": "#0f766e",
+  "sortOrder": 22,
+  "features": [
+    "cms",
+    "hospitality"
+  ],
+  "pages": {
+    "about": true,
+    "services": true,
+    "portfolio": true,
+    "blog": true,
+    "news": false,
+    "gallery": true,
+    "contact": true,
+    "rooms": true
+  },
+  "homeSections": [
+    "nav",
+    "hero",
+    "stats",
+    "rooms-teaser",
+    "services-teaser",
+    "portfolio-teaser",
+    "blog-teaser",
+    "news-teaser",
+    "testimonials",
+    "about-teaser",
+    "faq",
+    "contact",
+    "explore",
+    "footer"
+  ],
+  "sectionOrder": [
+    "nav",
+    "hero",
+    "stats",
+    "about",
+    "showcase",
+    "services",
+    "gallery",
+    "testimonials",
+    "blog",
+    "steps",
+    "faq",
+    "cta",
+    "contact",
+    "footer"
+  ],
+  "theme": {
+    "page": "bg-[#f4f6f5] text-slate-800",
+    "nav": "sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-200/80",
+    "navLink": "text-slate-500 hover:text-teal-800 font-medium",
+    "navCta": "rounded-full bg-teal-800 px-6 py-2.5 text-sm font-semibold text-white hover:bg-teal-700",
+    "hero": "relative min-h-[85vh] flex items-center text-white",
+    "heroBadge": "text-teal-100/90 uppercase tracking-[0.35em] text-xs",
+    "heroTitle": "text-5xl md:text-6xl font-light tracking-tight leading-tight",
+    "heroText": "text-slate-100/90 text-xl max-w-xl font-light mt-4",
+    "heroCta": "rounded-full bg-white px-8 py-3 font-semibold text-teal-900 hover:bg-teal-50",
+    "stats": "bg-white py-16 border-y border-slate-200",
+    "statValue": "text-4xl font-light text-teal-800",
+    "statLabel": "text-slate-400 text-xs uppercase tracking-[0.25em] mt-1",
+    "section": "py-20",
+    "sectionAlt": "bg-white py-20",
+    "sectionTitle": "text-4xl font-light text-slate-800",
+    "sectionSubtitle": "text-slate-500 mt-2 font-light",
+    "card": "rounded-2xl bg-white border border-slate-200/80 p-8 shadow-sm hover:shadow-md transition-shadow",
+    "cardTitle": "text-xl font-medium text-slate-900",
+    "cardText": "text-slate-600 leading-relaxed",
+    "aboutImage": "rounded-3xl shadow-xl shadow-slate-300/40",
+    "mission": "text-teal-800 font-light italic text-xl text-center max-w-2xl mx-auto",
+    "stepNum": "text-teal-600 text-3xl font-light",
+    "gallery": "rounded-2xl w-full aspect-[4/3] object-cover shadow-md",
+    "showcase": "bg-teal-50/50 py-20",
+    "showcaseCard": "rounded-2xl bg-white overflow-hidden shadow-sm hover:shadow-lg transition-all group border border-slate-100",
+    "showcaseImage": "w-full aspect-[16/10] object-cover group-hover:scale-105 transition-transform duration-700",
+    "showcasePrice": "text-teal-800 font-semibold text-lg",
+    "showcaseTag": "text-xs uppercase tracking-widest text-slate-400",
+    "testimonial": "text-center font-light text-slate-600 px-8 italic text-lg",
+    "faq": "border-b border-slate-200 py-6",
+    "teamCard": "text-center",
+    "ctaBanner": "bg-teal-900 text-teal-50 py-24 text-center",
+    "ctaBannerBtn": "rounded-full bg-white px-10 py-3 font-semibold text-teal-900 hover:bg-teal-50",
+    "contact": "bg-slate-900 text-slate-100 py-20",
+    "contactLabel": "text-teal-300 text-xs uppercase tracking-wider",
+    "footer": "py-8 text-center text-sm text-slate-400 bg-white border-t border-slate-200"
+  },
+  "colorSchemes": [
+    {
+      "id": "fjord-teal",
+      "name": "Fjord Teal",
+      "swatches": [
+        "#134e4a",
+        "#0f766e",
+        "#f4f6f5"
+      ],
+      "overrides": {}
+    },
+    {
+      "id": "arctic-blue",
+      "name": "Arctic Blue",
+      "swatches": [
+        "#1e3a5f",
+        "#3b82f6",
+        "#f8fafc"
+      ],
+      "overrides": {
+        "navCta": "rounded-full bg-blue-700 px-6 py-2.5 text-white hover:bg-blue-600",
+        "ctaBanner": "bg-blue-900 text-blue-50 py-24",
+        "showcasePrice": "text-blue-800"
+      }
+    },
+    {
+      "id": "birch",
+      "name": "Birch Wood",
+      "swatches": [
+        "#44403c",
+        "#a8a29e",
+        "#fafaf9"
+      ],
+      "overrides": {
+        "navCta": "rounded-full bg-stone-800 px-6 py-2.5 text-white hover:bg-stone-700",
+        "ctaBanner": "bg-stone-800 text-stone-50 py-24",
+        "showcasePrice": "text-stone-700"
+      }
+    }
+  ],
+  "defaultColorSchemeId": "fjord-teal",
+  "defaultLayoutVariantId": "classic",
+  "sectionVariants": {
+    "faq": "accordion",
+    "explore": "list-arrows",
+    "contactShell": "minimal-split",
+    "contactForm": "underline",
+    "exploreTitle": "The House",
+    "exploreSubtitle": "Rooms, spa, dining, and book rest",
+    "exploreLinkLabel": "Discover"
+  },
+  "showcase": {
+    "sectionTitle": "Rest Rituals",
+    "sectionSubtitle": "Sauna, treatments, and quiet fjord days",
+    "navLabel": "Rituals",
+    "itemLabel": "Ritual",
+    "showPrice": true,
+    "priceLabel": "From",
+    "showTag": true,
+    "tagLabel": "Focus"
+  },
+  "defaultShowcase": [
+    {
+      "title": "Sauna Circuit",
+      "description": "Wood-fired sauna, cold plunge, rest loft.",
+      "image": "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600&q=80",
+      "price": "\u20ac85",
+      "tag": "Spa",
+      "link": "contact"
+    },
+    {
+      "title": "Floating Treatment",
+      "description": "90-minute botanical massage.",
+      "image": "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=600&q=80",
+      "price": "\u20ac145",
+      "tag": "Body",
+      "link": "contact"
+    },
+    {
+      "title": "Fjord Kayak",
+      "description": "Morning paddle when the water is glass.",
+      "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80",
+      "price": "\u20ac70",
+      "tag": "Water",
+      "link": "contact"
+    },
+    {
+      "title": "Farm Table Dinner",
+      "description": "Seasonal Nordic tasting for two.",
+      "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80",
+      "price": "\u20ac160",
+      "tag": "Dining",
+      "link": "contact"
+    },
+    {
+      "title": "Spa Suite Night",
+      "description": "Suite with private sauna and balcony.",
+      "image": "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=600&q=80",
+      "price": "\u20ac540",
+      "tag": "Suite",
+      "link": "contact"
+    },
+    {
+      "title": "Forest Walk",
+      "description": "Guided silence walk through birch forest.",
+      "image": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&q=80",
+      "price": "\u20ac40",
+      "tag": "Nature",
+      "link": "contact"
+    }
+  ],
+  "navShell": "nordic",
+  "contactFields": [
+    {
+      "key": "reservationEmail",
+      "label": "Reservations",
+      "placeholder": "book@fjordlight.no"
+    },
+    {
+      "key": "phone",
+      "label": "Spa & Stay",
+      "placeholder": "+47 55 555 010"
+    },
+    {
+      "key": "address",
+      "label": "Address",
+      "placeholder": "Hardangerfjord, Norway"
+    },
+    {
+      "key": "hours",
+      "label": "Reception",
+      "placeholder": "8am\u201310pm"
+    },
+    {
+      "key": "email",
+      "label": "Email",
+      "placeholder": "hello@fjordlight.no"
+    }
+  ],
+  "servicesLabel": "Wellness",
+  "pageLayouts": {
+    "blog": "grid",
+    "blogPost": "classic",
+    "news": "timeline",
+    "newsPost": "classic",
+    "gallery": "grid",
+    "portfolio": "cards"
+  },
+  "hero": {
+    "overlay": true,
+    "overlayGradient": "bg-gradient-to-t from-teal-950/90 via-slate-900/40 to-transparent",
+    "splitColumns": false,
+    "badge": "name",
+    "grayscaleImage": false
+  },
+  "defaults": {
+    "businessName": "Fjord Light",
+    "tagline": "Soft light. Deep rest.",
+    "heroSubtext": "A Scandinavian spa hotel on the Hardangerfjord \u2014 pale oak, wool, and water rituals with effortless booking.",
+    "heroImage": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=80",
+    "aboutTitle": "The House",
+    "about": "Fjord Light was designed as a place to slow down. Every material is honest \u2014 oak, linen, stone \u2014 and every window frames water and sky.",
+    "aboutImage": "https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800&q=80",
+    "missionStatement": "Wellness without noise. Design without excess.",
+    "pageVisibility": {
+      "about": true,
+      "services": true,
+      "portfolio": true,
+      "blog": true,
+      "news": false,
+      "gallery": true,
+      "contact": true,
+      "rooms": true
+    },
+    "sectionVisibility": {
+      "stats": true,
+      "team": true,
+      "steps": true,
+      "faq": true,
+      "cta": true,
+      "testimonials": true,
+      "pricing": false
+    },
+    "stats": [
+      {
+        "value": "32",
+        "label": "Rooms"
+      },
+      {
+        "value": "Sauna",
+        "label": "Daily Ritual"
+      },
+      {
+        "value": "4.9\u2605",
+        "label": "Guest Rating"
+      },
+      {
+        "value": "Zero",
+        "label": "Plastic"
+      }
+    ],
+    "servicesSectionTitle": "Wellness",
+    "servicesSectionSubtitle": "Water, heat, and quiet attention",
+    "services": [
+      {
+        "title": "Sauna Circuit",
+        "description": "Wood-fired sauna, cold plunge, and rest loft with fjord views."
+      },
+      {
+        "title": "Floating Treatment",
+        "description": "Massage and facial rituals using Nordic botanicals."
+      },
+      {
+        "title": "Fjord Kayak",
+        "description": "Guided morning paddles when the water is glass."
+      },
+      {
+        "title": "Farm Table",
+        "description": "Seasonal Nordic dining with local growers."
+      }
+    ],
+    "stepsSectionTitle": "How It Works",
+    "steps": [
+      {
+        "title": "Consultation",
+        "description": "We learn about your goals and challenges in a discovery session."
+      },
+      {
+        "title": "Strategy",
+        "description": "Our team crafts a tailored plan designed for your success."
+      },
+      {
+        "title": "Execution",
+        "description": "We deliver with precision, keeping you informed every step."
+      },
+      {
+        "title": "Growth",
+        "description": "We measure results and optimize for continuous improvement."
+      }
+    ],
+    "showcaseSectionTitle": "Rest Rituals",
+    "showcaseSectionSubtitle": "Sauna, treatments, and quiet fjord days",
+    "showcaseItems": [
+      {
+        "title": "Sauna Circuit",
+        "description": "Wood-fired sauna, cold plunge, rest loft.",
+        "image": "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600&q=80",
+        "price": "\u20ac85",
+        "tag": "Spa",
+        "link": "contact"
+      },
+      {
+        "title": "Floating Treatment",
+        "description": "90-minute botanical massage.",
+        "image": "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=600&q=80",
+        "price": "\u20ac145",
+        "tag": "Body",
+        "link": "contact"
+      },
+      {
+        "title": "Fjord Kayak",
+        "description": "Morning paddle when the water is glass.",
+        "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80",
+        "price": "\u20ac70",
+        "tag": "Water",
+        "link": "contact"
+      },
+      {
+        "title": "Farm Table Dinner",
+        "description": "Seasonal Nordic tasting for two.",
+        "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80",
+        "price": "\u20ac160",
+        "tag": "Dining",
+        "link": "contact"
+      },
+      {
+        "title": "Spa Suite Night",
+        "description": "Suite with private sauna and balcony.",
+        "image": "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=600&q=80",
+        "price": "\u20ac540",
+        "tag": "Suite",
+        "link": "contact"
+      },
+      {
+        "title": "Forest Walk",
+        "description": "Guided silence walk through birch forest.",
+        "image": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&q=80",
+        "price": "\u20ac40",
+        "tag": "Nature",
+        "link": "contact"
+      }
+    ],
+    "gallerySectionTitle": "Light & Water",
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80",
+      "https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=600&q=80",
+      "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=600&q=80"
+    ],
+    "testimonialsSectionTitle": "Quiet Praise",
+    "testimonials": [
+      {
+        "quote": "Outstanding service and incredible results. Highly recommended!",
+        "author": "Sarah Johnson",
+        "role": "CEO, TechStart"
+      },
+      {
+        "quote": "They transformed our business. Professional, creative, and reliable.",
+        "author": "Michael Chen",
+        "role": "Founder, Bloom Co"
+      },
+      {
+        "quote": "The best decision we made this year. Exceeded every expectation.",
+        "author": "Emily Rodriguez",
+        "role": "Director, Apex Group"
+      }
+    ],
+    "faqSectionTitle": "Frequently Asked Questions",
+    "faqs": [
+      {
+        "question": "How do I get started?",
+        "answer": "Simply reach out via our contact form or give us a call. We offer a free initial consultation."
+      },
+      {
+        "question": "What are your pricing options?",
+        "answer": "We offer flexible packages tailored to your needs and budget. Contact us for a custom quote."
+      },
+      {
+        "question": "How long does a typical project take?",
+        "answer": "Timelines vary by scope, but most projects are completed within 2\u20138 weeks."
+      },
+      {
+        "question": "Do you offer ongoing support?",
+        "answer": "Yes! We provide continued support and maintenance to ensure long-term success."
+      }
+    ],
+    "teamSectionTitle": "Meet the Team",
+    "blogSectionTitle": "Latest from Our Blog",
+    "blogSectionSubtitle": "Insights, tips, and updates from our team",
+    "newsSectionTitle": "News & Updates",
+    "newsSectionSubtitle": "Announcements, press releases, and company news",
+    "newsPosts": [
+      {
+        "title": "We Are Expanding to Serve You Better",
+        "slug": "expanding-to-serve-you-better",
+        "excerpt": "New locations, extended hours, and more ways to connect with our team.",
+        "body": "We are thrilled to announce expanded service hours and a new consultation space designed around your comfort and convenience.\n\nThis investment reflects our commitment to accessibility and excellence. Thank you for being part of our journey \u2014 we cannot wait to welcome you.",
+        "image": "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80",
+        "author": "Press Team",
+        "date": "2026-04-01"
+      },
+      {
+        "title": "Award Recognizes Our Commitment to Quality",
+        "slug": "award-quality-commitment",
+        "excerpt": "Industry leaders honored our team for outstanding client satisfaction.",
+        "body": "Receiving this recognition is a testament to the people behind our work \u2014 dedicated professionals who show up every day with care and craft.\n\nWe share this award with every client who trusted us with their goals. Your feedback shapes how we grow and improve.",
+        "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80",
+        "author": "Communications",
+        "date": "2026-03-18"
+      },
+      {
+        "title": "Partnership Opens New Opportunities",
+        "slug": "partnership-new-opportunities",
+        "excerpt": "Strategic collaboration brings enhanced offerings to our community.",
+        "body": "Our new partnership combines complementary strengths to deliver more value, faster turnaround, and broader expertise under one roof.\n\nStay tuned for launch events and early-access opportunities for existing clients.",
+        "image": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80",
+        "author": "Leadership",
+        "date": "2026-02-05"
+      }
+    ],
+    "pricingSectionTitle": "Pricing Plans",
+    "pricing": [
+      {
+        "title": "Starter",
+        "description": "Essential features for individuals and small teams getting started.",
+        "price": "$29/mo",
+        "tag": "Most popular",
+        "featured": false
+      },
+      {
+        "title": "Professional",
+        "description": "Advanced tools, priority support, and integrations for growing businesses.",
+        "price": "$79/mo",
+        "tag": "Best value",
+        "featured": true
+      },
+      {
+        "title": "Enterprise",
+        "description": "Custom solutions, dedicated account management, and SLA guarantees.",
+        "price": "Custom",
+        "tag": "Contact us",
+        "featured": false
+      }
+    ],
+    "roomsSectionTitle": "Rooms & Suites",
+    "roomsSectionSubtitle": "Light rooms, fjord views, and spa suites",
+    "bookingSectionTitle": "Book Your Stay",
+    "bookingSectionSubtitle": "Find open rooms for your dates and guests",
+    "roomTypes": [
+      {
+        "name": "Light Room",
+        "slug": "light-room",
+        "parentSlug": "",
+        "description": "Soft oak, wool throws, and floor-to-ceiling windows for pale Nordic light year-round.",
+        "shortDescription": "Oak \u00b7 Wool \u00b7 28 m\u00b2",
+        "basePrice": "260",
+        "currency": "EUR",
+        "maxAdults": "2",
+        "maxChildren": "1",
+        "maxOccupancy": "3",
+        "bedConfiguration": "1 Queen",
+        "sizeSqm": "28",
+        "amenities": "Wi-Fi, Heated floors, Rain shower, Organic toiletries, Spa access",
+        "image": "https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=900&q=80",
+        "unitCount": "8",
+        "unitPrefix": "LGT-",
+        "isActive": true
+      },
+      {
+        "name": "Light Room \u00b7 Fjord View",
+        "slug": "light-fjord-view",
+        "parentSlug": "light-room",
+        "description": "Corner light rooms overlooking the fjord with a freestanding tub.",
+        "shortDescription": "Fjord view \u00b7 Tub \u00b7 32 m\u00b2",
+        "basePrice": "340",
+        "currency": "EUR",
+        "maxAdults": "2",
+        "maxChildren": "1",
+        "maxOccupancy": "3",
+        "bedConfiguration": "1 King",
+        "sizeSqm": "32",
+        "amenities": "Fjord view, Freestanding tub, Spa access, Mini bar, Robes",
+        "image": "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=900&q=80",
+        "unitCount": "4",
+        "unitPrefix": "FJD-",
+        "isActive": true
+      },
+      {
+        "name": "Spa Suite",
+        "slug": "spa-suite",
+        "parentSlug": "",
+        "description": "Suite with private sauna, treatment nook, and balcony over the water.",
+        "shortDescription": "Private sauna \u00b7 55 m\u00b2",
+        "basePrice": "540",
+        "currency": "EUR",
+        "maxAdults": "2",
+        "maxChildren": "1",
+        "maxOccupancy": "3",
+        "bedConfiguration": "1 King",
+        "sizeSqm": "55",
+        "amenities": "Private sauna, Spa bath, Balcony, Organic minibar, Treatment space",
+        "image": "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=900&q=80",
+        "unitCount": "3",
+        "unitPrefix": "SPA-",
+        "isActive": true
+      }
+    ],
+    "blogPosts": [
+      {
+        "title": "5 Strategies to Grow Your Business This Year",
+        "slug": "5-strategies-to-grow-your-business",
+        "excerpt": "Practical steps you can take today to build momentum and reach more customers.",
+        "body": "Growing a business takes focus, consistency, and a willingness to adapt. Start by clarifying your core offer, then double down on the channels that already bring results.\n\nReview your customer journey from first touch to repeat purchase. Small improvements at each step compound into meaningful revenue gains. Finally, invest in relationships \u2014 referrals and retention often outperform cold outreach.",
+        "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
+        "author": "Alex Morgan",
+        "date": "2026-03-12"
+      },
+      {
+        "title": "What Clients Are Asking Us Right Now",
+        "slug": "what-clients-are-asking-us",
+        "excerpt": "A quick roundup of the most common questions we hear \u2014 and how we answer them.",
+        "body": "Every season brings a new set of priorities. Lately, clients ask about pricing transparency, faster turnaround times, and how to stand out in crowded markets.\n\nOur advice stays grounded in fundamentals: deliver exceptional value, communicate clearly, and measure what matters. When in doubt, talk to your customers \u2014 their feedback is the best roadmap.",
+        "image": "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80",
+        "author": "Jordan Lee",
+        "date": "2026-02-28"
+      },
+      {
+        "title": "Behind the Scenes: How We Work",
+        "slug": "behind-the-scenes-how-we-work",
+        "excerpt": "Take a peek at our process, tools, and the principles that guide every project.",
+        "body": "We believe great outcomes come from clear goals, collaborative planning, and disciplined execution. Every engagement starts with listening \u2014 understanding where you are and where you want to go.\n\nFrom there we build a tailored plan with milestones you can track. Throughout delivery we keep communication open so there are no surprises, only steady progress toward results you can measure.",
+        "image": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80",
+        "author": "Taylor Brooks",
+        "date": "2026-01-15"
+      }
+    ],
+    "team": [
+      {
+        "name": "Alex Morgan",
+        "role": "Founder & CEO",
+        "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80"
+      },
+      {
+        "name": "Jordan Lee",
+        "role": "Creative Director",
+        "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
+      },
+      {
+        "name": "Taylor Brooks",
+        "role": "Operations Lead",
+        "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80"
+      }
+    ],
+    "ctaBannerTitle": "Book a light room",
+    "ctaBannerText": "Reserve a fjord-facing room or spa suite online.",
+    "ctaText": "Check Availability",
+    "ctaLink": "book",
+    "seoEnabled": false,
+    "seoTitle": "",
+    "seoDescription": "",
+    "seoKeywords": "",
+    "seoSiteUrl": "",
+    "email": "hello@fjordlight.no",
+    "phone": "+47 55 555 010",
+    "address": "Hardangerfjord, Norway",
+    "hours": "Reception 8am\u201310pm",
+    "instagram": "",
+    "website": "",
+    "linkedin": "",
+    "whatsapp": "",
+    "supportEmail": "",
+    "reservationEmail": "book@fjordlight.no",
+    "licenseNumber": "",
+    "bookingUrl": "",
+    "contactSectionTitle": "Get in Touch",
+    "contactFormTitle": "Send Us a Message",
+    "contactFormUrl": "",
+    "contactFormButtonText": "Open Contact Form"
+  }
+}

@@ -1,0 +1,622 @@
+{
+  "schemaVersion": 1,
+  "id": "jungle",
+  "name": "Canopy House",
+  "description": "Tropical eco-lodge \u2014 deep canopy greens, golden light, and elevated cabins in the trees.",
+  "category": "hospitality",
+  "previewGradient": "from-emerald-950 via-lime-800 to-amber-600",
+  "accentColor": "#65a30d",
+  "sortOrder": 23,
+  "features": [
+    "cms",
+    "hospitality"
+  ],
+  "pages": {
+    "about": true,
+    "services": true,
+    "portfolio": true,
+    "blog": true,
+    "news": false,
+    "gallery": true,
+    "contact": true,
+    "rooms": true
+  },
+  "homeSections": [
+    "nav",
+    "hero",
+    "stats",
+    "rooms-teaser",
+    "services-teaser",
+    "portfolio-teaser",
+    "blog-teaser",
+    "news-teaser",
+    "testimonials",
+    "about-teaser",
+    "faq",
+    "contact",
+    "explore",
+    "footer"
+  ],
+  "sectionOrder": [
+    "nav",
+    "hero",
+    "gallery",
+    "showcase",
+    "stats",
+    "about",
+    "services",
+    "testimonials",
+    "blog",
+    "steps",
+    "faq",
+    "cta",
+    "contact",
+    "footer"
+  ],
+  "theme": {
+    "page": "bg-[#0f1a12] text-lime-50",
+    "nav": "sticky top-0 z-50 bg-[#0a120c]/90 backdrop-blur border-b border-lime-700/30 text-lime-50",
+    "navLink": "text-lime-100/70 hover:text-lime-300 font-medium",
+    "navCta": "rounded-full bg-lime-500 px-6 py-2.5 text-sm font-semibold text-emerald-950 hover:bg-lime-400",
+    "hero": "relative min-h-[90vh] flex items-end pb-24 text-white",
+    "heroBadge": "text-lime-300 uppercase tracking-[0.4em] text-xs",
+    "heroTitle": "text-5xl md:text-7xl font-medium tracking-tight leading-none",
+    "heroText": "text-lime-100/85 text-xl max-w-2xl font-light mt-4",
+    "heroCta": "rounded-full bg-lime-400 px-8 py-3 font-semibold text-emerald-950 hover:bg-lime-300 shadow-xl shadow-lime-900/40",
+    "stats": "bg-emerald-950 text-lime-50 py-16 border-y border-lime-700/20",
+    "statValue": "text-4xl font-medium text-lime-400",
+    "statLabel": "text-lime-200/50 text-xs uppercase tracking-[0.25em] mt-1",
+    "section": "py-20",
+    "sectionAlt": "bg-[#142018] py-20",
+    "sectionTitle": "text-4xl font-medium text-lime-50",
+    "sectionSubtitle": "text-lime-200/60 mt-2 font-light",
+    "card": "rounded-2xl bg-[#142018] border border-lime-800/40 p-8 hover:border-lime-500/50 transition-colors",
+    "cardTitle": "text-xl font-medium text-lime-100",
+    "cardText": "text-lime-100/70 leading-relaxed",
+    "aboutImage": "rounded-3xl shadow-2xl shadow-lime-950/50 ring-1 ring-lime-700/30",
+    "mission": "text-lime-300 font-light italic text-xl text-center max-w-2xl mx-auto",
+    "stepNum": "text-lime-500 text-3xl font-medium",
+    "gallery": "rounded-2xl w-full aspect-[4/3] object-cover shadow-lg ring-1 ring-lime-800/40",
+    "showcase": "bg-[#0a120c] py-20",
+    "showcaseCard": "rounded-2xl bg-[#142018] overflow-hidden border border-lime-800/40 hover:border-lime-500/50 transition-all group",
+    "showcaseImage": "w-full aspect-[16/10] object-cover group-hover:scale-105 transition-transform duration-700",
+    "showcasePrice": "text-lime-400 font-semibold text-lg",
+    "showcaseTag": "text-xs uppercase tracking-widest text-amber-400",
+    "testimonial": "text-center font-light text-lime-100/70 px-8 italic text-lg",
+    "faq": "border-b border-lime-800/40 py-6",
+    "teamCard": "text-center",
+    "ctaBanner": "bg-gradient-to-r from-emerald-900 to-lime-800 text-lime-50 py-24 text-center",
+    "ctaBannerBtn": "rounded-full bg-lime-400 px-10 py-3 font-semibold text-emerald-950 hover:bg-lime-300",
+    "contact": "bg-[#0a120c] text-lime-50 py-20 border-t border-lime-800/30",
+    "contactLabel": "text-lime-400 text-xs uppercase tracking-wider",
+    "footer": "py-8 text-center text-sm text-lime-200/40 bg-[#0f1a12] border-t border-lime-900/50"
+  },
+  "colorSchemes": [
+    {
+      "id": "canopy",
+      "name": "Canopy Green",
+      "swatches": [
+        "#052e16",
+        "#65a30d",
+        "#0f1a12"
+      ],
+      "overrides": {}
+    },
+    {
+      "id": "macaw",
+      "name": "Macaw Gold",
+      "swatches": [
+        "#14532d",
+        "#eab308",
+        "#0f1a12"
+      ],
+      "overrides": {
+        "navCta": "rounded-full bg-yellow-400 px-6 py-2.5 text-emerald-950 hover:bg-yellow-300",
+        "ctaBanner": "bg-gradient-to-r from-emerald-900 to-yellow-700 text-yellow-50 py-24",
+        "showcasePrice": "text-yellow-400"
+      }
+    },
+    {
+      "id": "orchid",
+      "name": "Orchid Night",
+      "swatches": [
+        "#4a044e",
+        "#d946ef",
+        "#0f1a12"
+      ],
+      "overrides": {
+        "navCta": "rounded-full bg-fuchsia-500 px-6 py-2.5 text-white hover:bg-fuchsia-400",
+        "ctaBanner": "bg-gradient-to-r from-purple-950 to-fuchsia-800 text-fuchsia-50 py-24",
+        "showcasePrice": "text-fuchsia-400"
+      }
+    }
+  ],
+  "defaultColorSchemeId": "canopy",
+  "defaultLayoutVariantId": "classic",
+  "sectionVariants": {
+    "faq": "boxed",
+    "explore": "strips",
+    "contactShell": "terra-pill",
+    "contactForm": "soft-rounded",
+    "exploreTitle": "The Canopy",
+    "exploreSubtitle": "Cabins, trails, dining, and book",
+    "exploreLinkLabel": "Enter"
+  },
+  "showcase": {
+    "sectionTitle": "Forest Days",
+    "sectionSubtitle": "Trails, bridges, and meals from the garden",
+    "navLabel": "Experiences",
+    "itemLabel": "Experience",
+    "showPrice": true,
+    "priceLabel": "From",
+    "showTag": true,
+    "tagLabel": "Type"
+  },
+  "defaultShowcase": [
+    {
+      "title": "Cloud Forest Walk",
+      "description": "Half-day trail with birding guide.",
+      "image": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&q=80",
+      "price": "$65",
+      "tag": "Trail",
+      "link": "contact"
+    },
+    {
+      "title": "Canopy Bridges",
+      "description": "Dawn crossings when mist fills the valleys.",
+      "image": "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=600&q=80",
+      "price": "$55",
+      "tag": "Adventure",
+      "link": "contact"
+    },
+    {
+      "title": "Garden Dinner",
+      "description": "Farm-to-table meal under lantern light.",
+      "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80",
+      "price": "$85",
+      "tag": "Dining",
+      "link": "contact"
+    },
+    {
+      "title": "Night Safari",
+      "description": "Quiet walk to meet nocturnal wildlife.",
+      "image": "https://images.unsplash.com/photo-1516426122078-c23e76319801?w=600&q=80",
+      "price": "$70",
+      "tag": "Night",
+      "link": "contact"
+    },
+    {
+      "title": "Treehouse Night",
+      "description": "Multi-level villa in the canopy.",
+      "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600&q=80",
+      "price": "$720",
+      "tag": "Villa",
+      "link": "contact"
+    },
+    {
+      "title": "Coffee Tour",
+      "description": "Local farm visit with tasting.",
+      "image": "https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=600&q=80",
+      "price": "$45",
+      "tag": "Culture",
+      "link": "contact"
+    }
+  ],
+  "navShell": "jungle",
+  "contactFields": [
+    {
+      "key": "reservationEmail",
+      "label": "Reservations",
+      "placeholder": "stay@canopyhouse.com"
+    },
+    {
+      "key": "phone",
+      "label": "Lodge Phone",
+      "placeholder": "+506 2555 0100"
+    },
+    {
+      "key": "address",
+      "label": "Lodge Address",
+      "placeholder": "Monteverde Cloud Forest, Costa Rica"
+    },
+    {
+      "key": "hours",
+      "label": "Reception",
+      "placeholder": "7am\u20139pm"
+    },
+    {
+      "key": "email",
+      "label": "Email",
+      "placeholder": "hello@canopyhouse.com"
+    }
+  ],
+  "servicesLabel": "Jungle Experiences",
+  "pageLayouts": {
+    "blog": "magazine",
+    "blogPost": "editorial",
+    "news": "compact",
+    "newsPost": "split",
+    "gallery": "masonry",
+    "portfolio": "showcase"
+  },
+  "hero": {
+    "overlay": true,
+    "overlayGradient": "bg-gradient-to-t from-emerald-950 via-lime-950/50 to-transparent",
+    "splitColumns": false,
+    "badge": "name",
+    "grayscaleImage": false
+  },
+  "defaults": {
+    "businessName": "Canopy House",
+    "tagline": "Live among the trees",
+    "heroSubtext": "An eco-lodge in the Monteverde canopy \u2014 elevated cabins, outdoor baths, and guided forest days with full online booking.",
+    "heroImage": "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=1200&q=80",
+    "aboutTitle": "The Lodge",
+    "about": "Canopy House is built lightly on the land \u2014 solar power, timber frames, and paths that respect the cloud forest. Guests wake to howler monkeys and sleep under a roof of leaves.",
+    "aboutImage": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&q=80",
+    "missionStatement": "Hospitality that protects what guests came to see.",
+    "pageVisibility": {
+      "about": true,
+      "services": true,
+      "portfolio": true,
+      "blog": true,
+      "news": false,
+      "gallery": true,
+      "contact": true,
+      "rooms": true
+    },
+    "sectionVisibility": {
+      "stats": true,
+      "team": true,
+      "steps": true,
+      "faq": true,
+      "cta": true,
+      "testimonials": true,
+      "pricing": false
+    },
+    "stats": [
+      {
+        "value": "14",
+        "label": "Cabins & Villas"
+      },
+      {
+        "value": "100%",
+        "label": "Solar Power"
+      },
+      {
+        "value": "4.9\u2605",
+        "label": "Guest Rating"
+      },
+      {
+        "value": "12",
+        "label": "Trail Guides"
+      }
+    ],
+    "servicesSectionTitle": "Jungle Experiences",
+    "servicesSectionSubtitle": "Days designed by the forest",
+    "services": [
+      {
+        "title": "Cloud Forest Walks",
+        "description": "Guided trails with birding and botany experts."
+      },
+      {
+        "title": "Canopy Bridges",
+        "description": "Suspended crossings at dawn when mist fills the valleys."
+      },
+      {
+        "title": "Farm-to-Table",
+        "description": "Meals from our garden and neighboring farms."
+      },
+      {
+        "title": "Night Safari",
+        "description": "Quiet walks to meet nocturnal life of the forest."
+      }
+    ],
+    "stepsSectionTitle": "How It Works",
+    "steps": [
+      {
+        "title": "Consultation",
+        "description": "We learn about your goals and challenges in a discovery session."
+      },
+      {
+        "title": "Strategy",
+        "description": "Our team crafts a tailored plan designed for your success."
+      },
+      {
+        "title": "Execution",
+        "description": "We deliver with precision, keeping you informed every step."
+      },
+      {
+        "title": "Growth",
+        "description": "We measure results and optimize for continuous improvement."
+      }
+    ],
+    "showcaseSectionTitle": "Forest Days",
+    "showcaseSectionSubtitle": "Trails, bridges, and meals from the garden",
+    "showcaseItems": [
+      {
+        "title": "Cloud Forest Walk",
+        "description": "Half-day trail with birding guide.",
+        "image": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&q=80",
+        "price": "$65",
+        "tag": "Trail",
+        "link": "contact"
+      },
+      {
+        "title": "Canopy Bridges",
+        "description": "Dawn crossings when mist fills the valleys.",
+        "image": "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=600&q=80",
+        "price": "$55",
+        "tag": "Adventure",
+        "link": "contact"
+      },
+      {
+        "title": "Garden Dinner",
+        "description": "Farm-to-table meal under lantern light.",
+        "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80",
+        "price": "$85",
+        "tag": "Dining",
+        "link": "contact"
+      },
+      {
+        "title": "Night Safari",
+        "description": "Quiet walk to meet nocturnal wildlife.",
+        "image": "https://images.unsplash.com/photo-1516426122078-c23e76319801?w=600&q=80",
+        "price": "$70",
+        "tag": "Night",
+        "link": "contact"
+      },
+      {
+        "title": "Treehouse Night",
+        "description": "Multi-level villa in the canopy.",
+        "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600&q=80",
+        "price": "$720",
+        "tag": "Villa",
+        "link": "contact"
+      },
+      {
+        "title": "Coffee Tour",
+        "description": "Local farm visit with tasting.",
+        "image": "https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=600&q=80",
+        "price": "$45",
+        "tag": "Culture",
+        "link": "contact"
+      }
+    ],
+    "gallerySectionTitle": "In the Canopy",
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=600&q=80",
+      "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600&q=80",
+      "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600&q=80"
+    ],
+    "testimonialsSectionTitle": "Guest Notes",
+    "testimonials": [
+      {
+        "quote": "Outstanding service and incredible results. Highly recommended!",
+        "author": "Sarah Johnson",
+        "role": "CEO, TechStart"
+      },
+      {
+        "quote": "They transformed our business. Professional, creative, and reliable.",
+        "author": "Michael Chen",
+        "role": "Founder, Bloom Co"
+      },
+      {
+        "quote": "The best decision we made this year. Exceeded every expectation.",
+        "author": "Emily Rodriguez",
+        "role": "Director, Apex Group"
+      }
+    ],
+    "faqSectionTitle": "Frequently Asked Questions",
+    "faqs": [
+      {
+        "question": "How do I get started?",
+        "answer": "Simply reach out via our contact form or give us a call. We offer a free initial consultation."
+      },
+      {
+        "question": "What are your pricing options?",
+        "answer": "We offer flexible packages tailored to your needs and budget. Contact us for a custom quote."
+      },
+      {
+        "question": "How long does a typical project take?",
+        "answer": "Timelines vary by scope, but most projects are completed within 2\u20138 weeks."
+      },
+      {
+        "question": "Do you offer ongoing support?",
+        "answer": "Yes! We provide continued support and maintenance to ensure long-term success."
+      }
+    ],
+    "teamSectionTitle": "Meet the Team",
+    "blogSectionTitle": "Latest from Our Blog",
+    "blogSectionSubtitle": "Insights, tips, and updates from our team",
+    "newsSectionTitle": "News & Updates",
+    "newsSectionSubtitle": "Announcements, press releases, and company news",
+    "newsPosts": [
+      {
+        "title": "We Are Expanding to Serve You Better",
+        "slug": "expanding-to-serve-you-better",
+        "excerpt": "New locations, extended hours, and more ways to connect with our team.",
+        "body": "We are thrilled to announce expanded service hours and a new consultation space designed around your comfort and convenience.\n\nThis investment reflects our commitment to accessibility and excellence. Thank you for being part of our journey \u2014 we cannot wait to welcome you.",
+        "image": "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80",
+        "author": "Press Team",
+        "date": "2026-04-01"
+      },
+      {
+        "title": "Award Recognizes Our Commitment to Quality",
+        "slug": "award-quality-commitment",
+        "excerpt": "Industry leaders honored our team for outstanding client satisfaction.",
+        "body": "Receiving this recognition is a testament to the people behind our work \u2014 dedicated professionals who show up every day with care and craft.\n\nWe share this award with every client who trusted us with their goals. Your feedback shapes how we grow and improve.",
+        "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80",
+        "author": "Communications",
+        "date": "2026-03-18"
+      },
+      {
+        "title": "Partnership Opens New Opportunities",
+        "slug": "partnership-new-opportunities",
+        "excerpt": "Strategic collaboration brings enhanced offerings to our community.",
+        "body": "Our new partnership combines complementary strengths to deliver more value, faster turnaround, and broader expertise under one roof.\n\nStay tuned for launch events and early-access opportunities for existing clients.",
+        "image": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80",
+        "author": "Leadership",
+        "date": "2026-02-05"
+      }
+    ],
+    "pricingSectionTitle": "Pricing Plans",
+    "pricing": [
+      {
+        "title": "Starter",
+        "description": "Essential features for individuals and small teams getting started.",
+        "price": "$29/mo",
+        "tag": "Most popular",
+        "featured": false
+      },
+      {
+        "title": "Professional",
+        "description": "Advanced tools, priority support, and integrations for growing businesses.",
+        "price": "$79/mo",
+        "tag": "Best value",
+        "featured": true
+      },
+      {
+        "title": "Enterprise",
+        "description": "Custom solutions, dedicated account management, and SLA guarantees.",
+        "price": "Custom",
+        "tag": "Contact us",
+        "featured": false
+      }
+    ],
+    "roomsSectionTitle": "Cabins & Villas",
+    "roomsSectionSubtitle": "Elevated stays among the trees",
+    "bookingSectionTitle": "Book Your Stay",
+    "bookingSectionSubtitle": "Search open cabins by date and guests",
+    "roomTypes": [
+      {
+        "name": "Canopy Cabin",
+        "slug": "canopy-cabin",
+        "parentSlug": "",
+        "description": "Elevated timber cabin among the trees with mosquito netting, outdoor shower, and bird song.",
+        "shortDescription": "Treehouse \u00b7 Outdoor shower \u00b7 26 m\u00b2",
+        "basePrice": "240",
+        "currency": "USD",
+        "maxAdults": "2",
+        "maxChildren": "1",
+        "maxOccupancy": "3",
+        "bedConfiguration": "1 Queen",
+        "sizeSqm": "26",
+        "amenities": "Wi-Fi, Outdoor shower, Fan, Mosquito net, Nature guide",
+        "image": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=900&q=80",
+        "unitCount": "6",
+        "unitPrefix": "CAB-",
+        "isActive": true
+      },
+      {
+        "name": "Canopy Cabin \u00b7 River View",
+        "slug": "canopy-river-view",
+        "parentSlug": "canopy-cabin",
+        "description": "River-facing cabin with wraparound deck and hammock.",
+        "shortDescription": "River \u00b7 Deck \u00b7 30 m\u00b2",
+        "basePrice": "310",
+        "currency": "USD",
+        "maxAdults": "2",
+        "maxChildren": "1",
+        "maxOccupancy": "3",
+        "bedConfiguration": "1 Queen",
+        "sizeSqm": "30",
+        "amenities": "River view, Deck, Outdoor shower, Hammock, Fan",
+        "image": "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=900&q=80",
+        "unitCount": "3",
+        "unitPrefix": "RIV-",
+        "isActive": true
+      },
+      {
+        "name": "Treehouse Villa",
+        "slug": "treehouse-villa",
+        "parentSlug": "",
+        "description": "Multi-level villa in the canopy with living lounge, outdoor bath, and private guide.",
+        "shortDescription": "Multi-level \u00b7 70 m\u00b2",
+        "basePrice": "720",
+        "currency": "USD",
+        "maxAdults": "4",
+        "maxChildren": "2",
+        "maxOccupancy": "5",
+        "bedConfiguration": "1 King + loft twins",
+        "sizeSqm": "70",
+        "amenities": "Outdoor bath, Lounge, Private guide, Solar power, Deck",
+        "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=900&q=80",
+        "unitCount": "2",
+        "unitPrefix": "TRE-",
+        "isActive": true
+      }
+    ],
+    "blogPosts": [
+      {
+        "title": "5 Strategies to Grow Your Business This Year",
+        "slug": "5-strategies-to-grow-your-business",
+        "excerpt": "Practical steps you can take today to build momentum and reach more customers.",
+        "body": "Growing a business takes focus, consistency, and a willingness to adapt. Start by clarifying your core offer, then double down on the channels that already bring results.\n\nReview your customer journey from first touch to repeat purchase. Small improvements at each step compound into meaningful revenue gains. Finally, invest in relationships \u2014 referrals and retention often outperform cold outreach.",
+        "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
+        "author": "Alex Morgan",
+        "date": "2026-03-12"
+      },
+      {
+        "title": "What Clients Are Asking Us Right Now",
+        "slug": "what-clients-are-asking-us",
+        "excerpt": "A quick roundup of the most common questions we hear \u2014 and how we answer them.",
+        "body": "Every season brings a new set of priorities. Lately, clients ask about pricing transparency, faster turnaround times, and how to stand out in crowded markets.\n\nOur advice stays grounded in fundamentals: deliver exceptional value, communicate clearly, and measure what matters. When in doubt, talk to your customers \u2014 their feedback is the best roadmap.",
+        "image": "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80",
+        "author": "Jordan Lee",
+        "date": "2026-02-28"
+      },
+      {
+        "title": "Behind the Scenes: How We Work",
+        "slug": "behind-the-scenes-how-we-work",
+        "excerpt": "Take a peek at our process, tools, and the principles that guide every project.",
+        "body": "We believe great outcomes come from clear goals, collaborative planning, and disciplined execution. Every engagement starts with listening \u2014 understanding where you are and where you want to go.\n\nFrom there we build a tailored plan with milestones you can track. Throughout delivery we keep communication open so there are no surprises, only steady progress toward results you can measure.",
+        "image": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80",
+        "author": "Taylor Brooks",
+        "date": "2026-01-15"
+      }
+    ],
+    "team": [
+      {
+        "name": "Alex Morgan",
+        "role": "Founder & CEO",
+        "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80"
+      },
+      {
+        "name": "Jordan Lee",
+        "role": "Creative Director",
+        "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
+      },
+      {
+        "name": "Taylor Brooks",
+        "role": "Operations Lead",
+        "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80"
+      }
+    ],
+    "ctaBannerTitle": "Book a cabin",
+    "ctaBannerText": "Reserve canopy cabins and treehouse villas with live availability.",
+    "ctaText": "Book Now",
+    "ctaLink": "book",
+    "seoEnabled": false,
+    "seoTitle": "",
+    "seoDescription": "",
+    "seoKeywords": "",
+    "seoSiteUrl": "",
+    "email": "hello@canopyhouse.com",
+    "phone": "+506 2555 0100",
+    "address": "Monteverde Cloud Forest, Costa Rica",
+    "hours": "Reception 7am\u20139pm",
+    "instagram": "",
+    "website": "",
+    "linkedin": "",
+    "whatsapp": "",
+    "supportEmail": "",
+    "reservationEmail": "stay@canopyhouse.com",
+    "licenseNumber": "",
+    "bookingUrl": "",
+    "contactSectionTitle": "Get in Touch",
+    "contactFormTitle": "Send Us a Message",
+    "contactFormUrl": "",
+    "contactFormButtonText": "Open Contact Form"
+  }
+}

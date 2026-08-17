@@ -9,6 +9,7 @@ import { slugify } from '../utils/slugify'
 import type { ContentListKey } from '../data/listDefaults'
 import { getDefaultLayoutVariantId } from '../data/layoutVariants'
 import { optimizeSiteSeo } from '../utils/seoOptimizer'
+import { BrandIdentityForm } from './BrandIdentityForm'
 import { ColorSchemePicker } from './ColorSchemePicker'
 import { ImagePicker } from './ImagePicker'
 import { LayoutVariantPicker } from './LayoutVariantPicker'
@@ -44,6 +45,8 @@ export function ContentForm() {
 
   return (
     <div className="space-y-8">
+      <BrandIdentityForm content={content} onChange={updateContent} />
+
       {templateId && (
         <>
           <LayoutVariantPicker
@@ -415,19 +418,6 @@ export function ContentForm() {
         <Field label="Button Text" value={content.ctaText} onChange={(v) => updateContent({ ctaText: v })} />
         <Field label="Button Link" value={content.ctaLink} onChange={(v) => updateContent({ ctaLink: v })} placeholder="contact" />
       </FormSection>
-
-      {content.sectionVisibility.terms && (
-        <FormSection title="Terms & Conditions">
-          <Field label="Section Title" value={content.termsSectionTitle} onChange={(v) => updateContent({ termsSectionTitle: v })} />
-          <Field label="Terms Content" value={content.termsContent} onChange={(v) => updateContent({ termsContent: v })} multiline rows={8} />
-        </FormSection>
-      )}
-
-      {content.sectionVisibility.cookieBanner && (
-        <FormSection title="Cookie Notice">
-          <Field label="Banner Text" value={content.cookieBannerText} onChange={(v) => updateContent({ cookieBannerText: v })} multiline />
-        </FormSection>
-      )}
 
       <FormSection title="Contact Form">
         <Field label="Section Title" value={content.contactSectionTitle} onChange={(v) => updateContent({ contactSectionTitle: v })} />
