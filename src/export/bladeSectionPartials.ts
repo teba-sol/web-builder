@@ -89,7 +89,9 @@ export function generateBladeSectionPartials(payload: SiteExportPayload): Record
 <form class="space-y-4" action="{{ route('contact.store') }}" method="POST">@csrf
 <div><label class="block text-sm font-medium mb-1.5">Your Name</label><input name="name" type="text" required class="${inputCls}" /></div>
 <div><label class="block text-sm font-medium mb-1.5">Email</label><input name="email" type="email" required class="${inputCls}" /></div>
-<div><label class="block text-sm font-medium mb-1.5">Message</label><textarea name="message" required rows="5" class="${inputCls}"></textarea></div>
+<div><label class="block text-sm font-medium mb-1.5">Phone</label><input name="phone" type="tel" class="${inputCls}" /></div>
+@isset($services)<div><label class="block text-sm font-medium mb-1.5">Service</label><select name="service_type" class="${inputCls}"><option value="">How can we help?</option>@foreach($services as $service)<option value="{{ $service->title }}">{{ $service->title }}</option>@endforeach</select></div>@endisset
+<div><label class="block text-sm font-medium mb-1.5">Message</label><textarea name="message" rows="5" class="${inputCls}"></textarea></div>
 <button type="submit" class="w-full text-white px-6 py-3 rounded-lg font-semibold" style="background-color:${accent}">{{ $settings->contact_form_button_text }}</button>
 </form></div>`
 

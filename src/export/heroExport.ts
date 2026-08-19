@@ -131,34 +131,38 @@ function heroTextBlock(input: HeroExportInput, mode: 'html' | 'blade'): string {
       <a href="${ctaHref}" data-brand-cta class="inline-block ${t.heroCta}">${ctaText} →</a>`
 }
 
-function buildTaxFightersHero(input: HeroExportInput, mode: 'html' | 'blade'): string {
-  const src = heroImageSrc(mode, input.heroImage)
-  const title = mode === 'html' ? escapeHtml(input.tagline) : '{{ $settings->tagline }}'
-  const subtext = mode === 'html' ? escapeHtml(input.heroSubtext) : '{{ $settings->hero_subtext }}'
-  const img =
-    mode === 'blade'
-      ? `@if($settings->hero_image)<img src="${src}" alt="" class="absolute inset-0 h-full w-full object-cover" />@endif`
-      : input.heroImage
-        ? `<img src="${src}" alt="" class="absolute inset-0 h-full w-full object-cover" />`
-        : ''
-  return `<header class="relative h-screen min-h-[640px] -mt-20 overflow-hidden">
-  ${img}
-  <div class="absolute inset-0 bg-black/50"></div>
-  <div class="relative z-10 max-w-3xl mx-auto px-6 h-full flex flex-col items-center justify-center text-center pt-20">
-    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6">${title}</h1>
-    <p class="text-lg sm:text-xl text-gray-200 mb-8 leading-relaxed">${subtext}</p>
-    <a href="${mode === 'html' ? escapeHtml(input.ctaHref) : "{{ route('contact') }}"}" class="px-8 py-3 rounded-full font-semibold text-lg border-2 text-white" style="border-color:#800020">Learn More</a>
-  </div>
-  ${
-    input.stats?.length
-      ? `<div class="absolute bottom-10 left-0 right-0 z-10 flex flex-wrap justify-center gap-8 sm:gap-16 px-4">${input.stats
-          .map(
-            (s) =>
-              `<div class="text-center"><div class="text-2xl sm:text-3xl font-bold text-white">${escapeHtml(s.value)}</div><div class="text-sm sm:text-base text-gray-300">${escapeHtml(s.label)}</div></div>`,
-          )
-          .join('')}</div>`
-      : ''
+function heroCopy(input: HeroExportInput, mode: 'html' | 'blade') {
+  return {
+    src: heroImageSrc(mode, input.heroImage),
+    title: mode === 'html' ? escapeHtml(input.tagline) : '{{ $settings->tagline }}',
+    subtext: mode === 'html' ? escapeHtml(input.heroSubtext) : '{{ $settings->hero_subtext }}',
+    name: mode === 'html' ? escapeHtml(input.businessName) : '{{ $settings->business_name }}',
+    ctaText: mode === 'html' ? escapeHtml(input.ctaText) : '{{ $settings->cta_text }}',
+    ctaHref: mode === 'html' ? escapeHtml(input.ctaHref) : "{{ route('contact') }}",
   }
+}
+
+function heroImg(mode: 'html' | 'blade', src: string, heroImage: string, className: string): string {
+  if (mode === 'blade') return `@if($settings->hero_image)<img src="${src}" alt="" class="${className}" />@endif`
+  return heroImage ? `<img src="${src}" alt="" class="${className}" />` : ''
+}
+
+function buildTaxFightersHero(input: HeroExportInput, mode: 'html' | 'blade'): string {
+  const h = heroCopy(input, mode)
+  const img = heroImg(mode, h.src, input.heroImage, 'w-full h-full object-cover opacity-15 contrast-125 brightness-75')
+  const stats = (input.stats ?? [])
+    .slice(0, 3)
+    .map((s) => `<div class="flex items-center gap-2.5 text-xs font-semibold text-slate-700">${escapeHtml(s.value)} ${escapeHtml(s.label)}</div>`)
+    .join('')
+  return `<header class="relative overflow-hidden px-4 py-20 sm:px-6 lg:px-8 lg:py-28 bg-slate-50">
+  <div class="absolute inset-0 z-0">${img}<div class="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-white/70"></div></div>
+  <div class="relative z-10 max-w-7xl mx-auto">
+    <p class="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-bold tracking-wider text-white uppercase bg-[#E73F39]">${h.name}</p>
+    <h1 class="mt-6 text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-slate-900">${h.title}</h1>
+    <p class="mt-6 max-w-2xl text-lg text-slate-700">${h.subtext}</p>
+    <a href="${h.ctaHref}" class="inline-block mt-8 rounded-xl px-8 py-4 font-extrabold text-white" style="background-color:#e60039">${h.ctaText}</a>
+    <div class="grid sm:grid-cols-3 gap-4 pt-8 border-t border-slate-300 mt-8">${stats}</div>
+  </div>
 </header>`
 }
 
@@ -176,160 +180,89 @@ export function buildBladeHeroHtml(input: HeroExportInput): string {
 }
 
 function buildAureumHero(input: HeroExportInput, mode: 'html' | 'blade'): string {
-  const src = heroImageSrc(mode, input.heroImage)
-  const title = mode === 'html' ? escapeHtml(input.tagline) : '{{ $settings->tagline }}'
-  const subtext = mode === 'html' ? escapeHtml(input.heroSubtext) : '{{ $settings->hero_subtext }}'
-  const name = mode === 'html' ? escapeHtml(input.businessName) : '{{ $settings->business_name }}'
-  const ctaText = mode === 'html' ? escapeHtml(input.ctaText) : '{{ $settings->cta_text }}'
-  const ctaHref = mode === 'html' ? escapeHtml(input.ctaHref) : "{{ route('contact') }}"
-  const img =
-    mode === 'blade'
-      ? `@if($settings->hero_image)<img src="${src}" alt="" class="h-[420px] md:h-[560px] w-full rounded-[2rem] object-cover shadow-2xl" />@endif`
-      : input.heroImage
-        ? `<img src="${src}" alt="" class="h-[420px] md:h-[560px] w-full rounded-[2rem] object-cover shadow-2xl" />`
-        : ''
-  const stats = input.stats?.length
-    ? `<div class="relative z-10 max-w-5xl mx-auto px-6 -mt-16"><div class="grid grid-cols-3 bg-white rounded-2xl shadow-xl overflow-hidden">${input.stats
-        .map(
-          (s, i) =>
-            `<div class="text-center px-4 py-7 ${i > 0 ? 'border-l border-[#eadfce]' : ''}"><p class="font-serif text-3xl md:text-4xl text-[#7a2e38]">${escapeHtml(s.value)}</p><p class="mt-2 text-[11px] font-semibold tracking-[0.18em] uppercase text-[#8a7d72]">${escapeHtml(s.label)}</p></div>`,
-        )
-        .join('')}</div></div>`
-    : ''
-  return `<header class="relative overflow-hidden bg-[#f4efe6] text-[#2a211c]">
-  <div class="max-w-7xl mx-auto px-6 pt-16 pb-28 grid lg:grid-cols-12 gap-12 items-center min-h-[86vh]">
-    <div class="lg:col-span-6">
-      <p class="mb-5 text-xs font-semibold tracking-[0.28em] uppercase text-[#7a2e38]">${name}</p>
-      <h1 class="font-serif text-5xl md:text-6xl lg:text-7xl leading-[1.05] tracking-tight">${title}</h1>
-      <div class="mt-6 h-px w-20 bg-[#b8956a]"></div>
-      <p class="mt-6 max-w-xl text-lg leading-relaxed text-[#5c5148]">${subtext}</p>
-      <a href="${ctaHref}" class="inline-block mt-10 rounded-full px-8 py-3.5 text-sm font-semibold text-white" style="background-color:#7a2e38">${ctaText}</a>
+  const h = heroCopy(input, mode)
+  const img = heroImg(mode, h.src, input.heroImage, 'h-full w-full object-cover')
+  return `<header class="relative min-h-screen flex flex-col overflow-hidden bg-[#976DE8] text-white">
+  <div class="relative z-10 max-w-[1400px] mx-auto w-full px-6 lg:px-12 py-16 grid lg:grid-cols-2 gap-12 items-center">
+    <div>
+      <h1 class="text-[2.75rem] lg:text-[4rem] font-bold leading-[1.05] mb-6">${h.title}</h1>
+      <p class="text-[17px] text-gray-200 mb-10 max-w-[500px]">${h.subtext}</p>
+      <a href="${h.ctaHref}" class="inline-block rounded-full bg-[#6035EE] px-8 py-3 text-xs font-bold uppercase tracking-widest">${h.ctaText}</a>
     </div>
-    <div class="lg:col-span-6">${img}</div>
+    <div class="relative h-[450px] lg:h-[600px]">
+      <div class="absolute right-[5%] bottom-0 w-[75%] h-[85%] bg-[#FBD043] rounded-tl-[140px]"></div>
+      <div class="relative z-10 w-[70%] h-[95%] ml-auto rounded-t-full overflow-hidden border-[6px] border-[#211543]">${img}</div>
+    </div>
   </div>
-  ${stats}
 </header>`
 }
 
 function buildFluxHero(input: HeroExportInput, mode: 'html' | 'blade'): string {
-  const src = heroImageSrc(mode, input.heroImage)
-  const title = mode === 'html' ? escapeHtml(input.tagline) : '{{ $settings->tagline }}'
-  const subtext = mode === 'html' ? escapeHtml(input.heroSubtext) : '{{ $settings->hero_subtext }}'
-  const name = mode === 'html' ? escapeHtml(input.businessName) : '{{ $settings->business_name }}'
-  const ctaText = mode === 'html' ? escapeHtml(input.ctaText) : '{{ $settings->cta_text }}'
-  const ctaHref = mode === 'html' ? escapeHtml(input.ctaHref) : "{{ route('contact') }}"
-  const img =
-    mode === 'blade'
-      ? `@if($settings->hero_image)<img src="${src}" alt="" class="h-[380px] md:h-[480px] w-full rounded-[2rem] object-cover ring-2 ring-[#c8ff3d]" />@endif`
-      : input.heroImage
-        ? `<img src="${src}" alt="" class="h-[380px] md:h-[480px] w-full rounded-[2rem] object-cover ring-2 ring-[#c8ff3d]" />`
-        : ''
-  const stats = input.stats?.length
-    ? `<div class="border-y border-white/10 bg-black"><div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4">${input.stats
-        .map(
-          (s, i) =>
-            `<div class="px-6 py-8 ${i > 0 ? 'md:border-l border-white/10' : ''}"><p class="text-3xl md:text-4xl font-black tracking-tight text-[#c8ff3d]">${escapeHtml(s.value)}</p><p class="mt-2 text-xs font-bold tracking-[0.2em] uppercase text-white/45">${escapeHtml(s.label)}</p></div>`,
-        )
-        .join('')}</div></div>`
-    : ''
-  return `<header class="relative overflow-hidden bg-[#070708] text-white">
-  <div class="max-w-7xl mx-auto px-6 pt-16 pb-16 grid lg:grid-cols-12 gap-10 items-end">
-    <div class="lg:col-span-7">
-      <p class="mb-6 inline-flex rounded-full border border-white/15 bg-white/5 px-3 py-1 text-[11px] font-bold tracking-[0.22em] uppercase text-[#c8ff3d]">${name} · same-week money</p>
-      <h1 class="text-5xl sm:text-6xl lg:text-8xl font-black leading-[0.9] tracking-tight">${title}</h1>
-      <p class="mt-8 max-w-xl text-lg leading-relaxed text-white/65">${subtext}</p>
-      <a href="${ctaHref}" class="inline-block mt-10 rounded-full px-8 py-3.5 text-sm font-black text-black" style="background-color:#c8ff3d">${ctaText}</a>
-    </div>
-    <div class="lg:col-span-5">${img}</div>
+  const h = heroCopy(input, mode)
+  const img = heroImg(mode, h.src, input.heroImage, 'w-full h-full object-cover object-center')
+  return `<header class="relative min-h-screen flex flex-col bg-[#141110] text-white">
+  <div class="absolute inset-0 z-0">${img}<div class="absolute inset-0 bg-gradient-to-r from-[#141110] via-[#141110]/80 to-transparent"></div></div>
+  <div class="relative z-10 max-w-[1400px] mx-auto w-full px-6 lg:px-12 pb-24 flex-1 flex flex-col justify-center">
+    <p class="text-[13px] font-bold tracking-[0.2em] uppercase text-[#E8D9CB] mb-6">${h.name}</p>
+    <h1 class="text-5xl lg:text-[5.5rem] font-bold leading-[1.05] mb-8 max-w-3xl">${h.title}</h1>
+    <p class="text-lg text-[#CBBBAC] max-w-[600px] mb-10 border-l-2 pl-4" style="border-color:#FA6B34">${h.subtext}</p>
+    <a href="${h.ctaHref}" class="inline-block rounded-lg px-8 py-4 font-bold text-sm text-white" style="background-color:#FA6B34">${h.ctaText}</a>
   </div>
-  ${stats}
 </header>`
 }
 
 function buildAxiomHero(input: HeroExportInput, mode: 'html' | 'blade'): string {
-  const src = heroImageSrc(mode, input.heroImage)
-  const title = mode === 'html' ? escapeHtml(input.tagline) : '{{ $settings->tagline }}'
-  const subtext = mode === 'html' ? escapeHtml(input.heroSubtext) : '{{ $settings->hero_subtext }}'
-  const ctaText = mode === 'html' ? escapeHtml(input.ctaText) : '{{ $settings->cta_text }}'
-  const ctaHref = mode === 'html' ? escapeHtml(input.ctaHref) : "{{ route('contact') }}"
-  const img =
-    mode === 'blade'
-      ? `@if($settings->hero_image)<img src="${src}" alt="" class="relative h-[420px] w-full object-cover" />@endif`
-      : input.heroImage
-        ? `<img src="${src}" alt="" class="relative h-[420px] w-full object-cover" />`
-        : ''
-  const stats = input.stats?.length
-    ? `<div class="bg-[#0a1628] text-white"><div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4">${input.stats
-        .map(
-          (s, i) =>
-            `<div class="px-6 py-10 ${i > 0 ? 'md:border-l border-white/10' : ''}"><p class="font-serif text-3xl md:text-4xl text-[#c41e3a]">${escapeHtml(s.value)}</p><p class="mt-2 text-[11px] font-bold tracking-[0.2em] uppercase text-white/55">${escapeHtml(s.label)}</p></div>`,
-        )
-        .join('')}</div></div>`
-    : ''
-  return `<header class="bg-white text-[#0a1628] border-b border-[#0a1628]/10">
-  <div class="h-1.5 w-full bg-[#c41e3a]"></div>
-  <div class="max-w-7xl mx-auto px-6 py-20 lg:py-28 grid lg:grid-cols-12 gap-12 items-center">
-    <div class="lg:col-span-7">
-      <p class="mb-4 text-xs font-bold tracking-[0.32em] uppercase text-[#c41e3a]">Tax controversy & audit defense</p>
-      <h1 class="font-serif text-5xl md:text-6xl lg:text-7xl leading-[1.05] tracking-tight">${title}</h1>
-      <div class="mt-6 h-1 w-16 bg-[#c41e3a]"></div>
-      <p class="mt-6 max-w-xl text-lg leading-relaxed text-[#3d4a5c]">${subtext}</p>
-      <a href="${ctaHref}" class="inline-block mt-10 px-8 py-3.5 text-sm font-bold text-white bg-[#c41e3a]">${ctaText}</a>
-    </div>
-    <div class="relative lg:col-span-5">${img}</div>
+  const h = heroCopy(input, mode)
+  const img = heroImg(mode, h.src, input.heroImage, 'w-full h-full object-cover')
+  const stats = (input.stats ?? [])
+    .slice(0, 4)
+    .map((s) => `<div class="p-2"><p class="text-sm font-bold">${escapeHtml(s.value)}</p><p class="text-xs text-[#546E8A]">${escapeHtml(s.label)}</p></div>`)
+    .join('')
+  return `<header class="relative w-full overflow-hidden">
+  <div class="absolute inset-0">${img}<div class="absolute inset-0" style="background:linear-gradient(135deg, rgba(6,31,58,.92), rgba(11,79,138,.82))"></div></div>
+  <div class="relative z-10 max-w-7xl mx-auto px-4 py-20 lg:py-28">
+    <p class="text-xs font-bold tracking-[0.25em] uppercase text-[#64B5F6] mb-4">${h.name}</p>
+    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-white max-w-2xl">${h.title}</h1>
+    <p class="mt-6 max-w-lg text-blue-100/80">${h.subtext}</p>
+    <a href="${h.ctaHref}" class="inline-block mt-8 rounded-lg px-7 py-3.5 text-sm font-bold text-white" style="background-color:#2196F3">${h.ctaText}</a>
   </div>
-  ${stats}
+  <div class="relative z-10 max-w-7xl mx-auto px-4 -mb-8"><div class="grid grid-cols-2 md:grid-cols-4 gap-4 bg-white rounded-2xl p-6 shadow-2xl">${stats}</div></div>
 </header>`
 }
 
 function buildHelixHero(input: HeroExportInput, mode: 'html' | 'blade'): string {
-  const src = heroImageSrc(mode, input.heroImage)
-  const title = mode === 'html' ? escapeHtml(input.tagline) : '{{ $settings->tagline }}'
-  const subtext = mode === 'html' ? escapeHtml(input.heroSubtext) : '{{ $settings->hero_subtext }}'
-  const ctaText = mode === 'html' ? escapeHtml(input.ctaText) : '{{ $settings->cta_text }}'
-  const ctaHref = mode === 'html' ? escapeHtml(input.ctaHref) : "{{ route('contact') }}"
-  const img =
-    mode === 'blade'
-      ? `@if($settings->hero_image)<img src="${src}" alt="" class="mt-14 h-[360px] w-full rounded-2xl object-cover ring-1 ring-white/10" />@endif`
-      : input.heroImage
-        ? `<img src="${src}" alt="" class="mt-14 h-[360px] w-full rounded-2xl object-cover ring-1 ring-white/10" />`
-        : ''
-  const stats = input.stats?.length
-    ? `<div class="max-w-7xl mx-auto px-6 pb-12 grid grid-cols-3 gap-3">${input.stats
-        .map(
-          (s) =>
-            `<div class="rounded-2xl bg-white px-5 py-6 text-[#0f172a]"><p class="text-3xl font-black tracking-tight text-[#155dfc]">${escapeHtml(s.value)}</p><p class="mt-1 text-xs font-bold tracking-wide uppercase text-slate-500">${escapeHtml(s.label)}</p></div>`,
-        )
-        .join('')}</div>`
-    : ''
-  return `<header class="relative overflow-hidden bg-[#0f172a] text-white">
-  <div class="max-w-7xl mx-auto px-6 py-20 lg:py-28">
-    <p class="mb-5 text-xs font-bold tracking-[0.28em] uppercase text-[#93c5fd]">Financial audit · tax examination</p>
-    <h1 class="max-w-4xl text-5xl md:text-7xl font-black leading-[0.95] tracking-tight">${title}</h1>
-    <p class="mt-6 max-w-2xl text-lg leading-relaxed text-slate-300">${subtext}</p>
-    <a href="${ctaHref}" class="inline-block mt-10 rounded-md px-8 py-3.5 text-sm font-bold text-white bg-[#155dfc]">${ctaText}</a>
-    ${img}
+  const h = heroCopy(input, mode)
+  return `<header class="bg-black text-rose-50 py-28 px-6 text-center">
+  <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-rose-950/80 border border-rose-800 text-rose-300 text-xs font-bold uppercase tracking-widest mb-8">${h.name}</div>
+  <h1 class="text-5xl sm:text-7xl font-black tracking-tight text-white max-w-5xl mx-auto">${h.title}</h1>
+  <p class="text-neutral-400 text-lg max-w-2xl mx-auto mt-8">${h.subtext}</p>
+  <a href="${h.ctaHref}" class="inline-block mt-10 px-8 py-4 rounded-full bg-rose-600 hover:bg-rose-500 text-white font-extrabold text-sm">${h.ctaText}</a>
+</header>`
+}
+
+function buildCpaHero(input: HeroExportInput, mode: 'html' | 'blade'): string {
+  const h = heroCopy(input, mode)
+  const img = heroImg(mode, h.src, input.heroImage, 'w-full h-[420px] object-cover')
+  return `<header class="relative overflow-hidden text-white" style="background-color:#16302A">
+  <div class="max-w-7xl mx-auto px-4 py-16 lg:py-20 grid lg:grid-cols-12 gap-10 items-center">
+    <div class="lg:col-span-6">
+      <p class="text-xs font-semibold text-[#DDEBD0] mb-6">${h.name}</p>
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black uppercase leading-[1.05] mb-6">${h.title}</h1>
+      <p class="text-[15px] text-[#C7D6C9] max-w-md mb-8">${h.subtext}</p>
+      <a href="${h.ctaHref}" class="inline-flex items-center rounded-full pl-6 pr-2 py-2.5 font-bold text-sm" style="background-color:#A8D93F;color:#16302A">${h.ctaText}</a>
+    </div>
+    <div class="lg:col-span-6 rounded-[2rem] overflow-hidden border-4 border-white/10">${img}</div>
   </div>
-  ${stats}
 </header>`
 }
 
 function buildHeroHtml(input: HeroExportInput, mode: 'html' | 'blade'): string {
-  if (input.templateId === 'taxfighters') {
-    return buildTaxFightersHero(input, mode)
-  }
-  if (input.templateId === 'aureum') {
-    return buildAureumHero(input, mode)
-  }
-  if (input.templateId === 'flux') {
-    return buildFluxHero(input, mode)
-  }
-  if (input.templateId === 'axiom') {
-    return buildAxiomHero(input, mode)
-  }
-  if (input.templateId === 'helix') {
-    return buildHelixHero(input, mode)
-  }
+  if (input.templateId === 'taxfighters') return buildTaxFightersHero(input, mode)
+  if (input.templateId === 'aureum') return buildAureumHero(input, mode)
+  if (input.templateId === 'flux') return buildFluxHero(input, mode)
+  if (input.templateId === 'axiom') return buildAxiomHero(input, mode)
+  if (input.templateId === 'helix') return buildHelixHero(input, mode)
+  if (input.templateId === 'cpa') return buildCpaHero(input, mode)
   const { templateId, heroLayout, heroImage } = input
   const hasOverlay = heroUsesBackgroundImage(templateId, heroLayout)
   const wrapperClass = contentWrapperClass(templateId, heroLayout, hasOverlay)

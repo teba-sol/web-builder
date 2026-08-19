@@ -1,13 +1,15 @@
 {
   "schemaVersion": 1,
   "id": "flux",
-  "name": "Flux Tax",
-  "description": "Electric lime and magenta fintech energy for tax prep and same-week refund advances \u2014 loud, modern, unmissable.",
+  "name": "Posterity",
+  "description": "Warm cream-and-orange advisory firm invested in long-term wealth, tax planning, and family success.",
   "category": "finance",
-  "previewGradient": "from-black via-[#c8ff3d] to-[#ff2d6a]",
-  "accentColor": "#c8ff3d",
+  "previewGradient": "from-[#241C15] via-[#FA6B34] to-[#FFF9F4]",
+  "accentColor": "#FA6B34",
   "sortOrder": 27,
-  "features": ["cms"],
+  "features": [
+    "cms"
+  ],
   "pages": {
     "about": true,
     "services": true,
@@ -52,15 +54,15 @@
     "footer"
   ],
   "theme": {
-    "page": "bg-[#070708] text-white",
-    "nav": "sticky top-0 z-40 border-b border-white/10 bg-[#070708]/90 backdrop-blur-md",
+    "page": "bg-[var(--clone-surface)] text-[var(--clone-ink)] font-sans",
+    "nav": "sticky top-0 z-40 border-b border-[#EEDFCF] bg-[var(--clone-surface)]/95",
     "navLink": "text-white/80 hover:text-[#c8ff3d] font-bold",
-    "navCta": "rounded-full bg-[#c8ff3d] px-5 py-2 text-sm font-black text-black",
+    "navCta": "rounded-xl bg-[#FA6B34] px-6 py-3 text-sm font-bold text-white",
     "hero": "bg-[#070708] text-white py-20",
     "heroBadge": "text-[#c8ff3d] text-[11px] font-bold tracking-[0.22em] uppercase",
     "heroTitle": "text-5xl md:text-7xl font-black tracking-tight leading-[0.9]",
     "heroText": "text-lg text-white/65 leading-relaxed",
-    "heroCta": "rounded-full bg-[#c8ff3d] px-8 py-3.5 text-sm font-black text-black",
+    "heroCta": "rounded-xl bg-[#FA6B34] px-8 py-4 font-extrabold text-white",
     "stats": "bg-black text-white py-10 border-y border-white/10",
     "statValue": "text-3xl font-black text-[#c8ff3d]",
     "statLabel": "text-xs font-bold tracking-[0.2em] uppercase text-white/45 mt-2",
@@ -83,49 +85,42 @@
     "testimonial": "rounded-[1.5rem] bg-white p-7 text-black",
     "faq": "rounded-2xl border border-white/10 bg-white/5",
     "teamCard": "text-center",
-    "ctaBanner": "bg-[#ff2d6a] text-white py-20",
-    "ctaBannerBtn": "rounded-full bg-black px-8 py-3.5 font-black text-[#c8ff3d]",
+    "ctaBanner": "bg-[#FA6B34] text-white py-20",
+    "ctaBannerBtn": "rounded-lg bg-white px-10 py-4 font-semibold text-[#FA6B34]",
     "contact": "bg-[#070708] text-white py-20",
     "contactLabel": "text-[#c8ff3d] text-xs uppercase tracking-wider font-black",
-    "footer": "border-t border-white/10 py-8 text-center text-sm text-white/40 bg-black"
+    "footer": "bg-[#FFF3E7] border-t border-[#EEDFCF] text-[#4A3B2C] py-8 text-center text-sm"
   },
   "colorSchemes": [
     {
       "id": "lime-shock",
-      "name": "Lime Shock",
-      "swatches": ["#070708", "#c8ff3d", "#ff2d6a"],
+      "name": "Warm Ember",
+      "swatches": [
+        "#241C15",
+        "#FA6B34",
+        "#FFF9F4"
+      ],
       "overrides": {}
     },
     {
       "id": "cyan-volt",
       "name": "Cyan Volt",
-      "swatches": ["#05070a", "#22d3ee", "#a3e635"],
-      "overrides": {
-        "navLink": "text-white/80 hover:text-[#22d3ee] font-bold",
-        "navCta": "rounded-full bg-[#22d3ee] px-5 py-2 text-sm font-black text-black",
-        "heroBadge": "text-[#22d3ee] text-[11px] font-bold tracking-[0.22em] uppercase",
-        "heroCta": "rounded-full bg-[#22d3ee] px-8 py-3.5 text-sm font-black text-black",
-        "statValue": "text-3xl font-black text-[#22d3ee]",
-        "showcasePrice": "text-[#22d3ee] font-black",
-        "ctaBanner": "bg-[#0e7490] text-white py-20",
-        "ctaBannerBtn": "rounded-full bg-black px-8 py-3.5 font-black text-[#22d3ee]",
-        "contactLabel": "text-[#22d3ee] text-xs uppercase tracking-wider font-black"
-      }
+      "swatches": [
+        "#05070a",
+        "#0891b2",
+        "#22d3ee"
+      ],
+      "overrides": {}
     },
     {
       "id": "orange-void",
-      "name": "Orange Void",
-      "swatches": ["#0a0604", "#ff6a00", "#ffe14d"],
-      "overrides": {
-        "navLink": "text-white/80 hover:text-[#ff6a00] font-bold",
-        "navCta": "rounded-full bg-[#ff6a00] px-5 py-2 text-sm font-black text-black",
-        "heroBadge": "text-[#ff6a00] text-[11px] font-bold tracking-[0.22em] uppercase",
-        "heroCta": "rounded-full bg-[#ff6a00] px-8 py-3.5 text-sm font-black text-black",
-        "statValue": "text-3xl font-black text-[#ff6a00]",
-        "ctaBanner": "bg-[#ff6a00] text-black py-20",
-        "ctaBannerBtn": "rounded-full bg-black px-8 py-3.5 font-black text-[#ffe14d]",
-        "contactLabel": "text-[#ff6a00] text-xs uppercase tracking-wider font-black"
-      }
+      "name": "Deep Indigo",
+      "swatches": [
+        "#1e1b4b",
+        "#4f46e5",
+        "#c4b5fd"
+      ],
+      "overrides": {}
     }
   ],
   "defaultColorSchemeId": "lime-shock",
@@ -184,7 +179,7 @@
     },
     {
       "title": "Eastside",
-      "description": "Inman, Reynoldstown, Kirkwood \u2014 same week.",
+      "description": "Inman, Reynoldstown, Kirkwood — same week.",
       "image": "https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=800&q=80",
       "price": "",
       "tag": "East",
@@ -193,11 +188,31 @@
   ],
   "navShell": "flux",
   "contactFields": [
-    { "key": "phone", "label": "Text / Call", "placeholder": "(404) 555-0199" },
-    { "key": "email", "label": "Email", "placeholder": "hi@fluxtax.com" },
-    { "key": "address", "label": "Studio", "placeholder": "404 Edgewood, Atlanta" },
-    { "key": "hours", "label": "Hours", "placeholder": "Mon\u2013Sat 11am\u20137pm" },
-    { "key": "instagram", "label": "Instagram", "placeholder": "https://instagram.com/fluxtax" }
+    {
+      "key": "phone",
+      "label": "Text / Call",
+      "placeholder": "(404) 555-0199"
+    },
+    {
+      "key": "email",
+      "label": "Email",
+      "placeholder": "hi@fluxtax.com"
+    },
+    {
+      "key": "address",
+      "label": "Studio",
+      "placeholder": "404 Edgewood, Atlanta"
+    },
+    {
+      "key": "hours",
+      "label": "Hours",
+      "placeholder": "Mon–Sat 11am–7pm"
+    },
+    {
+      "key": "instagram",
+      "label": "Instagram",
+      "placeholder": "https://instagram.com/fluxtax"
+    }
   ],
   "servicesLabel": "Products",
   "pageLayouts": {
@@ -216,21 +231,21 @@
     "grayscaleImage": false
   },
   "defaults": {
-    "businessName": "Flux Tax",
-    "tagline": "Get paid before April even starts.",
-    "heroSubtext": "Tax prep plus same-week refund advances up to $7,500. Holiday advances with zero Flux fee. No waiting room energy.",
-    "heroImage": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1400&q=80",
+    "businessName": "Posterity",
+    "tagline": "Invested in your long term success.",
+    "heroSubtext": "To assist individuals and help businesses realize their financial ambitions and be successful is our mission.",
+    "heroImage": "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=2000&q=80",
     "logo": "",
     "logoShowName": true,
-    "brandPrimary": "#c8ff3d",
-    "brandSecondary": "#070708",
-    "brandAccent": "#ff2d6a",
+    "brandPrimary": "#FA6B34",
+    "brandSecondary": "#241C15",
+    "brandAccent": "#FFF9F4",
     "fontHeading": "space-grotesk",
     "fontBody": "space-grotesk",
-    "aboutTitle": "Tax season, but make it this week.",
-    "about": "Flux is built for people who need the refund now \u2014 not a brochure and a callback. We file the return, size Holiday or Shield advances off the finished file, and text you when the money moves.\n\nNo hold music. No beige lobby. You sit with one person who already knows the product.",
-    "aboutImage": "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1000&q=80",
-    "missionStatement": "Fast is not sloppy. We do not quote an advance until the return is real.",
+    "aboutTitle": "Your strategic partner for lasting wealth",
+    "about": "Posterity helps families and owners plan beyond this tax year — entity choice, estimated taxes, and a written plan that still works in five years.",
+    "aboutImage": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1200&q=80",
+    "missionStatement": "Your success. Your legacy. For posterity.",
     "pageVisibility": {
       "about": true,
       "services": true,
@@ -251,17 +266,29 @@
       "pricing": true
     },
     "stats": [
-      { "value": "30 min", "label": "Fastest fund" },
-      { "value": "$7.5k", "label": "Top advance" },
-      { "value": "0 fee", "label": "Holiday product" },
-      { "value": "24/7", "label": "Text the desk" }
+      {
+        "value": "30 min",
+        "label": "Fastest fund"
+      },
+      {
+        "value": "$7.5k",
+        "label": "Top advance"
+      },
+      {
+        "value": "0 fee",
+        "label": "Holiday product"
+      },
+      {
+        "value": "24/7",
+        "label": "Text the desk"
+      }
     ],
-    "servicesSectionTitle": "Three products. Zero fluff.",
-    "servicesSectionSubtitle": "File it. Fund it. Send a friend.",
+    "servicesSectionTitle": "Planning that outlasts tax season",
+    "servicesSectionSubtitle": "Individual filings, business strategy, and year-round advisory for people who think in decades.",
     "services": [
       {
         "title": "Prep + refund advance",
-        "description": "We finish the return, then push Holiday or Shield funds \u2014 often the same day, always the same week when the file is clean."
+        "description": "We finish the return, then push Holiday or Shield funds — often the same day, always the same week when the file is clean."
       },
       {
         "title": "Referral drop",
@@ -274,10 +301,22 @@
     ],
     "stepsSectionTitle": "Four moves. Then money.",
     "steps": [
-      { "title": "Dump the docs", "description": "ID, SSN, W-2s, dependents. We text a list so you only come once." },
-      { "title": "We run the year", "description": "One advisor. No rotating seasonal desk. You watch the return take shape." },
-      { "title": "Pick the product", "description": "Holiday (no Flux fee) or Shield ($500\u2013$7,500). Or take nothing. Your call." },
-      { "title": "Get wired", "description": "Approved files fund in 30 minutes to 48 hours. IRS pays us back. You keep living." }
+      {
+        "title": "Dump the docs",
+        "description": "ID, SSN, W-2s, dependents. We text a list so you only come once."
+      },
+      {
+        "title": "We run the year",
+        "description": "One advisor. No rotating seasonal desk. You watch the return take shape."
+      },
+      {
+        "title": "Pick the product",
+        "description": "Holiday (no Flux fee) or Shield ($500–$7,500). Or take nothing. Your call."
+      },
+      {
+        "title": "Get wired",
+        "description": "Approved files fund in 30 minutes to 48 hours. IRS pays us back. You keep living."
+      }
     ],
     "showcaseSectionTitle": "We pop up where you live",
     "showcaseSectionSubtitle": "Atlanta neighborhoods, same-week funds",
@@ -316,7 +355,7 @@
       },
       {
         "title": "Eastside",
-        "description": "Inman, Reynoldstown, Kirkwood \u2014 same week.",
+        "description": "Inman, Reynoldstown, Kirkwood — same week.",
         "image": "https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=800&q=80",
         "price": "",
         "tag": "East",
@@ -364,7 +403,7 @@
       },
       {
         "question": "Holiday vs Shield?",
-        "answer": "Holiday: no Flux fee, smaller. Shield: $500\u2013$7,500, bank fees shown before you tap yes."
+        "answer": "Holiday: no Flux fee, smaller. Shield: $500–$7,500, bank fees shown before you tap yes."
       }
     ],
     "teamSectionTitle": "The desk",
@@ -426,7 +465,7 @@
         "title": "An advance is a loan. We say that out loud.",
         "slug": "an-advance-is-a-loan",
         "excerpt": "Why we refuse to quote a number until the return exists.",
-        "body": "The IRS refund pays the advance back. Fees, if any, come out of that refund. If the year cannot carry the number, we will tell you to take less \u2014 or none.",
+        "body": "The IRS refund pays the advance back. Fees, if any, come out of that refund. If the year cannot carry the number, we will tell you to take less — or none.",
         "image": "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&q=80",
         "author": "Flux desk",
         "date": "2026-02-11"
@@ -435,7 +474,7 @@
         "title": "Bring this. Skip the second trip.",
         "slug": "bring-this",
         "excerpt": "The only list that matters.",
-        "body": "Photo ID. Socials. W-2s or stubs. Kids\u2019 birth certificates. Proof they lived with you. That is it for most files.",
+        "body": "Photo ID. Socials. W-2s or stubs. Kids’ birth certificates. Proof they lived with you. That is it for most files.",
         "image": "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&q=80",
         "author": "Flux desk",
         "date": "2026-01-18"
@@ -458,19 +497,19 @@
         "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80"
       }
     ],
-    "ctaBannerTitle": "Stop waiting on a date that does not care about your rent.",
-    "ctaBannerText": "Text the desk. Bring the file. Get a number this week.",
-    "ctaText": "Get funded",
+    "ctaBannerTitle": "A calmer way to file and plan",
+    "ctaBannerText": "We combine certified tax expertise with a long-horizon plan so you never overpay or miss a deadline.",
+    "ctaText": "Discover more",
     "ctaLink": "contact",
     "seoEnabled": true,
-    "seoTitle": "Flux Tax \u2014 same-week refund advances",
+    "seoTitle": "Flux Tax — same-week refund advances",
     "seoDescription": "Atlanta tax prep and refund advances up to $7,500. Holiday product with zero Flux fee.",
     "seoKeywords": "refund advance, tax prep Atlanta, same week refund, Holiday advance",
     "seoSiteUrl": "",
-    "email": "hi@fluxtax.com",
-    "phone": "(404) 555-0199",
-    "address": "404 Edgewood, Atlanta GA",
-    "hours": "Mon\u2013Sat 11am\u20137pm",
+    "email": "hello@posterity.tax",
+    "phone": "(800) 555-8299",
+    "address": "450 Peachtree Ave NE",
+    "hours": "Mon-Fri: 9AM - 7PM | Sat: 10AM - 4PM",
     "instagram": "https://instagram.com/fluxtax",
     "website": "",
     "linkedin": "",

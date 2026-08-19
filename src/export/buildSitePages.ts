@@ -7,6 +7,8 @@ import type { BlogPostItem, NewsItem, SiteContent, TemplateId } from '../types'
 import { slugify } from '../utils/slugify'
 import { buildStaticHeroHtml } from './heroExport'
 import { buildStaticHomePageBody } from './homePageExport'
+import { buildCloneHomeDocument, cloneInteractiveScript, isCloneTemplate } from './cloneHomeExport'
+import { clonePaletteCss, resolveClonePalette } from '../templates/cloneTheme'
 import { buildExportNavHtml } from './navExport'
 import { escapeHtml, resolveImageForExport, type ImageAsset } from './imageUtils'
 import { tailwindHead } from './htmlShared'
@@ -34,6 +36,7 @@ interface SiteHtmlContext {
   fromNested?: boolean
   /** classic | modern | luxury shell class */
   layoutShellClass?: string
+  colorSchemeId?: string
 }
 
 function buildNav(ctx: SiteHtmlContext): string {
@@ -63,11 +66,18 @@ function pageSeo(ctx: SiteHtmlContext, title: string, path: string, extra?: Part
 
 function wrapPage(ctx: SiteHtmlContext, title: string, body: string, seo?: PageSeoInput): string {
   const shell = ctx.layoutShellClass ?? 'layout-classic'
-  return `${tailwindHead(title, seo, ctx.content)}
-<body data-site-brand class="bg-white text-slate-800 ${shell}">
+  const cloneCss = isCloneTemplate(ctx.templateId)
+    ? clonePaletteCss(ctx.templateId, resolveClonePalette(ctx.templateId, ctx.content, ctx.colorSchemeId))
+    : ''
+  const head = cloneCss
+    ? tailwindHead(title, seo, ctx.content).replace('</style>', `${cloneCss}\n</style>`)
+    : tailwindHead(title, seo, ctx.content)
+  return `${head}
+<body data-site-brand class="bg-white text-slate-800 ${shell} ${isCloneTemplate(ctx.templateId) ? 'webtemplate-clone' : ''}">
 ${buildNav(ctx)}
 ${body}
 ${buildFooter(ctx)}
+${isCloneTemplate(ctx.templateId) ? cloneInteractiveScript() : ''}
 </body></html>`
 }
 
@@ -149,6 +159,7 @@ export function buildAllSitePages(
     accentDark,
     assets,
     layoutShellClass: layout.shellClass,
+    colorSchemeId,
   }
   const pages: Record<string, string> = {}
 
@@ -181,9 +192,23 @@ export function buildAllSitePages(
     contactFormHtml: buildContactFormHtml(content, accent, templateId),
   })
 
-  pages['index.html'] = wrapPage(ctx, content.businessName, `
+  if (isCloneTemplate(templateId)) {
+    pages['index.html'] = buildCloneHomeDocument(
+      {
+        mode: 'html',
+        templateId,
+        content: exportContent,
+        colorSchemeId,
+        layoutVariantId,
+        resolveImage: (url, name) => resolveImageForExport(url, name, assets),
+      },
+      pageSeo(ctx, content.businessName, 'index.html'),
+    )
+  } else {
+    pages['index.html'] = wrapPage(ctx, content.businessName, `
 ${heroHtml}
 ${homeBody}`, pageSeo(ctx, content.businessName, 'index.html'))
+  }
 
   if (pv.about && canLinkToPage('about', content)) {
     const aboutImg = content.aboutImage ? resolveImageForExport(content.aboutImage, 'about', assets) : ''

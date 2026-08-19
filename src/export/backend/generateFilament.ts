@@ -442,6 +442,8 @@ class ContactMessageResource extends Resource
         return $form->schema([
             Forms\\Components\\TextInput::make('name')->disabled(),
             Forms\\Components\\TextInput::make('email')->disabled(),
+            Forms\\Components\\TextInput::make('phone')->disabled(),
+            Forms\\Components\\TextInput::make('service_type')->label('Service')->disabled(),
             Forms\\Components\\Textarea::make('message')->disabled()->rows(6),
         ]);
     }
@@ -452,6 +454,8 @@ class ContactMessageResource extends Resource
             ->columns([
                 Tables\\Columns\\TextColumn::make('name')->searchable(),
                 Tables\\Columns\\TextColumn::make('email'),
+                Tables\\Columns\\TextColumn::make('phone'),
+                Tables\\Columns\\TextColumn::make('service_type')->label('Service'),
                 Tables\\Columns\\TextColumn::make('message')->limit(40),
                 Tables\\Columns\\TextColumn::make('created_at')->dateTime()->sortable(),
             ])

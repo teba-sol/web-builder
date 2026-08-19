@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
   "id": "cpa",
-  "name": "Hartwell Tax",
-  "description": "Trust-first CPA layout for tax firms, accountants, and financial advisors — services, industries, and consultation-ready.",
+  "name": "Greenfield Tax",
+  "description": "Forest-and-lime next-gen tax filing — simple returns, refund advances, and year-round audit defense.",
   "category": "finance",
-  "previewGradient": "from-slate-950 via-emerald-950 to-amber-900",
-  "accentColor": "#0f766e",
+  "previewGradient": "from-[#16302A] via-[#A8D93F] to-[#F6F3EA]",
+  "accentColor": "#A8D93F",
   "sortOrder": 24,
   "features": [
     "cms"
@@ -54,15 +54,15 @@
     "footer"
   ],
   "theme": {
-    "page": "bg-[#f7f4ee] text-slate-800",
-    "nav": "sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur-md",
+    "page": "bg-[var(--clone-surface)] text-[var(--clone-ink)] font-sans",
+    "nav": "sticky top-0 z-40",
     "navLink": "text-slate-600 hover:text-teal-800 font-medium",
-    "navCta": "rounded-sm bg-teal-800 px-5 py-2.5 text-sm font-semibold text-white hover:bg-teal-900",
+    "navCta": "rounded-full bg-[var(--clone-accent)] px-6 py-2 text-sm font-bold text-[var(--clone-ink)]",
     "hero": "bg-gradient-to-br from-slate-950 via-slate-900 to-teal-950 text-white py-24",
     "heroBadge": "text-teal-300 uppercase tracking-[0.28em] text-xs font-semibold",
     "heroTitle": "text-4xl md:text-5xl lg:text-6xl font-serif font-bold leading-tight",
     "heroText": "text-lg text-slate-300 max-w-2xl",
-    "heroCta": "rounded-sm bg-amber-600 px-8 py-3 font-semibold text-white hover:bg-amber-700",
+    "heroCta": "rounded-full bg-[var(--clone-accent)] px-8 py-3 font-bold text-[var(--clone-ink)]",
     "stats": "bg-slate-950 text-white py-16 border-y-4 border-teal-700",
     "statValue": "text-4xl font-serif font-bold text-amber-400",
     "statLabel": "text-slate-400 text-sm mt-1 uppercase tracking-wider",
@@ -85,15 +85,25 @@
     "testimonial": "rounded-lg bg-white border-l-4 border-teal-700 p-8 shadow-sm",
     "faq": "border-b border-slate-200 py-6",
     "teamCard": "text-center",
-    "ctaBanner": "bg-slate-950 text-white py-20 border-t-4 border-amber-600",
-    "ctaBannerBtn": "rounded-sm bg-amber-600 px-8 py-3 font-semibold text-white hover:bg-amber-700",
+    "ctaBanner": "bg-[var(--clone-ink)] text-white py-20",
+    "ctaBannerBtn": "rounded-full bg-[var(--clone-accent)] px-10 py-4 font-semibold text-[var(--clone-ink)]",
     "contact": "bg-slate-900 text-white py-20",
     "contactLabel": "text-teal-300 text-xs uppercase tracking-wider font-semibold",
-    "footer": "border-t border-slate-200 py-8 text-center text-sm text-slate-500 bg-white"
+    "footer": "bg-[#0F211C] text-[#C7D6C9] py-8 text-center text-sm"
   },
   "colorSchemes": [
     {
       "id": "navy-ledger",
+      "name": "Lime Forest",
+      "swatches": [
+        "#16302A",
+        "#A8D93F",
+        "#F6F3EA"
+      ],
+      "overrides": {}
+    },
+    {
+      "id": "forest-trust",
       "name": "Navy Ledger",
       "swatches": [
         "#0b1f3a",
@@ -103,60 +113,14 @@
       "overrides": {}
     },
     {
-      "id": "forest-trust",
-      "name": "Forest Trust",
-      "swatches": [
-        "#14532d",
-        "#047857",
-        "#f4f7f1"
-      ],
-      "overrides": {
-        "page": "bg-[#f4f7f1] text-slate-800",
-        "navLink": "text-slate-600 hover:text-emerald-800 font-medium",
-        "navCta": "rounded-sm bg-emerald-800 px-5 py-2.5 text-sm font-semibold text-white hover:bg-emerald-900",
-        "hero": "bg-gradient-to-br from-emerald-950 via-slate-900 to-emerald-950 text-white py-24",
-        "heroBadge": "text-emerald-300 uppercase tracking-[0.28em] text-xs font-semibold",
-        "heroCta": "rounded-sm bg-emerald-700 px-8 py-3 font-semibold text-white hover:bg-emerald-800",
-        "stats": "bg-emerald-950 text-white py-16 border-y-4 border-emerald-600",
-        "statValue": "text-4xl font-serif font-bold text-lime-200",
-        "mission": "border-l-4 border-emerald-700 pl-6 italic text-slate-700 text-lg font-serif",
-        "stepNum": "flex h-10 w-10 items-center justify-center rounded-sm bg-emerald-900 text-lime-200 font-bold text-sm",
-        "showcasePrice": "text-emerald-800 font-semibold",
-        "showcaseTag": "text-xs font-bold uppercase tracking-wider text-emerald-700",
-        "testimonial": "rounded-lg bg-white border-l-4 border-emerald-700 p-8 shadow-sm",
-        "ctaBanner": "bg-emerald-950 text-white py-20 border-t-4 border-lime-600",
-        "ctaBannerBtn": "rounded-sm bg-emerald-700 px-8 py-3 font-semibold text-white hover:bg-emerald-800",
-        "contact": "bg-emerald-950 text-white py-20",
-        "contactLabel": "text-lime-200 text-xs uppercase tracking-wider font-semibold"
-      }
-    },
-    {
       "id": "ink-teal",
-      "name": "Ink & Teal",
+      "name": "Sandstone",
       "swatches": [
-        "#0f172a",
-        "#0e7490",
-        "#f8fafc"
+        "#44403c",
+        "#d97706",
+        "#fde68a"
       ],
-      "overrides": {
-        "page": "bg-slate-50 text-slate-800",
-        "navLink": "text-slate-600 hover:text-cyan-800 font-medium",
-        "navCta": "rounded-sm bg-cyan-800 px-5 py-2.5 text-sm font-semibold text-white hover:bg-cyan-900",
-        "hero": "bg-gradient-to-br from-slate-950 via-slate-900 to-cyan-950 text-white py-24",
-        "heroBadge": "text-cyan-300 uppercase tracking-[0.28em] text-xs font-semibold",
-        "heroCta": "rounded-sm bg-cyan-700 px-8 py-3 font-semibold text-white hover:bg-cyan-800",
-        "stats": "bg-slate-900 text-white py-16 border-y-4 border-cyan-600",
-        "statValue": "text-4xl font-serif font-bold text-cyan-300",
-        "mission": "border-l-4 border-cyan-700 pl-6 italic text-slate-700 text-lg font-serif",
-        "stepNum": "flex h-10 w-10 items-center justify-center rounded-sm bg-slate-900 text-cyan-300 font-bold text-sm",
-        "showcasePrice": "text-cyan-800 font-semibold",
-        "showcaseTag": "text-xs font-bold uppercase tracking-wider text-cyan-700",
-        "testimonial": "rounded-lg bg-white border-l-4 border-cyan-700 p-8 shadow-sm",
-        "ctaBanner": "bg-slate-950 text-white py-20 border-t-4 border-cyan-500",
-        "ctaBannerBtn": "rounded-sm bg-cyan-700 px-8 py-3 font-semibold text-white hover:bg-cyan-800",
-        "contact": "bg-slate-950 text-white py-20",
-        "contactLabel": "text-cyan-300 text-xs uppercase tracking-wider font-semibold"
-      }
+      "overrides": {}
     }
   ],
   "defaultColorSchemeId": "navy-ledger",
@@ -183,7 +147,7 @@
   "defaultShowcase": [
     {
       "title": "Real Estate",
-      "description": "Investors, brokers, developers, and property managers \u2014 cost segregation, 1031 exchanges, and entity structure.",
+      "description": "Investors, brokers, developers, and property managers — cost segregation, 1031 exchanges, and entity structure.",
       "image": "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80",
       "price": "",
       "tag": "Investors",
@@ -207,7 +171,7 @@
     },
     {
       "title": "Entertainment",
-      "description": "Actors, creators, agents, and production companies \u2014 multi-state filing and deduction strategy.",
+      "description": "Actors, creators, agents, and production companies — multi-state filing and deduction strategy.",
       "image": "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=600&q=80",
       "price": "",
       "tag": "Creatives",
@@ -223,7 +187,7 @@
     },
     {
       "title": "Technology",
-      "description": "Founders, contractors, and growing software teams \u2014 R&D credits, equity events, and multi-state nexus.",
+      "description": "Founders, contractors, and growing software teams — R&D credits, equity events, and multi-state nexus.",
       "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80",
       "price": "",
       "tag": "Founders",
@@ -250,12 +214,12 @@
     {
       "key": "hours",
       "label": "Office Hours",
-      "placeholder": "Mon\u2013Fri 8:30am\u20135:30pm"
+      "placeholder": "Mon–Fri 8:30am–5:30pm"
     },
     {
       "key": "licenseNumber",
       "label": "CPA / Firm License",
-      "placeholder": "AICPA \u00b7 CPA License #C-44821"
+      "placeholder": "AICPA · CPA License #C-44821"
     },
     {
       "key": "linkedin",
@@ -280,21 +244,21 @@
     "grayscaleImage": false
   },
   "defaults": {
-    "businessName": "Hartwell & Associates",
-    "tagline": "Trusted tax preparation and advisory for individuals and growing businesses.",
-    "heroSubtext": "CPAs who file accurately, plan year-round, and keep more of what you earn \u2014 without the April scramble.",
-    "heroImage": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&q=80",
+    "businessName": "Greenfield Tax",
+    "tagline": "Next-gen tax filing made simple",
+    "heroSubtext": "We help individuals and businesses file with confidence, unlock every deduction, and get refund advances up to $7,500 in as little as 24 hours.",
+    "heroImage": "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=1200&q=80",
     "logo": "",
     "logoShowName": true,
-    "brandPrimary": "",
-    "brandSecondary": "",
-    "brandAccent": "",
+    "brandPrimary": "#A8D93F",
+    "brandSecondary": "#16302A",
+    "brandAccent": "#F6F3EA",
     "fontHeading": "",
     "fontBody": "",
-    "aboutTitle": "A firm built for calm tax seasons",
-    "about": "Hartwell & Associates has advised families, owners, and professional practices since 1978. We grew from a single-desk practice into a full-service tax and accounting firm because clients asked us to stay after the return was filed. Today we prepare thousands of individual and business returns each year, and we treat tax season as the midpoint of the relationship \u2014 not the whole job.\n\nOur CPAs combine meticulous compliance with practical planning: estimated taxes, entity choice, retirement contributions, and IRS correspondence. You work with a named advisor, not a seasonal call center.",
-    "aboutImage": "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&q=80",
-    "missionStatement": "Accurate filings, ethical strategy, and advice you can act on before the year is over.",
+    "aboutTitle": "Comprehensive tax solutions built around your finances",
+    "about": "Greenfield Tax was founded to make professional tax help fast, transparent, and genuinely useful, whether you are filing a simple return or navigating a multi-entity business.",
+    "aboutImage": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=900&q=80",
+    "missionStatement": "Certified preparers. Transparent pricing. Year-round support.",
     "pageVisibility": {
       "about": true,
       "services": true,
@@ -324,7 +288,7 @@
         "label": "Returns Filed"
       },
       {
-        "value": "4.9\u2605",
+        "value": "4.9★",
         "label": "Client Rating"
       },
       {
@@ -332,16 +296,16 @@
         "label": "Tax Planning"
       }
     ],
-    "servicesSectionTitle": "Tax & Accounting Services",
-    "servicesSectionSubtitle": "Preparation, planning, and resolution \u2014 for households and the businesses they run",
+    "servicesSectionTitle": "Essential services for total financial confidence",
+    "servicesSectionSubtitle": "We combine certified tax expertise with fast, transparent service so individuals and businesses never overpay or miss a deadline.",
     "services": [
       {
         "title": "Individual Tax",
-        "description": "Personal returns, multi-state filing, and a deduction review that goes beyond last year\u2019s forms."
+        "description": "Personal returns, multi-state filing, and a deduction review that goes beyond last year’s forms."
       },
       {
         "title": "Business Tax",
-        "description": "S-corps, partnerships, and corporations \u2014 entity strategy, estimated taxes, and year-end planning."
+        "description": "S-corps, partnerships, and corporations — entity strategy, estimated taxes, and year-end planning."
       },
       {
         "title": "Bookkeeping & Accounting",
@@ -357,7 +321,7 @@
       },
       {
         "title": "Entity Formation",
-        "description": "Choose, form, and maintain the right structure \u2014 LLC, S-corp, or nonprofit \u2014 before you file."
+        "description": "Choose, form, and maintain the right structure — LLC, S-corp, or nonprofit — before you file."
       }
     ],
     "stepsSectionTitle": "How an engagement works",
@@ -372,11 +336,11 @@
       },
       {
         "title": "Custom tax strategy",
-        "description": "You leave with a written plan for this year and next \u2014 filings, estimates, and entity decisions."
+        "description": "You leave with a written plan for this year and next — filings, estimates, and entity decisions."
       },
       {
         "title": "Year-round support",
-        "description": "Questions, quarterly check-ins, and filing \u2014 so you are never waiting until March to get organized."
+        "description": "Questions, quarterly check-ins, and filing — so you are never waiting until March to get organized."
       }
     ],
     "showcaseSectionTitle": "Who We Serve",
@@ -384,7 +348,7 @@
     "showcaseItems": [
       {
         "title": "Real Estate",
-        "description": "Investors, brokers, developers, and property managers \u2014 cost segregation, 1031 exchanges, and entity structure.",
+        "description": "Investors, brokers, developers, and property managers — cost segregation, 1031 exchanges, and entity structure.",
         "image": "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80",
         "price": "",
         "tag": "Investors",
@@ -408,7 +372,7 @@
       },
       {
         "title": "Entertainment",
-        "description": "Actors, creators, agents, and production companies \u2014 multi-state filing and deduction strategy.",
+        "description": "Actors, creators, agents, and production companies — multi-state filing and deduction strategy.",
         "image": "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=600&q=80",
         "price": "",
         "tag": "Creatives",
@@ -424,7 +388,7 @@
       },
       {
         "title": "Technology",
-        "description": "Founders, contractors, and growing software teams \u2014 R&D credits, equity events, and multi-state nexus.",
+        "description": "Founders, contractors, and growing software teams — R&D credits, equity events, and multi-state nexus.",
         "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80",
         "price": "",
         "tag": "Founders",
@@ -460,7 +424,7 @@
     "faqs": [
       {
         "question": "When should I start working with a CPA?",
-        "answer": "Anytime \u2014 but the best savings happen before December 31. New clients often start with a mid-year review so we can still change withholding, estimates, retirement contributions, and entity decisions."
+        "answer": "Anytime — but the best savings happen before December 31. New clients often start with a mid-year review so we can still change withholding, estimates, retirement contributions, and entity decisions."
       },
       {
         "question": "Do you only prepare returns, or do you plan year-round?",
@@ -476,7 +440,7 @@
       },
       {
         "question": "What should I bring to a first consultation?",
-        "answer": "Last year\u2019s return if you have it, a list of income sources, any IRS or state letters, and the questions keeping you up at night. We will tell you what else we need before we propose an engagement."
+        "answer": "Last year’s return if you have it, a list of income sources, any IRS or state letters, and the questions keeping you up at night. We will tell you what else we need before we propose an engagement."
       },
       {
         "question": "How do you charge?",
@@ -493,7 +457,7 @@
         "title": "Extended hours through April 15",
         "slug": "tax-season-extended-hours",
         "excerpt": "Evening and Saturday appointments are open through filing deadline. Book a slot before the calendar fills.",
-        "body": "Tax season is here. In addition to weekday hours, Hartwell & Associates will be open selected evenings and Saturdays through April 15 so you can review documents without missing work.\n\nExisting clients can book through the usual advisor. New clients should request a consultation \u2014 we still take a limited number of new individual and business returns each season.",
+        "body": "Tax season is here. In addition to weekday hours, Hartwell & Associates will be open selected evenings and Saturdays through April 15 so you can review documents without missing work.\n\nExisting clients can book through the usual advisor. New clients should request a consultation — we still take a limited number of new individual and business returns each season.",
         "image": "https://images.unsplash.com/photo-1434626881859-194d67b2b86f?w=800&q=80",
         "author": "Front Desk",
         "date": "2026-02-02"
@@ -502,16 +466,16 @@
         "title": "New retirement contribution limits for this year",
         "slug": "retirement-contribution-limits",
         "excerpt": "Higher 401(k) and IRA ceilings change the year-end planning conversation. Here is what we are telling clients.",
-        "body": "Contribution limits moved again. If you are self-employed or run payroll, the new ceilings affect both this year\u2019s estimates and next year\u2019s withholding.\n\nWe are reviewing every advisory client\u2019s plan in Q1. If you are not yet on a planning cadence, schedule a mid-year review before you lock in profit distributions.",
+        "body": "Contribution limits moved again. If you are self-employed or run payroll, the new ceilings affect both this year’s estimates and next year’s withholding.\n\nWe are reviewing every advisory client’s plan in Q1. If you are not yet on a planning cadence, schedule a mid-year review before you lock in profit distributions.",
         "image": "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&q=80",
         "author": "Elena Hartwell, CPA",
         "date": "2026-01-20"
       },
       {
-        "title": "Hartwell named among the city\u2019s top accounting firms",
+        "title": "Hartwell named among the city’s top accounting firms",
         "slug": "readers-choice-accounting-firm",
         "excerpt": "Thank you to the clients who keep sending neighbors, partners, and their own books our way.",
-        "body": "We are honored to be recognized again as a readers\u2019 choice accounting firm. Awards are nice. What matters more is that clients stay, refer, and come back when the IRS writes.\n\nThis year we are investing in secure document collection and additional tax-season staff so the experience stays calm as we grow.",
+        "body": "We are honored to be recognized again as a readers’ choice accounting firm. Awards are nice. What matters more is that clients stay, refer, and come back when the IRS writes.\n\nThis year we are investing in secure document collection and additional tax-season staff so the experience stays calm as we grow.",
         "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80",
         "author": "Communications",
         "date": "2026-03-04"
@@ -560,7 +524,7 @@
         "title": "You received an IRS letter. Here is the first week.",
         "slug": "irs-letter-first-week",
         "excerpt": "Do not ignore it, and do not call the number on the notice in a panic. A calm sequence works better.",
-        "body": "Open the envelope. Note the notice number, the tax year, and the deadline. Then send us the PDF. Most letters are math mismatches, missing forms, or identity checks \u2014 not audits.\n\nWe reply on your behalf, request transcripts when needed, and only escalate to representation if the facts require it. Waiting rarely improves the outcome. Guessing on the phone often makes it worse.",
+        "body": "Open the envelope. Note the notice number, the tax year, and the deadline. Then send us the PDF. Most letters are math mismatches, missing forms, or identity checks — not audits.\n\nWe reply on your behalf, request transcripts when needed, and only escalate to representation if the facts require it. Waiting rarely improves the outcome. Guessing on the phone often makes it worse.",
         "image": "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&q=80",
         "author": "Priya Nair, CPA",
         "date": "2026-02-18"
@@ -569,7 +533,7 @@
         "title": "Estimated taxes for freelancers who hate surprises",
         "slug": "estimated-taxes-for-freelancers",
         "excerpt": "A simple quarterly rhythm so April does not wipe out a good year.",
-        "body": "If you receive 1099 income, the IRS expects payments through the year. We set estimates from your current books, not last year\u2019s guess, and we adjust after a strong or slow quarter.\n\nPair estimates with a retirement contribution plan and an entity review. Plenty of freelancers overpay because they never looked at an S-corp or a SEP IRA until the return was already prepared.",
+        "body": "If you receive 1099 income, the IRS expects payments through the year. We set estimates from your current books, not last year’s guess, and we adjust after a strong or slow quarter.\n\nPair estimates with a retirement contribution plan and an entity review. Plenty of freelancers overpay because they never looked at an S-corp or a SEP IRA until the return was already prepared.",
         "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
         "author": "Elena Hartwell, CPA",
         "date": "2026-01-28"
@@ -578,40 +542,40 @@
     "team": [
       {
         "name": "Elena Hartwell, CPA",
-        "role": "Managing Partner \u2014 Tax Strategy",
+        "role": "Managing Partner — Tax Strategy",
         "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
       },
       {
         "name": "Marcus Adeyemi, CPA",
-        "role": "Partner \u2014 Business Tax",
+        "role": "Partner — Business Tax",
         "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80"
       },
       {
         "name": "Priya Nair, CPA",
-        "role": "Director \u2014 Tax Resolution",
+        "role": "Director — Tax Resolution",
         "image": "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80"
       }
     ],
-    "ctaBannerTitle": "Stop overpaying. Start planning.",
-    "ctaBannerText": "Schedule a complimentary consultation. Bring last year\u2019s return \u2014 or the notices you have been avoiding.",
-    "ctaText": "Schedule a Consultation",
+    "ctaBannerTitle": "File with confidence this season",
+    "ctaBannerText": "A+ BBB rated. 5,000+ returns filed. Advances the same day you file.",
+    "ctaText": "Book Appointment",
     "ctaLink": "contact",
     "seoEnabled": false,
     "seoTitle": "",
     "seoDescription": "",
     "seoKeywords": "",
     "seoSiteUrl": "",
-    "email": "hello@hartwellcpa.com",
-    "phone": "(555) 212-1040",
-    "address": "1200 Ledger Plaza, Suite 400, Atlanta, GA",
-    "hours": "Mon\u2013Fri 8:30am\u20135:30pm \u00b7 Extended Jan\u2013Apr",
+    "email": "info@greenfield.tax",
+    "phone": "(800) 555-8299",
+    "address": "100 Financial Way, Suite 300",
+    "hours": "Mon-Fri: 9AM-7PM | Sat: 10AM-4PM",
     "instagram": "",
     "website": "",
     "linkedin": "https://linkedin.com/company/hartwell-associates",
     "whatsapp": "",
     "supportEmail": "",
     "reservationEmail": "",
-    "licenseNumber": "AICPA \u00b7 CPA License #C-44821",
+    "licenseNumber": "AICPA · CPA License #C-44821",
     "bookingUrl": "",
     "contactSectionTitle": "Request a consultation",
     "contactFormTitle": "Tell us about your tax situation",
