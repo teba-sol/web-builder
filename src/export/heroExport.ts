@@ -218,15 +218,17 @@ function buildAxiomHero(input: HeroExportInput, mode: 'html' | 'blade'): string 
     .slice(0, 4)
     .map((s) => `<div class="p-2"><p class="text-sm font-bold">${escapeHtml(s.value)}</p><p class="text-xs text-[#546E8A]">${escapeHtml(s.label)}</p></div>`)
     .join('')
-  return `<header class="relative w-full overflow-hidden">
-  <div class="absolute inset-0">${img}<div class="absolute inset-0" style="background:linear-gradient(135deg, rgba(6,31,58,.92), rgba(11,79,138,.82))"></div></div>
-  <div class="relative z-10 max-w-7xl mx-auto px-4 py-20 lg:py-28">
-    <p class="text-xs font-bold tracking-[0.25em] uppercase text-[#64B5F6] mb-4">${h.name}</p>
-    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-white max-w-2xl">${h.title}</h1>
-    <p class="mt-6 max-w-lg text-blue-100/80">${h.subtext}</p>
-    <a href="${h.ctaHref}" class="inline-block mt-8 rounded-lg px-7 py-3.5 text-sm font-bold text-white" style="background-color:#2196F3">${h.ctaText}</a>
+  return `<header class="relative w-full">
+  <div class="relative overflow-hidden">
+    <div class="absolute inset-0">${img}<div class="absolute inset-0" style="background:linear-gradient(135deg, rgba(6,31,58,.92), rgba(11,79,138,.82))"></div></div>
+    <div class="relative z-10 max-w-7xl mx-auto px-4 py-20 lg:py-28 pb-28">
+      <p class="text-xs font-bold tracking-[0.25em] uppercase text-[#64B5F6] mb-4">${h.name}</p>
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-white max-w-2xl">${h.title}</h1>
+      <p class="mt-6 max-w-lg text-blue-100/80">${h.subtext}</p>
+      <a href="${h.ctaHref}" class="inline-block mt-8 rounded-lg px-7 py-3.5 text-sm font-bold text-white" style="background-color:#2196F3">${h.ctaText}</a>
+    </div>
   </div>
-  <div class="relative z-10 max-w-7xl mx-auto px-4 -mb-8"><div class="grid grid-cols-2 md:grid-cols-4 gap-4 bg-white rounded-2xl p-6 shadow-2xl">${stats}</div></div>
+  <div class="relative z-20 max-w-7xl mx-auto px-4 -mt-16"><div class="grid grid-cols-2 md:grid-cols-4 gap-4 bg-white rounded-2xl p-6 shadow-2xl">${stats}</div></div>
 </header>`
 }
 

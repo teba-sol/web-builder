@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
-import { getManifest, isImportedTemplate, removeImportedManifest } from '../catalog/catalog'
+import { isImportedTemplate, removeImportedManifest } from '../catalog/catalog'
+import { getTemplateThumbnail } from '../catalog/thumbnails'
 import { categories } from '../data/categories'
 import { getLayoutVariants } from '../data/layoutVariants'
 import type { TemplateMeta } from '../types'
@@ -12,45 +13,19 @@ export function TemplateCard({ template }: Props) {
   const categoryLabel = categories.find((c) => c.id === template.category)?.label ?? template.category
   const layoutCount = getLayoutVariants(template.id).length
   const imported = isImportedTemplate(template.id)
-  const manifest = getManifest(template.id)
-  const heroImage = manifest?.defaults.heroImage ?? ''
-  const tagline = manifest?.defaults.tagline || template.name
-  const businessName = manifest?.defaults.businessName || template.name
-  const overlay = Boolean(manifest?.hero.overlay)
-  const split = Boolean(manifest?.hero.splitColumns) && !overlay
-  const heroPanel = (manifest?.theme.hero ?? 'bg-slate-900 text-white')
-    .split(/\s+/)
-    .filter((cls) => !/^(p|px|py|pt|pb|pl|pr)-/.test(cls))
-    .join(' ')
+  const thumbnail = getTemplateThumbnail(template.id)
 
   return (
     <div className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl">
-      <div className="relative h-52 overflow-hidden bg-slate-900">
-        {split ? (
-          <div className="absolute inset-0 grid grid-cols-2">
-            <div className={`relative flex flex-col justify-end p-4 ${heroPanel}`}>
-              <p className="mb-1 line-clamp-1 text-[10px] font-semibold uppercase tracking-wider text-white/70">{businessName}</p>
-              <p className="line-clamp-3 text-sm font-bold leading-snug text-white">{tagline}</p>
-            </div>
-            {heroImage ? (
-              <img src={heroImage} alt="" className="h-full w-full object-cover" />
-            ) : (
-              <div className={`h-full w-full bg-gradient-to-br ${template.previewGradient}`} />
-            )}
-          </div>
+      <div className="relative aspect-[16/9] overflow-hidden bg-slate-900">
+        {thumbnail ? (
+          <img
+            src={thumbnail}
+            alt={`${template.name} hero`}
+            className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+          />
         ) : (
-          <>
-            {heroImage ? (
-              <img src={heroImage} alt="" className="absolute inset-0 h-full w-full object-cover" />
-            ) : (
-              <div className={`absolute inset-0 bg-gradient-to-br ${template.previewGradient}`} />
-            )}
-            <div className={`absolute inset-0 ${manifest?.hero.overlayGradient || 'bg-black/40'}`} />
-            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent p-4 pt-16">
-              <p className="mb-1 line-clamp-1 text-[10px] font-semibold uppercase tracking-wider text-white/70">{businessName}</p>
-              <p className="line-clamp-2 text-sm font-bold leading-snug text-white">{tagline}</p>
-            </div>
-          </>
+          <div className={`absolute inset-0 bg-gradient-to-br ${template.previewGradient}`} />
         )}
 
         <div className="absolute left-3 top-3 z-10 flex flex-wrap gap-1.5">

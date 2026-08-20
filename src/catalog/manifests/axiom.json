@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "axiom",
-  "name": "TaxFighter",
+  "name": "Axiom Audit",
   "description": "Blue professional tax recovery and protection — filing, refund advances, and IRS representation.",
   "category": "finance",
   "previewGradient": "from-[#061F3A] via-[#0B4F8A] to-[#2196F3]",
@@ -223,7 +223,7 @@
     "grayscaleImage": false
   },
   "defaults": {
-    "businessName": "TaxFighter",
+    "businessName": "Axiom Audit",
     "tagline": "Delivering savings, protecting your future.",
     "heroSubtext": "End-to-end tax solutions that drive efficiency, maximize refunds, and provide year-round financial protection.",
     "heroImage": "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1800&q=80",
@@ -235,7 +235,7 @@
     "fontHeading": "playfair",
     "fontBody": "source-sans",
     "aboutTitle": "Tax solutions built around you",
-    "about": "At TaxFighter, we simplify complex tax situations with smart technology, expert support, and a commitment to excellence. We are here to protect your finances year-round.",
+    "about": "At Axiom Audit, we simplify complex tax situations with smart technology, expert support, and a commitment to excellence. We are here to protect your finances year-round.",
     "aboutImage": "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=900&q=80",
     "missionStatement": "Smart tax filing. Stronger finances. National coverage.",
     "pageVisibility": {
@@ -462,7 +462,7 @@
     "seoDescription": "Tax controversy counsel for IRS examinations, appeals, penalties, and collections.",
     "seoKeywords": "IRS audit, tax controversy, tax examination, penalty abatement, tax appeals",
     "seoSiteUrl": "",
-    "email": "hello@taxfighter.com",
+    "email": "hello@axiomaudit.com",
     "phone": "(800) 555-8299",
     "address": "85 Commerce Street",
     "hours": "Mon-Fri: 9AM - 6PM",

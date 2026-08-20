@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "id": "helix",
-  "name": "Tax Fighters Atlanta",
-  "description": "Exact burgundy-and-black Atlanta storefront from taxfightersatlanta.com — tax prep, refund advances, referrals, and locations.",
+  "name": "Tax Fighter",
+  "description": "Burgundy-and-black tax storefront — tax prep, refund advances, referrals, and locations.",
   "category": "finance",
   "previewGradient": "from-black via-[#800020] to-red-800",
   "accentColor": "#800020",

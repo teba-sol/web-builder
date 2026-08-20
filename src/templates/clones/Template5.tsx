@@ -110,7 +110,7 @@ export function Template5() {
   ];
 
   const reviews = [
-    { name: 'Marcus Vance', role: 'Small Business Owner', img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80', rating: 5, comment: 'TaxFighter completely simplified our business filing. The refund advance hit our account in under a day. Genuinely stress-free experience.' },
+    { name: 'Marcus Vance', role: 'Small Business Owner', img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80', rating: 5, comment: 'Axiom Audit completely simplified our business filing. The refund advance hit our account in under a day. Genuinely stress-free experience.' },
     { name: 'Elena Rostova', role: 'Freelance Designer', img: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80', rating: 5, comment: 'Working with this team was a breeze. They caught deductions our old accountant missed and got us $1,800 back. Highly recommended!' },
     { name: 'Terrell Jackson', role: 'Real Estate Investor', img: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80', rating: 5, comment: "The best tax partner we've ever had. They handled our IRS audit end to end and kept us calm through the whole process." },
   ];
@@ -169,7 +169,7 @@ export function Template5() {
               <Shield className="w-5 h-5 text-white" />
             </div>
             <span className="text-lg font-black tracking-tight" style={{ color: C.text }}>
-              Company<span style={{ color: C.accent }}>Name</span>
+              Axiom<span style={{ color: C.accent }}>Audit</span>
             </span>
           </a>
 
@@ -278,7 +278,7 @@ export function Template5() {
           <div className="t5-hero-overlay absolute inset-0" />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28 pb-28 lg:pb-32">
           <div className="max-w-2xl">
             <div className="text-xs font-bold uppercase tracking-[0.25em] mb-4 t5-fu" style={{ color: C.accentLight }}>
               Smart Tax Filing, Stronger Finances
@@ -314,34 +314,33 @@ export function Template5() {
             </div>
           </div>
         </div>
-
-        {/* ── Hero Feature Badges Row ── */}
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mb-16">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-white rounded-2xl shadow-2xl shadow-black/8 p-6 border" style={{ borderColor: C.borderLight }}>
-            {[
-              { icon: <Globe className="w-6 h-6" />, title: 'National Coverage', desc: 'Clients across all 50 states served.' },
-              { icon: <TrendingUp className="w-6 h-6" />, title: 'Real-Time Tracking', desc: 'Track every return status in real time.' },
-              { icon: <Shield className="w-6 h-6" />, title: 'Audit Protection', desc: 'Full IRS representation you can trust.' },
-              { icon: <Headphones className="w-6 h-6" />, title: '24/7 Support', desc: 'Our tax experts are always here.' },
-            ].map((f, i) => (
-              <div key={i} className="flex items-start gap-3 p-2">
-                <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: C.accentSoft, color: C.primary }}>
-                  {f.icon}
-                </div>
-                <div>
-                  <div className="text-sm font-bold" style={{ color: C.text }}>{f.title}</div>
-                  <div className="text-xs mt-0.5" style={{ color: C.textMuted }}>{f.desc}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
       </section>
+
+      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-white rounded-2xl shadow-2xl shadow-black/8 p-6 border" style={{ borderColor: C.borderLight }}>
+          {[
+            { icon: <Globe className="w-6 h-6" />, title: 'National Coverage', desc: 'Clients across all 50 states served.' },
+            { icon: <TrendingUp className="w-6 h-6" />, title: 'Real-Time Tracking', desc: 'Track every return status in real time.' },
+            { icon: <Shield className="w-6 h-6" />, title: 'Audit Protection', desc: 'Full IRS representation you can trust.' },
+            { icon: <Headphones className="w-6 h-6" />, title: '24/7 Support', desc: 'Our tax experts are always here.' },
+          ].map((f, i) => (
+            <div key={i} className="flex items-start gap-3 p-2">
+              <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: C.accentSoft, color: C.primary }}>
+                {f.icon}
+              </div>
+              <div>
+                <div className="text-sm font-bold" style={{ color: C.text }}>{f.title}</div>
+                <div className="text-xs mt-0.5" style={{ color: C.textMuted }}>{f.desc}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
 
       {/* ═══════════════════════════════════════════════════════════════
           ABOUT SECTION — Image collage + content (unique layout)
       ═══════════════════════════════════════════════════════════════ */}
-      <section id="about" className="t5 pt-32 pb-24 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: C.white }}>
+      <section id="about" className="t5 pt-16 pb-24 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: C.white }}>
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
 
           {/* Left: Image collage with floating badge */}
@@ -382,7 +381,7 @@ export function Template5() {
               <span className="italic" style={{ color: C.primary }}>Built Around</span> You
             </h2>
             <p className="text-sm leading-relaxed" style={{ color: C.textMuted }}>
-              At TaxFighter, we simplify complex tax situations with smart technology, expert support, and a commitment to excellence. We're here to protect your finances year-round.
+              At Axiom Audit, we simplify complex tax situations with smart technology, expert support, and a commitment to excellence. We're here to protect your finances year-round.
             </p>
 
             <div className="space-y-2.5 pt-1">
@@ -492,7 +491,7 @@ export function Template5() {
 
           {/* Right: Why Choose Us */}
           <div className="bg-white rounded-2xl border p-8 lg:p-10 space-y-6" style={{ borderColor: C.border }}>
-            <h3 className="text-2xl font-black" style={{ color: C.text }}>Why Choose TaxFighter?</h3>
+            <h3 className="text-2xl font-black" style={{ color: C.text }}>Why Choose Axiom Audit?</h3>
             <div className="space-y-4">
               {[
                 { icon: <Award className="w-5 h-5" />, label: 'Industry Expertise' },
@@ -813,7 +812,7 @@ export function Template5() {
               {[
                 { icon: <MapPin className="w-5 h-5" />, title: 'Headquarters Address', desc: '100 Financial Way, Suite 300, New York, NY' },
                 { icon: <Phone className="w-5 h-5" />, title: 'Direct Phone Line', desc: 'Call: (800) 555-8299' },
-                { icon: <Mail className="w-5 h-5" />, title: 'Email Support', desc: 'support@taxfighter.com' },
+                { icon: <Mail className="w-5 h-5" />, title: 'Email Support', desc: 'support@axiomaudit.com' },
               ].map((c, i) => (
                 <div key={i} className="bg-white p-5 rounded-xl border flex items-start gap-4" style={{ borderColor: C.border }}>
                   <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 text-white" style={{ backgroundColor: C.primary }}>
@@ -901,7 +900,7 @@ export function Template5() {
               <div className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ backgroundColor: C.accent }}>
                 <Shield className="w-5 h-5 text-white" />
               </div>
-              <span className="text-white font-black text-base">TaxFighter</span>
+              <span className="text-white font-black text-base">Axiom Audit</span>
             </div>
             <p className="text-xs leading-relaxed">
               Empowering individuals and businesses with intelligent tax solutions that deliver results.
@@ -929,7 +928,7 @@ export function Template5() {
         </div>
 
         <div className="max-w-7xl mx-auto pt-6 text-center" style={{ color: '#5B7D9C' }}>
-          © {new Date().getFullYear()} TaxFighter LLC. All rights reserved.
+          © {new Date().getFullYear()} Axiom Audit LLC. All rights reserved.
         </div>
       </footer>
 

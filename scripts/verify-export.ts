@@ -146,7 +146,7 @@ assert(templateDefaults.flux?.businessName === 'Posterity', 'flux should seed Po
 const axiom = requireManifest('axiom')
 assert(axiom.category === 'finance', 'axiom should be in the finance category')
 assert(axiom.navShell === 'axiom', 'axiom nav shell should stay axiom')
-assert(templateDefaults.axiom?.businessName === 'TaxFighter', 'axiom should seed TaxFighter')
+assert(templateDefaults.axiom?.businessName === 'Axiom Audit', 'axiom should seed Axiom Audit')
 
 const helix = requireManifest('helix')
 assert(helix.category === 'finance', 'helix should be the sixth tax template')
