@@ -1,13 +1,15 @@
 {
   "schemaVersion": 1,
   "id": "aureum",
-  "name": "Aureum Tax",
-  "description": "A calmer, more designed take on tax prep and refund advances \u2014 cream, wine, and gold with editorial type.",
+  "name": "Ledger Studio",
+  "description": "Purple bookkeeping and fractional-CFO studio — dashboards, cost strategy, and books that stay current.",
   "category": "finance",
-  "previewGradient": "from-[#2a211c] via-[#7a2e38] to-[#b8956a]",
-  "accentColor": "#7a2e38",
+  "previewGradient": "from-[#976DE8] via-[#6035EE] to-[#FBD043]",
+  "accentColor": "#9333ea",
   "sortOrder": 26,
-  "features": ["cms"],
+  "features": [
+    "cms"
+  ],
   "pages": {
     "about": true,
     "services": true,
@@ -52,15 +54,15 @@
     "footer"
   ],
   "theme": {
-    "page": "bg-[#f4efe6] text-[#2a211c]",
-    "nav": "sticky top-0 z-40 border-b border-[#eadfce]/80 bg-[#f4efe6]/90 backdrop-blur-md",
+    "page": "bg-[var(--clone-surface)] text-[var(--clone-ink)] font-sans",
+    "nav": "sticky top-0 z-40 border-b border-slate-300 bg-slate-50/95",
     "navLink": "text-[#2a211c]/80 hover:text-[#7a2e38] font-medium",
-    "navCta": "rounded-full bg-[#7a2e38] px-5 py-2.5 text-sm font-semibold text-white",
+    "navCta": "rounded-xl bg-[#9333ea] px-6 py-3 text-sm font-bold text-white",
     "hero": "bg-[#f4efe6] py-20",
     "heroBadge": "text-[#7a2e38] text-xs font-semibold tracking-[0.28em] uppercase",
     "heroTitle": "font-serif text-5xl md:text-6xl text-[#2a211c] leading-[1.05]",
     "heroText": "text-lg text-[#5c5148] leading-relaxed",
-    "heroCta": "rounded-full bg-[#7a2e38] px-8 py-3.5 text-sm font-semibold text-white",
+    "heroCta": "rounded-xl bg-[#9333ea] px-8 py-4 font-extrabold text-white",
     "stats": "bg-white py-10",
     "statValue": "font-serif text-3xl text-[#7a2e38]",
     "statLabel": "text-[11px] font-semibold tracking-[0.18em] uppercase text-[#8a7d72] mt-2",
@@ -83,46 +85,42 @@
     "testimonial": "rounded-[1.5rem] bg-white p-8 ring-1 ring-[#eadfce]",
     "faq": "rounded-2xl bg-white ring-1 ring-[#eadfce]",
     "teamCard": "text-center",
-    "ctaBanner": "bg-[#7a2e38] text-white py-20",
-    "ctaBannerBtn": "rounded-full bg-white px-8 py-3.5 font-semibold text-[#7a2e38]",
+    "ctaBanner": "bg-[#9333ea] text-white py-20",
+    "ctaBannerBtn": "rounded-lg bg-white px-10 py-4 font-semibold text-[#9333ea]",
     "contact": "bg-[#f4efe6] text-[#2a211c] py-20",
     "contactLabel": "text-[#7a2e38] text-xs uppercase tracking-wider font-semibold",
-    "footer": "border-t border-[#eadfce] py-8 text-center text-sm text-[#8a7d72] bg-[#f4efe6]"
+    "footer": "bg-slate-50 border-t border-slate-300 text-slate-600 py-8 text-center text-sm"
   },
   "colorSchemes": [
     {
       "id": "wine-cream",
-      "name": "Wine & Cream",
-      "swatches": ["#2a211c", "#7a2e38", "#b8956a"],
+      "name": "Violet Gold",
+      "swatches": [
+        "#211543",
+        "#9333ea",
+        "#FBD043"
+      ],
       "overrides": {}
     },
     {
       "id": "olive-gold",
-      "name": "Olive & Gold",
-      "swatches": ["#1f2a1c", "#4a5d3a", "#c4a574"],
-      "overrides": {
-        "navCta": "rounded-full bg-[#4a5d3a] px-5 py-2.5 text-sm font-semibold text-white",
-        "heroBadge": "text-[#4a5d3a] text-xs font-semibold tracking-[0.28em] uppercase",
-        "heroCta": "rounded-full bg-[#4a5d3a] px-8 py-3.5 text-sm font-semibold text-white",
-        "statValue": "font-serif text-3xl text-[#4a5d3a]",
-        "ctaBanner": "bg-[#4a5d3a] text-white py-20",
-        "ctaBannerBtn": "rounded-full bg-white px-8 py-3.5 font-semibold text-[#4a5d3a]",
-        "contactLabel": "text-[#4a5d3a] text-xs uppercase tracking-wider font-semibold"
-      }
+      "name": "Ink Copper",
+      "swatches": [
+        "#1c1917",
+        "#9a3412",
+        "#e7d5c0"
+      ],
+      "overrides": {}
     },
     {
       "id": "ink-copper",
-      "name": "Ink & Copper",
-      "swatches": ["#1c1917", "#9a3412", "#e7d5c0"],
-      "overrides": {
-        "navCta": "rounded-full bg-[#9a3412] px-5 py-2.5 text-sm font-semibold text-white",
-        "heroBadge": "text-[#9a3412] text-xs font-semibold tracking-[0.28em] uppercase",
-        "heroCta": "rounded-full bg-[#9a3412] px-8 py-3.5 text-sm font-semibold text-white",
-        "statValue": "font-serif text-3xl text-[#9a3412]",
-        "ctaBanner": "bg-[#1c1917] text-white py-20",
-        "ctaBannerBtn": "rounded-full bg-[#e7d5c0] px-8 py-3.5 font-semibold text-[#1c1917]",
-        "contactLabel": "text-[#9a3412] text-xs uppercase tracking-wider font-semibold"
-      }
+      "name": "Midnight Lime",
+      "swatches": [
+        "#052e16",
+        "#16a34a",
+        "#bbf7d0"
+      ],
+      "overrides": {}
     }
   ],
   "defaultColorSchemeId": "wine-cream",
@@ -165,7 +163,7 @@
     },
     {
       "title": "Downtown",
-      "description": "Walk-in prep near the core \u2014 documents in, a clear plan out.",
+      "description": "Walk-in prep near the core — documents in, a clear plan out.",
       "image": "https://images.unsplash.com/photo-1575917649705-5b59aaa12e6b?w=800&q=80",
       "price": "",
       "tag": "Downtown",
@@ -198,10 +196,26 @@
   ],
   "navShell": "aureum",
   "contactFields": [
-    { "key": "phone", "label": "Studio phone", "placeholder": "(404) 555-0188" },
-    { "key": "email", "label": "Email", "placeholder": "hello@aureumtax.com" },
-    { "key": "address", "label": "Studio address", "placeholder": "88 Ponce Annex, Atlanta GA" },
-    { "key": "hours", "label": "Hours", "placeholder": "Tue\u2013Sat 10am\u20136pm" }
+    {
+      "key": "phone",
+      "label": "Studio phone",
+      "placeholder": "(404) 555-0188"
+    },
+    {
+      "key": "email",
+      "label": "Email",
+      "placeholder": "hello@aureumtax.com"
+    },
+    {
+      "key": "address",
+      "label": "Studio address",
+      "placeholder": "88 Ponce Annex, Atlanta GA"
+    },
+    {
+      "key": "hours",
+      "label": "Hours",
+      "placeholder": "Tue–Sat 10am–6pm"
+    }
   ],
   "servicesLabel": "Services",
   "pageLayouts": {
@@ -220,21 +234,21 @@
     "grayscaleImage": false
   },
   "defaults": {
-    "businessName": "Aureum Tax",
-    "tagline": "Tax prep and advances, without the fluorescent rush.",
-    "heroSubtext": "Same-week refund advances, year-round filing, and a studio that treats April like a conversation \u2014 not a queue.",
-    "heroImage": "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1400&q=80",
+    "businessName": "Ledger Studio",
+    "tagline": "If you're buried in bookkeeping, who's leading the company?",
+    "heroSubtext": "We handle your books, but that is just the start. Get intelligent dashboards plus strategic guidance from former CFOs and operators.",
+    "heroImage": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1200&q=80",
     "logo": "",
     "logoShowName": true,
-    "brandPrimary": "#7a2e38",
-    "brandSecondary": "#2a211c",
-    "brandAccent": "#b8956a",
+    "brandPrimary": "#9333ea",
+    "brandSecondary": "#211543",
+    "brandAccent": "#FBD043",
     "fontHeading": "fraunces",
     "fontBody": "source-sans",
-    "aboutTitle": "A quieter room for a loud tax season",
-    "about": "Aureum is a tax studio for people who want the advance, the filing, and a plan \u2014 without the storefront noise. We prepare individual and business returns, arrange Holiday and Shield advances when they fit, and stay on the file if a notice arrives.\n\nYou sit with one advisor. Documents are reviewed before anyone talks numbers. If an advance is not the right move, we say so.",
-    "aboutImage": "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1000&q=80",
-    "missionStatement": "Accuracy first. Advances only when they serve you. The year after April matters as much as the week of it.",
+    "aboutTitle": "Your strategic partner for digital finance",
+    "about": "Ledger Studio was founded to bridge the gap between clean books and the decisions owners actually need to make. Former CFOs sit beside operators, not just tax season.",
+    "aboutImage": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1200&q=80",
+    "missionStatement": "Books first. Strategy always. One desk for dashboards and decisions.",
     "pageVisibility": {
       "about": true,
       "services": true,
@@ -255,20 +269,29 @@
       "pricing": true
     },
     "stats": [
-      { "value": "18 yrs", "label": "In practice" },
-      { "value": "4.9", "label": "Client rating" },
-      { "value": "30 min", "label": "Fastest advance" }
+      {
+        "value": "18 yrs",
+        "label": "In practice"
+      },
+      {
+        "value": "4.9",
+        "label": "Client rating"
+      },
+      {
+        "value": "30 min",
+        "label": "Fastest advance"
+      }
     ],
-    "servicesSectionTitle": "Three ways we help",
-    "servicesSectionSubtitle": "Preparation, capital when you need it, and a bench for the business behind the return.",
+    "servicesSectionTitle": "Finance, books, and brand systems",
+    "servicesSectionSubtitle": "Bookkeeping, CFO guidance, and the digital systems that keep owners out of the spreadsheet.",
     "services": [
       {
         "title": "Tax prep & refund advances",
-        "description": "A complete return, then a Holiday or Shield advance when the file supports it \u2014 often the same week."
+        "description": "A complete return, then a Holiday or Shield advance when the file supports it — often the same week."
       },
       {
         "title": "Referrals, quietly rewarded",
-        "description": "Send someone you trust. When they file, you receive the season\u2019s bonus. No scripts, no pressure."
+        "description": "Send someone you trust. When they file, you receive the season’s bonus. No scripts, no pressure."
       },
       {
         "title": "Business tax & audit care",
@@ -315,7 +338,7 @@
       },
       {
         "title": "Downtown",
-        "description": "Walk-in prep near the core \u2014 documents in, a clear plan out.",
+        "description": "Walk-in prep near the core — documents in, a clear plan out.",
         "image": "https://images.unsplash.com/photo-1575917649705-5b59aaa12e6b?w=800&q=80",
         "price": "",
         "tag": "Downtown",
@@ -379,7 +402,7 @@
       },
       {
         "question": "How fast can funds arrive?",
-        "answer": "When the file is clean, Holiday and Shield advances often fund the same week \u2014 sometimes the same day."
+        "answer": "When the file is clean, Holiday and Shield advances often fund the same week — sometimes the same day."
       },
       {
         "question": "What should I bring?",
@@ -409,7 +432,7 @@
         "title": "Saturday sittings through filing week",
         "slug": "saturday-sittings",
         "excerpt": "A limited Saturday book is open. Midtown and Buckhead only.",
-        "body": "Weekday hours stay 10\u20136. Saturdays are reserved for complete files. Bring the checklist and we will not ask you to come back.",
+        "body": "Weekday hours stay 10–6. Saturdays are reserved for complete files. Bring the checklist and we will not ask you to come back.",
         "image": "https://images.unsplash.com/photo-1434626881859-194d67b2b86f?w=800&q=80",
         "author": "Front desk",
         "date": "2026-02-04"
@@ -481,19 +504,19 @@
         "image": "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80"
       }
     ],
-    "ctaBannerTitle": "Book a sitting. Leave with a plan.",
-    "ctaBannerText": "Tell us the year you are in. We will tell you whether an advance belongs in it.",
-    "ctaText": "Reserve a sitting",
+    "ctaBannerTitle": "Why invest in professional books?",
+    "ctaBannerText": "Clean books let you command better pricing, raise with confidence, and cut costs without hurting growth.",
+    "ctaText": "Talk to our team",
     "ctaLink": "contact",
     "seoEnabled": true,
-    "seoTitle": "Aureum Tax \u2014 Tax prep and refund advances",
+    "seoTitle": "Aureum Tax — Tax prep and refund advances",
     "seoDescription": "A calm Atlanta tax studio for preparation, Holiday and Shield advances, and business filings.",
     "seoKeywords": "tax preparation, refund advance, Atlanta tax studio, Holiday advance",
     "seoSiteUrl": "",
-    "email": "hello@aureumtax.com",
-    "phone": "(404) 555-0188",
-    "address": "88 Ponce Annex, Atlanta GA",
-    "hours": "Tue\u2013Sat 10am\u20136pm",
+    "email": "hello@ledger.studio",
+    "phone": "(800) 555-5829",
+    "address": "100 Financial Way, Suite 300",
+    "hours": "Mon-Fri: 9AM - 7PM",
     "instagram": "",
     "website": "",
     "linkedin": "",

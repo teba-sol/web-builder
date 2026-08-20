@@ -9,6 +9,7 @@ import { templateDefaults } from '../src/data/defaults.ts'
 import { generateBackend } from '../src/export/backend/generateBackend.ts'
 import { hasBookingFeature } from '../src/export/backend/generateBooking.ts'
 import { buildAllSitePages } from '../src/export/buildSitePages.ts'
+import { clonePaletteCss, resolveClonePalette } from '../src/templates/cloneTheme.ts'
 
 function assert(condition: unknown, message: string): void {
   if (!condition) throw new Error(message)
@@ -129,28 +130,28 @@ assert(templateDefaults.cpa?.licenseNumber, 'cpa should seed a license number')
 const taxfighters = requireManifest('taxfighters')
 assert(taxfighters.category === 'finance', 'taxfighters should be in the finance category')
 assert(taxfighters.navShell === 'taxfighters', 'taxfighters nav shell should stay taxfighters')
-assert(taxfighters.hero.overlay, 'taxfighters should use a full-bleed overlay hero')
-assert(templateDefaults.taxfighters?.phone?.includes('679'), 'taxfighters should seed the storefront phone')
+assert(templateDefaults.taxfighters?.businessName === 'TaxGuardians', 'taxfighters should seed TaxGuardians')
+assert(templateDefaults.taxfighters?.phone?.includes('555'), 'taxfighters should seed the storefront phone')
 
 const aureum = requireManifest('aureum')
 assert(aureum.category === 'finance', 'aureum should be in the finance category')
 assert(aureum.navShell === 'aureum', 'aureum nav shell should stay aureum')
-assert(templateDefaults.aureum?.businessName === 'Aureum Tax', 'aureum should seed the studio name')
+assert(templateDefaults.aureum?.businessName === 'Ledger Studio', 'aureum should seed Ledger Studio')
 
 const flux = requireManifest('flux')
 assert(flux.category === 'finance', 'flux should be in the finance category')
 assert(flux.navShell === 'flux', 'flux nav shell should stay flux')
-assert(templateDefaults.flux?.businessName === 'Flux Tax', 'flux should seed the studio name')
+assert(templateDefaults.flux?.businessName === 'Posterity', 'flux should seed Posterity')
 
 const axiom = requireManifest('axiom')
 assert(axiom.category === 'finance', 'axiom should be in the finance category')
 assert(axiom.navShell === 'axiom', 'axiom nav shell should stay axiom')
-assert(templateDefaults.axiom?.businessName === 'Axiom Audit', 'axiom should seed the firm name')
+assert(templateDefaults.axiom?.businessName === 'Axiom Audit', 'axiom should seed Axiom Audit')
 
 const helix = requireManifest('helix')
-assert(helix.category === 'finance', 'helix should be in the finance category')
+assert(helix.category === 'finance', 'helix should be the sixth tax template')
 assert(helix.navShell === 'helix', 'helix nav shell should stay helix')
-assert(templateDefaults.helix?.businessName === 'Helix Financial', 'helix should seed the firm name')
+assert(templateDefaults.helix?.businessName === 'The Tax Fighters', 'helix should seed The Tax Fighters')
 
 const financeIds = ['cpa', 'taxfighters', 'aureum', 'flux', 'axiom', 'helix'] as const
 for (const id of financeIds) {
@@ -174,13 +175,38 @@ for (const id of financeIds) {
   assert(backend['app/Filament/Resources/SiteSettingResource.php']?.includes('license_number'), `${id}: Filament should edit license`)
   assert(backend['routes/web.php']?.includes("route('contact')") || backend['routes/web.php']?.includes('contact'), `${id}: missing contact route`)
   assert(!backend['app/Models/RoomType.php'], `${id}: finance export must not include booking models`)
+  assert(pages['index.html']?.includes('js-clone-form'), `${id}: static home must include working clone forms`)
+  assert(pages['index.html']?.includes('booking-modal'), `${id}: static home must include booking modal`)
+  assert(pages['index.html']?.includes('name="phone"'), `${id}: static forms must collect phone`)
+  assert(backend['resources/views/site/index.blade.php']?.includes('contact.store'), `${id}: Blade home must post to contact.store`)
+  assert(backend['resources/views/site/index.blade.php']?.includes('@csrf'), `${id}: Blade forms must include CSRF`)
+  assert(backend['app/Http/Controllers/ContactController.php']?.includes('service_type'), `${id}: ContactController must accept booking fields`)
 }
 
-assert(generateBackend('taxfighters', templateDefaults.taxfighters, 'burgundy-fight', 'classic', [])['resources/views/site/index.blade.php']?.includes('#800020'), 'taxfighters Blade home should keep burgundy')
-assert(generateBackend('aureum', templateDefaults.aureum, 'wine-cream', 'classic', [])['resources/views/site/index.blade.php']?.includes('#7a2e38'), 'aureum Blade home should keep wine')
-assert(generateBackend('flux', templateDefaults.flux, 'lime-shock', 'modern', [])['resources/views/site/index.blade.php']?.includes('#c8ff3d'), 'flux Blade home should keep lime')
-assert(generateBackend('axiom', templateDefaults.axiom, 'navy-crimson', 'classic', [])['resources/views/site/index.blade.php']?.includes('#c41e3a'), 'axiom Blade home should keep crimson')
-assert(generateBackend('helix', templateDefaults.helix, 'cobalt', 'modern', [])['resources/views/site/index.blade.php']?.includes('#155dfc'), 'helix Blade home should keep cobalt')
+assert(generateBackend('taxfighters', templateDefaults.taxfighters, 'burgundy-fight', 'classic', [])['resources/views/site/index.blade.php']?.includes('#e60039'), 'taxfighters Blade home should keep rose')
+assert(generateBackend('aureum', templateDefaults.aureum, requireManifest('aureum').defaultColorSchemeId, 'classic', [])['resources/views/site/index.blade.php']?.includes('#9333ea'), 'aureum Blade home should keep purple')
+assert(generateBackend('flux', templateDefaults.flux, requireManifest('flux').defaultColorSchemeId, 'modern', [])['resources/views/site/index.blade.php']?.includes('#FA6B34'), 'flux Blade home should keep orange')
+assert(generateBackend('axiom', templateDefaults.axiom, requireManifest('axiom').defaultColorSchemeId, 'classic', [])['resources/views/site/index.blade.php']?.includes('#0B4F8A'), 'axiom Blade home should keep blue')
+assert(generateBackend('helix', templateDefaults.helix, requireManifest('helix').defaultColorSchemeId, 'classic', [])['resources/views/site/index.blade.php']?.includes('#800020'), 'helix Blade home should keep burgundy')
+assert(generateBackend('cpa', templateDefaults.cpa, requireManifest('cpa').defaultColorSchemeId, 'classic', [])['resources/views/site/index.blade.php']?.includes('#16302A'), 'cpa Blade home should keep forest')
+
+const cpaNative = resolveClonePalette('cpa', templateDefaults.cpa, requireManifest('cpa').defaultColorSchemeId)
+assert(cpaNative.ink.toLowerCase() === '#16302a', 'cpa first scheme ink is forest')
+assert(cpaNative.accent.toLowerCase() === '#a8d93f', 'cpa first scheme accent is lime')
+assert(cpaNative.surface.toLowerCase() === '#f6f3ea', 'cpa first scheme surface is cream')
+const cpaAlt = resolveClonePalette('cpa', { ...templateDefaults.cpa, brandPrimary: '#ff0000', brandSecondary: '#00ff00', brandAccent: '#0000ff' }, 'forest-trust')
+assert(cpaAlt.ink.toLowerCase() === '#0b1f3a', 'cpa scheme change applies ink even if brand is set')
+assert(cpaAlt.accent.toLowerCase() === '#0f766e', 'cpa scheme change applies accent even if brand is set')
+assert(cpaAlt.surface.toLowerCase() === '#f7f4ee', 'cpa navy scheme uses its light surface')
+const fluxNative = resolveClonePalette('flux', templateDefaults.flux, requireManifest('flux').defaultColorSchemeId)
+assert(fluxNative.surface.toLowerCase() === '#fff9f4', 'flux first scheme keeps warm peach surface')
+assert(fluxNative.accent.toLowerCase() === '#fa6b34', 'flux first scheme keeps ember accent')
+const helixNative = resolveClonePalette('helix', templateDefaults.helix, requireManifest('helix').defaultColorSchemeId)
+assert(helixNative.accent.toLowerCase() === '#800020', 'helix first scheme keeps burgundy')
+const cpaCss = clonePaletteCss('cpa', cpaNative)
+assert(cpaCss.includes('--clone-surface: #F6F3EA') || cpaCss.toLowerCase().includes('--clone-surface: #f6f3ea'), 'cpa palette css emits cream surface')
+const cpaAltCss = clonePaletteCss('cpa', cpaAlt)
+assert(cpaAltCss.includes('#0f766e') || cpaAltCss.includes('#0F766E'), 'alternate scheme css emits new accent')
 
 const hotelBackend = generateBackend('hotel', templateDefaults.hotel, hotel.defaultColorSchemeId, hotel.defaultLayoutVariantId, [])
 assert(hotelBackend['app/Models/RoomType.php']?.includes('class RoomType'), 'hotel Laravel export should include RoomType')

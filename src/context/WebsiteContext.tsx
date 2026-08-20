@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
 import { getDefaultColorSchemeId } from '../data/colorSchemes'
 import { getDefaultLayoutVariantId } from '../data/layoutVariants'
+import { brandColorsFromScheme, isCloneTemplate } from '../templates/cloneTheme'
 import type { PageVisibility, SiteContent, TemplateId, ToggleableSection } from '../types'
 import { defaultContent, getEditorContent } from '../data/defaults'
 import {
@@ -83,6 +84,10 @@ export function WebsiteProvider({ children }: { children: ReactNode }) {
 
   const setColorScheme = (schemeId: string) => {
     setColorSchemeId(schemeId)
+    if (templateId && isCloneTemplate(templateId)) {
+      const brand = brandColorsFromScheme(templateId, schemeId)
+      setContent((prev) => ({ ...prev, ...brand }))
+    }
   }
 
   const setLayoutVariant = (variantId: string) => {

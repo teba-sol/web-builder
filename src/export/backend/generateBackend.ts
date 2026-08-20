@@ -855,7 +855,7 @@ use Illuminate\\Database\\Eloquent\\Model;
 
 class ContactMessage extends Model
 {
-    protected $fillable = ['name', 'email', 'message'];
+    protected $fillable = ['name', 'email', 'phone', 'service_type', 'message'];
 }
 `,
 
@@ -969,6 +969,7 @@ class PageController extends Controller
         return view('site.contact', [
             'settings' => SiteSetting::current(),
             'faqs' => Faq::orderBy('sort_order')->get(),
+            'services' => Service::orderBy('sort_order')->get(),
         ]);
     }
 }
@@ -985,6 +986,7 @@ use App\\Models\\Service;
 use App\\Models\\ShowcaseItem;
 use App\\Models\\SiteSetting;
 use App\\Models\\Stat;
+use App\\Models\\Step;
 use App\\Models\\Testimonial;
 use Illuminate\\View\\View;
 
@@ -996,6 +998,7 @@ class SiteController extends Controller
             'settings' => SiteSetting::current(),
             'stats' => Stat::orderBy('sort_order')->get(),
             'services' => Service::orderBy('sort_order')->get(),
+            'steps' => Step::orderBy('sort_order')->get(),
             'showcaseItems' => ShowcaseItem::orderBy('sort_order')->get(),
             'blogPosts' => BlogPost::where('is_published', true)->orderByDesc('published_at')->orderBy('sort_order')->get(),
             'newsPosts' => NewsPost::where('is_published', true)->orderByDesc('published_at')->orderBy('sort_order')->get(),
@@ -1019,12 +1022,46 @@ class ContactController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'message' => 'required|string|max:5000',
+            'name' => 'nullable|string|max:255',
+            'first_name' => 'nullable|string|max:255',
+            'last_name' => 'nullable|string|max:255',
+            'email' => 'nullable|email|max:255',
+            'phone' => 'nullable|string|max:50',
+            'service_type' => 'nullable|string|max:255',
+            'message' => 'nullable|string|max:5000',
         ]);
 
-        ContactMessage::create($validated);
+        $name = trim((string) ($validated['name'] ?? ''));
+        if ($name === '') {
+            $name = trim(($validated['first_name'] ?? '') . ' ' . ($validated['last_name'] ?? ''));
+        }
+        if ($name === '') {
+            $name = 'Website inquiry';
+        }
+
+        $email = $validated['email'] ?? '';
+        if ($email === '') {
+            $email = 'noreply@example.com';
+        }
+
+        $lines = [];
+        if (!empty($validated['service_type'])) {
+            $lines[] = 'Service: ' . $validated['service_type'];
+        }
+        if (!empty($validated['phone'])) {
+            $lines[] = 'Phone: ' . $validated['phone'];
+        }
+        if (!empty($validated['message'])) {
+            $lines[] = $validated['message'];
+        }
+
+        ContactMessage::create([
+            'name' => $name,
+            'email' => $email,
+            'phone' => $validated['phone'] ?? null,
+            'service_type' => $validated['service_type'] ?? null,
+            'message' => implode("\\n", $lines) ?: 'Booking or contact request',
+        ]);
 
         return back()->with('contact_success', 'Thank you! Your message has been sent.');
     }
@@ -1317,6 +1354,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email');
+            $table->string('phone')->nullable();
+            $table->string('service_type')->nullable();
             $table->text('message');
             $table->timestamps();
         });

@@ -43,6 +43,8 @@ import { AureumHome } from './AureumHome'
 import { FluxHome } from './FluxHome'
 import { AxiomHome } from './AxiomHome'
 import { HelixHome } from './HelixHome'
+import { CpaHome } from './CpaHome'
+import { clonePaletteCss, cloneWrapperClass, isCloneTemplate, resolveClonePalette } from './cloneTheme'
 
 interface Props {
   variant: TemplateId
@@ -141,70 +143,35 @@ export function RichTemplateLayout({
     footer: <FooterSection c={c} t={t} navItems={navItems} basePath={basePath} />,
   }
 
-  if (variant === 'axiom' && page === 'home') {
-    return (
-      <div data-site-brand className={`min-h-screen tpl-${variant} ${layout.shellClass} bg-white text-[#0a1628]`}>
-        {fontHref ? <link rel="stylesheet" href={fontHref} /> : null}
-        {brandStyles ? <style>{brandStyles}</style> : null}
-        <TemplateNav c={c} t={t} variant={variant} navItems={navItems} basePath={basePath} />
-        <AxiomHome c={c} basePath={basePath} />
-        <FooterSection c={c} t={t} navItems={navItems} basePath={basePath} />
-      </div>
-    )
+  const customHome: Record<string, ReactNode> = {
+    axiom: <AxiomHome c={c} basePath={basePath} />,
+    helix: <HelixHome c={c} basePath={basePath} />,
+    flux: <FluxHome c={c} basePath={basePath} />,
+    aureum: <AureumHome c={c} basePath={basePath} />,
+    taxfighters: <TaxFightersHome c={c} basePath={basePath} />,
+    cpa: <CpaHome c={c} basePath={basePath} />,
   }
+  const custom = page === 'home' ? customHome[variant] : undefined
+  const clonePalette = isCloneTemplate(variant) ? resolveClonePalette(variant, c, colorSchemeId) : null
+  const cloneCss = clonePalette ? clonePaletteCss(variant, clonePalette) : ''
+  const cloneClass = isCloneTemplate(variant) ? cloneWrapperClass(variant, layoutVariantId) : ''
 
-  if (variant === 'helix' && page === 'home') {
+  if (custom) {
     return (
-      <div data-site-brand className={`min-h-screen tpl-${variant} ${layout.shellClass} bg-[#f8fafc] text-[#0f172a]`}>
+      <div data-site-brand className={cloneClass}>
         {fontHref ? <link rel="stylesheet" href={fontHref} /> : null}
         {brandStyles ? <style>{brandStyles}</style> : null}
-        <TemplateNav c={c} t={t} variant={variant} navItems={navItems} basePath={basePath} />
-        <HelixHome c={c} basePath={basePath} />
-        <FooterSection c={c} t={t} navItems={navItems} basePath={basePath} />
-      </div>
-    )
-  }
-
-  if (variant === 'flux' && page === 'home') {
-    return (
-      <div data-site-brand className={`min-h-screen tpl-${variant} ${layout.shellClass} bg-[#070708] text-white`}>
-        {fontHref ? <link rel="stylesheet" href={fontHref} /> : null}
-        {brandStyles ? <style>{brandStyles}</style> : null}
-        <TemplateNav c={c} t={t} variant={variant} navItems={navItems} basePath={basePath} />
-        <FluxHome c={c} basePath={basePath} />
-        <FooterSection c={c} t={t} navItems={navItems} basePath={basePath} />
-      </div>
-    )
-  }
-
-  if (variant === 'aureum' && page === 'home') {
-    return (
-      <div data-site-brand className={`min-h-screen tpl-${variant} ${layout.shellClass} bg-[#f4efe6] text-[#2a211c]`}>
-        {fontHref ? <link rel="stylesheet" href={fontHref} /> : null}
-        {brandStyles ? <style>{brandStyles}</style> : null}
-        <TemplateNav c={c} t={t} variant={variant} navItems={navItems} basePath={basePath} />
-        <AureumHome c={c} basePath={basePath} />
-        <FooterSection c={c} t={t} navItems={navItems} basePath={basePath} />
-      </div>
-    )
-  }
-
-  if (variant === 'taxfighters' && page === 'home') {
-    return (
-      <div data-site-brand className={`min-h-screen tpl-${variant} ${layout.shellClass} bg-white font-sans text-gray-800`}>
-        {fontHref ? <link rel="stylesheet" href={fontHref} /> : null}
-        {brandStyles ? <style>{brandStyles}</style> : null}
-        <TemplateNav c={c} t={t} variant={variant} navItems={navItems} basePath={basePath} />
-        <TaxFightersHome c={c} basePath={basePath} />
-        <FooterSection c={c} t={t} navItems={navItems} basePath={basePath} />
+        {cloneCss ? <style>{cloneCss}</style> : null}
+        {custom}
       </div>
     )
   }
 
   return (
-    <div data-site-brand className={`min-h-screen tpl-${variant} ${layout.shellClass} ${t.page}`}>
+    <div data-site-brand className={`min-h-screen tpl-${variant} ${layout.shellClass} ${t.page} ${isCloneTemplate(variant) ? 'webtemplate-clone' : ''}`}>
       {fontHref ? <link rel="stylesheet" href={fontHref} /> : null}
       {brandStyles ? <style>{brandStyles}</style> : null}
+      {cloneCss ? <style>{cloneCss}</style> : null}
       {order.map((id) => {
         const node = sections[id]
         if (node === null) return null

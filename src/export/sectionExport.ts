@@ -47,11 +47,13 @@ export function buildStyledContactFormHtml(content: SiteContent, accent: string,
   }
 
   return `<div class="${wrap}">
-    <form class="space-y-4" action="${formUrl ? escapeHtml(formUrl) : mailTarget ? `mailto:${escapeHtml(mailTarget)}` : '#'}" method="${formUrl ? 'get' : 'post'}"${formUrl ? ' target="_blank" rel="noopener noreferrer"' : ''}>
+    <form class="js-clone-form space-y-4" data-mode="html" action="${formUrl ? escapeHtml(formUrl) : mailTarget ? `mailto:${escapeHtml(mailTarget)}` : '#'}" method="${formUrl ? 'get' : 'post'}"${formUrl ? ' target="_blank" rel="noopener noreferrer"' : ''}>
       <div><label class="block text-sm font-medium mb-1.5">Your Name</label><input name="name" type="text" required class="${input}" /></div>
       <div><label class="block text-sm font-medium mb-1.5">Email</label><input name="email" type="email" required class="${input}" /></div>
+      <div><label class="block text-sm font-medium mb-1.5">Phone</label><input name="phone" type="tel" class="${input}" /></div>
       <div><label class="block text-sm font-medium mb-1.5">Message</label><textarea name="message" required rows="5" class="${input}"></textarea></div>
       <button type="submit" class="w-full text-white px-6 py-3 rounded-lg font-semibold" style="background-color:${accent}">${escapeHtml(content.contactFormButtonText || 'Send Message')}</button>
+      <div class="js-form-success hidden rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-center text-xs font-semibold text-emerald-800">Message sent. We will follow up shortly.</div>
     </form>
   </div>`
 }

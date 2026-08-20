@@ -1,13 +1,15 @@
 {
   "schemaVersion": 1,
   "id": "helix",
-  "name": "Helix Financial",
-  "description": "Bold cobalt financial-audit and tax-exam desk for companies facing reviews, provisions, and IRS inquiries.",
+  "name": "Tax Fighter",
+  "description": "Burgundy-and-black tax storefront — tax prep, refund advances, referrals, and locations.",
   "category": "finance",
-  "previewGradient": "from-slate-950 via-blue-700 to-blue-400",
-  "accentColor": "#155dfc",
+  "previewGradient": "from-black via-[#800020] to-red-800",
+  "accentColor": "#800020",
   "sortOrder": 29,
-  "features": ["cms"],
+  "features": [
+    "cms"
+  ],
   "pages": {
     "about": true,
     "services": true,
@@ -18,212 +20,552 @@
     "contact": true,
     "rooms": false
   },
-  "homeSections": ["nav", "hero", "stats", "rooms-teaser", "services-teaser", "portfolio-teaser", "blog-teaser", "news-teaser", "testimonials", "about-teaser", "faq", "contact", "explore", "footer"],
-  "sectionOrder": ["nav", "hero", "stats", "services", "steps", "about", "showcase", "testimonials", "team", "blog", "gallery", "faq", "cta", "contact", "footer"],
+  "homeSections": [
+    "nav",
+    "hero",
+    "stats",
+    "rooms-teaser",
+    "services-teaser",
+    "portfolio-teaser",
+    "blog-teaser",
+    "news-teaser",
+    "testimonials",
+    "about-teaser",
+    "faq",
+    "contact",
+    "explore",
+    "footer"
+  ],
+  "sectionOrder": [
+    "nav",
+    "hero",
+    "stats",
+    "services",
+    "steps",
+    "showcase",
+    "about",
+    "testimonials",
+    "team",
+    "blog",
+    "gallery",
+    "faq",
+    "cta",
+    "contact",
+    "footer"
+  ],
   "theme": {
-    "page": "bg-[#f8fafc] text-[#0f172a]",
-    "nav": "sticky top-0 z-40 border-b border-slate-200 bg-white/90 backdrop-blur-md",
-    "navLink": "text-[#0f172a] hover:text-[#155dfc] font-bold",
-    "navCta": "rounded-md bg-[#155dfc] px-5 py-2.5 text-sm font-bold text-white",
-    "hero": "bg-[#0f172a] text-white py-20",
-    "heroBadge": "text-[#93c5fd] text-xs font-bold tracking-[0.28em] uppercase",
-    "heroTitle": "text-5xl md:text-7xl font-black tracking-tight text-white",
-    "heroText": "text-lg text-slate-300 leading-relaxed",
-    "heroCta": "rounded-md bg-[#155dfc] px-8 py-3.5 text-sm font-bold text-white",
-    "stats": "bg-[#0f172a] text-white py-8",
-    "statValue": "text-3xl font-black text-[#155dfc]",
-    "statLabel": "text-xs font-bold uppercase tracking-wide text-slate-500 mt-1",
-    "section": "py-20 bg-[#f8fafc]",
-    "sectionAlt": "py-20 bg-white",
-    "sectionTitle": "text-4xl font-black tracking-tight text-[#0f172a]",
-    "sectionSubtitle": "text-slate-600 mt-2",
-    "card": "rounded-2xl bg-white p-8 ring-1 ring-slate-200",
-    "cardTitle": "text-2xl font-black text-[#0f172a]",
-    "cardText": "text-slate-600 leading-relaxed",
-    "aboutImage": "rounded-2xl w-full object-cover",
-    "mission": "border-l-4 border-[#155dfc] pl-5 text-lg font-semibold",
-    "stepNum": "text-5xl font-black text-[#155dfc]",
-    "gallery": "rounded-2xl w-full aspect-[4/3] object-cover",
-    "showcase": "bg-[#f8fafc] py-20",
-    "showcaseCard": "rounded-2xl overflow-hidden bg-white ring-1 ring-slate-200",
-    "showcaseImage": "w-full h-48 object-cover",
-    "showcasePrice": "text-[#155dfc] font-black",
-    "showcaseTag": "text-xs font-black uppercase tracking-wider text-[#155dfc]",
-    "testimonial": "rounded-2xl bg-[#0f172a] p-7 text-white",
-    "faq": "rounded-xl bg-white ring-1 ring-slate-200",
+    "page": "bg-[var(--clone-surface)] text-[var(--clone-ink)] font-sans",
+    "nav": "sticky top-0 z-40 rounded-b-3xl bg-[#800020] text-white shadow-lg",
+    "navLink": "text-white hover:bg-white/10 rounded-lg px-4 py-2 font-medium",
+    "navCta": "rounded-lg bg-white px-6 py-2 font-semibold text-[#800020]",
+    "hero": "relative h-screen min-h-[640px] text-white",
+    "heroBadge": "text-white text-sm font-medium",
+    "heroTitle": "text-4xl sm:text-5xl lg:text-6xl font-bold text-white",
+    "heroText": "text-lg sm:text-xl text-gray-200 leading-relaxed",
+    "heroCta": "rounded-full border-2 border-[#800020] px-8 py-3 text-lg font-semibold text-white",
+    "stats": "bg-transparent text-white py-0",
+    "statValue": "text-2xl sm:text-3xl font-bold text-white",
+    "statLabel": "text-sm sm:text-base text-gray-300",
+    "section": "py-20 bg-white",
+    "sectionAlt": "py-20 bg-[#f9f9f9]",
+    "sectionTitle": "text-4xl sm:text-5xl font-bold text-gray-900",
+    "sectionSubtitle": "text-xl text-gray-600 mt-2",
+    "card": "rounded-xl border border-gray-200 bg-white p-8 shadow-lg",
+    "cardTitle": "text-2xl font-bold text-gray-900",
+    "cardText": "text-gray-600 leading-relaxed",
+    "aboutImage": "rounded-xl shadow-lg w-full object-cover",
+    "mission": "text-lg leading-relaxed text-[#800020]",
+    "stepNum": "flex h-10 w-10 items-center justify-center rounded-lg bg-[#800020] text-white font-bold text-sm",
+    "gallery": "rounded-xl w-full aspect-[4/3] object-cover shadow-lg",
+    "showcase": "bg-white py-20",
+    "showcaseCard": "rounded-xl overflow-hidden bg-white shadow-lg",
+    "showcaseImage": "w-full h-40 object-cover",
+    "showcasePrice": "text-[#800020] font-semibold",
+    "showcaseTag": "text-xs font-semibold text-[#800020]",
+    "testimonial": "rounded-lg bg-white p-4 shadow-lg",
+    "faq": "border border-gray-200 rounded-lg overflow-hidden bg-white",
     "teamCard": "text-center",
-    "ctaBanner": "bg-[#155dfc] text-white py-20",
-    "ctaBannerBtn": "rounded-md bg-white px-8 py-3.5 font-black text-[#155dfc]",
-    "contact": "bg-[#f8fafc] text-[#0f172a] py-20",
-    "contactLabel": "text-[#155dfc] text-xs uppercase tracking-wider font-black",
-    "footer": "border-t border-slate-200 py-8 text-center text-sm text-slate-500 bg-white"
+    "ctaBanner": "bg-[#800020] text-white py-20",
+    "ctaBannerBtn": "rounded-lg bg-white px-10 py-4 font-semibold text-[#800020]",
+    "contact": "bg-white text-gray-800 py-20",
+    "contactLabel": "text-[#800020] text-xs uppercase tracking-wider font-bold",
+    "footer": "bg-black text-white/70 py-8 text-center text-sm"
   },
   "colorSchemes": [
-    { "id": "cobalt", "name": "Cobalt", "swatches": ["#0f172a", "#155dfc", "#f8fafc"], "overrides": {} },
     {
-      "id": "emerald-board",
-      "name": "Emerald Board",
-      "swatches": ["#022c22", "#059669", "#ecfdf5"],
-      "overrides": {
-        "navCta": "rounded-md bg-[#059669] px-5 py-2.5 text-sm font-bold text-white",
-        "heroCta": "rounded-md bg-[#059669] px-8 py-3.5 text-sm font-bold text-white",
-        "statValue": "text-3xl font-black text-[#059669]",
-        "ctaBanner": "bg-[#059669] text-white py-20",
-        "ctaBannerBtn": "rounded-md bg-white px-8 py-3.5 font-black text-[#059669]",
-        "contactLabel": "text-[#059669] text-xs uppercase tracking-wider font-black"
-      }
+      "id": "burgundy-fight",
+      "name": "Burgundy Fight",
+      "swatches": [
+        "#000000",
+        "#800020",
+        "#E63946"
+      ],
+      "overrides": {}
+    },
+    {
+      "id": "wine-gold",
+      "name": "Wine & Gold",
+      "swatches": [
+        "#1a0a0d",
+        "#6b1f34",
+        "#d4a017"
+      ],
+      "overrides": {}
+    },
+    {
+      "id": "black-red",
+      "name": "Black & Signal Red",
+      "swatches": [
+        "#0c1615",
+        "#DC2626",
+        "#f5f5f5"
+      ],
+      "overrides": {}
     }
   ],
-  "defaultColorSchemeId": "cobalt",
-  "defaultLayoutVariantId": "modern",
+  "defaultColorSchemeId": "burgundy-fight",
+  "defaultLayoutVariantId": "classic",
   "sectionVariants": {
     "faq": "accordion",
-    "explore": "card-grid",
-    "contactShell": "split-classic",
-    "contactForm": "standard",
-    "exploreTitle": "Work",
-    "exploreSubtitle": "Audits, exams, provisions, contact",
-    "exploreLinkLabel": "Open"
+    "explore": "strips",
+    "contactShell": "split-dark",
+    "contactForm": "bold-outline",
+    "exploreTitle": "Get Started",
+    "exploreSubtitle": "Tax prep, refund advances, locations, and pre-qualify today",
+    "exploreLinkLabel": "Go"
   },
   "showcase": {
-    "sectionTitle": "Selected engagements",
-    "sectionSubtitle": "Financial audits and tax exams we have run with management",
-    "navLabel": "Work",
-    "itemLabel": "Engagement",
+    "sectionTitle": "Atlanta Locations We Serve",
+    "sectionSubtitle": "Walk in with your documents — or book the office closest to you",
+    "navLabel": "Locations",
+    "itemLabel": "Location",
     "showPrice": false,
-    "priceLabel": "",
+    "priceLabel": "Advance",
     "showTag": true,
-    "tagLabel": "Type"
+    "tagLabel": "Area"
   },
   "defaultShowcase": [
-    { "title": "First-year financial audit", "description": "Stood up controls and a clean opinion for a growth-stage operator preparing for credit.", "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80", "price": "", "tag": "Financial audit", "link": "contact" },
-    { "title": "IRS employment tax exam", "description": "Managed IDRs and interviews for a multi-state payroll inquiry.", "image": "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&q=80", "price": "", "tag": "Tax exam", "link": "contact" },
-    { "title": "ASC 740 provision", "description": "Built the tax provision and workpapers a lender could actually read.", "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80", "price": "", "tag": "Provision", "link": "contact" },
-    { "title": "Sales-tax nexus review", "description": "Mapped exposure and a voluntary-disclosure path before a state letter arrived.", "image": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&q=80", "price": "", "tag": "State", "link": "contact" }
+    {
+      "title": "Downtown Atlanta",
+      "description": "Premier tax prep and refund advances near Centennial Olympic Park, Underground Atlanta, and Fairlie-Poplar.",
+      "image": "https://images.unsplash.com/photo-1575917649705-5b59aaa12e6b?w=600&q=80",
+      "price": "",
+      "tag": "Downtown",
+      "link": "contact"
+    },
+    {
+      "title": "Midtown Atlanta",
+      "description": "Fast filing for Midtown apartments, Georgia Tech, and the Woodruff Arts Center corridor.",
+      "image": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&q=80",
+      "price": "",
+      "tag": "Midtown",
+      "link": "contact"
+    },
+    {
+      "title": "Buckhead",
+      "description": "Individual and business returns for Buckhead Village, Hanover, and Northside clients.",
+      "image": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&q=80",
+      "price": "",
+      "tag": "Buckhead",
+      "link": "contact"
+    },
+    {
+      "title": "Collier Heights",
+      "description": "Neighborhood tax prep, holiday advances, and referral bonuses on the west side.",
+      "image": "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80",
+      "price": "",
+      "tag": "West Atlanta",
+      "link": "contact"
+    },
+    {
+      "title": "West Midtown",
+      "description": "Convenient for Star Metals, North and Line, and Novel West Midtown — bring W-2s and walk out funded.",
+      "image": "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=600&q=80",
+      "price": "",
+      "tag": "West Midtown",
+      "link": "contact"
+    },
+    {
+      "title": "Suite Y · 30318",
+      "description": "Main office. Monday–Friday 10:00 AM–6:00 PM. Call or text (678) 679-1040 before you come in.",
+      "image": "https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80",
+      "price": "",
+      "tag": "HQ",
+      "link": "contact"
+    }
   ],
   "navShell": "helix",
   "contactFields": [
-    { "key": "email", "label": "Email", "placeholder": "work@helix.fin" },
-    { "key": "phone", "label": "Phone", "placeholder": "(415) 555-0172" },
-    { "key": "address", "label": "Office", "placeholder": "1 Market, San Francisco" },
-    { "key": "hours", "label": "Hours", "placeholder": "Mon\u2013Fri 8am\u20136pm" }
+    {
+      "key": "phone",
+      "label": "Call / Text",
+      "placeholder": "(678) 679-1040"
+    },
+    {
+      "key": "email",
+      "label": "Email",
+      "placeholder": "hello@taxfightersatlanta.com"
+    },
+    {
+      "key": "address",
+      "label": "Office Address",
+      "placeholder": "Suite Y, Atlanta GA, 30318"
+    },
+    {
+      "key": "hours",
+      "label": "Office Hours",
+      "placeholder": "Mon–Fri 10:00 AM–6:00 PM"
+    },
+    {
+      "key": "instagram",
+      "label": "Instagram",
+      "placeholder": "https://instagram.com/taxfightersatl"
+    },
+    {
+      "key": "whatsapp",
+      "label": "SMS Help Line",
+      "placeholder": "Text HELP to (678) 679-1040"
+    }
   ],
-  "servicesLabel": "Engagements",
-  "pageLayouts": { "blog": "grid", "blogPost": "classic", "news": "grid", "newsPost": "classic", "gallery": "grid", "portfolio": "case-study" },
-  "hero": { "overlay": false, "overlayGradient": "bg-black/30", "splitColumns": false, "badge": "name", "grayscaleImage": false },
+  "servicesLabel": "Tax Services",
+  "pageLayouts": {
+    "blog": "magazine",
+    "blogPost": "editorial",
+    "news": "grid",
+    "newsPost": "classic",
+    "gallery": "masonry",
+    "portfolio": "showcase"
+  },
+  "hero": {
+    "overlay": true,
+    "overlayGradient": "bg-black/50",
+    "splitColumns": false,
+    "badge": "name",
+    "grayscaleImage": false
+  },
   "defaults": {
-    "businessName": "Helix Financial",
-    "tagline": "Financial audit. Tax exam. One desk.",
-    "heroSubtext": "We run the books the board can sign and the exam the Service cannot ignore. Built for operators who are done juggling two firms.",
-    "heroImage": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1600&q=80",
-    "logo": "",
-    "logoShowName": true,
-    "brandPrimary": "#155dfc",
-    "brandSecondary": "#0f172a",
-    "brandAccent": "#155dfc",
-    "fontHeading": "outfit",
-    "fontBody": "outfit",
-    "aboutTitle": "The audit and the exam should share a file.",
-    "about": "Helix is a financial-audit and tax-examination practice for companies that have outgrown a seasonal preparer. We issue opinions, sit through IRS and state exams, and keep the provision from becoming a surprise in the close.\n\nYou get one partner, one workpaper set, and a calendar that treats the exam like an engagement \u2014 not an emergency.",
-    "aboutImage": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=1000&q=80",
-    "missionStatement": "If it cannot be shown, it cannot be signed.",
-    "pageVisibility": { "about": true, "services": true, "portfolio": true, "blog": true, "news": true, "gallery": true, "contact": true, "rooms": false },
-    "sectionVisibility": { "stats": true, "team": true, "steps": true, "faq": true, "cta": true, "testimonials": true, "pricing": false },
+    "businessName": "The Tax Fighters",
+    "tagline": "Best Tax preparation & Refund Advances in Atlanta",
+    "heroSubtext": "The Tax Fighters offers expert tax preparation & Refund advances, including Holiday and Shield Advances, Referrals, and Tax planning. Our seasoned tax consultants minimize tax liabilities and maximize savings.",
+    "heroImage": "https://taxfightersatlanta.com/assets/hero-BVT3_udm.jpg",
+    "logo": "https://i.ibb.co/nVCY17t/logo-removebg.png",
+    "logoShowName": false,
+    "brandPrimary": "#800020",
+    "brandSecondary": "#000000",
+    "brandAccent": "#E63946",
+    "fontHeading": "montserrat",
+    "fontBody": "open-sans",
+    "aboutTitle": "Best Tax preparation & Refund Advances in Atlanta",
+    "about": "The Tax Fighters offers expert tax preparation & Refund advances, including Holiday and Shield Advances, Referrals, and Tax planning. Our seasoned tax consultants minimize tax liabilities and maximize savings. Specializing in business tax preparation and compliance.\n\nWith 20+ years of experience, we provide consultations and audit support, prioritizing integrity, accuracy, and client satisfaction. Trust us for diligent and professional handling of your tax matters.",
+    "aboutImage": "https://i.ibb.co/tPk2V2Lj/627bef65-3274-4bb1-a1aa-2747f6a7d767.jpg",
+    "missionStatement": "We provide the fastest route to tax preparation and a refund advance — integrity, accuracy, and the fastest service in Atlanta.",
+    "pageVisibility": {
+      "about": true,
+      "services": true,
+      "portfolio": true,
+      "blog": true,
+      "news": true,
+      "gallery": true,
+      "contact": true,
+      "rooms": false
+    },
+    "sectionVisibility": {
+      "stats": true,
+      "team": true,
+      "steps": true,
+      "faq": true,
+      "cta": true,
+      "testimonials": true,
+      "pricing": true
+    },
     "stats": [
-      { "value": "140+", "label": "Opinions issued" },
-      { "value": "60", "label": "Tax exams sat" },
-      { "value": "12d", "label": "Median kickoff" }
+      {
+        "value": "20+",
+        "label": "Years Experience"
+      },
+      {
+        "value": "5000+",
+        "label": "Happy Clients"
+      },
+      {
+        "value": "$10M+",
+        "label": "Advances Issued"
+      }
     ],
-    "servicesSectionTitle": "What we are hired to do",
-    "servicesSectionSubtitle": "Audit opinions, tax examinations, and the provision that ties them together.",
+    "servicesSectionTitle": "Our Services",
+    "servicesSectionSubtitle": "Comprehensive tax solutions tailored to your needs",
     "services": [
-      { "title": "Financial statement audit", "description": "GAAS opinions for lenders, boards, and the next raise. Controls that exist on more than a slide." },
-      { "title": "IRS & state tax exams", "description": "We take the IDRs, the interviews, and the close. Management stays in the business." },
-      { "title": "Tax provision & ASC 740", "description": "Current and deferred, uncertain positions, and workpapers a reviewer can follow." },
-      { "title": "Readiness & controls", "description": "First-year audit prep so the fieldwork is not a reconstruction project." }
+      {
+        "title": "Tax preparation & Refund Advances",
+        "description": "Receive a portion of your refund within 30 minutes or 24-48 hours depending on your needs."
+      },
+      {
+        "title": "Referral program and Bonuses",
+        "description": "Earn bonuses by referring friends and family to our trusted tax preparation services."
+      },
+      {
+        "title": "Business tax preparation & Audit support",
+        "description": "Expert handling of business taxes and comprehensive audit support for peace of mind."
+      }
     ],
-    "stepsSectionTitle": "How an engagement runs",
+    "stepsSectionTitle": "How It Works",
     "steps": [
-      { "title": "Scope", "description": "Years, entities, and what the board or the Service actually asked." },
-      { "title": "Fieldwork", "description": "A named team, a shared room, and a list that shrinks every week." },
-      { "title": "Findings", "description": "You see issues before they become the report or the RAR." },
-      { "title": "Opinion / close", "description": "Signed financials or a closed exam. Same standard of paper." }
+      {
+        "title": "Step 1",
+        "description": "Bring in all your necessary documents: ID, SSN, Children birth certificate and their SSN, W-2/Pay Stubs."
+      },
+      {
+        "title": "Step 2",
+        "description": "Apply in one of our nearest location by bringing the necessary documents to the Tax Preparer."
+      },
+      {
+        "title": "How Tax Preparation & Refund Advances Works",
+        "description": "Upon application and depending on the time line of the process, the tax preparer reviews the documents you gave them and evaluates your eligibility. Subsequently, you may receive a portion of your refund as an advance."
+      },
+      {
+        "title": "Repayment of the Advances",
+        "description": "The process of repaying the advance usually occurs when the IRS issues the final tax refund. This repayment is often automated, with the tax preparation service deducting the advance amount along with any associated fees directly from the taxpayer's refund."
+      }
     ],
-    "showcaseSectionTitle": "Selected engagements",
-    "showcaseSectionSubtitle": "Financial audits and tax exams we have run with management",
+    "showcaseSectionTitle": "Atlanta Locations We Serve",
+    "showcaseSectionSubtitle": "Walk in with your documents — or book the office closest to you",
     "showcaseItems": [
-      { "title": "First-year financial audit", "description": "Stood up controls and a clean opinion for a growth-stage operator preparing for credit.", "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80", "price": "", "tag": "Financial audit", "link": "contact" },
-      { "title": "IRS employment tax exam", "description": "Managed IDRs and interviews for a multi-state payroll inquiry.", "image": "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&q=80", "price": "", "tag": "Tax exam", "link": "contact" },
-      { "title": "ASC 740 provision", "description": "Built the tax provision and workpapers a lender could actually read.", "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80", "price": "", "tag": "Provision", "link": "contact" },
-      { "title": "Sales-tax nexus review", "description": "Mapped exposure and a voluntary-disclosure path before a state letter arrived.", "image": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&q=80", "price": "", "tag": "State", "link": "contact" }
+      {
+        "title": "Downtown Atlanta",
+        "description": "Premier tax prep and refund advances near Centennial Olympic Park, Underground Atlanta, and Fairlie-Poplar.",
+        "image": "https://images.unsplash.com/photo-1575917649705-5b59aaa12e6b?w=600&q=80",
+        "price": "",
+        "tag": "Downtown",
+        "link": "contact"
+      },
+      {
+        "title": "Midtown Atlanta",
+        "description": "Fast filing for Midtown apartments, Georgia Tech, and the Woodruff Arts Center corridor.",
+        "image": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&q=80",
+        "price": "",
+        "tag": "Midtown",
+        "link": "contact"
+      },
+      {
+        "title": "Buckhead",
+        "description": "Individual and business returns for Buckhead Village, Hanover, and Northside clients.",
+        "image": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&q=80",
+        "price": "",
+        "tag": "Buckhead",
+        "link": "contact"
+      },
+      {
+        "title": "Collier Heights",
+        "description": "Neighborhood tax prep, holiday advances, and referral bonuses on the west side.",
+        "image": "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80",
+        "price": "",
+        "tag": "West Atlanta",
+        "link": "contact"
+      },
+      {
+        "title": "West Midtown",
+        "description": "Convenient for Star Metals, North and Line, and Novel West Midtown — bring W-2s and walk out funded.",
+        "image": "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=600&q=80",
+        "price": "",
+        "tag": "West Midtown",
+        "link": "contact"
+      },
+      {
+        "title": "Suite Y · 30318",
+        "description": "Main office. Monday–Friday 10:00 AM–6:00 PM. Call or text (678) 679-1040 before you come in.",
+        "image": "https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80",
+        "price": "",
+        "tag": "HQ",
+        "link": "contact"
+      }
     ],
-    "gallerySectionTitle": "The floor",
+    "gallerySectionTitle": "Recent tax prep & refund advance wins",
     "galleryImages": [
-      "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80",
-      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80",
-      "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80"
+      "https://i.ibb.co/Dg7RDHC3/tax-services.jpg",
+      "https://i.ibb.co/tPk2V2Lj/627bef65-3274-4bb1-a1aa-2747f6a7d767.jpg",
+      "https://i.ibb.co/jj99LMj/stack-of-dollar-bills-money.jpg",
+      "https://i.ibb.co/v4z1LQ07/money-celebrating.jpg",
+      "https://i.ibb.co/wrRtmHZG/professional-woman-business-accountant.jpg",
+      "https://i.ibb.co/TDTyyKbv/step1.png"
     ],
-    "testimonialsSectionTitle": "From the people who sign",
+    "testimonialsSectionTitle": "The Tax Fighters — reviews",
     "testimonials": [
-      { "quote": "They ran the exam so I could run payroll. That was the engagement.", "author": "Dana Cho", "role": "CFO, logistics" },
-      { "quote": "First clean opinion in three years. The workpapers were the product.", "author": "Marcus Veld", "role": "Founder" },
-      { "quote": "The provision finally matched the return. Our lender noticed.", "author": "Priya Shah", "role": "Controller" }
+      {
+        "quote": "Great tax preparers. Dedicated to customer service and maximizing your return.",
+        "author": "Hosea Harris",
+        "role": "Google review"
+      },
+      {
+        "quote": "Very professional with exceptional customer service. Highly recommend.",
+        "author": "Terri Jackson",
+        "role": "Google review"
+      },
+      {
+        "quote": "I needed the money before the IRS paid. They had my Holiday Advance the same day I walked in with my W-2s.",
+        "author": "Atlanta client",
+        "role": "Refund advance"
+      }
     ],
-    "faqSectionTitle": "Before we kick off",
+    "faqSectionTitle": "Frequently asked questions",
     "faqs": [
-      { "question": "Do you replace our tax preparer?", "answer": "We can. Or we sit beside them for the exam and the provision. Scope is written first." },
-      { "question": "Can you take an IRS letter already in flight?", "answer": "Yes. Send the notice. We map the deadline and whether a power of attorney should go out immediately." },
-      { "question": "Are you a Big Four substitute?", "answer": "No. We are a focused desk for mid-market companies that need an opinion and an exam partner, not a 400-person pyramid." },
-      { "question": "How do you staff?", "answer": "A partner and a named team. You will not meet a new senior every Thursday." }
+      {
+        "question": "What is a tax refund advance?",
+        "answer": "A refund advance lets eligible taxpayers receive a portion of their refund before the IRS finishes processing. Tax Fighters offers Holiday Advances (no fee) and Shield Advances ($500–$7,500). You can always refuse an advance and wait for the full IRS refund."
+      },
+      {
+        "question": "How quickly can I receive a tax refund advance?",
+        "answer": "Depending on the product and your file, you may receive funds in about 30 minutes or within 24–48 hours after we complete your return and the bank approves the advance."
+      },
+      {
+        "question": "What happens if my tax refund is less than the advance amount?",
+        "answer": "Advances are sized from the completed return. The advance and any bank fees are deducted from the IRS refund when it posts. We review the numbers with you before you accept funds."
+      },
+      {
+        "question": "What is the cost associated with a tax refund advance?",
+        "answer": "The Tax Fighters does not charge fees on Holiday Advances. Shield Advances may include bank fees that depend on the amount. Fees are disclosed in full before we process, and they come out of the final refund — not a separate payment."
+      },
+      {
+        "question": "Can I refuse an advance if I am not interested?",
+        "answer": "Absolutely. You can decline every advance and wait for the entire refund. Preparers respect that choice."
+      },
+      {
+        "question": "What should I bring?",
+        "answer": "Photo ID, SSN, W-2s or pay stubs, children’s birth certificates and SSNs, and proof each dependent lived with you for at least six months. We may request more documents to finish an accurate return."
+      }
     ],
-    "teamSectionTitle": "Partners",
-    "blogSectionTitle": "The close",
-    "blogSectionSubtitle": "Audit, exam, and provision notes",
-    "newsSectionTitle": "Desk",
-    "newsSectionSubtitle": "Capacity and kickoff windows",
+    "teamSectionTitle": "Meet your team",
+    "blogSectionTitle": "Tax preparation & refund advances",
+    "blogSectionSubtitle": "Guides on personal taxes, business filings, advances, and how to pick a tax professional",
+    "newsSectionTitle": "Office updates",
+    "newsSectionSubtitle": "Holiday Advance windows, hours, and Atlanta location news",
     "newsPosts": [
-      { "title": "Q2 exam capacity is open", "slug": "q2-exam-capacity", "excerpt": "We can still take two mid-market IRS exams this quarter.", "body": "If a letter already arrived, send it this week. Statute control is the first deliverable.", "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80", "author": "Desk", "date": "2026-03-02" }
+      {
+        "title": "Holiday Advances are open — no fee, up to $500",
+        "slug": "holiday-advances-open",
+        "excerpt": "Eligible clients can take a no-fee Holiday Advance through April 15. Bring your documents and pre-qualify today.",
+        "body": "Holiday Advances start in the season and run through April 15. There is no Tax Fighters fee on this product. Eligibility depends on income, filing status, and a complete document set.\n\nIf you need a larger amount, ask about Shield Advances from $500 to $7,500. We will show bank fees before anything is processed.",
+        "image": "https://images.unsplash.com/photo-1482517967863-00e15c9b44be?w=800&q=80",
+        "author": "The Tax Fighters Team",
+        "date": "2026-01-06"
+      },
+      {
+        "title": "Extended weekday hours through filing deadline",
+        "slug": "tax-season-hours",
+        "excerpt": "Monday–Friday 10:00 AM–6:00 PM at Suite Y, Atlanta 30318. Saturday and Sunday closed — text us to hold a weekday slot.",
+        "body": "Walk-ins are welcome during posted hours. If you want a guaranteed time, call or text (678) 679-1040. Bring ID, SSNs, W-2s, and dependent documents so we can start the same day.",
+        "image": "https://images.unsplash.com/photo-1434626881859-194d67b2b86f?w=800&q=80",
+        "author": "Front Desk",
+        "date": "2026-02-01"
+      },
+      {
+        "title": "Refer a friend. Earn $50.",
+        "slug": "referral-bonus-50",
+        "excerpt": "When someone you send files with us, you earn a referral bonus. Ask your preparer how to track it.",
+        "body": "Our referral program pays existing clients when family and friends complete a return with The Tax Fighters. There is no extra paperwork for the person you send — they just mention your name at intake.\n\nBonuses are issued after the referred return is filed. Ask the front desk for this season’s amount and payout timing.",
+        "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80",
+        "author": "The Tax Fighters Team",
+        "date": "2026-01-15"
+      }
     ],
-    "pricingSectionTitle": "Fees",
-    "pricing": [],
+    "pricingSectionTitle": "Advance options",
+    "pricing": [
+      {
+        "title": "Holiday Advance",
+        "description": "No Tax Fighters fee. Up to $500 for eligible clients through April 15.",
+        "price": "No fee",
+        "tag": "Seasonal",
+        "featured": false
+      },
+      {
+        "title": "Shield Advance",
+        "description": "$500 to $7,500 based on your completed return. Bank fees disclosed before processing.",
+        "price": "$500–$7,500",
+        "tag": "Most requested",
+        "featured": true
+      },
+      {
+        "title": "Wait for the IRS",
+        "description": "Decline every advance. We still prepare the return and you keep the full refund when it posts.",
+        "price": "Your choice",
+        "tag": "No advance",
+        "featured": false
+      }
+    ],
     "roomsSectionTitle": "Rooms & Suites",
-    "roomsSectionSubtitle": "",
+    "roomsSectionSubtitle": "Explore our accommodations and reserve your stay",
     "bookingSectionTitle": "Book Your Stay",
-    "bookingSectionSubtitle": "",
+    "bookingSectionSubtitle": "Select dates, guests, and your preferred room type",
     "roomTypes": [],
     "blogPosts": [
-      { "title": "Your tax provision is an audit issue", "slug": "tax-provision-is-an-audit-issue", "excerpt": "If the 740 and the return cannot be tied, the opinion is already late.", "body": "We build the provision and the return from the same trial balance. That is not a slogan. It is the only way the close survives review.", "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80", "author": "Helix", "date": "2026-02-18" },
-      { "title": "How to sit an IRS exam without freezing the company", "slug": "sit-an-irs-exam", "excerpt": "One inbox. One calendar. Management stays in operations.", "body": "We take the IDRs. You approve what leaves the building. Fieldwork has a start and a stop.", "image": "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&q=80", "author": "Helix", "date": "2026-01-27" }
+      {
+        "title": "A guide for income tax preparation & advances",
+        "slug": "income-tax-preparation-advances",
+        "excerpt": "What Holiday and Shield Advances are, what to bring, and how repayment works when the IRS pays.",
+        "body": "Tax refund advances are short-term funds against a completed return. Holiday Advances carry no Tax Fighters fee. Shield Advances range from $500 to $7,500 and may include bank fees.\n\nBring ID, SSNs, W-2s or pay stubs, and dependent documents. After we file, approved clients can take an advance. The IRS refund later repays the advance and any disclosed fees automatically.\n\nYou can always say no and wait for the full refund.",
+        "image": "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=800&q=80",
+        "author": "E. Bel",
+        "date": "2026-02-12"
+      },
+      {
+        "title": "Information about referral program and bonuses",
+        "slug": "referral-program-and-bonuses",
+        "excerpt": "How existing clients earn when family and friends file with The Tax Fighters.",
+        "body": "Tell your people to mention your name at intake. After their return is filed, you receive the posted referral bonus. There is no charge to the person you send.\n\nAsk your preparer for this season’s amount. Bonuses are one of the ways we thank clients who keep the waiting room full.",
+        "image": "https://images.unsplash.com/photo-1556745753-b2904692b3cd?w=800&q=80",
+        "author": "The Tax Fighters Team",
+        "date": "2026-01-22"
+      },
+      {
+        "title": "How to find the right business tax preparation & audit support",
+        "slug": "business-tax-and-audit-support",
+        "excerpt": "Schedule C and 1120 filings, plus a safety net if the IRS writes. Existing clients are not charged for audit support.",
+        "body": "Gather income statements, expenses, and receipts. Use the right form — Schedule C for sole proprietors, 1120 for corporations — and bring it to the preparer.\n\nWe file for the business and stay on the file if an audit starts. Existing Tax Fighters clients are not charged for audit support. That is the safety net.",
+        "image": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&q=80",
+        "author": "E. Bel",
+        "date": "2026-03-03"
+      }
     ],
     "team": [
-      { "name": "Alex Rhee, CPA", "role": "Audit partner", "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80" },
-      { "name": "Jordan Vale, CPA", "role": "Tax exam partner", "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80" },
-      { "name": "Sam Okonkwo", "role": "Provision lead", "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80" }
+      {
+        "name": "Hosea Harris",
+        "role": "Tax Preparer",
+        "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80"
+      },
+      {
+        "name": "Terri Jackson",
+        "role": "Client Services",
+        "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
+      },
+      {
+        "name": "E. Bel",
+        "role": "Tax Professional · 12+ years",
+        "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80"
+      }
     ],
-    "ctaBannerTitle": "If a letter or a board date is already on the calendar, start the desk.",
-    "ctaBannerText": "Send the notice or the last financials. We return a scoped plan.",
-    "ctaText": "Start the engagement",
+    "ctaBannerTitle": "Ready to get your refund advance?",
+    "ctaBannerText": "Join thousands of clients who trust The Tax Fighters for expert tax prep and refund advances. Pre-qualify today.",
+    "ctaText": "Book now",
     "ctaLink": "contact",
     "seoEnabled": true,
-    "seoTitle": "Helix Financial \u2014 financial audit and tax exam",
-    "seoDescription": "Financial statement audits, IRS and state tax examinations, and ASC 740 provisions for mid-market companies.",
-    "seoKeywords": "financial audit, tax examination, IRS exam, ASC 740, tax provision",
+    "seoTitle": "Best Tax Preparation & Refund Advances | The Tax Fighters",
+    "seoDescription": "Atlanta tax preparation experts. Get up to $7,500 instant refund advances and no-fee Holiday Advances up to $500. Call (678) 679-1040.",
+    "seoKeywords": "tax preparation Atlanta, refund advance Atlanta, holiday advance, IRS tax help Atlanta, business tax preparation, audit support Atlanta",
     "seoSiteUrl": "",
-    "email": "work@helix.fin",
-    "phone": "(415) 555-0172",
-    "address": "1 Market Street, San Francisco, CA",
-    "hours": "Mon\u2013Fri 8am\u20136pm",
-    "instagram": "",
-    "website": "",
+    "email": "hello@taxfightersatlanta.com",
+    "phone": "(678) 679-1040",
+    "address": "Suite Y, Atlanta GA, 30318",
+    "hours": "Monday–Friday 10:00 AM–6:00 PM · Sat & Sun closed",
+    "instagram": "https://instagram.com/taxfightersatl",
+    "website": "https://taxfightersatlanta.com",
     "linkedin": "",
-    "whatsapp": "",
+    "whatsapp": "Text HELP to (678) 679-1040",
     "supportEmail": "",
     "reservationEmail": "",
     "licenseNumber": "",
     "bookingUrl": "",
-    "contactSectionTitle": "Start the desk",
-    "contactFormTitle": "What is on the calendar?",
+    "contactSectionTitle": "Leave your info for a quick response",
+    "contactFormTitle": "Pre-qualify today",
     "contactFormUrl": "",
-    "contactFormButtonText": "Send"
+    "contactFormButtonText": "Submit"
   }
 }

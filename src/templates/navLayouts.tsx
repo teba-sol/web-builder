@@ -185,38 +185,47 @@ export function TemplateNav({ c, t, variant, navItems, basePath }: NavProps) {
 
     case 'cpa':
       return (
-        <nav className={t.nav}>
-          <div className="border-b border-white/10 bg-slate-950 text-slate-200">
-            <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-2 px-6 py-1.5 text-xs">
-              <p className="font-medium tracking-wide">Year-round tax planning · Complimentary consultation</p>
-              <div className="flex flex-wrap items-center gap-4">
-                {c.phone ? <a href={`tel:${c.phone}`} className="hover:text-white">{c.phone}</a> : null}
-                {c.hours ? <span className="opacity-80">{c.hours}</span> : null}
+        <div>
+          <div className="text-xs text-[#DDEBD0]" style={{ backgroundColor: 'var(--clone-ink, #0F211C)' }}>
+            <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-4 py-2.5 sm:flex-row">
+              <div className="flex items-center gap-6">
+                {c.phone ? <a href={`tel:${c.phone}`} className="hover:text-[#A8D93F]">{c.phone}</a> : null}
+                {c.email ? <span className="hidden md:inline">{c.email}</span> : null}
+                {c.hours ? <span className="hidden lg:inline">{c.hours}</span> : null}
               </div>
             </div>
           </div>
-          <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-            <Link to={basePath} className="shrink-0 font-serif text-xl font-semibold tracking-tight"><BrandMark c={c} /></Link>
-            <div className="hidden gap-7 text-sm font-medium lg:flex">
-              <NavLinks items={pageLinks} t={t} basePath={basePath} />
+          <nav className="sticky top-0 z-40 border-b border-white/10 shadow-lg backdrop-blur-md" style={{ backgroundColor: 'var(--clone-ink, #16302A)' }}>
+            <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6">
+              <Link to={basePath} className="text-xl font-black text-white"><BrandMark c={c} /></Link>
+              <div className="hidden items-center gap-1 lg:flex">
+                {pageLinks.map((item) => (
+                  <Link key={item.page} to={sitePath(basePath, item.segment)} className="rounded-full px-3.5 py-2 text-sm font-semibold text-white/90 hover:bg-[#A8D93F] hover:text-[#16302A]">
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+              <Link to={ctaHref} className="hidden items-center gap-3 rounded-full py-2 pr-2 pl-6 text-sm font-bold sm:flex" style={{ backgroundColor: 'var(--clone-accent, #A8D93F)', color: 'var(--clone-ink, #16302A)', ...ctaStyle }}>
+                {c.ctaText}
+              </Link>
             </div>
-            <Link to={ctaHref} data-brand-cta className={t.navCta} style={ctaStyle}>{c.ctaText}</Link>
-          </div>
-        </nav>
+          </nav>
+        </div>
       )
 
     case 'axiom':
       return (
-        <nav className="sticky top-0 z-40 border-b border-[#0a1628]/10 bg-white text-[#0a1628]">
-          <div className="h-1 w-full bg-[#c41e3a]" />
-          <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-            <Link to={basePath} className="font-serif text-xl tracking-tight">
-              <BrandMark c={c} />
-            </Link>
-            <div className="hidden items-center gap-8 text-sm font-semibold lg:flex">
-              <NavLinks items={pageLinks} t={t} basePath={basePath} />
+        <nav className="sticky top-0 z-40 border-b bg-white shadow-sm" style={{ borderColor: '#E8EFF7' }}>
+          <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-4 sm:px-6">
+            <Link to={basePath} className="text-lg font-black tracking-tight text-[#0A1628]"><BrandMark c={c} /></Link>
+            <div className="hidden items-center gap-1 lg:flex">
+              {pageLinks.map((item) => (
+                <Link key={item.page} to={sitePath(basePath, item.segment)} className="px-3.5 py-2 text-sm font-semibold text-[#0A1628] hover:text-blue-600">
+                  {item.label}
+                </Link>
+              ))}
             </div>
-            <Link to={ctaHref} className="px-5 py-2.5 text-sm font-bold text-white" style={{ backgroundColor: '#c41e3a', ...ctaStyle }}>
+            <Link to={ctaHref} className="hidden rounded-lg px-6 py-2.5 text-sm font-bold text-white shadow-md sm:inline" style={{ backgroundColor: 'var(--clone-accent, #0B4F8A)', ...ctaStyle }}>
               {c.ctaText}
             </Link>
           </div>
@@ -225,100 +234,128 @@ export function TemplateNav({ c, t, variant, navItems, basePath }: NavProps) {
 
     case 'helix':
       return (
-        <nav className="sticky top-0 z-40 border-b border-slate-200 bg-white/90 text-[#0f172a] backdrop-blur-md">
-          <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-            <Link to={basePath} className="text-lg font-black tracking-tight">
-              <BrandMark c={c} />
-            </Link>
-            <div className="hidden items-center gap-7 text-sm font-bold lg:flex">
-              <NavLinks items={pageLinks} t={t} basePath={basePath} />
+        <div>
+          <div className="bg-black px-4 py-3 text-white">
+            <div className="mx-auto flex max-w-7xl items-center justify-between">
+              {c.email ? <a href={`mailto:${c.email}`} className="font-medium hover:underline">Email</a> : <span />}
+              {c.phone ? <a href={`tel:${c.phone}`} className="text-sm font-medium md:text-2xl">{c.phone}</a> : null}
             </div>
-            <Link to={ctaHref} className="rounded-md px-5 py-2.5 text-sm font-bold text-white" style={{ backgroundColor: '#155dfc', ...ctaStyle }}>
-              {c.ctaText}
-            </Link>
           </div>
-        </nav>
+          <nav className="sticky top-0 z-40 rounded-b-3xl text-white shadow-lg" style={{ backgroundColor: 'var(--clone-accent, #800020)' }}>
+            <div className="mx-auto max-w-7xl px-4">
+              <div className="flex h-20 items-center justify-between">
+                <Link to={basePath} className="shrink-0 text-xl font-bold">
+                  {c.logo ? <img src={c.logo} alt={c.businessName} className="h-16 w-16 object-contain" /> : <BrandMark c={c} />}
+                </Link>
+                <div className="hidden items-center gap-1 md:flex">
+                  {pageLinks.map((item) => (
+                    <Link key={item.page} to={sitePath(basePath, item.segment)} className="rounded-lg px-4 py-2 font-medium text-white transition-all hover:bg-white/10">
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
+                <div className="flex items-center gap-4">
+                  {c.phone ? <a href={`tel:${c.phone}`} className="hidden font-medium md:inline">{c.phone}</a> : null}
+                  <Link to={ctaHref} className="hidden rounded-lg bg-white px-6 py-2 font-semibold md:block" style={{ color: 'var(--clone-accent, #800020)' }}>
+                    Book now
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </nav>
+        </div>
       )
 
     case 'flux':
       return (
-        <nav className="sticky top-0 z-40 border-b border-white/10 bg-[#070708]/90 text-white backdrop-blur-md">
-          <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-            <Link to={basePath} className="text-lg font-black tracking-tight text-[#c8ff3d]">
-              <BrandMark c={c} />
-            </Link>
-            <div className="hidden items-center gap-7 text-sm font-bold lg:flex">
-              <NavLinks items={pageLinks} t={t} basePath={basePath} />
+        <div>
+          <div className="border-b border-[#241C15]/10 text-xs text-[#FFF3E7]" style={{ backgroundColor: '#241C15' }}>
+            <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-2 px-4 py-2">
+              <div className="flex items-center gap-6 font-semibold text-[#FFDCC4]">
+                {c.phone ? <a href={`tel:${c.phone}`} className="hover:text-[#FA6B34]">{c.phone}</a> : null}
+                {c.email ? <span className="hidden md:inline">{c.email}</span> : null}
+                {c.hours ? <span className="hidden lg:inline">{c.hours}</span> : null}
+              </div>
             </div>
-            <Link
-              to={ctaHref}
-              className="rounded-full px-5 py-2 text-sm font-black text-black"
-              style={{ backgroundColor: '#c8ff3d', ...ctaStyle }}
-            >
-              {c.ctaText}
-            </Link>
           </div>
-        </nav>
-      )
-
-    case 'aureum':
-      return (
-        <nav className="sticky top-0 z-40 border-b border-[#eadfce]/80 bg-[#f4efe6]/90 text-[#2a211c] backdrop-blur-md">
-          <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-            <Link to={basePath} className="font-serif text-xl tracking-tight">
-              <BrandMark c={c} />
-            </Link>
-            <div className="hidden items-center gap-8 text-sm font-medium lg:flex">
-              <NavLinks items={pageLinks} t={t} basePath={basePath} />
-            </div>
-            <Link
-              to={ctaHref}
-              className="rounded-full px-5 py-2.5 text-sm font-semibold text-white"
-              style={{ backgroundColor: '#7a2e38', ...ctaStyle }}
-            >
-              {c.ctaText}
-            </Link>
-          </div>
-        </nav>
-      )
-
-    case 'taxfighters':
-      return (
-        <nav className="sticky top-0 z-40 rounded-b-3xl bg-[#800020] text-white shadow-lg">
-          <div className="mx-auto max-w-7xl px-4">
-            <div className="flex h-20 items-center justify-between">
-              <Link to={basePath} className="shrink-0 font-bold text-xl">
-                {c.logo ? (
-                  <img src={c.logo} alt={c.businessName} className="h-16 w-16 object-contain" />
-                ) : (
-                  <BrandMark c={c} />
-                )}
-              </Link>
-              <div className="hidden items-center gap-1 md:flex">
+          <nav className="sticky top-0 z-40 border-b border-[#EEDFCF] bg-[#FFF9F4]/95 shadow-sm backdrop-blur-md">
+            <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6">
+              <Link to={basePath} className="text-xl font-black tracking-tight text-[#241C15]"><BrandMark c={c} /></Link>
+              <div className="hidden items-center gap-1 lg:flex">
                 {pageLinks.map((item) => (
-                  <Link
-                    key={item.page}
-                    to={sitePath(basePath, item.segment)}
-                    className="rounded-lg px-4 py-2 font-medium text-white transition-all hover:bg-white/10"
-                  >
+                  <Link key={item.page} to={sitePath(basePath, item.segment)} className="rounded-lg px-3.5 py-2 text-sm font-semibold text-[#3A2E22] hover:bg-[#FFEDE1] hover:text-[#FA6B34]">
                     {item.label}
                   </Link>
                 ))}
               </div>
-              <div className="flex items-center gap-4">
-                {c.phone ? (
-                  <a href={`tel:${c.phone}`} className="hidden font-medium text-white md:inline">{c.phone}</a>
-                ) : null}
-                <Link
-                  to={ctaHref}
-                  className="hidden rounded-lg bg-white px-6 py-2 font-semibold text-[#800020] transition hover:bg-opacity-90 md:block"
-                >
-                  Book now
-                </Link>
+              <Link to={ctaHref} className="hidden rounded-xl px-6 py-3 text-sm font-bold text-white shadow-lg sm:inline" style={{ backgroundColor: 'var(--clone-accent, #FA6B34)', ...ctaStyle }}>
+                {c.ctaText}
+              </Link>
+            </div>
+          </nav>
+        </div>
+      )
+
+    case 'aureum':
+      return (
+        <div>
+          <div className="border-b border-purple-200 text-xs text-slate-900" style={{ backgroundColor: '#eee4e6ff' }}>
+            <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-2 px-4 py-2">
+              <div className="flex items-center gap-6 font-semibold text-purple-700">
+                {c.phone ? <a href={`tel:${c.phone}`} className="hover:underline">{c.phone}</a> : null}
+                {c.email ? <span className="hidden md:inline">{c.email}</span> : null}
+                {c.hours ? <span className="hidden lg:inline">{c.hours}</span> : null}
               </div>
             </div>
           </div>
-        </nav>
+          <nav className="sticky top-0 z-40 border-b border-slate-300 bg-slate-50/95 shadow-xl backdrop-blur-md">
+            <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6">
+              <Link to={basePath} className="text-xl font-black tracking-tight text-slate-900"><BrandMark c={c} /></Link>
+              <div className="hidden items-center gap-1 lg:flex">
+                {pageLinks.map((item) => (
+                  <Link key={item.page} to={sitePath(basePath, item.segment)} className="rounded-lg px-3.5 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-100 hover:text-purple-600">
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+              <Link to={ctaHref} className="hidden rounded-xl px-6 py-3 text-sm font-bold text-white shadow-xl sm:inline" style={{ backgroundColor: 'var(--clone-accent, #9333ea)', ...ctaStyle }}>
+                {c.ctaText}
+              </Link>
+            </div>
+          </nav>
+        </div>
+      )
+
+    case 'taxfighters':
+      return (
+        <div>
+          <div className="border-b border-rose-200 text-xs text-slate-900" style={{ backgroundColor: '#eee4e6ff' }}>
+            <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-2 px-4 py-2">
+              <div className="flex items-center gap-6 font-semibold text-rose-700">
+                {c.phone ? <a href={`tel:${c.phone}`} className="hover:underline">{c.phone}</a> : null}
+                {c.email ? <span className="hidden md:inline">{c.email}</span> : null}
+                {c.hours ? <span className="hidden lg:inline">{c.hours}</span> : null}
+              </div>
+            </div>
+          </div>
+          <nav className="sticky top-0 z-40 border-b border-slate-300 bg-slate-50/95 shadow-xl backdrop-blur-md">
+            <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6">
+              <Link to={basePath} className="text-xl font-black tracking-tight text-slate-900">
+                {c.logo ? <img src={c.logo} alt="" className="h-10 w-auto object-contain" /> : <BrandMark c={c} />}
+              </Link>
+              <div className="hidden items-center gap-1 lg:flex">
+                {pageLinks.map((item) => (
+                  <Link key={item.page} to={sitePath(basePath, item.segment)} className="rounded-lg px-3.5 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-100 hover:text-rose-600">
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+              <Link to={ctaHref} className="hidden rounded-xl px-6 py-3 text-sm font-bold text-white shadow-xl sm:inline" style={{ backgroundColor: 'var(--clone-accent, #e60039)', ...ctaStyle }}>
+                {c.ctaText}
+              </Link>
+            </div>
+          </nav>
+        </div>
       )
 
     case 'salon':
