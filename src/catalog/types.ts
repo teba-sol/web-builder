@@ -10,6 +10,7 @@ import type {
   SiteContent,
   TemplateCategory,
   TemplateMeta,
+  ToggleableSection,
 } from '../types'
 import type { BlockDesign } from './blockDesign'
 import type { HeroBadgeMode, NavShellId, TemplateFeature } from './vocab'
@@ -41,6 +42,10 @@ export interface TemplateManifest {
   sortOrder: number
   features: TemplateFeature[]
   pages: PageVisibility
+  /** Pages this template's editor can turn on or off. Omit to use category defaults. */
+  editorPages?: Array<keyof PageVisibility>
+  /** Optional sections this template's editor can turn on or off. Omit to use category defaults. */
+  editorSections?: ToggleableSection[]
   homeSections: HomeSectionId[]
   sectionOrder: SectionId[]
   theme: TemplateTheme

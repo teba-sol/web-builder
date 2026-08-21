@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import { lazy, Suspense, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { getColorSchemes } from '../data/colorSchemes'
 import { getTemplateMeta } from '../data/defaults'
@@ -44,7 +44,11 @@ import { FluxHome } from './FluxHome'
 import { AxiomHome } from './AxiomHome'
 import { HelixHome } from './HelixHome'
 import { CpaHome } from './CpaHome'
-import { clonePaletteCss, cloneWrapperClass, isCloneTemplate, resolveClonePalette } from './cloneTheme'
+import { clonePaletteCss, cloneWrapperClass, isCloneTemplate, resolveClonePalette, type CloneTemplateId } from './cloneTheme'
+
+const CloneInnerPage = lazy(() =>
+  import('./clones/CloneInnerPages').then((mod) => ({ default: mod.CloneInnerPage })),
+)
 
 interface Props {
   variant: TemplateId
@@ -67,7 +71,19 @@ type PageSectionId =
 
 function homeSectionsFor(templateId: string): PageSectionId[] {
   const fromManifest = getManifest(templateId)?.homeSections
-  return [...(fromManifest ?? DEFAULT_HOME_SECTIONS)] as PageSectionId[]
+  const order = [...(fromManifest ?? DEFAULT_HOME_SECTIONS)] as PageSectionId[]
+  insertHomeSection(order, 'steps', 'testimonials')
+  insertHomeSection(order, 'pricing', 'faq')
+  insertHomeSection(order, 'team', 'faq')
+  insertHomeSection(order, 'cta', 'contact')
+  return order
+}
+
+function insertHomeSection(order: PageSectionId[], id: PageSectionId, before: PageSectionId) {
+  if (order.includes(id)) return
+  const idx = order.indexOf(before)
+  if (idx >= 0) order.splice(idx, 0, id)
+  else order.splice(Math.max(order.length - 1, 0), 0, id)
 }
 
 const PAGE_SECTIONS: Record<SitePageId, PageSectionId[]> = {
@@ -156,13 +172,23 @@ export function RichTemplateLayout({
   const cloneCss = clonePalette ? clonePaletteCss(variant, clonePalette) : ''
   const cloneClass = isCloneTemplate(variant) ? cloneWrapperClass(variant, layoutVariantId) : ''
 
-  if (custom) {
+  if (custom || (isCloneTemplate(variant) && page !== 'home')) {
     return (
       <div data-site-brand className={cloneClass}>
         {fontHref ? <link rel="stylesheet" href={fontHref} /> : null}
         {brandStyles ? <style>{brandStyles}</style> : null}
         {cloneCss ? <style>{cloneCss}</style> : null}
-        {custom}
+        {custom ?? (
+          <Suspense fallback={null}>
+            <CloneInnerPage
+              templateId={variant as CloneTemplateId}
+              c={c}
+              basePath={basePath}
+              page={page}
+              postSlugParam={postSlug}
+            />
+          </Suspense>
+        )}
       </div>
     )
   }
@@ -293,7 +319,7 @@ function HeroSection({ c, t, variant, heroLayout, basePath }: { c: SiteContent; 
   const hasOverlay = Boolean(heroCfg?.overlay) || heroLayout === 'immersive'
 
   return (
-    <header className={`relative ${t.hero} ${heroLayout === 'immersive' && !['restaurant', 'realtor', 'photography', 'creative', 'fitness', 'noir', 'coastal', 'hotel', 'alpine', 'ryokan', 'desert', 'nordic', 'jungle', 'vineyard', 'arcade'].includes(variant) ? 'min-h-[85vh] flex flex-col justify-center' : ''}`}>
+    <header className={`relative z-0 isolate ${t.hero} ${heroLayout === 'immersive' && !['restaurant', 'realtor', 'photography', 'creative', 'fitness', 'noir', 'coastal', 'hotel', 'alpine', 'ryokan', 'desert', 'nordic', 'jungle', 'vineyard', 'arcade'].includes(variant) ? 'min-h-[85vh] flex flex-col justify-center' : ''}`}>
       {hasOverlay && c.heroImage && (
         <>
           <img data-part="image" src={c.heroImage} alt="" className={`absolute inset-0 h-full w-full object-cover ${variant === 'noir' ? 'grayscale contrast-125' : ''}`} />

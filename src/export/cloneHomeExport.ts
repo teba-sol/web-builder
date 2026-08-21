@@ -1,7 +1,8 @@
-import { resolveStaticHref } from '../data/siteNav'
+import { canLinkToPage, resolveStaticHref } from '../data/siteNav'
 import type { SiteContent } from '../types'
 import { brandCss } from '../data/brand'
 import { escapeHtml } from './imageUtils'
+import { getMapEmbedUrl } from '../utils/mapEmbed'
 import { buildSeoMetaTags, resolveDocumentTitle, type PageSeoInput } from './seoExport'
 import { LAYOUT_SHELL_CSS } from './htmlShared'
 import {
@@ -46,7 +47,7 @@ const THEMES: Record<CloneTemplateId, CloneTheme> = {
     page: 'min-h-screen bg-[var(--clone-surface)] text-[var(--clone-ink)] font-sans relative',
     topbar: 'border-b border-rose-200 text-xs py-2 px-4',
     topbarText: 'text-rose-700',
-    header: 'sticky top-0 z-40 bg-slate-50/95 backdrop-blur-md border-b border-slate-300 shadow-xl',
+    header: 'sticky top-0 z-50 overflow-visible bg-slate-50/95 border-b border-slate-300 shadow-xl',
     accent: 'var(--clone-accent)',
     accentFg: '#ffffff',
     muted: 'text-slate-600',
@@ -58,7 +59,7 @@ const THEMES: Record<CloneTemplateId, CloneTheme> = {
     page: 'min-h-screen bg-[var(--clone-surface)] text-[var(--clone-ink)] font-sans relative',
     topbar: 'border-b border-purple-200 text-xs py-2 px-4',
     topbarText: 'text-purple-700',
-    header: 'sticky top-0 z-40 bg-slate-50/95 backdrop-blur-md border-b border-slate-300 shadow-xl',
+    header: 'sticky top-0 z-50 overflow-visible bg-slate-50/95 border-b border-slate-300 shadow-xl',
     accent: 'var(--clone-accent)',
     accentFg: '#ffffff',
     muted: 'text-slate-600',
@@ -70,7 +71,7 @@ const THEMES: Record<CloneTemplateId, CloneTheme> = {
     page: 'min-h-screen bg-[var(--clone-surface)] text-[var(--clone-ink)] font-sans relative',
     topbar: 'border-b border-[#241C15]/10 text-xs py-2 px-4 text-[#FFF3E7]',
     topbarText: 'text-[#FFDCC4]',
-    header: 'sticky top-0 z-40 bg-[var(--clone-surface)]/95 backdrop-blur-md border-b border-[#EEDFCF] shadow-sm',
+    header: 'sticky top-0 z-50 overflow-visible bg-[var(--clone-surface)]/95 border-b border-[#EEDFCF] shadow-sm',
     accent: 'var(--clone-accent)',
     accentFg: '#ffffff',
     muted: 'text-[#4A3B2C]',
@@ -82,7 +83,7 @@ const THEMES: Record<CloneTemplateId, CloneTheme> = {
     page: 'min-h-screen bg-[var(--clone-surface)] text-[var(--clone-ink)] font-sans relative',
     topbar: 'text-xs py-2.5 px-4 text-[#DDEBD0]',
     topbarText: 'text-[#DDEBD0]',
-    header: 'sticky top-0 z-40 backdrop-blur-md border-b border-white/10 shadow-lg',
+    header: 'sticky top-0 z-50 overflow-visible border-b border-white/10 shadow-lg',
     accent: 'var(--clone-accent)',
     accentFg: 'var(--clone-accent-fg)',
     muted: 'text-[#6B7A70]',
@@ -94,7 +95,7 @@ const THEMES: Record<CloneTemplateId, CloneTheme> = {
     page: 'min-h-screen bg-[var(--clone-surface)] text-[var(--clone-ink)] font-sans relative',
     topbar: 'hidden',
     topbarText: '',
-    header: 'sticky top-0 z-40 bg-white border-b shadow-sm',
+    header: 'sticky top-0 z-50 overflow-visible bg-white border-b shadow-sm',
     accent: 'var(--clone-accent)',
     accentFg: '#ffffff',
     muted: 'text-[#546E8A]',
@@ -106,7 +107,7 @@ const THEMES: Record<CloneTemplateId, CloneTheme> = {
     page: 'bg-[var(--clone-surface)] font-sans text-[var(--clone-ink)]',
     topbar: 'bg-black text-white py-3 px-4',
     topbarText: 'text-white',
-    header: 'sticky top-0 z-40 rounded-b-3xl bg-[var(--clone-accent)] text-white shadow-lg',
+    header: 'sticky top-0 z-50 overflow-visible rounded-b-3xl bg-[var(--clone-accent)] text-white shadow-lg',
     accent: 'var(--clone-accent)',
     accentFg: '#ffffff',
     muted: 'text-gray-600',
@@ -269,6 +270,10 @@ function bookingModal(ctx: CloneExportCtx, theme: CloneTheme): string {
   </div>`
 }
 
+export function buildCloneChromeNav(ctx: CloneExportCtx): string {
+  return chromeNav(ctx, THEMES[ctx.templateId])
+}
+
 function chromeNav(ctx: CloneExportCtx, theme: CloneTheme): string {
   const c = ctx.content
   const name = txt(ctx, c.businessName, '{{ $settings->business_name }}')
@@ -280,13 +285,15 @@ function chromeNav(ctx: CloneExportCtx, theme: CloneTheme): string {
   const logoColor = ctx.templateId === 'cpa' || ctx.templateId === 'helix' ? 'text-white' : ''
   const topbarStyle = ctx.templateId === 'cpa' ? ' style="background-color:#0F211C"' : ctx.templateId === 'taxfighters' || ctx.templateId === 'aureum' ? ' style="background-color:#eee4e6"' : ctx.templateId === 'flux' ? ' style="background-color:#241C15"' : ''
 
-  const links = [
-    ['Home', href(ctx, 'home')],
-    ['About', href(ctx, 'about')],
-    ['Services', href(ctx, 'services')],
-    ['Blog', href(ctx, 'blog')],
-    ['Contact', href(ctx, 'contact')],
-  ]
+  const links = (
+    [
+      ['Home', href(ctx, 'home'), true],
+      ['About', href(ctx, 'about'), c.pageVisibility.about],
+      ['Services', href(ctx, 'services'), c.pageVisibility.services],
+      ['Blog', href(ctx, 'blog'), c.pageVisibility.blog && canLinkToPage('blog', c)],
+      ['Contact', href(ctx, 'contact'), c.pageVisibility.contact],
+    ] as Array<[string, string, boolean]>
+  ).filter(([, , show]) => show)
 
   const desktopLinks = links
     .map(([label, url]) => `<a href="${url}" class="px-3.5 py-2 rounded-lg text-sm font-semibold ${logoColor} ${theme.hover}">${label}</a>`)
@@ -300,7 +307,7 @@ function chromeNav(ctx: CloneExportCtx, theme: CloneTheme): string {
       ? ''
       : `<div class="${theme.topbar}"${topbarStyle}><div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2"><div class="flex items-center gap-6 font-semibold ${theme.topbarText}">${c.phone || ctx.mode === 'blade' ? `<a href="tel:${ctx.mode === 'blade' ? '{{ $settings->phone }}' : escapeHtml(c.phone)}">${phone}</a>` : ''}${c.email || ctx.mode === 'blade' ? `<span class="hidden md:inline">${email}</span>` : ''}${c.hours || ctx.mode === 'blade' ? `<span class="hidden lg:inline">${hours}</span>` : ''}</div></div></div>`
 
-  return `${topbar}
+  return `<div class="relative z-50">${topbar}
   <header class="${theme.header}"${headerStyle}>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
       <a href="${href(ctx, 'home')}" class="flex items-center gap-3">
@@ -318,17 +325,20 @@ function chromeNav(ctx: CloneExportCtx, theme: CloneTheme): string {
       ${mobileLinks}
       <button type="button" data-open-booking class="w-full py-3.5 rounded-xl font-bold" style="background-color:${theme.accent};color:${theme.accentFg}">${cta}</button>
     </div>
-  </header>`
+  </header></div>`
 }
 
 function standardSections(ctx: CloneExportCtx, theme: CloneTheme): string {
   const c = ctx.content
-  const stats = c.stats.filter((s) => s.value)
-  const services = c.services.filter((s) => s.title)
-  const steps = c.steps.filter((s) => s.title)
-  const reviews = c.testimonials.filter((t) => t.quote)
-  const faqs = c.faqs.filter((f) => f.question)
-  const locations = c.showcaseItems.filter((i) => i.title)
+  const pv = c.pageVisibility
+  const sv = c.sectionVisibility
+  const stats = sv.stats ? c.stats.filter((s) => s.value) : []
+  const services = pv.services ? c.services.filter((s) => s.title) : []
+  const steps = sv.steps ? c.steps.filter((s) => s.title) : []
+  const reviews = sv.testimonials ? c.testimonials.filter((t) => t.quote) : []
+  const faqs = sv.faq ? c.faqs.filter((f) => f.question) : []
+  const locations = pv.portfolio ? c.showcaseItems.filter((i) => i.title) : []
+  const plans = sv.pricing ? c.pricing.filter((p) => p.title) : []
 
   const statsHtml = stats.length
     ? `<section class="py-12 border-y"><div class="max-w-7xl mx-auto px-4 grid md:grid-cols-3 gap-6 text-center">${
@@ -341,7 +351,9 @@ function standardSections(ctx: CloneExportCtx, theme: CloneTheme): string {
       }</div></section>`
     : ''
 
-  const aboutHtml = `<section id="about" class="py-24 px-4 sm:px-6 lg:px-8"><div class="max-w-7xl mx-auto grid lg:grid-cols-12 gap-12 items-center"><div class="lg:col-span-6">${img(ctx, c.aboutImage, 'about', 'w-full h-[640px] object-cover rounded-3xl shadow-2xl')}</div><div class="lg:col-span-6 space-y-6"><div class="text-xs font-bold uppercase tracking-widest" style="color:${theme.accent}">Who we are</div><h2 class="text-3xl sm:text-4xl font-extrabold">${txt(ctx, c.aboutTitle, '{{ $settings->about_title }}')}</h2><p class="${theme.muted} leading-relaxed">${txt(ctx, c.about, '{{ $settings->about }}')}</p><button type="button" data-open-booking class="px-7 py-3.5 rounded-xl font-bold text-sm shadow-xl" style="background-color:${theme.accent};color:${theme.accentFg}">Schedule appointment</button></div></div></section>`
+  const aboutHtml = pv.about
+    ? `<section id="about" class="py-24 px-4 sm:px-6 lg:px-8"><div class="max-w-7xl mx-auto grid lg:grid-cols-12 gap-12 items-center"><div class="lg:col-span-6">${img(ctx, c.aboutImage, 'about', 'w-full h-[640px] object-cover rounded-3xl shadow-2xl')}</div><div class="lg:col-span-6 space-y-6"><div class="text-xs font-bold uppercase tracking-widest" style="color:${theme.accent}">Who we are</div><h2 class="text-3xl sm:text-4xl font-extrabold">${txt(ctx, c.aboutTitle, '{{ $settings->about_title }}')}</h2><p class="${theme.muted} leading-relaxed">${txt(ctx, c.about, '{{ $settings->about }}')}</p><button type="button" data-open-booking class="px-7 py-3.5 rounded-xl font-bold text-sm shadow-xl" style="background-color:${theme.accent};color:${theme.accentFg}">Schedule appointment</button></div></div></section>`
+    : ''
 
   const servicesHtml = `<section id="services" class="py-24 px-4 sm:px-6 lg:px-8"><div class="max-w-7xl mx-auto space-y-12"><div class="text-center max-w-3xl mx-auto space-y-3"><div class="text-xs font-bold uppercase tracking-widest" style="color:${theme.accent}">Our expertise</div><h2 class="text-3xl sm:text-4xl font-extrabold">${txt(ctx, c.servicesSectionTitle, '{{ $settings->services_section_title }}')}</h2><p class="${theme.muted} text-sm">${txt(ctx, c.servicesSectionSubtitle, '{{ $settings->services_section_subtitle }}')}</p></div><div class="grid md:grid-cols-3 gap-8">${
     ctx.mode === 'blade'
@@ -384,6 +396,19 @@ function standardSections(ctx: CloneExportCtx, theme: CloneTheme): string {
       }</div></div></section>`
     : ''
 
+  const pricingPlans = plans.length
+    ? plans
+    : [{ title: 'Custom quote', description: 'Tell us what you need and we will price the work clearly before we start.', price: 'Contact us', tag: '', featured: true }]
+  const pricingHtml = sv.pricing
+    ? `<section id="pricing" class="py-24 px-4"><div class="max-w-7xl mx-auto space-y-12"><div class="text-center"><div class="text-xs font-bold uppercase tracking-widest" style="color:${theme.accent}">Pricing</div><h2 class="text-3xl font-extrabold mt-2">${txt(ctx, c.pricingSectionTitle, '{{ $settings->pricing_section_title }}')}</h2></div><div class="grid md:grid-cols-3 gap-6">${pricingPlans
+        .map((p) => `<div class="${theme.card} p-8 rounded-3xl"${p.featured ? ` style="border-color:${theme.accent};box-shadow:0 0 0 1px ${theme.accent}"` : ''}><p class="text-xs font-bold uppercase tracking-wider" style="color:${theme.accent}">${escapeHtml(p.tag)}</p><h3 class="text-xl font-bold">${escapeHtml(p.title)}</h3><p class="my-3 text-3xl font-black" style="color:${theme.accent}">${escapeHtml(p.price)}</p><p class="text-sm ${theme.muted}">${escapeHtml(p.description)}</p></div>`)
+        .join('')}</div></div></section>`
+    : ''
+
+  const ctaHtml = sv.cta
+    ? `<section id="cta" class="py-20 px-4" style="background-color:var(--clone-ink,#16302A)"><div class="max-w-4xl mx-auto text-center"><h2 class="text-3xl sm:text-4xl font-black text-white">${txt(ctx, c.ctaBannerTitle, '{{ $settings->cta_banner_title }}')}</h2><p class="mt-4 text-lg text-white/75">${txt(ctx, c.ctaBannerText, '{{ $settings->cta_banner_text }}')}</p><button type="button" data-open-booking class="mt-8 inline-flex rounded-xl px-8 py-3.5 text-sm font-bold shadow-xl" style="background-color:${theme.accent};color:${theme.accentFg}">${txt(ctx, c.ctaText, '{{ $settings->cta_text }}')}</button></div></section>`
+    : ''
+
   const locHtml = locations.length
     ? `<section class="py-20 px-4"><h2 class="text-3xl font-extrabold text-center mb-12">${txt(ctx, c.showcaseSectionTitle, '{{ $settings->showcase_section_title }}')}</h2><div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">${
         ctx.mode === 'blade'
@@ -398,16 +423,26 @@ function standardSections(ctx: CloneExportCtx, theme: CloneTheme): string {
       }</div></section>`
     : ''
 
-  const contactHtml = `<section id="contact" class="py-24 px-4 sm:px-6 lg:px-8"><div class="max-w-7xl mx-auto space-y-12"><div class="text-center max-w-2xl mx-auto"><div class="text-xs font-bold uppercase tracking-widest" style="color:${theme.accent}">Connect with us</div><h2 class="text-3xl font-extrabold mt-2">${txt(ctx, c.contactSectionTitle, '{{ $settings->contact_section_title }}')}</h2></div><div class="grid lg:grid-cols-12 gap-12"><div class="lg:col-span-5 space-y-6"><div class="${theme.card} p-6 rounded-2xl"><h4 class="font-bold text-sm">Phone</h4><p class="text-xs ${theme.muted} mt-1">${txt(ctx, c.phone, '{{ $settings->phone }}')}</p></div><div class="${theme.card} p-6 rounded-2xl"><h4 class="font-bold text-sm">Email</h4><p class="text-xs ${theme.muted} mt-1">${txt(ctx, c.email, '{{ $settings->email }}')}</p></div><div class="${theme.card} p-6 rounded-2xl"><h4 class="font-bold text-sm">Office</h4><p class="text-xs ${theme.muted} mt-1">${txt(ctx, c.address, '{{ $settings->address }}')}</p></div></div><div class="lg:col-span-7 ${theme.card} p-8 rounded-3xl space-y-6"><h3 class="text-xl font-bold">${txt(ctx, c.contactFormTitle, '{{ $settings->contact_form_title }}')}</h3>${contactForm(ctx, theme)}</div></div></div></section>`
+  const mapSrc = getMapEmbedUrl(c.mapUrl, c.address)
+  const mapHtml =
+    ctx.mode === 'blade'
+      ? `@php $mapSrc = $settings->map_url; if ($mapSrc && (str_contains($mapSrc, 'maps/embed') || str_contains($mapSrc, 'output=embed'))) { /* keep */ } elseif ($mapSrc) { $mapSrc = 'https://www.google.com/maps?q='.urlencode($mapSrc).'&output=embed'; } elseif ($settings->address) { $mapSrc = 'https://www.google.com/maps?q='.urlencode($settings->address).'&output=embed'; } else { $mapSrc = ''; } @endphp
+        @if($mapSrc)<div class="overflow-hidden rounded-2xl border h-56"><iframe title="Office location" src="{{ $mapSrc }}" class="w-full h-full border-0" loading="lazy"></iframe></div>@endif`
+      : mapSrc
+        ? `<div class="overflow-hidden rounded-2xl border h-56"><iframe title="Office location" src="${escapeHtml(mapSrc)}" class="w-full h-full border-0" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>`
+        : ''
+  const contactHtml = pv.contact
+    ? `<section id="contact" class="py-24 px-4 sm:px-6 lg:px-8"><div class="max-w-7xl mx-auto space-y-12"><div class="text-center max-w-2xl mx-auto"><div class="text-xs font-bold uppercase tracking-widest" style="color:${theme.accent}">Connect with us</div><h2 class="text-3xl font-extrabold mt-2">${txt(ctx, c.contactSectionTitle, '{{ $settings->contact_section_title }}')}</h2></div><div class="grid lg:grid-cols-12 gap-12"><div class="lg:col-span-5 space-y-6"><div class="${theme.card} p-6 rounded-2xl"><h4 class="font-bold text-sm">Phone</h4><p class="text-xs ${theme.muted} mt-1">${txt(ctx, c.phone, '{{ $settings->phone }}')}</p></div><div class="${theme.card} p-6 rounded-2xl"><h4 class="font-bold text-sm">Email</h4><p class="text-xs ${theme.muted} mt-1">${txt(ctx, c.email, '{{ $settings->email }}')}</p></div><div class="${theme.card} p-6 rounded-2xl"><h4 class="font-bold text-sm">Office</h4><p class="text-xs ${theme.muted} mt-1">${txt(ctx, c.address, '{{ $settings->address }}')}</p></div>${mapHtml}</div><div class="lg:col-span-7 ${theme.card} p-8 rounded-3xl space-y-6"><h3 class="text-xl font-bold">${txt(ctx, c.contactFormTitle, '{{ $settings->contact_form_title }}')}</h3>${contactForm(ctx, theme)}</div></div></div></section>`
+    : ''
 
   const footer = `<footer class="border-t py-12 px-4 text-xs ${theme.muted}"><div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-8"><div><div class="font-bold text-base mb-3">${txt(ctx, c.businessName, '{{ $settings->business_name }}')}</div><p>${txt(ctx, c.missionStatement || c.heroSubtext, '{{ $settings->mission_statement }}')}</p></div><div><h4 class="font-bold mb-3 uppercase tracking-wider">Pages</h4><ul class="space-y-2"><li><a href="${href(ctx, 'services')}">Services</a></li><li><a href="${href(ctx, 'about')}">About</a></li><li><a href="${href(ctx, 'blog')}">Blog</a></li><li><a href="${href(ctx, 'contact')}">Contact</a></li></ul></div><div><h4 class="font-bold mb-3 uppercase tracking-wider">Hours</h4><p>${txt(ctx, c.hours, '{{ $settings->hours }}')}</p></div><div><h4 class="font-bold mb-3 uppercase tracking-wider">Contact</h4><p>${txt(ctx, c.phone, '{{ $settings->phone }}')}<br/>${txt(ctx, c.email, '{{ $settings->email }}')}</p></div></div><div class="max-w-7xl mx-auto mt-8 pt-8 border-t text-center">© ${new Date().getFullYear()} ${txt(ctx, c.businessName, '{{ $settings->business_name }}')}</div></footer>`
 
-  return `${statsHtml}${aboutHtml}${servicesHtml}${stepsHtml}${reviewsHtml}${locHtml}${faqHtml}${contactHtml}${footer}`
+  return `${statsHtml}${aboutHtml}${servicesHtml}${stepsHtml}${pricingHtml}${reviewsHtml}${locHtml}${faqHtml}${ctaHtml}${contactHtml}${footer}`
 }
 
 function t1Hero(ctx: CloneExportCtx, theme: CloneTheme): string {
   const c = ctx.content
-  return `<section id="hero" class="relative py-20 lg:py-28 px-4 sm:px-6 lg:px-8 overflow-hidden">
+  return `<section id="hero" class="relative z-0 isolate py-20 lg:py-28 px-4 sm:px-6 lg:px-8 overflow-hidden">
     <div class="absolute inset-0 z-0">${img(ctx, c.heroImage, 'hero', 'w-full h-full object-cover opacity-15 contrast-125 brightness-75')}<div class="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-white/70"></div></div>
     <div class="max-w-7xl mx-auto relative z-10 grid lg:grid-cols-12 gap-12 items-center">
       <div class="lg:col-span-7 space-y-8">
@@ -426,7 +461,7 @@ function t1Hero(ctx: CloneExportCtx, theme: CloneTheme): string {
 
 function t2Hero(ctx: CloneExportCtx, _theme: CloneTheme): string {
   const c = ctx.content
-  return `<section class="relative min-h-screen flex flex-col overflow-hidden bg-[#976DE8] text-white">
+  return `<section class="relative z-0 isolate min-h-screen flex flex-col overflow-hidden bg-[#976DE8] text-white">
     <div class="relative z-10 max-w-[1400px] mx-auto w-full px-6 lg:px-12 py-12 lg:py-16 grid lg:grid-cols-2 gap-12 items-center">
       <div>
         <h1 class="text-[2.75rem] lg:text-[4rem] font-bold leading-[1.05] mb-6">${txt(ctx, c.tagline, '{{ $settings->tagline }}')}</h1>
@@ -443,7 +478,7 @@ function t2Hero(ctx: CloneExportCtx, _theme: CloneTheme): string {
 
 function t3Hero(ctx: CloneExportCtx, theme: CloneTheme): string {
   const c = ctx.content
-  return `<section class="relative min-h-screen flex flex-col bg-[#141110] text-white">
+  return `<section class="relative z-0 isolate min-h-screen flex flex-col bg-[#141110] text-white">
     <div class="absolute inset-0 z-0">${img(ctx, c.heroImage, 'hero', 'w-full h-full object-cover object-center')}<div class="absolute inset-0 bg-gradient-to-r from-[#141110] via-[#141110]/80 to-transparent"></div></div>
     <div class="relative z-10 max-w-[1400px] mx-auto w-full px-6 lg:px-12 pb-24 flex-1 flex flex-col justify-center">
       <p class="text-[13px] font-bold tracking-[0.2em] uppercase text-[#E8D9CB] mb-6">${txt(ctx, c.businessName, '{{ $settings->business_name }}')}</p>
@@ -456,7 +491,7 @@ function t3Hero(ctx: CloneExportCtx, theme: CloneTheme): string {
 
 function t4Hero(ctx: CloneExportCtx, theme: CloneTheme): string {
   const c = ctx.content
-  return `<section id="hero" class="relative overflow-hidden text-white" style="background-color:#16302A">
+  return `<section id="hero" class="relative z-0 isolate overflow-hidden text-white" style="background-color:#16302A">
     <div class="max-w-7xl mx-auto px-4 py-16 lg:py-20 grid lg:grid-cols-12 gap-10 items-center">
       <div class="lg:col-span-6">
         <p class="text-xs font-semibold text-[#DDEBD0] mb-6">${txt(ctx, c.businessName, '{{ $settings->business_name }}')}</p>
@@ -471,7 +506,7 @@ function t4Hero(ctx: CloneExportCtx, theme: CloneTheme): string {
 
 function t5Hero(ctx: CloneExportCtx, _theme: CloneTheme): string {
   const c = ctx.content
-  return `<section id="hero" class="relative w-full overflow-hidden">
+  return `<section id="hero" class="relative z-0 isolate w-full overflow-hidden">
     <div class="absolute inset-0">${img(ctx, c.heroImage, 'hero', 'w-full h-full object-cover')}<div class="absolute inset-0" style="background:linear-gradient(135deg, rgba(6,31,58,.92), rgba(11,79,138,.82))"></div></div>
     <div class="relative z-10 max-w-7xl mx-auto px-4 py-20 lg:py-28">
       <p class="text-xs font-bold tracking-[0.25em] uppercase text-[#64B5F6] mb-4">${txt(ctx, c.businessName, '{{ $settings->business_name }}')}</p>
@@ -525,8 +560,8 @@ function helixTaxFightersBody(ctx: CloneExportCtx): string {
 
   return `<div class="${theme.page}">
   <div class="bg-black px-4 py-3 text-white"><div class="mx-auto flex max-w-7xl items-center justify-between"><a href="mailto:${ctx.mode === 'blade' ? '{{ $settings->email }}' : escapeHtml(c.email)}" class="font-medium hover:underline">Email</a><a href="tel:${ctx.mode === 'blade' ? '{{ $settings->phone }}' : escapeHtml(c.phone)}" class="text-sm font-medium md:text-2xl">${phone}</a></div></div>
-  <nav class="sticky top-0 z-40 rounded-b-3xl bg-[var(--clone-accent)] text-white shadow-lg"><div class="mx-auto max-w-7xl px-4"><div class="flex h-20 items-center justify-between"><a href="${href(ctx, 'home')}" class="shrink-0">${logo}</a><div class="hidden md:flex items-center gap-1"><a href="${href(ctx, 'home')}" class="rounded-lg px-4 py-2 font-medium hover:bg-white/10">Home</a><a href="${href(ctx, 'services')}" class="rounded-lg px-4 py-2 font-medium hover:bg-white/10">Services</a><a href="${href(ctx, 'portfolio')}" class="rounded-lg px-4 py-2 font-medium hover:bg-white/10">Locations</a><a href="${href(ctx, 'blog')}" class="rounded-lg px-4 py-2 font-medium hover:bg-white/10">Blog</a><a href="${href(ctx, 'about')}" class="rounded-lg px-4 py-2 font-medium hover:bg-white/10">About</a><a href="${href(ctx, 'contact')}" class="rounded-lg px-4 py-2 font-medium hover:bg-white/10">Contact</a></div><button type="button" data-open-booking class="hidden md:block rounded-lg bg-white px-6 py-2 font-semibold text-[var(--clone-accent)]">Book now</button></div></div></nav>
-  <header class="relative h-screen min-h-[640px] overflow-hidden">${hero}<div class="absolute inset-0 bg-black/50"></div><div class="relative z-10 mx-auto flex h-full max-w-3xl flex-col items-center justify-center px-6 text-center"><h1 class="mb-6 text-4xl font-bold text-white sm:text-5xl lg:text-6xl">${txt(ctx, c.tagline, '{{ $settings->tagline }}')}</h1><p class="mb-8 text-lg text-gray-200 sm:text-xl">${txt(ctx, c.heroSubtext, '{{ $settings->hero_subtext }}')}</p><a href="${href(ctx, 'about')}" class="rounded-full border-2 border-[var(--clone-accent)] px-8 py-3 text-lg font-semibold text-white">Learn More</a></div>${
+  <nav class="sticky top-0 z-50 overflow-visible rounded-b-3xl bg-[var(--clone-accent)] text-white shadow-lg"><div class="mx-auto max-w-7xl px-4"><div class="flex h-20 items-center justify-between"><a href="${href(ctx, 'home')}" class="shrink-0">${logo}</a><div class="hidden md:flex items-center gap-1"><a href="${href(ctx, 'home')}" class="rounded-lg px-4 py-2 font-medium hover:bg-white/10">Home</a><a href="${href(ctx, 'services')}" class="rounded-lg px-4 py-2 font-medium hover:bg-white/10">Services</a><a href="${href(ctx, 'portfolio')}" class="rounded-lg px-4 py-2 font-medium hover:bg-white/10">Locations</a><a href="${href(ctx, 'blog')}" class="rounded-lg px-4 py-2 font-medium hover:bg-white/10">Blog</a><a href="${href(ctx, 'about')}" class="rounded-lg px-4 py-2 font-medium hover:bg-white/10">About</a><a href="${href(ctx, 'contact')}" class="rounded-lg px-4 py-2 font-medium hover:bg-white/10">Contact</a></div><button type="button" data-open-booking class="hidden md:block rounded-lg bg-white px-6 py-2 font-semibold text-[var(--clone-accent)]">Book now</button></div></div></nav>
+  <header class="relative z-0 isolate h-screen min-h-[640px] overflow-hidden">${hero}<div class="absolute inset-0 bg-black/50"></div><div class="relative z-10 mx-auto flex h-full max-w-3xl flex-col items-center justify-center px-6 text-center"><h1 class="mb-6 text-4xl font-bold text-white sm:text-5xl lg:text-6xl">${txt(ctx, c.tagline, '{{ $settings->tagline }}')}</h1><p class="mb-8 text-lg text-gray-200 sm:text-xl">${txt(ctx, c.heroSubtext, '{{ $settings->hero_subtext }}')}</p><a href="${href(ctx, 'about')}" class="rounded-full border-2 border-[var(--clone-accent)] px-8 py-3 text-lg font-semibold text-white">Learn More</a></div>${
     stats.length
       ? `<div class="absolute bottom-10 left-0 right-0 z-10 flex flex-wrap justify-center gap-8 sm:gap-16 px-4">${ctx.mode === 'blade' ? `@foreach($stats->take(3) as $stat)<div class="text-center"><div class="text-2xl sm:text-3xl font-bold text-white">{{ $stat->value }}</div><div class="text-sm text-gray-300">{{ $stat->label }}</div></div>@endforeach` : stats.map((s) => `<div class="text-center"><div class="text-2xl sm:text-3xl font-bold text-white">${escapeHtml(s.value)}</div><div class="text-sm text-gray-300">${escapeHtml(s.label)}</div></div>`).join('')}</div>`
       : ''

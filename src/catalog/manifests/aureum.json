@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "aureum",
   "name": "Ledger Studio",
-  "description": "Purple bookkeeping and fractional-CFO studio — dashboards, cost strategy, and books that stay current.",
+  "description": "Purple bookkeeping and fractional-CFO studio \u2014 dashboards, cost strategy, and books that stay current.",
   "category": "finance",
   "previewGradient": "from-[#976DE8] via-[#6035EE] to-[#FBD043]",
   "accentColor": "#9333ea",
@@ -15,11 +15,27 @@
     "services": true,
     "portfolio": true,
     "blog": true,
-    "news": true,
-    "gallery": true,
+    "news": false,
+    "gallery": false,
     "contact": true,
     "rooms": false
   },
+  "editorPages": [
+    "about",
+    "services",
+    "portfolio",
+    "blog",
+    "contact"
+  ],
+  "editorSections": [
+    "stats",
+    "steps",
+    "testimonials",
+    "faq",
+    "cta",
+    "team",
+    "pricing"
+  ],
   "homeSections": [
     "nav",
     "hero",
@@ -55,7 +71,7 @@
   ],
   "theme": {
     "page": "bg-[var(--clone-surface)] text-[var(--clone-ink)] font-sans",
-    "nav": "sticky top-0 z-40 border-b border-slate-300 bg-slate-50/95",
+    "nav": "sticky top-0 z-50 border-b border-slate-300 bg-slate-50/95",
     "navLink": "text-[#2a211c]/80 hover:text-[#7a2e38] font-medium",
     "navCta": "rounded-xl bg-[#9333ea] px-6 py-3 text-sm font-bold text-white",
     "hero": "bg-[#f4efe6] py-20",
@@ -163,7 +179,7 @@
     },
     {
       "title": "Downtown",
-      "description": "Walk-in prep near the core — documents in, a clear plan out.",
+      "description": "Walk-in prep near the core \u2014 documents in, a clear plan out.",
       "image": "https://images.unsplash.com/photo-1575917649705-5b59aaa12e6b?w=800&q=80",
       "price": "",
       "tag": "Downtown",
@@ -214,7 +230,7 @@
     {
       "key": "hours",
       "label": "Hours",
-      "placeholder": "Tue–Sat 10am–6pm"
+      "placeholder": "Tue\u2013Sat 10am\u20136pm"
     }
   ],
   "servicesLabel": "Services",
@@ -254,8 +270,8 @@
       "services": true,
       "portfolio": true,
       "blog": true,
-      "news": true,
-      "gallery": true,
+      "news": false,
+      "gallery": false,
       "contact": true,
       "rooms": false
     },
@@ -287,11 +303,11 @@
     "services": [
       {
         "title": "Tax prep & refund advances",
-        "description": "A complete return, then a Holiday or Shield advance when the file supports it — often the same week."
+        "description": "A complete return, then a Holiday or Shield advance when the file supports it \u2014 often the same week."
       },
       {
         "title": "Referrals, quietly rewarded",
-        "description": "Send someone you trust. When they file, you receive the season’s bonus. No scripts, no pressure."
+        "description": "Send someone you trust. When they file, you receive the season\u2019s bonus. No scripts, no pressure."
       },
       {
         "title": "Business tax & audit care",
@@ -338,7 +354,7 @@
       },
       {
         "title": "Downtown",
-        "description": "Walk-in prep near the core — documents in, a clear plan out.",
+        "description": "Walk-in prep near the core \u2014 documents in, a clear plan out.",
         "image": "https://images.unsplash.com/photo-1575917649705-5b59aaa12e6b?w=800&q=80",
         "price": "",
         "tag": "Downtown",
@@ -402,7 +418,7 @@
       },
       {
         "question": "How fast can funds arrive?",
-        "answer": "When the file is clean, Holiday and Shield advances often fund the same week — sometimes the same day."
+        "answer": "When the file is clean, Holiday and Shield advances often fund the same week \u2014 sometimes the same day."
       },
       {
         "question": "What should I bring?",
@@ -432,7 +448,7 @@
         "title": "Saturday sittings through filing week",
         "slug": "saturday-sittings",
         "excerpt": "A limited Saturday book is open. Midtown and Buckhead only.",
-        "body": "Weekday hours stay 10–6. Saturdays are reserved for complete files. Bring the checklist and we will not ask you to come back.",
+        "body": "Weekday hours stay 10\u20136. Saturdays are reserved for complete files. Bring the checklist and we will not ask you to come back.",
         "image": "https://images.unsplash.com/photo-1434626881859-194d67b2b86f?w=800&q=80",
         "author": "Front desk",
         "date": "2026-02-04"
@@ -509,13 +525,14 @@
     "ctaText": "Talk to our team",
     "ctaLink": "contact",
     "seoEnabled": true,
-    "seoTitle": "Aureum Tax — Tax prep and refund advances",
+    "seoTitle": "Aureum Tax \u2014 Tax prep and refund advances",
     "seoDescription": "A calm Atlanta tax studio for preparation, Holiday and Shield advances, and business filings.",
     "seoKeywords": "tax preparation, refund advance, Atlanta tax studio, Holiday advance",
     "seoSiteUrl": "",
     "email": "hello@ledger.studio",
     "phone": "(800) 555-5829",
     "address": "100 Financial Way, Suite 300",
+    "mapUrl": "",
     "hours": "Mon-Fri: 9AM - 7PM",
     "instagram": "",
     "website": "",

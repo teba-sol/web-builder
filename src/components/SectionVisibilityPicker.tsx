@@ -1,18 +1,19 @@
-import { sectionMetas } from '../data/sectionConfig'
+import { sectionMetas, type SectionMeta } from '../data/sectionConfig'
 import type { SectionVisibility, ToggleableSection } from '../types'
 
 interface Props {
   visibility: SectionVisibility
   onToggle: (section: ToggleableSection) => void
+  sections?: SectionMeta[]
 }
 
-export function SectionVisibilityPicker({ visibility, onToggle }: Props) {
+export function SectionVisibilityPicker({ visibility, onToggle, sections = sectionMetas }: Props) {
   return (
     <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
       <p className="mb-1 text-sm font-bold uppercase tracking-wider text-slate-500">Optional Sections</p>
-      <p className="mb-4 text-xs text-slate-400">Toggle extra sections within your pages (stats, FAQ, pricing, etc.)</p>
+      <p className="mb-4 text-xs text-slate-400">Toggle sections this template actually uses. Turning one off hides it in the preview and export.</p>
       <div className="grid gap-2 sm:grid-cols-2">
-        {sectionMetas.map((meta) => (
+        {sections.map((meta) => (
           <label
             key={meta.key}
             className="flex cursor-pointer items-start gap-3 rounded-lg border border-slate-200 bg-white px-3 py-2.5 hover:border-indigo-300 transition-colors"

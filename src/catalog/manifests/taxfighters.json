@@ -15,11 +15,27 @@
     "services": true,
     "portfolio": true,
     "blog": true,
-    "news": true,
-    "gallery": true,
+    "news": false,
+    "gallery": false,
     "contact": true,
     "rooms": false
   },
+  "editorPages": [
+    "about",
+    "services",
+    "portfolio",
+    "blog",
+    "contact"
+  ],
+  "editorSections": [
+    "stats",
+    "steps",
+    "testimonials",
+    "faq",
+    "cta",
+    "team",
+    "pricing"
+  ],
   "homeSections": [
     "nav",
     "hero",
@@ -55,7 +71,7 @@
   ],
   "theme": {
     "page": "bg-[var(--clone-surface)] text-[var(--clone-ink)] font-sans",
-    "nav": "sticky top-0 z-40 border-b border-slate-300 bg-slate-50/95",
+    "nav": "sticky top-0 z-50 border-b border-slate-300 bg-slate-50/95",
     "navLink": "text-white hover:bg-white/10 rounded-lg px-4 py-2 font-medium",
     "navCta": "rounded-xl bg-[#e60039] px-6 py-3 text-sm font-bold text-white",
     "hero": "relative h-screen min-h-[640px] text-white",
@@ -136,7 +152,7 @@
   },
   "showcase": {
     "sectionTitle": "Atlanta Locations We Serve",
-    "sectionSubtitle": "Walk in with your documents — or book the office closest to you",
+    "sectionSubtitle": "Walk in with your documents \u2014 or book the office closest to you",
     "navLabel": "Locations",
     "itemLabel": "Location",
     "showPrice": false,
@@ -179,15 +195,15 @@
     },
     {
       "title": "West Midtown",
-      "description": "Convenient for Star Metals, North and Line, and Novel West Midtown — bring W-2s and walk out funded.",
+      "description": "Convenient for Star Metals, North and Line, and Novel West Midtown \u2014 bring W-2s and walk out funded.",
       "image": "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=600&q=80",
       "price": "",
       "tag": "West Midtown",
       "link": "contact"
     },
     {
-      "title": "Suite Y · 30318",
-      "description": "Main office. Monday–Friday 10:00 AM–6:00 PM. Call or text (678) 679-1040 before you come in.",
+      "title": "Suite Y \u00b7 30318",
+      "description": "Main office. Monday\u2013Friday 10:00 AM\u20136:00 PM. Call or text (678) 679-1040 before you come in.",
       "image": "https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80",
       "price": "",
       "tag": "HQ",
@@ -214,7 +230,7 @@
     {
       "key": "hours",
       "label": "Office Hours",
-      "placeholder": "Mon–Fri 10:00 AM–6:00 PM"
+      "placeholder": "Mon\u2013Fri 10:00 AM\u20136:00 PM"
     },
     {
       "key": "instagram",
@@ -264,8 +280,8 @@
       "services": true,
       "portfolio": true,
       "blog": true,
-      "news": true,
-      "gallery": true,
+      "news": false,
+      "gallery": false,
       "contact": true,
       "rooms": false
     },
@@ -328,7 +344,7 @@
       }
     ],
     "showcaseSectionTitle": "Atlanta Locations We Serve",
-    "showcaseSectionSubtitle": "Walk in with your documents — or book the office closest to you",
+    "showcaseSectionSubtitle": "Walk in with your documents \u2014 or book the office closest to you",
     "showcaseItems": [
       {
         "title": "Downtown Atlanta",
@@ -364,15 +380,15 @@
       },
       {
         "title": "West Midtown",
-        "description": "Convenient for Star Metals, North and Line, and Novel West Midtown — bring W-2s and walk out funded.",
+        "description": "Convenient for Star Metals, North and Line, and Novel West Midtown \u2014 bring W-2s and walk out funded.",
         "image": "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=600&q=80",
         "price": "",
         "tag": "West Midtown",
         "link": "contact"
       },
       {
-        "title": "Suite Y · 30318",
-        "description": "Main office. Monday–Friday 10:00 AM–6:00 PM. Call or text (678) 679-1040 before you come in.",
+        "title": "Suite Y \u00b7 30318",
+        "description": "Main office. Monday\u2013Friday 10:00 AM\u20136:00 PM. Call or text (678) 679-1040 before you come in.",
         "image": "https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80",
         "price": "",
         "tag": "HQ",
@@ -388,17 +404,17 @@
       "https://i.ibb.co/wrRtmHZG/professional-woman-business-accountant.jpg",
       "https://i.ibb.co/TDTyyKbv/step1.png"
     ],
-    "testimonialsSectionTitle": "The Tax Fighters — reviews",
+    "testimonialsSectionTitle": "The Tax Fighters \u2014 reviews",
     "testimonials": [
       {
         "quote": "Got my $5,000 refund advance approved the same day. Best tax office in town.",
         "author": "Marcus Vance",
-        "role": "Client · 1 week ago"
+        "role": "Client \u00b7 1 week ago"
       },
       {
         "quote": "I referred 4 coworkers and received my $200 bonuses immediately.",
         "author": "Elena Rostova",
-        "role": "Client · 2 weeks ago"
+        "role": "Client \u00b7 2 weeks ago"
       },
       {
         "quote": "They solved an IRS notice for my small business seamlessly.",
@@ -436,7 +452,7 @@
     "newsSectionSubtitle": "Holiday Advance windows, hours, and Atlanta location news",
     "newsPosts": [
       {
-        "title": "Holiday Advances are open — no fee, up to $500",
+        "title": "Holiday Advances are open \u2014 no fee, up to $500",
         "slug": "holiday-advances-open",
         "excerpt": "Eligible clients can take a no-fee Holiday Advance through April 15. Bring your documents and pre-qualify today.",
         "body": "Holiday Advances start in the season and run through April 15. There is no Tax Fighters fee on this product. Eligibility depends on income, filing status, and a complete document set.\n\nIf you need a larger amount, ask about Shield Advances from $500 to $7,500. We will show bank fees before anything is processed.",
@@ -447,7 +463,7 @@
       {
         "title": "Extended weekday hours through filing deadline",
         "slug": "tax-season-hours",
-        "excerpt": "Monday–Friday 10:00 AM–6:00 PM at Suite Y, Atlanta 30318. Saturday and Sunday closed — text us to hold a weekday slot.",
+        "excerpt": "Monday\u2013Friday 10:00 AM\u20136:00 PM at Suite Y, Atlanta 30318. Saturday and Sunday closed \u2014 text us to hold a weekday slot.",
         "body": "Walk-ins are welcome during posted hours. If you want a guaranteed time, call or text (678) 679-1040. Bring ID, SSNs, W-2s, and dependent documents so we can start the same day.",
         "image": "https://images.unsplash.com/photo-1434626881859-194d67b2b86f?w=800&q=80",
         "author": "Front Desk",
@@ -457,7 +473,7 @@
         "title": "Refer a friend. Earn $50.",
         "slug": "referral-bonus-50",
         "excerpt": "When someone you send files with us, you earn a referral bonus. Ask your preparer how to track it.",
-        "body": "Our referral program pays existing clients when family and friends complete a return with The Tax Fighters. There is no extra paperwork for the person you send — they just mention your name at intake.\n\nBonuses are issued after the referred return is filed. Ask the front desk for this season’s amount and payout timing.",
+        "body": "Our referral program pays existing clients when family and friends complete a return with The Tax Fighters. There is no extra paperwork for the person you send \u2014 they just mention your name at intake.\n\nBonuses are issued after the referred return is filed. Ask the front desk for this season\u2019s amount and payout timing.",
         "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80",
         "author": "The Tax Fighters Team",
         "date": "2026-01-15"
@@ -475,7 +491,7 @@
       {
         "title": "Shield Advance",
         "description": "$500 to $7,500 based on your completed return. Bank fees disclosed before processing.",
-        "price": "$500–$7,500",
+        "price": "$500\u2013$7,500",
         "tag": "Most requested",
         "featured": true
       },
@@ -506,7 +522,7 @@
         "title": "Information about referral program and bonuses",
         "slug": "referral-program-and-bonuses",
         "excerpt": "How existing clients earn when family and friends file with The Tax Fighters.",
-        "body": "Tell your people to mention your name at intake. After their return is filed, you receive the posted referral bonus. There is no charge to the person you send.\n\nAsk your preparer for this season’s amount. Bonuses are one of the ways we thank clients who keep the waiting room full.",
+        "body": "Tell your people to mention your name at intake. After their return is filed, you receive the posted referral bonus. There is no charge to the person you send.\n\nAsk your preparer for this season\u2019s amount. Bonuses are one of the ways we thank clients who keep the waiting room full.",
         "image": "https://images.unsplash.com/photo-1556745753-b2904692b3cd?w=800&q=80",
         "author": "The Tax Fighters Team",
         "date": "2026-01-22"
@@ -515,7 +531,7 @@
         "title": "How to find the right business tax preparation & audit support",
         "slug": "business-tax-and-audit-support",
         "excerpt": "Schedule C and 1120 filings, plus a safety net if the IRS writes. Existing clients are not charged for audit support.",
-        "body": "Gather income statements, expenses, and receipts. Use the right form — Schedule C for sole proprietors, 1120 for corporations — and bring it to the preparer.\n\nWe file for the business and stay on the file if an audit starts. Existing Tax Fighters clients are not charged for audit support. That is the safety net.",
+        "body": "Gather income statements, expenses, and receipts. Use the right form \u2014 Schedule C for sole proprietors, 1120 for corporations \u2014 and bring it to the preparer.\n\nWe file for the business and stay on the file if an audit starts. Existing Tax Fighters clients are not charged for audit support. That is the safety net.",
         "image": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&q=80",
         "author": "E. Bel",
         "date": "2026-03-03"
@@ -534,7 +550,7 @@
       },
       {
         "name": "E. Bel",
-        "role": "Tax Professional · 12+ years",
+        "role": "Tax Professional \u00b7 12+ years",
         "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80"
       }
     ],
@@ -550,6 +566,7 @@
     "email": "info@taxguardians.com",
     "phone": "(800) 555-8299",
     "address": "100 Financial Way, Suite 300",
+    "mapUrl": "",
     "hours": "Mon-Fri: 9AM - 7PM | Sat: 10AM - 4PM",
     "instagram": "https://instagram.com/taxfightersatl",
     "website": "https://taxfightersatlanta.com",

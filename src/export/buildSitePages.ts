@@ -7,7 +7,7 @@ import type { BlogPostItem, NewsItem, SiteContent, TemplateId } from '../types'
 import { slugify } from '../utils/slugify'
 import { buildStaticHeroHtml } from './heroExport'
 import { buildStaticHomePageBody } from './homePageExport'
-import { buildCloneHomeDocument, cloneInteractiveScript, isCloneTemplate } from './cloneHomeExport'
+import { buildCloneChromeNav, buildCloneHomeDocument, cloneInteractiveScript, isCloneTemplate, type CloneExportCtx } from './cloneHomeExport'
 import { clonePaletteCss, resolveClonePalette } from '../templates/cloneTheme'
 import { buildExportNavHtml } from './navExport'
 import { escapeHtml, resolveImageForExport, type ImageAsset } from './imageUtils'
@@ -72,12 +72,23 @@ function wrapPage(ctx: SiteHtmlContext, title: string, body: string, seo?: PageS
   const head = cloneCss
     ? tailwindHead(title, seo, ctx.content).replace('</style>', `${cloneCss}\n</style>`)
     : tailwindHead(title, seo, ctx.content)
+  const clone = isCloneTemplate(ctx.templateId)
+  const cloneNav = clone
+    ? buildCloneChromeNav({
+        mode: 'html',
+        templateId: ctx.templateId,
+        content: ctx.content,
+        fromNested: ctx.fromNested,
+        colorSchemeId: ctx.colorSchemeId,
+        layoutVariantId: undefined,
+      } as CloneExportCtx)
+    : buildNav(ctx)
   return `${head}
-<body data-site-brand class="bg-white text-slate-800 ${shell} ${isCloneTemplate(ctx.templateId) ? 'webtemplate-clone' : ''}">
-${buildNav(ctx)}
+<body data-site-brand class="${clone ? 'bg-[var(--clone-surface)] text-[var(--clone-ink)]' : 'bg-white text-slate-800'} ${shell} ${clone ? 'webtemplate-clone' : ''}">
+${cloneNav}
 ${body}
 ${buildFooter(ctx)}
-${isCloneTemplate(ctx.templateId) ? cloneInteractiveScript() : ''}
+${clone ? cloneInteractiveScript() : ''}
 </body></html>`
 }
 

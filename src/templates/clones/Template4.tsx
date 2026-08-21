@@ -1,9 +1,12 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import type { SiteContent } from '../../types';
+import { CloneCtaSection, CloneMap, CloneNav, ClonePricingSection, CloneTeamSection } from './CloneChrome';
+import { buildCloneHomeData } from './cloneHomeData';
 import {
   Shield,
   DollarSign,
   CheckCircle2,
-  Clock,
   MapPin,
   Phone,
   Mail,
@@ -15,16 +18,15 @@ import {
   Calendar,
   Send,
   X,
-  Menu,
   Briefcase,
   Gift,
   FileCheck2,
   Users,
 } from 'lucide-react';
 
-export function Template4() {
+export function Template4({ c, basePath }: { c: SiteContent; basePath: string }) {
+  const d = buildCloneHomeData(c, basePath, 'cpa')
   // Mobile Navigation Menu State
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Booking Modal State
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
@@ -80,69 +82,13 @@ export function Template4() {
   };
 
   // Nav Dropdowns Data
-  const servicesList = [
-    { title: 'Individual Tax Filing', desc: 'Fast, accurate e-filing with maximum refund review' },
-    { title: 'Business Tax Prep', desc: 'LLC, S-Corp, and partnership return filing' },
-    { title: 'Refund Advance Loans', desc: 'Get up to $7,500 within 24 hours of filing' },
-    { title: 'IRS Audit Defense', desc: 'Full representation if you get audited' }
-  ];
-
-  const locationsList = [
-    { title: 'Small Business Owners', desc: 'Bookkeeping, payroll, and quarterly filings' },
-    { title: 'Freelancers & Gig Workers', desc: '1099 income, deductions, and estimated tax' },
-    { title: 'Real Estate Investors', desc: 'Depreciation, 1031 exchanges, rental income' },
-    { title: 'Corporations', desc: 'Multi-entity tax strategy and compliance' }
-  ];
-
-  const blogList = [
-    { title: '2026 Tax Season Guide', desc: 'Key deadlines and what changed this year' },
-    { title: 'Maximizing Your Refund', desc: 'Deductions and credits people overlook' },
-    { title: 'IRS Audit Red Flags', desc: 'What actually triggers a review' }
-  ];
-
-  const faqs = [
-    {
-      q: 'How much can I receive in an instant refund advance?',
-      a: 'Qualified clients can receive refund advances ranging from $500 up to $7,500 within 24 hours of filing, subject to IRS acceptance and loan approval terms.'
-    },
-    {
-      q: 'Are there any upfront out-of-pocket costs to apply?',
-      a: 'No! There are $0 upfront out-of-pocket fees. All preparation fees and advance repayments can be deducted directly from your total tax refund.'
-    },
-    {
-      q: 'What documents do I need to bring for tax preparation?',
-      a: 'Please bring a valid Government-issued ID, Social Security Card (or ITIN), W-2s, 1099s, direct deposit account info, and any applicable tax deduction forms.'
-    },
-    {
-      q: 'How does the $50 referral bonus work?',
-      a: 'For every new client you refer who completes tax preparation with us, you receive a cash or digital gift bonus of $50 with no limit on referrals.'
-    },
-    {
-      q: 'Do you assist with IRS audit protection & back taxes?',
-      a: 'Yes, our certified tax preparers provide comprehensive IRS audit representation, back-tax resolution, and penalty abatement support.'
-    }
-  ];
-
-  const reviews = [
-    {
-      name: 'Marcus Vance',
-      date: '1 week ago',
-      rating: 5,
-      comment: 'TaxGuardians completely simplified our business filing. The refund advance hit our account in under a day. Genuinely stress-free experience.'
-    },
-    {
-      name: 'Elena Rostova',
-      date: '2 weeks ago',
-      rating: 5,
-      comment: 'Working with this team was a breeze. They caught deductions our old accountant missed and got us $1,800 back. Highly recommended!'
-    },
-    {
-      name: 'Terrell Jackson',
-      date: '1 month ago',
-      rating: 5,
-      comment: "The best tax partner we've ever had. They handled our IRS audit end to end and kept us calm through the whole process."
-    }
-  ];
+  const faqs = d.faqs.map((faq) => ({ q: faq.question, a: faq.answer }))
+  const reviews = d.testimonials.map((item) => ({
+    name: item.author,
+    date: item.role,
+    rating: 5,
+    comment: item.quote,
+  }))
 
   const galleryPhotos = [
     'https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=800&q=80',
@@ -154,183 +100,9 @@ export function Template4() {
   return (
     <div className="min-h-screen bg-[var(--clone-surface)] text-[var(--clone-ink)] font-sans selection:bg-[var(--clone-accent)] selection:text-[var(--clone-ink)] relative">
 
-      {/* TOP ANNOUNCEMENT & CONTACT BAR */}
-      <div className="text-xs py-2.5 px-4 text-[#DDEBD0]" style={{ backgroundColor: 'var(--clone-ink)' }}>
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
-
-          <div className="flex items-center gap-6">
-            <span className="flex items-center gap-1.5 font-medium">
-              <Phone className="w-3.5 h-3.5" style={{ color: 'var(--clone-accent)' }} />
-              <a href="tel:+18005558299" className="hover:text-[var(--clone-accent)] transition-colors">(800) 555-8299</a>
-            </span>
-            <span className="hidden md:flex items-center gap-1.5 font-medium">
-              <Mail className="w-3.5 h-3.5" style={{ color: 'var(--clone-accent)' }} />
-              info@taxguardians.com
-            </span>
-            <span className="hidden lg:flex items-center gap-1.5 font-medium">
-              <Clock className="w-3.5 h-3.5" style={{ color: 'var(--clone-accent)' }} />
-              Mon-Fri: 9AM-7PM | Sat: 10AM-4PM
-            </span>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <span className="hidden sm:inline text-[#8FA396] font-medium">Follow Us</span>
-            <div className="flex items-center gap-3 text-xs font-bold">
-              <a href="#" aria-label="Facebook" className="hover:text-[var(--clone-accent)] transition-colors">FB</a>
-              <a href="#" aria-label="Twitter" className="hover:text-[var(--clone-accent)] transition-colors">X</a>
-              <a href="#" aria-label="Instagram" className="hover:text-[var(--clone-accent)] transition-colors">IG</a>
-              <a href="#" aria-label="LinkedIn" className="hover:text-[var(--clone-accent)] transition-colors">IN</a>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      {/* HEADER / NAVIGATION BAR */}
-      <header className="sticky top-0 z-40 backdrop-blur-md border-b border-white/10 shadow-lg" style={{ backgroundColor: 'var(--clone-ink)' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-
-          {/* Logo */}
-          <a href="#hero" className="flex items-center gap-3 group">
-            <div className="w-11 h-11 rounded-xl flex items-center justify-center shadow-lg transition-transform group-hover:scale-105" style={{ backgroundColor: 'var(--clone-accent)' }}>
-              <Shield className="w-6 h-6" style={{ color: 'var(--clone-ink)' }} />
-            </div>
-            <div>
-              <div className="text-xl font-black tracking-tight text-white flex items-center gap-1">
-                Company<span style={{ color: 'var(--clone-accent)' }}>Name</span>
-              </div>
-              <div className="text-[10px] text-[#8FA396] font-semibold uppercase tracking-widest">
-                Tagline here
-              </div>
-            </div>
-          </a>
-
-          {/* Desktop Navigation Links with Dropdowns */}
-          <nav className="hidden lg:flex items-center gap-1">
-
-            {/* HOME */}
-            <a href="#hero" className="px-3.5 py-2 rounded-full text-sm font-semibold text-white/90 hover:text-[var(--clone-ink)] hover:bg-[var(--clone-accent)] transition">
-              Home
-            </a>
-
-            {/* SERVICES DROPDOWN */}
-            <div className="relative group">
-              <button className="flex items-center gap-1 px-3.5 py-2 rounded-full text-sm font-semibold text-white/90 hover:text-[var(--clone-ink)] hover:bg-[var(--clone-accent)] transition">
-                Services <ChevronDown className="w-4 h-4 group-hover:rotate-180 transition-transform" />
-              </button>
-
-              <div className="absolute top-full left-0 w-80 pt-2 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200">
-                <div className="bg-white border border-[#E4E0D4] rounded-2xl shadow-2xl shadow-black/20 p-2 space-y-1">
-                  {servicesList.map((s, idx) => (
-                    <a key={idx} href="#services" className="block p-3 rounded-xl hover:bg-[#F0F8E0] border border-transparent transition">
-                      <div className="text-sm font-bold text-[var(--clone-ink)] flex items-center justify-between">
-                        {s.title}
-                        <ArrowRight className="w-3.5 h-3.5" style={{ color: 'var(--clone-accent)' }} />
-                      </div>
-                      <div className="text-xs text-[#6B7A70] mt-0.5">{s.desc}</div>
-                    </a>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* LOCATIONS DROPDOWN */}
-            <div className="relative group">
-              <button className="flex items-center gap-1 px-3.5 py-2 rounded-full text-sm font-semibold text-white/90 hover:text-[var(--clone-ink)] hover:bg-[var(--clone-accent)] transition">
-                Who We Help <ChevronDown className="w-4 h-4 group-hover:rotate-180 transition-transform" />
-              </button>
-
-              <div className="absolute top-full left-0 w-80 pt-2 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200">
-                <div className="bg-white border border-[#E4E0D4] rounded-2xl shadow-2xl shadow-black/20 p-2 space-y-1">
-                  {locationsList.map((loc, idx) => (
-                    <a key={idx} href="#location" className="block p-3 rounded-xl hover:bg-[#F0F8E0] transition">
-                      <div className="text-sm font-bold text-[var(--clone-ink)]">{loc.title}</div>
-                      <div className="text-xs text-[#6B7A70] mt-0.5">{loc.desc}</div>
-                    </a>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* BLOG DROPDOWN */}
-            <div className="relative group">
-              <button className="flex items-center gap-1 px-3.5 py-2 rounded-full text-sm font-semibold text-white/90 hover:text-[var(--clone-ink)] hover:bg-[var(--clone-accent)] transition">
-                Blog <ChevronDown className="w-4 h-4 group-hover:rotate-180 transition-transform" />
-              </button>
-
-              <div className="absolute top-full left-0 w-80 pt-2 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200">
-                <div className="bg-white border border-[#E4E0D4] rounded-2xl shadow-2xl shadow-black/20 p-2 space-y-1">
-                  {blogList.map((b, idx) => (
-                    <a key={idx} href="#faq" className="block p-3 rounded-xl hover:bg-[#F0F8E0] transition">
-                      <div className="text-sm font-bold text-[var(--clone-ink)]">{b.title}</div>
-                      <div className="text-xs text-[#6B7A70] mt-0.5">{b.desc}</div>
-                    </a>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* ABOUT */}
-            <a href="#about" className="px-3.5 py-2 rounded-full text-sm font-semibold text-white/90 hover:text-[var(--clone-ink)] hover:bg-[var(--clone-accent)] transition">
-              About
-            </a>
-
-            {/* CONTACT */}
-            <a href="#contact" className="px-3.5 py-2 rounded-full text-sm font-semibold text-white/90 hover:text-[var(--clone-ink)] hover:bg-[var(--clone-accent)] transition">
-              Contact
-            </a>
-
-          </nav>
-
-          {/* Book Now Action Button */}
-          <div className="hidden sm:flex items-center gap-3">
-            <button
-              onClick={() => setIsBookingModalOpen(true)}
-              className="pl-6 pr-2 py-2 rounded-full text-[var(--clone-ink)] font-bold text-sm shadow-lg hover:brightness-105 active:scale-95 transition-all flex items-center gap-3"
-              style={{ backgroundColor: 'var(--clone-accent)' }}
-            >
-              Book Appointment
-              <span className="w-8 h-8 rounded-full bg-[var(--clone-ink)] flex items-center justify-center">
-                <ArrowUpRight className="w-4 h-4 text-white" />
-              </span>
-            </button>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 rounded-xl text-white border border-white/20"
-            style={{ backgroundColor: 'var(--clone-ink)' }}
-          >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-
-        </div>
-
-        {/* Mobile Dropdown Menu */}
-        {mobileMenuOpen && (
-          <div className="lg:hidden border-t border-white/10 px-6 py-6 space-y-4" style={{ backgroundColor: 'var(--clone-ink)' }}>
-            <a href="#hero" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-base font-bold text-white">Home</a>
-            <a href="#services" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-base font-bold text-white">Services</a>
-            <a href="#about" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-base font-bold text-white">About Us</a>
-            <a href="#process" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-base font-bold text-white">How It Works</a>
-            <a href="#reviews" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-base font-bold text-white">Client Reviews</a>
-            <a href="#faq" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-base font-bold text-white">FAQ</a>
-            <a href="#contact" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-base font-bold text-white">Contact Us</a>
-
-            <button
-              onClick={() => { setMobileMenuOpen(false); setIsBookingModalOpen(true); }}
-              className="w-full py-3.5 rounded-full text-[var(--clone-ink)] font-bold flex items-center justify-center gap-2 shadow-lg"
-              style={{ backgroundColor: 'var(--clone-accent)' }}
-            >
-              <Calendar className="w-4 h-4" /> Book Appointment Now
-            </button>
-          </div>
-        )}
-      </header>
-
-      {/* HERO */}
-      <section id="hero" className="relative text-white font-sans w-full overflow-hidden" style={{ backgroundColor: 'var(--clone-ink)' }}>
+      <CloneNav templateId="cpa" d={d} onBook={() => setIsBookingModalOpen(true)} />
+{/* HERO */}
+      <section id="hero" className="relative z-0 isolate text-white font-sans w-full overflow-hidden" style={{ backgroundColor: 'var(--clone-ink)' }}>
         <div className="absolute -top-24 -right-24 w-[420px] h-[420px] rounded-full opacity-20 blur-3xl" style={{ backgroundColor: 'var(--clone-accent)' }} />
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20 grid lg:grid-cols-12 gap-10 items-center">
@@ -345,12 +117,11 @@ export function Template4() {
             </div>
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black uppercase leading-[1.05] tracking-tight mb-6">
-              Next-gen tax<br />
-              filing made <span style={{ color: 'var(--clone-accent)' }}>simple</span>
+              {c.tagline}
             </h1>
 
             <p className="text-[15px] text-[#C7D6C9] font-medium max-w-md mb-8 leading-relaxed">
-              We help individuals and businesses file with confidence, unlock every deduction, and get refund advances up to $7,500 in as little as 24 hours.
+              {c.heroSubtext}
             </p>
 
             <div className="flex flex-wrap items-center gap-4">
@@ -406,29 +177,20 @@ export function Template4() {
         </div>
       </section>
 
-      {/* STATS BANNER */}
+      {d.show.stats && d.stats.length > 0 && (
       <section className="py-10 border-b border-[#E4E0D4]" style={{ backgroundColor: 'var(--clone-ink)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-            <div>
-              <div className="text-3xl font-black text-white">12+ Yrs</div>
-              <div className="text-xs font-semibold mt-1" style={{ color: 'var(--clone-accent)' }}>In Practice</div>
+            {d.stats.slice(0, 4).map((stat) => (
+            <div key={stat.label}>
+              <div className="text-3xl font-black text-white">{stat.value}</div>
+              <div className="text-xs font-semibold mt-1" style={{ color: 'var(--clone-accent)' }}>{stat.label}</div>
             </div>
-            <div>
-              <div className="text-3xl font-black text-white">5,000+</div>
-              <div className="text-xs font-semibold mt-1" style={{ color: 'var(--clone-accent)' }}>Returns Filed</div>
-            </div>
-            <div>
-              <div className="text-3xl font-black text-white">$18M+</div>
-              <div className="text-xs font-semibold mt-1" style={{ color: 'var(--clone-accent)' }}>Refunds Secured</div>
-            </div>
-            <div>
-              <div className="text-3xl font-black text-white">4.9/5.0</div>
-              <div className="text-xs font-semibold mt-1" style={{ color: 'var(--clone-accent)' }}>Client Rating</div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
+      )}
 
       {/* ESSENTIAL FEATURES SECTION */}
       <section className="py-24 px-4 sm:px-6 lg:px-8">
@@ -497,7 +259,7 @@ export function Template4() {
       </section>
 
       {/* ABOUT SECTION */}
-      <section id="about" className="py-24 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: 'var(--clone-surface-alt)' }}>
+      <section id="about" className={`${!(d.show.about) ? 'hidden ' : ''}py-24 px-4 sm:px-6 lg:px-8`} style={{ backgroundColor: 'var(--clone-surface-alt)' }}>
         <div className="max-w-7xl mx-auto grid lg:grid-cols-12 gap-12 items-start">
 
           <div className="lg:col-span-6 space-y-4">
@@ -591,7 +353,7 @@ export function Template4() {
       </section>
 
       {/* OUR SERVICES SECTION */}
-      <section id="services" className="py-24 px-4 sm:px-6 lg:px-8">
+      <section id="services" className={`${!(d.show.services) ? 'hidden ' : ''}py-24 px-4 sm:px-6 lg:px-8`}>
         <div className="max-w-7xl mx-auto space-y-12">
 
           <div className="text-center max-w-2xl mx-auto space-y-3">
@@ -702,7 +464,7 @@ export function Template4() {
       </section>
 
       {/* HOW IT WORKS PROCESS SECTION */}
-      <section id="process" className="py-24 px-4 sm:px-6 lg:px-8">
+      <section id="process" className={`${!(d.show.steps) ? 'hidden ' : ''}py-24 px-4 sm:px-6 lg:px-8`}>
         <div className="max-w-7xl mx-auto space-y-16">
 
           <div className="text-center max-w-2xl mx-auto space-y-3">
@@ -753,7 +515,7 @@ export function Template4() {
       </section>
 
       {/* CLIENT REVIEWS SECTION */}
-      <section id="reviews" className="py-24 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: 'var(--clone-surface-alt)' }}>
+      <section id="reviews" className={`${!(d.show.testimonials) ? 'hidden ' : ''}py-24 px-4 sm:px-6 lg:px-8`} style={{ backgroundColor: 'var(--clone-surface-alt)' }}>
         <div className="max-w-7xl mx-auto space-y-12">
 
           <div className="text-center max-w-2xl mx-auto space-y-3">
@@ -783,8 +545,11 @@ export function Template4() {
         </div>
       </section>
 
+      <ClonePricingSection d={d} onBook={() => setIsBookingModalOpen(true)} />
+      <CloneTeamSection templateId="cpa" d={d} />
+
       {/* FAQ ACCORDION SECTION */}
-      <section id="faq" className="py-24 px-4 sm:px-6 lg:px-8">
+      <section id="faq" className={`${!(d.show.faq) ? 'hidden ' : ''}py-24 px-4 sm:px-6 lg:px-8`}>
         <div className="max-w-4xl mx-auto space-y-8">
 
           <div className="text-center space-y-3">
@@ -818,8 +583,10 @@ export function Template4() {
         </div>
       </section>
 
+      <CloneCtaSection d={d} onBook={() => setIsBookingModalOpen(true)} />
+
       {/* CONTACT SECTION */}
-      <section id="contact" className="py-24 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: 'var(--clone-surface-alt)' }}>
+      <section id="contact" className={`${!(d.show.contact) ? 'hidden ' : ''}py-24 px-4 sm:px-6 lg:px-8`} style={{ backgroundColor: 'var(--clone-surface-alt)' }}>
         <div className="max-w-7xl mx-auto space-y-12">
 
           <div className="text-center max-w-2xl mx-auto space-y-3">
@@ -838,7 +605,7 @@ export function Template4() {
                 </div>
                 <div>
                   <h4 className="font-bold text-[var(--clone-ink)] text-sm">Headquarters Address</h4>
-                  <p className="text-xs text-[#6B7A70] mt-1">100 Financial Way, Suite 300, New York, NY</p>
+                  <p className="text-xs text-[#6B7A70] mt-1">{c.address}</p>
                 </div>
               </div>
 
@@ -848,7 +615,7 @@ export function Template4() {
                 </div>
                 <div>
                   <h4 className="font-bold text-[var(--clone-ink)] text-sm">Direct Phone Line</h4>
-                  <p className="text-xs text-[#6B7A70] mt-1">Call: (800) 555-8299</p>
+                  <p className="text-xs text-[#6B7A70] mt-1">{c.phone ? `Call: ${c.phone}` : ''}</p>
                 </div>
               </div>
 
@@ -858,20 +625,11 @@ export function Template4() {
                 </div>
                 <div>
                   <h4 className="font-bold text-[var(--clone-ink)] text-sm">Email Support</h4>
-                  <p className="text-xs text-[#6B7A70] mt-1">support@taxguardians.com</p>
+                  <p className="text-xs text-[#6B7A70] mt-1">{c.email}</p>
                 </div>
               </div>
 
-              {/* Google Map */}
-              <div className="rounded-2xl overflow-hidden border border-[#E4E0D4] h-56">
-                <iframe
-                  title="TaxGuardians office location"
-                  src="https://www.google.com/maps?q=100+Financial+Way,New+York,NY&output=embed"
-                  className="w-full h-full border-0"
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                />
-              </div>
+              <CloneMap d={d} className="h-56 overflow-hidden rounded-2xl border border-[#E4E0D4]" title="Office location" />
             </div>
 
             {/* Direct Message Form */}
@@ -975,10 +733,10 @@ export function Template4() {
           <div>
             <h4 className="text-white font-bold mb-4 uppercase tracking-wider text-[11px]">Services</h4>
             <ul className="space-y-2.5">
-              <li><a href="#services" className="hover:text-[var(--clone-accent)] transition-colors">Individual Tax Prep</a></li>
-              <li><a href="#services" className="hover:text-[var(--clone-accent)] transition-colors">Refund Advance Loans</a></li>
-              <li><a href="#services" className="hover:text-[var(--clone-accent)] transition-colors">$50 Referral Bonus</a></li>
-              <li><a href="#services" className="hover:text-[var(--clone-accent)] transition-colors">Business Tax & IRS Audit</a></li>
+              <li><Link to={d.hrefs.services} className="hover:text-[var(--clone-accent)] transition-colors">Individual Tax Prep</Link></li>
+              <li><Link to={d.hrefs.services} className="hover:text-[var(--clone-accent)] transition-colors">Refund Advance Loans</Link></li>
+              <li><Link to={d.hrefs.services} className="hover:text-[var(--clone-accent)] transition-colors">$50 Referral Bonus</Link></li>
+              <li><Link to={d.hrefs.services} className="hover:text-[var(--clone-accent)] transition-colors">Business Tax & IRS Audit</Link></li>
             </ul>
           </div>
 

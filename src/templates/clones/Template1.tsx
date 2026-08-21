@@ -1,10 +1,13 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import type { SiteContent } from '../../types';
+import { CloneCtaSection, CloneMap, CloneNav, ClonePricingSection, CloneTeamSection } from './CloneChrome';
+import { buildCloneHomeData } from './cloneHomeData';
 import {
   Shield,
   DollarSign,
   Award,
   CheckCircle2,
-  Clock,
   MapPin,
   Phone,
   Mail,
@@ -15,14 +18,11 @@ import {
   Calendar,
    Send,
   X,
-  Menu,
-  Briefcase,
-  Gift,
 } from 'lucide-react';
 
-export function Template1() {
+export function Template1({ c, basePath }: { c: SiteContent; basePath: string }) {
+  const d = buildCloneHomeData(c, basePath, 'taxfighters')
   // Mobile Navigation Menu State
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Booking Modal State
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
@@ -77,249 +77,25 @@ export function Template1() {
     }, 3000);
   };
 
-  // Nav Dropdowns Data
-  const servicesList = [
-    { title: 'Tax Preparation & E-Filing', desc: 'Maximize your federal & state tax returns' },
-    { title: 'Instant Refund Advances', desc: 'Get up to $7,500 in 24 hours with zero upfront fee' },
-    { title: 'Referral Rewards Program', desc: 'Earn $50 for every friend or family member referred' },
-    { title: 'Business Tax & Audit Defense', desc: 'Comprehensive CPA assistance for LLCs & Corporations' }
-  ];
-
-  const locationsList = [
-    { title: 'Metro Financial Center (HQ)', desc: '100 Financial Way, Suite 300' },
-    { title: 'Midtown Branch', desc: '450 Peachtree Ave NE' },
-    { title: 'Downtown Office', desc: '85 Commerce Street' },
-    { title: 'Suburban Tax Hub', desc: '1200 Market Center Blvd' }
-  ];
-
-  const blogList = [
-    { title: '2026 IRS Filing Guide: Maximize Credits', desc: 'Key updates for Earned Income & Child Tax credits' },
-    { title: 'How Refund Advances Work Explained', desc: 'Learn how to get funds before IRS direct deposit' },
-    { title: 'Top 5 Small Business Deductions', desc: 'Don’t leave money on the table this tax year' }
-  ];
-
-  const faqs = [
-    {
-      q: 'How much can I receive in an instant refund advance?',
-      a: 'Qualified clients can receive refund advances ranging from $500 up to $7,500 within 24 hours of filing, subject to IRS acceptance and loan approval terms.'
-    },
-    {
-      q: 'Are there any upfront out-of-pocket costs to apply?',
-      a: 'No! There are $0 upfront out-of-pocket fees. All preparation fees and advance repayments can be deducted directly from your total tax refund.'
-    },
-    {
-      q: 'What documents do I need to bring for tax preparation?',
-      a: 'Please bring a valid Government-issued ID, Social Security Card (or ITIN), W-2s, 1099s, direct deposit account info, and any applicable tax deduction forms.'
-    },
-    {
-      q: 'How does the $50 referral bonus work?',
-      a: 'For every new client you refer who completes tax preparation with us, you receive a cash or digital gift bonus of $50 with no limit on referrals.'
-    },
-    {
-      q: 'Do you assist with IRS audit protection & back taxes?',
-      a: 'Yes, our certified tax preparers provide comprehensive IRS audit representation, back-tax resolution, and penalty abatement support.'
-    }
-  ];
-
-  const reviews = [
-    {
-      name: 'Marcus Vance',
-      date: '1 week ago',
-      rating: 5,
-      comment: 'Got my $5,000 refund advance approved the exact same day! The staff was super friendly and explained every deduction. Best tax office in town!'
-    },
-    {
-      name: 'Elena Rostova',
-      date: '2 weeks ago',
-      rating: 5,
-      comment: 'I referred 4 coworkers and received my $200 referral bonuses immediately. Professional, transparent, and maximized my return!'
-    },
-    {
-      name: 'Terrell Jackson',
-      date: '1 month ago',
-      rating: 5,
-      comment: 'Been coming here for 5 years. They solved an IRS notice for my small business seamlessly. Highly recommend TaxGuardians!'
-    }
-  ];
+  const faqs = d.faqs.map((faq) => ({ q: faq.question, a: faq.answer }))
+  const reviews = d.testimonials.map((item) => ({
+    name: item.author,
+    date: item.role,
+    rating: 5,
+    comment: item.quote,
+  }))
 
   return (
     <div className="min-h-screen bg-[var(--clone-surface)] text-[var(--clone-ink)] font-sans selection:bg-rose-900 selection:text-slate-900 relative">
-      
-      {/* TOP ANNOUNCEMENT & CONTACT BAR */}
-      <div className="bg border-b border-rose-200 text-xs py-2 px-4 text-slate-900" style={{ backgroundColor: '#eee4e6ff' }}>
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
-          
-          <div className="flex items-center gap-6">
-            <span className="flex items-center gap-1.5 font-semibold text-rose-700">
-              <Phone className="w-3.5 h-3.5 text-rose-600" />
-              Call Toll-Free: <a href="tel:+18005558299" className="text-slate-900 hover:underline">(800) 555-TAXES</a>
-            </span>
-            <span className="hidden md:flex items-center gap-1.5 text-rose-700">
-              <Mail className="w-3.5 h-3.5 text-rose-600" />
-              info@taxguardians.com
-            </span>
-            <span className="hidden lg:flex items-center gap-1.5 text-rose-700">
-              <Clock className="w-3.5 h-3.5 text-rose-600" />
-              Mon-Fri: 9AM - 7PM | Sat: 10AM - 4PM
-            </span>
-          </div>
-
-          <div className="flex items-center gap-3 font-semibold text-rose-100">
-            {/* <span className="bg-rose-100/80 px-2.5 py-0.5 rounded-full border border-rose-300 text-[11px]">
-              🔥 2026 Tax Season Open: Get Up to $7,500 Today!
-            </span> */}
-          </div>
-
-        </div>
-      </div>
-
-      {/* HEADER / NAVIGATION BAR */}
-      <header className="sticky top-0 z-40 bg-slate-50/95 backdrop-blur-md border-b border-slate-300 shadow-xl">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-          
-          {/* Logo */}
-          <a href="#hero" className="flex items-center gap-3 group">
-            <div className="w-11 h-11 rounded-xl flex items-center justify-center text-slate-900 shadow-lg transition-transform group-hover:scale-105" style={{ backgroundColor: 'var(--clone-accent)' }}>
-              <Shield className="w-6 h-6 text-amber-300" />
-            </div>
-            <div>
-              <div className="text-xl font-black tracking-tight text-slate-900 flex items-center gap-1">
-                Company<span className="text-purple-600">Name</span>
-              </div>
-              <div className="text-[10px] text-slate-600 font-semibold uppercase tracking-widest">
-                Tagline here
-              </div>
-            </div>
-          </a>
-
-          {/* Desktop Navigation Links with Dropdowns */}
-          <nav className="hidden lg:flex items-center gap-1">
-            
-            {/* HOME */}
-            <a href="#hero" className="px-3.5 py-2 rounded-lg text-sm font-semibold text-slate-800 hover:text-rose-600 hover:bg-slate-100 transition">
-              Home
-            </a>
-
-            {/* SERVICES DROPDOWN */}
-            <div className="relative group">
-              <button className="flex items-center gap-1 px-3.5 py-2 rounded-lg text-sm font-semibold text-slate-800 hover:text-rose-600 hover:bg-slate-100 transition">
-                Services <ChevronDown className="w-4 h-4 text-slate-600 group-hover:rotate-180 transition-transform" />
-              </button>
-
-              <div className="absolute top-full left-0 w-80 pt-2 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200">
-                <div className="bg-slate-100 border border-slate-300 rounded-2xl shadow-2xl p-2 space-y-1">
-                  {servicesList.map((s, idx) => (
-                    <a key={idx} href="#services" className="block p-3 rounded-xl hover:bg-rose-100/40 border border-transparent transition">
-                      <div className="text-sm font-bold text-slate-900 flex items-center justify-between">
-                        {s.title}
-                        <ArrowRight className="w-3.5 h-3.5 text-rose-600" />
-                      </div>
-                      <div className="text-xs text-slate-600 mt-0.5">{s.desc}</div>
-                    </a>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* LOCATIONS DROPDOWN */}
-            <div className="relative group">
-              <button className="flex items-center gap-1 px-3.5 py-2 rounded-lg text-sm font-semibold text-slate-800 hover:text-rose-600 hover:bg-slate-100 transition">
-                Locations <ChevronDown className="w-4 h-4 text-slate-600 group-hover:rotate-180 transition-transform" />
-              </button>
-
-              <div className="absolute top-full left-0 w-80 pt-2 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200">
-                <div className="bg-slate-100 border border-slate-300 rounded-2xl shadow-2xl p-2 space-y-1">
-                  {locationsList.map((loc, idx) => (
-                    <a key={idx} href="#location" className="block p-3 rounded-xl hover:bg-rose-100/40 transition">
-                      <div className="text-sm font-bold text-slate-900">{loc.title}</div>
-                      <div className="text-xs text-slate-600 mt-0.5">{loc.desc}</div>
-                    </a>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* BLOG DROPDOWN */}
-            <div className="relative group">
-              <button className="flex items-center gap-1 px-3.5 py-2 rounded-lg text-sm font-semibold text-slate-800 hover:text-rose-600 hover:bg-slate-100 transition">
-                Blog <ChevronDown className="w-4 h-4 text-slate-600 group-hover:rotate-180 transition-transform" />
-              </button>
-
-              <div className="absolute top-full left-0 w-80 pt-2 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200">
-                <div className="bg-slate-100 border border-slate-300 rounded-2xl shadow-2xl p-2 space-y-1">
-                  {blogList.map((b, idx) => (
-                    <a key={idx} href="#faq" className="block p-3 rounded-xl hover:bg-rose-100/40 transition">
-                      <div className="text-sm font-bold text-slate-900">{b.title}</div>
-                      <div className="text-xs text-slate-600 mt-0.5">{b.desc}</div>
-                    </a>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* ABOUT */}
-            <a href="#about" className="px-3.5 py-2 rounded-lg text-sm font-semibold text-slate-800 hover:text-rose-600 hover:bg-slate-100 transition">
-              About
-            </a>
-
-            {/* CONTACT */}
-            <a href="#contact" className="px-3.5 py-2 rounded-lg text-sm font-semibold text-slate-800 hover:text-rose-600 hover:bg-slate-100 transition">
-              Contact
-            </a>
-
-          </nav>
-
-          {/* Book Now Action Button */}
-          <div className="hidden sm:flex items-center gap-3">
-            <button
-              onClick={() => setIsBookingModalOpen(true)}
-              className="px-6 py-3 rounded-xl text-white font-bold text-sm shadow-xl shadow-rose-950/60 hover:scale-105 active:scale-95 transition-all flex items-center gap-2"
-              style={{ backgroundColor: 'var(--clone-accent)' }}
-            >
-              <Calendar className="w-4 h-4 text-amber-300" /> Book Now
-            </button>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 rounded-xl bg-slate-100 text-slate-800 border border-slate-300"
-          >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-
-        </div>
-
-        {/* Mobile Dropdown Menu */}
-        {mobileMenuOpen && (
-          <div className="lg:hidden bg-slate-50 border-b border-slate-300 px-6 py-6 space-y-4">
-            <a href="#hero" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-base font-bold text-slate-900">Home</a>
-            <a href="#services" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-base font-bold text-slate-900">Services</a>
-            <a href="#about" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-base font-bold text-slate-900">About Us</a>
-            <a href="#process" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-base font-bold text-slate-900">How It Works</a>
-            <a href="#reviews" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-base font-bold text-slate-900">Client Reviews</a>
-            <a href="#faq" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-base font-bold text-slate-900">FAQ</a>
-            <a href="#contact" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-base font-bold text-slate-900">Contact Us</a>
-
-            <button
-              onClick={() => { setMobileMenuOpen(false); setIsBookingModalOpen(true); }}
-              className="w-full py-3.5 rounded-xl text-white font-bold flex items-center justify-center gap-2 shadow-lg"
-              style={{ backgroundColor: 'var(--clone-accent)' }}
-            >
-              <Calendar className="w-4 h-4 text-amber-300" /> Book Appointment Now
-            </button>
-          </div>
-        )}
-      </header>
-
+      <CloneNav templateId="taxfighters" d={d} onBook={() => setIsBookingModalOpen(true)} />
       {/* HERO SECTION */}
-      <section id="hero" className="relative py-20 lg:py-28 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      <section id="hero" className="relative z-0 isolate py-20 lg:py-28 px-4 sm:px-6 lg:px-8 overflow-hidden">
         
         {/* Background Visual Overlay */}
         <div className="absolute inset-0 z-0">
           <img
-            src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=2000&q=80"
-            alt="Tax Preparation Experts"
+            src={c.heroImage || 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=2000&q=80'}
+            alt=""
             className="w-full h-full object-cover opacity-15 filter contrast-125 brightness-75"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-white/70" />
@@ -334,14 +110,11 @@ export function Template1() {
             </div>
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 leading-[1.15] tracking-tight">
-              Best Tax Preparation & <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-400 via-rose-300 to-amber-300">
-                Instant Refund Advances
-              </span>
+              {c.tagline}
             </h1>
 
             <p className="text-slate-700 text-base sm:text-lg max-w-2xl leading-relaxed">
-              Get up to <strong className="text-amber-300">$7,500 in instant refund advances</strong> within 24 hours! No hidden fees, $0 upfront out-of-pocket costs, and maximum return guaranteed by certified CPAs.
+              {c.heroSubtext}
             </p>
 
             <div className="flex flex-wrap items-center gap-4 pt-2">
@@ -350,29 +123,26 @@ export function Template1() {
                 className="px-8 py-4 rounded-xl text-white font-extrabold text-base shadow-2xl hover:scale-105 active:scale-95 transition-all flex items-center gap-3"
                 style={{ backgroundColor: 'var(--clone-accent)' }}
               >
-                Pre-Qualify Now <ArrowRight className="w-5 h-5 text-amber-300" />
+                {c.ctaText || 'Pre-Qualify Now'} <ArrowRight className="w-5 h-5 text-amber-300" />
               </button>
 
-              <a
-                href="#about"
+              <Link
+                to={d.hrefs.about}
                 className="px-7 py-4 rounded-xl bg-slate-100 border border-slate-400/80 hover:border-slate-500 text-slate-800 font-bold text-base transition-all flex items-center gap-2"
               >
                 Learn More
-              </a>
+              </Link>
             </div>
 
-            {/* Quick Hero Badges */}
+            {d.show.stats && d.stats.length > 0 && (
             <div className="grid sm:grid-cols-3 gap-4 pt-6 border-t border-slate-300">
-              <div className="flex items-center gap-2.5 text-xs text-slate-700 font-semibold">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" /> $0 Upfront Out-Of-Pocket
+              {d.stats.slice(0, 3).map((stat) => (
+              <div key={stat.label} className="flex items-center gap-2.5 text-xs text-slate-700 font-semibold">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" /> {stat.value} {stat.label}
               </div>
-              <div className="flex items-center gap-2.5 text-xs text-slate-700 font-semibold">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" /> Up to $7,500 Advances
-              </div>
-              <div className="flex items-center gap-2.5 text-xs text-slate-700 font-semibold">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" /> Maximum Refund Guarantee
-              </div>
+              ))}
             </div>
+            )}
 
           </div>
 
@@ -471,44 +241,34 @@ export function Template1() {
         </div>
       </section>
 
-      {/* STATS BANNER */}
+      {d.show.stats && d.stats.length > 0 && (
       <section className="py-12 bg-slate-100/60 border-y border-slate-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-            
-            <div className="p-6 rounded-2xl bg-slate-50/60 border border-slate-300">
-              <div className="text-4xl font-extrabold text-slate-900">20+ Years</div>
-              <div className="text-sm font-semibold text-rose-600 mt-1">Tax Filing Experience</div>
-              <p className="text-xs text-slate-600 mt-1">IRS Registered Certified Tax Preparers & CPAs</p>
+            {d.stats.slice(0, 4).map((stat) => (
+            <div key={stat.label} className="p-6 rounded-2xl bg-slate-50/60 border border-slate-300">
+              <div className="text-4xl font-extrabold text-slate-900">{stat.value}</div>
+              <div className="text-sm font-semibold text-rose-600 mt-1">{stat.label}</div>
             </div>
-
-            <div className="p-6 rounded-2xl bg-slate-50/60 border border-slate-300">
-              <div className="text-4xl font-extrabold text-slate-900">5,000+</div>
-              <div className="text-sm font-semibold text-amber-300 mt-1">Happy Tax Clients</div>
-              <p className="text-xs text-slate-600 mt-1">Helping families and businesses get maximum refunds</p>
-            </div>
-
-            <div className="p-6 rounded-2xl bg-slate-50/60 border border-slate-300">
-              <div className="text-4xl font-extrabold text-slate-900">$10M+</div>
-              <div className="text-sm font-semibold text-rose-600 mt-1">Refund Advances Issued</div>
-              <p className="text-xs text-slate-600 mt-1">Instant payouts provided before official IRS dates</p>
-            </div>
-
+            ))}
           </div>
         </div>
       </section>
+      )}
 
-      {/* ABOUT SECTION */}
+      {d.show.about && (
       <section id="about" className="py-24 px-4 sm:px-6 lg:px-8 relative">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-12 gap-12 items-center">
           
           <div className="lg:col-span-6 relative">
             <div className="rounded-3xl overflow-hidden shadow-2xl border border-slate-300">
+              {c.aboutImage ? (
               <img
-                src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1200&q=80"
-                alt="Tax Advisor Consulting Client"
+                src={c.aboutImage}
+                alt=""
                 className="w-full h-[640px] object-cover"
               />
+              ) : null}
             </div>
             
             {/* Floating Experience Badge */}
@@ -526,12 +286,11 @@ export function Template1() {
           <div className="lg:col-span-6 space-y-6">
             <div className="text-xs font-bold text-rose-600 uppercase tracking-widest">Who We Are</div>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 leading-tight">
-              Your Trusted Partners for <br />
-              <span className="text-rose-600">Tax Relief & Fast Cash</span>
+              {c.aboutTitle}
             </h2>
 
             <p className="text-slate-700 text-sm sm:text-base leading-relaxed">
-              TaxGuardians was founded on a simple principle: ensuring hard-working individuals and business owners never overpay on taxes or wait weeks for their IRS refunds.
+              {c.about}
             </p>
 
             <div className="space-y-3 pt-2">
@@ -562,84 +321,47 @@ export function Template1() {
 
         </div>
       </section>
+      )}
 
-      {/* OUR SERVICES SECTION */}
+      {d.show.services && (
       <section id="services" className="py-24 px-4 sm:px-6 lg:px-8 bg-slate-100/50 border-t border-slate-300">
         <div className="max-w-7xl mx-auto space-y-12">
           
           <div className="text-center max-w-3xl mx-auto space-y-3">
             <div className="text-xs font-bold text-rose-600 uppercase tracking-widest">Our Expertise</div>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900">
-              Comprehensive <span className="text-rose-600">Tax Services</span>
+              {c.servicesSectionTitle}
             </h2>
             <p className="text-slate-700 text-sm">
-              From individual income tax filing to high-dollar refund advances and business audit defense.
+              {c.servicesSectionSubtitle}
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            
-            {/* Service 1 */}
-            <div className="bg-slate-50/80 p-8 rounded-3xl border border-slate-300 hover:border-rose-600/60 transition space-y-4 group">
+            {d.services.slice(0, 3).map((service) => (
+            <div key={service.title} className="bg-slate-50/80 p-8 rounded-3xl border border-slate-300 hover:border-rose-600/60 transition space-y-4 group">
               <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-slate-900" style={{ backgroundColor: 'var(--clone-accent)' }}>
                 <DollarSign className="w-7 h-7 text-amber-300" />
               </div>
               <h3 className="text-xl font-bold text-slate-900 group-hover:text-rose-600 transition">
-                Tax Prep & Refund Advances
+                {service.title}
               </h3>
               <p className="text-slate-600 text-sm leading-relaxed">
-                Fast e-filing with refund advance options from $500 up to $7,500 deposited directly to your bank account.
+                {service.description}
               </p>
               <button
                 onClick={() => setIsBookingModalOpen(true)}
                 className="text-xs font-bold text-rose-600 flex items-center gap-1.5 pt-2 hover:underline"
               >
-                Apply For Advance <ArrowRight className="w-3.5 h-3.5" />
+                Learn more <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>
-
-            {/* Service 2 */}
-            <div className="bg-slate-50/80 p-8 rounded-3xl border border-slate-300 hover:border-rose-600/60 transition space-y-4 group">
-              <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-slate-900" style={{ backgroundColor: 'var(--clone-accent)' }}>
-                <Gift className="w-7 h-7 text-amber-300" />
-              </div>
-              <h3 className="text-xl font-bold text-slate-900 group-hover:text-rose-600 transition">
-                Referral Bonus Program
-              </h3>
-              <p className="text-slate-600 text-sm leading-relaxed">
-                Refer friends, family, or colleagues and receive $50 cash per completed client filing with zero payout limits!
-              </p>
-              <button
-                onClick={() => setIsBookingModalOpen(true)}
-                className="text-xs font-bold text-rose-600 flex items-center gap-1.5 pt-2 hover:underline"
-              >
-                Join Referral Program <ArrowRight className="w-3.5 h-3.5" />
-              </button>
-            </div>
-
-            {/* Service 3 */}
-            <div className="bg-slate-50/80 p-8 rounded-3xl border border-slate-300 hover:border-rose-600/60 transition space-y-4 group">
-              <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-slate-900" style={{ backgroundColor: 'var(--clone-accent)' }}>
-                <Briefcase className="w-7 h-7 text-amber-300" />
-              </div>
-              <h3 className="text-xl font-bold text-slate-900 group-hover:text-rose-600 transition">
-                Business Tax & Audit Defense
-              </h3>
-              <p className="text-slate-600 text-sm leading-relaxed">
-                Dedicated business accounting, LLC filing, payroll tax optimization, and 100% IRS audit defense coverage.
-              </p>
-              <button
-                onClick={() => setIsBookingModalOpen(true)}
-                className="text-xs font-bold text-rose-600 flex items-center gap-1.5 pt-2 hover:underline"
-              >
-                Business Tax Consult <ArrowRight className="w-3.5 h-3.5" />
-              </button>
-            </div>
-
+            ))}
           </div>
 
         </div>
       </section>
+      )}
 
       {/* WHAT IS REFUND ADVANCE EXPLANATION */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 border-t border-slate-300">
@@ -662,62 +384,40 @@ export function Template1() {
         </div>
       </section>
 
-      {/* HOW IT WORKS PROCESS SECTION */}
+      {d.show.steps && d.steps.length > 0 && (
       <section id="process" className="py-24 px-4 sm:px-6 lg:px-8 border-t border-slate-300">
         <div className="max-w-7xl mx-auto space-y-16">
           
           <div className="text-center max-w-2xl mx-auto space-y-3">
-            <div className="text-xs font-bold text-rose-600 uppercase tracking-widest">Simple 3-Step Process</div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900">How Refund Advances Work</h2>
+            <div className="text-xs font-bold text-rose-600 uppercase tracking-widest">Process</div>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900">{c.stepsSectionTitle || 'How It Works'}</h2>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8 relative">
-            
-            {/* Step 1 */}
-            <div className="bg-slate-100 p-8 rounded-3xl border border-slate-300 text-center space-y-4 relative">
+            {d.steps.slice(0, 4).map((step, index) => (
+            <div key={step.title} className="bg-slate-100 p-8 rounded-3xl border border-slate-300 text-center space-y-4 relative">
               <div className="w-12 h-12 rounded-full font-black text-lg text-slate-900 mx-auto flex items-center justify-center" style={{ backgroundColor: 'var(--clone-accent)' }}>
-                1
+                {index + 1}
               </div>
-              <h3 className="text-xl font-bold text-slate-900">Submit W-2 & Documents</h3>
+              <h3 className="text-xl font-bold text-slate-900">{step.title}</h3>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Bring or upload your tax documents to our secure client portal or physical branch office.
+                {step.description}
               </p>
             </div>
-
-            {/* Step 2 */}
-            <div className="bg-slate-100 p-8 rounded-3xl border border-slate-300 text-center space-y-4 relative">
-              <div className="w-12 h-12 rounded-full font-black text-lg text-slate-900 mx-auto flex items-center justify-center" style={{ backgroundColor: 'var(--clone-accent)' }}>
-                2
-              </div>
-              <h3 className="text-xl font-bold text-slate-900">Instant Approval Calculation</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Our CPAs e-file your return and run immediate eligibility checks for advances up to $7,500.
-              </p>
-            </div>
-
-            {/* Step 3 */}
-            <div className="bg-slate-100 p-8 rounded-3xl border border-slate-300 text-center space-y-4 relative">
-              <div className="w-12 h-12 rounded-full font-black text-lg text-slate-900 mx-auto flex items-center justify-center" style={{ backgroundColor: 'var(--clone-accent)' }}>
-                3
-              </div>
-              <h3 className="text-xl font-bold text-slate-900">Receive Cash in 24 Hours</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Funds are transferred directly into your bank account or provided via prepaid debit card.
-              </p>
-            </div>
-
+            ))}
           </div>
 
         </div>
       </section>
+      )}
 
-      {/* CLIENT REVIEWS SECTION */}
+      {d.show.testimonials && reviews.length > 0 && (
       <section id="reviews" className="py-24 px-4 sm:px-6 lg:px-8 bg-slate-100/60 border-t border-slate-300">
         <div className="max-w-7xl mx-auto space-y-12">
           
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <div className="text-xs font-bold text-rose-600 uppercase tracking-widest">Testimonials</div>
-            <h2 className="text-3xl font-extrabold text-slate-900">What Our Clients Say</h2>
+            <h2 className="text-3xl font-extrabold text-slate-900">{c.testimonialsSectionTitle || 'What Our Clients Say'}</h2>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
@@ -739,14 +439,18 @@ export function Template1() {
 
         </div>
       </section>
+      )}
 
-      {/* FAQ ACCORDION SECTION */}
+      <ClonePricingSection d={d} onBook={() => setIsBookingModalOpen(true)} />
+      <CloneTeamSection templateId="taxfighters" d={d} />
+
+      {d.show.faq && faqs.length > 0 && (
       <section id="faq" className="py-24 px-4 sm:px-6 lg:px-8 border-t border-slate-300">
         <div className="max-w-4xl mx-auto space-y-8">
           
           <div className="text-center space-y-3">
             <div className="text-xs font-bold text-rose-600 uppercase tracking-widest">Got Questions?</div>
-            <h2 className="text-3xl font-extrabold text-slate-900">Frequently Asked Questions</h2>
+            <h2 className="text-3xl font-extrabold text-slate-900">{c.faqSectionTitle || 'Frequently Asked Questions'}</h2>
           </div>
 
           <div className="space-y-4">
@@ -770,14 +474,17 @@ export function Template1() {
 
         </div>
       </section>
+      )}
 
-      {/* CONTACT SECTION */}
+      <CloneCtaSection d={d} onBook={() => setIsBookingModalOpen(true)} />
+
+      {d.show.contact && (
       <section id="contact" className="py-24 px-4 sm:px-6 lg:px-8 bg-slate-100/80 border-t border-slate-300">
         <div className="max-w-7xl mx-auto space-y-12">
           
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <div className="text-xs font-bold text-rose-600 uppercase tracking-widest">Connect With Us</div>
-            <h2 className="text-3xl font-extrabold text-slate-900">Visit Our Tax Office Or Message Us</h2>
+            <h2 className="text-3xl font-extrabold text-slate-900">{c.contactSectionTitle || 'Visit Our Tax Office Or Message Us'}</h2>
           </div>
 
           <div className="grid lg:grid-cols-12 gap-12">
@@ -789,7 +496,7 @@ export function Template1() {
                 </div>
                 <div>
                   <h4 className="font-bold text-slate-900 text-sm">Headquarters Address</h4>
-                  <p className="text-xs text-slate-600 mt-1">100 Financial Way, Suite 300, Financial District</p>
+                  <p className="text-xs text-slate-600 mt-1">{c.address}</p>
                 </div>
               </div>
 
@@ -799,7 +506,7 @@ export function Template1() {
                 </div>
                 <div>
                   <h4 className="font-bold text-slate-900 text-sm">Direct Phone Line</h4>
-                  <p className="text-xs text-slate-600 mt-1">Call: (800) 555-TAXES / (800) 555-8299</p>
+                  <p className="text-xs text-slate-600 mt-1">{c.phone}</p>
                 </div>
               </div>
 
@@ -809,14 +516,15 @@ export function Template1() {
                 </div>
                 <div>
                   <h4 className="font-bold text-slate-900 text-sm">Email Support</h4>
-                  <p className="text-xs text-slate-600 mt-1">support@taxguardians.com</p>
+                  <p className="text-xs text-slate-600 mt-1">{c.email}</p>
                 </div>
               </div>
+              <CloneMap d={d} className="h-56 overflow-hidden rounded-2xl border border-slate-300" />
             </div>
 
             {/* Direct Message Form */}
             <div className="lg:col-span-7 bg-slate-50 p-8 rounded-3xl border border-slate-300 space-y-6">
-              <h3 className="text-xl font-bold text-slate-900">Send A Direct Message</h3>
+              <h3 className="text-xl font-bold text-slate-900">{c.contactFormTitle || 'Send A Direct Message'}</h3>
 
               <form onSubmit={handleContactSubmit} className="space-y-4">
                 <div className="grid sm:grid-cols-2 gap-4">
@@ -886,37 +594,33 @@ export function Template1() {
 
         </div>
       </section>
+      )}
 
-      {/* FOOTER */}
       <footer className="bg-slate-50 border-t border-slate-300 text-slate-600 text-xs py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
           
           <div className="space-y-3">
-            <div className="flex items-center gap-2 text-white font-bold text-base">
-              <Shield className="w-5 h-5 text-rose-500" /> TAX GUARDIANS
+            <div className="flex items-center gap-2 font-bold text-base text-slate-900">
+              <Shield className="w-5 h-5 text-rose-500" /> {c.businessName}
             </div>
             <p className="text-slate-600 text-xs leading-relaxed">
-              Authorized IRS e-File Provider specializing in maximum tax refunds, fast refund advance loans, and audit representation.
+              {c.missionStatement || c.heroSubtext}
             </p>
           </div>
 
           <div>
-            <h4 className="text-white font-bold mb-3 uppercase tracking-wider">Services</h4>
+            <h4 className="font-bold mb-3 uppercase tracking-wider text-slate-900">Pages</h4>
             <ul className="space-y-2">
-              <li><a href="#services" className="hover:text-rose-600">Individual Tax Prep</a></li>
-              <li><a href="#services" className="hover:text-rose-600">Refund Advance Loans</a></li>
-              <li><a href="#services" className="hover:text-rose-600">$50 Referral Bonus</a></li>
-              <li><a href="#services" className="hover:text-rose-600">Business Tax & IRS Audit</a></li>
+              {d.navItems.filter((item) => item.page !== 'home').map((item) => (
+                <li key={item.page}><Link to={item.to} className="hover:text-rose-600">{item.label}</Link></li>
+              ))}
             </ul>
           </div>
 
           <div>
-            <h4 className="text-white font-bold mb-3 uppercase tracking-wider">Office Hours</h4>
+            <h4 className="font-bold mb-3 uppercase tracking-wider text-slate-900">Office Hours</h4>
             <ul className="space-y-2">
-              <li>Monday - Friday: 9:00 AM - 7:00 PM</li>
-              <li>Saturday: 10:00 AM - 4:00 PM</li>
-              <li>Sunday: Closed</li>
-              <li className="text-amber-300 font-semibold pt-1">24/7 Online Application Active</li>
+              <li>{c.hours}</li>
             </ul>
           </div>
 
@@ -930,7 +634,7 @@ export function Template1() {
         </div>
 
         <div className="max-w-7xl mx-auto mt-8 pt-8 border-t border-slate-900 text-center text-slate-500">
-          © {new Date().getFullYear()} TaxGuardians LLC. All rights reserved. Placeholder Template 1 UI.
+          © {new Date().getFullYear()} {c.businessName}. All rights reserved.
         </div>
       </footer>
 

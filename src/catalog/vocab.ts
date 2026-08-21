@@ -19,6 +19,27 @@ import type { SectionId } from './theme'
 export const TEMPLATE_FEATURES = ['cms', 'hospitality'] as const
 export type TemplateFeature = (typeof TEMPLATE_FEATURES)[number]
 
+export const PAGE_VISIBILITY_KEYS = [
+  'about',
+  'services',
+  'portfolio',
+  'rooms',
+  'blog',
+  'news',
+  'gallery',
+  'contact',
+] as const
+
+export const SECTION_VISIBILITY_KEYS = [
+  'stats',
+  'steps',
+  'team',
+  'testimonials',
+  'pricing',
+  'faq',
+  'cta',
+] as const
+
 export const TEMPLATE_CATEGORIES: TemplateCategory[] = [
   'business',
   'creative',

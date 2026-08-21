@@ -2,6 +2,9 @@ import { useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { resolveSiteHref, sitePath } from '../../data/siteNav'
 import type { SiteContent } from '../../types'
+import { CloneMap, CloneNav, ClonePricingSection, CloneTeamSection } from './CloneChrome'
+import { getMapOpenUrl } from '../../utils/mapEmbed'
+import { buildCloneHomeData } from './cloneHomeData'
 
 const MAROON = 'var(--clone-accent)'
 const WINE = 'var(--clone-ink)'
@@ -13,21 +16,19 @@ interface Props {
 }
 
 export function Template6({ c, basePath }: Props) {
-  const [mobileOpen, setMobileOpen] = useState(false)
+  const d = buildCloneHomeData(c, basePath, 'helix')
   const [formOpen, setFormOpen] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const ctaHref = resolveSiteHref(basePath, c.ctaLink || 'contact', c)
   const servicesHref = sitePath(basePath, 'services')
-  const aboutHref = sitePath(basePath, 'about')
   const locationsHref = sitePath(basePath, 'portfolio')
-  const blogHref = sitePath(basePath, 'blog')
-  const contactHref = sitePath(basePath, 'contact')
   const stats = c.stats.filter((s) => s.value).slice(0, 3)
   const steps = c.steps.filter((s) => s.title)
   const services = c.services.filter((s) => s.title).slice(0, 3)
   const locations = c.showcaseItems.filter((s) => s.title).slice(0, 6)
   const reviews = c.testimonials.filter((t) => t.quote).slice(0, 3)
   const faqs = c.faqs.filter((f) => f.question)
+  const mapsHref = getMapOpenUrl(c.mapUrl, c.address)
   const specialize = services.map((s, i) => ({
     title: i === 0 ? 'Advances' : i === 1 ? 'Referrals' : 'Business Tax',
     description: s.description,
@@ -39,103 +40,12 @@ export function Template6({ c, basePath }: Props) {
     setSubmitted(true)
   }
 
-  const navItems = [
-    { label: 'Home', to: basePath },
-    { label: 'Services', to: servicesHref },
-    { label: 'Locations', to: locationsHref },
-    { label: 'Blog', to: blogHref },
-    { label: 'About', to: aboutHref },
-    { label: 'Contact', to: contactHref },
-  ]
 
   return (
     <div className="bg-[var(--clone-surface)] font-sans text-[var(--clone-ink)]">
-      <div className="bg-black px-4 py-3 text-white">
-        <div className="mx-auto flex max-w-7xl items-center justify-between">
-          <a href={`mailto:${c.email || 'info@thetaxfighters.com'}`} className="font-medium hover:underline">
-            Email
-          </a>
-          <div className="hidden items-center gap-6 md:flex">
-            {c.instagram ? (
-              <a href={c.instagram} target="_blank" rel="noreferrer" className="hover:text-[var(--clone-accent)]">
-                Instagram
-              </a>
-            ) : null}
-            {c.website ? (
-              <a href={c.website} target="_blank" rel="noreferrer" className="hover:text-[var(--clone-accent)]">
-                Google
-              </a>
-            ) : null}
-          </div>
-          {c.phone ? (
-            <a href={`sms:${c.phone.replace(/[^\d+]/g, '')}`} className="text-sm font-medium md:text-2xl">
-              {c.phone}
-            </a>
-          ) : null}
-        </div>
-      </div>
+      <CloneNav templateId="helix" d={d} onBook={() => { setFormOpen(true); setSubmitted(false) }} />
 
-      <nav className="sticky top-0 z-40 rounded-b-3xl bg-[var(--clone-accent)] text-white shadow-lg">
-        <div className="mx-auto max-w-7xl px-4">
-          <div className="flex h-20 items-center justify-between">
-            <Link to={basePath} className="shrink-0 text-xl font-bold">
-              {c.logo ? (
-                <img src={c.logo} alt={c.businessName} className="h-16 w-16 object-contain" />
-              ) : (
-                <span>{c.businessName}</span>
-              )}
-            </Link>
-            <div className="hidden items-center gap-1 md:flex">
-              {navItems.map((item) => (
-                <Link key={item.label} to={item.to} className="rounded-lg px-4 py-2 font-medium transition-all hover:bg-white/10">
-                  {item.label}
-                </Link>
-              ))}
-            </div>
-            <div className="flex items-center gap-4">
-              {c.phone ? (
-                <a href={`tel:${c.phone}`} className="hidden font-medium md:inline">
-                  {c.phone}
-                </a>
-              ) : null}
-              <button
-                type="button"
-                onClick={() => {
-                  setFormOpen(true)
-                  setSubmitted(false)
-                }}
-                className="hidden rounded-lg bg-white px-6 py-2 font-semibold text-[var(--clone-accent)] md:block"
-              >
-                Book now
-              </button>
-              <button type="button" className="md:hidden rounded-lg px-3 py-2 hover:bg-white/10" onClick={() => setMobileOpen((v) => !v)}>
-                ☰
-              </button>
-            </div>
-          </div>
-          {mobileOpen ? (
-            <div className="space-y-2 pb-4 md:hidden">
-              {navItems.map((item) => (
-                <Link key={item.label} to={item.to} className="block rounded-lg px-4 py-2 hover:bg-white/10" onClick={() => setMobileOpen(false)}>
-                  {item.label}
-                </Link>
-              ))}
-              <button
-                type="button"
-                onClick={() => {
-                  setMobileOpen(false)
-                  setFormOpen(true)
-                }}
-                className="w-full rounded-lg bg-white px-6 py-2 font-semibold text-[var(--clone-accent)]"
-              >
-                Book now
-              </button>
-            </div>
-          ) : null}
-        </div>
-      </nav>
-
-      <header className="relative h-screen min-h-[640px] overflow-hidden">
+      <header className="relative z-0 isolate h-screen min-h-[640px] overflow-hidden">
         {c.heroImage ? (
           <img src={c.heroImage} alt="" className="absolute inset-0 h-full w-full object-cover" />
         ) : (
@@ -153,7 +63,7 @@ export function Template6({ c, basePath }: Props) {
             Learn More
           </Link>
         </div>
-        {stats.length > 0 && (
+        {c.sectionVisibility.stats && stats.length > 0 && (
           <div className="absolute right-0 bottom-10 left-0 z-10 flex flex-wrap justify-center gap-8 px-4 sm:gap-16">
             {stats.map((s) => (
               <div key={s.label} className="text-center">
@@ -165,7 +75,7 @@ export function Template6({ c, basePath }: Props) {
         )}
       </header>
 
-      {steps.length > 0 && (
+      {c.sectionVisibility.steps && steps.length > 0 && (
         <section className="w-full px-6 py-24 text-white" style={{ backgroundColor: WINE }}>
           <div className="mx-auto max-w-7xl">
             <div className="mb-20 text-center">
@@ -223,7 +133,7 @@ export function Template6({ c, basePath }: Props) {
         </section>
       )}
 
-      {reviews.length > 0 && (
+      {c.sectionVisibility.testimonials && reviews.length > 0 && (
         <section className="relative min-h-[70vh] bg-black px-4 py-12 sm:px-6 lg:px-8">
           <div className="mx-auto grid max-w-7xl gap-16 lg:grid-cols-2">
             <div>
@@ -255,7 +165,7 @@ export function Template6({ c, basePath }: Props) {
         </section>
       )}
 
-      {services.length > 0 && (
+      {c.pageVisibility.services && services.length > 0 && (
         <section className="px-4 py-20 sm:px-6 lg:px-8" style={{ backgroundColor: '#f9f9f9' }}>
           <div className="mx-auto max-w-7xl">
             <div className="mb-16 text-center">
@@ -336,7 +246,7 @@ export function Template6({ c, basePath }: Props) {
         </section>
       )}
 
-      {locations.length > 0 && (
+      {c.pageVisibility.portfolio && locations.length > 0 && (
         <section className="bg-white px-4 py-20">
           <h2 className="mb-12 pt-6 text-center text-4xl font-bold text-black">{c.showcaseSectionTitle}</h2>
           <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-5">
@@ -352,7 +262,10 @@ export function Template6({ c, basePath }: Props) {
         </section>
       )}
 
-      {faqs.length > 0 && (
+      <ClonePricingSection d={d} onBook={() => { setFormOpen(true); setSubmitted(false) }} />
+      <CloneTeamSection templateId="helix" d={d} />
+
+      {c.sectionVisibility.faq && faqs.length > 0 && (
         <section className="bg-[#f9f9f9] px-4 py-20">
           <div className="mx-auto max-w-4xl">
             <div className="mb-16 text-center">
@@ -371,6 +284,7 @@ export function Template6({ c, basePath }: Props) {
         </section>
       )}
 
+      {d.show.cta && (
       <section className="px-4 py-20 sm:px-6 lg:px-8" style={{ backgroundColor: MAROON }}>
         <div className="mx-auto max-w-4xl text-center">
           <h2 className="mb-6 text-4xl font-bold text-white sm:text-5xl">{c.ctaBannerTitle}</h2>
@@ -385,6 +299,7 @@ export function Template6({ c, basePath }: Props) {
           </button>
         </div>
       </section>
+      )}
 
       <section className="bg-white px-6 py-20">
         <div className="mx-auto max-w-6xl">
@@ -426,14 +341,7 @@ export function Template6({ c, basePath }: Props) {
                 </div>
               ) : null}
             </div>
-            <div className="overflow-hidden rounded-xl shadow-lg">
-              <iframe
-                title="Office map"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3318.3589265873676!2d-84.38971!3d33.76159!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88f5086f7c8e0001%3A0x1234567890!2s1130%20Chattahoochee%20Ave%20NW%20Suite%20Y%2C%20Atlanta%2C%20GA%2030318!5e0!3m2!1sen!2sus"
-                className="h-72 w-full border-0"
-                loading="lazy"
-              />
-            </div>
+            <CloneMap d={d} className="h-72 overflow-hidden rounded-xl shadow-lg" title="Office map" />
           </div>
         </div>
       </section>
@@ -450,9 +358,11 @@ export function Template6({ c, basePath }: Props) {
                 Instagram
               </a>
             ) : null}
-            <a href="https://maps.app.goo.gl/UKxWYZnFY9zW1meu8" className="p-2" target="_blank" rel="noreferrer">
-              Google
-            </a>
+            {mapsHref ? (
+              <a href={mapsHref} className="p-2" target="_blank" rel="noreferrer">
+                Google
+              </a>
+            ) : null}
           </div>
           <div className="flex flex-col items-center justify-between gap-4 border-t border-gray-600 pt-8 md:flex-row">
             {c.logo ? <img src={c.logo} alt="" className="h-16 w-auto" /> : <span className="font-bold">{c.businessName}</span>}

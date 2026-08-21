@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "axiom",
   "name": "Axiom Audit",
-  "description": "Blue professional tax recovery and protection — filing, refund advances, and IRS representation.",
+  "description": "Blue professional tax recovery and protection \u2014 filing, refund advances, and IRS representation.",
   "category": "finance",
   "previewGradient": "from-[#061F3A] via-[#0B4F8A] to-[#2196F3]",
   "accentColor": "#0B4F8A",
@@ -15,11 +15,27 @@
     "services": true,
     "portfolio": true,
     "blog": true,
-    "news": true,
-    "gallery": true,
+    "news": false,
+    "gallery": false,
     "contact": true,
     "rooms": false
   },
+  "editorPages": [
+    "about",
+    "services",
+    "portfolio",
+    "blog",
+    "contact"
+  ],
+  "editorSections": [
+    "stats",
+    "steps",
+    "testimonials",
+    "faq",
+    "cta",
+    "team",
+    "pricing"
+  ],
   "homeSections": [
     "nav",
     "hero",
@@ -55,7 +71,7 @@
   ],
   "theme": {
     "page": "bg-[var(--clone-surface)] text-[var(--clone-ink)] font-sans",
-    "nav": "sticky top-0 z-40 border-b bg-white",
+    "nav": "sticky top-0 z-50 border-b bg-white",
     "navLink": "text-[#0a1628] hover:text-[#c41e3a] font-semibold",
     "navCta": "rounded-lg bg-[#0B4F8A] px-6 py-2.5 text-sm font-bold text-white",
     "hero": "bg-white py-20",
@@ -198,7 +214,7 @@
     {
       "key": "hours",
       "label": "Hours",
-      "placeholder": "Mon–Fri 8:30am–5:30pm"
+      "placeholder": "Mon\u2013Fri 8:30am\u20135:30pm"
     },
     {
       "key": "licenseNumber",
@@ -243,8 +259,8 @@
       "services": true,
       "portfolio": true,
       "blog": true,
-      "news": true,
-      "gallery": true,
+      "news": false,
+      "gallery": false,
       "contact": true,
       "rooms": false
     },
@@ -276,7 +292,7 @@
       }
     ],
     "servicesSectionTitle": "Comprehensive tax services tailored to you",
-    "servicesSectionSubtitle": "Refund advances, business prep, IRS defense, and referral bonuses — one desk.",
+    "servicesSectionSubtitle": "Refund advances, business prep, IRS defense, and referral bonuses \u2014 one desk.",
     "services": [
       {
         "title": "Income tax examinations",
@@ -284,7 +300,7 @@
       },
       {
         "title": "Penalty defense",
-        "description": "Accuracy, late-file, and trust-fund penalties — abatement with a record, not a plea."
+        "description": "Accuracy, late-file, and trust-fund penalties \u2014 abatement with a record, not a plea."
       },
       {
         "title": "Appeals & CDP",
@@ -418,7 +434,7 @@
     "roomTypes": [],
     "blogPosts": [
       {
-        "title": "What a CP2000 is — and is not",
+        "title": "What a CP2000 is \u2014 and is not",
         "slug": "what-a-cp2000-is",
         "excerpt": "A matching notice is not an assessment. Treat it like one and you invent the tax.",
         "body": "A CP2000 proposes a change based on third-party reports. It is not a bill until you let it become one. The reply is a record, not a phone script.",
@@ -458,13 +474,14 @@
     "ctaText": "Get a free quote",
     "ctaLink": "contact",
     "seoEnabled": true,
-    "seoTitle": "Axiom Audit — IRS exam and tax controversy",
+    "seoTitle": "Axiom Audit \u2014 IRS exam and tax controversy",
     "seoDescription": "Tax controversy counsel for IRS examinations, appeals, penalties, and collections.",
     "seoKeywords": "IRS audit, tax controversy, tax examination, penalty abatement, tax appeals",
     "seoSiteUrl": "",
     "email": "hello@axiomaudit.com",
     "phone": "(800) 555-8299",
     "address": "85 Commerce Street",
+    "mapUrl": "https://www.google.com/maps?q=85+Commerce+Street&output=embed",
     "hours": "Mon-Fri: 9AM - 6PM",
     "instagram": "",
     "website": "",
@@ -472,7 +489,7 @@
     "whatsapp": "",
     "supportEmail": "",
     "reservationEmail": "",
-    "licenseNumber": "CPA · EA · JD",
+    "licenseNumber": "CPA \u00b7 EA \u00b7 JD",
     "bookingUrl": "",
     "contactSectionTitle": "Confidential intake",
     "contactFormTitle": "Describe the notice",
