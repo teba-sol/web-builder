@@ -546,7 +546,7 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
       </section>
 
       <ClonePricingSection d={d} onBook={() => setIsBookingModalOpen(true)} />
-      <CloneTeamSection d={d} />
+      <CloneTeamSection templateId="cpa" d={d} />
 
       {/* FAQ ACCORDION SECTION */}
       <section id="faq" className={`${!(d.show.faq) ? 'hidden ' : ''}py-24 px-4 sm:px-6 lg:px-8`}>

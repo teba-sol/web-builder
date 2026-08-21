@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { SiteContent } from '../../types';
-import { CloneMap, CloneNav, ClonePricingSection } from './CloneChrome';
+import { CloneMap, CloneNav, ClonePricingSection, CloneTeamSection } from './CloneChrome';
 import { buildCloneHomeData } from './cloneHomeData';
 import {
   Shield,
@@ -25,7 +25,6 @@ import {
   Headphones,
   Play,
 } from 'lucide-react';
-import { FaLinkedin } from 'react-icons/fa'
 
 /* ─── Color Palette ─── */
 const C = {
@@ -90,12 +89,6 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
     rating: 5,
     comment: item.quote,
     img: c.galleryImages[i] || c.aboutImage || c.heroImage,
-  }))
-
-  const teamMembers = d.team.map((member) => ({
-    name: member.name,
-    role: member.role,
-    img: member.image,
   }))
 
   const industries = [
@@ -512,44 +505,7 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════════════════════════
-          TEAM — 4-member grid with social icons (NavikX-inspired)
-      ═══════════════════════════════════════════════════════════════ */}
-      {d.show.team && teamMembers.length > 0 && (
-      <section className="t5 py-24 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: C.surfaceAlt }}>
-        <div className="max-w-7xl mx-auto space-y-14">
-          <div className="text-center max-w-2xl mx-auto space-y-3">
-            <div className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: C.accent }}>Our Experts</div>
-            <h2 className="text-3xl sm:text-4xl font-black" style={{ color: C.text }}>
-              Meet The Experts Behind{' '}
-              <span className="italic" style={{ color: C.primary }}>Our Success</span>
-            </h2>
-          </div>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {teamMembers.map((m, i) => (
-              <div key={i} className="t5-card bg-white rounded-2xl overflow-hidden border" style={{ borderColor: C.border }}>
-                <div className="h-56 overflow-hidden">
-                  <img src={m.img} alt={m.name} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
-                </div>
-                <div className="p-5 text-center space-y-2">
-                  <h4 className="text-sm font-bold" style={{ color: C.text }}>{m.name}</h4>
-                  <p className="text-xs" style={{ color: C.textMuted }}>{m.role}</p>
-                  <div className="flex items-center justify-center gap-2 pt-1">
-                    <a href="#" className="w-7 h-7 rounded-full flex items-center justify-center transition hover:scale-110" style={{ backgroundColor: C.accentSoft, color: C.accent }}>
-                      <FaLinkedin className="w-3.5 h-3.5" />
-                    </a>
-                    <a href="#" className="w-7 h-7 rounded-full flex items-center justify-center transition hover:scale-110" style={{ backgroundColor: C.accentSoft, color: C.accent }}>
-                      <X className="w-3.5 h-3.5" />
-                    </a>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-      )}
+      <CloneTeamSection templateId="axiom" d={d} />
 
       <ClonePricingSection d={d} onBook={() => setIsBookingModalOpen(true)} />
 

@@ -263,7 +263,7 @@ export function Template6({ c, basePath }: Props) {
       )}
 
       <ClonePricingSection d={d} onBook={() => { setFormOpen(true); setSubmitted(false) }} />
-      <CloneTeamSection d={d} />
+      <CloneTeamSection templateId="helix" d={d} />
 
       {c.sectionVisibility.faq && faqs.length > 0 && (
         <section className="bg-[#f9f9f9] px-4 py-20">

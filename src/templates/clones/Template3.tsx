@@ -396,7 +396,7 @@ export function Template3({ c, basePath }: { c: SiteContent; basePath: string })
       </section>
 
       <ClonePricingSection d={d} onBook={() => setIsBookingModalOpen(true)} />
-      <CloneTeamSection d={d} />
+      <CloneTeamSection templateId="flux" d={d} />
 
       {/* FAQ ACCORDION SECTION */}
       <section id="faq" className={`${!(d.show.faq) ? 'hidden ' : ''}py-24 px-4 sm:px-6 lg:px-8 border-t border-[#EEDFCF]`}>

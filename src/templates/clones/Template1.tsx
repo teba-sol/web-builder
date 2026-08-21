@@ -442,7 +442,7 @@ export function Template1({ c, basePath }: { c: SiteContent; basePath: string })
       )}
 
       <ClonePricingSection d={d} onBook={() => setIsBookingModalOpen(true)} />
-      <CloneTeamSection d={d} />
+      <CloneTeamSection templateId="taxfighters" d={d} />
 
       {d.show.faq && faqs.length > 0 && (
       <section id="faq" className="py-24 px-4 sm:px-6 lg:px-8 border-t border-slate-300">

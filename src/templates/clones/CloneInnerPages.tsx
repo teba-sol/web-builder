@@ -557,7 +557,7 @@ function AboutPage({ templateId, d }: { templateId: CloneTemplateId; d: CloneHom
             </div>
           </div>
         </section>
-        <CloneTeamSection d={d} />
+        <CloneTeamSection templateId={templateId} d={d} />
       </>
     )
   }
@@ -579,7 +579,7 @@ function AboutPage({ templateId, d }: { templateId: CloneTemplateId; d: CloneHom
             <p className="mx-auto max-w-3xl text-center text-2xl italic">{c.missionStatement}</p>
           </section>
         ) : null}
-        <CloneTeamSection d={d} />
+        <CloneTeamSection templateId={templateId} d={d} />
       </>
     )
   }
@@ -606,7 +606,7 @@ function AboutPage({ templateId, d }: { templateId: CloneTemplateId; d: CloneHom
             </div>
           </div>
         </section>
-        <CloneTeamSection d={d} />
+        <CloneTeamSection templateId={templateId} d={d} />
       </>
     )
   }
@@ -627,7 +627,7 @@ function AboutPage({ templateId, d }: { templateId: CloneTemplateId; d: CloneHom
           </div>
           {c.aboutImage ? <img src={c.aboutImage} alt="" className="mx-auto mt-12 max-w-5xl rounded-2xl object-cover" /> : null}
         </section>
-        <CloneTeamSection d={d} />
+        <CloneTeamSection templateId={templateId} d={d} />
       </>
     )
   }
@@ -659,7 +659,7 @@ function AboutPage({ templateId, d }: { templateId: CloneTemplateId; d: CloneHom
           ) : null}
         </div>
       </section>
-      <CloneTeamSection d={d} />
+      <CloneTeamSection templateId={templateId} d={d} />
     </>
   )
 }

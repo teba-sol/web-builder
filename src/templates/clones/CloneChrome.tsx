@@ -371,24 +371,190 @@ export function CloneStatsSection({ d }: { d: CloneHomeData }) {
   )
 }
 
-export function CloneTeamSection({ d }: { d: CloneHomeData }) {
+export function CloneTeamSection({ d, templateId }: { d: CloneHomeData; templateId: CloneTemplateId }) {
   if (!d.show.team || d.team.length === 0) return null
-  return (
-    <section className="px-4 py-24 sm:px-6" style={{ backgroundColor: 'var(--clone-surface-alt)' }}>
-      <div className="mx-auto max-w-7xl space-y-12">
-        <div className="mx-auto max-w-2xl text-center">
-          <div className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: 'var(--clone-accent)' }}>
+  const title = d.c.teamSectionTitle || 'Meet the team'
+  const team = d.team
+
+  if (templateId === 'taxfighters') {
+    return (
+      <section className="border-y border-slate-300 bg-white px-4 py-24 sm:px-6">
+        <div className="mx-auto max-w-4xl">
+          <div className="mb-12">
+            <div className="text-xs font-bold uppercase tracking-widest text-rose-600">Our experts</div>
+            <h2 className="mt-2 text-4xl font-black tracking-tight text-slate-900">{title}</h2>
+          </div>
+          <div className="divide-y divide-slate-200">
+            {team.map((member) => (
+              <div key={member.name} className="flex items-center gap-5 py-6">
+                {member.image ? (
+                  <img src={member.image} alt="" className="h-16 w-16 rounded-full object-cover" />
+                ) : (
+                  <div className="h-16 w-16 rounded-full" style={{ backgroundColor: 'var(--clone-accent-soft)' }} />
+                )}
+                <div className="min-w-0 flex-1">
+                  <h3 className="text-lg font-bold text-slate-900">{member.name}</h3>
+                  <p className="text-sm text-slate-500">{member.role}</p>
+                </div>
+                <span className="hidden h-px w-16 sm:block" style={{ backgroundColor: 'var(--clone-accent)' }} />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  if (templateId === 'aureum') {
+    return (
+      <section className="px-6 py-24 lg:px-12">
+        <div className="mx-auto max-w-[1400px]">
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] opacity-50">The studio</p>
+          <h2 className="mt-2 max-w-xl text-5xl font-bold tracking-tight">{title}</h2>
+          <div className="mt-14 grid gap-x-12 gap-y-16 sm:grid-cols-2">
+            {team.map((member) => (
+              <div key={member.name} className="flex items-center gap-6">
+                <div className="relative shrink-0">
+                  <div className="absolute -bottom-2 -left-2 h-20 w-20 rounded-tl-[40px]" style={{ backgroundColor: 'var(--clone-highlight)' }} />
+                  {member.image ? (
+                    <img src={member.image} alt="" className="relative h-28 w-28 rounded-full object-cover" />
+                  ) : (
+                    <div className="relative h-28 w-28 rounded-full" style={{ backgroundColor: 'var(--clone-accent)' }} />
+                  )}
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold tracking-tight">{member.name}</h3>
+                  <p className="mt-1 text-sm uppercase tracking-widest opacity-50">{member.role}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  if (templateId === 'flux') {
+    return (
+      <section className="bg-[#FFF3E7] px-4 py-24 sm:px-6">
+        <div className="mx-auto max-w-3xl">
+          <div className="mb-12 flex items-center gap-3 text-[13px] font-bold uppercase tracking-[0.2em] text-[#7A6A58]">
+            <span className="inline-block h-2 w-2 rotate-45" style={{ backgroundColor: 'var(--clone-accent)' }} />
+            People
+          </div>
+          <h2 className="mb-10 text-4xl font-bold tracking-tight text-[#241C15]">{title}</h2>
+          <div className="divide-y divide-[#EEDFCF]">
+            {team.map((member) => (
+              <div key={member.name} className="flex items-center justify-between gap-6 py-8">
+                <div>
+                  <h3 className="text-3xl font-bold tracking-tight text-[#241C15]">{member.name}</h3>
+                  <p className="mt-2 border-l-2 pl-3 text-sm text-[#7A6A58]" style={{ borderColor: 'var(--clone-accent)' }}>
+                    {member.role}
+                  </p>
+                </div>
+                {member.image ? (
+                  <img src={member.image} alt="" className="h-20 w-20 shrink-0 rounded-2xl object-cover" />
+                ) : (
+                  <div className="h-20 w-20 shrink-0 rounded-2xl bg-[#EEDFCF]" />
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  if (templateId === 'cpa') {
+    return (
+      <section className="px-4 py-24 sm:px-6" style={{ backgroundColor: 'var(--clone-surface)' }}>
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-12 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--clone-accent)' }}>
+            <span className="h-px w-4" style={{ backgroundColor: 'var(--clone-accent)' }} />
             Our experts
           </div>
-          <h2 className="mt-3 text-3xl font-black sm:text-4xl">{d.c.teamSectionTitle || 'Meet the team'}</h2>
+          <h2 className="mb-14 text-4xl font-black uppercase tracking-tight">{title}</h2>
+          <div className="grid gap-6 lg:grid-cols-2">
+            {team.map((member, i) => (
+              <div
+                key={member.name}
+                className="flex overflow-hidden rounded-3xl border border-[#E4E0D4] bg-white"
+                style={i === 0 ? { borderColor: 'var(--clone-accent)', boxShadow: '0 0 0 1px var(--clone-accent)' } : undefined}
+              >
+                {member.image ? (
+                  <img src={member.image} alt="" className="h-40 w-36 shrink-0 object-cover sm:h-44 sm:w-44" />
+                ) : (
+                  <div className="h-40 w-36 shrink-0 sm:h-44 sm:w-44" style={{ backgroundColor: 'var(--clone-accent-soft)' }} />
+                )}
+                <div className="flex flex-col justify-center p-6">
+                  <h3 className="text-xl font-black">{member.name}</h3>
+                  <p className="mt-1 text-sm opacity-60">{member.role}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {d.team.map((member) => (
-            <div key={member.name} className="overflow-hidden rounded-2xl border bg-[var(--clone-surface)]">
-              {member.image ? <img src={member.image} alt="" className="h-56 w-full object-cover" /> : <div className="h-56 bg-[var(--clone-accent-soft)]" />}
-              <div className="p-5 text-center">
-                <h3 className="text-sm font-bold">{member.name}</h3>
-                <p className="mt-1 text-xs opacity-60">{member.role}</p>
+      </section>
+    )
+  }
+
+  if (templateId === 'axiom') {
+    return (
+      <section className="t5 px-4 py-24 sm:px-6">
+        <div className="mx-auto grid max-w-7xl items-start gap-16 lg:grid-cols-12">
+          <div className="lg:col-span-4">
+            <div className="text-xs font-bold uppercase tracking-[0.25em]" style={{ color: 'var(--clone-accent)' }}>
+              Our experts
+            </div>
+            <h2 className="mt-3 text-4xl font-black tracking-tight">
+              {title.trim().split(/\s+/).length > 1 ? (
+                <>
+                  {title.trim().split(/\s+/).slice(0, -1).join(' ')}{' '}
+                  <span className="italic" style={{ color: 'var(--clone-accent)' }}>
+                    {title.trim().split(/\s+/).slice(-1)}
+                  </span>
+                </>
+              ) : (
+                <span className="italic" style={{ color: 'var(--clone-accent)' }}>{title}</span>
+              )}
+            </h2>
+          </div>
+          <div className="divide-y lg:col-span-8" style={{ borderColor: '#D6E4F0' }}>
+            {team.map((member) => (
+              <div key={member.name} className="flex items-center gap-5 py-6">
+                {member.image ? (
+                  <img src={member.image} alt="" className="h-16 w-16 rounded-lg object-cover" />
+                ) : (
+                  <div className="h-16 w-16 rounded-lg bg-slate-100" />
+                )}
+                <div>
+                  <h3 className="text-lg font-black tracking-tight">{member.name}</h3>
+                  <p className="text-sm italic opacity-60">{member.role}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  return (
+    <section className="bg-black px-4 py-24 text-white sm:px-6">
+      <div className="mx-auto max-w-7xl">
+        <h2 className="mb-16 text-center text-5xl font-bold sm:text-6xl">{title}</h2>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {team.map((member) => (
+            <div key={member.name} className="group relative min-h-[320px] overflow-hidden">
+              {member.image ? (
+                <img src={member.image} alt="" className="absolute inset-0 h-full w-full object-cover" />
+              ) : (
+                <div className="absolute inset-0" style={{ backgroundColor: 'var(--clone-accent)' }} />
+              )}
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
+              <div className="absolute inset-x-0 bottom-0 p-5">
+                <h3 className="text-xl font-bold">{member.name}</h3>
+                <p className="mt-1 text-sm text-white/70">{member.role}</p>
               </div>
             </div>
           ))}
