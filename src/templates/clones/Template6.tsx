@@ -2,6 +2,8 @@ import { useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { resolveSiteHref, sitePath } from '../../data/siteNav'
 import type { SiteContent } from '../../types'
+import { CloneNav, CloneTeamSection } from './CloneChrome'
+import { buildCloneHomeData } from './cloneHomeData'
 
 const MAROON = 'var(--clone-accent)'
 const WINE = 'var(--clone-ink)'
@@ -13,15 +15,12 @@ interface Props {
 }
 
 export function Template6({ c, basePath }: Props) {
-  const [mobileOpen, setMobileOpen] = useState(false)
+  const d = buildCloneHomeData(c, basePath, 'helix')
   const [formOpen, setFormOpen] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const ctaHref = resolveSiteHref(basePath, c.ctaLink || 'contact', c)
   const servicesHref = sitePath(basePath, 'services')
-  const aboutHref = sitePath(basePath, 'about')
   const locationsHref = sitePath(basePath, 'portfolio')
-  const blogHref = sitePath(basePath, 'blog')
-  const contactHref = sitePath(basePath, 'contact')
   const stats = c.stats.filter((s) => s.value).slice(0, 3)
   const steps = c.steps.filter((s) => s.title)
   const services = c.services.filter((s) => s.title).slice(0, 3)
@@ -39,101 +38,10 @@ export function Template6({ c, basePath }: Props) {
     setSubmitted(true)
   }
 
-  const navItems = [
-    { label: 'Home', to: basePath },
-    { label: 'Services', to: servicesHref },
-    { label: 'Locations', to: locationsHref },
-    { label: 'Blog', to: blogHref },
-    { label: 'About', to: aboutHref },
-    { label: 'Contact', to: contactHref },
-  ]
 
   return (
     <div className="bg-[var(--clone-surface)] font-sans text-[var(--clone-ink)]">
-      <div className="bg-black px-4 py-3 text-white">
-        <div className="mx-auto flex max-w-7xl items-center justify-between">
-          <a href={`mailto:${c.email || 'info@thetaxfighters.com'}`} className="font-medium hover:underline">
-            Email
-          </a>
-          <div className="hidden items-center gap-6 md:flex">
-            {c.instagram ? (
-              <a href={c.instagram} target="_blank" rel="noreferrer" className="hover:text-[var(--clone-accent)]">
-                Instagram
-              </a>
-            ) : null}
-            {c.website ? (
-              <a href={c.website} target="_blank" rel="noreferrer" className="hover:text-[var(--clone-accent)]">
-                Google
-              </a>
-            ) : null}
-          </div>
-          {c.phone ? (
-            <a href={`sms:${c.phone.replace(/[^\d+]/g, '')}`} className="text-sm font-medium md:text-2xl">
-              {c.phone}
-            </a>
-          ) : null}
-        </div>
-      </div>
-
-      <nav className="sticky top-0 z-40 rounded-b-3xl bg-[var(--clone-accent)] text-white shadow-lg">
-        <div className="mx-auto max-w-7xl px-4">
-          <div className="flex h-20 items-center justify-between">
-            <Link to={basePath} className="shrink-0 text-xl font-bold">
-              {c.logo ? (
-                <img src={c.logo} alt={c.businessName} className="h-16 w-16 object-contain" />
-              ) : (
-                <span>{c.businessName}</span>
-              )}
-            </Link>
-            <div className="hidden items-center gap-1 md:flex">
-              {navItems.map((item) => (
-                <Link key={item.label} to={item.to} className="rounded-lg px-4 py-2 font-medium transition-all hover:bg-white/10">
-                  {item.label}
-                </Link>
-              ))}
-            </div>
-            <div className="flex items-center gap-4">
-              {c.phone ? (
-                <a href={`tel:${c.phone}`} className="hidden font-medium md:inline">
-                  {c.phone}
-                </a>
-              ) : null}
-              <button
-                type="button"
-                onClick={() => {
-                  setFormOpen(true)
-                  setSubmitted(false)
-                }}
-                className="hidden rounded-lg bg-white px-6 py-2 font-semibold text-[var(--clone-accent)] md:block"
-              >
-                Book now
-              </button>
-              <button type="button" className="md:hidden rounded-lg px-3 py-2 hover:bg-white/10" onClick={() => setMobileOpen((v) => !v)}>
-                ☰
-              </button>
-            </div>
-          </div>
-          {mobileOpen ? (
-            <div className="space-y-2 pb-4 md:hidden">
-              {navItems.map((item) => (
-                <Link key={item.label} to={item.to} className="block rounded-lg px-4 py-2 hover:bg-white/10" onClick={() => setMobileOpen(false)}>
-                  {item.label}
-                </Link>
-              ))}
-              <button
-                type="button"
-                onClick={() => {
-                  setMobileOpen(false)
-                  setFormOpen(true)
-                }}
-                className="w-full rounded-lg bg-white px-6 py-2 font-semibold text-[var(--clone-accent)]"
-              >
-                Book now
-              </button>
-            </div>
-          ) : null}
-        </div>
-      </nav>
+      <CloneNav templateId="helix" d={d} onBook={() => { setFormOpen(true); setSubmitted(false) }} />
 
       <header className="relative h-screen min-h-[640px] overflow-hidden">
         {c.heroImage ? (
@@ -153,7 +61,7 @@ export function Template6({ c, basePath }: Props) {
             Learn More
           </Link>
         </div>
-        {stats.length > 0 && (
+        {c.sectionVisibility.stats && stats.length > 0 && (
           <div className="absolute right-0 bottom-10 left-0 z-10 flex flex-wrap justify-center gap-8 px-4 sm:gap-16">
             {stats.map((s) => (
               <div key={s.label} className="text-center">
@@ -165,7 +73,7 @@ export function Template6({ c, basePath }: Props) {
         )}
       </header>
 
-      {steps.length > 0 && (
+      {c.sectionVisibility.steps && steps.length > 0 && (
         <section className="w-full px-6 py-24 text-white" style={{ backgroundColor: WINE }}>
           <div className="mx-auto max-w-7xl">
             <div className="mb-20 text-center">
@@ -223,7 +131,7 @@ export function Template6({ c, basePath }: Props) {
         </section>
       )}
 
-      {reviews.length > 0 && (
+      {c.sectionVisibility.testimonials && reviews.length > 0 && (
         <section className="relative min-h-[70vh] bg-black px-4 py-12 sm:px-6 lg:px-8">
           <div className="mx-auto grid max-w-7xl gap-16 lg:grid-cols-2">
             <div>
@@ -255,7 +163,7 @@ export function Template6({ c, basePath }: Props) {
         </section>
       )}
 
-      {services.length > 0 && (
+      {c.pageVisibility.services && services.length > 0 && (
         <section className="px-4 py-20 sm:px-6 lg:px-8" style={{ backgroundColor: '#f9f9f9' }}>
           <div className="mx-auto max-w-7xl">
             <div className="mb-16 text-center">
@@ -336,7 +244,7 @@ export function Template6({ c, basePath }: Props) {
         </section>
       )}
 
-      {locations.length > 0 && (
+      {c.pageVisibility.portfolio && locations.length > 0 && (
         <section className="bg-white px-4 py-20">
           <h2 className="mb-12 pt-6 text-center text-4xl font-bold text-black">{c.showcaseSectionTitle}</h2>
           <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-5">
@@ -352,7 +260,9 @@ export function Template6({ c, basePath }: Props) {
         </section>
       )}
 
-      {faqs.length > 0 && (
+      <CloneTeamSection d={d} />
+
+      {c.sectionVisibility.faq && faqs.length > 0 && (
         <section className="bg-[#f9f9f9] px-4 py-20">
           <div className="mx-auto max-w-4xl">
             <div className="mb-16 text-center">

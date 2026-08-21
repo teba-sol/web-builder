@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import { lazy, Suspense, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { getColorSchemes } from '../data/colorSchemes'
 import { getTemplateMeta } from '../data/defaults'
@@ -44,7 +44,11 @@ import { FluxHome } from './FluxHome'
 import { AxiomHome } from './AxiomHome'
 import { HelixHome } from './HelixHome'
 import { CpaHome } from './CpaHome'
-import { clonePaletteCss, cloneWrapperClass, isCloneTemplate, resolveClonePalette } from './cloneTheme'
+import { clonePaletteCss, cloneWrapperClass, isCloneTemplate, resolveClonePalette, type CloneTemplateId } from './cloneTheme'
+
+const CloneInnerPage = lazy(() =>
+  import('./clones/CloneInnerPages').then((mod) => ({ default: mod.CloneInnerPage })),
+)
 
 interface Props {
   variant: TemplateId
@@ -156,13 +160,23 @@ export function RichTemplateLayout({
   const cloneCss = clonePalette ? clonePaletteCss(variant, clonePalette) : ''
   const cloneClass = isCloneTemplate(variant) ? cloneWrapperClass(variant, layoutVariantId) : ''
 
-  if (custom) {
+  if (custom || (isCloneTemplate(variant) && page !== 'home')) {
     return (
       <div data-site-brand className={cloneClass}>
         {fontHref ? <link rel="stylesheet" href={fontHref} /> : null}
         {brandStyles ? <style>{brandStyles}</style> : null}
         {cloneCss ? <style>{cloneCss}</style> : null}
-        {custom}
+        {custom ?? (
+          <Suspense fallback={null}>
+            <CloneInnerPage
+              templateId={variant as CloneTemplateId}
+              c={c}
+              basePath={basePath}
+              page={page}
+              postSlugParam={postSlug}
+            />
+          </Suspense>
+        )}
       </div>
     )
   }

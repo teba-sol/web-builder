@@ -1,9 +1,12 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import type { SiteContent } from '../../types';
+import { CloneNav, CloneTeamSection } from './CloneChrome';
+import { buildCloneHomeData } from './cloneHomeData';
 import {
   Shield,
   DollarSign,
   CheckCircle2,
-  Clock,
   MapPin,
   Phone,
   Mail,
@@ -14,14 +17,13 @@ import {
   Calendar,
    Send,
   X,
-  Menu,
   Briefcase,
   Gift,
 } from 'lucide-react';
 
-export function Template3() {
+export function Template3({ c, basePath }: { c: SiteContent; basePath: string }) {
+  const d = buildCloneHomeData(c, basePath, 'flux')
   // Mobile Navigation Menu State
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Booking Modal State
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
@@ -77,241 +79,19 @@ export function Template3() {
   };
 
   // Nav Dropdowns Data
-  const servicesList = [
-    { title: 'Predictive AI Analytics', desc: 'Uncover insights hidden in your datasets' },
-    { title: 'Automated Workflows', desc: 'Streamline operations with smart pipelines' },
-    { title: 'Enterprise Data Lake', desc: 'Secure, scalable storage for all telemetry' },
-    { title: 'Real-time API', desc: 'Integrate AI directly into your apps' }
-  ];
-
-  const locationsList = [
-    { title: 'Financial Services', desc: 'Fraud detection and risk modeling' },
-    { title: 'Healthcare', desc: 'Patient outcomes and diagnostics' },
-    { title: 'E-Commerce', desc: 'Recommendation engines and inventory' },
-    { title: 'Manufacturing', desc: 'Supply chain optimization' }
-  ];
-
-  const blogList = [
-    { title: '2026 AI Trends', desc: 'The future of generative models' },
-    { title: 'Scaling Data Pipelines', desc: 'Best practices for Enterprise architecture' },
-    { title: 'SOC-2 Compliance', desc: 'How we secure your data' }
-  ];
-
-  const faqs = [
-    {
-      q: 'How much can I receive in an instant refund advance?',
-      a: 'Qualified clients can receive refund advances ranging from $500 up to $7,500 within 24 hours of filing, subject to IRS acceptance and loan approval terms.'
-    },
-    {
-      q: 'Are there any upfront out-of-pocket costs to apply?',
-      a: 'No! There are $0 upfront out-of-pocket fees. All preparation fees and advance repayments can be deducted directly from your total tax refund.'
-    },
-    {
-      q: 'What documents do I need to bring for tax preparation?',
-      a: 'Please bring a valid Government-issued ID, Social Security Card (or ITIN), W-2s, 1099s, direct deposit account info, and any applicable tax deduction forms.'
-    },
-    {
-      q: 'How does the $50 referral bonus work?',
-      a: 'For every new client you refer who completes tax preparation with us, you receive a cash or digital gift bonus of $50 with no limit on referrals.'
-    },
-    {
-      q: 'Do you assist with IRS audit protection & back taxes?',
-      a: 'Yes, our certified tax preparers provide comprehensive IRS audit representation, back-tax resolution, and penalty abatement support.'
-    }
-  ];
-
-  const reviews = [
-    {
-      name: 'Marcus Vance',
-      date: '1 week ago',
-      rating: 5,
-      comment: 'Kreative.Studio completely transformed our brand identity. The new web app they built increased our user engagement by 150%. Unbelievable talent!'
-    },
-    {
-      name: 'Elena Rostova',
-      date: '2 weeks ago',
-      rating: 5,
-      comment: 'Working with this agency was a breeze. They delivered motion assets that made our marketing campaign go viral. Highly recommended!'
-    },
-    {
-      name: 'Terrell Jackson',
-      date: '1 month ago',
-      rating: 5,
-      comment: "The best design partners we've ever had. They truly understand how to balance stunning visuals with robust technical execution."
-    }
-  ];
+  const faqs = d.faqs.map((faq) => ({ q: faq.question, a: faq.answer }))
+  const reviews = d.testimonials.map((item) => ({
+    name: item.author,
+    date: item.role,
+    rating: 5,
+    comment: item.quote,
+  }))
 
   return (
     <div className="min-h-screen bg-[var(--clone-surface)] text-[var(--clone-ink)] font-sans selection:bg-[var(--clone-accent)] selection:text-white relative">
 
-      {/* TOP ANNOUNCEMENT & CONTACT BAR */}
-      <div className="border-b border-[#241C15]/10 text-xs py-2 px-4 text-[#FFF3E7]" style={{ backgroundColor: 'var(--clone-ink)' }}>
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
-
-          <div className="flex items-center gap-6">
-            <span className="flex items-center gap-1.5 font-semibold text-[#FFDCC4]">
-              <Phone className="w-3.5 h-3.5 text-[var(--clone-accent)]" />
-              Call Toll-Free: <a href="tel:+18005558299" className="text-[#FFF3E7] hover:text-[var(--clone-accent)] transition-colors">(800) 555-KREATIVEES</a>
-            </span>
-            <span className="hidden md:flex items-center gap-1.5 text-[#FFDCC4]">
-              <Mail className="w-3.5 h-3.5 text-[var(--clone-accent)]" />
-              info@taxguardians.com
-            </span>
-            <span className="hidden lg:flex items-center gap-1.5 text-[#FFDCC4]">
-              <Clock className="w-3.5 h-3.5 text-[var(--clone-accent)]" />
-              Mon-Fri: 9AM - 7PM | Sat: 10AM - 4PM
-            </span>
-          </div>
-
-          <div className="flex items-center gap-3 font-semibold text-[#FFDCC4]">
-            {/* <span className="bg-[#FA6B34]/20 px-2.5 py-0.5 rounded-full border border-[#FA6B34]/40 text-[11px]">
-              🔥 2026 Tax Season Open: Get Up to $7,500 Today!
-            </span> */}
-          </div>
-
-        </div>
-      </div>
-
-      {/* HEADER / NAVIGATION BAR */}
-      <header className="sticky top-0 z-40 bg-[var(--clone-surface)]/95 backdrop-blur-md border-b border-[#EEDFCF] shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-
-          {/* Logo */}
-          <a href="#hero" className="flex items-center gap-3 group">
-            <div className="w-11 h-11 rounded-xl flex items-center justify-center text-white shadow-lg shadow-[#FA6B34]/30 transition-transform group-hover:scale-105" style={{ backgroundColor: 'var(--clone-accent)' }}>
-              <Shield className="w-6 h-6 text-white" />
-            </div>
-            <div>
-              <div className="text-xl font-black tracking-tight text-[#241C15] flex items-center gap-1">
-                Company<span style={{ color: 'var(--clone-accent)' }}>Name</span>
-              </div>
-              <div className="text-[10px] text-[#9C8A76] font-semibold uppercase tracking-widest">
-                Tagline here
-              </div>
-            </div>
-          </a>
-
-          {/* Desktop Navigation Links with Dropdowns */}
-          <nav className="hidden lg:flex items-center gap-1">
-
-            {/* HOME */}
-            <a href="#hero" className="px-3.5 py-2 rounded-lg text-sm font-semibold text-[#3A2E22] hover:text-[var(--clone-accent)] hover:bg-[#FFEDE1] transition">
-              Home
-            </a>
-
-            {/* SERVICES DROPDOWN */}
-            <div className="relative group">
-              <button className="flex items-center gap-1 px-3.5 py-2 rounded-lg text-sm font-semibold text-[#3A2E22] hover:text-[var(--clone-accent)] hover:bg-[#FFEDE1] transition">
-                Services <ChevronDown className="w-4 h-4 text-[#9C8A76] group-hover:rotate-180 group-hover:text-[var(--clone-accent)] transition-transform" />
-              </button>
-
-              <div className="absolute top-full left-0 w-80 pt-2 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200">
-                <div className="bg-white border border-[#EEDFCF] rounded-2xl shadow-2xl shadow-[#241C15]/10 p-2 space-y-1">
-                  {servicesList.map((s, idx) => (
-                    <a key={idx} href="#services" className="block p-3 rounded-xl hover:bg-[#FFEDE1] border border-transparent transition">
-                      <div className="text-sm font-bold text-[#241C15] flex items-center justify-between">
-                        {s.title}
-                        <ArrowRight className="w-3.5 h-3.5 text-[var(--clone-accent)]" />
-                      </div>
-                      <div className="text-xs text-[#7A6A58] mt-0.5">{s.desc}</div>
-                    </a>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* LOCATIONS DROPDOWN */}
-            <div className="relative group">
-              <button className="flex items-center gap-1 px-3.5 py-2 rounded-lg text-sm font-semibold text-[#3A2E22] hover:text-[var(--clone-accent)] hover:bg-[#FFEDE1] transition">
-                Locations <ChevronDown className="w-4 h-4 text-[#9C8A76] group-hover:rotate-180 group-hover:text-[var(--clone-accent)] transition-transform" />
-              </button>
-
-              <div className="absolute top-full left-0 w-80 pt-2 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200">
-                <div className="bg-white border border-[#EEDFCF] rounded-2xl shadow-2xl shadow-[#241C15]/10 p-2 space-y-1">
-                  {locationsList.map((loc, idx) => (
-                    <a key={idx} href="#location" className="block p-3 rounded-xl hover:bg-[#FFEDE1] transition">
-                      <div className="text-sm font-bold text-[#241C15]">{loc.title}</div>
-                      <div className="text-xs text-[#7A6A58] mt-0.5">{loc.desc}</div>
-                    </a>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* BLOG DROPDOWN */}
-            <div className="relative group">
-              <button className="flex items-center gap-1 px-3.5 py-2 rounded-lg text-sm font-semibold text-[#3A2E22] hover:text-[var(--clone-accent)] hover:bg-[#FFEDE1] transition">
-                Blog <ChevronDown className="w-4 h-4 text-[#9C8A76] group-hover:rotate-180 group-hover:text-[var(--clone-accent)] transition-transform" />
-              </button>
-
-              <div className="absolute top-full left-0 w-80 pt-2 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200">
-                <div className="bg-white border border-[#EEDFCF] rounded-2xl shadow-2xl shadow-[#241C15]/10 p-2 space-y-1">
-                  {blogList.map((b, idx) => (
-                    <a key={idx} href="#faq" className="block p-3 rounded-xl hover:bg-[#FFEDE1] transition">
-                      <div className="text-sm font-bold text-[#241C15]">{b.title}</div>
-                      <div className="text-xs text-[#7A6A58] mt-0.5">{b.desc}</div>
-                    </a>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* ABOUT */}
-            <a href="#about" className="px-3.5 py-2 rounded-lg text-sm font-semibold text-[#3A2E22] hover:text-[var(--clone-accent)] hover:bg-[#FFEDE1] transition">
-              About
-            </a>
-
-            {/* CONTACT */}
-            <a href="#contact" className="px-3.5 py-2 rounded-lg text-sm font-semibold text-[#3A2E22] hover:text-[var(--clone-accent)] hover:bg-[#FFEDE1] transition">
-              Contact
-            </a>
-
-          </nav>
-
-          {/* Book Now Action Button */}
-          <div className="hidden sm:flex items-center gap-3">
-            <button
-              onClick={() => setIsBookingModalOpen(true)}
-              className="px-6 py-3 rounded-xl text-white font-bold text-sm shadow-lg shadow-[#FA6B34]/30 hover:scale-105 hover:shadow-[#FA6B34]/50 active:scale-95 transition-all flex items-center gap-2"
-              style={{ backgroundColor: 'var(--clone-accent)' }}
-            >
-              <Calendar className="w-4 h-4 text-white" /> Book Now
-            </button>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 rounded-xl bg-[#FFEDE1] text-[#241C15] border border-[#EEDFCF]"
-          >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-
-        </div>
-
-        {/* Mobile Dropdown Menu */}
-        {mobileMenuOpen && (
-          <div className="lg:hidden bg-[var(--clone-surface)] border-b border-[#EEDFCF] px-6 py-6 space-y-4">
-            <a href="#hero" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-base font-bold text-[#241C15]">Home</a>
-            <a href="#services" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-base font-bold text-[#241C15]">Services</a>
-            <a href="#about" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-base font-bold text-[#241C15]">About Us</a>
-            <a href="#process" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-base font-bold text-[#241C15]">How It Works</a>
-            <a href="#reviews" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-base font-bold text-[#241C15]">Client Reviews</a>
-            <a href="#faq" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-base font-bold text-[#241C15]">FAQ</a>
-            <a href="#contact" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-base font-bold text-[#241C15]">Contact Us</a>
-
-            <button
-              onClick={() => { setMobileMenuOpen(false); setIsBookingModalOpen(true); }}
-              className="w-full py-3.5 rounded-xl text-white font-bold flex items-center justify-center gap-2 shadow-lg shadow-[#FA6B34]/30"
-              style={{ backgroundColor: 'var(--clone-accent)' }}
-            >
-              <Calendar className="w-4 h-4 text-white" /> Book Appointment Now
-            </button>
-          </div>
-        )}
-      </header>
-
-    <section className="relative min-h-screen text-white font-sans flex flex-col w-full bg-[#141110]">
+      <CloneNav templateId="flux" d={d} onBook={() => setIsBookingModalOpen(true)} />
+<section className="relative min-h-screen text-white font-sans flex flex-col w-full bg-[#141110]">
   {/* Full Background Image with Dark Overlay */}
   <div className="absolute inset-0 z-0">
     <img
@@ -339,13 +119,12 @@ export function Template3() {
 
       {/* Main Headline */}
       <h1 className="text-5xl lg:text-[5.5rem] font-bold leading-[1.05] tracking-tight mb-8">
-        Invested in your<br />
-        <span style={{ color: 'var(--clone-accent)' }}>Long term</span> success.
+        {c.tagline}
       </h1>
 
       {/* Subtext */}
       <p className="text-lg lg:text-[19px] text-[#CBBBAC] font-medium max-w-[600px] mb-10 leading-relaxed border-l-2 pl-4" style={{ borderColor: 'var(--clone-accent)' }}>
-        To assist individuals and help businesses realize their financial ambitions and be successful is The Allen CPA Firm mission.
+        {c.heroSubtext}
       </p>
 
       {/* Call to Action */}
@@ -356,35 +135,23 @@ export function Template3() {
   </div>
 </section>
 
-      {/* STATS BANNER */}
+      {d.show.stats && d.stats.length > 0 && (
       <section className="py-12 bg-[#FFF3E7] border-y border-[#EEDFCF]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-
-            <div className="p-6 rounded-2xl bg-white border border-[#EEDFCF] shadow-sm">
-              <div className="text-4xl font-extrabold text-[#241C15]">10+ Years</div>
-              <div className="text-sm font-semibold mt-1" style={{ color: 'var(--clone-accent)' }}>Design Excellence</div>
-              <p className="text-xs text-[#7A6A58] mt-1">Award-winning UX/UI Designers & Engineers</p>
+            {d.stats.slice(0, 4).map((stat) => (
+            <div key={stat.label} className="p-6 rounded-2xl bg-white border border-[#EEDFCF] shadow-sm">
+              <div className="text-4xl font-extrabold text-[#241C15]">{stat.value}</div>
+              <div className="text-sm font-semibold mt-1" style={{ color: 'var(--clone-accent)' }}>{stat.label}</div>
             </div>
-
-            <div className="p-6 rounded-2xl bg-white border border-[#EEDFCF] shadow-sm">
-              <div className="text-4xl font-extrabold text-[#241C15]">300+</div>
-              <div className="text-sm font-semibold mt-1" style={{ color: 'var(--clone-accent)' }}>Projects Launched</div>
-              <p className="text-xs text-[#7A6A58] mt-1">Helping startups and enterprises redefine their brands</p>
-            </div>
-
-            <div className="p-6 rounded-2xl bg-white border border-[#EEDFCF] shadow-sm">
-              <div className="text-4xl font-extrabold text-[#241C15]">$500M+</div>
-              <div className="text-sm font-semibold mt-1" style={{ color: 'var(--clone-accent)' }}>Client Revenue Generated</div>
-              <p className="text-xs text-[#7A6A58] mt-1">Impactful digital products driving significant business growth</p>
-            </div>
-
+            ))}
           </div>
         </div>
       </section>
+      )}
 
       {/* ABOUT SECTION */}
-      <section id="about" className="py-24 px-4 sm:px-6 lg:px-8 relative">
+      <section id="about" className={`${!(d.show.about) ? 'hidden ' : ''}py-24 px-4 sm:px-6 lg:px-8 relative`}>
         <div className="max-w-7xl mx-auto grid lg:grid-cols-12 gap-12 items-center">
 
           <div className="lg:col-span-6 relative">
@@ -449,7 +216,7 @@ export function Template3() {
       </section>
 
       {/* OUR SERVICES SECTION */}
-      <section id="services" className="py-24 px-4 sm:px-6 lg:px-8 bg-[#FFF3E7] border-t border-[#EEDFCF]">
+      <section id="services" className={`${!(d.show.services) ? 'hidden ' : ''}py-24 px-4 sm:px-6 lg:px-8 bg-[#FFF3E7] border-t border-[#EEDFCF]`}>
         <div className="max-w-7xl mx-auto space-y-12">
 
           <div className="text-center max-w-3xl mx-auto space-y-3">
@@ -551,7 +318,7 @@ export function Template3() {
       </section>
 
       {/* HOW IT WORKS PROCESS SECTION */}
-      <section id="process" className="py-24 px-4 sm:px-6 lg:px-8 border-t border-[#EEDFCF]">
+      <section id="process" className={`${!(d.show.steps) ? 'hidden ' : ''}py-24 px-4 sm:px-6 lg:px-8 border-t border-[#EEDFCF]`}>
         <div className="max-w-7xl mx-auto space-y-16">
 
           <div className="text-center max-w-2xl mx-auto space-y-3">
@@ -600,7 +367,7 @@ export function Template3() {
       </section>
 
       {/* CLIENT REVIEWS SECTION */}
-      <section id="reviews" className="py-24 px-4 sm:px-6 lg:px-8 bg-[#FFF3E7] border-t border-[#EEDFCF]">
+      <section id="reviews" className={`${!(d.show.testimonials) ? 'hidden ' : ''}py-24 px-4 sm:px-6 lg:px-8 bg-[#FFF3E7] border-t border-[#EEDFCF]`}>
         <div className="max-w-7xl mx-auto space-y-12">
 
           <div className="text-center max-w-2xl mx-auto space-y-3">
@@ -628,8 +395,10 @@ export function Template3() {
         </div>
       </section>
 
+      <CloneTeamSection d={d} />
+
       {/* FAQ ACCORDION SECTION */}
-      <section id="faq" className="py-24 px-4 sm:px-6 lg:px-8 border-t border-[#EEDFCF]">
+      <section id="faq" className={`${!(d.show.faq) ? 'hidden ' : ''}py-24 px-4 sm:px-6 lg:px-8 border-t border-[#EEDFCF]`}>
         <div className="max-w-4xl mx-auto space-y-8">
 
           <div className="text-center space-y-3">
@@ -660,7 +429,7 @@ export function Template3() {
       </section>
 
       {/* CONTACT SECTION */}
-      <section id="contact" className="py-24 px-4 sm:px-6 lg:px-8 bg-[#FFF3E7] border-t border-[#EEDFCF]">
+      <section id="contact" className={`${!(d.show.contact) ? 'hidden ' : ''}py-24 px-4 sm:px-6 lg:px-8 bg-[#FFF3E7] border-t border-[#EEDFCF]`}>
         <div className="max-w-7xl mx-auto space-y-12">
 
           <div className="text-center max-w-2xl mx-auto space-y-3">
@@ -791,10 +560,10 @@ export function Template3() {
           <div>
             <h4 className="text-white font-bold mb-3 uppercase tracking-wider">Services</h4>
             <ul className="space-y-2">
-              <li><a href="#services" className="hover:text-[var(--clone-accent)] transition-colors">Individual Tax Prep</a></li>
-              <li><a href="#services" className="hover:text-[var(--clone-accent)] transition-colors">Refund Advance Loans</a></li>
-              <li><a href="#services" className="hover:text-[var(--clone-accent)] transition-colors">$50 Referral Bonus</a></li>
-              <li><a href="#services" className="hover:text-[var(--clone-accent)] transition-colors">Business Tax & IRS Audit</a></li>
+              <li><Link to={d.hrefs.services} className="hover:text-[var(--clone-accent)] transition-colors">Individual Tax Prep</Link></li>
+              <li><Link to={d.hrefs.services} className="hover:text-[var(--clone-accent)] transition-colors">Refund Advance Loans</Link></li>
+              <li><Link to={d.hrefs.services} className="hover:text-[var(--clone-accent)] transition-colors">$50 Referral Bonus</Link></li>
+              <li><Link to={d.hrefs.services} className="hover:text-[var(--clone-accent)] transition-colors">Business Tax & IRS Audit</Link></li>
             </ul>
           </div>
 

@@ -1,3 +1,4 @@
+import { clampVisibilityToProfile } from '../data/editorProfile'
 import { defaultPageVisibility } from '../data/pageConfig'
 import { mergeRichContent } from '../data/richDefaults'
 import {
@@ -94,7 +95,7 @@ export function migrateContent(raw: Partial<SiteContent>, templateId?: TemplateI
     seoSiteUrl: raw.seoSiteUrl ?? merged.seoSiteUrl ?? '',
   }
 
-  return sanitizeContentLinks(result)
+  return clampVisibilityToProfile(id, sanitizeContentLinks(result))
 }
 
 export function migrateContentWithTemplate(saved: { templateId: TemplateId; content: Partial<SiteContent> }) {

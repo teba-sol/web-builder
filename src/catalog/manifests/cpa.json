@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "cpa",
   "name": "Greenfield Tax",
-  "description": "Forest-and-lime next-gen tax filing — simple returns, refund advances, and year-round audit defense.",
+  "description": "Forest-and-lime next-gen tax filing \u2014 simple returns, refund advances, and year-round audit defense.",
   "category": "finance",
   "previewGradient": "from-[#16302A] via-[#A8D93F] to-[#F6F3EA]",
   "accentColor": "#A8D93F",
@@ -15,11 +15,27 @@
     "services": true,
     "portfolio": true,
     "blog": true,
-    "news": true,
-    "gallery": true,
+    "news": false,
+    "gallery": false,
     "contact": true,
     "rooms": false
   },
+  "editorPages": [
+    "about",
+    "services",
+    "portfolio",
+    "blog",
+    "contact"
+  ],
+  "editorSections": [
+    "stats",
+    "steps",
+    "testimonials",
+    "faq",
+    "cta",
+    "team",
+    "pricing"
+  ],
   "homeSections": [
     "nav",
     "hero",
@@ -147,7 +163,7 @@
   "defaultShowcase": [
     {
       "title": "Real Estate",
-      "description": "Investors, brokers, developers, and property managers — cost segregation, 1031 exchanges, and entity structure.",
+      "description": "Investors, brokers, developers, and property managers \u2014 cost segregation, 1031 exchanges, and entity structure.",
       "image": "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80",
       "price": "",
       "tag": "Investors",
@@ -171,7 +187,7 @@
     },
     {
       "title": "Entertainment",
-      "description": "Actors, creators, agents, and production companies — multi-state filing and deduction strategy.",
+      "description": "Actors, creators, agents, and production companies \u2014 multi-state filing and deduction strategy.",
       "image": "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=600&q=80",
       "price": "",
       "tag": "Creatives",
@@ -187,7 +203,7 @@
     },
     {
       "title": "Technology",
-      "description": "Founders, contractors, and growing software teams — R&D credits, equity events, and multi-state nexus.",
+      "description": "Founders, contractors, and growing software teams \u2014 R&D credits, equity events, and multi-state nexus.",
       "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80",
       "price": "",
       "tag": "Founders",
@@ -214,12 +230,12 @@
     {
       "key": "hours",
       "label": "Office Hours",
-      "placeholder": "Mon–Fri 8:30am–5:30pm"
+      "placeholder": "Mon\u2013Fri 8:30am\u20135:30pm"
     },
     {
       "key": "licenseNumber",
       "label": "CPA / Firm License",
-      "placeholder": "AICPA · CPA License #C-44821"
+      "placeholder": "AICPA \u00b7 CPA License #C-44821"
     },
     {
       "key": "linkedin",
@@ -264,8 +280,8 @@
       "services": true,
       "portfolio": true,
       "blog": true,
-      "news": true,
-      "gallery": true,
+      "news": false,
+      "gallery": false,
       "contact": true,
       "rooms": false
     },
@@ -288,7 +304,7 @@
         "label": "Returns Filed"
       },
       {
-        "value": "4.9★",
+        "value": "4.9\u2605",
         "label": "Client Rating"
       },
       {
@@ -301,11 +317,11 @@
     "services": [
       {
         "title": "Individual Tax",
-        "description": "Personal returns, multi-state filing, and a deduction review that goes beyond last year’s forms."
+        "description": "Personal returns, multi-state filing, and a deduction review that goes beyond last year\u2019s forms."
       },
       {
         "title": "Business Tax",
-        "description": "S-corps, partnerships, and corporations — entity strategy, estimated taxes, and year-end planning."
+        "description": "S-corps, partnerships, and corporations \u2014 entity strategy, estimated taxes, and year-end planning."
       },
       {
         "title": "Bookkeeping & Accounting",
@@ -321,7 +337,7 @@
       },
       {
         "title": "Entity Formation",
-        "description": "Choose, form, and maintain the right structure — LLC, S-corp, or nonprofit — before you file."
+        "description": "Choose, form, and maintain the right structure \u2014 LLC, S-corp, or nonprofit \u2014 before you file."
       }
     ],
     "stepsSectionTitle": "How an engagement works",
@@ -336,11 +352,11 @@
       },
       {
         "title": "Custom tax strategy",
-        "description": "You leave with a written plan for this year and next — filings, estimates, and entity decisions."
+        "description": "You leave with a written plan for this year and next \u2014 filings, estimates, and entity decisions."
       },
       {
         "title": "Year-round support",
-        "description": "Questions, quarterly check-ins, and filing — so you are never waiting until March to get organized."
+        "description": "Questions, quarterly check-ins, and filing \u2014 so you are never waiting until March to get organized."
       }
     ],
     "showcaseSectionTitle": "Who We Serve",
@@ -348,7 +364,7 @@
     "showcaseItems": [
       {
         "title": "Real Estate",
-        "description": "Investors, brokers, developers, and property managers — cost segregation, 1031 exchanges, and entity structure.",
+        "description": "Investors, brokers, developers, and property managers \u2014 cost segregation, 1031 exchanges, and entity structure.",
         "image": "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80",
         "price": "",
         "tag": "Investors",
@@ -372,7 +388,7 @@
       },
       {
         "title": "Entertainment",
-        "description": "Actors, creators, agents, and production companies — multi-state filing and deduction strategy.",
+        "description": "Actors, creators, agents, and production companies \u2014 multi-state filing and deduction strategy.",
         "image": "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=600&q=80",
         "price": "",
         "tag": "Creatives",
@@ -388,7 +404,7 @@
       },
       {
         "title": "Technology",
-        "description": "Founders, contractors, and growing software teams — R&D credits, equity events, and multi-state nexus.",
+        "description": "Founders, contractors, and growing software teams \u2014 R&D credits, equity events, and multi-state nexus.",
         "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80",
         "price": "",
         "tag": "Founders",
@@ -424,7 +440,7 @@
     "faqs": [
       {
         "question": "When should I start working with a CPA?",
-        "answer": "Anytime — but the best savings happen before December 31. New clients often start with a mid-year review so we can still change withholding, estimates, retirement contributions, and entity decisions."
+        "answer": "Anytime \u2014 but the best savings happen before December 31. New clients often start with a mid-year review so we can still change withholding, estimates, retirement contributions, and entity decisions."
       },
       {
         "question": "Do you only prepare returns, or do you plan year-round?",
@@ -440,7 +456,7 @@
       },
       {
         "question": "What should I bring to a first consultation?",
-        "answer": "Last year’s return if you have it, a list of income sources, any IRS or state letters, and the questions keeping you up at night. We will tell you what else we need before we propose an engagement."
+        "answer": "Last year\u2019s return if you have it, a list of income sources, any IRS or state letters, and the questions keeping you up at night. We will tell you what else we need before we propose an engagement."
       },
       {
         "question": "How do you charge?",
@@ -457,7 +473,7 @@
         "title": "Extended hours through April 15",
         "slug": "tax-season-extended-hours",
         "excerpt": "Evening and Saturday appointments are open through filing deadline. Book a slot before the calendar fills.",
-        "body": "Tax season is here. In addition to weekday hours, Hartwell & Associates will be open selected evenings and Saturdays through April 15 so you can review documents without missing work.\n\nExisting clients can book through the usual advisor. New clients should request a consultation — we still take a limited number of new individual and business returns each season.",
+        "body": "Tax season is here. In addition to weekday hours, Hartwell & Associates will be open selected evenings and Saturdays through April 15 so you can review documents without missing work.\n\nExisting clients can book through the usual advisor. New clients should request a consultation \u2014 we still take a limited number of new individual and business returns each season.",
         "image": "https://images.unsplash.com/photo-1434626881859-194d67b2b86f?w=800&q=80",
         "author": "Front Desk",
         "date": "2026-02-02"
@@ -466,16 +482,16 @@
         "title": "New retirement contribution limits for this year",
         "slug": "retirement-contribution-limits",
         "excerpt": "Higher 401(k) and IRA ceilings change the year-end planning conversation. Here is what we are telling clients.",
-        "body": "Contribution limits moved again. If you are self-employed or run payroll, the new ceilings affect both this year’s estimates and next year’s withholding.\n\nWe are reviewing every advisory client’s plan in Q1. If you are not yet on a planning cadence, schedule a mid-year review before you lock in profit distributions.",
+        "body": "Contribution limits moved again. If you are self-employed or run payroll, the new ceilings affect both this year\u2019s estimates and next year\u2019s withholding.\n\nWe are reviewing every advisory client\u2019s plan in Q1. If you are not yet on a planning cadence, schedule a mid-year review before you lock in profit distributions.",
         "image": "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&q=80",
         "author": "Elena Hartwell, CPA",
         "date": "2026-01-20"
       },
       {
-        "title": "Hartwell named among the city’s top accounting firms",
+        "title": "Hartwell named among the city\u2019s top accounting firms",
         "slug": "readers-choice-accounting-firm",
         "excerpt": "Thank you to the clients who keep sending neighbors, partners, and their own books our way.",
-        "body": "We are honored to be recognized again as a readers’ choice accounting firm. Awards are nice. What matters more is that clients stay, refer, and come back when the IRS writes.\n\nThis year we are investing in secure document collection and additional tax-season staff so the experience stays calm as we grow.",
+        "body": "We are honored to be recognized again as a readers\u2019 choice accounting firm. Awards are nice. What matters more is that clients stay, refer, and come back when the IRS writes.\n\nThis year we are investing in secure document collection and additional tax-season staff so the experience stays calm as we grow.",
         "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80",
         "author": "Communications",
         "date": "2026-03-04"
@@ -524,7 +540,7 @@
         "title": "You received an IRS letter. Here is the first week.",
         "slug": "irs-letter-first-week",
         "excerpt": "Do not ignore it, and do not call the number on the notice in a panic. A calm sequence works better.",
-        "body": "Open the envelope. Note the notice number, the tax year, and the deadline. Then send us the PDF. Most letters are math mismatches, missing forms, or identity checks — not audits.\n\nWe reply on your behalf, request transcripts when needed, and only escalate to representation if the facts require it. Waiting rarely improves the outcome. Guessing on the phone often makes it worse.",
+        "body": "Open the envelope. Note the notice number, the tax year, and the deadline. Then send us the PDF. Most letters are math mismatches, missing forms, or identity checks \u2014 not audits.\n\nWe reply on your behalf, request transcripts when needed, and only escalate to representation if the facts require it. Waiting rarely improves the outcome. Guessing on the phone often makes it worse.",
         "image": "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&q=80",
         "author": "Priya Nair, CPA",
         "date": "2026-02-18"
@@ -533,7 +549,7 @@
         "title": "Estimated taxes for freelancers who hate surprises",
         "slug": "estimated-taxes-for-freelancers",
         "excerpt": "A simple quarterly rhythm so April does not wipe out a good year.",
-        "body": "If you receive 1099 income, the IRS expects payments through the year. We set estimates from your current books, not last year’s guess, and we adjust after a strong or slow quarter.\n\nPair estimates with a retirement contribution plan and an entity review. Plenty of freelancers overpay because they never looked at an S-corp or a SEP IRA until the return was already prepared.",
+        "body": "If you receive 1099 income, the IRS expects payments through the year. We set estimates from your current books, not last year\u2019s guess, and we adjust after a strong or slow quarter.\n\nPair estimates with a retirement contribution plan and an entity review. Plenty of freelancers overpay because they never looked at an S-corp or a SEP IRA until the return was already prepared.",
         "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
         "author": "Elena Hartwell, CPA",
         "date": "2026-01-28"
@@ -542,17 +558,17 @@
     "team": [
       {
         "name": "Elena Hartwell, CPA",
-        "role": "Managing Partner — Tax Strategy",
+        "role": "Managing Partner \u2014 Tax Strategy",
         "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
       },
       {
         "name": "Marcus Adeyemi, CPA",
-        "role": "Partner — Business Tax",
+        "role": "Partner \u2014 Business Tax",
         "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80"
       },
       {
         "name": "Priya Nair, CPA",
-        "role": "Director — Tax Resolution",
+        "role": "Director \u2014 Tax Resolution",
         "image": "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80"
       }
     ],
@@ -575,7 +591,7 @@
     "whatsapp": "",
     "supportEmail": "",
     "reservationEmail": "",
-    "licenseNumber": "AICPA · CPA License #C-44821",
+    "licenseNumber": "AICPA \u00b7 CPA License #C-44821",
     "bookingUrl": "",
     "contactSectionTitle": "Request a consultation",
     "contactFormTitle": "Tell us about your tax situation",

@@ -8,6 +8,13 @@ import type { ContactFieldKey } from '../types'
 import { slugify } from '../utils/slugify'
 import type { ContentListKey } from '../data/listDefaults'
 import { getDefaultLayoutVariantId } from '../data/layoutVariants'
+import {
+  getEditablePageMetas,
+  getEditableSectionMetas,
+  isEditablePage,
+  isEditableSection,
+} from '../data/editorProfile'
+import { getPageNavLabel } from '../data/pageConfig'
 import { optimizeSiteSeo } from '../utils/seoOptimizer'
 import { BrandIdentityForm } from './BrandIdentityForm'
 import { ColorSchemePicker } from './ColorSchemePicker'
@@ -25,6 +32,15 @@ export function ContentForm() {
   } = useWebsite()
   const template = templateId ? getTemplateMeta(templateId) : null
   const showcaseCfg = templateId ? getShowcaseConfig(templateId) : null
+  const editablePages = getEditablePageMetas(templateId).map((meta) => ({
+    ...meta,
+    label: templateId ? getPageNavLabel(templateId, meta.key) : meta.label,
+  }))
+  const editableSections = getEditableSectionMetas(templateId)
+  const pageOn = (page: keyof typeof content.pageVisibility) =>
+    isEditablePage(templateId, page) && content.pageVisibility[page]
+  const sectionOn = (section: Parameters<typeof isEditableSection>[1]) =>
+    isEditableSection(templateId, section) && content.sectionVisibility[section]
 
   const setContact = (key: ContactFieldKey, value: string) => {
     updateContent({ [key]: value })
@@ -65,11 +81,13 @@ export function ContentForm() {
       <PageVisibilityPicker
         visibility={content.pageVisibility}
         onToggle={togglePageVisibility}
+        pages={editablePages}
       />
 
       <SectionVisibilityPicker
         visibility={content.sectionVisibility}
         onToggle={toggleSectionVisibility}
+        sections={editableSections}
       />
 
       <FormSection title="SEO">
@@ -109,15 +127,20 @@ export function ContentForm() {
         <Field label="Headline / Tagline" value={content.tagline} onChange={(v) => updateContent({ tagline: v })} />
         <Field label="Hero Subtext" value={content.heroSubtext} onChange={(v) => updateContent({ heroSubtext: v })} multiline />
         <ImagePicker label="Hero Image" value={content.heroImage} onChange={(v) => updateContent({ heroImage: v })} />
+        <Field label="Primary button text" value={content.ctaText} onChange={(v) => updateContent({ ctaText: v })} />
+        <Field label="Primary button link" value={content.ctaLink} onChange={(v) => updateContent({ ctaLink: v })} placeholder="contact" />
       </FormSection>
 
+      {pageOn('about') && (
       <FormSection title="About">
         <Field label="Section Title" value={content.aboutTitle} onChange={(v) => updateContent({ aboutTitle: v })} />
         <Field label="About Text" value={content.about} onChange={(v) => updateContent({ about: v })} multiline rows={5} />
         <ImagePicker label="About Image" value={content.aboutImage} onChange={(v) => updateContent({ aboutImage: v })} />
         <Field label="Mission Statement" value={content.missionStatement} onChange={(v) => updateContent({ missionStatement: v })} multiline />
       </FormSection>
+      )}
 
+      {sectionOn('stats') && (
       <FormSection title="Stats" {...listControls('stats')}>
         {content.stats.map((stat, i) => (
           <ItemCard
@@ -131,7 +154,9 @@ export function ContentForm() {
           </ItemCard>
         ))}
       </FormSection>
+      )}
 
+      {pageOn('services') && (
       <FormSection title={template?.servicesLabel ?? 'Services'} {...listControls('services', servicesAddLabel)}>
         <Field label="Section Title" value={content.servicesSectionTitle} onChange={(v) => updateContent({ servicesSectionTitle: v })} />
         <Field label="Section Subtitle" value={content.servicesSectionSubtitle} onChange={(v) => updateContent({ servicesSectionSubtitle: v })} />
@@ -147,8 +172,9 @@ export function ContentForm() {
           </ItemCard>
         ))}
       </FormSection>
+      )}
 
-      {content.pageVisibility.rooms && (
+      {pageOn('rooms') && (
         <FormSection title="Rooms & Booking" {...listControls('roomTypes', 'Add Room Type')}>
           <p className="mb-3 text-xs text-slate-500">
             Define room types and optional subtypes (set Parent slug). Unit count seeds inventory in the exported admin. Guests can only book available units.
@@ -214,7 +240,7 @@ export function ContentForm() {
         </FormSection>
       )}
 
-      {showcaseCfg && content.pageVisibility.portfolio && (
+      {showcaseCfg && pageOn('portfolio') && (
         <FormSection title={`Portfolio — ${showcaseCfg.sectionTitle}`} {...listControls('showcaseItems', showcaseAddLabel)}>
           <Field label="Section Title" value={content.showcaseSectionTitle} onChange={(v) => updateContent({ showcaseSectionTitle: v })} />
           <Field label="Section Subtitle" value={content.showcaseSectionSubtitle} onChange={(v) => updateContent({ showcaseSectionSubtitle: v })} />
@@ -240,6 +266,7 @@ export function ContentForm() {
         </FormSection>
       )}
 
+      {sectionOn('steps') && (
       <FormSection title="How It Works" {...listControls('steps')}>
         <Field label="Section Title" value={content.stepsSectionTitle} onChange={(v) => updateContent({ stepsSectionTitle: v })} />
         {content.steps.map((step, i) => (
@@ -254,7 +281,9 @@ export function ContentForm() {
           </ItemCard>
         ))}
       </FormSection>
+      )}
 
+      {pageOn('gallery') && (
       <FormSection title="Gallery" {...listControls('galleryImages')}>
         <Field label="Section Title" value={content.gallerySectionTitle} onChange={(v) => updateContent({ gallerySectionTitle: v })} />
         {content.galleryImages.map((img, i) => (
@@ -268,7 +297,9 @@ export function ContentForm() {
           </ItemCard>
         ))}
       </FormSection>
+      )}
 
+      {sectionOn('testimonials') && (
       <FormSection title="Reviews" {...listControls('testimonials', 'Add Review')}>
         <Field label="Section Title" value={content.testimonialsSectionTitle} onChange={(v) => updateContent({ testimonialsSectionTitle: v })} />
         {content.testimonials.map((t, i) => (
@@ -284,8 +315,9 @@ export function ContentForm() {
           </ItemCard>
         ))}
       </FormSection>
+      )}
 
-      {content.pageVisibility.blog && (
+      {pageOn('blog') && (
         <FormSection title="Blog" {...listControls('blogPosts', 'Add Post')}>
           <Field label="Section Title" value={content.blogSectionTitle} onChange={(v) => updateContent({ blogSectionTitle: v })} />
           <Field label="Section Subtitle" value={content.blogSectionSubtitle} onChange={(v) => updateContent({ blogSectionSubtitle: v })} />
@@ -317,7 +349,7 @@ export function ContentForm() {
         </FormSection>
       )}
 
-      {content.pageVisibility.news && (
+      {pageOn('news') && (
         <FormSection title="News" {...listControls('newsPosts', 'Add News Item')}>
           <Field label="Section Title" value={content.newsSectionTitle} onChange={(v) => updateContent({ newsSectionTitle: v })} />
           <Field label="Section Subtitle" value={content.newsSectionSubtitle} onChange={(v) => updateContent({ newsSectionSubtitle: v })} />
@@ -349,7 +381,7 @@ export function ContentForm() {
         </FormSection>
       )}
 
-      {content.sectionVisibility.pricing && (
+      {sectionOn('pricing') && (
         <FormSection title="Pricing" {...listControls('pricing', 'Add Plan')}>
           <Field label="Section Title" value={content.pricingSectionTitle} onChange={(v) => updateContent({ pricingSectionTitle: v })} />
           {content.pricing.map((plan, i) => (
@@ -381,6 +413,7 @@ export function ContentForm() {
         </FormSection>
       )}
 
+      {sectionOn('team') && (
       <FormSection title="Team" {...listControls('team')}>
         <Field label="Section Title" value={content.teamSectionTitle} onChange={(v) => updateContent({ teamSectionTitle: v })} />
         {content.team.map((m, i) => (
@@ -396,7 +429,9 @@ export function ContentForm() {
           </ItemCard>
         ))}
       </FormSection>
+      )}
 
+      {sectionOn('faq') && (
       <FormSection title="FAQ" {...listControls('faqs')}>
         <Field label="Section Title" value={content.faqSectionTitle} onChange={(v) => updateContent({ faqSectionTitle: v })} />
         {content.faqs.map((faq, i) => (
@@ -411,14 +446,18 @@ export function ContentForm() {
           </ItemCard>
         ))}
       </FormSection>
+      )}
 
+      {sectionOn('cta') && (
       <FormSection title="CTA Banner">
         <Field label="Banner Title" value={content.ctaBannerTitle} onChange={(v) => updateContent({ ctaBannerTitle: v })} />
         <Field label="Banner Text" value={content.ctaBannerText} onChange={(v) => updateContent({ ctaBannerText: v })} multiline />
         <Field label="Button Text" value={content.ctaText} onChange={(v) => updateContent({ ctaText: v })} />
         <Field label="Button Link" value={content.ctaLink} onChange={(v) => updateContent({ ctaLink: v })} placeholder="contact" />
       </FormSection>
+      )}
 
+      {pageOn('contact') && (
       <FormSection title="Contact Form">
         <Field label="Section Title" value={content.contactSectionTitle} onChange={(v) => updateContent({ contactSectionTitle: v })} />
         <Field label="Form Section Title" value={content.contactFormTitle} onChange={(v) => updateContent({ contactFormTitle: v })} />
@@ -431,6 +470,7 @@ export function ContentForm() {
         <Field label="Form Button Text" value={content.contactFormButtonText} onChange={(v) => updateContent({ contactFormButtonText: v })} placeholder="Open Contact Form" />
         <p className="text-xs text-slate-400">A built-in contact form is always on your site. Optionally paste a Google Form or Typeform link to embed it (use the full docs.google.com/forms URL, not a forms.gle short link).</p>
       </FormSection>
+      )}
 
       {template && (
         <FormSection title={`Contact Details — ${template.name}`}>

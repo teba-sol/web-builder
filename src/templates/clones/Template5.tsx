@@ -1,4 +1,7 @@
 import { useState } from 'react';
+import type { SiteContent } from '../../types';
+import { CloneNav } from './CloneChrome';
+import { buildCloneHomeData } from './cloneHomeData';
 import {
   Shield,
   DollarSign,
@@ -13,14 +16,12 @@ import {
   Calendar,
   Send,
   X,
-  Menu,
   Briefcase,
   Gift,
   FileCheck2,
   Target,
   Award,
   TrendingUp,
-  Globe,
   Headphones,
   Play,
 } from 'lucide-react';
@@ -45,8 +46,8 @@ const C = {
   gold: '#F59E0B',
 };
 
-export function Template5() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+export function Template5({ c, basePath }: { c: SiteContent; basePath: string }) {
+  const d = buildCloneHomeData(c, basePath, 'axiom')
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [bookingSubmitted, setBookingSubmitted] = useState(false);
   const [bookingForm, setBookingForm] = useState({
@@ -81,46 +82,21 @@ export function Template5() {
   };
 
   /* ─── Data ─── */
-  const servicesList = [
-    { title: 'Individual Tax Filing', desc: 'Fast, accurate e-filing with maximum refund review' },
-    { title: 'Business Tax Prep', desc: 'LLC, S-Corp, and partnership return filing' },
-    { title: 'Refund Advance Loans', desc: 'Get up to $7,500 within 24 hours of filing' },
-    { title: 'IRS Audit Defense', desc: 'Full representation if you get audited' },
-  ];
+  const faqs = d.faqs.map((faq) => ({ q: faq.question, a: faq.answer }))
+  const reviews = d.testimonials.map((item, i) => ({
+    name: item.author,
+    date: item.role,
+    role: item.role,
+    rating: 5,
+    comment: item.quote,
+    img: c.galleryImages[i] || c.aboutImage || c.heroImage,
+  }))
 
-  const locationsList = [
-    { title: 'Small Business Owners', desc: 'Bookkeeping, payroll, and quarterly filings' },
-    { title: 'Freelancers & Gig Workers', desc: '1099 income, deductions, and estimated tax' },
-    { title: 'Real Estate Investors', desc: 'Depreciation, 1031 exchanges, rental income' },
-    { title: 'Corporations', desc: 'Multi-entity tax strategy and compliance' },
-  ];
-
-  const blogList = [
-    { title: '2026 Tax Season Guide', desc: 'Key deadlines and what changed this year' },
-    { title: 'Maximizing Your Refund', desc: 'Deductions and credits people overlook' },
-    { title: 'IRS Audit Red Flags', desc: 'What actually triggers a review' },
-  ];
-
-  const faqs = [
-    { q: 'How much can I receive in an instant refund advance?', a: 'Qualified clients can receive refund advances ranging from $500 up to $7,500 within 24 hours of filing, subject to IRS acceptance and loan approval terms.' },
-    { q: 'Are there any upfront out-of-pocket costs to apply?', a: 'No! There are $0 upfront out-of-pocket fees. All preparation fees and advance repayments can be deducted directly from your total tax refund.' },
-    { q: 'What documents do I need to bring for tax preparation?', a: 'Please bring a valid Government-issued ID, Social Security Card (or ITIN), W-2s, 1099s, direct deposit account info, and any applicable tax deduction forms.' },
-    { q: 'How does the $50 referral bonus work?', a: 'For every new client you refer who completes tax preparation with us, you receive a cash or digital gift bonus of $50 with no limit on referrals.' },
-    { q: 'Do you assist with IRS audit protection & back taxes?', a: 'Yes, our certified tax preparers provide comprehensive IRS audit representation, back-tax resolution, and penalty abatement support.' },
-  ];
-
-  const reviews = [
-    { name: 'Marcus Vance', role: 'Small Business Owner', img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80', rating: 5, comment: 'Axiom Audit completely simplified our business filing. The refund advance hit our account in under a day. Genuinely stress-free experience.' },
-    { name: 'Elena Rostova', role: 'Freelance Designer', img: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80', rating: 5, comment: 'Working with this team was a breeze. They caught deductions our old accountant missed and got us $1,800 back. Highly recommended!' },
-    { name: 'Terrell Jackson', role: 'Real Estate Investor', img: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80', rating: 5, comment: "The best tax partner we've ever had. They handled our IRS audit end to end and kept us calm through the whole process." },
-  ];
-
-  const teamMembers = [
-    { name: 'Sophia Martinez', role: 'Operations Director', img: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80' },
-    { name: 'James Anderson', role: 'Head of Tax Strategy', img: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=400&q=80' },
-    { name: 'Olivia Bennett', role: 'Senior Tax Analyst', img: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=400&q=80' },
-    { name: 'Daniel Roberts', role: 'Client Success Lead', img: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=400&q=80' },
-  ];
+  const teamMembers = d.team.map((member) => ({
+    name: member.name,
+    role: member.role,
+    img: member.image,
+  }))
 
   const industries = [
     { name: 'Small Business', img: 'https://images.unsplash.com/photo-1556761175-4b46a572b786?auto=format&fit=crop&w=400&q=80', desc: 'Bookkeeping, payroll, and quarterly tax filings' },
@@ -157,112 +133,7 @@ export function Template5() {
         }
       `}</style>
 
-      {/* ═══════════════════════════════════════════════════════════════
-          HEADER / NAVIGATION — Single-line navbar (no top bar)
-      ═══════════════════════════════════════════════════════════════ */}
-      <header className="t5 sticky top-0 z-40 bg-white border-b shadow-sm" style={{ borderColor: C.borderLight }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-[72px] flex items-center justify-between">
-
-          {/* Logo */}
-          <a href="#hero" className="flex items-center gap-2.5 group">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow transition-transform group-hover:scale-105" style={{ backgroundColor: C.primary }}>
-              <Shield className="w-5 h-5 text-white" />
-            </div>
-            <span className="text-lg font-black tracking-tight" style={{ color: C.text }}>
-              Axiom<span style={{ color: C.accent }}>Audit</span>
-            </span>
-          </a>
-
-          {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-1">
-            <a href="#hero" className="px-3.5 py-2 text-sm font-semibold hover:text-blue-600 transition" style={{ color: C.text }}>Home</a>
-            <a href="#about" className="px-3.5 py-2 text-sm font-semibold hover:text-blue-600 transition" style={{ color: C.text }}>About Us</a>
-
-            {/* Services Dropdown */}
-            <div className="relative group">
-              <button className="flex items-center gap-1 px-3.5 py-2 text-sm font-semibold hover:text-blue-600 transition" style={{ color: C.text }}>
-                Services <ChevronDown className="w-4 h-4 group-hover:rotate-180 transition-transform" />
-              </button>
-              <div className="absolute top-full left-0 w-80 pt-2 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 z-50">
-                <div className="bg-white border rounded-2xl shadow-2xl shadow-black/10 p-2 space-y-1" style={{ borderColor: C.border }}>
-                  {servicesList.map((s, idx) => (
-                    <a key={idx} href="#services" className="block p-3 rounded-xl hover:bg-blue-50 transition">
-                      <div className="text-sm font-bold flex items-center justify-between" style={{ color: C.text }}>
-                        {s.title} <ArrowRight className="w-3.5 h-3.5" style={{ color: C.accent }} />
-                      </div>
-                      <div className="text-xs mt-0.5" style={{ color: C.textMuted }}>{s.desc}</div>
-                    </a>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Solutions Dropdown */}
-            <div className="relative group">
-              <button className="flex items-center gap-1 px-3.5 py-2 text-sm font-semibold hover:text-blue-600 transition" style={{ color: C.text }}>
-                Solutions <ChevronDown className="w-4 h-4 group-hover:rotate-180 transition-transform" />
-              </button>
-              <div className="absolute top-full left-0 w-80 pt-2 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 z-50">
-                <div className="bg-white border rounded-2xl shadow-2xl shadow-black/10 p-2 space-y-1" style={{ borderColor: C.border }}>
-                  {locationsList.map((loc, idx) => (
-                    <a key={idx} href="#industries" className="block p-3 rounded-xl hover:bg-blue-50 transition">
-                      <div className="text-sm font-bold" style={{ color: C.text }}>{loc.title}</div>
-                      <div className="text-xs mt-0.5" style={{ color: C.textMuted }}>{loc.desc}</div>
-                    </a>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Resources Dropdown */}
-            <div className="relative group">
-              <button className="flex items-center gap-1 px-3.5 py-2 text-sm font-semibold hover:text-blue-600 transition" style={{ color: C.text }}>
-                Resources <ChevronDown className="w-4 h-4 group-hover:rotate-180 transition-transform" />
-              </button>
-              <div className="absolute top-full left-0 w-72 pt-2 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 z-50">
-                <div className="bg-white border rounded-2xl shadow-2xl shadow-black/10 p-2 space-y-1" style={{ borderColor: C.border }}>
-                  {blogList.map((b, idx) => (
-                    <a key={idx} href="#faq" className="block p-3 rounded-xl hover:bg-blue-50 transition">
-                      <div className="text-sm font-bold" style={{ color: C.text }}>{b.title}</div>
-                      <div className="text-xs mt-0.5" style={{ color: C.textMuted }}>{b.desc}</div>
-                    </a>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <a href="#contact" className="px-3.5 py-2 text-sm font-semibold hover:text-blue-600 transition" style={{ color: C.text }}>Contact</a>
-          </nav>
-
-          {/* CTA */}
-          <div className="hidden sm:flex items-center gap-3">
-            <button
-              onClick={() => setIsBookingModalOpen(true)}
-              className="px-6 py-2.5 rounded-lg text-white font-bold text-sm shadow-md hover:shadow-lg hover:shadow-blue-500/20 active:scale-95 transition-all"
-              style={{ backgroundColor: C.primary }}
-            >
-              Get A Free Quote
-            </button>
-          </div>
-
-          {/* Mobile Menu */}
-          <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="lg:hidden p-2 rounded-xl border" style={{ borderColor: C.border }}>
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-        </div>
-
-        {mobileMenuOpen && (
-          <div className="lg:hidden border-t px-6 py-6 space-y-3 bg-white" style={{ borderColor: C.borderLight }}>
-            {['Home|#hero', 'About|#about', 'Services|#services', 'Solutions|#industries', 'Process|#process', 'Reviews|#reviews', 'FAQ|#faq', 'Contact|#contact'].map(item => {
-              const [label, href] = item.split('|');
-              return <a key={label} href={href} onClick={() => setMobileMenuOpen(false)} className="block py-2 text-base font-bold" style={{ color: C.text }}>{label}</a>;
-            })}
-            <button onClick={() => { setMobileMenuOpen(false); setIsBookingModalOpen(true); }} className="w-full py-3 rounded-lg text-white font-bold text-sm" style={{ backgroundColor: C.primary }}>
-              <Calendar className="w-4 h-4 inline mr-2" /> Get A Free Quote
-            </button>
-          </div>
-        )}
-      </header>
+      <CloneNav templateId="axiom" d={d} onBook={() => setIsBookingModalOpen(true)} />
 
       {/* ═══════════════════════════════════════════════════════════════
           HERO — Full-width image with dark overlay (NavikX-inspired)
@@ -285,15 +156,11 @@ export function Template5() {
             </div>
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-[1.08] tracking-tight mb-6 t5-fu1">
-              Delivering Savings,{' '}
-              <span className="italic" style={{ color: C.accentLight }}>
-                Protecting
-              </span>{' '}
-              Your Future.
+              {c.tagline}
             </h1>
 
             <p className="text-base text-blue-100/80 font-medium max-w-lg mb-8 leading-relaxed t5-fu2">
-              End-to-end tax solutions that drive efficiency, maximize refunds, and provide year-round financial protection.
+              {c.heroSubtext}
             </p>
 
             <div className="flex flex-wrap items-center gap-4 t5-fu3">
@@ -316,31 +183,23 @@ export function Template5() {
         </div>
       </section>
 
+      {d.show.stats && d.stats.length > 0 && (
       <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-white rounded-2xl shadow-2xl shadow-black/8 p-6 border" style={{ borderColor: C.borderLight }}>
-          {[
-            { icon: <Globe className="w-6 h-6" />, title: 'National Coverage', desc: 'Clients across all 50 states served.' },
-            { icon: <TrendingUp className="w-6 h-6" />, title: 'Real-Time Tracking', desc: 'Track every return status in real time.' },
-            { icon: <Shield className="w-6 h-6" />, title: 'Audit Protection', desc: 'Full IRS representation you can trust.' },
-            { icon: <Headphones className="w-6 h-6" />, title: '24/7 Support', desc: 'Our tax experts are always here.' },
-          ].map((f, i) => (
-            <div key={i} className="flex items-start gap-3 p-2">
-              <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: C.accentSoft, color: C.primary }}>
-                {f.icon}
-              </div>
-              <div>
-                <div className="text-sm font-bold" style={{ color: C.text }}>{f.title}</div>
-                <div className="text-xs mt-0.5" style={{ color: C.textMuted }}>{f.desc}</div>
-              </div>
+          {d.stats.slice(0, 4).map((stat) => (
+            <div key={stat.label} className="p-2 text-center">
+              <div className="text-2xl font-black" style={{ color: C.primary }}>{stat.value}</div>
+              <div className="text-xs mt-1 font-semibold" style={{ color: C.textMuted }}>{stat.label}</div>
             </div>
           ))}
         </div>
       </div>
+      )}
 
       {/* ═══════════════════════════════════════════════════════════════
           ABOUT SECTION — Image collage + content (unique layout)
       ═══════════════════════════════════════════════════════════════ */}
-      <section id="about" className="t5 pt-16 pb-24 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: C.white }}>
+      <section id="about" className={`${!(d.show.about) ? 'hidden ' : ''}t5 pt-16 pb-24 px-4 sm:px-6 lg:px-8`} style={{ backgroundColor: C.white }}>
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
 
           {/* Left: Image collage with floating badge */}
@@ -404,31 +263,12 @@ export function Template5() {
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════════════════════════
-          STATS BANNER — Light bg, horizontal (distinct from T4 dark bar)
-      ═══════════════════════════════════════════════════════════════ */}
-      <section className="t5 py-12 border-y" style={{ backgroundColor: C.surface, borderColor: C.border }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            {[
-              { value: '120+', label: 'Expert Advisors' },
-              { value: '18K+', label: 'Happy Clients' },
-              { value: '$45M+', label: 'Refunds Secured' },
-              { value: '99%', label: 'Client Satisfaction' },
-            ].map((s, i) => (
-              <div key={i}>
-                <div className="text-3xl sm:text-4xl font-black" style={{ color: C.primary }}>{s.value}</div>
-                <div className="text-xs font-semibold mt-1" style={{ color: C.textMuted }}>{s.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+
 
       {/* ═══════════════════════════════════════════════════════════════
           SERVICES — 4-column icon grid (NavikX-style)
       ═══════════════════════════════════════════════════════════════ */}
-      <section id="services" className="t5 py-24 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: C.white }}>
+      <section id="services" className={`${!(d.show.services) ? 'hidden ' : ''}t5 py-24 px-4 sm:px-6 lg:px-8`} style={{ backgroundColor: C.white }}>
         <div className="max-w-7xl mx-auto space-y-14">
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <div className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: C.accent }}>Our Services</div>
@@ -514,7 +354,7 @@ export function Template5() {
       {/* ═══════════════════════════════════════════════════════════════
           PROCESS — 4-step horizontal with connected dashed line
       ═══════════════════════════════════════════════════════════════ */}
-      <section id="process" className="t5 py-24 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: C.white }}>
+      <section id="process" className={`${!(d.show.steps) ? 'hidden ' : ''}t5 py-24 px-4 sm:px-6 lg:px-8`} style={{ backgroundColor: C.white }}>
         <div className="max-w-7xl mx-auto space-y-16">
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <div className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: C.accent }}>Our Process</div>
@@ -550,7 +390,7 @@ export function Template5() {
       {/* ═══════════════════════════════════════════════════════════════
           TESTIMONIAL — Large single-card slider (NavikX-style)
       ═══════════════════════════════════════════════════════════════ */}
-      <section id="reviews" className="t5 py-24 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: C.surfaceAlt }}>
+      <section id="reviews" className={`${!(d.show.testimonials) ? 'hidden ' : ''}t5 py-24 px-4 sm:px-6 lg:px-8`} style={{ backgroundColor: C.surfaceAlt }}>
         <div className="max-w-7xl mx-auto space-y-12">
           <div className="text-center space-y-3">
             <div className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: C.accent }}>Client Testimonials</div>
@@ -560,6 +400,7 @@ export function Template5() {
             </h2>
           </div>
 
+          {reviews.length > 0 && (
           <div className="max-w-4xl mx-auto">
             <div className="grid md:grid-cols-5 gap-0 bg-white rounded-2xl shadow-xl overflow-hidden border" style={{ borderColor: C.borderLight }}>
               {/* Image */}
@@ -602,6 +443,7 @@ export function Template5() {
               </div>
             </div>
           </div>
+          )}
         </div>
       </section>
 
@@ -673,6 +515,7 @@ export function Template5() {
       {/* ═══════════════════════════════════════════════════════════════
           TEAM — 4-member grid with social icons (NavikX-inspired)
       ═══════════════════════════════════════════════════════════════ */}
+      {d.show.team && teamMembers.length > 0 && (
       <section className="t5 py-24 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: C.surfaceAlt }}>
         <div className="max-w-7xl mx-auto space-y-14">
           <div className="text-center max-w-2xl mx-auto space-y-3">
@@ -706,11 +549,12 @@ export function Template5() {
           </div>
         </div>
       </section>
+      )}
 
       {/* ═══════════════════════════════════════════════════════════════
           FAQ — Side-by-side: image+CTA left, accordion right
       ═══════════════════════════════════════════════════════════════ */}
-      <section id="faq" className="t5 py-24 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: C.white }}>
+      <section id="faq" className={`${!(d.show.faq) ? 'hidden ' : ''}t5 py-24 px-4 sm:px-6 lg:px-8`} style={{ backgroundColor: C.white }}>
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12">
           {/* Left: Image + CTA */}
           <div className="space-y-6">
@@ -769,7 +613,7 @@ export function Template5() {
       {/* ═══════════════════════════════════════════════════════════════
           INDUSTRIES — Horizontal card row (NavikX-inspired)
       ═══════════════════════════════════════════════════════════════ */}
-      <section id="industries" className="t5 py-24 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: C.surfaceAlt }}>
+      <section id="industries" className={`${!(d.show.portfolio) ? 'hidden ' : ''}t5 py-24 px-4 sm:px-6 lg:px-8`} style={{ backgroundColor: C.surfaceAlt }}>
         <div className="max-w-7xl mx-auto space-y-12">
           <div className="flex items-end justify-between gap-4 flex-wrap">
             <div className="space-y-2">
@@ -800,7 +644,7 @@ export function Template5() {
       {/* ═══════════════════════════════════════════════════════════════
           CONTACT SECTION
       ═══════════════════════════════════════════════════════════════ */}
-      <section id="contact" className="t5 py-24 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: C.white }}>
+      <section id="contact" className={`${!(d.show.contact) ? 'hidden ' : ''}t5 py-24 px-4 sm:px-6 lg:px-8`} style={{ backgroundColor: C.white }}>
         <div className="max-w-7xl mx-auto space-y-12">
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <div className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: C.accent }}>Get In Touch</div>

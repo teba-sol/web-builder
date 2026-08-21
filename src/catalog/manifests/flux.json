@@ -15,11 +15,27 @@
     "services": true,
     "portfolio": true,
     "blog": true,
-    "news": true,
-    "gallery": true,
+    "news": false,
+    "gallery": false,
     "contact": true,
     "rooms": false
   },
+  "editorPages": [
+    "about",
+    "services",
+    "portfolio",
+    "blog",
+    "contact"
+  ],
+  "editorSections": [
+    "stats",
+    "steps",
+    "testimonials",
+    "faq",
+    "cta",
+    "team",
+    "pricing"
+  ],
   "homeSections": [
     "nav",
     "hero",
@@ -179,7 +195,7 @@
     },
     {
       "title": "Eastside",
-      "description": "Inman, Reynoldstown, Kirkwood — same week.",
+      "description": "Inman, Reynoldstown, Kirkwood \u2014 same week.",
       "image": "https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=800&q=80",
       "price": "",
       "tag": "East",
@@ -206,7 +222,7 @@
     {
       "key": "hours",
       "label": "Hours",
-      "placeholder": "Mon–Sat 11am–7pm"
+      "placeholder": "Mon\u2013Sat 11am\u20137pm"
     },
     {
       "key": "instagram",
@@ -243,7 +259,7 @@
     "fontHeading": "space-grotesk",
     "fontBody": "space-grotesk",
     "aboutTitle": "Your strategic partner for lasting wealth",
-    "about": "Posterity helps families and owners plan beyond this tax year — entity choice, estimated taxes, and a written plan that still works in five years.",
+    "about": "Posterity helps families and owners plan beyond this tax year \u2014 entity choice, estimated taxes, and a written plan that still works in five years.",
     "aboutImage": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1200&q=80",
     "missionStatement": "Your success. Your legacy. For posterity.",
     "pageVisibility": {
@@ -251,8 +267,8 @@
       "services": true,
       "portfolio": true,
       "blog": true,
-      "news": true,
-      "gallery": true,
+      "news": false,
+      "gallery": false,
       "contact": true,
       "rooms": false
     },
@@ -288,7 +304,7 @@
     "services": [
       {
         "title": "Prep + refund advance",
-        "description": "We finish the return, then push Holiday or Shield funds — often the same day, always the same week when the file is clean."
+        "description": "We finish the return, then push Holiday or Shield funds \u2014 often the same day, always the same week when the file is clean."
       },
       {
         "title": "Referral drop",
@@ -311,7 +327,7 @@
       },
       {
         "title": "Pick the product",
-        "description": "Holiday (no Flux fee) or Shield ($500–$7,500). Or take nothing. Your call."
+        "description": "Holiday (no Flux fee) or Shield ($500\u2013$7,500). Or take nothing. Your call."
       },
       {
         "title": "Get wired",
@@ -355,7 +371,7 @@
       },
       {
         "title": "Eastside",
-        "description": "Inman, Reynoldstown, Kirkwood — same week.",
+        "description": "Inman, Reynoldstown, Kirkwood \u2014 same week.",
         "image": "https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=800&q=80",
         "price": "",
         "tag": "East",
@@ -403,7 +419,7 @@
       },
       {
         "question": "Holiday vs Shield?",
-        "answer": "Holiday: no Flux fee, smaller. Shield: $500–$7,500, bank fees shown before you tap yes."
+        "answer": "Holiday: no Flux fee, smaller. Shield: $500\u2013$7,500, bank fees shown before you tap yes."
       }
     ],
     "teamSectionTitle": "The desk",
@@ -465,7 +481,7 @@
         "title": "An advance is a loan. We say that out loud.",
         "slug": "an-advance-is-a-loan",
         "excerpt": "Why we refuse to quote a number until the return exists.",
-        "body": "The IRS refund pays the advance back. Fees, if any, come out of that refund. If the year cannot carry the number, we will tell you to take less — or none.",
+        "body": "The IRS refund pays the advance back. Fees, if any, come out of that refund. If the year cannot carry the number, we will tell you to take less \u2014 or none.",
         "image": "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&q=80",
         "author": "Flux desk",
         "date": "2026-02-11"
@@ -474,7 +490,7 @@
         "title": "Bring this. Skip the second trip.",
         "slug": "bring-this",
         "excerpt": "The only list that matters.",
-        "body": "Photo ID. Socials. W-2s or stubs. Kids’ birth certificates. Proof they lived with you. That is it for most files.",
+        "body": "Photo ID. Socials. W-2s or stubs. Kids\u2019 birth certificates. Proof they lived with you. That is it for most files.",
         "image": "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&q=80",
         "author": "Flux desk",
         "date": "2026-01-18"
@@ -502,7 +518,7 @@
     "ctaText": "Discover more",
     "ctaLink": "contact",
     "seoEnabled": true,
-    "seoTitle": "Flux Tax — same-week refund advances",
+    "seoTitle": "Flux Tax \u2014 same-week refund advances",
     "seoDescription": "Atlanta tax prep and refund advances up to $7,500. Holiday product with zero Flux fee.",
     "seoKeywords": "refund advance, tax prep Atlanta, same week refund, Holiday advance",
     "seoSiteUrl": "",

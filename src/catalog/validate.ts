@@ -14,8 +14,10 @@ import {
   NAV_SHELL_IDS,
   NEWS_LIST_LAYOUTS,
   NEWS_POST_LAYOUTS,
+  PAGE_VISIBILITY_KEYS,
   PORTFOLIO_LAYOUTS,
   SECTION_IDS,
+  SECTION_VISIBILITY_KEYS,
   TEMPLATE_CATEGORIES,
   TEMPLATE_FEATURES,
 } from './vocab'
@@ -162,6 +164,12 @@ export function validateManifest(raw: unknown): { ok: true; manifest: TemplateMa
   }
   if (!isRecord(raw.pages)) {
     errors.push(fail('pages', 'expected page visibility flags'))
+  }
+  if (raw.editorPages !== undefined) {
+    errors.push(...expectStringArray('editorPages', raw.editorPages, PAGE_VISIBILITY_KEYS))
+  }
+  if (raw.editorSections !== undefined) {
+    errors.push(...expectStringArray('editorSections', raw.editorSections, SECTION_VISIBILITY_KEYS))
   }
   if (!isRecord(raw.showcase)) {
     errors.push(fail('showcase', 'expected showcase config'))

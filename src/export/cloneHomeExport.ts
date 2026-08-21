@@ -1,4 +1,4 @@
-import { resolveStaticHref } from '../data/siteNav'
+import { canLinkToPage, resolveStaticHref } from '../data/siteNav'
 import type { SiteContent } from '../types'
 import { brandCss } from '../data/brand'
 import { escapeHtml } from './imageUtils'
@@ -269,6 +269,10 @@ function bookingModal(ctx: CloneExportCtx, theme: CloneTheme): string {
   </div>`
 }
 
+export function buildCloneChromeNav(ctx: CloneExportCtx): string {
+  return chromeNav(ctx, THEMES[ctx.templateId])
+}
+
 function chromeNav(ctx: CloneExportCtx, theme: CloneTheme): string {
   const c = ctx.content
   const name = txt(ctx, c.businessName, '{{ $settings->business_name }}')
@@ -280,13 +284,15 @@ function chromeNav(ctx: CloneExportCtx, theme: CloneTheme): string {
   const logoColor = ctx.templateId === 'cpa' || ctx.templateId === 'helix' ? 'text-white' : ''
   const topbarStyle = ctx.templateId === 'cpa' ? ' style="background-color:#0F211C"' : ctx.templateId === 'taxfighters' || ctx.templateId === 'aureum' ? ' style="background-color:#eee4e6"' : ctx.templateId === 'flux' ? ' style="background-color:#241C15"' : ''
 
-  const links = [
-    ['Home', href(ctx, 'home')],
-    ['About', href(ctx, 'about')],
-    ['Services', href(ctx, 'services')],
-    ['Blog', href(ctx, 'blog')],
-    ['Contact', href(ctx, 'contact')],
-  ]
+  const links = (
+    [
+      ['Home', href(ctx, 'home'), true],
+      ['About', href(ctx, 'about'), c.pageVisibility.about],
+      ['Services', href(ctx, 'services'), c.pageVisibility.services],
+      ['Blog', href(ctx, 'blog'), c.pageVisibility.blog && canLinkToPage('blog', c)],
+      ['Contact', href(ctx, 'contact'), c.pageVisibility.contact],
+    ] as Array<[string, string, boolean]>
+  ).filter(([, , show]) => show)
 
   const desktopLinks = links
     .map(([label, url]) => `<a href="${url}" class="px-3.5 py-2 rounded-lg text-sm font-semibold ${logoColor} ${theme.hover}">${label}</a>`)
@@ -323,12 +329,14 @@ function chromeNav(ctx: CloneExportCtx, theme: CloneTheme): string {
 
 function standardSections(ctx: CloneExportCtx, theme: CloneTheme): string {
   const c = ctx.content
-  const stats = c.stats.filter((s) => s.value)
-  const services = c.services.filter((s) => s.title)
-  const steps = c.steps.filter((s) => s.title)
-  const reviews = c.testimonials.filter((t) => t.quote)
-  const faqs = c.faqs.filter((f) => f.question)
-  const locations = c.showcaseItems.filter((i) => i.title)
+  const pv = c.pageVisibility
+  const sv = c.sectionVisibility
+  const stats = sv.stats ? c.stats.filter((s) => s.value) : []
+  const services = pv.services ? c.services.filter((s) => s.title) : []
+  const steps = sv.steps ? c.steps.filter((s) => s.title) : []
+  const reviews = sv.testimonials ? c.testimonials.filter((t) => t.quote) : []
+  const faqs = sv.faq ? c.faqs.filter((f) => f.question) : []
+  const locations = pv.portfolio ? c.showcaseItems.filter((i) => i.title) : []
 
   const statsHtml = stats.length
     ? `<section class="py-12 border-y"><div class="max-w-7xl mx-auto px-4 grid md:grid-cols-3 gap-6 text-center">${
@@ -341,7 +349,9 @@ function standardSections(ctx: CloneExportCtx, theme: CloneTheme): string {
       }</div></section>`
     : ''
 
-  const aboutHtml = `<section id="about" class="py-24 px-4 sm:px-6 lg:px-8"><div class="max-w-7xl mx-auto grid lg:grid-cols-12 gap-12 items-center"><div class="lg:col-span-6">${img(ctx, c.aboutImage, 'about', 'w-full h-[640px] object-cover rounded-3xl shadow-2xl')}</div><div class="lg:col-span-6 space-y-6"><div class="text-xs font-bold uppercase tracking-widest" style="color:${theme.accent}">Who we are</div><h2 class="text-3xl sm:text-4xl font-extrabold">${txt(ctx, c.aboutTitle, '{{ $settings->about_title }}')}</h2><p class="${theme.muted} leading-relaxed">${txt(ctx, c.about, '{{ $settings->about }}')}</p><button type="button" data-open-booking class="px-7 py-3.5 rounded-xl font-bold text-sm shadow-xl" style="background-color:${theme.accent};color:${theme.accentFg}">Schedule appointment</button></div></div></section>`
+  const aboutHtml = pv.about
+    ? `<section id="about" class="py-24 px-4 sm:px-6 lg:px-8"><div class="max-w-7xl mx-auto grid lg:grid-cols-12 gap-12 items-center"><div class="lg:col-span-6">${img(ctx, c.aboutImage, 'about', 'w-full h-[640px] object-cover rounded-3xl shadow-2xl')}</div><div class="lg:col-span-6 space-y-6"><div class="text-xs font-bold uppercase tracking-widest" style="color:${theme.accent}">Who we are</div><h2 class="text-3xl sm:text-4xl font-extrabold">${txt(ctx, c.aboutTitle, '{{ $settings->about_title }}')}</h2><p class="${theme.muted} leading-relaxed">${txt(ctx, c.about, '{{ $settings->about }}')}</p><button type="button" data-open-booking class="px-7 py-3.5 rounded-xl font-bold text-sm shadow-xl" style="background-color:${theme.accent};color:${theme.accentFg}">Schedule appointment</button></div></div></section>`
+    : ''
 
   const servicesHtml = `<section id="services" class="py-24 px-4 sm:px-6 lg:px-8"><div class="max-w-7xl mx-auto space-y-12"><div class="text-center max-w-3xl mx-auto space-y-3"><div class="text-xs font-bold uppercase tracking-widest" style="color:${theme.accent}">Our expertise</div><h2 class="text-3xl sm:text-4xl font-extrabold">${txt(ctx, c.servicesSectionTitle, '{{ $settings->services_section_title }}')}</h2><p class="${theme.muted} text-sm">${txt(ctx, c.servicesSectionSubtitle, '{{ $settings->services_section_subtitle }}')}</p></div><div class="grid md:grid-cols-3 gap-8">${
     ctx.mode === 'blade'
@@ -398,7 +408,9 @@ function standardSections(ctx: CloneExportCtx, theme: CloneTheme): string {
       }</div></section>`
     : ''
 
-  const contactHtml = `<section id="contact" class="py-24 px-4 sm:px-6 lg:px-8"><div class="max-w-7xl mx-auto space-y-12"><div class="text-center max-w-2xl mx-auto"><div class="text-xs font-bold uppercase tracking-widest" style="color:${theme.accent}">Connect with us</div><h2 class="text-3xl font-extrabold mt-2">${txt(ctx, c.contactSectionTitle, '{{ $settings->contact_section_title }}')}</h2></div><div class="grid lg:grid-cols-12 gap-12"><div class="lg:col-span-5 space-y-6"><div class="${theme.card} p-6 rounded-2xl"><h4 class="font-bold text-sm">Phone</h4><p class="text-xs ${theme.muted} mt-1">${txt(ctx, c.phone, '{{ $settings->phone }}')}</p></div><div class="${theme.card} p-6 rounded-2xl"><h4 class="font-bold text-sm">Email</h4><p class="text-xs ${theme.muted} mt-1">${txt(ctx, c.email, '{{ $settings->email }}')}</p></div><div class="${theme.card} p-6 rounded-2xl"><h4 class="font-bold text-sm">Office</h4><p class="text-xs ${theme.muted} mt-1">${txt(ctx, c.address, '{{ $settings->address }}')}</p></div></div><div class="lg:col-span-7 ${theme.card} p-8 rounded-3xl space-y-6"><h3 class="text-xl font-bold">${txt(ctx, c.contactFormTitle, '{{ $settings->contact_form_title }}')}</h3>${contactForm(ctx, theme)}</div></div></div></section>`
+  const contactHtml = pv.contact
+    ? `<section id="contact" class="py-24 px-4 sm:px-6 lg:px-8"><div class="max-w-7xl mx-auto space-y-12"><div class="text-center max-w-2xl mx-auto"><div class="text-xs font-bold uppercase tracking-widest" style="color:${theme.accent}">Connect with us</div><h2 class="text-3xl font-extrabold mt-2">${txt(ctx, c.contactSectionTitle, '{{ $settings->contact_section_title }}')}</h2></div><div class="grid lg:grid-cols-12 gap-12"><div class="lg:col-span-5 space-y-6"><div class="${theme.card} p-6 rounded-2xl"><h4 class="font-bold text-sm">Phone</h4><p class="text-xs ${theme.muted} mt-1">${txt(ctx, c.phone, '{{ $settings->phone }}')}</p></div><div class="${theme.card} p-6 rounded-2xl"><h4 class="font-bold text-sm">Email</h4><p class="text-xs ${theme.muted} mt-1">${txt(ctx, c.email, '{{ $settings->email }}')}</p></div><div class="${theme.card} p-6 rounded-2xl"><h4 class="font-bold text-sm">Office</h4><p class="text-xs ${theme.muted} mt-1">${txt(ctx, c.address, '{{ $settings->address }}')}</p></div></div><div class="lg:col-span-7 ${theme.card} p-8 rounded-3xl space-y-6"><h3 class="text-xl font-bold">${txt(ctx, c.contactFormTitle, '{{ $settings->contact_form_title }}')}</h3>${contactForm(ctx, theme)}</div></div></div></section>`
+    : ''
 
   const footer = `<footer class="border-t py-12 px-4 text-xs ${theme.muted}"><div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-8"><div><div class="font-bold text-base mb-3">${txt(ctx, c.businessName, '{{ $settings->business_name }}')}</div><p>${txt(ctx, c.missionStatement || c.heroSubtext, '{{ $settings->mission_statement }}')}</p></div><div><h4 class="font-bold mb-3 uppercase tracking-wider">Pages</h4><ul class="space-y-2"><li><a href="${href(ctx, 'services')}">Services</a></li><li><a href="${href(ctx, 'about')}">About</a></li><li><a href="${href(ctx, 'blog')}">Blog</a></li><li><a href="${href(ctx, 'contact')}">Contact</a></li></ul></div><div><h4 class="font-bold mb-3 uppercase tracking-wider">Hours</h4><p>${txt(ctx, c.hours, '{{ $settings->hours }}')}</p></div><div><h4 class="font-bold mb-3 uppercase tracking-wider">Contact</h4><p>${txt(ctx, c.phone, '{{ $settings->phone }}')}<br/>${txt(ctx, c.email, '{{ $settings->email }}')}</p></div></div><div class="max-w-7xl mx-auto mt-8 pt-8 border-t text-center">© ${new Date().getFullYear()} ${txt(ctx, c.businessName, '{{ $settings->business_name }}')}</div></footer>`
 
