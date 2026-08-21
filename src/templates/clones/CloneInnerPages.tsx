@@ -4,7 +4,7 @@ import type { SitePageId } from '../../data/pageConfig'
 import type { SiteContent } from '../../types'
 import type { CloneTemplateId } from '../cloneTheme'
 import { formatPostDate, postSlug } from '../PageLayoutSections'
-import { CloneFooter, CloneNav, ClonePricingSection, CloneTeamSection } from './CloneChrome'
+import { CloneFooter, CloneMap, CloneNav, ClonePricingSection, CloneTeamSection } from './CloneChrome'
 import { buildCloneHomeData, type CloneHomeData } from './cloneHomeData'
 
 interface Props {
@@ -236,6 +236,7 @@ function ContactPage({ d }: { d: CloneHomeData }) {
                 <p className="mt-1 text-lg font-semibold">{value}</p>
               </div>
             ))}
+          <CloneMap d={d} className="h-56 overflow-hidden rounded-2xl border" />
         </div>
         <div className="rounded-3xl border p-8 lg:col-span-7">
           <h2 className="text-2xl font-black">{c.contactFormTitle || 'Send a message'}</h2>

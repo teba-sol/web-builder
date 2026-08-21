@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import type { SiteContent } from '../../types';
-import { CloneCtaSection, CloneNav, ClonePricingSection, CloneTeamSection } from './CloneChrome';
+import { CloneCtaSection, CloneMap, CloneNav, ClonePricingSection, CloneTeamSection } from './CloneChrome';
 import { buildCloneHomeData } from './cloneHomeData';
 import {
   Shield,
@@ -519,6 +519,7 @@ export function Template1({ c, basePath }: { c: SiteContent; basePath: string })
                   <p className="text-xs text-slate-600 mt-1">{c.email}</p>
                 </div>
               </div>
+              <CloneMap d={d} className="h-56 overflow-hidden rounded-2xl border border-slate-300" />
             </div>
 
             {/* Direct Message Form */}

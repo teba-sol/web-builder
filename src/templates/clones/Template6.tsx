@@ -2,7 +2,8 @@ import { useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { resolveSiteHref, sitePath } from '../../data/siteNav'
 import type { SiteContent } from '../../types'
-import { CloneNav, ClonePricingSection, CloneTeamSection } from './CloneChrome'
+import { CloneMap, CloneNav, ClonePricingSection, CloneTeamSection } from './CloneChrome'
+import { getMapOpenUrl } from '../../utils/mapEmbed'
 import { buildCloneHomeData } from './cloneHomeData'
 
 const MAROON = 'var(--clone-accent)'
@@ -27,6 +28,7 @@ export function Template6({ c, basePath }: Props) {
   const locations = c.showcaseItems.filter((s) => s.title).slice(0, 6)
   const reviews = c.testimonials.filter((t) => t.quote).slice(0, 3)
   const faqs = c.faqs.filter((f) => f.question)
+  const mapsHref = getMapOpenUrl(c.mapUrl, c.address)
   const specialize = services.map((s, i) => ({
     title: i === 0 ? 'Advances' : i === 1 ? 'Referrals' : 'Business Tax',
     description: s.description,
@@ -339,14 +341,7 @@ export function Template6({ c, basePath }: Props) {
                 </div>
               ) : null}
             </div>
-            <div className="overflow-hidden rounded-xl shadow-lg">
-              <iframe
-                title="Office map"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3318.3589265873676!2d-84.38971!3d33.76159!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88f5086f7c8e0001%3A0x1234567890!2s1130%20Chattahoochee%20Ave%20NW%20Suite%20Y%2C%20Atlanta%2C%20GA%2030318!5e0!3m2!1sen!2sus"
-                className="h-72 w-full border-0"
-                loading="lazy"
-              />
-            </div>
+            <CloneMap d={d} className="h-72 overflow-hidden rounded-xl shadow-lg" title="Office map" />
           </div>
         </div>
       </section>
@@ -363,9 +358,11 @@ export function Template6({ c, basePath }: Props) {
                 Instagram
               </a>
             ) : null}
-            <a href="https://maps.app.goo.gl/UKxWYZnFY9zW1meu8" className="p-2" target="_blank" rel="noreferrer">
-              Google
-            </a>
+            {mapsHref ? (
+              <a href={mapsHref} className="p-2" target="_blank" rel="noreferrer">
+                Google
+              </a>
+            ) : null}
           </div>
           <div className="flex flex-col items-center justify-between gap-4 border-t border-gray-600 pt-8 md:flex-row">
             {c.logo ? <img src={c.logo} alt="" className="h-16 w-auto" /> : <span className="font-bold">{c.businessName}</span>}

@@ -224,6 +224,7 @@ export interface SiteContent {
   contactFormTitle: string
   contactFormUrl: string
   contactFormButtonText: string
+  mapUrl: string
   seoEnabled: boolean
   seoTitle: string
   seoDescription: string

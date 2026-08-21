@@ -2,6 +2,7 @@ import { canLinkToPage, resolveStaticHref } from '../data/siteNav'
 import type { SiteContent } from '../types'
 import { brandCss } from '../data/brand'
 import { escapeHtml } from './imageUtils'
+import { getMapEmbedUrl } from '../utils/mapEmbed'
 import { buildSeoMetaTags, resolveDocumentTitle, type PageSeoInput } from './seoExport'
 import { LAYOUT_SHELL_CSS } from './htmlShared'
 import {
@@ -422,8 +423,16 @@ function standardSections(ctx: CloneExportCtx, theme: CloneTheme): string {
       }</div></section>`
     : ''
 
+  const mapSrc = getMapEmbedUrl(c.mapUrl, c.address)
+  const mapHtml =
+    ctx.mode === 'blade'
+      ? `@php $mapSrc = $settings->map_url; if ($mapSrc && (str_contains($mapSrc, 'maps/embed') || str_contains($mapSrc, 'output=embed'))) { /* keep */ } elseif ($mapSrc) { $mapSrc = 'https://www.google.com/maps?q='.urlencode($mapSrc).'&output=embed'; } elseif ($settings->address) { $mapSrc = 'https://www.google.com/maps?q='.urlencode($settings->address).'&output=embed'; } else { $mapSrc = ''; } @endphp
+        @if($mapSrc)<div class="overflow-hidden rounded-2xl border h-56"><iframe title="Office location" src="{{ $mapSrc }}" class="w-full h-full border-0" loading="lazy"></iframe></div>@endif`
+      : mapSrc
+        ? `<div class="overflow-hidden rounded-2xl border h-56"><iframe title="Office location" src="${escapeHtml(mapSrc)}" class="w-full h-full border-0" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>`
+        : ''
   const contactHtml = pv.contact
-    ? `<section id="contact" class="py-24 px-4 sm:px-6 lg:px-8"><div class="max-w-7xl mx-auto space-y-12"><div class="text-center max-w-2xl mx-auto"><div class="text-xs font-bold uppercase tracking-widest" style="color:${theme.accent}">Connect with us</div><h2 class="text-3xl font-extrabold mt-2">${txt(ctx, c.contactSectionTitle, '{{ $settings->contact_section_title }}')}</h2></div><div class="grid lg:grid-cols-12 gap-12"><div class="lg:col-span-5 space-y-6"><div class="${theme.card} p-6 rounded-2xl"><h4 class="font-bold text-sm">Phone</h4><p class="text-xs ${theme.muted} mt-1">${txt(ctx, c.phone, '{{ $settings->phone }}')}</p></div><div class="${theme.card} p-6 rounded-2xl"><h4 class="font-bold text-sm">Email</h4><p class="text-xs ${theme.muted} mt-1">${txt(ctx, c.email, '{{ $settings->email }}')}</p></div><div class="${theme.card} p-6 rounded-2xl"><h4 class="font-bold text-sm">Office</h4><p class="text-xs ${theme.muted} mt-1">${txt(ctx, c.address, '{{ $settings->address }}')}</p></div></div><div class="lg:col-span-7 ${theme.card} p-8 rounded-3xl space-y-6"><h3 class="text-xl font-bold">${txt(ctx, c.contactFormTitle, '{{ $settings->contact_form_title }}')}</h3>${contactForm(ctx, theme)}</div></div></div></section>`
+    ? `<section id="contact" class="py-24 px-4 sm:px-6 lg:px-8"><div class="max-w-7xl mx-auto space-y-12"><div class="text-center max-w-2xl mx-auto"><div class="text-xs font-bold uppercase tracking-widest" style="color:${theme.accent}">Connect with us</div><h2 class="text-3xl font-extrabold mt-2">${txt(ctx, c.contactSectionTitle, '{{ $settings->contact_section_title }}')}</h2></div><div class="grid lg:grid-cols-12 gap-12"><div class="lg:col-span-5 space-y-6"><div class="${theme.card} p-6 rounded-2xl"><h4 class="font-bold text-sm">Phone</h4><p class="text-xs ${theme.muted} mt-1">${txt(ctx, c.phone, '{{ $settings->phone }}')}</p></div><div class="${theme.card} p-6 rounded-2xl"><h4 class="font-bold text-sm">Email</h4><p class="text-xs ${theme.muted} mt-1">${txt(ctx, c.email, '{{ $settings->email }}')}</p></div><div class="${theme.card} p-6 rounded-2xl"><h4 class="font-bold text-sm">Office</h4><p class="text-xs ${theme.muted} mt-1">${txt(ctx, c.address, '{{ $settings->address }}')}</p></div>${mapHtml}</div><div class="lg:col-span-7 ${theme.card} p-8 rounded-3xl space-y-6"><h3 class="text-xl font-bold">${txt(ctx, c.contactFormTitle, '{{ $settings->contact_form_title }}')}</h3>${contactForm(ctx, theme)}</div></div></div></section>`
     : ''
 
   const footer = `<footer class="border-t py-12 px-4 text-xs ${theme.muted}"><div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-8"><div><div class="font-bold text-base mb-3">${txt(ctx, c.businessName, '{{ $settings->business_name }}')}</div><p>${txt(ctx, c.missionStatement || c.heroSubtext, '{{ $settings->mission_statement }}')}</p></div><div><h4 class="font-bold mb-3 uppercase tracking-wider">Pages</h4><ul class="space-y-2"><li><a href="${href(ctx, 'services')}">Services</a></li><li><a href="${href(ctx, 'about')}">About</a></li><li><a href="${href(ctx, 'blog')}">Blog</a></li><li><a href="${href(ctx, 'contact')}">Contact</a></li></ul></div><div><h4 class="font-bold mb-3 uppercase tracking-wider">Hours</h4><p>${txt(ctx, c.hours, '{{ $settings->hours }}')}</p></div><div><h4 class="font-bold mb-3 uppercase tracking-wider">Contact</h4><p>${txt(ctx, c.phone, '{{ $settings->phone }}')}<br/>${txt(ctx, c.email, '{{ $settings->email }}')}</p></div></div><div class="max-w-7xl mx-auto mt-8 pt-8 border-t text-center">© ${new Date().getFullYear()} ${txt(ctx, c.businessName, '{{ $settings->business_name }}')}</div></footer>`

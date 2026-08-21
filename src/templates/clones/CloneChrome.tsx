@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { ArrowRight, Calendar, ChevronDown, Clock, Mail, Menu, Phone, Shield, X } from 'lucide-react'
 import type { CSSProperties } from 'react'
 import type { CloneTemplateId } from '../cloneTheme'
+import { getMapEmbedUrl } from '../../utils/mapEmbed'
 import type { CloneHomeData } from './cloneHomeData'
 
 interface ChromeProps {
@@ -490,5 +491,30 @@ export function CloneCtaSection({ d, onBook }: { d: CloneHomeData; onBook?: () =
         )}
       </div>
     </section>
+  )
+}
+
+export function CloneMap({
+  d,
+  className = 'h-56 overflow-hidden rounded-2xl border',
+  title = 'Office location',
+}: {
+  d: CloneHomeData
+  className?: string
+  title?: string
+}) {
+  const src = getMapEmbedUrl(d.c.mapUrl, d.c.address)
+  if (!src) return null
+  return (
+    <div className={className}>
+      <iframe
+        title={title}
+        src={src}
+        className="h-full w-full border-0"
+        loading="lazy"
+        referrerPolicy="no-referrer-when-downgrade"
+        allowFullScreen
+      />
+    </div>
   )
 }

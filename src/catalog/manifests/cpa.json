@@ -584,6 +584,7 @@
     "email": "info@greenfield.tax",
     "phone": "(800) 555-8299",
     "address": "100 Financial Way, Suite 300",
+    "mapUrl": "https://www.google.com/maps?q=100+Financial+Way,+New+York,+NY&output=embed",
     "hours": "Mon-Fri: 9AM-7PM | Sat: 10AM-4PM",
     "instagram": "",
     "website": "",

@@ -15,6 +15,7 @@ import {
   isEditableSection,
 } from '../data/editorProfile'
 import { getPageNavLabel } from '../data/pageConfig'
+import { getMapEmbedUrl, isShortMapLink } from '../utils/mapEmbed'
 import { optimizeSiteSeo } from '../utils/seoOptimizer'
 import { BrandIdentityForm } from './BrandIdentityForm'
 import { ColorSchemePicker } from './ColorSchemePicker'
@@ -483,6 +484,11 @@ export function ContentForm() {
               placeholder={field.placeholder}
             />
           ))}
+          <MapLinkField
+            value={content.mapUrl}
+            address={content.address}
+            onChange={(v) => updateContent({ mapUrl: v })}
+          />
         </FormSection>
       )}
     </div>
@@ -561,5 +567,50 @@ function Field({
         <input type="text" value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} className={cls} />
       )}
     </label>
+  )
+}
+
+function MapLinkField({
+  value,
+  address,
+  onChange,
+}: {
+  value: string
+  address: string
+  onChange: (v: string) => void
+}) {
+  const embedUrl = getMapEmbedUrl(value, address)
+  const shortLink = isShortMapLink(value)
+  return (
+    <div className="space-y-2">
+      <Field
+        label="Google Maps link"
+        value={value}
+        onChange={onChange}
+        placeholder="https://www.google.com/maps/place/... or paste embed code"
+      />
+      <p className="text-xs text-slate-400">
+        Paste a Google Maps URL or the embed iframe code (Share → Embed a map). Short maps.app.goo.gl links cannot be
+        embedded — open them, then copy the full maps.google.com address. If this is empty, the map uses your office
+        address.
+      </p>
+      {shortLink ? (
+        <p className="text-xs text-amber-700">
+          That looks like a short Maps link. Copy the full URL from your browser bar after it opens, or we will fall
+          back to the office address.
+        </p>
+      ) : null}
+      {embedUrl ? (
+        <div className="overflow-hidden rounded-xl border border-slate-200">
+          <iframe
+            title="Map preview"
+            src={embedUrl}
+            className="h-44 w-full border-0"
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
+        </div>
+      ) : null}
+    </div>
   )
 }

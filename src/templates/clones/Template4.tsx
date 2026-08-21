@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import type { SiteContent } from '../../types';
-import { CloneCtaSection, CloneNav, ClonePricingSection, CloneTeamSection } from './CloneChrome';
+import { CloneCtaSection, CloneMap, CloneNav, ClonePricingSection, CloneTeamSection } from './CloneChrome';
 import { buildCloneHomeData } from './cloneHomeData';
 import {
   Shield,
@@ -605,7 +605,7 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
                 </div>
                 <div>
                   <h4 className="font-bold text-[var(--clone-ink)] text-sm">Headquarters Address</h4>
-                  <p className="text-xs text-[#6B7A70] mt-1">100 Financial Way, Suite 300, New York, NY</p>
+                  <p className="text-xs text-[#6B7A70] mt-1">{c.address}</p>
                 </div>
               </div>
 
@@ -615,7 +615,7 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
                 </div>
                 <div>
                   <h4 className="font-bold text-[var(--clone-ink)] text-sm">Direct Phone Line</h4>
-                  <p className="text-xs text-[#6B7A70] mt-1">Call: (800) 555-8299</p>
+                  <p className="text-xs text-[#6B7A70] mt-1">{c.phone ? `Call: ${c.phone}` : ''}</p>
                 </div>
               </div>
 
@@ -625,20 +625,11 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
                 </div>
                 <div>
                   <h4 className="font-bold text-[var(--clone-ink)] text-sm">Email Support</h4>
-                  <p className="text-xs text-[#6B7A70] mt-1">support@taxguardians.com</p>
+                  <p className="text-xs text-[#6B7A70] mt-1">{c.email}</p>
                 </div>
               </div>
 
-              {/* Google Map */}
-              <div className="rounded-2xl overflow-hidden border border-[#E4E0D4] h-56">
-                <iframe
-                  title="TaxGuardians office location"
-                  src="https://www.google.com/maps?q=100+Financial+Way,New+York,NY&output=embed"
-                  className="w-full h-full border-0"
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                />
-              </div>
+              <CloneMap d={d} className="h-56 overflow-hidden rounded-2xl border border-[#E4E0D4]" title="Office location" />
             </div>
 
             {/* Direct Message Form */}

@@ -55,6 +55,7 @@ export function migrateContent(raw: Partial<SiteContent>, templateId?: TemplateI
     contactFormTitle: raw.contactFormTitle || merged.contactFormTitle,
     contactFormUrl: raw.contactFormUrl ?? merged.contactFormUrl,
     contactFormButtonText: raw.contactFormButtonText || merged.contactFormButtonText,
+    mapUrl: raw.mapUrl ?? merged.mapUrl ?? '',
     pageVisibility: migratePageVisibility(raw, legacyVisibility),
     sectionVisibility: migrateSectionVisibility({
       ...defaultSectionVisibility,

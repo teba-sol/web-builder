@@ -15,4 +15,5 @@ export const emptyContacts = {
   contactFormTitle: 'Send Us a Message',
   contactFormUrl: '',
   contactFormButtonText: 'Open Contact Form',
+  mapUrl: '',
 }

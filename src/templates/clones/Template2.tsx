@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import type { SiteContent } from '../../types';
-import { CloneCtaSection, CloneNav, ClonePricingSection, CloneTeamSection } from './CloneChrome';
+import { CloneCtaSection, CloneMap, CloneNav, ClonePricingSection, CloneTeamSection } from './CloneChrome';
 import { buildCloneHomeData } from './cloneHomeData';
 import {
   Shield,
@@ -485,7 +485,7 @@ export function Template2({ c, basePath }: { c: SiteContent; basePath: string })
                 </div>
                 <div>
                   <h4 className="font-bold text-slate-900 text-sm">Headquarters Address</h4>
-                  <p className="text-xs text-slate-600 mt-1">100 Financial Way, Suite 300, Financial District</p>
+                  <p className="text-xs text-slate-600 mt-1">{c.address}</p>
                 </div>
               </div>
 
@@ -495,7 +495,7 @@ export function Template2({ c, basePath }: { c: SiteContent; basePath: string })
                 </div>
                 <div>
                   <h4 className="font-bold text-slate-900 text-sm">Direct Phone Line</h4>
-                  <p className="text-xs text-slate-600 mt-1">Call: (800) 555-KREATIVEES / (800) 555-8299</p>
+                  <p className="text-xs text-slate-600 mt-1">{c.phone ? `Call: ${c.phone}` : ''}</p>
                 </div>
               </div>
 
@@ -505,9 +505,10 @@ export function Template2({ c, basePath }: { c: SiteContent; basePath: string })
                 </div>
                 <div>
                   <h4 className="font-bold text-slate-900 text-sm">Email Support</h4>
-                  <p className="text-xs text-slate-600 mt-1">support@taxguardians.com</p>
+                  <p className="text-xs text-slate-600 mt-1">{c.email}</p>
                 </div>
               </div>
+              <CloneMap d={d} className="h-56 overflow-hidden rounded-2xl border border-slate-300" />
             </div>
 
             {/* Direct Message Form */}

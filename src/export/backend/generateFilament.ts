@@ -388,6 +388,7 @@ class SiteSettingResource extends Resource
                     Forms\\Components\\TextInput::make('email')->email(),
                     Forms\\Components\\TextInput::make('phone'),
                     Forms\\Components\\TextInput::make('address'),
+                    Forms\\Components\\TextInput::make('map_url')->label('Google Maps link')->helperText('Paste a Google Maps URL or embed code. If empty, the map uses the office address.'),
                     Forms\\Components\\TextInput::make('hours'),
                     Forms\\Components\\TextInput::make('license_number')->label('License / credentials'),
                     Forms\\Components\\TextInput::make('instagram')->label('Instagram')->url(),

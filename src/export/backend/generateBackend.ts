@@ -201,6 +201,7 @@ function buildSettingsRecord(payload: SiteExportPayload): Record<string, unknown
     email: c.email,
     phone: c.phone,
     address: c.address,
+    map_url: c.mapUrl,
     hours: c.hours,
     license_number: c.licenseNumber,
     instagram: c.instagram,
@@ -427,7 +428,7 @@ class SiteSetting extends Model
         'gallery_section_title', 'testimonials_section_title',
         'blog_section_title', 'blog_section_subtitle', 'faq_section_title',
         'team_section_title', 'cta_banner_title', 'cta_banner_text',
-        'cta_text', 'cta_link', 'email', 'phone', 'address', 'hours',
+        'cta_text', 'cta_link', 'email', 'phone', 'address', 'map_url', 'hours',
         'license_number', 'instagram', 'linkedin', 'website',
         'contact_section_title', 'contact_form_title', 'contact_form_button_text',
         'template_id', 'color_scheme_id', 'layout_variant_id',
@@ -1282,6 +1283,7 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
             $table->string('address')->nullable();
+            $table->text('map_url')->nullable();
             $table->string('hours')->nullable();
             $table->string('license_number')->nullable();
             $table->string('instagram')->nullable();

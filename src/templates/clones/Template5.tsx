@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { SiteContent } from '../../types';
-import { CloneNav, ClonePricingSection } from './CloneChrome';
+import { CloneMap, CloneNav, ClonePricingSection } from './CloneChrome';
 import { buildCloneHomeData } from './cloneHomeData';
 import {
   Shield,
@@ -656,24 +656,22 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
           <div className="grid lg:grid-cols-12 gap-8">
             <div className="lg:col-span-5 space-y-4">
               {[
-                { icon: <MapPin className="w-5 h-5" />, title: 'Headquarters Address', desc: '100 Financial Way, Suite 300, New York, NY' },
-                { icon: <Phone className="w-5 h-5" />, title: 'Direct Phone Line', desc: 'Call: (800) 555-8299' },
-                { icon: <Mail className="w-5 h-5" />, title: 'Email Support', desc: 'support@axiomaudit.com' },
-              ].map((c, i) => (
+                { icon: <MapPin className="w-5 h-5" />, title: 'Headquarters Address', desc: c.address },
+                { icon: <Phone className="w-5 h-5" />, title: 'Direct Phone Line', desc: c.phone ? `Call: ${c.phone}` : '' },
+                { icon: <Mail className="w-5 h-5" />, title: 'Email Support', desc: c.email },
+              ].map((item, i) => (
                 <div key={i} className="bg-white p-5 rounded-xl border flex items-start gap-4" style={{ borderColor: C.border }}>
                   <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 text-white" style={{ backgroundColor: C.primary }}>
-                    {c.icon}
+                    {item.icon}
                   </div>
                   <div>
-                    <h4 className="font-bold text-sm" style={{ color: C.text }}>{c.title}</h4>
-                    <p className="text-xs mt-1" style={{ color: C.textMuted }}>{c.desc}</p>
+                    <h4 className="font-bold text-sm" style={{ color: C.text }}>{item.title}</h4>
+                    <p className="text-xs mt-1" style={{ color: C.textMuted }}>{item.desc}</p>
                   </div>
                 </div>
               ))}
 
-              <div className="rounded-xl overflow-hidden border h-56" style={{ borderColor: C.border }}>
-                <iframe title="Office location" src="https://www.google.com/maps?q=100+Financial+Way,New+York,NY&output=embed" className="w-full h-full border-0" loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
-              </div>
+              <CloneMap d={d} className="h-56 overflow-hidden rounded-xl border" title="Office location" />
             </div>
 
             <div className="lg:col-span-7 bg-white p-8 rounded-2xl border space-y-6" style={{ borderColor: C.border }}>
