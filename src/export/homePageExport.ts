@@ -46,13 +46,15 @@ interface FinanceTheme {
 
 function themedFinanceHome(ctx: HomeExportContext, theme: FinanceTheme): string {
   const { content: c, fromNested } = ctx
+  const sv = c.sectionVisibility
   const parts: string[] = []
-  const stats = c.stats.filter((s) => s.value)
+  const stats = sv.stats ? c.stats.filter((s) => s.value) : []
   const services = c.services.filter((s) => s.title)
-  const steps = c.steps.filter((s) => s.title)
-  const reviews = c.testimonials.filter((t) => t.quote)
-  const faqs = c.faqs.filter((f) => f.question)
+  const steps = sv.steps ? c.steps.filter((s) => s.title) : []
+  const reviews = sv.testimonials ? c.testimonials.filter((t) => t.quote) : []
+  const faqs = sv.faq ? c.faqs.filter((f) => f.question) : []
   const locations = c.showcaseItems.filter((i) => i.title)
+  const plans = sv.pricing ? c.pricing.filter((p) => p.title) : []
   const aboutImg = c.aboutImage ? ctx.resolveImage(c.aboutImage, 'fin-about') : ''
 
   if (stats.length) {
@@ -76,6 +78,14 @@ function themedFinanceHome(ctx: HomeExportContext, theme: FinanceTheme): string 
       .map((step, i) => `<div class="${theme.card} p-8 rounded-3xl text-center"><div class="w-12 h-12 rounded-full mx-auto flex items-center justify-center font-black text-white" style="background-color:${theme.accent}">${i + 1}</div><h3 class="mt-4 text-xl font-bold ${theme.heading}">${escapeHtml(step.title)}</h3><p class="mt-2 text-xs ${theme.muted}">${escapeHtml(step.description)}</p></div>`)
       .join('')}</div></div></section>`)
   }
+  if (sv.pricing) {
+    const pricingPlans = plans.length
+      ? plans
+      : [{ title: 'Custom quote', description: 'Tell us what you need and we will price the work clearly before we start.', price: 'Contact us', tag: '', featured: true }]
+    parts.push(`<section id="pricing" class="${theme.alt} py-24 px-4"><div class="max-w-7xl mx-auto"><div class="text-center mb-12"><p class="text-xs font-bold uppercase tracking-widest" style="color:${theme.accent}">Pricing</p><h2 class="text-3xl font-extrabold mt-2 ${theme.heading}">${escapeHtml(c.pricingSectionTitle)}</h2></div><div class="grid md:grid-cols-3 gap-6">${pricingPlans
+      .map((p) => `<div class="${theme.card} p-8 rounded-3xl"${p.featured ? ` style="border-color:${theme.accent};box-shadow:0 0 0 1px ${theme.accent}"` : ''}><p class="text-xs font-bold uppercase tracking-wider" style="color:${theme.accent}">${escapeHtml(p.tag)}</p><h3 class="text-xl font-bold ${theme.heading}">${escapeHtml(p.title)}</h3><p class="my-3 text-3xl font-black" style="color:${theme.accent}">${escapeHtml(p.price)}</p><p class="text-sm ${theme.muted}">${escapeHtml(p.description)}</p></div>`)
+      .join('')}</div></div></section>`)
+  }
   if (reviews.length) {
     parts.push(`<section class="${theme.alt} py-24 px-4"><div class="max-w-7xl mx-auto"><h2 class="text-3xl font-extrabold text-center mb-12 ${theme.heading}">${escapeHtml(c.testimonialsSectionTitle)}</h2><div class="grid md:grid-cols-3 gap-8">${reviews
       .slice(0, 3)
@@ -97,7 +107,9 @@ function themedFinanceHome(ctx: HomeExportContext, theme: FinanceTheme): string 
       .join('')}</div></section>`)
   }
   parts.push(`<section class="${theme.alt} py-24 px-4"><div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12"><div><h2 class="text-3xl font-extrabold ${theme.heading}">${escapeHtml(c.contactSectionTitle)}</h2><p class="mt-4 ${theme.muted}">${escapeHtml(c.phone)}</p><p class="${theme.muted}">${escapeHtml(c.email)}</p><p class="${theme.muted}">${escapeHtml(c.address)}</p></div><div class="${theme.card} p-8 rounded-3xl">${financeContactForm(ctx, 'w-full rounded-xl border px-4 py-3 text-sm', `background-color:${theme.accent}`)}</div></div></section>`)
-  parts.push(`<section class="py-20 px-4" style="background-color:${theme.accent}"><div class="max-w-4xl mx-auto text-center text-white"><h2 class="text-4xl font-bold mb-4">${escapeHtml(c.ctaBannerTitle)}</h2><p class="text-white/85 mb-8">${escapeHtml(c.ctaBannerText)}</p><a href="${resolveStaticHref('contact', c, fromNested)}" class="inline-block bg-white px-10 py-4 rounded-lg font-semibold" style="color:${theme.accent}">${escapeHtml(c.ctaText)}</a></div></section>`)
+  if (sv.cta) {
+    parts.push(`<section class="py-20 px-4" style="background-color:${theme.accent}"><div class="max-w-4xl mx-auto text-center text-white"><h2 class="text-4xl font-bold mb-4">${escapeHtml(c.ctaBannerTitle)}</h2><p class="text-white/85 mb-8">${escapeHtml(c.ctaBannerText)}</p><a href="${resolveStaticHref('contact', c, fromNested)}" class="inline-block bg-white px-10 py-4 rounded-lg font-semibold" style="color:${theme.accent}">${escapeHtml(c.ctaText)}</a></div></section>`)
+  }
   return parts.join('\n')
 }
 

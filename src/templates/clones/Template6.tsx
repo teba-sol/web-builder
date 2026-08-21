@@ -2,7 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { resolveSiteHref, sitePath } from '../../data/siteNav'
 import type { SiteContent } from '../../types'
-import { CloneNav, CloneTeamSection } from './CloneChrome'
+import { CloneNav, ClonePricingSection, CloneTeamSection } from './CloneChrome'
 import { buildCloneHomeData } from './cloneHomeData'
 
 const MAROON = 'var(--clone-accent)'
@@ -43,7 +43,7 @@ export function Template6({ c, basePath }: Props) {
     <div className="bg-[var(--clone-surface)] font-sans text-[var(--clone-ink)]">
       <CloneNav templateId="helix" d={d} onBook={() => { setFormOpen(true); setSubmitted(false) }} />
 
-      <header className="relative h-screen min-h-[640px] overflow-hidden">
+      <header className="relative z-0 isolate h-screen min-h-[640px] overflow-hidden">
         {c.heroImage ? (
           <img src={c.heroImage} alt="" className="absolute inset-0 h-full w-full object-cover" />
         ) : (
@@ -260,6 +260,7 @@ export function Template6({ c, basePath }: Props) {
         </section>
       )}
 
+      <ClonePricingSection d={d} onBook={() => { setFormOpen(true); setSubmitted(false) }} />
       <CloneTeamSection d={d} />
 
       {c.sectionVisibility.faq && faqs.length > 0 && (
@@ -281,6 +282,7 @@ export function Template6({ c, basePath }: Props) {
         </section>
       )}
 
+      {d.show.cta && (
       <section className="px-4 py-20 sm:px-6 lg:px-8" style={{ backgroundColor: MAROON }}>
         <div className="mx-auto max-w-4xl text-center">
           <h2 className="mb-6 text-4xl font-bold text-white sm:text-5xl">{c.ctaBannerTitle}</h2>
@@ -295,6 +297,7 @@ export function Template6({ c, basePath }: Props) {
           </button>
         </div>
       </section>
+      )}
 
       <section className="bg-white px-6 py-20">
         <div className="mx-auto max-w-6xl">

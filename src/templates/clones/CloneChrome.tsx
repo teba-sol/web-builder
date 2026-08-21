@@ -17,6 +17,7 @@ interface VariantChrome {
   topbarText: string
   nav: string
   navStyle?: CSSProperties
+  navBlur?: boolean
   link: string
   dropdown: string
   dropdownItem: string
@@ -36,7 +37,8 @@ const VARIANTS: Record<CloneTemplateId, VariantChrome> = {
     topbar: 'border-b border-rose-200 text-xs py-2 px-4',
     topbarStyle: { backgroundColor: '#eee4e6' },
     topbarText: 'text-rose-700 font-semibold',
-    nav: 'sticky top-0 z-40 border-b border-slate-300 bg-slate-50/95 shadow-xl backdrop-blur-md',
+    nav: 'sticky top-0 z-50 overflow-visible border-b border-slate-300 bg-slate-50/95 shadow-xl',
+    navBlur: true,
     link: 'rounded-lg px-3.5 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-100 hover:text-rose-600',
     dropdown: 'bg-slate-100 border border-slate-300',
     dropdownItem: 'hover:bg-rose-100/40',
@@ -49,7 +51,8 @@ const VARIANTS: Record<CloneTemplateId, VariantChrome> = {
     topbar: 'border-b border-purple-200 text-xs py-2 px-4',
     topbarStyle: { backgroundColor: '#eee4e6' },
     topbarText: 'text-purple-700 font-semibold',
-    nav: 'sticky top-0 z-40 border-b border-slate-300 bg-slate-50/95 shadow-xl backdrop-blur-md',
+    nav: 'sticky top-0 z-50 overflow-visible border-b border-slate-300 bg-slate-50/95 shadow-xl',
+    navBlur: true,
     link: 'rounded-lg px-3.5 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-100 hover:text-purple-600',
     dropdown: 'bg-white border border-purple-200',
     dropdownItem: 'hover:bg-purple-100/40',
@@ -62,7 +65,8 @@ const VARIANTS: Record<CloneTemplateId, VariantChrome> = {
     topbar: 'border-b border-[#241C15]/10 text-xs py-2 px-4 text-[#FFF3E7]',
     topbarStyle: { backgroundColor: '#241C15' },
     topbarText: 'text-[#FFDCC4] font-semibold',
-    nav: 'sticky top-0 z-40 border-b border-[#EEDFCF] bg-[#FFF9F4]/95 shadow-sm backdrop-blur-md',
+    nav: 'sticky top-0 z-50 overflow-visible border-b border-[#EEDFCF] bg-[#FFF9F4]/95 shadow-sm',
+    navBlur: true,
     link: 'rounded-lg px-3.5 py-2 text-sm font-semibold text-[#3A2E22] hover:bg-[#FFEDE1] hover:text-[#FA6B34]',
     dropdown: 'bg-white border border-[#EEDFCF]',
     dropdownItem: 'hover:bg-[#FFEDE1]',
@@ -75,8 +79,9 @@ const VARIANTS: Record<CloneTemplateId, VariantChrome> = {
     topbar: 'text-xs py-2.5 px-4 text-[#DDEBD0]',
     topbarStyle: { backgroundColor: 'var(--clone-ink)' },
     topbarText: 'text-[#DDEBD0] font-semibold',
-    nav: 'sticky top-0 z-40 border-b border-white/10 shadow-lg backdrop-blur-md',
+    nav: 'sticky top-0 z-50 overflow-visible border-b border-white/10 shadow-lg',
     navStyle: { backgroundColor: 'var(--clone-ink)' },
+    navBlur: true,
     link: 'rounded-full px-3.5 py-2 text-sm font-semibold text-white/90 hover:bg-[var(--clone-accent)] hover:text-[var(--clone-ink)]',
     dropdown: 'bg-white border border-[#E4E0D4]',
     dropdownItem: 'hover:bg-[#F0F8E0]',
@@ -90,7 +95,7 @@ const VARIANTS: Record<CloneTemplateId, VariantChrome> = {
   axiom: {
     topbar: '',
     topbarText: '',
-    nav: 'sticky top-0 z-40 border-b bg-white shadow-sm',
+    nav: 'sticky top-0 z-50 overflow-visible border-b bg-white shadow-sm',
     navStyle: { borderColor: '#E8EFF7' },
     link: 'px-3.5 py-2 text-sm font-semibold hover:text-blue-600',
     dropdown: 'bg-white border',
@@ -104,7 +109,7 @@ const VARIANTS: Record<CloneTemplateId, VariantChrome> = {
   helix: {
     topbar: 'bg-black px-4 py-3 text-white',
     topbarText: 'text-white',
-    nav: 'sticky top-0 z-40 rounded-b-3xl text-white shadow-lg',
+    nav: 'sticky top-0 z-50 overflow-visible rounded-b-3xl text-white shadow-lg',
     navStyle: { backgroundColor: 'var(--clone-accent)' },
     link: 'rounded-lg px-4 py-2 font-medium text-white hover:bg-white/10',
     dropdown: 'bg-[var(--clone-ink)] border border-white/10',
@@ -131,11 +136,11 @@ function Dropdown({
   v: VariantChrome
 }) {
   return (
-    <div className="relative group">
+    <div className="relative z-50 group">
       <Link to={to} className={`flex items-center gap-1 ${v.link}`}>
         {label} <ChevronDown className="h-4 w-4 transition-transform group-hover:rotate-180" />
       </Link>
-      <div className="pointer-events-none absolute top-full left-0 w-80 pt-2 translate-y-2 opacity-0 transition-all duration-200 group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100">
+      <div className="pointer-events-none absolute top-full left-0 z-50 w-80 pt-2 translate-y-2 opacity-0 transition-all duration-200 group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100">
         <div className={`space-y-1 rounded-2xl border p-2 shadow-2xl ${v.dropdown}`}>
           {items.map((item) => (
             <Link key={item.title} to={item.to} className={`block rounded-xl p-3 ${v.dropdownItem}`}>
@@ -166,7 +171,7 @@ export function CloneNav({ templateId, d, onBook }: ChromeProps) {
   }))
 
   return (
-    <div>
+    <div className="clone-site-nav relative z-50">
       {!v.skipTopbar ? (
         <div className={v.topbar} style={v.topbarStyle}>
           <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 sm:flex-row">
@@ -192,7 +197,13 @@ export function CloneNav({ templateId, d, onBook }: ChromeProps) {
       ) : null}
 
       <nav className={v.nav} style={v.navStyle}>
-        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6">
+        {v.navBlur ? (
+          <div
+            className={`pointer-events-none absolute inset-0 -z-10 backdrop-blur-md ${v.rounded ? 'rounded-b-3xl' : ''}`}
+            aria-hidden
+          />
+        ) : null}
+        <div className="relative mx-auto flex h-20 max-w-7xl items-center justify-between overflow-visible px-4 sm:px-6">
           <Link to={d.hrefs.home} className="flex items-center gap-3">
             {c.logo ? (
               <img src={c.logo} alt="" className={`object-contain ${v.rounded ? 'h-14 w-14' : 'h-11 w-auto max-w-[10rem]'}`} />
@@ -381,6 +392,102 @@ export function CloneTeamSection({ d }: { d: CloneHomeData }) {
             </div>
           ))}
         </div>
+      </div>
+    </section>
+  )
+}
+
+export function ClonePricingSection({ d, onBook }: { d: CloneHomeData; onBook?: () => void }) {
+  if (!d.show.pricing) return null
+  const plans = d.pricing.length
+    ? d.pricing
+    : [
+        {
+          title: 'Custom quote',
+          description: 'Tell us what you need and we will price the work clearly before we start.',
+          price: 'Contact us',
+          tag: '',
+          featured: true,
+        },
+      ]
+  return (
+    <section id="pricing" className="px-4 py-24 sm:px-6">
+      <div className="mx-auto max-w-7xl space-y-12">
+        <div className="mx-auto max-w-2xl text-center">
+          <div className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: 'var(--clone-accent)' }}>
+            Pricing
+          </div>
+          <h2 className="mt-3 text-3xl font-black sm:text-4xl">{d.c.pricingSectionTitle || 'Pricing plans'}</h2>
+        </div>
+        <div className="grid gap-6 md:grid-cols-3">
+          {plans.map((plan) => (
+            <div
+              key={plan.title}
+              className="rounded-3xl border bg-[var(--clone-surface)] p-8"
+              style={
+                plan.featured
+                  ? { borderColor: 'var(--clone-accent)', boxShadow: '0 0 0 1px var(--clone-accent)' }
+                  : undefined
+              }
+            >
+              {plan.tag ? (
+                <p className="mb-2 text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--clone-accent)' }}>
+                  {plan.tag}
+                </p>
+              ) : null}
+              <h3 className="text-xl font-bold">{plan.title}</h3>
+              <p className="my-3 text-3xl font-black" style={{ color: 'var(--clone-accent)' }}>
+                {plan.price}
+              </p>
+              <p className="text-sm leading-relaxed opacity-70">{plan.description}</p>
+              {onBook ? (
+                <button
+                  type="button"
+                  onClick={onBook}
+                  className="mt-6 text-sm font-bold hover:underline"
+                  style={{ color: 'var(--clone-accent)' }}
+                >
+                  Get started →
+                </button>
+              ) : (
+                <Link to={d.hrefs.cta} className="mt-6 inline-block text-sm font-bold hover:underline" style={{ color: 'var(--clone-accent)' }}>
+                  Get started →
+                </Link>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+export function CloneCtaSection({ d, onBook }: { d: CloneHomeData; onBook?: () => void }) {
+  if (!d.show.cta) return null
+  const { c } = d
+  return (
+    <section id="cta" className="px-4 py-20 sm:px-6" style={{ backgroundColor: 'var(--clone-ink)' }}>
+      <div className="mx-auto max-w-4xl text-center">
+        <h2 className="text-3xl font-black text-white sm:text-4xl">{c.ctaBannerTitle || 'Ready to get started?'}</h2>
+        <p className="mx-auto mt-4 max-w-2xl text-lg text-white/75">{c.ctaBannerText || c.heroSubtext}</p>
+        {onBook ? (
+          <button
+            type="button"
+            onClick={onBook}
+            className="mt-8 inline-flex rounded-xl px-8 py-3.5 text-sm font-bold shadow-xl"
+            style={{ backgroundColor: 'var(--clone-accent)', color: 'var(--clone-ink)' }}
+          >
+            {c.ctaText || 'Book now'}
+          </button>
+        ) : (
+          <Link
+            to={d.hrefs.cta}
+            className="mt-8 inline-flex rounded-xl px-8 py-3.5 text-sm font-bold shadow-xl"
+            style={{ backgroundColor: 'var(--clone-accent)', color: 'var(--clone-ink)' }}
+          >
+            {c.ctaText || 'Book now'}
+          </Link>
+        )}
       </div>
     </section>
   )

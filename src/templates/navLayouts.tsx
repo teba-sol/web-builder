@@ -185,7 +185,7 @@ export function TemplateNav({ c, t, variant, navItems, basePath }: NavProps) {
 
     case 'cpa':
       return (
-        <div>
+        <div className="relative z-50">
           <div className="text-xs text-[#DDEBD0]" style={{ backgroundColor: 'var(--clone-ink, #0F211C)' }}>
             <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-4 py-2.5 sm:flex-row">
               <div className="flex items-center gap-6">
@@ -195,7 +195,7 @@ export function TemplateNav({ c, t, variant, navItems, basePath }: NavProps) {
               </div>
             </div>
           </div>
-          <nav className="sticky top-0 z-40 border-b border-white/10 shadow-lg backdrop-blur-md" style={{ backgroundColor: 'var(--clone-ink, #16302A)' }}>
+          <nav className="sticky top-0 z-50 overflow-visible border-b border-white/10 shadow-lg" style={{ backgroundColor: 'var(--clone-ink, #16302A)' }}>
             <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6">
               <Link to={basePath} className="text-xl font-black text-white"><BrandMark c={c} /></Link>
               <div className="hidden items-center gap-1 lg:flex">
@@ -215,7 +215,7 @@ export function TemplateNav({ c, t, variant, navItems, basePath }: NavProps) {
 
     case 'axiom':
       return (
-        <nav className="sticky top-0 z-40 border-b bg-white shadow-sm" style={{ borderColor: '#E8EFF7' }}>
+        <nav className="sticky top-0 z-50 overflow-visible border-b bg-white shadow-sm" style={{ borderColor: '#E8EFF7' }}>
           <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-4 sm:px-6">
             <Link to={basePath} className="text-lg font-black tracking-tight text-[#0A1628]"><BrandMark c={c} /></Link>
             <div className="hidden items-center gap-1 lg:flex">
@@ -234,14 +234,14 @@ export function TemplateNav({ c, t, variant, navItems, basePath }: NavProps) {
 
     case 'helix':
       return (
-        <div>
+        <div className="relative z-50">
           <div className="bg-black px-4 py-3 text-white">
             <div className="mx-auto flex max-w-7xl items-center justify-between">
               {c.email ? <a href={`mailto:${c.email}`} className="font-medium hover:underline">Email</a> : <span />}
               {c.phone ? <a href={`tel:${c.phone}`} className="text-sm font-medium md:text-2xl">{c.phone}</a> : null}
             </div>
           </div>
-          <nav className="sticky top-0 z-40 rounded-b-3xl text-white shadow-lg" style={{ backgroundColor: 'var(--clone-accent, #800020)' }}>
+          <nav className="sticky top-0 z-50 overflow-visible rounded-b-3xl text-white shadow-lg" style={{ backgroundColor: 'var(--clone-accent, #800020)' }}>
             <div className="mx-auto max-w-7xl px-4">
               <div className="flex h-20 items-center justify-between">
                 <Link to={basePath} className="shrink-0 text-xl font-bold">
@@ -268,7 +268,7 @@ export function TemplateNav({ c, t, variant, navItems, basePath }: NavProps) {
 
     case 'flux':
       return (
-        <div>
+        <div className="relative z-50">
           <div className="border-b border-[#241C15]/10 text-xs text-[#FFF3E7]" style={{ backgroundColor: '#241C15' }}>
             <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-2 px-4 py-2">
               <div className="flex items-center gap-6 font-semibold text-[#FFDCC4]">
@@ -278,7 +278,7 @@ export function TemplateNav({ c, t, variant, navItems, basePath }: NavProps) {
               </div>
             </div>
           </div>
-          <nav className="sticky top-0 z-40 border-b border-[#EEDFCF] bg-[#FFF9F4]/95 shadow-sm backdrop-blur-md">
+          <nav className="sticky top-0 z-50 overflow-visible border-b border-[#EEDFCF] bg-[#FFF9F4]/95 shadow-sm">
             <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6">
               <Link to={basePath} className="text-xl font-black tracking-tight text-[#241C15]"><BrandMark c={c} /></Link>
               <div className="hidden items-center gap-1 lg:flex">
@@ -298,7 +298,7 @@ export function TemplateNav({ c, t, variant, navItems, basePath }: NavProps) {
 
     case 'aureum':
       return (
-        <div>
+        <div className="relative z-50">
           <div className="border-b border-purple-200 text-xs text-slate-900" style={{ backgroundColor: '#eee4e6ff' }}>
             <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-2 px-4 py-2">
               <div className="flex items-center gap-6 font-semibold text-purple-700">
@@ -308,7 +308,7 @@ export function TemplateNav({ c, t, variant, navItems, basePath }: NavProps) {
               </div>
             </div>
           </div>
-          <nav className="sticky top-0 z-40 border-b border-slate-300 bg-slate-50/95 shadow-xl backdrop-blur-md">
+          <nav className="sticky top-0 z-50 overflow-visible border-b border-slate-300 bg-slate-50/95 shadow-xl">
             <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6">
               <Link to={basePath} className="text-xl font-black tracking-tight text-slate-900"><BrandMark c={c} /></Link>
               <div className="hidden items-center gap-1 lg:flex">
@@ -328,7 +328,7 @@ export function TemplateNav({ c, t, variant, navItems, basePath }: NavProps) {
 
     case 'taxfighters':
       return (
-        <div>
+        <div className="relative z-50">
           <div className="border-b border-rose-200 text-xs text-slate-900" style={{ backgroundColor: '#eee4e6ff' }}>
             <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-2 px-4 py-2">
               <div className="flex items-center gap-6 font-semibold text-rose-700">
@@ -338,7 +338,7 @@ export function TemplateNav({ c, t, variant, navItems, basePath }: NavProps) {
               </div>
             </div>
           </div>
-          <nav className="sticky top-0 z-40 border-b border-slate-300 bg-slate-50/95 shadow-xl backdrop-blur-md">
+          <nav className="sticky top-0 z-50 overflow-visible border-b border-slate-300 bg-slate-50/95 shadow-xl">
             <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6">
               <Link to={basePath} className="text-xl font-black tracking-tight text-slate-900">
                 {c.logo ? <img src={c.logo} alt="" className="h-10 w-auto object-contain" /> : <BrandMark c={c} />}

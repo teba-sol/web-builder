@@ -71,7 +71,19 @@ type PageSectionId =
 
 function homeSectionsFor(templateId: string): PageSectionId[] {
   const fromManifest = getManifest(templateId)?.homeSections
-  return [...(fromManifest ?? DEFAULT_HOME_SECTIONS)] as PageSectionId[]
+  const order = [...(fromManifest ?? DEFAULT_HOME_SECTIONS)] as PageSectionId[]
+  insertHomeSection(order, 'steps', 'testimonials')
+  insertHomeSection(order, 'pricing', 'faq')
+  insertHomeSection(order, 'team', 'faq')
+  insertHomeSection(order, 'cta', 'contact')
+  return order
+}
+
+function insertHomeSection(order: PageSectionId[], id: PageSectionId, before: PageSectionId) {
+  if (order.includes(id)) return
+  const idx = order.indexOf(before)
+  if (idx >= 0) order.splice(idx, 0, id)
+  else order.splice(Math.max(order.length - 1, 0), 0, id)
 }
 
 const PAGE_SECTIONS: Record<SitePageId, PageSectionId[]> = {
@@ -307,7 +319,7 @@ function HeroSection({ c, t, variant, heroLayout, basePath }: { c: SiteContent; 
   const hasOverlay = Boolean(heroCfg?.overlay) || heroLayout === 'immersive'
 
   return (
-    <header className={`relative ${t.hero} ${heroLayout === 'immersive' && !['restaurant', 'realtor', 'photography', 'creative', 'fitness', 'noir', 'coastal', 'hotel', 'alpine', 'ryokan', 'desert', 'nordic', 'jungle', 'vineyard', 'arcade'].includes(variant) ? 'min-h-[85vh] flex flex-col justify-center' : ''}`}>
+    <header className={`relative z-0 isolate ${t.hero} ${heroLayout === 'immersive' && !['restaurant', 'realtor', 'photography', 'creative', 'fitness', 'noir', 'coastal', 'hotel', 'alpine', 'ryokan', 'desert', 'nordic', 'jungle', 'vineyard', 'arcade'].includes(variant) ? 'min-h-[85vh] flex flex-col justify-center' : ''}`}>
       {hasOverlay && c.heroImage && (
         <>
           <img data-part="image" src={c.heroImage} alt="" className={`absolute inset-0 h-full w-full object-cover ${variant === 'noir' ? 'grayscale contrast-125' : ''}`} />

@@ -71,7 +71,7 @@
   ],
   "theme": {
     "page": "bg-[var(--clone-surface)] text-[var(--clone-ink)] font-sans",
-    "nav": "sticky top-0 z-40 border-b border-slate-300 bg-slate-50/95",
+    "nav": "sticky top-0 z-50 border-b border-slate-300 bg-slate-50/95",
     "navLink": "text-white hover:bg-white/10 rounded-lg px-4 py-2 font-medium",
     "navCta": "rounded-xl bg-[#e60039] px-6 py-3 text-sm font-bold text-white",
     "hero": "relative h-screen min-h-[640px] text-white",

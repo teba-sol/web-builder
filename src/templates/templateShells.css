@@ -176,6 +176,12 @@
 }
 .tpl-saas .tpl-teaser-heading { font-weight: 800; }
 
+/* Nav chrome + dropdowns must paint above heroes (which often use relative/z-10). */
+.clone-site-nav {
+  position: relative;
+  z-index: 50;
+}
+
 /* Granular block tokens (studio design controls) */
 .bd-density-compact { --bd-pad-y: 2.5rem; }
 .bd-density-regular { --bd-pad-y: 5rem; }

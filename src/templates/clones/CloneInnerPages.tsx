@@ -4,7 +4,7 @@ import type { SitePageId } from '../../data/pageConfig'
 import type { SiteContent } from '../../types'
 import type { CloneTemplateId } from '../cloneTheme'
 import { formatPostDate, postSlug } from '../PageLayoutSections'
-import { CloneFooter, CloneNav, CloneTeamSection } from './CloneChrome'
+import { CloneFooter, CloneNav, ClonePricingSection, CloneTeamSection } from './CloneChrome'
 import { buildCloneHomeData, type CloneHomeData } from './cloneHomeData'
 
 interface Props {
@@ -18,7 +18,7 @@ interface Props {
 
 function PageHero({ title, subtitle }: { title: string; subtitle?: string }) {
   return (
-    <section className="relative overflow-hidden py-16 sm:py-20" style={{ backgroundColor: 'var(--clone-ink)' }}>
+    <section className="relative z-0 isolate overflow-hidden py-16 sm:py-20" style={{ backgroundColor: 'var(--clone-ink)' }}>
       <div
         className="pointer-events-none absolute inset-0 opacity-15"
         style={{ backgroundImage: 'radial-gradient(white 1px, transparent 1px)', backgroundSize: '22px 22px' }}
@@ -132,57 +132,40 @@ function BlogPost({ d, slug }: { d: CloneHomeData; slug: string }) {
 
 function ServicesPage({ d }: { d: CloneHomeData }) {
   return (
-    <section className="px-4 py-16 sm:px-6">
-      <div className="mx-auto max-w-7xl space-y-16">
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {d.services.map((service, i) => (
-            <Card key={service.title}>
-              <div className="space-y-4 p-8">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl text-lg font-black text-white" style={{ backgroundColor: 'var(--clone-accent)' }}>
-                  {String(i + 1).padStart(2, '0')}
+    <>
+      <section className="px-4 py-16 sm:px-6">
+        <div className="mx-auto max-w-7xl space-y-16">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {d.services.map((service, i) => (
+              <Card key={service.title}>
+                <div className="space-y-4 p-8">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl text-lg font-black text-white" style={{ backgroundColor: 'var(--clone-accent)' }}>
+                    {String(i + 1).padStart(2, '0')}
+                  </div>
+                  <h3 className="text-xl font-bold">{service.title}</h3>
+                  <p className="text-sm leading-relaxed opacity-70">{service.description}</p>
                 </div>
-                <h3 className="text-xl font-bold">{service.title}</h3>
-                <p className="text-sm leading-relaxed opacity-70">{service.description}</p>
+              </Card>
+            ))}
+          </div>
+          {d.show.steps && d.steps.length ? (
+            <div>
+              <h2 className="mb-8 text-3xl font-black">{d.c.stepsSectionTitle || 'How it works'}</h2>
+              <div className="grid gap-6 md:grid-cols-3">
+                {d.steps.map((step, i) => (
+                  <div key={step.title} className="rounded-2xl border p-6">
+                    <div className="text-2xl font-black opacity-30">0{i + 1}</div>
+                    <h3 className="mt-2 text-lg font-bold">{step.title}</h3>
+                    <p className="mt-2 text-sm opacity-70">{step.description}</p>
+                  </div>
+                ))}
               </div>
-            </Card>
-          ))}
+            </div>
+          ) : null}
         </div>
-        {d.show.steps && d.steps.length ? (
-          <div>
-            <h2 className="mb-8 text-3xl font-black">{d.c.stepsSectionTitle || 'How it works'}</h2>
-            <div className="grid gap-6 md:grid-cols-3">
-              {d.steps.map((step, i) => (
-                <div key={step.title} className="rounded-2xl border p-6">
-                  <div className="text-2xl font-black opacity-30">0{i + 1}</div>
-                  <h3 className="mt-2 text-lg font-bold">{step.title}</h3>
-                  <p className="mt-2 text-sm opacity-70">{step.description}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        ) : null}
-        {d.show.pricing && d.pricing.length ? (
-          <div>
-            <h2 className="mb-8 text-3xl font-black">{d.c.pricingSectionTitle || 'Pricing'}</h2>
-            <div className="grid gap-6 md:grid-cols-3">
-              {d.pricing.map((plan) => (
-                <div
-                  key={plan.title}
-                  className="rounded-2xl border p-6"
-                  style={plan.featured ? { borderColor: 'var(--clone-accent)', boxShadow: '0 0 0 1px var(--clone-accent)' } : undefined}
-                >
-                  <h3 className="font-bold">{plan.title}</h3>
-                  <p className="my-3 text-3xl font-black" style={{ color: 'var(--clone-accent)' }}>
-                    {plan.price}
-                  </p>
-                  <p className="text-sm opacity-70">{plan.description}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        ) : null}
-      </div>
-    </section>
+      </section>
+      <ClonePricingSection d={d} />
+    </>
   )
 }
 

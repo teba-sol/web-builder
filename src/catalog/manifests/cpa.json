@@ -71,7 +71,7 @@
   ],
   "theme": {
     "page": "bg-[var(--clone-surface)] text-[var(--clone-ink)] font-sans",
-    "nav": "sticky top-0 z-40",
+    "nav": "sticky top-0 z-50",
     "navLink": "text-slate-600 hover:text-teal-800 font-medium",
     "navCta": "rounded-full bg-[var(--clone-accent)] px-6 py-2 text-sm font-bold text-[var(--clone-ink)]",
     "hero": "bg-gradient-to-br from-slate-950 via-slate-900 to-teal-950 text-white py-24",

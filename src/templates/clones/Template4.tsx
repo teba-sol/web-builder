@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import type { SiteContent } from '../../types';
-import { CloneNav, CloneTeamSection } from './CloneChrome';
+import { CloneCtaSection, CloneNav, ClonePricingSection, CloneTeamSection } from './CloneChrome';
 import { buildCloneHomeData } from './cloneHomeData';
 import {
   Shield,
@@ -102,7 +102,7 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
 
       <CloneNav templateId="cpa" d={d} onBook={() => setIsBookingModalOpen(true)} />
 {/* HERO */}
-      <section id="hero" className="relative text-white font-sans w-full overflow-hidden" style={{ backgroundColor: 'var(--clone-ink)' }}>
+      <section id="hero" className="relative z-0 isolate text-white font-sans w-full overflow-hidden" style={{ backgroundColor: 'var(--clone-ink)' }}>
         <div className="absolute -top-24 -right-24 w-[420px] h-[420px] rounded-full opacity-20 blur-3xl" style={{ backgroundColor: 'var(--clone-accent)' }} />
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20 grid lg:grid-cols-12 gap-10 items-center">
@@ -545,6 +545,7 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
         </div>
       </section>
 
+      <ClonePricingSection d={d} onBook={() => setIsBookingModalOpen(true)} />
       <CloneTeamSection d={d} />
 
       {/* FAQ ACCORDION SECTION */}
@@ -581,6 +582,8 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
 
         </div>
       </section>
+
+      <CloneCtaSection d={d} onBook={() => setIsBookingModalOpen(true)} />
 
       {/* CONTACT SECTION */}
       <section id="contact" className={`${!(d.show.contact) ? 'hidden ' : ''}py-24 px-4 sm:px-6 lg:px-8`} style={{ backgroundColor: 'var(--clone-surface-alt)' }}>

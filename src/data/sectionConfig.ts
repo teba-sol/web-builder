@@ -33,9 +33,9 @@ export const sectionMetas: SectionMeta[] = [
   { key: 'steps', label: 'Process', description: 'How-it-works steps on services page' },
   { key: 'team', label: 'Team', description: 'Team members on the about page' },
   { key: 'testimonials', label: 'Testimonials', description: 'Client reviews on home or about' },
-  { key: 'pricing', label: 'Pricing', description: 'Pricing plans on services page' },
-  { key: 'faq', label: 'FAQ', description: 'Common questions on contact page' },
-  { key: 'cta', label: 'CTA Banner', description: 'Mid-page call to action' },
+  { key: 'pricing', label: 'Pricing', description: 'Pricing plans on the home page and services page' },
+  { key: 'faq', label: 'FAQ', description: 'Common questions on the home page' },
+  { key: 'cta', label: 'CTA Banner', description: 'Call-to-action banner on the home page' },
 ]
 
 export const showcaseConfigByTemplate: Record<string, ShowcaseConfig> = Object.fromEntries(

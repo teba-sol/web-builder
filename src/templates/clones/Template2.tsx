@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import type { SiteContent } from '../../types';
-import { CloneNav, CloneTeamSection } from './CloneChrome';
+import { CloneCtaSection, CloneNav, ClonePricingSection, CloneTeamSection } from './CloneChrome';
 import { buildCloneHomeData } from './cloneHomeData';
 import {
   Shield,
@@ -91,7 +91,7 @@ export function Template2({ c, basePath }: { c: SiteContent; basePath: string })
     <div className="min-h-screen bg-[var(--clone-surface)] text-[var(--clone-ink)] font-sans selection:bg-purple-900 selection:text-slate-900 relative">
       
       <CloneNav templateId="aureum" d={d} onBook={() => setIsBookingModalOpen(true)} />
-<section className="bg-[var(--clone-accent)] min-h-screen text-white font-sans overflow-hidden flex flex-col relative">
+<section className="bg-[var(--clone-accent)] min-h-screen text-white font-sans overflow-hidden flex flex-col relative z-0 isolate">
   {/* Decorative background grid */}
   <div className="absolute right-0 bottom-0 w-[50%] h-full opacity-10 pointer-events-none" style={{ backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
 
@@ -431,6 +431,7 @@ export function Template2({ c, basePath }: { c: SiteContent; basePath: string })
         </div>
       </section>
 
+      <ClonePricingSection d={d} onBook={() => setIsBookingModalOpen(true)} />
       <CloneTeamSection d={d} />
 
       {/* FAQ ACCORDION SECTION */}
@@ -463,6 +464,8 @@ export function Template2({ c, basePath }: { c: SiteContent; basePath: string })
 
         </div>
       </section>
+
+      <CloneCtaSection d={d} onBook={() => setIsBookingModalOpen(true)} />
 
       {/* CONTACT SECTION */}
       <section id="contact" className={`${!(d.show.contact) ? 'hidden ' : ''}py-24 px-4 sm:px-6 lg:px-8 bg-slate-100/80 border-t border-slate-300`}>

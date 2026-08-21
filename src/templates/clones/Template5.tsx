@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { SiteContent } from '../../types';
-import { CloneNav } from './CloneChrome';
+import { CloneNav, ClonePricingSection } from './CloneChrome';
 import { buildCloneHomeData } from './cloneHomeData';
 import {
   Shield,
@@ -138,7 +138,7 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
       {/* ═══════════════════════════════════════════════════════════════
           HERO — Full-width image with dark overlay (NavikX-inspired)
       ═══════════════════════════════════════════════════════════════ */}
-      <section id="hero" className="t5 relative w-full overflow-hidden">
+      <section id="hero" className="t5 relative z-0 isolate w-full overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0">
           <img
@@ -551,6 +551,8 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
       </section>
       )}
 
+      <ClonePricingSection d={d} onBook={() => setIsBookingModalOpen(true)} />
+
       {/* ═══════════════════════════════════════════════════════════════
           FAQ — Side-by-side: image+CTA left, accordion right
       ═══════════════════════════════════════════════════════════════ */}
@@ -716,6 +718,7 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
       {/* ═══════════════════════════════════════════════════════════════
           CTA BANNER — Full-width dark (NavikX-inspired)
       ═══════════════════════════════════════════════════════════════ */}
+      {d.show.cta && (
       <section className="t5 py-16 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: C.primaryDeep }}>
         <div className="max-w-4xl mx-auto text-center space-y-5">
           <h2 className="text-3xl sm:text-4xl font-black text-white">
@@ -733,6 +736,7 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
           </button>
         </div>
       </section>
+      )}
 
       {/* ═══════════════════════════════════════════════════════════════
           FOOTER — Multi-column (NavikX-inspired)
