@@ -1,7 +1,12 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
 import { getDefaultColorSchemeId } from '../data/colorSchemes'
 import { getDefaultLayoutVariantId } from '../data/layoutVariants'
-import { brandColorsFromScheme, isCloneTemplate } from '../templates/cloneTheme'
+import { brandColorsFromScheme } from '../templates/cloneTheme'
+import {
+  CUSTOM_COLOR_SCHEME_ID,
+  applyAppearanceToContent,
+  type EditorAppearance,
+} from '../data/pickTemplate'
 import type { PageVisibility, SiteContent, TemplateId, ToggleableSection } from '../types'
 import { defaultContent, getEditorContent } from '../data/defaults'
 import {
@@ -20,7 +25,7 @@ interface WebsiteContextValue {
   content: SiteContent
   colorSchemeId: string
   layoutVariantId: string
-  selectTemplate: (id: TemplateId) => void
+  selectTemplate: (id: TemplateId, appearance?: EditorAppearance | null) => void
   setColorScheme: (schemeId: string) => void
   setLayoutVariant: (variantId: string) => void
   updateContent: (updates: Partial<SiteContent>) => void
@@ -75,19 +80,26 @@ export function WebsiteProvider({ children }: { children: ReactNode }) {
     }
   }, [templateId, content, colorSchemeId, layoutVariantId])
 
-  const selectTemplate = (id: TemplateId) => {
+  const selectTemplate = (id: TemplateId, appearance?: EditorAppearance | null) => {
     setTemplateId(id)
-    setContent(sanitizeContentLinks({ ...getEditorContent(id) }))
-    setColorSchemeId(getDefaultColorSchemeId(id))
+    const defaults = sanitizeContentLinks({ ...getEditorContent(id) })
+    if (appearance) {
+      const applied = applyAppearanceToContent(id, defaults, appearance)
+      setContent(applied.content)
+      setColorSchemeId(applied.colorSchemeId || getDefaultColorSchemeId(id))
+    } else {
+      const schemeId = getDefaultColorSchemeId(id)
+      setContent({ ...defaults, ...brandColorsFromScheme(id, schemeId) })
+      setColorSchemeId(schemeId)
+    }
     setLayoutVariantId(getDefaultLayoutVariantId(id))
   }
 
   const setColorScheme = (schemeId: string) => {
     setColorSchemeId(schemeId)
-    if (templateId && isCloneTemplate(templateId)) {
-      const brand = brandColorsFromScheme(templateId, schemeId)
-      setContent((prev) => ({ ...prev, ...brand }))
-    }
+    if (!templateId || schemeId === CUSTOM_COLOR_SCHEME_ID) return
+    const brand = brandColorsFromScheme(templateId, schemeId)
+    setContent((prev) => ({ ...prev, ...brand }))
   }
 
   const setLayoutVariant = (variantId: string) => {

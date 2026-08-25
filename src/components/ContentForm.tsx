@@ -74,6 +74,7 @@ export function ContentForm() {
           <ColorSchemePicker
             templateId={templateId}
             activeSchemeId={colorSchemeId || getDefaultColorSchemeId(templateId)}
+            customSwatches={[content.brandSecondary, content.brandPrimary, content.brandAccent]}
             onChange={setColorScheme}
           />
         </>

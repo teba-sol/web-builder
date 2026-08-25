@@ -42,7 +42,7 @@ export function showBrandName(content: SiteContent): boolean {
   return content.logoShowName !== false
 }
 
-function googleHref(ids: string[]): string {
+export function fontsStylesheetHref(ids: string[]): string {
   const families = ids
     .map((id) => getFont(id)?.google)
     .filter((value, index, list): value is string => Boolean(value) && list.indexOf(value) === index)
@@ -51,7 +51,7 @@ function googleHref(ids: string[]): string {
 }
 
 export function brandFontHref(content: SiteContent): string {
-  return googleHref([content.fontHeading, content.fontBody].filter(Boolean))
+  return fontsStylesheetHref([content.fontHeading, content.fontBody].filter(Boolean))
 }
 
 export function brandCss(content: SiteContent): string {
@@ -65,6 +65,9 @@ export function brandCss(content: SiteContent): string {
     primary ? `  --brand-primary: ${primary};` : '',
     secondary ? `  --brand-secondary: ${secondary};` : '',
     accent ? `  --brand-accent: ${accent};` : '',
+    primary ? `  --clone-accent: ${primary};` : '',
+    secondary ? `  --clone-ink: ${secondary};` : '',
+    accent ? `  --clone-highlight: ${accent};` : '',
     body ? `  --font-body: ${body.family};` : '',
     heading ? `  --font-heading: ${heading.family};` : '',
     body ? '  font-family: var(--font-body);' : '',

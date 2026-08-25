@@ -375,12 +375,15 @@ ${fontsPhp}
         $lines = ['[data-site-brand] {'];
         if ($primary) {
             $lines[] = '  --brand-primary: ' . $primary . ';';
+            $lines[] = '  --clone-accent: ' . $primary . ';';
         }
         if ($secondary) {
             $lines[] = '  --brand-secondary: ' . $secondary . ';';
+            $lines[] = '  --clone-ink: ' . $secondary . ';';
         }
         if ($accent) {
             $lines[] = '  --brand-accent: ' . $accent . ';';
+            $lines[] = '  --clone-highlight: ' . $accent . ';';
         }
         if ($body) {
             $lines[] = '  --font-body: ' . $body['family'] . ';';
