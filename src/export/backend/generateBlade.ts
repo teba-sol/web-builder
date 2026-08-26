@@ -3,7 +3,7 @@ import { clonePaletteCss, isCloneTemplate, resolveClonePalette } from '../../tem
 import { LAYOUT_VARIANT_IDS, LAYOUT_VARIANT_PRESETS } from '../../data/layoutVariants'
 import { generateBladeSectionPartials } from '../bladeSectionPartials'
 import { buildBladeHeroHtml } from '../heroExport'
-import { LAYOUT_SHELL_CSS } from '../htmlShared'
+import { LAYOUT_SHELL_CSS, rewriteContainerVariantsForExport } from '../htmlShared'
 import type { SiteExportPayload } from './exportPayload'
 import { hasBookingFeature } from './generateBooking'
 import { generateFinanceHomeBlade } from './generateFinanceBlade'
@@ -58,7 +58,23 @@ function navPartial(payload: SiteExportPayload): string {
     jungle: `<nav class="sticky top-0 z-50 bg-[#0a120c]/90 backdrop-blur border-b border-lime-700/30 text-lime-50 px-6 py-4"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4"><a href="{{ route('home') }}" class="text-lg font-medium tracking-wide">${BRAND_MARK}</a><div class="hidden lg:flex gap-7 text-sm font-medium">${NAV_LINKS}</div>${cta}</div></nav>`,
   }
 
-  return shells[getNavShellId(templateId)] ?? shells.business
+  const desktop = shells[getNavShellId(templateId)] ?? shells.business
+  const mobileNav = `<nav class="sticky top-0 z-50 border-b border-slate-200 bg-white/95 text-slate-900 backdrop-blur lg:hidden">
+  <div class="flex items-center justify-between gap-3 px-4 py-3">
+    <a href="{{ route('home') }}" class="min-w-0 truncate font-semibold">${BRAND_MARK}</a>
+    <details class="relative">
+      <summary class="flex h-10 w-10 cursor-pointer list-none items-center justify-center rounded-lg border border-slate-300 [&::-webkit-details-marker]:hidden">
+        <span class="sr-only">Menu</span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+      </summary>
+      <div class="absolute right-0 z-50 mt-2 w-64 rounded-xl border border-slate-200 bg-white p-3 shadow-xl">
+        <div class="flex flex-col">${NAV_LINKS}</div>
+        <div class="mt-3">${cta}</div>
+      </div>
+    </details>
+  </div>
+</nav>`
+  return `${mobileNav}<div class="hidden lg:block">${desktop}</div>`
 }
 
 function footerPartial(): string {
@@ -411,7 +427,11 @@ export function generateSiteLayout(payload: SiteExportPayload): string {
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="{{ \\App\\Support\\Brand::fontHref($settings->font_heading, $settings->font_body) }}" rel="stylesheet" />
-  <style>${LAYOUT_SHELL_CSS}
+  <style>html,body { overflow-x: hidden; max-width: 100%; }
+iframe { max-width: 100%; }
+img:not([class*="object-cover"]):not([class*="h-full"]) { max-width: 100%; height: auto; }
+@media (max-width: 640px) { h1 { font-size: clamp(1.75rem, 8vw, 2.75rem) !important; line-height: 1.15 !important; } }
+${LAYOUT_SHELL_CSS}
 {!! \\App\\Support\\Brand::css($settings) !!}
 ${cloneCss}
 </style>
@@ -429,7 +449,7 @@ ${cloneCss}
 }
 
 export function generateAllBladeViews(payload: SiteExportPayload): Record<string, string> {
-  return {
+  const views: Record<string, string> = {
     ...generateBladePartials(payload),
     'resources/views/layouts/site.blade.php': generateSiteLayout(payload),
     'resources/views/site/index.blade.php': generateBladeView(payload),
@@ -443,4 +463,5 @@ export function generateAllBladeViews(payload: SiteExportPayload): Record<string
     'resources/views/site/news-post.blade.php': generateNewsPostView(payload),
     'resources/views/site/contact.blade.php': generateContactView(),
   }
+  return Object.fromEntries(Object.entries(views).map(([path, html]) => [path, rewriteContainerVariantsForExport(html)]))
 }

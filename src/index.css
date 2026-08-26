@@ -5,8 +5,25 @@
   --font-serif: "Georgia", "Times New Roman", serif;
 }
 
+/* Template layouts follow the preview/site container, not the browser chrome. */
+@custom-variant csm (@container (min-width: 640px));
+@custom-variant cmd (@container (min-width: 768px));
+@custom-variant clg (@container (min-width: 1024px));
+@custom-variant cxl (@container (min-width: 1280px));
+@custom-variant c2xl (@container (min-width: 1536px));
+@custom-variant max-csm (@container (max-width: 639px));
+@custom-variant max-cmd (@container (max-width: 767px));
+@custom-variant max-clg (@container (max-width: 1023px));
+@custom-variant max-cxl (@container (max-width: 1279px));
+
 html {
   scroll-behavior: smooth;
+}
+
+html,
+body {
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 body {
@@ -15,11 +32,48 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+[data-site-brand] {
+  overflow-x: hidden;
+  max-width: 100%;
+  container-type: inline-size;
+  container-name: site;
+}
+
+[data-site-brand] iframe,
+[data-site-brand] embed,
+[data-site-brand] object {
+  max-width: 100%;
+}
+
+[data-site-brand] img:not([class*='object-cover']):not([class*='h-full']):not(.absolute) {
+  max-width: 100%;
+  height: auto;
+}
+
+[data-site-brand] h1,
+[data-site-brand] h2,
+[data-site-brand] h3,
+[data-site-brand] p,
+[data-site-brand] li {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+@container (max-width: 640px) {
+  [data-site-brand] h1 {
+    font-size: clamp(1.75rem, 8cqw, 2.75rem) !important;
+    line-height: 1.15 !important;
+  }
+}
+
 /* Keep template navs inside the editor preview (some themes use position:fixed). */
 .editor-site-preview {
   transform: translateZ(0);
   isolation: isolate;
   contain: layout paint;
+  container-type: inline-size;
+  width: 100%;
+  min-width: 0;
 }
 
 .editor-site-preview nav {

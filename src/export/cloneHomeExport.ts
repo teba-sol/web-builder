@@ -4,7 +4,7 @@ import { brandCss } from '../data/brand'
 import { escapeHtml } from './imageUtils'
 import { getMapEmbedUrl } from '../utils/mapEmbed'
 import { buildSeoMetaTags, resolveDocumentTitle, type PageSeoInput } from './seoExport'
-import { LAYOUT_SHELL_CSS } from './htmlShared'
+import { LAYOUT_SHELL_CSS, rewriteContainerVariantsForExport } from './htmlShared'
 import {
   clonePaletteCss,
   cloneWrapperClass,
@@ -611,7 +611,7 @@ export function buildCloneHomeDocument(ctx: CloneExportCtx, seo?: PageSeoInput):
   const palette = resolveClonePalette(ctx.templateId, ctx.content, ctx.colorSchemeId)
   const paletteCss = clonePaletteCss(ctx.templateId, palette)
   const wrapper = cloneWrapperClass(ctx.templateId, ctx.layoutVariantId)
-  return `<!DOCTYPE html>
+  return rewriteContainerVariantsForExport(`<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -620,7 +620,10 @@ export function buildCloneHomeDocument(ctx: CloneExportCtx, seo?: PageSeoInput):
   ${seoTags ? `${seoTags}\n  ` : ''}<script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <style>body { font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif; }
+  <style>html,body { overflow-x: hidden; max-width: 100%; } body { font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif; }
+iframe { max-width: 100%; }
+img:not([class*="object-cover"]):not([class*="h-full"]) { max-width: 100%; height: auto; }
+@media (max-width: 640px) { h1 { font-size: clamp(1.75rem, 8vw, 2.75rem) !important; line-height: 1.15 !important; } }
 ${LAYOUT_SHELL_CSS}
 ${extraCss}
 ${paletteCss}
@@ -628,7 +631,7 @@ ${paletteCss}
 </head>
 <body data-site-brand class="${wrapper}">
 ${cloneBody(ctx)}
-</body></html>`
+</body></html>`)
 }
 
 export function buildCloneHomeBlade(

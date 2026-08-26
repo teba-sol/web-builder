@@ -48,6 +48,22 @@ export function buildExportNavHtml(
   const allLinks = linkHtml(pageLinks, fromNested, linkClass)
   const leftLinks = linkHtml(left, fromNested, linkClass)
   const rightLinks = linkHtml(right, fromNested, linkClass)
+  const mobileLinks = linkHtml(pageLinks, fromNested, 'block rounded-lg px-3 py-2.5 text-base font-medium hover:bg-slate-100')
+  const mobileNav = `<nav class="sticky top-0 z-50 border-b border-slate-200 bg-white/95 text-slate-900 backdrop-blur lg:hidden">
+  <div class="flex items-center justify-between gap-3 px-4 py-3">
+    <a href="${homeHref}" class="min-w-0 truncate font-semibold">${brand}</a>
+    <details class="relative">
+      <summary class="flex h-10 w-10 cursor-pointer list-none items-center justify-center rounded-lg border border-slate-300 [&::-webkit-details-marker]:hidden">
+        <span class="sr-only">Menu</span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+      </summary>
+      <div class="absolute right-0 z-50 mt-2 w-64 rounded-xl border border-slate-200 bg-white p-3 shadow-xl">
+        ${mobileLinks}
+        <div class="mt-3">${ctaBtn}</div>
+      </div>
+    </details>
+  </div>
+</nav>`
 
   const dotLinks = pageLinks
     .map((item, i) => `${i > 0 ? '<span class="opacity-30">·</span>' : ''}<a href="${navHref(item, fromNested)}" class="${linkClass}">${escapeHtml(item.label)}</a>`)
@@ -115,5 +131,6 @@ export function buildExportNavHtml(
     coffee: `<nav class="sticky top-0 z-50 border-b border-amber-900/10 bg-[#faf6f0]/85 backdrop-blur-xl px-6 py-4"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4"><a href="${homeHref}" class="font-serif text-2xl font-semibold text-[#2d1810]">${brand}</a><div class="hidden lg:flex gap-8 text-sm">${allLinks}</div>${ctaBtn}</div></nav>`,
   }
 
-  return shells[getNavShellId(templateId)] ?? shells.business
+  const desktop = shells[getNavShellId(templateId)] ?? shells.business
+  return `${mobileNav}<div class="hidden lg:block">${desktop}</div>`
 }

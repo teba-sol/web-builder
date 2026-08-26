@@ -21,7 +21,7 @@ function headerClasses(templateId: TemplateId, heroLayout: HeroLayout): string {
 }
 
 function contentWrapperClass(templateId: TemplateId, heroLayout: HeroLayout, hasOverlay: boolean): string {
-  const base = 'relative mx-auto max-w-6xl px-6 w-full'
+  const base = 'relative mx-auto max-w-6xl px-4 sm:px-6 w-full'
   if (heroLayout === 'centered') {
     return `${base} text-center py-24 flex flex-col items-center`
   }

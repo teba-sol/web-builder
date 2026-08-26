@@ -59,7 +59,7 @@
     "navCta": "rounded-lg bg-gradient-to-r from-fuchsia-600 to-lime-500 px-5 py-2 text-sm font-bold text-black hover:opacity-90 shadow-lg shadow-fuchsia-500/20",
     "hero": "relative min-h-[90vh] flex items-center overflow-hidden bg-[#0a0a12]",
     "heroBadge": "text-fuchsia-400 uppercase tracking-[0.3em] text-xs font-bold",
-    "heroTitle": "text-5xl md:text-7xl font-black uppercase leading-[0.95] bg-gradient-to-r from-fuchsia-400 via-white to-lime-400 bg-clip-text text-transparent",
+    "heroTitle": "text-5xl cmd:text-7xl font-black uppercase leading-[0.95] bg-gradient-to-r from-fuchsia-400 via-white to-lime-400 bg-clip-text text-transparent",
     "heroText": "text-zinc-400 text-lg max-w-xl mt-4",
     "heroCta": "rounded-lg bg-lime-400 px-8 py-3 font-black uppercase text-black hover:bg-lime-300 shadow-lg shadow-lime-400/30",
     "stats": "border-y border-fuchsia-500/20 bg-gradient-to-r from-fuchsia-950/50 to-lime-950/30 py-16",

@@ -148,7 +148,7 @@ export function ContactFormBlock({ c, t, layout, formStyle = 'standard' }: Props
   }
 
   return (
-    <div className={`${cls.wrap} ${layout === 'form-focus' ? 'lg:p-8' : ''}`}>
+    <div className={`${cls.wrap} ${layout === 'form-focus' ? 'clg:p-8' : ''}`}>
       {formUrl && (
         <p className={`mb-4 text-sm ${t.cardText}`}>
           Fill out the form below — your message will open our contact page to complete.

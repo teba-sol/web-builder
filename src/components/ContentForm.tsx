@@ -18,7 +18,9 @@ import { getPageNavLabel } from '../data/pageConfig'
 import { getMapEmbedUrl, isShortMapLink } from '../utils/mapEmbed'
 import { optimizeSiteSeo } from '../utils/seoOptimizer'
 import { BrandIdentityForm } from './BrandIdentityForm'
-import { ColorSchemePicker } from './ColorSchemePicker'
+import { CUSTOM_COLOR_SCHEME_ID } from '../data/pickTemplate'
+import { FontPicker } from './style/FontPicker'
+import { PalettePicker } from './style/PalettePicker'
 import { ImagePicker } from './ImagePicker'
 import { LayoutVariantPicker } from './LayoutVariantPicker'
 import { PageVisibilityPicker } from './PageVisibilityPicker'
@@ -62,22 +64,43 @@ export function ContentForm() {
 
   return (
     <div className="space-y-8">
+      {templateId && (
+        <>
+          <PalettePicker
+            templateId={templateId}
+            colorSchemeId={colorSchemeId || getDefaultColorSchemeId(templateId)}
+            customPalette={{
+              primary: content.brandPrimary || '',
+              secondary: content.brandSecondary || '',
+              accent: content.brandAccent || '',
+            }}
+            onSchemeChange={setColorScheme}
+            onCustomPaletteChange={(palette) => {
+              setColorScheme(CUSTOM_COLOR_SCHEME_ID)
+              updateContent({
+                brandPrimary: palette.primary,
+                brandSecondary: palette.secondary,
+                brandAccent: palette.accent,
+              })
+            }}
+          />
+          <FontPicker
+            fontHeading={content.fontHeading ?? ''}
+            fontBody={content.fontBody ?? ''}
+            previewName={content.businessName}
+            onChange={(heading, body) => updateContent({ fontHeading: heading, fontBody: body })}
+          />
+        </>
+      )}
+
       <BrandIdentityForm content={content} onChange={updateContent} />
 
       {templateId && (
-        <>
-          <LayoutVariantPicker
-            templateId={templateId}
-            activeVariantId={layoutVariantId || getDefaultLayoutVariantId(templateId)}
-            onChange={setLayoutVariant}
-          />
-          <ColorSchemePicker
-            templateId={templateId}
-            activeSchemeId={colorSchemeId || getDefaultColorSchemeId(templateId)}
-            customSwatches={[content.brandSecondary, content.brandPrimary, content.brandAccent]}
-            onChange={setColorScheme}
-          />
-        </>
+        <LayoutVariantPicker
+          templateId={templateId}
+          activeVariantId={layoutVariantId || getDefaultLayoutVariantId(templateId)}
+          onChange={setLayoutVariant}
+        />
       )}
 
       <PageVisibilityPicker

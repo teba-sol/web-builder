@@ -1,4 +1,6 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { Menu, X } from 'lucide-react'
 import { BrandMark } from '../components/BrandMark'
 import { brandCtaStyle } from '../data/brand'
 import { getNavShellId } from '../catalog/catalog'
@@ -34,6 +36,65 @@ function NavLinks({ items, t, basePath, className = '' }: { items: SiteNavItem[]
   )
 }
 
+function MobileSiteNav({
+  c,
+  t,
+  pageLinks,
+  basePath,
+  ctaHref,
+  ctaStyle,
+}: {
+  c: SiteContent
+  t: TemplateTheme
+  pageLinks: SiteNavItem[]
+  basePath: string
+  ctaHref: string
+  ctaStyle: ReturnType<typeof brandCtaStyle>
+}) {
+  const [open, setOpen] = useState(false)
+  return (
+    <nav className={`${t.nav} clg:hidden`}>
+      <div className="flex items-center justify-between gap-3 px-4 py-3 csm:px-6">
+        <Link to={basePath} className="inline-flex min-w-0 items-center gap-2 truncate text-base font-semibold">
+          <BrandMark c={c} />
+        </Link>
+        <button
+          type="button"
+          className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-current/20"
+          aria-expanded={open}
+          aria-label={open ? 'Close menu' : 'Open menu'}
+          onClick={() => setOpen((value) => !value)}
+        >
+          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </button>
+      </div>
+      {open ? (
+        <div className="space-y-1 border-t border-current/10 px-4 py-4 csm:px-6">
+          {pageLinks.map((item) => (
+            <Link
+              key={item.page}
+              to={sitePath(basePath, item.segment)}
+              className={`${t.navLink} block rounded-lg px-3 py-2.5 text-base`}
+              onClick={() => setOpen(false)}
+            >
+              {item.label}
+            </Link>
+          ))}
+          <Link
+            to={ctaHref}
+            data-brand-cta
+            className={`${t.navCta} mt-2 inline-flex w-full items-center justify-center`}
+            style={ctaStyle}
+            onClick={() => setOpen(false)}
+          >
+            {c.ctaText}
+          </Link>
+        </div>
+      ) : null}
+    </nav>
+  )
+}
+
 export function TemplateNav({ c, t, variant, navItems, basePath }: NavProps) {
   const ctaHref = resolveSiteHref(basePath, c.ctaLink || 'contact', c)
   const ctaStyle = brandCtaStyle(c)
@@ -42,13 +103,44 @@ export function TemplateNav({ c, t, variant, navItems, basePath }: NavProps) {
   const leftLinks = pageLinks.slice(0, half)
   const rightLinks = pageLinks.slice(half)
 
+  const desktop = renderDesktopNav({ c, t, variant, pageLinks, leftLinks, rightLinks, basePath, ctaHref, ctaStyle })
+
+  return (
+    <>
+      <MobileSiteNav c={c} t={t} pageLinks={pageLinks} basePath={basePath} ctaHref={ctaHref} ctaStyle={ctaStyle} />
+      <div className="hidden clg:contents">{desktop}</div>
+    </>
+  )
+}
+
+function renderDesktopNav({
+  c,
+  t,
+  variant,
+  pageLinks,
+  leftLinks,
+  rightLinks,
+  basePath,
+  ctaHref,
+  ctaStyle,
+}: {
+  c: SiteContent
+  t: TemplateTheme
+  variant: TemplateId
+  pageLinks: SiteNavItem[]
+  leftLinks: SiteNavItem[]
+  rightLinks: SiteNavItem[]
+  basePath: string
+  ctaHref: string
+  ctaStyle: ReturnType<typeof brandCtaStyle>
+}) {
   switch (getNavShellId(variant)) {
     case 'creative':
       return (
         <nav className={t.nav}>
           <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
             <Link to={basePath} className="text-lg font-black uppercase tracking-widest text-white"><BrandMark c={c} /></Link>
-            <div className="hidden items-center gap-8 text-xs font-semibold uppercase tracking-wider lg:flex">
+            <div className="hidden items-center gap-8 text-xs font-semibold uppercase tracking-wider clg:flex">
               <NavLinks items={pageLinks} t={t} basePath={basePath} />
             </div>
             <Link to={ctaHref} data-brand-cta className={t.navCta} style={ctaStyle}>{c.ctaText}</Link>
@@ -60,12 +152,12 @@ export function TemplateNav({ c, t, variant, navItems, basePath }: NavProps) {
       return (
         <nav className={t.nav}>
           <div className="mx-auto flex max-w-6xl items-center justify-between border-b border-white/10 px-6 py-5">
-            <div className="hidden flex-1 gap-6 text-sm lg:flex">
+            <div className="hidden flex-1 gap-6 text-sm clg:flex">
               <NavLinks items={leftLinks} t={t} basePath={basePath} />
             </div>
             <Link to={basePath} className="px-6 text-center font-serif text-2xl font-semibold text-white"><BrandMark c={c} /></Link>
             <div className="flex flex-1 items-center justify-end gap-6 text-sm">
-              <div className="hidden gap-6 lg:flex">
+              <div className="hidden gap-6 clg:flex">
                 <NavLinks items={rightLinks} t={t} basePath={basePath} />
               </div>
               <Link to={ctaHref} data-brand-cta className={t.navCta} style={ctaStyle}>{c.ctaText}</Link>
@@ -79,7 +171,7 @@ export function TemplateNav({ c, t, variant, navItems, basePath }: NavProps) {
         <nav className={t.nav}>
           <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
             <Link to={basePath} className="text-lg font-bold"><BrandMark c={c} /></Link>
-            <div className="hidden items-center gap-1 text-sm lg:flex">
+            <div className="hidden items-center gap-1 text-sm clg:flex">
               {pageLinks.map((item, i) => (
                 <span key={item.page} className="flex items-center gap-1">
                   {i > 0 && <span className="mx-2 opacity-30">·</span>}
@@ -97,7 +189,7 @@ export function TemplateNav({ c, t, variant, navItems, basePath }: NavProps) {
         <nav className={t.nav}>
           <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
             <Link to={basePath} className="text-xl font-bold uppercase tracking-wide text-white"><BrandMark c={c} /></Link>
-            <div className="hidden gap-7 text-sm font-medium uppercase tracking-wide lg:flex">
+            <div className="hidden gap-7 text-sm font-medium uppercase tracking-wide clg:flex">
               <NavLinks items={pageLinks} t={t} basePath={basePath} />
             </div>
             <Link to={ctaHref} data-brand-cta className={t.navCta} style={ctaStyle}>{c.ctaText} →</Link>
@@ -110,10 +202,10 @@ export function TemplateNav({ c, t, variant, navItems, basePath }: NavProps) {
         <nav className={`${t.nav} relative`}>
           <div className="mx-auto max-w-6xl px-6 py-6 text-center">
             <Link to={basePath} className="font-serif text-2xl font-light tracking-wide"><BrandMark c={c} /></Link>
-            <div className="mt-4 hidden flex-wrap items-center justify-center gap-x-8 gap-y-2 text-sm lg:flex">
+            <div className="mt-4 hidden flex-wrap items-center justify-center gap-x-8 gap-y-2 text-sm clg:flex">
               <NavLinks items={pageLinks} t={t} basePath={basePath} />
             </div>
-            <div className="mt-4 lg:absolute lg:right-6 lg:top-6 lg:mt-0">
+            <div className="mt-4 clg:absolute clg:right-6 clg:top-6 clg:mt-0">
               <Link to={ctaHref} data-brand-cta className={t.navCta} style={ctaStyle}>{c.ctaText}</Link>
             </div>
           </div>
@@ -129,7 +221,7 @@ export function TemplateNav({ c, t, variant, navItems, basePath }: NavProps) {
                 <Link to={basePath} className="text-lg font-bold uppercase tracking-wide text-white"><BrandMark c={c} /></Link>
                 <p className="mt-0.5 text-xs uppercase tracking-widest text-amber-400/80">Luxury Real Estate</p>
               </div>
-              <div className="hidden items-center gap-8 text-sm lg:flex">
+              <div className="hidden items-center gap-8 text-sm clg:flex">
                 <NavLinks items={pageLinks} t={t} basePath={basePath} />
               </div>
               <Link to={ctaHref} data-brand-cta className={t.navCta} style={ctaStyle}>{c.ctaText}</Link>
@@ -143,7 +235,7 @@ export function TemplateNav({ c, t, variant, navItems, basePath }: NavProps) {
         <nav className={`${t.nav} border-b border-white/10`}>
           <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
             <Link to={basePath} className="text-sm font-light uppercase tracking-[0.3em] text-white"><BrandMark c={c} /></Link>
-            <div className="hidden gap-10 text-xs uppercase tracking-widest lg:flex">
+            <div className="hidden gap-10 text-xs uppercase tracking-widest clg:flex">
               <NavLinks items={pageLinks} t={t} basePath={basePath} />
             </div>
             <Link to={ctaHref} data-brand-cta className={`${t.navCta} text-xs uppercase tracking-wider`} style={ctaStyle}>{c.ctaText}</Link>
@@ -159,7 +251,7 @@ export function TemplateNav({ c, t, variant, navItems, basePath }: NavProps) {
           </div>
           <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
             <Link to={basePath} className="text-lg font-semibold text-teal-900"><BrandMark c={c} /></Link>
-            <div className="hidden gap-6 text-sm font-medium lg:flex">
+            <div className="hidden gap-6 text-sm font-medium clg:flex">
               <NavLinks items={pageLinks} t={t} basePath={basePath} />
             </div>
             <Link to={ctaHref} data-brand-cta className={t.navCta} style={ctaStyle}>{c.ctaText}</Link>
@@ -172,8 +264,8 @@ export function TemplateNav({ c, t, variant, navItems, basePath }: NavProps) {
         <nav className={t.nav}>
           <div className="mx-auto flex max-w-6xl items-center gap-8 px-6 py-5">
             <Link to={basePath} className="shrink-0 font-serif text-xl font-semibold"><BrandMark c={c} /></Link>
-            <div className="hidden h-8 w-px bg-stone-300 lg:block" aria-hidden />
-            <div className="hidden flex-1 items-center justify-between lg:flex">
+            <div className="hidden h-8 w-px bg-stone-300 clg:block" aria-hidden />
+            <div className="hidden flex-1 items-center justify-between clg:flex">
               <div className="flex gap-8 text-sm">
                 <NavLinks items={pageLinks} t={t} basePath={basePath} />
               </div>
@@ -187,25 +279,25 @@ export function TemplateNav({ c, t, variant, navItems, basePath }: NavProps) {
       return (
         <div className="relative z-50">
           <div className="text-xs text-[#DDEBD0]" style={{ backgroundColor: 'var(--clone-ink, #0F211C)' }}>
-            <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-4 py-2.5 sm:flex-row">
+            <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-4 py-2.5 csm:flex-row">
               <div className="flex items-center gap-6">
                 {c.phone ? <a href={`tel:${c.phone}`} className="hover:text-[#A8D93F]">{c.phone}</a> : null}
-                {c.email ? <span className="hidden md:inline">{c.email}</span> : null}
-                {c.hours ? <span className="hidden lg:inline">{c.hours}</span> : null}
+                {c.email ? <span className="hidden cmd:inline">{c.email}</span> : null}
+                {c.hours ? <span className="hidden clg:inline">{c.hours}</span> : null}
               </div>
             </div>
           </div>
           <nav className="sticky top-0 z-50 overflow-visible border-b border-white/10 shadow-lg" style={{ backgroundColor: 'var(--clone-ink, #16302A)' }}>
-            <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6">
+            <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 csm:px-6">
               <Link to={basePath} className="text-xl font-black text-white"><BrandMark c={c} /></Link>
-              <div className="hidden items-center gap-1 lg:flex">
+              <div className="hidden items-center gap-1 clg:flex">
                 {pageLinks.map((item) => (
                   <Link key={item.page} to={sitePath(basePath, item.segment)} className="rounded-full px-3.5 py-2 text-sm font-semibold text-white/90 hover:bg-[#A8D93F] hover:text-[#16302A]">
                     {item.label}
                   </Link>
                 ))}
               </div>
-              <Link to={ctaHref} className="hidden items-center gap-3 rounded-full py-2 pr-2 pl-6 text-sm font-bold sm:flex" style={{ backgroundColor: 'var(--clone-accent, #A8D93F)', color: 'var(--clone-ink, #16302A)', ...ctaStyle }}>
+              <Link to={ctaHref} className="hidden items-center gap-3 rounded-full py-2 pr-2 pl-6 text-sm font-bold csm:flex" style={{ backgroundColor: 'var(--clone-accent, #A8D93F)', color: 'var(--clone-ink, #16302A)', ...ctaStyle }}>
                 {c.ctaText}
               </Link>
             </div>
@@ -216,16 +308,16 @@ export function TemplateNav({ c, t, variant, navItems, basePath }: NavProps) {
     case 'axiom':
       return (
         <nav className="sticky top-0 z-50 overflow-visible border-b bg-white shadow-sm" style={{ borderColor: '#E8EFF7' }}>
-          <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-4 sm:px-6">
+          <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-4 csm:px-6">
             <Link to={basePath} className="text-lg font-black tracking-tight text-[#0A1628]"><BrandMark c={c} /></Link>
-            <div className="hidden items-center gap-1 lg:flex">
+            <div className="hidden items-center gap-1 clg:flex">
               {pageLinks.map((item) => (
                 <Link key={item.page} to={sitePath(basePath, item.segment)} className="px-3.5 py-2 text-sm font-semibold text-[#0A1628] hover:text-blue-600">
                   {item.label}
                 </Link>
               ))}
             </div>
-            <Link to={ctaHref} className="hidden rounded-lg px-6 py-2.5 text-sm font-bold text-white shadow-md sm:inline" style={{ backgroundColor: 'var(--clone-accent, #0B4F8A)', ...ctaStyle }}>
+            <Link to={ctaHref} className="hidden rounded-lg px-6 py-2.5 text-sm font-bold text-white shadow-md csm:inline" style={{ backgroundColor: 'var(--clone-accent, #0B4F8A)', ...ctaStyle }}>
               {c.ctaText}
             </Link>
           </div>
@@ -238,7 +330,7 @@ export function TemplateNav({ c, t, variant, navItems, basePath }: NavProps) {
           <div className="bg-black px-4 py-3 text-white">
             <div className="mx-auto flex max-w-7xl items-center justify-between">
               {c.email ? <a href={`mailto:${c.email}`} className="font-medium hover:underline">Email</a> : <span />}
-              {c.phone ? <a href={`tel:${c.phone}`} className="text-sm font-medium md:text-2xl">{c.phone}</a> : null}
+              {c.phone ? <a href={`tel:${c.phone}`} className="text-sm font-medium cmd:text-2xl">{c.phone}</a> : null}
             </div>
           </div>
           <nav className="sticky top-0 z-50 overflow-visible rounded-b-3xl text-white shadow-lg" style={{ backgroundColor: 'var(--clone-accent, #800020)' }}>
@@ -247,7 +339,7 @@ export function TemplateNav({ c, t, variant, navItems, basePath }: NavProps) {
                 <Link to={basePath} className="shrink-0 text-xl font-bold">
                   {c.logo ? <img src={c.logo} alt={c.businessName} className="h-16 w-16 object-contain" /> : <BrandMark c={c} />}
                 </Link>
-                <div className="hidden items-center gap-1 md:flex">
+                <div className="hidden items-center gap-1 clg:flex">
                   {pageLinks.map((item) => (
                     <Link key={item.page} to={sitePath(basePath, item.segment)} className="rounded-lg px-4 py-2 font-medium text-white transition-all hover:bg-white/10">
                       {item.label}
@@ -255,8 +347,8 @@ export function TemplateNav({ c, t, variant, navItems, basePath }: NavProps) {
                   ))}
                 </div>
                 <div className="flex items-center gap-4">
-                  {c.phone ? <a href={`tel:${c.phone}`} className="hidden font-medium md:inline">{c.phone}</a> : null}
-                  <Link to={ctaHref} className="hidden rounded-lg bg-white px-6 py-2 font-semibold md:block" style={{ color: 'var(--clone-accent, #800020)' }}>
+                  {c.phone ? <a href={`tel:${c.phone}`} className="hidden font-medium clg:inline">{c.phone}</a> : null}
+                  <Link to={ctaHref} className="hidden rounded-lg bg-white px-6 py-2 font-semibold clg:block" style={{ color: 'var(--clone-accent, #800020)' }}>
                     Book now
                   </Link>
                 </div>
@@ -273,22 +365,22 @@ export function TemplateNav({ c, t, variant, navItems, basePath }: NavProps) {
             <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-2 px-4 py-2">
               <div className="flex items-center gap-6 font-semibold text-[#FFDCC4]">
                 {c.phone ? <a href={`tel:${c.phone}`} className="hover:text-[#FA6B34]">{c.phone}</a> : null}
-                {c.email ? <span className="hidden md:inline">{c.email}</span> : null}
-                {c.hours ? <span className="hidden lg:inline">{c.hours}</span> : null}
+                {c.email ? <span className="hidden cmd:inline">{c.email}</span> : null}
+                {c.hours ? <span className="hidden clg:inline">{c.hours}</span> : null}
               </div>
             </div>
           </div>
           <nav className="sticky top-0 z-50 overflow-visible border-b border-[#EEDFCF] bg-[#FFF9F4]/95 shadow-sm">
-            <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6">
+            <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 csm:px-6">
               <Link to={basePath} className="text-xl font-black tracking-tight text-[#241C15]"><BrandMark c={c} /></Link>
-              <div className="hidden items-center gap-1 lg:flex">
+              <div className="hidden items-center gap-1 clg:flex">
                 {pageLinks.map((item) => (
                   <Link key={item.page} to={sitePath(basePath, item.segment)} className="rounded-lg px-3.5 py-2 text-sm font-semibold text-[#3A2E22] hover:bg-[#FFEDE1] hover:text-[#FA6B34]">
                     {item.label}
                   </Link>
                 ))}
               </div>
-              <Link to={ctaHref} className="hidden rounded-xl px-6 py-3 text-sm font-bold text-white shadow-lg sm:inline" style={{ backgroundColor: 'var(--clone-accent, #FA6B34)', ...ctaStyle }}>
+              <Link to={ctaHref} className="hidden rounded-xl px-6 py-3 text-sm font-bold text-white shadow-lg csm:inline" style={{ backgroundColor: 'var(--clone-accent, #FA6B34)', ...ctaStyle }}>
                 {c.ctaText}
               </Link>
             </div>
@@ -303,22 +395,22 @@ export function TemplateNav({ c, t, variant, navItems, basePath }: NavProps) {
             <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-2 px-4 py-2">
               <div className="flex items-center gap-6 font-semibold text-purple-700">
                 {c.phone ? <a href={`tel:${c.phone}`} className="hover:underline">{c.phone}</a> : null}
-                {c.email ? <span className="hidden md:inline">{c.email}</span> : null}
-                {c.hours ? <span className="hidden lg:inline">{c.hours}</span> : null}
+                {c.email ? <span className="hidden cmd:inline">{c.email}</span> : null}
+                {c.hours ? <span className="hidden clg:inline">{c.hours}</span> : null}
               </div>
             </div>
           </div>
           <nav className="sticky top-0 z-50 overflow-visible border-b border-slate-300 bg-slate-50/95 shadow-xl">
-            <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6">
+            <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 csm:px-6">
               <Link to={basePath} className="text-xl font-black tracking-tight text-slate-900"><BrandMark c={c} /></Link>
-              <div className="hidden items-center gap-1 lg:flex">
+              <div className="hidden items-center gap-1 clg:flex">
                 {pageLinks.map((item) => (
                   <Link key={item.page} to={sitePath(basePath, item.segment)} className="rounded-lg px-3.5 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-100 hover:text-purple-600">
                     {item.label}
                   </Link>
                 ))}
               </div>
-              <Link to={ctaHref} className="hidden rounded-xl px-6 py-3 text-sm font-bold text-white shadow-xl sm:inline" style={{ backgroundColor: 'var(--clone-accent, #9333ea)', ...ctaStyle }}>
+              <Link to={ctaHref} className="hidden rounded-xl px-6 py-3 text-sm font-bold text-white shadow-xl csm:inline" style={{ backgroundColor: 'var(--clone-accent, #9333ea)', ...ctaStyle }}>
                 {c.ctaText}
               </Link>
             </div>
@@ -333,24 +425,24 @@ export function TemplateNav({ c, t, variant, navItems, basePath }: NavProps) {
             <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-2 px-4 py-2">
               <div className="flex items-center gap-6 font-semibold text-rose-700">
                 {c.phone ? <a href={`tel:${c.phone}`} className="hover:underline">{c.phone}</a> : null}
-                {c.email ? <span className="hidden md:inline">{c.email}</span> : null}
-                {c.hours ? <span className="hidden lg:inline">{c.hours}</span> : null}
+                {c.email ? <span className="hidden cmd:inline">{c.email}</span> : null}
+                {c.hours ? <span className="hidden clg:inline">{c.hours}</span> : null}
               </div>
             </div>
           </div>
           <nav className="sticky top-0 z-50 overflow-visible border-b border-slate-300 bg-slate-50/95 shadow-xl">
-            <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6">
+            <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 csm:px-6">
               <Link to={basePath} className="text-xl font-black tracking-tight text-slate-900">
                 {c.logo ? <img src={c.logo} alt="" className="h-10 w-auto object-contain" /> : <BrandMark c={c} />}
               </Link>
-              <div className="hidden items-center gap-1 lg:flex">
+              <div className="hidden items-center gap-1 clg:flex">
                 {pageLinks.map((item) => (
                   <Link key={item.page} to={sitePath(basePath, item.segment)} className="rounded-lg px-3.5 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-100 hover:text-rose-600">
                     {item.label}
                   </Link>
                 ))}
               </div>
-              <Link to={ctaHref} className="hidden rounded-xl px-6 py-3 text-sm font-bold text-white shadow-xl sm:inline" style={{ backgroundColor: 'var(--clone-accent, #e60039)', ...ctaStyle }}>
+              <Link to={ctaHref} className="hidden rounded-xl px-6 py-3 text-sm font-bold text-white shadow-xl csm:inline" style={{ backgroundColor: 'var(--clone-accent, #e60039)', ...ctaStyle }}>
                 {c.ctaText}
               </Link>
             </div>
@@ -363,12 +455,12 @@ export function TemplateNav({ c, t, variant, navItems, basePath }: NavProps) {
         <nav className={t.nav}>
           <div className="mx-auto max-w-6xl px-6 py-5">
             <div className="flex items-center justify-between gap-4">
-              <div className="hidden flex-1 justify-end gap-6 text-sm lg:flex">
+              <div className="hidden flex-1 justify-end gap-6 text-sm clg:flex">
                 <NavLinks items={leftLinks} t={t} basePath={basePath} />
               </div>
               <Link to={basePath} className="font-serif text-2xl font-light tracking-wide text-pink-900"><BrandMark c={c} /></Link>
               <div className="flex flex-1 items-center justify-end gap-6 text-sm">
-                <div className="hidden gap-6 lg:flex">
+                <div className="hidden gap-6 clg:flex">
                   <NavLinks items={rightLinks} t={t} basePath={basePath} />
                 </div>
                 <Link to={ctaHref} data-brand-cta className={t.navCta} style={ctaStyle}>{c.ctaText}</Link>
@@ -383,7 +475,7 @@ export function TemplateNav({ c, t, variant, navItems, basePath }: NavProps) {
         <nav className={`${t.nav} border-b border-amber-500/40`}>
           <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
             <Link to={basePath} className="font-serif text-lg font-semibold uppercase tracking-[0.2em] text-amber-100"><BrandMark c={c} /></Link>
-            <div className="hidden gap-8 text-xs font-semibold uppercase tracking-widest lg:flex">
+            <div className="hidden gap-8 text-xs font-semibold uppercase tracking-widest clg:flex">
               <NavLinks items={pageLinks} t={t} basePath={basePath} />
             </div>
             <Link to={ctaHref} data-brand-cta className={t.navCta} style={ctaStyle}>{c.ctaText}</Link>
@@ -397,7 +489,7 @@ export function TemplateNav({ c, t, variant, navItems, basePath }: NavProps) {
           <div className="mx-auto max-w-6xl px-6 py-4">
             <div className="flex items-center justify-between gap-4 rounded-full border border-orange-200 bg-orange-50/90 px-6 py-3 shadow-sm">
               <Link to={basePath} className="text-lg font-bold text-orange-950"><BrandMark c={c} /></Link>
-              <div className="hidden gap-6 text-sm font-medium lg:flex">
+              <div className="hidden gap-6 text-sm font-medium clg:flex">
                 <NavLinks items={pageLinks} t={t} basePath={basePath} />
               </div>
               <Link to={ctaHref} data-brand-cta className={t.navCta} style={ctaStyle}>{c.ctaText}</Link>
@@ -414,7 +506,7 @@ export function TemplateNav({ c, t, variant, navItems, basePath }: NavProps) {
               <Link to={basePath} className="text-xl font-bold text-sky-950">
                 <span className="border-b-2 border-sky-400 pb-0.5"><BrandMark c={c} /></span>
               </Link>
-              <div className="hidden gap-7 text-sm font-medium text-sky-900 lg:flex">
+              <div className="hidden gap-7 text-sm font-medium text-sky-900 clg:flex">
                 <NavLinks items={pageLinks} t={t} basePath={basePath} />
               </div>
               <Link to={ctaHref} data-brand-cta className={t.navCta} style={ctaStyle}>{c.ctaText}</Link>
@@ -429,7 +521,7 @@ export function TemplateNav({ c, t, variant, navItems, basePath }: NavProps) {
           <div className="mx-auto max-w-6xl px-6 py-5">
             <div className="flex items-center justify-between border-b border-rose-900/20 pb-4">
               <Link to={basePath} className="font-serif text-2xl font-semibold text-rose-950"><BrandMark c={c} /></Link>
-              <div className="hidden items-center gap-8 text-sm lg:flex">
+              <div className="hidden items-center gap-8 text-sm clg:flex">
                 <NavLinks items={pageLinks} t={t} basePath={basePath} />
                 <Link to={ctaHref} data-brand-cta className={t.navCta} style={ctaStyle}>{c.ctaText}</Link>
               </div>
@@ -443,7 +535,7 @@ export function TemplateNav({ c, t, variant, navItems, basePath }: NavProps) {
         <nav className={`${t.nav} border-b-2 border-lime-400/60 shadow-[0_4px_24px_rgba(163,230,53,0.15)]`}>
           <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
             <Link to={basePath} className="text-lg font-black uppercase tracking-wider text-lime-300"><BrandMark c={c} /></Link>
-            <div className="hidden gap-6 text-xs font-bold uppercase tracking-widest lg:flex">
+            <div className="hidden gap-6 text-xs font-bold uppercase tracking-widest clg:flex">
               <NavLinks items={pageLinks} t={t} basePath={basePath} />
             </div>
             <Link to={ctaHref} data-brand-cta className={t.navCta} style={ctaStyle}>{c.ctaText}</Link>
@@ -456,7 +548,7 @@ export function TemplateNav({ c, t, variant, navItems, basePath }: NavProps) {
         <nav className={t.nav}>
           <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-4">
             <Link to={basePath} className="font-serif text-2xl font-semibold tracking-tight text-[#2d1810]"><BrandMark c={c} /></Link>
-            <div className="hidden items-center gap-8 text-sm lg:flex">
+            <div className="hidden items-center gap-8 text-sm clg:flex">
               <NavLinks items={pageLinks} t={t} basePath={basePath} />
             </div>
             <Link to={ctaHref} data-brand-cta className={t.navCta} style={ctaStyle}>{c.ctaText}</Link>
@@ -469,7 +561,7 @@ export function TemplateNav({ c, t, variant, navItems, basePath }: NavProps) {
         <nav className={t.nav}>
           <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
             <Link to={basePath} className="text-xl font-bold"><BrandMark c={c} /></Link>
-            <div className="hidden gap-6 text-sm font-medium lg:flex">
+            <div className="hidden gap-6 text-sm font-medium clg:flex">
               <NavLinks items={pageLinks} t={t} basePath={basePath} />
             </div>
             <Link to={ctaHref} data-brand-cta className={t.navCta} style={ctaStyle}>{c.ctaText}</Link>

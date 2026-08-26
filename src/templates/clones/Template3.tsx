@@ -91,7 +91,7 @@ export function Template3({ c, basePath }: { c: SiteContent; basePath: string })
     <div className="min-h-screen bg-[var(--clone-surface)] text-[var(--clone-ink)] font-sans selection:bg-[var(--clone-accent)] selection:text-white relative">
 
       <CloneNav templateId="flux" d={d} onBook={() => setIsBookingModalOpen(true)} />
-<section className="relative z-0 isolate min-h-screen text-white font-sans flex flex-col w-full bg-[#141110]">
+<section className="relative z-0 isolate flex min-h-[70vh] w-full flex-col bg-[#141110] font-sans text-white clg:min-h-screen">
   {/* Full Background Image with Dark Overlay */}
   <div className="absolute inset-0 z-0">
     <img
@@ -105,7 +105,7 @@ export function Template3({ c, basePath }: { c: SiteContent; basePath: string })
 
 
   {/* Hero Content Area */}
-  <div className="relative z-10 flex-1 flex flex-col justify-center px-6 lg:px-12 max-w-[1400px] w-full mx-auto pb-24">
+  <div className="relative z-10 flex-1 flex flex-col justify-center px-6 clg:px-12 max-w-[1400px] w-full mx-auto pb-24">
     <div className="max-w-3xl">
       {/* Eyebrow / Tagline */}
       <div className="flex items-center gap-4 mb-6">
@@ -118,12 +118,12 @@ export function Template3({ c, basePath }: { c: SiteContent; basePath: string })
       </div>
 
       {/* Main Headline */}
-      <h1 className="text-5xl lg:text-[5.5rem] font-bold leading-[1.05] tracking-tight mb-8">
+      <h1 className="mb-8 text-3xl font-bold leading-[1.05] tracking-tight csm:text-5xl clg:text-[5.5rem]">
         {c.tagline}
       </h1>
 
       {/* Subtext */}
-      <p className="text-lg lg:text-[19px] text-[#CBBBAC] font-medium max-w-[600px] mb-10 leading-relaxed border-l-2 pl-4" style={{ borderColor: 'var(--clone-accent)' }}>
+      <p className="text-lg clg:text-[19px] text-[#CBBBAC] font-medium max-w-[600px] mb-10 leading-relaxed border-l-2 pl-4" style={{ borderColor: 'var(--clone-accent)' }}>
         {c.heroSubtext}
       </p>
 
@@ -137,8 +137,8 @@ export function Template3({ c, basePath }: { c: SiteContent; basePath: string })
 
       {d.show.stats && d.stats.length > 0 && (
       <section className="py-12 bg-[#FFF3E7] border-y border-[#EEDFCF]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+        <div className="max-w-7xl mx-auto px-4 csm:px-6 clg:px-8">
+          <div className="grid grid-cols-1 cmd:grid-cols-3 gap-6 text-center">
             {d.stats.slice(0, 4).map((stat) => (
             <div key={stat.label} className="p-6 rounded-2xl bg-white border border-[#EEDFCF] shadow-sm">
               <div className="text-4xl font-extrabold text-[#241C15]">{stat.value}</div>
@@ -151,20 +151,20 @@ export function Template3({ c, basePath }: { c: SiteContent; basePath: string })
       )}
 
       {/* ABOUT SECTION */}
-      <section id="about" className={`${!(d.show.about) ? 'hidden ' : ''}py-24 px-4 sm:px-6 lg:px-8 relative`}>
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-12 gap-12 items-center">
+      <section id="about" className={`${!(d.show.about) ? 'hidden ' : ''}py-24 px-4 csm:px-6 clg:px-8 relative`}>
+        <div className="max-w-7xl mx-auto grid clg:grid-cols-12 gap-12 items-center">
 
-          <div className="lg:col-span-6 relative">
+          <div className="clg:col-span-6 relative">
             <div className="rounded-3xl overflow-hidden shadow-2xl shadow-[#241C15]/10 border border-[#EEDFCF]">
               <img
                 src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1200&q=80"
                 alt="Creative Team Brainstorming"
-                className="w-full h-[640px] object-cover"
+                className="h-56 w-full object-cover csm:h-80 clg:h-[640px]"
               />
             </div>
 
             {/* Floating Experience Badge */}
-            <div className="absolute -bottom-6 -right-2 sm:right-6 bg-white border border-[#EEDFCF] p-5 rounded-2xl shadow-xl shadow-[#241C15]/10 flex items-center gap-4 max-w-xs">
+            <div className="relative mt-4 flex max-w-xs items-center gap-4 rounded-2xl border border-[#EEDFCF] bg-white p-5 shadow-xl shadow-[#241C15]/10 csm:absolute csm:-bottom-6 csm:right-6 csm:mt-0">
               <div className="w-12 h-12 rounded-xl flex items-center justify-center text-white flex-shrink-0" style={{ backgroundColor: 'var(--clone-accent)' }}>
                 <Shield className="w-6 h-6" />
               </div>
@@ -175,14 +175,14 @@ export function Template3({ c, basePath }: { c: SiteContent; basePath: string })
             </div>
           </div>
 
-          <div className="lg:col-span-6 space-y-6">
+          <div className="clg:col-span-6 space-y-6">
             <div className="text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--clone-accent)' }}>Our Vision</div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-[#241C15] leading-tight">
+            <h2 className="text-3xl csm:text-4xl font-extrabold text-[#241C15] leading-tight">
               Your Strategic Partner for <br />
               <span style={{ color: 'var(--clone-accent)' }}>Digital Innovation</span>
             </h2>
 
-            <p className="text-[#4A3B2C] text-sm sm:text-base leading-relaxed">
+            <p className="text-[#4A3B2C] text-sm csm:text-base leading-relaxed">
               Kreative.Studio was founded on a simple principle: bridging the gap between aesthetic beauty and functional digital experiences to help brands stand out.
             </p>
 
@@ -216,12 +216,12 @@ export function Template3({ c, basePath }: { c: SiteContent; basePath: string })
       </section>
 
       {/* OUR SERVICES SECTION */}
-      <section id="services" className={`${!(d.show.services) ? 'hidden ' : ''}py-24 px-4 sm:px-6 lg:px-8 bg-[#FFF3E7] border-t border-[#EEDFCF]`}>
+      <section id="services" className={`${!(d.show.services) ? 'hidden ' : ''}py-24 px-4 csm:px-6 clg:px-8 bg-[#FFF3E7] border-t border-[#EEDFCF]`}>
         <div className="max-w-7xl mx-auto space-y-12">
 
           <div className="text-center max-w-3xl mx-auto space-y-3">
             <div className="text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--clone-accent)' }}>Our Expertise</div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-[#241C15]">
+            <h2 className="text-3xl csm:text-4xl font-extrabold text-[#241C15]">
               Comprehensive <span style={{ color: 'var(--clone-accent)' }}>Tax Services</span>
             </h2>
             <p className="text-[#4A3B2C] text-sm">
@@ -229,7 +229,7 @@ export function Template3({ c, basePath }: { c: SiteContent; basePath: string })
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid cmd:grid-cols-3 gap-8">
 
             {/* Service 1 */}
             <div className="bg-white p-8 rounded-3xl border border-[#EEDFCF] hover:border-[var(--clone-accent)]/60 hover:shadow-xl hover:shadow-[var(--clone-accent)]/10 transition space-y-4 group">
@@ -297,14 +297,14 @@ export function Template3({ c, basePath }: { c: SiteContent; basePath: string })
       </section>
 
       {/* WHAT IS REFUND ADVANCE EXPLANATION */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 border-t border-[#EEDFCF]">
-        <div className="max-w-7xl mx-auto bg-[#FFF3E7] border border-[#EEDFCF] rounded-3xl p-8 sm:p-12 space-y-6">
+      <section className="py-20 px-4 csm:px-6 clg:px-8 border-t border-[#EEDFCF]">
+        <div className="max-w-7xl mx-auto bg-[#FFF3E7] border border-[#EEDFCF] rounded-3xl p-8 csm:p-12 space-y-6">
           <div className="text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--clone-accent)' }}>Financial Transparency</div>
           <h2 className="text-3xl font-extrabold text-[#241C15]">Why Invest in Professional Brand Design?</h2>
           <p className="text-[#4A3B2C] text-sm leading-relaxed">
             In today's saturated digital landscape, your brand is more than just a logo—it's the emotional connection you build with your audience. Professional design establishes trust, differentiates you from competitors, and directly influences purchasing decisions.
           </p>
-          <div className="grid sm:grid-cols-2 gap-4 text-xs text-[#7A6A58] pt-2">
+          <div className="grid csm:grid-cols-2 gap-4 text-xs text-[#7A6A58] pt-2">
             <div className="p-4 bg-white rounded-xl border border-[#EEDFCF]">
               <strong className="text-[#241C15] block mb-1 text-sm">✓ Increased Perceived Value</strong>
               High-quality design allows you to command premium pricing for your products.
@@ -318,15 +318,15 @@ export function Template3({ c, basePath }: { c: SiteContent; basePath: string })
       </section>
 
       {/* HOW IT WORKS PROCESS SECTION */}
-      <section id="process" className={`${!(d.show.steps) ? 'hidden ' : ''}py-24 px-4 sm:px-6 lg:px-8 border-t border-[#EEDFCF]`}>
+      <section id="process" className={`${!(d.show.steps) ? 'hidden ' : ''}py-24 px-4 csm:px-6 clg:px-8 border-t border-[#EEDFCF]`}>
         <div className="max-w-7xl mx-auto space-y-16">
 
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <div className="text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--clone-accent)' }}>Simple 3-Step Process</div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-[#241C15]">Our Creative Process</h2>
+            <h2 className="text-3xl csm:text-4xl font-extrabold text-[#241C15]">Our Creative Process</h2>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 relative">
+          <div className="grid cmd:grid-cols-3 gap-8 relative">
 
             {/* Step 1 */}
             <div className="bg-[#FFF3E7] p-8 rounded-3xl border border-[#EEDFCF] text-center space-y-4 relative">
@@ -367,7 +367,7 @@ export function Template3({ c, basePath }: { c: SiteContent; basePath: string })
       </section>
 
       {/* CLIENT REVIEWS SECTION */}
-      <section id="reviews" className={`${!(d.show.testimonials) ? 'hidden ' : ''}py-24 px-4 sm:px-6 lg:px-8 bg-[#FFF3E7] border-t border-[#EEDFCF]`}>
+      <section id="reviews" className={`${!(d.show.testimonials) ? 'hidden ' : ''}py-24 px-4 csm:px-6 clg:px-8 bg-[#FFF3E7] border-t border-[#EEDFCF]`}>
         <div className="max-w-7xl mx-auto space-y-12">
 
           <div className="text-center max-w-2xl mx-auto space-y-3">
@@ -375,7 +375,7 @@ export function Template3({ c, basePath }: { c: SiteContent; basePath: string })
             <h2 className="text-3xl font-extrabold text-[#241C15]">What Our Clients Say</h2>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid cmd:grid-cols-3 gap-8">
             {reviews.map((r, idx) => (
               <div key={idx} className="bg-white p-6 rounded-2xl border border-[#EEDFCF] shadow-sm space-y-4">
                 <div className="flex items-center gap-1" style={{ color: 'var(--clone-accent)' }}>
@@ -399,7 +399,7 @@ export function Template3({ c, basePath }: { c: SiteContent; basePath: string })
       <CloneTeamSection templateId="flux" d={d} />
 
       {/* FAQ ACCORDION SECTION */}
-      <section id="faq" className={`${!(d.show.faq) ? 'hidden ' : ''}py-24 px-4 sm:px-6 lg:px-8 border-t border-[#EEDFCF]`}>
+      <section id="faq" className={`${!(d.show.faq) ? 'hidden ' : ''}py-24 px-4 csm:px-6 clg:px-8 border-t border-[#EEDFCF]`}>
         <div className="max-w-4xl mx-auto space-y-8">
 
           <div className="text-center space-y-3">
@@ -432,7 +432,7 @@ export function Template3({ c, basePath }: { c: SiteContent; basePath: string })
       <CloneCtaSection d={d} onBook={() => setIsBookingModalOpen(true)} />
 
       {/* CONTACT SECTION */}
-      <section id="contact" className={`${!(d.show.contact) ? 'hidden ' : ''}py-24 px-4 sm:px-6 lg:px-8 bg-[#FFF3E7] border-t border-[#EEDFCF]`}>
+      <section id="contact" className={`${!(d.show.contact) ? 'hidden ' : ''}py-24 px-4 csm:px-6 clg:px-8 bg-[#FFF3E7] border-t border-[#EEDFCF]`}>
         <div className="max-w-7xl mx-auto space-y-12">
 
           <div className="text-center max-w-2xl mx-auto space-y-3">
@@ -440,9 +440,9 @@ export function Template3({ c, basePath }: { c: SiteContent; basePath: string })
             <h2 className="text-3xl font-extrabold text-[#241C15]">Visit Our Creative Studio Or Message Us</h2>
           </div>
 
-          <div className="grid lg:grid-cols-12 gap-12">
+          <div className="grid clg:grid-cols-12 gap-12">
 
-            <div className="lg:col-span-5 space-y-6">
+            <div className="clg:col-span-5 space-y-6">
               <div className="bg-white p-6 rounded-2xl border border-[#EEDFCF] shadow-sm space-y-4">
                 <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white" style={{ backgroundColor: 'var(--clone-accent)' }}>
                   <MapPin className="w-5 h-5 text-white" />
@@ -476,11 +476,11 @@ export function Template3({ c, basePath }: { c: SiteContent; basePath: string })
             </div>
 
             {/* Direct Message Form */}
-            <div className="lg:col-span-7 bg-white p-8 rounded-3xl border border-[#EEDFCF] shadow-sm space-y-6">
+            <div className="clg:col-span-7 bg-white p-8 rounded-3xl border border-[#EEDFCF] shadow-sm space-y-6">
               <h3 className="text-xl font-bold text-[#241C15]">Send A Direct Message</h3>
 
               <form onSubmit={handleContactSubmit} className="space-y-4">
-                <div className="grid sm:grid-cols-2 gap-4">
+                <div className="grid csm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-semibold text-[#4A3B2C] mb-1">Your Name *</label>
                     <input
@@ -549,8 +549,8 @@ export function Template3({ c, basePath }: { c: SiteContent; basePath: string })
       </section>
 
       {/* FOOTER */}
-      <footer className="bg-[#1A1512] border-t border-[#2A231E] text-[#B8A996] text-xs py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+      <footer className="bg-[#1A1512] border-t border-[#2A231E] text-[#B8A996] text-xs py-12 px-4 csm:px-6 clg:px-8">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 cmd:grid-cols-4 gap-8">
 
           <div className="space-y-3">
             <div className="flex items-center gap-2 text-white font-bold text-base">
@@ -597,8 +597,8 @@ export function Template3({ c, basePath }: { c: SiteContent; basePath: string })
 
       {/* BOOKING MODAL */}
       {isBookingModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#1A1512]/70 backdrop-blur-sm">
-          <div className="bg-[var(--clone-surface)] border border-[#EEDFCF] rounded-3xl p-6 sm:p-8 max-w-md w-full relative shadow-2xl space-y-4">
+        <div className="fixed inset-0 z-50 flex items-end justify-center overflow-y-auto bg-[#1A1512]/70 p-4 backdrop-blur-sm csm:items-center">
+          <div className="bg-[var(--clone-surface)] border border-[#EEDFCF] rounded-3xl p-6 csm:p-8 max-w-md w-full relative shadow-2xl space-y-4">
 
             <button
               onClick={() => setIsBookingModalOpen(false)}

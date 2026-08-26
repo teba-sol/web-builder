@@ -166,7 +166,7 @@ export function PickTemplatePage() {
   }
 
   return (
-    <PickerShell fill={step === 'customize'}>
+    <PickerShell fill={step === 'customize'} wide={step === 'customize'}>
       {step === 'gallery' && (
         <PickTemplateGallery
           templates={templates}
@@ -225,18 +225,16 @@ export function PickTemplatePage() {
 function PickerShell({
   children,
   fill = false,
+  wide = false,
 }: {
   children: ReactNode
   fill?: boolean
+  wide?: boolean
 }) {
   return (
-    <div
-      className={`flex flex-col bg-slate-50 text-slate-900 ${
-        fill ? 'min-h-screen xl:h-screen xl:overflow-hidden' : 'min-h-screen'
-      }`}
-    >
-      <header className="shrink-0 border-b border-slate-200 bg-white">
-        <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-4 sm:px-6">
+    <div className="flex min-h-screen flex-col bg-slate-50 text-slate-900">
+      <header className={`shrink-0 border-b border-slate-200 bg-white ${fill ? 'sticky top-0 z-40' : ''}`}>
+        <div className={`mx-auto flex w-full items-center justify-between px-4 sm:px-6 ${wide ? 'max-w-[96%] py-2.5' : 'max-w-7xl py-4'}`}>
           <div className="flex items-center gap-2">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-600 text-sm font-bold text-white">
               WB
@@ -248,7 +246,9 @@ function PickerShell({
           </div>
         </div>
       </header>
-      <main className="mx-auto flex min-h-0 w-full max-w-7xl flex-1 flex-col px-4 py-8 sm:px-6 sm:py-10 xl:h-full">{children}</main>
+      <main className={`mx-auto flex min-h-0 w-full flex-1 flex-col px-4 sm:px-6 ${wide ? 'max-w-[96%] py-3' : 'max-w-7xl py-8 sm:py-10'}`}>
+        {children}
+      </main>
     </div>
   )
 }

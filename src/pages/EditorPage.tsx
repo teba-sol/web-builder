@@ -92,7 +92,7 @@ export function EditorPage() {
         </aside>
 
         <main className="flex-1 overflow-hidden bg-slate-200 p-4">
-          <div className="mx-auto flex h-full max-w-5xl flex-col overflow-hidden rounded-xl border border-slate-300 bg-white shadow-lg">
+          <div className="mx-auto flex h-full w-[90%] flex-col overflow-hidden rounded-xl border border-slate-300 bg-white shadow-lg">
             <div className="flex items-center gap-2 border-b border-slate-200 bg-slate-50 px-4 py-2">
               <div className="flex gap-1.5">
                 <div className="h-3 w-3 rounded-full bg-red-400" />

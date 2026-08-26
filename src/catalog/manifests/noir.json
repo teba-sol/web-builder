@@ -59,7 +59,7 @@
     "navCta": "border border-amber-500/60 bg-transparent px-6 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-amber-400 hover:bg-amber-500/10",
     "hero": "relative min-h-[90vh] flex items-center bg-neutral-950 text-neutral-50",
     "heroBadge": "text-amber-500/90 uppercase tracking-[0.5em] text-[10px] font-medium",
-    "heroTitle": "text-5xl md:text-7xl font-serif font-light tracking-tight leading-[1.05]",
+    "heroTitle": "text-5xl cmd:text-7xl font-serif font-light tracking-tight leading-[1.05]",
     "heroText": "text-neutral-400 text-lg max-w-xl font-light leading-relaxed",
     "heroCta": "mt-4 inline-block border-b-2 border-amber-500 pb-1 text-sm uppercase tracking-[0.3em] text-amber-400 hover:text-amber-300",
     "stats": "border-y border-neutral-800 bg-neutral-900 py-20",
@@ -112,7 +112,7 @@
       "overrides": {
         "navLink": "text-neutral-400 hover:text-zinc-300 tracking-wide uppercase text-xs",
         "navCta": "border border-zinc-400/60 text-zinc-300 hover:bg-zinc-400/10",
-        "heroTitle": "text-5xl md:text-7xl font-serif font-light tracking-tight text-zinc-100",
+        "heroTitle": "text-5xl cmd:text-7xl font-serif font-light tracking-tight text-zinc-100",
         "statValue": "text-4xl font-serif font-light text-zinc-300",
         "mission": "text-zinc-300 border-l border-zinc-500/50 pl-8",
         "showcasePrice": "text-zinc-300 font-serif",

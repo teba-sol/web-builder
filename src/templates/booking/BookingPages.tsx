@@ -41,7 +41,7 @@ export function RoomsPage({ content: c, basePath, theme: t, accent }: BookingPro
   const types = topLevelRoomTypes(c.roomTypes)
   return (
     <section className={`${t.sectionAlt || t.section} py-16`}>
-      <div className="mx-auto max-w-6xl px-6">
+      <div className="mx-auto max-w-6xl px-4 csm:px-6">
         <div className="mb-12 text-center">
           <h1 className={`${t.sectionTitle} text-4xl`}>{c.roomsSectionTitle || 'Rooms & Suites'}</h1>
           <p className={`${t.sectionSubtitle} mt-2`}>{c.roomsSectionSubtitle}</p>
@@ -53,7 +53,7 @@ export function RoomsPage({ content: c, basePath, theme: t, accent }: BookingPro
             Check availability
           </Link>
         </div>
-        <div className="grid gap-8 md:grid-cols-2">
+        <div className="grid gap-8 cmd:grid-cols-2">
           {types.map((type) => {
             const kids = subtypesOf(c.roomTypes, type.slug)
             return (
@@ -150,11 +150,11 @@ export function RoomDetailPage({ content: c, basePath, theme: t, accent }: Booki
 
   return (
     <section className={`${t.section} py-12`}>
-      <div className="mx-auto max-w-6xl px-6">
+      <div className="mx-auto max-w-6xl px-4 csm:px-6">
         <Link to={sitePath(basePath, 'rooms')} className="text-sm text-slate-500 hover:underline">
           ← All rooms
         </Link>
-        <div className="mt-6 grid items-start gap-10 lg:grid-cols-2">
+        <div className="mt-6 grid items-start gap-10 clg:grid-cols-2">
           <div>
             {type.image ? (
               <img src={type.image} alt="" className="aspect-[4/3] w-full rounded-2xl object-cover shadow-lg" />
@@ -272,7 +272,7 @@ export function BookPage({ content: c, basePath, theme: t, templateId, accent }:
 
   return (
     <section className={`${t.sectionAlt || t.section} py-16`}>
-      <div className="mx-auto max-w-6xl px-6">
+      <div className="mx-auto max-w-6xl px-4 csm:px-6">
         <div className="mb-10 text-center">
           <h1 className={`${t.sectionTitle} text-4xl`}>{c.bookingSectionTitle || 'Book Your Stay'}</h1>
           <p className={`${t.sectionSubtitle} mt-2`}>{c.bookingSectionSubtitle}</p>
@@ -280,7 +280,7 @@ export function BookPage({ content: c, basePath, theme: t, templateId, accent }:
 
         <form
           onSubmit={onSearch}
-          className="mb-10 grid items-end gap-4 rounded-2xl border bg-white p-6 shadow-sm md:grid-cols-5"
+          className="mb-10 grid items-end gap-4 rounded-2xl border bg-white p-6 shadow-sm cmd:grid-cols-5"
         >
           <label className="block text-sm">
             <span className="mb-1 block text-xs font-semibold uppercase tracking-wider text-slate-500">Check-in</span>
@@ -309,7 +309,7 @@ export function BookPage({ content: c, basePath, theme: t, templateId, accent }:
               ))}
             </select>
           </label>
-          <div className="md:col-span-5">
+          <div className="cmd:col-span-5">
             <button type="submit" className="rounded-lg px-6 py-3 font-semibold text-white" style={{ backgroundColor: accent }}>
               Search availability
             </button>
@@ -324,9 +324,9 @@ export function BookPage({ content: c, basePath, theme: t, templateId, accent }:
           results.length ? (
             <div className="space-y-6">
               {results.map(({ rt, available, pricing }) => (
-                <div key={rt.slug} className="flex flex-col gap-6 rounded-2xl border bg-white p-6 md:flex-row">
+                <div key={rt.slug} className="flex flex-col gap-6 rounded-2xl border bg-white p-6 cmd:flex-row">
                   {rt.image ? (
-                    <img src={rt.image} alt="" className="h-36 w-full shrink-0 rounded-xl object-cover md:w-48" />
+                    <img src={rt.image} alt="" className="h-36 w-full shrink-0 rounded-xl object-cover cmd:w-48" />
                   ) : null}
                   <div className="flex-1">
                     <h2 className="text-xl font-semibold">{rt.name}</h2>
@@ -375,7 +375,7 @@ export function BookPage({ content: c, basePath, theme: t, templateId, accent }:
                       setReservations(loadPreviewReservations(key))
                       navigate(sitePath(basePath, `book/confirm/${reservation.confirmationCode}`))
                     }}
-                    className="w-full shrink-0 space-y-3 border-t pt-4 md:w-80 md:border-l md:border-t-0 md:pl-6 md:pt-0"
+                    className="w-full shrink-0 space-y-3 border-t pt-4 cmd:w-80 cmd:border-l cmd:border-t-0 cmd:pl-6 cmd:pt-0"
                   >
                     <label className="block text-xs">
                       <span className="mb-1 block font-semibold text-slate-500">Full name</span>

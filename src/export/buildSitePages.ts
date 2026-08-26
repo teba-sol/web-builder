@@ -11,7 +11,7 @@ import { buildCloneChromeNav, buildCloneHomeDocument, cloneInteractiveScript, is
 import { clonePaletteCss, resolveClonePalette } from '../templates/cloneTheme'
 import { buildExportNavHtml } from './navExport'
 import { escapeHtml, resolveImageForExport, type ImageAsset } from './imageUtils'
-import { tailwindHead } from './htmlShared'
+import { rewriteContainerVariantsForExport, tailwindHead } from './htmlShared'
 import { buildRobotsTxt, buildSitemapXml, collectSitemapPaths, type PageSeoInput } from './seoExport'
 import { buildContactSectionHtml, buildFaqSectionHtml, buildStyledContactFormHtml } from './sectionExport'
 import { getLayoutVariant } from '../data/layoutVariants'
@@ -83,13 +83,13 @@ function wrapPage(ctx: SiteHtmlContext, title: string, body: string, seo?: PageS
         layoutVariantId: undefined,
       } as CloneExportCtx)
     : buildNav(ctx)
-  return `${head}
+  return rewriteContainerVariantsForExport(`${head}
 <body data-site-brand class="${clone ? 'bg-[var(--clone-surface)] text-[var(--clone-ink)]' : 'bg-white text-slate-800'} ${shell} ${clone ? 'webtemplate-clone' : ''}">
 ${cloneNav}
 ${body}
 ${buildFooter(ctx)}
 ${clone ? cloneInteractiveScript() : ''}
-</body></html>`
+</body></html>`)
 }
 
 function buildContactFormHtml(content: SiteContent, accent: string, templateId: TemplateId): string {

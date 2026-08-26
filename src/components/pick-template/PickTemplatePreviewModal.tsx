@@ -33,7 +33,7 @@ export function PickTemplatePreviewModal({ template, content, onClose, onUse }: 
       onClick={onClose}
     >
       <div
-        className="mx-auto flex h-full w-full max-w-6xl flex-col overflow-hidden rounded-3xl bg-white shadow-2xl"
+        className="mx-auto flex h-full w-[90%] max-w-none flex-col overflow-hidden rounded-3xl bg-white shadow-2xl"
         onClick={(event) => event.stopPropagation()}
       >
         <div className="flex items-center justify-between gap-3 border-b border-slate-200 px-4 py-3 sm:px-5">

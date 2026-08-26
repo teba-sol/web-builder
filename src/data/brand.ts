@@ -54,6 +54,46 @@ export function brandFontHref(content: SiteContent): string {
   return fontsStylesheetHref([content.fontHeading, content.fontBody].filter(Boolean))
 }
 
+const ACCENT_COLOR_FAMILIES = [
+  'red',
+  'orange',
+  'amber',
+  'yellow',
+  'lime',
+  'green',
+  'emerald',
+  'teal',
+  'cyan',
+  'sky',
+  'blue',
+  'indigo',
+  'violet',
+  'purple',
+  'fuchsia',
+  'pink',
+  'rose',
+] as const
+
+function paletteTokenLines(primary: string, secondary: string, accent: string): string[] {
+  const highlight = accent || primary
+  const ink = secondary || primary
+  const lines: string[] = []
+  for (const family of ACCENT_COLOR_FAMILIES) {
+    lines.push(`  --color-${family}-50: color-mix(in srgb, ${highlight} 22%, white);`)
+    lines.push(`  --color-${family}-100: color-mix(in srgb, ${highlight} 38%, white);`)
+    lines.push(`  --color-${family}-200: color-mix(in srgb, ${primary} 28%, white);`)
+    lines.push(`  --color-${family}-300: color-mix(in srgb, ${primary} 48%, white);`)
+    lines.push(`  --color-${family}-400: color-mix(in srgb, ${primary} 72%, white);`)
+    lines.push(`  --color-${family}-500: ${primary};`)
+    lines.push(`  --color-${family}-600: ${primary};`)
+    lines.push(`  --color-${family}-700: color-mix(in srgb, ${primary} 72%, ${ink});`)
+    lines.push(`  --color-${family}-800: color-mix(in srgb, ${ink} 78%, ${primary});`)
+    lines.push(`  --color-${family}-900: ${ink};`)
+    lines.push(`  --color-${family}-950: ${ink};`)
+  }
+  return lines
+}
+
 export function brandCss(content: SiteContent): string {
   const heading = getFont(content.fontHeading)
   const body = getFont(content.fontBody)
@@ -68,6 +108,11 @@ export function brandCss(content: SiteContent): string {
     primary ? `  --clone-accent: ${primary};` : '',
     secondary ? `  --clone-ink: ${secondary};` : '',
     accent ? `  --clone-highlight: ${accent};` : '',
+    primary ? `  --brand-tint: color-mix(in srgb, ${primary} 42%, white);` : '',
+    primary
+      ? `  --brand-primary-dark: color-mix(in srgb, ${primary} 68%, ${secondary || '#0f172a'});`
+      : '',
+    ...(primary ? paletteTokenLines(primary, secondary, accent) : []),
     body ? `  --font-body: ${body.family};` : '',
     heading ? `  --font-heading: ${heading.family};` : '',
     body ? '  font-family: var(--font-body);' : '',
@@ -76,8 +121,38 @@ export function brandCss(content: SiteContent): string {
     primary
       ? '[data-site-brand] [data-brand-cta] { background-color: var(--brand-primary) !important; color: #fff !important; border-color: var(--brand-primary) !important; }'
       : '',
+    ...(primary ? customPaletteSurfaceLines() : []),
   ]
   return lines.filter(Boolean).join('\n')
+}
+
+function customPaletteSurfaceLines(): string[] {
+  const darkFrom = ['slate', 'gray', 'zinc', 'neutral', 'stone']
+    .flatMap((family) => [800, 900, 950].map((shade) => `.from-${family}-${shade}`))
+    .join(',\n')
+  const accentTo = ACCENT_COLOR_FAMILIES.flatMap((family) =>
+    [700, 800, 900, 950].map((shade) => `.to-${family}-${shade}`),
+  ).join(',\n')
+  const accentBg = ACCENT_COLOR_FAMILIES.flatMap((family) =>
+    [500, 600, 700].map((shade) => `.bg-${family}-${shade}`),
+  ).join(',\n')
+  const accentText = ACCENT_COLOR_FAMILIES.flatMap((family) =>
+    [500, 600, 700].map((shade) => `.text-${family}-${shade}`),
+  ).join(',\n')
+  const accentBorder = ACCENT_COLOR_FAMILIES.flatMap((family) =>
+    [500, 600, 700].map((shade) => `.border-${family}-${shade}`),
+  ).join(',\n')
+  const accentTint = ACCENT_COLOR_FAMILIES.flatMap((family) =>
+    [100, 200, 300, 400].map((shade) => `.text-${family}-${shade}`),
+  ).join(',\n')
+  return [
+    `[data-site-brand][data-custom-palette] :is(${darkFrom}) { --tw-gradient-from: var(--brand-secondary); }`,
+    `[data-site-brand][data-custom-palette] :is(${accentTo}) { --tw-gradient-to: var(--brand-primary); }`,
+    `[data-site-brand][data-custom-palette] :is(${accentBg}) { background-color: var(--brand-primary); }`,
+    `[data-site-brand][data-custom-palette] :is(${accentText}) { color: var(--brand-primary); }`,
+    `[data-site-brand][data-custom-palette] :is(${accentBorder}) { border-color: var(--brand-primary); }`,
+    `[data-site-brand][data-custom-palette] :is(${accentTint}) { color: var(--brand-tint); }`,
+  ]
 }
 
 export function brandCtaStyle(content: SiteContent): { backgroundColor: string; color: string } | undefined {

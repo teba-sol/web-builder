@@ -105,10 +105,10 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
       <section id="hero" className="relative z-0 isolate text-white font-sans w-full overflow-hidden" style={{ backgroundColor: 'var(--clone-ink)' }}>
         <div className="absolute -top-24 -right-24 w-[420px] h-[420px] rounded-full opacity-20 blur-3xl" style={{ backgroundColor: 'var(--clone-accent)' }} />
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20 grid lg:grid-cols-12 gap-10 items-center">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 csm:px-6 clg:px-8 py-16 clg:py-20 grid clg:grid-cols-12 gap-10 items-center">
 
           {/* Left copy */}
-          <div className="lg:col-span-6">
+          <div className="clg:col-span-6">
             <div className="inline-flex items-center gap-2 bg-white/10 border border-white/15 rounded-full pl-2 pr-4 py-1.5 mb-6">
               <span className="flex items-center gap-0.5 rounded-full px-2 py-1 text-xs font-bold" style={{ backgroundColor: 'var(--clone-accent)', color: 'var(--clone-ink)' }}>
                 4.9 <Star className="w-3 h-3 fill-[var(--clone-ink)]" />
@@ -116,7 +116,7 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
               <span className="text-xs font-semibold text-[#DDEBD0]">A+ BBB Rated &middot; 5,000+ Returns Filed</span>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black uppercase leading-[1.05] tracking-tight mb-6">
+            <h1 className="text-4xl csm:text-5xl clg:text-6xl font-black uppercase leading-[1.05] tracking-tight mb-6">
               {c.tagline}
             </h1>
 
@@ -149,8 +149,8 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
           </div>
 
           {/* Right image collage */}
-          <div className="lg:col-span-6 relative">
-            <div className="rounded-[2rem] overflow-hidden border-4 border-white/10 shadow-2xl">
+          <div className="relative overflow-hidden clg:col-span-6 clg:overflow-visible">
+            <div className="overflow-hidden rounded-[2rem] border-4 border-white/10 shadow-2xl">
               <img
                 src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=1200&q=80"
                 alt="Tax advisors reviewing documents with a client"
@@ -158,7 +158,7 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
               />
             </div>
 
-            <div className="absolute -bottom-6 -left-6 bg-white text-[var(--clone-ink)] rounded-2xl shadow-2xl p-4 flex items-center gap-3 max-w-[220px]">
+            <div className="absolute bottom-3 left-3 flex max-w-[220px] items-center gap-3 rounded-2xl bg-white p-4 text-[var(--clone-ink)] shadow-2xl csm:-bottom-6 csm:-left-6">
               <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'var(--clone-ink)' }}>
                 <FileCheck2 className="w-5 h-5" style={{ color: 'var(--clone-accent)' }} />
               </div>
@@ -168,7 +168,7 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
               </div>
             </div>
 
-            <div className="hidden sm:flex absolute -top-6 -right-4 rounded-2xl shadow-2xl px-4 py-3 items-center gap-2" style={{ backgroundColor: 'var(--clone-accent)' }}>
+            <div className="hidden csm:flex absolute -top-6 -right-4 rounded-2xl shadow-2xl px-4 py-3 items-center gap-2" style={{ backgroundColor: 'var(--clone-accent)' }}>
               <Users className="w-4 h-4" style={{ color: 'var(--clone-ink)' }} />
               <span className="text-xs font-black" style={{ color: 'var(--clone-ink)' }}>5,000+ Happy Clients</span>
             </div>
@@ -179,8 +179,8 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
 
       {d.show.stats && d.stats.length > 0 && (
       <section className="py-10 border-b border-[#E4E0D4]" style={{ backgroundColor: 'var(--clone-ink)' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+        <div className="max-w-7xl mx-auto px-4 csm:px-6 clg:px-8">
+          <div className="grid grid-cols-2 cmd:grid-cols-4 gap-6 text-center">
             {d.stats.slice(0, 4).map((stat) => (
             <div key={stat.label}>
               <div className="text-3xl font-black text-white">{stat.value}</div>
@@ -193,23 +193,23 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
       )}
 
       {/* ESSENTIAL FEATURES SECTION */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8">
+      <section className="py-24 px-4 csm:px-6 clg:px-8">
         <div className="max-w-7xl mx-auto space-y-12">
-          <div className="grid lg:grid-cols-2 gap-8 items-end">
+          <div className="grid clg:grid-cols-2 gap-8 items-end">
             <div className="space-y-3">
               <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--clone-accent)' }}>
                 <span className="w-4 h-px" style={{ backgroundColor: 'var(--clone-accent)' }} /> Our Approach
               </div>
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-[var(--clone-ink)] leading-tight max-w-md">
+              <h2 className="text-3xl csm:text-4xl font-extrabold text-[var(--clone-ink)] leading-tight max-w-md">
                 Essential services for total financial confidence
               </h2>
             </div>
-            <p className="text-[#6B7A70] text-sm max-w-md lg:justify-self-end">
+            <p className="text-[#6B7A70] text-sm max-w-md clg:justify-self-end">
               We combine certified tax expertise with fast, transparent service so individuals and businesses never overpay or miss a deadline.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid cmd:grid-cols-3 gap-6">
 
             {/* Card 1 - white */}
             <div className="bg-white p-8 rounded-3xl border border-[#E4E0D4] space-y-5">
@@ -259,10 +259,10 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
       </section>
 
       {/* ABOUT SECTION */}
-      <section id="about" className={`${!(d.show.about) ? 'hidden ' : ''}py-24 px-4 sm:px-6 lg:px-8`} style={{ backgroundColor: 'var(--clone-surface-alt)' }}>
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-12 gap-12 items-start">
+      <section id="about" className={`${!(d.show.about) ? 'hidden ' : ''}py-24 px-4 csm:px-6 clg:px-8`} style={{ backgroundColor: 'var(--clone-surface-alt)' }}>
+        <div className="max-w-7xl mx-auto grid clg:grid-cols-12 gap-12 items-start">
 
-          <div className="lg:col-span-6 space-y-4">
+          <div className="clg:col-span-6 space-y-4">
             <div className="grid grid-cols-5 gap-4">
               <div className="col-span-3 rounded-3xl overflow-hidden shadow-xl">
                 <img
@@ -287,7 +287,7 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
               </div>
             </div>
 
-            <div className="grid sm:grid-cols-2 gap-4">
+            <div className="grid csm:grid-cols-2 gap-4">
               <div className="bg-white rounded-2xl border border-[#E4E0D4] p-4 flex items-center gap-3">
                 <div className="flex items-center gap-0.5" style={{ color: 'var(--clone-accent)' }}>
                   {[...Array(5)].map((_, i) => <Star key={i} className="w-3.5 h-3.5" style={{ fill: 'var(--clone-accent)' }} />)}
@@ -308,15 +308,15 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
             </div>
           </div>
 
-          <div className="lg:col-span-6 space-y-6 lg:pt-6">
+          <div className="clg:col-span-6 space-y-6 clg:pt-6">
             <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--clone-accent)' }}>
               <span className="w-4 h-px" style={{ backgroundColor: 'var(--clone-accent)' }} /> Who We Are
             </div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-[var(--clone-ink)] leading-tight">
+            <h2 className="text-3xl csm:text-4xl font-extrabold text-[var(--clone-ink)] leading-tight">
               Comprehensive tax solutions built around your finances
             </h2>
 
-            <p className="text-[#4A554D] text-sm sm:text-base leading-relaxed">
+            <p className="text-[#4A554D] text-sm csm:text-base leading-relaxed">
               TaxGuardians was founded to make professional tax help fast, transparent, and genuinely useful, whether you're filing a simple return or navigating a multi-entity business.
             </p>
 
@@ -353,14 +353,14 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
       </section>
 
       {/* OUR SERVICES SECTION */}
-      <section id="services" className={`${!(d.show.services) ? 'hidden ' : ''}py-24 px-4 sm:px-6 lg:px-8`}>
+      <section id="services" className={`${!(d.show.services) ? 'hidden ' : ''}py-24 px-4 csm:px-6 clg:px-8`}>
         <div className="max-w-7xl mx-auto space-y-12">
 
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest justify-center" style={{ color: 'var(--clone-accent)' }}>
               <span className="w-4 h-px" style={{ backgroundColor: 'var(--clone-accent)' }} /> Our Expertise <span className="w-4 h-px" style={{ backgroundColor: 'var(--clone-accent)' }} />
             </div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-[var(--clone-ink)]">
+            <h2 className="text-3xl csm:text-4xl font-extrabold text-[var(--clone-ink)]">
               Comprehensive Tax Services
             </h2>
             <p className="text-[#6B7A70] text-sm">
@@ -368,7 +368,7 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid cmd:grid-cols-3 gap-8">
 
             {/* Service 1 */}
             <div className="bg-white p-8 rounded-3xl border border-[#E4E0D4] hover:border-[var(--clone-accent)] hover:shadow-xl hover:shadow-black/5 transition space-y-4 group">
@@ -435,23 +435,23 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
       </section>
 
       {/* PHOTO GALLERY SECTION */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: 'var(--clone-ink)' }}>
+      <section className="py-20 px-4 csm:px-6 clg:px-8" style={{ backgroundColor: 'var(--clone-ink)' }}>
         <div className="max-w-7xl mx-auto space-y-10">
-          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+          <div className="flex flex-col csm:flex-row csm:items-end csm:justify-between gap-4">
             <div className="space-y-3">
               <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--clone-accent)' }}>
                 <span className="w-4 h-px" style={{ backgroundColor: 'var(--clone-accent)' }} /> Inside Our Office
               </div>
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-white max-w-md">A firm built for real conversations, not just returns</h2>
+              <h2 className="text-3xl csm:text-4xl font-extrabold text-white max-w-md">A firm built for real conversations, not just returns</h2>
             </div>
             <p className="text-[#B9C9BC] text-sm max-w-sm">
               Step inside our workspace, meet the advisors, and see where thousands of returns get filed every season.
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 cmd:grid-cols-4 gap-4">
             {galleryPhotos.map((src, idx) => (
-              <div key={idx} className={`rounded-2xl overflow-hidden group ${idx === 0 ? 'row-span-2 h-full' : 'h-48 md:h-56'}`}>
+              <div key={idx} className={`rounded-2xl overflow-hidden group ${idx === 0 ? 'row-span-2 h-full' : 'h-48 cmd:h-56'}`}>
                 <img
                   src={src}
                   alt="Inside the TaxGuardians office"
@@ -464,17 +464,17 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
       </section>
 
       {/* HOW IT WORKS PROCESS SECTION */}
-      <section id="process" className={`${!(d.show.steps) ? 'hidden ' : ''}py-24 px-4 sm:px-6 lg:px-8`}>
+      <section id="process" className={`${!(d.show.steps) ? 'hidden ' : ''}py-24 px-4 csm:px-6 clg:px-8`}>
         <div className="max-w-7xl mx-auto space-y-16">
 
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest justify-center" style={{ color: 'var(--clone-accent)' }}>
               <span className="w-4 h-px" style={{ backgroundColor: 'var(--clone-accent)' }} /> Simple 3-Step Process
             </div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-[var(--clone-ink)]">Our Filing Process</h2>
+            <h2 className="text-3xl csm:text-4xl font-extrabold text-[var(--clone-ink)]">Our Filing Process</h2>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 relative">
+          <div className="grid cmd:grid-cols-3 gap-8 relative">
 
             {/* Step 1 */}
             <div className="bg-white p-8 rounded-3xl border border-[#E4E0D4] text-center space-y-4 relative">
@@ -515,7 +515,7 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
       </section>
 
       {/* CLIENT REVIEWS SECTION */}
-      <section id="reviews" className={`${!(d.show.testimonials) ? 'hidden ' : ''}py-24 px-4 sm:px-6 lg:px-8`} style={{ backgroundColor: 'var(--clone-surface-alt)' }}>
+      <section id="reviews" className={`${!(d.show.testimonials) ? 'hidden ' : ''}py-24 px-4 csm:px-6 clg:px-8`} style={{ backgroundColor: 'var(--clone-surface-alt)' }}>
         <div className="max-w-7xl mx-auto space-y-12">
 
           <div className="text-center max-w-2xl mx-auto space-y-3">
@@ -525,7 +525,7 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
             <h2 className="text-3xl font-extrabold text-[var(--clone-ink)]">What Our Clients Say</h2>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid cmd:grid-cols-3 gap-8">
             {reviews.map((r, idx) => (
               <div key={idx} className="bg-white p-6 rounded-2xl border border-[#E4E0D4] space-y-4">
                 <div className="flex items-center gap-1" style={{ color: 'var(--clone-accent)' }}>
@@ -549,7 +549,7 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
       <CloneTeamSection templateId="cpa" d={d} />
 
       {/* FAQ ACCORDION SECTION */}
-      <section id="faq" className={`${!(d.show.faq) ? 'hidden ' : ''}py-24 px-4 sm:px-6 lg:px-8`}>
+      <section id="faq" className={`${!(d.show.faq) ? 'hidden ' : ''}py-24 px-4 csm:px-6 clg:px-8`}>
         <div className="max-w-4xl mx-auto space-y-8">
 
           <div className="text-center space-y-3">
@@ -586,7 +586,7 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
       <CloneCtaSection d={d} onBook={() => setIsBookingModalOpen(true)} />
 
       {/* CONTACT SECTION */}
-      <section id="contact" className={`${!(d.show.contact) ? 'hidden ' : ''}py-24 px-4 sm:px-6 lg:px-8`} style={{ backgroundColor: 'var(--clone-surface-alt)' }}>
+      <section id="contact" className={`${!(d.show.contact) ? 'hidden ' : ''}py-24 px-4 csm:px-6 clg:px-8`} style={{ backgroundColor: 'var(--clone-surface-alt)' }}>
         <div className="max-w-7xl mx-auto space-y-12">
 
           <div className="text-center max-w-2xl mx-auto space-y-3">
@@ -596,9 +596,9 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
             <h2 className="text-3xl font-extrabold text-[var(--clone-ink)]">Visit Our Office Or Message Us</h2>
           </div>
 
-          <div className="grid lg:grid-cols-12 gap-8">
+          <div className="grid clg:grid-cols-12 gap-8">
 
-            <div className="lg:col-span-5 space-y-4">
+            <div className="clg:col-span-5 space-y-4">
               <div className="bg-white p-6 rounded-2xl border border-[#E4E0D4] flex items-start gap-4">
                 <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'var(--clone-ink)' }}>
                   <MapPin className="w-5 h-5" style={{ color: 'var(--clone-accent)' }} />
@@ -633,11 +633,11 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
             </div>
 
             {/* Direct Message Form */}
-            <div className="lg:col-span-7 bg-white p-8 rounded-3xl border border-[#E4E0D4] space-y-6">
+            <div className="clg:col-span-7 bg-white p-8 rounded-3xl border border-[#E4E0D4] space-y-6">
               <h3 className="text-xl font-bold text-[var(--clone-ink)]">Send A Direct Message</h3>
 
               <form onSubmit={handleContactSubmit} className="space-y-4">
-                <div className="grid sm:grid-cols-2 gap-4">
+                <div className="grid csm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-semibold text-[#4A554D] mb-1">Your Name *</label>
                     <input
@@ -709,8 +709,8 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
       </section>
 
       {/* FOOTER */}
-      <footer className="text-[#B9C9BC] text-xs pt-16 pb-8 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: 'var(--clone-ink)' }}>
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10 pb-10 border-b border-white/10">
+      <footer className="text-[#B9C9BC] text-xs pt-16 pb-8 px-4 csm:px-6 clg:px-8" style={{ backgroundColor: 'var(--clone-ink)' }}>
+        <div className="max-w-7xl mx-auto grid grid-cols-1 cmd:grid-cols-4 gap-10 pb-10 border-b border-white/10">
 
           <div className="space-y-4">
             <div className="flex items-center gap-2">
@@ -766,8 +766,8 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
 
       {/* BOOKING MODAL */}
       {isBookingModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0F211C]/70 backdrop-blur-sm">
-          <div className="bg-[var(--clone-surface)] border border-[#E4E0D4] rounded-3xl p-6 sm:p-8 max-w-md w-full relative shadow-2xl space-y-4">
+        <div className="fixed inset-0 z-50 flex items-end justify-center overflow-y-auto bg-[#0F211C]/70 p-4 backdrop-blur-sm csm:items-center">
+          <div className="bg-[var(--clone-surface)] border border-[#E4E0D4] rounded-3xl p-6 csm:p-8 max-w-md w-full relative shadow-2xl space-y-4">
 
             <button
               onClick={() => setIsBookingModalOpen(false)}
