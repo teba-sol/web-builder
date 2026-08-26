@@ -71,14 +71,14 @@ function PageHero({
 
   if (templateId === 'taxfighters') {
     return (
-      <section className="relative z-0 isolate overflow-hidden px-4 py-20 sm:px-6 lg:py-24">
+      <section className="relative z-0 isolate overflow-hidden px-4 py-20 csm:px-6 clg:py-24">
         <div className="absolute inset-0">
           {img ? <img src={img} alt="" className="h-full w-full object-cover opacity-15 contrast-125 brightness-75" /> : null}
           <div className="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-white/70" />
         </div>
         <div className="relative mx-auto max-w-7xl">
           <Eyebrow templateId={templateId}>{d.c.businessName}</Eyebrow>
-          <h1 className="max-w-4xl text-4xl font-black tracking-tight text-slate-900 sm:text-6xl">{title}</h1>
+          <h1 className="max-w-4xl text-4xl font-black tracking-tight text-slate-900 csm:text-6xl">{title}</h1>
           {subtitle ? <p className="mt-5 max-w-2xl text-lg leading-relaxed text-slate-700">{subtitle}</p> : null}
         </div>
       </section>
@@ -87,11 +87,11 @@ function PageHero({
 
   if (templateId === 'aureum') {
     return (
-      <section className="relative z-0 isolate overflow-hidden px-6 py-24 text-white lg:px-12" style={{ backgroundColor: 'var(--clone-accent)' }}>
+      <section className="relative z-0 isolate overflow-hidden px-6 py-24 text-white clg:px-12" style={{ backgroundColor: 'var(--clone-accent)' }}>
         <div className="pointer-events-none absolute right-0 bottom-0 h-full w-1/2 opacity-10" style={{ backgroundImage: 'radial-gradient(#fff 1px, transparent 1px)', backgroundSize: '30px 30px' }} />
         <div className="relative mx-auto max-w-[1400px]">
           <Eyebrow templateId={templateId}>{d.c.businessName}</Eyebrow>
-          <h1 className="max-w-4xl text-5xl font-bold leading-[1.05] tracking-tight lg:text-7xl">{title}</h1>
+          <h1 className="max-w-4xl text-5xl font-bold leading-[1.05] tracking-tight clg:text-7xl">{title}</h1>
           {subtitle ? <p className="mt-6 max-w-xl text-lg text-white/80">{subtitle}</p> : null}
         </div>
       </section>
@@ -100,12 +100,12 @@ function PageHero({
 
   if (templateId === 'flux') {
     return (
-      <section className="relative z-0 isolate min-h-[52vh] overflow-hidden bg-[#141110] px-6 py-24 text-white lg:px-12">
+      <section className="relative z-0 isolate min-h-[52vh] overflow-hidden bg-[#141110] px-6 py-24 text-white clg:px-12">
         {img ? <img src={img} alt="" className="absolute inset-0 h-full w-full object-cover" /> : null}
         <div className="absolute inset-0 bg-gradient-to-r from-[#141110] via-[#141110]/80 to-transparent" />
         <div className="relative mx-auto flex min-h-[36vh] max-w-[1400px] flex-col justify-center">
           <Eyebrow templateId={templateId}>{d.c.businessName}</Eyebrow>
-          <h1 className="max-w-4xl text-5xl font-bold leading-[1.05] tracking-tight lg:text-[4.5rem]">{title}</h1>
+          <h1 className="max-w-4xl text-5xl font-bold leading-[1.05] tracking-tight clg:text-[4.5rem]">{title}</h1>
           {subtitle ? (
             <p className="mt-8 max-w-xl border-l-2 pl-4 text-lg text-[#CBBBAC]" style={{ borderColor: 'var(--clone-accent)' }}>
               {subtitle}
@@ -118,11 +118,11 @@ function PageHero({
 
   if (templateId === 'cpa') {
     return (
-      <section className="relative z-0 isolate overflow-hidden px-4 py-20 text-white sm:px-6" style={{ backgroundColor: 'var(--clone-ink)' }}>
+      <section className="relative z-0 isolate overflow-hidden px-4 py-20 text-white csm:px-6" style={{ backgroundColor: 'var(--clone-ink)' }}>
         <div className="absolute -top-24 -right-24 h-[380px] w-[380px] rounded-full opacity-20 blur-3xl" style={{ backgroundColor: 'var(--clone-accent)' }} />
         <div className="relative mx-auto max-w-7xl">
           <Eyebrow templateId={templateId}>{d.c.businessName}</Eyebrow>
-          <h1 className="max-w-4xl text-4xl font-black uppercase leading-[1.05] tracking-tight sm:text-6xl">{title}</h1>
+          <h1 className="max-w-4xl text-4xl font-black uppercase leading-[1.05] tracking-tight csm:text-6xl">{title}</h1>
           {subtitle ? <p className="mt-5 max-w-xl text-[15px] font-medium text-[#C7D6C9]">{subtitle}</p> : null}
         </div>
       </section>
@@ -134,10 +134,10 @@ function PageHero({
       <section className="t5 relative z-0 isolate overflow-hidden">
         {img ? <img src={img} alt="" className="absolute inset-0 h-full w-full object-cover" /> : <div className="absolute inset-0 bg-slate-900" />}
         <div className="absolute inset-0 bg-gradient-to-r from-[#061F3A]/92 to-[#0B4F8A]/75" />
-        <div className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6">
+        <div className="relative mx-auto max-w-7xl px-4 py-24 csm:px-6">
           <div className="max-w-2xl">
             <Eyebrow templateId={templateId}>{d.c.businessName}</Eyebrow>
-            <h1 className="text-4xl font-black leading-[1.08] tracking-tight text-white sm:text-6xl">{title}</h1>
+            <h1 className="text-4xl font-black leading-[1.08] tracking-tight text-white csm:text-6xl">{title}</h1>
             {subtitle ? <p className="mt-5 max-w-lg text-base leading-relaxed text-blue-100/80">{subtitle}</p> : null}
           </div>
         </div>
@@ -150,7 +150,7 @@ function PageHero({
       {img ? <img src={img} alt="" className="absolute inset-0 h-full w-full object-cover" /> : <div className="absolute inset-0 bg-neutral-900" />}
       <div className="absolute inset-0 bg-black/50" />
       <div className="relative mx-auto flex min-h-[52vh] max-w-3xl flex-col items-center justify-center px-6 text-center">
-        <h1 className="text-4xl font-bold text-white sm:text-6xl">{title}</h1>
+        <h1 className="text-4xl font-bold text-white csm:text-6xl">{title}</h1>
         {subtitle ? <p className="mt-6 max-w-2xl text-lg text-gray-200">{subtitle}</p> : null}
       </div>
     </header>
@@ -196,7 +196,7 @@ function Card({
 
 function EmptyNote({ children }: { children: ReactNode }) {
   return (
-    <section className="px-4 py-20 sm:px-6">
+    <section className="px-4 py-20 csm:px-6">
       <div className="mx-auto max-w-3xl text-center opacity-60">{children}</div>
     </section>
   )
@@ -209,20 +209,20 @@ function BlogList({ templateId, d }: { templateId: CloneTemplateId; d: CloneHome
 
   if (templateId === 'aureum') {
     return (
-      <section className="px-6 py-20 lg:px-12">
+      <section className="px-6 py-20 clg:px-12">
         <div className="mx-auto max-w-[1400px] space-y-10">
           {posts.map((post) => (
             <Link
               key={post.slug || post.title}
               to={post.slug ? d.hrefs.blogPost(post.slug) : d.hrefs.blog}
-              className="grid overflow-hidden rounded-[2rem] border border-slate-300 bg-white shadow-sm lg:grid-cols-5"
+              className="grid overflow-hidden rounded-[2rem] border border-slate-300 bg-white shadow-sm clg:grid-cols-5"
             >
               {post.image ? (
-                <img src={post.image} alt="" className="h-56 w-full object-cover lg:col-span-2 lg:h-full" />
+                <img src={post.image} alt="" className="h-56 w-full object-cover clg:col-span-2 clg:h-full" />
               ) : (
-                <div className="h-56 bg-[var(--clone-accent)]/20 lg:col-span-2" />
+                <div className="h-56 bg-[var(--clone-accent)]/20 clg:col-span-2" />
               )}
-              <div className="space-y-4 p-8 lg:col-span-3 lg:p-12">
+              <div className="space-y-4 p-8 clg:col-span-3 clg:p-12">
                 {post.date ? <p className="text-[10px] font-bold uppercase tracking-[0.2em] opacity-50">{formatPostDate(post.date)}</p> : null}
                 <h2 className="text-3xl font-bold tracking-tight">{post.title}</h2>
                 <p className="max-w-xl text-[17px] leading-relaxed text-slate-600">{post.excerpt}</p>
@@ -261,12 +261,12 @@ function BlogList({ templateId, d }: { templateId: CloneTemplateId; d: CloneHome
 
   if (templateId === 'axiom') {
     return (
-      <section className="t5 px-4 py-20 sm:px-6">
+      <section className="t5 px-4 py-20 csm:px-6">
         <div className="mx-auto max-w-5xl divide-y" style={{ borderColor: '#D6E4F0' }}>
           {posts.map((post) => (
-            <Link key={post.slug || post.title} to={post.slug ? d.hrefs.blogPost(post.slug) : d.hrefs.blog} className="grid gap-8 py-10 md:grid-cols-5">
-              {post.image ? <img src={post.image} alt="" className="h-40 w-full rounded-lg object-cover md:col-span-2" /> : <div className="h-40 rounded-lg bg-slate-100 md:col-span-2" />}
-              <div className="md:col-span-3">
+            <Link key={post.slug || post.title} to={post.slug ? d.hrefs.blogPost(post.slug) : d.hrefs.blog} className="grid gap-8 py-10 cmd:grid-cols-5">
+              {post.image ? <img src={post.image} alt="" className="h-40 w-full rounded-lg object-cover cmd:col-span-2" /> : <div className="h-40 rounded-lg bg-slate-100 cmd:col-span-2" />}
+              <div className="cmd:col-span-3">
                 {post.date ? <p className="text-xs font-bold uppercase tracking-[0.2em] opacity-50">{formatPostDate(post.date)}</p> : null}
                 <h2 className="mt-2 text-2xl font-black tracking-tight">{post.title}</h2>
                 <p className="mt-3 text-sm leading-relaxed opacity-70">{post.excerpt}</p>
@@ -283,12 +283,12 @@ function BlogList({ templateId, d }: { templateId: CloneTemplateId; d: CloneHome
 
   if (templateId === 'helix') {
     return (
-      <section className="bg-black px-4 py-20 text-white sm:px-6">
+      <section className="bg-black px-4 py-20 text-white csm:px-6">
         <div className="mx-auto max-w-4xl space-y-12">
           {posts.map((post) => (
             <Link key={post.slug || post.title} to={post.slug ? d.hrefs.blogPost(post.slug) : d.hrefs.blog} className="block border-l-4 pl-6" style={{ borderColor: 'var(--clone-accent)' }}>
               {post.date ? <p className="text-sm text-white/50">{formatPostDate(post.date)}</p> : null}
-              <h2 className="mt-2 text-4xl font-bold sm:text-5xl">{post.title}</h2>
+              <h2 className="mt-2 text-4xl font-bold csm:text-5xl">{post.title}</h2>
               <p className="mt-4 max-w-2xl text-lg text-white/70">{post.excerpt}</p>
             </Link>
           ))}
@@ -301,12 +301,12 @@ function BlogList({ templateId, d }: { templateId: CloneTemplateId; d: CloneHome
   const featuredLayout = templateId === 'cpa' ? 'rounded-3xl border border-[#E4E0D4] bg-white' : cardClass(templateId)
 
   return (
-    <section className={`px-4 py-16 sm:px-6 ${templateId === 'cpa' ? 'bg-[var(--clone-surface)]' : ''}`}>
+    <section className={`px-4 py-16 csm:px-6 ${templateId === 'cpa' ? 'bg-[var(--clone-surface)]' : ''}`}>
       <div className="mx-auto max-w-7xl space-y-10">
         <Link to={featuredTo} className={`block overflow-hidden ${featuredLayout}`}>
-          <div className="grid lg:grid-cols-2">
-            {featured.image ? <img src={featured.image} alt="" className="h-72 w-full object-cover lg:h-full" /> : <div className="h-72 bg-[var(--clone-accent-soft)]" />}
-            <div className="space-y-4 p-8 lg:p-10">
+          <div className="grid clg:grid-cols-2">
+            {featured.image ? <img src={featured.image} alt="" className="h-72 w-full object-cover clg:h-full" /> : <div className="h-72 bg-[var(--clone-accent-soft)]" />}
+            <div className="space-y-4 p-8 clg:p-10">
               {featured.date ? (
                 <p className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: 'var(--clone-accent)' }}>
                   {formatPostDate(featured.date)}
@@ -321,7 +321,7 @@ function BlogList({ templateId, d }: { templateId: CloneTemplateId; d: CloneHome
           </div>
         </Link>
         {rest.length ? (
-          <div className={`grid gap-8 ${templateId === 'taxfighters' ? 'sm:grid-cols-2' : 'sm:grid-cols-2 lg:grid-cols-3'}`}>
+          <div className={`grid gap-8 ${templateId === 'taxfighters' ? 'csm:grid-cols-2' : 'csm:grid-cols-2 clg:grid-cols-3'}`}>
             {rest.map((post) => (
               <Card key={post.slug || post.title} templateId={templateId} to={post.slug ? d.hrefs.blogPost(post.slug) : d.hrefs.blog}>
                 {post.image ? <img src={post.image} alt="" className="h-44 w-full object-cover" /> : null}
@@ -343,7 +343,7 @@ function BlogPost({ templateId, d, slug }: { templateId: CloneTemplateId; d: Clo
   const post = d.c.blogPosts.find((item) => item.title && postSlug(item.title, item.slug) === slug)
   if (!post) {
     return (
-      <section className="px-4 py-20 text-center sm:px-6">
+      <section className="px-4 py-20 text-center csm:px-6">
         <p>That article was not found.</p>
         <Link to={d.hrefs.blog} className="mt-4 inline-block font-bold" style={{ color: 'var(--clone-accent)' }}>
           ← Back to blog
@@ -361,7 +361,7 @@ function BlogPost({ templateId, d, slug }: { templateId: CloneTemplateId; d: Clo
   return (
     <>
       <PageHero templateId={templateId} d={d} title={post.title} subtitle={post.excerpt} />
-      <article className={`px-4 py-16 sm:px-6 ${templateId === 'helix' ? 'bg-black text-white' : templateId === 'flux' ? 'bg-[#FFF9F4]' : ''}`}>
+      <article className={`px-4 py-16 csm:px-6 ${templateId === 'helix' ? 'bg-black text-white' : templateId === 'flux' ? 'bg-[#FFF9F4]' : ''}`}>
         <div className={`mx-auto ${templateId === 'aureum' || templateId === 'axiom' ? 'max-w-4xl' : 'max-w-3xl'}`}>
           <Link to={d.hrefs.blog} className="text-sm font-semibold" style={{ color: 'var(--clone-accent)' }}>
             ← All articles
@@ -416,12 +416,12 @@ function ServicesPage({ templateId, d }: { templateId: CloneTemplateId; d: Clone
   if (templateId === 'aureum') {
     return (
       <>
-        <section className="px-6 py-20 lg:px-12">
+        <section className="px-6 py-20 clg:px-12">
           <div className="mx-auto max-w-[1400px] space-y-6">
             {services.map((service, i) => (
-              <div key={service.title} className="grid items-center gap-8 rounded-[2rem] border border-slate-300 bg-white p-8 lg:grid-cols-12">
-                <div className="text-6xl font-black text-slate-200 lg:col-span-2">{String(i + 1).padStart(2, '0')}</div>
-                <div className="lg:col-span-10">
+              <div key={service.title} className="grid items-center gap-8 rounded-[2rem] border border-slate-300 bg-white p-8 clg:grid-cols-12">
+                <div className="text-6xl font-black text-slate-200 clg:col-span-2">{String(i + 1).padStart(2, '0')}</div>
+                <div className="clg:col-span-10">
                   <h3 className="text-3xl font-bold tracking-tight">{service.title}</h3>
                   <p className="mt-3 max-w-2xl text-[17px] leading-relaxed text-slate-600">{service.description}</p>
                 </div>
@@ -437,8 +437,8 @@ function ServicesPage({ templateId, d }: { templateId: CloneTemplateId; d: Clone
   if (templateId === 'axiom') {
     return (
       <>
-        <section className="t5 px-4 py-24 sm:px-6">
-          <div className="mx-auto grid max-w-7xl gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <section className="t5 px-4 py-24 csm:px-6">
+          <div className="mx-auto grid max-w-7xl gap-6 csm:grid-cols-2 clg:grid-cols-4">
             {services.map((service) => (
               <div key={service.title} className="rounded-2xl border bg-white p-8 text-center">
                 <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl" style={{ backgroundColor: 'var(--clone-accent-soft)', color: 'var(--clone-accent)' }}>
@@ -458,8 +458,8 @@ function ServicesPage({ templateId, d }: { templateId: CloneTemplateId; d: Clone
   if (templateId === 'flux') {
     return (
       <>
-        <section className="bg-[#FFF3E7] px-4 py-24 sm:px-6">
-          <div className="mx-auto grid max-w-7xl gap-8 md:grid-cols-3">
+        <section className="bg-[#FFF3E7] px-4 py-24 csm:px-6">
+          <div className="mx-auto grid max-w-7xl gap-8 cmd:grid-cols-3">
             {services.map((service) => (
               <div key={service.title} className="rounded-3xl border border-[#EEDFCF] bg-white p-8 shadow-sm">
                 <div className="mb-5 h-14 w-14 rounded-2xl" style={{ backgroundColor: 'var(--clone-accent)' }} />
@@ -476,8 +476,8 @@ function ServicesPage({ templateId, d }: { templateId: CloneTemplateId; d: Clone
 
   return (
     <>
-      <section className="px-4 py-16 sm:px-6">
-        <div className={`mx-auto max-w-7xl ${templateId === 'cpa' ? 'grid gap-8 md:grid-cols-3' : 'grid gap-6 md:grid-cols-2 lg:grid-cols-3'}`}>
+      <section className="px-4 py-16 csm:px-6">
+        <div className={`mx-auto max-w-7xl ${templateId === 'cpa' ? 'grid gap-8 cmd:grid-cols-3' : 'grid gap-6 cmd:grid-cols-2 clg:grid-cols-3'}`}>
           {services.map((service, i) => (
             <Card key={service.title} templateId={templateId}>
               <div className="space-y-4 p-8">
@@ -496,7 +496,7 @@ function ServicesPage({ templateId, d }: { templateId: CloneTemplateId; d: Clone
         {d.show.steps && d.steps.length ? (
           <div className="mx-auto mt-16 max-w-7xl">
             <h2 className="mb-8 text-3xl font-black">{d.c.stepsSectionTitle || 'How it works'}</h2>
-            <div className="grid gap-6 md:grid-cols-3">
+            <div className="grid gap-6 cmd:grid-cols-3">
               {d.steps.map((step, i) => (
                 <div key={step.title} className={cardClass(templateId) + ' p-6'}>
                   <div className="text-2xl font-black opacity-30">0{i + 1}</div>
@@ -520,9 +520,9 @@ function AboutPage({ templateId, d }: { templateId: CloneTemplateId; d: CloneHom
   if (templateId === 'cpa') {
     return (
       <>
-        <section className="px-4 py-24 sm:px-6" style={{ backgroundColor: 'var(--clone-surface-alt)' }}>
-          <div className="mx-auto grid max-w-7xl items-start gap-12 lg:grid-cols-12">
-            <div className="grid grid-cols-5 gap-4 lg:col-span-6">
+        <section className="px-4 py-24 csm:px-6" style={{ backgroundColor: 'var(--clone-surface-alt)' }}>
+          <div className="mx-auto grid max-w-7xl items-start gap-12 clg:grid-cols-12">
+            <div className="grid grid-cols-5 gap-4 clg:col-span-6">
               <div className="col-span-3 overflow-hidden rounded-3xl shadow-xl">
                 {extras[0] ? <img src={extras[0]} alt="" className="h-[340px] w-full object-cover" /> : <div className="h-[340px] bg-[var(--clone-ink)]" />}
               </div>
@@ -540,9 +540,9 @@ function AboutPage({ templateId, d }: { templateId: CloneTemplateId; d: CloneHom
                 </div>
               </div>
             </div>
-            <div className="space-y-5 lg:col-span-6">
+            <div className="space-y-5 clg:col-span-6">
               <Eyebrow templateId="cpa">Who we are</Eyebrow>
-              <h2 className="text-3xl font-black sm:text-4xl">{c.aboutTitle}</h2>
+              <h2 className="text-3xl font-black csm:text-4xl">{c.aboutTitle}</h2>
               <p className="text-lg leading-relaxed opacity-75">{c.about}</p>
               {c.missionStatement ? (
                 <p className="border-l-4 pl-5 text-lg italic" style={{ borderColor: 'var(--clone-accent)' }}>
@@ -567,7 +567,7 @@ function AboutPage({ templateId, d }: { templateId: CloneTemplateId; d: CloneHom
       <>
         <section className="px-6 py-24 text-white" style={{ backgroundColor: 'var(--clone-accent)' }}>
           <div className="mx-auto max-w-4xl">
-            <h2 className="text-5xl font-bold sm:text-6xl">{c.aboutTitle}</h2>
+            <h2 className="text-5xl font-bold csm:text-6xl">{c.aboutTitle}</h2>
             <p className="mt-8 text-xl leading-relaxed text-white/90">{c.about}</p>
           </div>
         </section>
@@ -587,14 +587,14 @@ function AboutPage({ templateId, d }: { templateId: CloneTemplateId; d: CloneHom
   if (templateId === 'flux') {
     return (
       <>
-        <section className="px-4 py-24 sm:px-6">
-          <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-12">
-            <div className="relative lg:col-span-6">
+        <section className="px-4 py-24 csm:px-6">
+          <div className="mx-auto grid max-w-7xl items-center gap-12 clg:grid-cols-12">
+            <div className="relative clg:col-span-6">
               <div className="overflow-hidden rounded-3xl border border-[#EEDFCF] shadow-2xl">
                 {c.aboutImage ? <img src={c.aboutImage} alt="" className="h-[520px] w-full object-cover" /> : null}
               </div>
             </div>
-            <div className="space-y-6 lg:col-span-6">
+            <div className="space-y-6 clg:col-span-6">
               <Eyebrow templateId="flux">Who we are</Eyebrow>
               <h2 className="text-4xl font-bold tracking-tight text-[#241C15]">{c.aboutTitle}</h2>
               <p className="text-lg leading-relaxed text-[#4A3B2C]">{c.about}</p>
@@ -614,7 +614,7 @@ function AboutPage({ templateId, d }: { templateId: CloneTemplateId; d: CloneHom
   if (templateId === 'axiom') {
     return (
       <>
-        <section className="t5 px-4 py-24 sm:px-6">
+        <section className="t5 px-4 py-24 csm:px-6">
           <div className="mx-auto max-w-3xl text-center">
             <Eyebrow templateId="axiom">About us</Eyebrow>
             <h2 className="text-4xl font-black tracking-tight">
@@ -634,10 +634,10 @@ function AboutPage({ templateId, d }: { templateId: CloneTemplateId; d: CloneHom
 
   return (
     <>
-      <section className="px-4 py-16 sm:px-6">
-        <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-2">
+      <section className="px-4 py-16 csm:px-6">
+        <div className="mx-auto grid max-w-7xl items-center gap-12 clg:grid-cols-2">
           <div className="space-y-5">
-            <h2 className={`text-3xl sm:text-4xl ${templateId === 'aureum' ? 'font-bold tracking-tight' : 'font-black'}`}>{c.aboutTitle}</h2>
+            <h2 className={`text-3xl csm:text-4xl ${templateId === 'aureum' ? 'font-bold tracking-tight' : 'font-black'}`}>{c.aboutTitle}</h2>
             <p className="text-lg leading-relaxed opacity-75">{c.about}</p>
             {c.missionStatement ? (
               <p className="border-l-4 pl-5 text-lg italic" style={{ borderColor: 'var(--clone-accent)' }}>
@@ -648,7 +648,7 @@ function AboutPage({ templateId, d }: { templateId: CloneTemplateId; d: CloneHom
           {c.aboutImage ? (
             <div className={templateId === 'aureum' ? 'relative' : ''}>
               {templateId === 'aureum' ? (
-                <div className="absolute -left-6 -bottom-6 h-2/3 w-2/3 rounded-tl-[80px]" style={{ backgroundColor: 'var(--clone-highlight)' }} />
+                <div className="absolute -bottom-4 -left-4 h-2/3 w-2/3 rounded-tl-[80px] csm:-bottom-6 csm:-left-6" style={{ backgroundColor: 'var(--clone-highlight)' }} />
               ) : null}
               <img
                 src={c.aboutImage}
@@ -667,8 +667,8 @@ function AboutPage({ templateId, d }: { templateId: CloneTemplateId; d: CloneHom
 function PortfolioPage({ templateId, d }: { templateId: CloneTemplateId; d: CloneHomeData }) {
   if (templateId === 'helix') {
     return (
-      <section className="bg-[#f9f9f9] px-4 py-20 sm:px-6">
-        <div className="mx-auto grid max-w-7xl gap-8 md:grid-cols-2">
+      <section className="bg-[#f9f9f9] px-4 py-20 csm:px-6">
+        <div className="mx-auto grid max-w-7xl gap-8 cmd:grid-cols-2">
           {d.locations.map((item) => (
             <div key={item.title} className="overflow-hidden rounded-xl bg-white shadow-lg">
               {item.image ? <img src={item.image} alt="" className="h-64 w-full object-cover" /> : null}
@@ -684,8 +684,8 @@ function PortfolioPage({ templateId, d }: { templateId: CloneTemplateId; d: Clon
   }
   if (templateId === 'flux') {
     return (
-      <section className="bg-[#FFF9F4] px-4 py-20 sm:px-6">
-        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 md:grid-cols-4">
+      <section className="bg-[#FFF9F4] px-4 py-20 csm:px-6">
+        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 cmd:grid-cols-4">
           {d.locations.map((item) => (
             <div key={item.title} className="text-center">
               {item.image ? <img src={item.image} alt="" className="mb-3 h-40 w-full rounded-2xl object-cover" /> : <div className="mb-3 h-40 rounded-2xl bg-[#EEDFCF]" />}
@@ -698,12 +698,12 @@ function PortfolioPage({ templateId, d }: { templateId: CloneTemplateId; d: Clon
   }
   if (templateId === 'axiom') {
     return (
-      <section className="t5 px-4 py-20 sm:px-6">
+      <section className="t5 px-4 py-20 csm:px-6">
         <div className="mx-auto max-w-7xl space-y-0 divide-y">
           {d.locations.map((item) => (
-            <div key={item.title} className="grid items-center gap-8 py-10 md:grid-cols-3">
+            <div key={item.title} className="grid items-center gap-8 py-10 cmd:grid-cols-3">
               {item.image ? <img src={item.image} alt="" className="h-44 w-full rounded-lg object-cover" /> : <div className="h-44 rounded-lg bg-slate-100" />}
-              <div className="md:col-span-2">
+              <div className="cmd:col-span-2">
                 {item.tag ? <p className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: 'var(--clone-accent)' }}>{item.tag}</p> : null}
                 <h3 className="mt-1 text-2xl font-black">{item.title}</h3>
                 <p className="mt-2 text-sm opacity-70">{item.description}</p>
@@ -715,8 +715,8 @@ function PortfolioPage({ templateId, d }: { templateId: CloneTemplateId; d: Clon
     )
   }
   return (
-    <section className="px-4 py-16 sm:px-6">
-      <div className={`mx-auto grid max-w-7xl gap-8 ${templateId === 'taxfighters' || templateId === 'aureum' ? 'sm:grid-cols-2' : 'sm:grid-cols-2 lg:grid-cols-3'}`}>
+    <section className="px-4 py-16 csm:px-6">
+      <div className={`mx-auto grid max-w-7xl gap-8 ${templateId === 'taxfighters' || templateId === 'aureum' ? 'csm:grid-cols-2' : 'csm:grid-cols-2 clg:grid-cols-3'}`}>
         {d.locations.map((item) => (
           <Card key={item.title} templateId={templateId}>
             {item.image ? <img src={item.image} alt="" className="h-48 w-full object-cover" /> : null}
@@ -761,9 +761,9 @@ function ContactPage({ templateId, d }: { templateId: CloneTemplateId; d: CloneH
     'rounded-2xl border border-slate-300 bg-slate-50 p-5'
 
   return (
-    <section className={`px-4 py-16 sm:px-6 ${templateId === 'flux' ? 'bg-[#FFF3E7]' : templateId === 'helix' ? 'bg-white' : ''}`}>
-      <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-12">
-        <div className={`space-y-4 lg:col-span-5 ${templateId === 'helix' ? '' : ''}`}>
+    <section className={`px-4 py-16 csm:px-6 ${templateId === 'flux' ? 'bg-[#FFF3E7]' : templateId === 'helix' ? 'bg-white' : ''}`}>
+      <div className="mx-auto grid max-w-7xl gap-12 clg:grid-cols-12">
+        <div className={`space-y-4 clg:col-span-5 ${templateId === 'helix' ? '' : ''}`}>
           {fields.map(([label, value]) => (
             <div key={label} className={infoBox}>
               <p className="text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--clone-accent)' }}>
@@ -783,16 +783,16 @@ function ContactPage({ templateId, d }: { templateId: CloneTemplateId; d: CloneH
             }
           />
         </div>
-        <div className={`${formBox} lg:col-span-7`}>
+        <div className={`${formBox} clg:col-span-7`}>
           <h2 className={`text-2xl ${templateId === 'cpa' ? 'font-black' : templateId === 'helix' ? 'font-bold' : 'font-black'}`}>
             {c.contactFormTitle || 'Send a message'}
           </h2>
           <p className="mt-2 text-sm opacity-60">The live site form is included when you export. This preview shows the layout.</p>
-          <div className="mt-6 grid gap-4 sm:grid-cols-2">
+          <div className="mt-6 grid gap-4 csm:grid-cols-2">
             <div className={`h-11 border bg-[var(--clone-surface-alt)] ${templateId === 'cpa' ? 'rounded-full' : templateId === 'helix' ? 'rounded-md' : 'rounded-xl'}`} />
             <div className={`h-11 border bg-[var(--clone-surface-alt)] ${templateId === 'cpa' ? 'rounded-full' : templateId === 'helix' ? 'rounded-md' : 'rounded-xl'}`} />
-            <div className={`h-11 border bg-[var(--clone-surface-alt)] sm:col-span-2 ${templateId === 'cpa' ? 'rounded-full' : templateId === 'helix' ? 'rounded-md' : 'rounded-xl'}`} />
-            <div className={`h-28 border bg-[var(--clone-surface-alt)] sm:col-span-2 ${templateId === 'helix' ? 'rounded-md' : 'rounded-xl'}`} />
+            <div className={`h-11 border bg-[var(--clone-surface-alt)] csm:col-span-2 ${templateId === 'cpa' ? 'rounded-full' : templateId === 'helix' ? 'rounded-md' : 'rounded-xl'}`} />
+            <div className={`h-28 border bg-[var(--clone-surface-alt)] csm:col-span-2 ${templateId === 'helix' ? 'rounded-md' : 'rounded-xl'}`} />
           </div>
           <div
             className={`mt-4 inline-flex px-6 py-3 text-sm font-bold ${templateId === 'cpa' ? 'rounded-full' : templateId === 'helix' ? 'rounded-lg' : 'rounded-xl'}`}

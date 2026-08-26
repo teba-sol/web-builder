@@ -60,7 +60,7 @@
     "navCta": "border border-amber-400/80 px-6 py-2 text-sm uppercase tracking-wider text-amber-300 hover:bg-amber-400 hover:text-stone-900",
     "hero": "relative min-h-screen flex flex-col justify-end",
     "heroBadge": "text-amber-400 uppercase tracking-[0.3em] text-sm",
-    "heroTitle": "text-4xl md:text-6xl font-light text-white max-w-4xl leading-tight",
+    "heroTitle": "text-4xl cmd:text-6xl font-light text-white max-w-4xl leading-tight",
     "heroText": "text-white/80 text-lg mt-4 max-w-2xl",
     "heroCta": "bg-amber-700 text-white px-10 py-3 uppercase tracking-wider hover:bg-amber-800",
     "stats": "bg-stone-800 text-white py-16",

@@ -91,17 +91,17 @@ export function Template2({ c, basePath }: { c: SiteContent; basePath: string })
     <div className="min-h-screen bg-[var(--clone-surface)] text-[var(--clone-ink)] font-sans selection:bg-purple-900 selection:text-slate-900 relative">
       
       <CloneNav templateId="aureum" d={d} onBook={() => setIsBookingModalOpen(true)} />
-<section className="bg-[var(--clone-accent)] min-h-screen text-white font-sans overflow-hidden flex flex-col relative z-0 isolate">
+<section className="relative z-0 isolate flex min-h-[70vh] flex-col overflow-hidden bg-[var(--clone-accent)] font-sans text-white clg:min-h-screen">
   {/* Decorative background grid */}
   <div className="absolute right-0 bottom-0 w-[50%] h-full opacity-10 pointer-events-none" style={{ backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
 
 
   {/* Hero Content */}
-  <div className="relative z-10 flex-1 max-w-[1400px] mx-auto w-full px-6 lg:px-12 py-12 lg:py-16 grid lg:grid-cols-2 gap-12 items-center">
+  <div className="relative z-10 flex-1 max-w-[1400px] mx-auto w-full px-6 clg:px-12 py-12 clg:py-16 grid clg:grid-cols-2 gap-12 items-center">
     
     {/* Left Text Column */}
-    <div className="pr-0 lg:pr-10">
-      <h1 className="text-[2.75rem] lg:text-[4rem] font-bold leading-[1.05] text-white mb-6 tracking-tight">
+    <div className="pr-0 clg:pr-10">
+      <h1 className="text-[2.75rem] clg:text-[4rem] font-bold leading-[1.05] text-white mb-6 tracking-tight">
         {c.tagline}
       </h1>
       <p className="text-[17px] text-gray-300 mb-10 max-w-[500px] leading-relaxed">
@@ -109,13 +109,13 @@ export function Template2({ c, basePath }: { c: SiteContent; basePath: string })
       </p>
 
       {/* Input Group */}
-      <div className="bg-white rounded-full p-1.5 flex items-center w-full max-w-md mb-8 shadow-lg">
+      <div className="mb-8 flex w-full max-w-md flex-col gap-2 rounded-2xl bg-white p-1.5 shadow-lg csm:flex-row csm:items-center csm:rounded-full">
         <input
           type="email"
           placeholder="Email Address"
-          className="flex-1 bg-transparent px-5 py-2 text-gray-900 outline-none placeholder-gray-500 font-medium text-sm"
+          className="min-w-0 flex-1 bg-transparent px-5 py-2 text-sm font-medium text-gray-900 outline-none placeholder-gray-500"
         />
-        <button className="bg-[var(--clone-ink)] hover:brightness-110 text-white px-8 py-3 rounded-full font-bold text-xs uppercase tracking-widest transition-all whitespace-nowrap">
+        <button className="rounded-full bg-[var(--clone-ink)] px-6 py-3 text-xs font-bold uppercase tracking-widest text-white transition-all hover:brightness-110 csm:whitespace-nowrap csm:px-8">
           Talk To Our Team
         </button>
       </div>
@@ -127,7 +127,7 @@ export function Template2({ c, basePath }: { c: SiteContent; basePath: string })
     </div>
 
     {/* Right Visual Column */}
-    <div className="relative h-[450px] lg:h-[600px] w-full flex items-end justify-center lg:justify-end mt-12 lg:mt-0">
+    <div className="relative mt-8 flex h-[280px] w-full items-end justify-center overflow-hidden csm:h-[450px] clg:mt-0 clg:h-[600px] clg:justify-end clg:overflow-visible">
       
       {/* Yellow Arch Background */}
       <div className="absolute right-[5%] bottom-0 w-[75%] h-[85%] bg-[var(--clone-highlight)] rounded-tl-[140px] rounded-br-[30px] z-0"></div>
@@ -138,7 +138,7 @@ export function Template2({ c, basePath }: { c: SiteContent; basePath: string })
       </div>
 
       {/* Floating UI: Graph Card */}
-      <div className="absolute top-[15%] left-[5%] bg-white rounded-xl p-4 shadow-2xl z-20 w-48 text-gray-900">
+      <div className="absolute top-[15%] left-[5%] z-20 hidden w-48 rounded-xl bg-white p-4 text-gray-900 shadow-2xl cmd:block">
         <div className="flex items-center gap-1 text-[10px] font-bold text-gray-500 mb-1">
           Net income <span className="text-lg leading-none">&rsaquo;</span>
         </div>
@@ -155,7 +155,7 @@ export function Template2({ c, basePath }: { c: SiteContent; basePath: string })
       </div>
 
       {/* Floating UI: Chat Bubble 1 */}
-      <div className="absolute bottom-[20%] -right-[2%] bg-white p-3 rounded-2xl rounded-br-sm shadow-2xl z-20 w-52 text-gray-900">
+      <div className="absolute bottom-[20%] right-2 z-20 hidden w-52 rounded-2xl rounded-br-sm bg-white p-3 text-gray-900 shadow-2xl cmd:block clg:right-[-2%]">
         <div className="text-[8px] font-bold text-gray-400 mb-1 uppercase tracking-wide">Bridget, your CFO</div>
         <div className="text-sm font-bold flex justify-between items-center text-[var(--clone-ink)]">
           Your books are ready <span className="text-lg leading-none">&rarr;</span>
@@ -163,7 +163,7 @@ export function Template2({ c, basePath }: { c: SiteContent; basePath: string })
       </div>
 
       {/* Floating UI: Chat Bubble 2 */}
-      <div className="absolute bottom-[8%] -right-[8%] bg-white px-4 py-2.5 rounded-full shadow-2xl z-30 flex items-center gap-3">
+      <div className="absolute bottom-[8%] right-2 z-30 hidden items-center gap-3 rounded-full bg-white px-4 py-2.5 shadow-2xl cmd:flex clg:right-[-8%]">
         <span className="text-gray-900 text-sm font-bold">you're my hero!</span>
         <div className="w-6 h-6 bg-purple-200 rounded-full flex items-center justify-center overflow-hidden">
           <span className="text-[8px] text-purple-800 font-bold">IMG</span>
@@ -176,8 +176,8 @@ export function Template2({ c, basePath }: { c: SiteContent; basePath: string })
 
       {d.show.stats && d.stats.length > 0 && (
       <section className="py-12 bg-slate-100/60 border-y border-slate-300">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+        <div className="max-w-7xl mx-auto px-4 csm:px-6 clg:px-8">
+          <div className="grid grid-cols-1 cmd:grid-cols-3 gap-6 text-center">
             {d.stats.slice(0, 4).map((stat) => (
             <div key={stat.label} className="p-6 rounded-2xl bg-slate-50/60 border border-slate-300">
               <div className="text-4xl font-extrabold text-slate-900">{stat.value}</div>
@@ -190,20 +190,20 @@ export function Template2({ c, basePath }: { c: SiteContent; basePath: string })
       )}
 
       {/* ABOUT SECTION */}
-      <section id="about" className={`${!(d.show.about) ? 'hidden ' : ''}py-24 px-4 sm:px-6 lg:px-8 relative`}>
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-12 gap-12 items-center">
+      <section id="about" className={`${!(d.show.about) ? 'hidden ' : ''}py-24 px-4 csm:px-6 clg:px-8 relative`}>
+        <div className="max-w-7xl mx-auto grid clg:grid-cols-12 gap-12 items-center">
           
-          <div className="lg:col-span-6 relative">
+          <div className="clg:col-span-6 relative">
             <div className="rounded-3xl overflow-hidden shadow-2xl border border-slate-300">
               <img
                 src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1200&q=80"
                 alt="Creative Team Brainstorming"
-                className="w-full h-[640px] object-cover"
+                className="h-56 w-full object-cover csm:h-80 clg:h-[640px]"
               />
             </div>
             
             {/* Floating Experience Badge */}
-            <div className="absolute -bottom-6 -right-2 sm:right-6 bg-slate-100 border border-slate-300 p-5 rounded-2xl shadow-2xl flex items-center gap-4 max-w-xs">
+            <div className="relative mt-4 flex max-w-xs items-center gap-4 rounded-2xl border border-slate-300 bg-slate-100 p-5 shadow-2xl csm:absolute csm:-bottom-6 csm:right-6 csm:mt-0">
               <div className="w-12 h-12 rounded-xl flex items-center justify-center text-pink-400 flex-shrink-0" style={{ backgroundColor: 'var(--clone-accent)' }}>
                 <Shield className="w-6 h-6" />
               </div>
@@ -214,14 +214,14 @@ export function Template2({ c, basePath }: { c: SiteContent; basePath: string })
             </div>
           </div>
 
-          <div className="lg:col-span-6 space-y-6">
+          <div className="clg:col-span-6 space-y-6">
             <div className="text-xs font-bold text-purple-600 uppercase tracking-widest">Our Vision</div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 leading-tight">
+            <h2 className="text-3xl csm:text-4xl font-extrabold text-slate-900 leading-tight">
               Your Strategic Partner for <br />
               <span className="text-purple-600">Digital Innovation</span>
             </h2>
 
-            <p className="text-slate-700 text-sm sm:text-base leading-relaxed">
+            <p className="text-slate-700 text-sm csm:text-base leading-relaxed">
               Kreative.Studio was founded on a simple principle: bridging the gap between aesthetic beauty and functional digital experiences to help brands stand out.
             </p>
 
@@ -255,12 +255,12 @@ export function Template2({ c, basePath }: { c: SiteContent; basePath: string })
       </section>
 
       {/* OUR SERVICES SECTION */}
-      <section id="services" className={`${!(d.show.services) ? 'hidden ' : ''}py-24 px-4 sm:px-6 lg:px-8 bg-slate-100/50 border-t border-slate-300`}>
+      <section id="services" className={`${!(d.show.services) ? 'hidden ' : ''}py-24 px-4 csm:px-6 clg:px-8 bg-slate-100/50 border-t border-slate-300`}>
         <div className="max-w-7xl mx-auto space-y-12">
           
           <div className="text-center max-w-3xl mx-auto space-y-3">
             <div className="text-xs font-bold text-purple-600 uppercase tracking-widest">Our Expertise</div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900">
+            <h2 className="text-3xl csm:text-4xl font-extrabold text-slate-900">
               Comprehensive <span className="text-purple-600">Tax Services</span>
             </h2>
             <p className="text-slate-700 text-sm">
@@ -268,7 +268,7 @@ export function Template2({ c, basePath }: { c: SiteContent; basePath: string })
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid cmd:grid-cols-3 gap-8">
             
             {/* Service 1 */}
             <div className="bg-slate-50/80 p-8 rounded-3xl border border-slate-300 hover:border-purple-600/60 transition space-y-4 group">
@@ -333,14 +333,14 @@ export function Template2({ c, basePath }: { c: SiteContent; basePath: string })
       </section>
 
       {/* WHAT IS REFUND ADVANCE EXPLANATION */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 border-t border-slate-300">
-        <div className="max-w-7xl mx-auto bg-slate-100 border border-slate-300 rounded-3xl p-8 sm:p-12 space-y-6">
+      <section className="py-20 px-4 csm:px-6 clg:px-8 border-t border-slate-300">
+        <div className="max-w-7xl mx-auto bg-slate-100 border border-slate-300 rounded-3xl p-8 csm:p-12 space-y-6">
           <div className="text-xs font-bold text-purple-600 uppercase tracking-widest">Financial Transparency</div>
           <h2 className="text-3xl font-extrabold text-slate-900">Why Invest in Professional Brand Design?</h2>
           <p className="text-slate-700 text-sm leading-relaxed">
             In today's saturated digital landscape, your brand is more than just a logo—it's the emotional connection you build with your audience. Professional design establishes trust, differentiates you from competitors, and directly influences purchasing decisions.
           </p>
-          <div className="grid sm:grid-cols-2 gap-4 text-xs text-slate-600 pt-2">
+          <div className="grid csm:grid-cols-2 gap-4 text-xs text-slate-600 pt-2">
             <div className="p-4 bg-slate-50 rounded-xl border border-slate-300">
               <strong className="text-slate-900 block mb-1 text-sm">✓ Increased Perceived Value</strong>
               High-quality design allows you to command premium pricing for your products.
@@ -354,15 +354,15 @@ export function Template2({ c, basePath }: { c: SiteContent; basePath: string })
       </section>
 
       {/* HOW IT WORKS PROCESS SECTION */}
-      <section id="process" className={`${!(d.show.steps) ? 'hidden ' : ''}py-24 px-4 sm:px-6 lg:px-8 border-t border-slate-300`}>
+      <section id="process" className={`${!(d.show.steps) ? 'hidden ' : ''}py-24 px-4 csm:px-6 clg:px-8 border-t border-slate-300`}>
         <div className="max-w-7xl mx-auto space-y-16">
           
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <div className="text-xs font-bold text-purple-600 uppercase tracking-widest">Simple 3-Step Process</div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900">Our Creative Process</h2>
+            <h2 className="text-3xl csm:text-4xl font-extrabold text-slate-900">Our Creative Process</h2>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 relative">
+          <div className="grid cmd:grid-cols-3 gap-8 relative">
             
             {/* Step 1 */}
             <div className="bg-slate-100 p-8 rounded-3xl border border-slate-300 text-center space-y-4 relative">
@@ -403,7 +403,7 @@ export function Template2({ c, basePath }: { c: SiteContent; basePath: string })
       </section>
 
       {/* CLIENT REVIEWS SECTION */}
-      <section id="reviews" className={`${!(d.show.testimonials) ? 'hidden ' : ''}py-24 px-4 sm:px-6 lg:px-8 bg-slate-100/60 border-t border-slate-300`}>
+      <section id="reviews" className={`${!(d.show.testimonials) ? 'hidden ' : ''}py-24 px-4 csm:px-6 clg:px-8 bg-slate-100/60 border-t border-slate-300`}>
         <div className="max-w-7xl mx-auto space-y-12">
           
           <div className="text-center max-w-2xl mx-auto space-y-3">
@@ -411,7 +411,7 @@ export function Template2({ c, basePath }: { c: SiteContent; basePath: string })
             <h2 className="text-3xl font-extrabold text-slate-900">What Our Clients Say</h2>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid cmd:grid-cols-3 gap-8">
             {reviews.map((r, idx) => (
               <div key={idx} className="bg-slate-50 p-6 rounded-2xl border border-slate-300 space-y-4">
                 <div className="flex items-center gap-1 text-pink-500">
@@ -435,7 +435,7 @@ export function Template2({ c, basePath }: { c: SiteContent; basePath: string })
       <CloneTeamSection templateId="aureum" d={d} />
 
       {/* FAQ ACCORDION SECTION */}
-      <section id="faq" className={`${!(d.show.faq) ? 'hidden ' : ''}py-24 px-4 sm:px-6 lg:px-8 border-t border-slate-300`}>
+      <section id="faq" className={`${!(d.show.faq) ? 'hidden ' : ''}py-24 px-4 csm:px-6 clg:px-8 border-t border-slate-300`}>
         <div className="max-w-4xl mx-auto space-y-8">
           
           <div className="text-center space-y-3">
@@ -468,7 +468,7 @@ export function Template2({ c, basePath }: { c: SiteContent; basePath: string })
       <CloneCtaSection d={d} onBook={() => setIsBookingModalOpen(true)} />
 
       {/* CONTACT SECTION */}
-      <section id="contact" className={`${!(d.show.contact) ? 'hidden ' : ''}py-24 px-4 sm:px-6 lg:px-8 bg-slate-100/80 border-t border-slate-300`}>
+      <section id="contact" className={`${!(d.show.contact) ? 'hidden ' : ''}py-24 px-4 csm:px-6 clg:px-8 bg-slate-100/80 border-t border-slate-300`}>
         <div className="max-w-7xl mx-auto space-y-12">
           
           <div className="text-center max-w-2xl mx-auto space-y-3">
@@ -476,9 +476,9 @@ export function Template2({ c, basePath }: { c: SiteContent; basePath: string })
             <h2 className="text-3xl font-extrabold text-slate-900">Visit Our Creative Studio Or Message Us</h2>
           </div>
 
-          <div className="grid lg:grid-cols-12 gap-12">
+          <div className="grid clg:grid-cols-12 gap-12">
             
-            <div className="lg:col-span-5 space-y-6">
+            <div className="clg:col-span-5 space-y-6">
               <div className="bg-slate-50 p-6 rounded-2xl border border-slate-300 space-y-4">
                 <div className="w-10 h-10 rounded-xl flex items-center justify-center text-slate-900" style={{ backgroundColor: 'var(--clone-accent)' }}>
                   <MapPin className="w-5 h-5 text-pink-400" />
@@ -512,11 +512,11 @@ export function Template2({ c, basePath }: { c: SiteContent; basePath: string })
             </div>
 
             {/* Direct Message Form */}
-            <div className="lg:col-span-7 bg-slate-50 p-8 rounded-3xl border border-slate-300 space-y-6">
+            <div className="clg:col-span-7 bg-slate-50 p-8 rounded-3xl border border-slate-300 space-y-6">
               <h3 className="text-xl font-bold text-slate-900">Send A Direct Message</h3>
 
               <form onSubmit={handleContactSubmit} className="space-y-4">
-                <div className="grid sm:grid-cols-2 gap-4">
+                <div className="grid csm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-semibold text-slate-700 mb-1">Your Name *</label>
                     <input
@@ -585,8 +585,8 @@ export function Template2({ c, basePath }: { c: SiteContent; basePath: string })
       </section>
 
       {/* FOOTER */}
-      <footer className="bg-slate-50 border-t border-slate-300 text-slate-600 text-xs py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+      <footer className="bg-slate-50 border-t border-slate-300 text-slate-600 text-xs py-12 px-4 csm:px-6 clg:px-8">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 cmd:grid-cols-4 gap-8">
           
           <div className="space-y-3">
             <div className="flex items-center gap-2 text-white font-bold text-base">
@@ -633,8 +633,8 @@ export function Template2({ c, basePath }: { c: SiteContent; basePath: string })
 
       {/* BOOKING MODAL */}
       {isBookingModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-50/80 backdrop-blur-sm">
-          <div className="bg-slate-100 border border-slate-300 rounded-3xl p-6 sm:p-8 max-w-md w-full relative shadow-2xl space-y-4">
+        <div className="fixed inset-0 z-50 flex items-end justify-center overflow-y-auto bg-slate-50/80 p-4 backdrop-blur-sm csm:items-center">
+          <div className="bg-slate-100 border border-slate-300 rounded-3xl p-6 csm:p-8 max-w-md w-full relative shadow-2xl space-y-4">
             
             <button
               onClick={() => setIsBookingModalOpen(false)}

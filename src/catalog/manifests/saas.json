@@ -59,7 +59,7 @@
     "navCta": "rounded-lg bg-indigo-600 px-5 py-2 text-sm font-semibold hover:bg-indigo-500",
     "hero": "relative overflow-hidden py-28",
     "heroBadge": "rounded-full border border-indigo-500/30 bg-indigo-500/10 px-4 py-1 text-xs text-indigo-300",
-    "heroTitle": "text-4xl md:text-5xl lg:text-6xl font-bold leading-tight",
+    "heroTitle": "text-4xl cmd:text-5xl clg:text-6xl font-bold leading-tight",
     "heroText": "text-lg text-slate-400",
     "heroCta": "rounded-lg bg-gradient-to-r from-indigo-600 to-cyan-600 px-6 py-3 font-semibold",
     "stats": "border-y border-white/10 py-16",

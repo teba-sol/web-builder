@@ -76,7 +76,7 @@
     "navCta": "rounded-lg bg-[#0B4F8A] px-6 py-2.5 text-sm font-bold text-white",
     "hero": "bg-white py-20",
     "heroBadge": "text-[#c41e3a] text-xs font-bold tracking-[0.32em] uppercase",
-    "heroTitle": "font-serif text-5xl md:text-6xl text-[#0a1628]",
+    "heroTitle": "font-serif text-5xl cmd:text-6xl text-[#0a1628]",
     "heroText": "text-lg text-[#3d4a5c] leading-relaxed",
     "heroCta": "rounded-lg bg-[#2196F3] px-7 py-3.5 font-bold text-white",
     "stats": "bg-[#0a1628] text-white py-10",

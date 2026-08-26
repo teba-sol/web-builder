@@ -43,7 +43,7 @@ const VARIANTS: Record<CloneTemplateId, VariantChrome> = {
     link: 'rounded-lg px-3.5 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-100 hover:text-rose-600',
     dropdown: 'bg-slate-100 border border-slate-300',
     dropdownItem: 'hover:bg-rose-100/40',
-    cta: 'hidden sm:inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-bold text-white shadow-xl',
+    cta: 'hidden csm:inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-bold text-white shadow-xl',
     ctaStyle: { backgroundColor: 'var(--clone-accent)' },
     mobile: 'bg-slate-50 border-b border-slate-300 text-slate-900',
     locationsLabel: 'Locations',
@@ -57,7 +57,7 @@ const VARIANTS: Record<CloneTemplateId, VariantChrome> = {
     link: 'rounded-lg px-3.5 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-100 hover:text-purple-600',
     dropdown: 'bg-white border border-purple-200',
     dropdownItem: 'hover:bg-purple-100/40',
-    cta: 'hidden sm:inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-bold text-white shadow-xl',
+    cta: 'hidden csm:inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-bold text-white shadow-xl',
     ctaStyle: { backgroundColor: 'var(--clone-accent)' },
     mobile: 'bg-slate-50 border-b border-slate-300 text-slate-900',
     locationsLabel: 'Locations',
@@ -71,7 +71,7 @@ const VARIANTS: Record<CloneTemplateId, VariantChrome> = {
     link: 'rounded-lg px-3.5 py-2 text-sm font-semibold text-[#3A2E22] hover:bg-[#FFEDE1] hover:text-[#FA6B34]',
     dropdown: 'bg-white border border-[#EEDFCF]',
     dropdownItem: 'hover:bg-[#FFEDE1]',
-    cta: 'hidden sm:inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-bold text-white shadow-lg',
+    cta: 'hidden csm:inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-bold text-white shadow-lg',
     ctaStyle: { backgroundColor: 'var(--clone-accent)' },
     mobile: 'bg-[#FFF9F4] border-b border-[#EEDFCF] text-[#241C15]',
     locationsLabel: 'Locations',
@@ -86,7 +86,7 @@ const VARIANTS: Record<CloneTemplateId, VariantChrome> = {
     link: 'rounded-full px-3.5 py-2 text-sm font-semibold text-white/90 hover:bg-[var(--clone-accent)] hover:text-[var(--clone-ink)]',
     dropdown: 'bg-white border border-[#E4E0D4]',
     dropdownItem: 'hover:bg-[#F0F8E0]',
-    cta: 'hidden sm:inline-flex items-center gap-2 rounded-full px-6 py-2 text-sm font-bold shadow-lg',
+    cta: 'hidden csm:inline-flex items-center gap-2 rounded-full px-6 py-2 text-sm font-bold shadow-lg',
     ctaStyle: { backgroundColor: 'var(--clone-accent)', color: 'var(--clone-ink)' },
     mobile: 'text-white border-t border-white/10',
     logoOnDark: true,
@@ -101,7 +101,7 @@ const VARIANTS: Record<CloneTemplateId, VariantChrome> = {
     link: 'px-3.5 py-2 text-sm font-semibold hover:text-blue-600',
     dropdown: 'bg-white border',
     dropdownItem: 'hover:bg-blue-50',
-    cta: 'hidden sm:inline-flex items-center gap-2 rounded-lg px-6 py-2.5 text-sm font-bold text-white shadow-md',
+    cta: 'hidden csm:inline-flex items-center gap-2 rounded-lg px-6 py-2.5 text-sm font-bold text-white shadow-md',
     ctaStyle: { backgroundColor: 'var(--clone-accent)' },
     mobile: 'bg-white border-t text-[var(--clone-ink)]',
     skipTopbar: true,
@@ -115,7 +115,7 @@ const VARIANTS: Record<CloneTemplateId, VariantChrome> = {
     link: 'rounded-lg px-4 py-2 font-medium text-white hover:bg-white/10',
     dropdown: 'bg-[var(--clone-ink)] border border-white/10',
     dropdownItem: 'hover:bg-white/10',
-    cta: 'hidden sm:inline-flex items-center gap-2 rounded-lg bg-white px-6 py-2 font-semibold',
+    cta: 'hidden csm:inline-flex items-center gap-2 rounded-lg bg-white px-6 py-2 font-semibold',
     ctaStyle: { color: 'var(--clone-accent)' },
     mobile: 'text-white',
     logoOnDark: true,
@@ -175,7 +175,7 @@ export function CloneNav({ templateId, d, onBook }: ChromeProps) {
     <div className="clone-site-nav relative z-50">
       {!v.skipTopbar ? (
         <div className={v.topbar} style={v.topbarStyle}>
-          <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 sm:flex-row">
+          <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 csm:flex-row">
             <div className={`flex flex-wrap items-center gap-6 ${v.topbarText}`}>
               {c.phone ? (
                 <a href={`tel:${c.phone}`} className="inline-flex items-center gap-1.5 hover:underline">
@@ -183,12 +183,12 @@ export function CloneNav({ templateId, d, onBook }: ChromeProps) {
                 </a>
               ) : null}
               {c.email ? (
-                <span className="hidden items-center gap-1.5 md:inline-flex">
+                <span className="hidden items-center gap-1.5 cmd:inline-flex">
                   <Mail className="h-3.5 w-3.5" /> {c.email}
                 </span>
               ) : null}
               {c.hours ? (
-                <span className="hidden items-center gap-1.5 lg:inline-flex">
+                <span className="hidden items-center gap-1.5 clg:inline-flex">
                   <Clock className="h-3.5 w-3.5" /> {c.hours}
                 </span>
               ) : null}
@@ -204,27 +204,27 @@ export function CloneNav({ templateId, d, onBook }: ChromeProps) {
             aria-hidden
           />
         ) : null}
-        <div className="relative mx-auto flex h-20 max-w-7xl items-center justify-between overflow-visible px-4 sm:px-6">
-          <Link to={d.hrefs.home} className="flex items-center gap-3">
+        <div className="relative mx-auto flex min-h-16 max-w-7xl items-center justify-between gap-2 overflow-hidden px-4 py-2 csm:h-20 csm:overflow-visible csm:px-6 csm:py-0">
+          <Link to={d.hrefs.home} className="flex min-w-0 flex-1 items-center gap-2 csm:gap-3">
             {c.logo ? (
-              <img src={c.logo} alt="" className={`object-contain ${v.rounded ? 'h-14 w-14' : 'h-11 w-auto max-w-[10rem]'}`} />
+              <img src={c.logo} alt="" className={`shrink-0 object-contain ${v.rounded ? 'h-10 w-10 csm:h-14 csm:w-14' : 'h-8 w-auto max-w-[7rem] csm:h-11 csm:max-w-[10rem]'}`} />
             ) : (
               <div
-                className="flex h-11 w-11 items-center justify-center rounded-xl shadow-lg"
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl shadow-lg csm:h-11 csm:w-11"
                 style={{ backgroundColor: v.logoOnDark && templateId !== 'helix' ? 'var(--clone-accent)' : 'var(--clone-accent)' }}
               >
-                <Shield className="h-6 w-6 text-white" />
+                <Shield className="h-5 w-5 text-white csm:h-6 csm:w-6" />
               </div>
             )}
-            <div className={c.logo && v.rounded ? 'hidden' : ''}>
-              <div className={`text-xl font-black tracking-tight ${v.logoOnDark ? 'text-white' : ''}`}>{c.businessName}</div>
-              <div className={`text-[10px] font-semibold uppercase tracking-widest opacity-60 ${v.logoOnDark ? 'text-white' : ''}`}>
+            <div className={`min-w-0 ${c.logo && v.rounded ? 'clg:hidden' : ''}`}>
+              <div className={`truncate text-sm font-black tracking-tight csm:text-xl ${v.logoOnDark ? 'text-white' : ''}`}>{c.businessName}</div>
+              <div className={`hidden truncate text-[10px] font-semibold uppercase tracking-widest opacity-60 csm:block ${v.logoOnDark ? 'text-white' : ''}`}>
                 {c.tagline}
               </div>
             </div>
           </Link>
 
-          <div className="hidden items-center gap-1 lg:flex">
+          <div className="hidden items-center gap-1 clg:flex">
             <Link to={d.hrefs.home} className={v.link}>
               Home
             </Link>
@@ -272,14 +272,19 @@ export function CloneNav({ templateId, d, onBook }: ChromeProps) {
                 {cta}
               </Link>
             )}
-            <button type="button" className="rounded-xl border p-2 lg:hidden" onClick={() => setOpen((value) => !value)}>
+            <button
+              type="button"
+              className="shrink-0 rounded-xl border p-2 clg:hidden"
+              aria-label={open ? 'Close menu' : 'Open menu'}
+              onClick={() => setOpen((value) => !value)}
+            >
               {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
           </div>
         </div>
 
         {open ? (
-          <div className={`space-y-2 px-6 py-6 lg:hidden ${v.mobile}`}>
+          <div className={`space-y-2 px-6 py-6 clg:hidden ${v.mobile}`}>
             {d.navItems.map((item) => (
               <Link key={item.page} to={item.to} className="block py-2 text-base font-bold" onClick={() => setOpen(false)}>
                 {item.label}
@@ -310,9 +315,9 @@ export function CloneFooter({ templateId, d }: ChromeProps) {
   const dark = templateId === 'helix' || templateId === 'cpa'
   return (
     <footer
-      className={`border-t px-4 py-12 text-xs sm:px-6 ${dark ? 'bg-black text-white/70' : 'bg-[var(--clone-surface)] text-[var(--clone-ink)]'}`}
+      className={`border-t px-4 py-12 text-xs csm:px-6 ${dark ? 'bg-black text-white/70' : 'bg-[var(--clone-surface)] text-[var(--clone-ink)]'}`}
     >
-      <div className="mx-auto grid max-w-7xl gap-8 md:grid-cols-4">
+      <div className="mx-auto grid max-w-7xl gap-8 cmd:grid-cols-4">
         <div className="space-y-3">
           <div className={`text-base font-bold ${dark ? 'text-white' : ''}`}>{c.businessName}</div>
           <p className="leading-relaxed opacity-70">{c.missionStatement || c.heroSubtext}</p>
@@ -357,10 +362,10 @@ export function CloneStatsSection({ d }: { d: CloneHomeData }) {
   if (!d.show.stats || d.stats.length === 0) return null
   return (
     <section className="border-y py-12" style={{ backgroundColor: 'var(--clone-surface-alt)' }}>
-      <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-4 text-center md:grid-cols-4 sm:px-6">
+      <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-4 text-center cmd:grid-cols-4 csm:px-6">
         {d.stats.slice(0, 4).map((stat) => (
           <div key={stat.label}>
-            <div className="text-3xl font-black sm:text-4xl" style={{ color: 'var(--clone-accent)' }}>
+            <div className="text-3xl font-black csm:text-4xl" style={{ color: 'var(--clone-accent)' }}>
               {stat.value}
             </div>
             <div className="mt-1 text-xs font-semibold uppercase tracking-wider opacity-60">{stat.label}</div>
@@ -378,10 +383,10 @@ export function CloneTeamSection({ d, templateId }: { d: CloneHomeData; template
 
   if (templateId === 'taxfighters') {
     return (
-      <section className="border-y border-slate-300 bg-white px-4 py-24 sm:px-6">
+      <section className="border-y border-slate-300 bg-white px-4 py-24 csm:px-6">
         <div className="mx-auto max-w-4xl">
           <div className="mb-12">
-            <div className="text-xs font-bold uppercase tracking-widest text-rose-600">Our experts</div>
+            <div className="text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--clone-accent)' }}>Our experts</div>
             <h2 className="mt-2 text-4xl font-black tracking-tight text-slate-900">{title}</h2>
           </div>
           <div className="divide-y divide-slate-200">
@@ -396,7 +401,7 @@ export function CloneTeamSection({ d, templateId }: { d: CloneHomeData; template
                   <h3 className="text-lg font-bold text-slate-900">{member.name}</h3>
                   <p className="text-sm text-slate-500">{member.role}</p>
                 </div>
-                <span className="hidden h-px w-16 sm:block" style={{ backgroundColor: 'var(--clone-accent)' }} />
+                <span className="hidden h-px w-16 csm:block" style={{ backgroundColor: 'var(--clone-accent)' }} />
               </div>
             ))}
           </div>
@@ -407,11 +412,11 @@ export function CloneTeamSection({ d, templateId }: { d: CloneHomeData; template
 
   if (templateId === 'aureum') {
     return (
-      <section className="px-6 py-24 lg:px-12">
+      <section className="px-6 py-24 clg:px-12">
         <div className="mx-auto max-w-[1400px]">
           <p className="text-[10px] font-bold uppercase tracking-[0.2em] opacity-50">The studio</p>
           <h2 className="mt-2 max-w-xl text-5xl font-bold tracking-tight">{title}</h2>
-          <div className="mt-14 grid gap-x-12 gap-y-16 sm:grid-cols-2">
+          <div className="mt-14 grid gap-x-12 gap-y-16 csm:grid-cols-2">
             {team.map((member) => (
               <div key={member.name} className="flex items-center gap-6">
                 <div className="relative shrink-0">
@@ -436,7 +441,7 @@ export function CloneTeamSection({ d, templateId }: { d: CloneHomeData; template
 
   if (templateId === 'flux') {
     return (
-      <section className="bg-[#FFF3E7] px-4 py-24 sm:px-6">
+      <section className="bg-[#FFF3E7] px-4 py-24 csm:px-6">
         <div className="mx-auto max-w-3xl">
           <div className="mb-12 flex items-center gap-3 text-[13px] font-bold uppercase tracking-[0.2em] text-[#7A6A58]">
             <span className="inline-block h-2 w-2 rotate-45" style={{ backgroundColor: 'var(--clone-accent)' }} />
@@ -467,14 +472,14 @@ export function CloneTeamSection({ d, templateId }: { d: CloneHomeData; template
 
   if (templateId === 'cpa') {
     return (
-      <section className="px-4 py-24 sm:px-6" style={{ backgroundColor: 'var(--clone-surface)' }}>
+      <section className="px-4 py-24 csm:px-6" style={{ backgroundColor: 'var(--clone-surface)' }}>
         <div className="mx-auto max-w-7xl">
           <div className="mb-12 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--clone-accent)' }}>
             <span className="h-px w-4" style={{ backgroundColor: 'var(--clone-accent)' }} />
             Our experts
           </div>
           <h2 className="mb-14 text-4xl font-black uppercase tracking-tight">{title}</h2>
-          <div className="grid gap-6 lg:grid-cols-2">
+          <div className="grid gap-6 clg:grid-cols-2">
             {team.map((member, i) => (
               <div
                 key={member.name}
@@ -482,9 +487,9 @@ export function CloneTeamSection({ d, templateId }: { d: CloneHomeData; template
                 style={i === 0 ? { borderColor: 'var(--clone-accent)', boxShadow: '0 0 0 1px var(--clone-accent)' } : undefined}
               >
                 {member.image ? (
-                  <img src={member.image} alt="" className="h-40 w-36 shrink-0 object-cover sm:h-44 sm:w-44" />
+                  <img src={member.image} alt="" className="h-40 w-36 shrink-0 object-cover csm:h-44 csm:w-44" />
                 ) : (
-                  <div className="h-40 w-36 shrink-0 sm:h-44 sm:w-44" style={{ backgroundColor: 'var(--clone-accent-soft)' }} />
+                  <div className="h-40 w-36 shrink-0 csm:h-44 csm:w-44" style={{ backgroundColor: 'var(--clone-accent-soft)' }} />
                 )}
                 <div className="flex flex-col justify-center p-6">
                   <h3 className="text-xl font-black">{member.name}</h3>
@@ -500,9 +505,9 @@ export function CloneTeamSection({ d, templateId }: { d: CloneHomeData; template
 
   if (templateId === 'axiom') {
     return (
-      <section className="t5 px-4 py-24 sm:px-6">
-        <div className="mx-auto grid max-w-7xl items-start gap-16 lg:grid-cols-12">
-          <div className="lg:col-span-4">
+      <section className="t5 px-4 py-24 csm:px-6">
+        <div className="mx-auto grid max-w-7xl items-start gap-16 clg:grid-cols-12">
+          <div className="clg:col-span-4">
             <div className="text-xs font-bold uppercase tracking-[0.25em]" style={{ color: 'var(--clone-accent)' }}>
               Our experts
             </div>
@@ -519,7 +524,7 @@ export function CloneTeamSection({ d, templateId }: { d: CloneHomeData; template
               )}
             </h2>
           </div>
-          <div className="divide-y lg:col-span-8" style={{ borderColor: '#D6E4F0' }}>
+          <div className="divide-y clg:col-span-8" style={{ borderColor: '#D6E4F0' }}>
             {team.map((member) => (
               <div key={member.name} className="flex items-center gap-5 py-6">
                 {member.image ? (
@@ -540,10 +545,10 @@ export function CloneTeamSection({ d, templateId }: { d: CloneHomeData; template
   }
 
   return (
-    <section className="bg-black px-4 py-24 text-white sm:px-6">
+    <section className="bg-black px-4 py-24 text-white csm:px-6">
       <div className="mx-auto max-w-7xl">
-        <h2 className="mb-16 text-center text-5xl font-bold sm:text-6xl">{title}</h2>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <h2 className="mb-16 text-center text-5xl font-bold csm:text-6xl">{title}</h2>
+        <div className="grid gap-4 csm:grid-cols-2 clg:grid-cols-4">
           {team.map((member) => (
             <div key={member.name} className="group relative min-h-[320px] overflow-hidden">
               {member.image ? (
@@ -578,15 +583,15 @@ export function ClonePricingSection({ d, onBook }: { d: CloneHomeData; onBook?: 
         },
       ]
   return (
-    <section id="pricing" className="px-4 py-24 sm:px-6">
+    <section id="pricing" className="px-4 py-24 csm:px-6">
       <div className="mx-auto max-w-7xl space-y-12">
         <div className="mx-auto max-w-2xl text-center">
           <div className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: 'var(--clone-accent)' }}>
             Pricing
           </div>
-          <h2 className="mt-3 text-3xl font-black sm:text-4xl">{d.c.pricingSectionTitle || 'Pricing plans'}</h2>
+          <h2 className="mt-3 text-3xl font-black csm:text-4xl">{d.c.pricingSectionTitle || 'Pricing plans'}</h2>
         </div>
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="grid gap-6 cmd:grid-cols-3">
           {plans.map((plan) => (
             <div
               key={plan.title}
@@ -633,9 +638,9 @@ export function CloneCtaSection({ d, onBook }: { d: CloneHomeData; onBook?: () =
   if (!d.show.cta) return null
   const { c } = d
   return (
-    <section id="cta" className="px-4 py-20 sm:px-6" style={{ backgroundColor: 'var(--clone-ink)' }}>
+    <section id="cta" className="px-4 py-20 csm:px-6" style={{ backgroundColor: 'var(--clone-ink)' }}>
       <div className="mx-auto max-w-4xl text-center">
-        <h2 className="text-3xl font-black text-white sm:text-4xl">{c.ctaBannerTitle || 'Ready to get started?'}</h2>
+        <h2 className="text-3xl font-black text-white csm:text-4xl">{c.ctaBannerTitle || 'Ready to get started?'}</h2>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-white/75">{c.ctaBannerText || c.heroSubtext}</p>
         {onBook ? (
           <button

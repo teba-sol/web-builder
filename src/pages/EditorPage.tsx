@@ -1,17 +1,20 @@
-import { useEffect } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useEffect, useRef } from 'react'
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { ContentForm } from '../components/ContentForm'
 import { DownloadButton } from '../components/DownloadButton'
 import { useWebsite } from '../context/WebsiteContext'
 import { TemplateRenderer } from '../templates/TemplateRenderer'
 import { getTemplateDefaults, getTemplateMeta } from '../data/defaults'
+import { appearanceFromSearchParams } from '../data/pickTemplate'
 import { isValidTemplateId } from '../data/templateIds'
 import { buildSiteDocument, downloadSiteDocument } from '../siteDocument/io'
 
 export function EditorPage() {
   const { templateId } = useParams<{ templateId: string }>()
+  const [searchParams] = useSearchParams()
   const navigate = useNavigate()
   const { selectTemplate, templateId: selectedId, content, colorSchemeId, layoutVariantId } = useWebsite()
+  const appliedQuery = useRef<string | null>(null)
 
   const id = templateId ?? ''
   const template = isValidTemplateId(id) ? getTemplateMeta(id) : undefined
@@ -21,7 +24,18 @@ export function EditorPage() {
       navigate('/')
       return
     }
+    const appearance = appearanceFromSearchParams(searchParams)
+    const queryKey = `${id}?${searchParams.toString()}`
+    if (appearance) {
+      if (appliedQuery.current !== queryKey) {
+        appliedQuery.current = queryKey
+        selectTemplate(id, appearance)
+        navigate(`/editor/${id}`, { replace: true })
+      }
+      return
+    }
     if (selectedId !== id) {
+      if (appliedQuery.current?.startsWith(`${id}?`)) return
       selectTemplate(id)
       return
     }
@@ -29,7 +43,7 @@ export function EditorPage() {
     if (!content.businessName?.trim() && sample.businessName?.trim()) {
       selectTemplate(id)
     }
-  }, [id, selectedId, content.businessName, selectTemplate, navigate])
+  }, [id, selectedId, searchParams, content.businessName, selectTemplate, navigate])
 
   if (!template || !isValidTemplateId(id)) return null
 
@@ -78,7 +92,7 @@ export function EditorPage() {
         </aside>
 
         <main className="flex-1 overflow-hidden bg-slate-200 p-4">
-          <div className="mx-auto flex h-full max-w-5xl flex-col overflow-hidden rounded-xl border border-slate-300 bg-white shadow-lg">
+          <div className="mx-auto flex h-full w-[90%] flex-col overflow-hidden rounded-xl border border-slate-300 bg-white shadow-lg">
             <div className="flex items-center gap-2 border-b border-slate-200 bg-slate-50 px-4 py-2">
               <div className="flex gap-1.5">
                 <div className="h-3 w-3 rounded-full bg-red-400" />

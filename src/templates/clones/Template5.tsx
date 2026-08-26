@@ -124,6 +124,7 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
           position: absolute; top: 40px; left: 12.5%; right: 12.5%; height: 2px;
           background: repeating-linear-gradient(90deg, ${C.accent} 0, ${C.accent} 8px, transparent 8px, transparent 16px);
         }
+        @media (max-width: 768px) { .t5-process-line { display: none; } }
       `}</style>
 
       <CloneNav templateId="axiom" d={d} onBook={() => setIsBookingModalOpen(true)} />
@@ -142,13 +143,13 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
           <div className="t5-hero-overlay absolute inset-0" />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28 pb-28 lg:pb-32">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 csm:px-6 clg:px-8 py-20 clg:py-28 pb-28 clg:pb-32">
           <div className="max-w-2xl">
             <div className="text-xs font-bold uppercase tracking-[0.25em] mb-4 t5-fu" style={{ color: C.accentLight }}>
               Smart Tax Filing, Stronger Finances
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-[1.08] tracking-tight mb-6 t5-fu1">
+            <h1 className="text-4xl csm:text-5xl clg:text-6xl font-black text-white leading-[1.08] tracking-tight mb-6 t5-fu1">
               {c.tagline}
             </h1>
 
@@ -177,8 +178,8 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
       </section>
 
       {d.show.stats && d.stats.length > 0 && (
-      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-white rounded-2xl shadow-2xl shadow-black/8 p-6 border" style={{ borderColor: C.borderLight }}>
+      <div className="relative z-20 max-w-7xl mx-auto px-4 csm:px-6 clg:px-8 -mt-16">
+        <div className="grid grid-cols-2 cmd:grid-cols-4 gap-4 bg-white rounded-2xl shadow-2xl shadow-black/8 p-6 border" style={{ borderColor: C.borderLight }}>
           {d.stats.slice(0, 4).map((stat) => (
             <div key={stat.label} className="p-2 text-center">
               <div className="text-2xl font-black" style={{ color: C.primary }}>{stat.value}</div>
@@ -192,14 +193,14 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
       {/* ═══════════════════════════════════════════════════════════════
           ABOUT SECTION — Image collage + content (unique layout)
       ═══════════════════════════════════════════════════════════════ */}
-      <section id="about" className={`${!(d.show.about) ? 'hidden ' : ''}t5 pt-16 pb-24 px-4 sm:px-6 lg:px-8`} style={{ backgroundColor: C.white }}>
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+      <section id="about" className={`${!(d.show.about) ? 'hidden ' : ''}t5 pt-16 pb-24 px-4 csm:px-6 clg:px-8`} style={{ backgroundColor: C.white }}>
+        <div className="max-w-7xl mx-auto grid clg:grid-cols-2 gap-16 items-center">
 
           {/* Left: Image collage with floating badge */}
           <div className="relative">
             <div className="grid grid-cols-5 gap-4">
               <div className="col-span-3 rounded-2xl overflow-hidden shadow-xl">
-                <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=900&q=80" alt="Team reviewing tax documents" className="w-full h-[380px] object-cover" />
+                <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=900&q=80" alt="Team reviewing tax documents" className="h-40 w-full object-cover csm:h-[380px]" />
               </div>
               <div className="col-span-2 flex flex-col gap-4">
                 <div className="rounded-2xl overflow-hidden shadow-lg flex-1">
@@ -212,7 +213,7 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
             </div>
 
             {/* Floating stat badge */}
-            <div className="t5-float absolute -bottom-6 right-8 bg-white rounded-2xl shadow-2xl shadow-blue-950/15 px-5 py-4 flex items-center gap-3 border" style={{ borderColor: C.borderLight }}>
+            <div className="t5-float relative mt-4 flex items-center gap-3 rounded-2xl border bg-white px-5 py-4 shadow-2xl shadow-blue-950/15 csm:absolute csm:-bottom-6 csm:right-8 csm:mt-0" style={{ borderColor: C.borderLight }}>
               <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ backgroundColor: C.accent }}>
                 <TrendingUp className="w-6 h-6 text-white" />
               </div>
@@ -228,7 +229,7 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
             <div className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: C.accent }}>
               ✦ About Us
             </div>
-            <h2 className="text-3xl sm:text-4xl font-black leading-tight" style={{ color: C.text }}>
+            <h2 className="text-3xl csm:text-4xl font-black leading-tight" style={{ color: C.text }}>
               Tax Solutions{' '}
               <span className="italic" style={{ color: C.primary }}>Built Around</span> You
             </h2>
@@ -261,17 +262,17 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
       {/* ═══════════════════════════════════════════════════════════════
           SERVICES — 4-column icon grid (NavikX-style)
       ═══════════════════════════════════════════════════════════════ */}
-      <section id="services" className={`${!(d.show.services) ? 'hidden ' : ''}t5 py-24 px-4 sm:px-6 lg:px-8`} style={{ backgroundColor: C.white }}>
+      <section id="services" className={`${!(d.show.services) ? 'hidden ' : ''}t5 py-24 px-4 csm:px-6 clg:px-8`} style={{ backgroundColor: C.white }}>
         <div className="max-w-7xl mx-auto space-y-14">
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <div className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: C.accent }}>Our Services</div>
-            <h2 className="text-3xl sm:text-4xl font-black" style={{ color: C.text }}>
+            <h2 className="text-3xl csm:text-4xl font-black" style={{ color: C.text }}>
               Comprehensive Tax{' '}
               <span className="italic" style={{ color: C.primary }}>Services</span> Tailored to You
             </h2>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid csm:grid-cols-2 clg:grid-cols-4 gap-6">
             {[
               { icon: <DollarSign className="w-7 h-7" />, title: 'Refund Advances', desc: 'Access $500 to $7,500 deposited directly to your account.' },
               { icon: <Briefcase className="w-7 h-7" />, title: 'Business Tax Prep', desc: 'LLC, S-Corp, partnership filing and compliance.' },
@@ -303,8 +304,8 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
       {/* ═══════════════════════════════════════════════════════════════
           CTA SPLIT — Request a Plan + Why Choose Us (NavikX-inspired)
       ═══════════════════════════════════════════════════════════════ */}
-      <section className="t5 py-20 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: C.surface }}>
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-8">
+      <section className="t5 py-20 px-4 csm:px-6 clg:px-8" style={{ backgroundColor: C.surface }}>
+        <div className="max-w-7xl mx-auto grid clg:grid-cols-2 gap-8">
           {/* Left: CTA Card with image */}
           <div className="relative rounded-2xl overflow-hidden shadow-xl min-h-[320px] flex items-end">
             <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=900&q=80" alt="Tax consultation" className="absolute inset-0 w-full h-full object-cover" />
@@ -323,7 +324,7 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
           </div>
 
           {/* Right: Why Choose Us */}
-          <div className="bg-white rounded-2xl border p-8 lg:p-10 space-y-6" style={{ borderColor: C.border }}>
+          <div className="bg-white rounded-2xl border p-8 clg:p-10 space-y-6" style={{ borderColor: C.border }}>
             <h3 className="text-2xl font-black" style={{ color: C.text }}>Why Choose Axiom Audit?</h3>
             <div className="space-y-4">
               {[
@@ -347,19 +348,19 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
       {/* ═══════════════════════════════════════════════════════════════
           PROCESS — 4-step horizontal with connected dashed line
       ═══════════════════════════════════════════════════════════════ */}
-      <section id="process" className={`${!(d.show.steps) ? 'hidden ' : ''}t5 py-24 px-4 sm:px-6 lg:px-8`} style={{ backgroundColor: C.white }}>
+      <section id="process" className={`${!(d.show.steps) ? 'hidden ' : ''}t5 py-24 px-4 csm:px-6 clg:px-8`} style={{ backgroundColor: C.white }}>
         <div className="max-w-7xl mx-auto space-y-16">
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <div className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: C.accent }}>Our Process</div>
-            <h2 className="text-3xl sm:text-4xl font-black" style={{ color: C.text }}>
+            <h2 className="text-3xl csm:text-4xl font-black" style={{ color: C.text }}>
               Smart Process for{' '}
               <span className="italic" style={{ color: C.primary }}>Seamless</span> Filing
             </h2>
           </div>
 
-          <div className="relative grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="relative grid csm:grid-cols-2 clg:grid-cols-4 gap-8">
             {/* Connecting dashed line (desktop) */}
-            <div className="t5-process-line hidden lg:block" />
+            <div className="t5-process-line hidden clg:block" />
 
             {[
               { step: '01', icon: <FileCheck2 className="w-7 h-7" />, title: 'Understand Needs', desc: 'We analyze your financial requirements.' },
@@ -383,11 +384,11 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
       {/* ═══════════════════════════════════════════════════════════════
           TESTIMONIAL — Large single-card slider (NavikX-style)
       ═══════════════════════════════════════════════════════════════ */}
-      <section id="reviews" className={`${!(d.show.testimonials) ? 'hidden ' : ''}t5 py-24 px-4 sm:px-6 lg:px-8`} style={{ backgroundColor: C.surfaceAlt }}>
+      <section id="reviews" className={`${!(d.show.testimonials) ? 'hidden ' : ''}t5 py-24 px-4 csm:px-6 clg:px-8`} style={{ backgroundColor: C.surfaceAlt }}>
         <div className="max-w-7xl mx-auto space-y-12">
           <div className="text-center space-y-3">
             <div className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: C.accent }}>Client Testimonials</div>
-            <h2 className="text-3xl sm:text-4xl font-black" style={{ color: C.text }}>
+            <h2 className="text-3xl csm:text-4xl font-black" style={{ color: C.text }}>
               What Our Clients{' '}
               <span className="italic" style={{ color: C.primary }}>Are Saying</span>
             </h2>
@@ -395,9 +396,9 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
 
           {reviews.length > 0 && (
           <div className="max-w-4xl mx-auto">
-            <div className="grid md:grid-cols-5 gap-0 bg-white rounded-2xl shadow-xl overflow-hidden border" style={{ borderColor: C.borderLight }}>
+            <div className="grid cmd:grid-cols-5 gap-0 bg-white rounded-2xl shadow-xl overflow-hidden border" style={{ borderColor: C.borderLight }}>
               {/* Image */}
-              <div className="md:col-span-2 h-64 md:h-auto">
+              <div className="cmd:col-span-2 h-64 cmd:h-auto">
                 <img
                   src={reviews[activeTestimonial].img}
                   alt={reviews[activeTestimonial].name}
@@ -405,7 +406,7 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
                 />
               </div>
               {/* Content */}
-              <div className="md:col-span-3 p-8 lg:p-10 flex flex-col justify-center space-y-4">
+              <div className="cmd:col-span-3 p-8 clg:p-10 flex flex-col justify-center space-y-4">
                 <div className="flex gap-0.5">
                   {[...Array(reviews[activeTestimonial].rating)].map((_, i) => (
                     <Star key={i} className="w-4 h-4" style={{ fill: C.gold, color: C.gold }} />
@@ -443,8 +444,8 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
       {/* ═══════════════════════════════════════════════════════════════
           EVENTS & NEWSLETTER — Split layout (NavikX-inspired, unique)
       ═══════════════════════════════════════════════════════════════ */}
-      <section className="t5 py-24 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: C.white }}>
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12">
+      <section className="t5 py-24 px-4 csm:px-6 clg:px-8" style={{ backgroundColor: C.white }}>
+        <div className="max-w-7xl mx-auto grid clg:grid-cols-2 gap-12">
           {/* Left: Upcoming Events / Tax Deadlines */}
           <div className="space-y-6">
             <div className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: C.accent }}>Upcoming Deadlines</div>
@@ -512,8 +513,8 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
       {/* ═══════════════════════════════════════════════════════════════
           FAQ — Side-by-side: image+CTA left, accordion right
       ═══════════════════════════════════════════════════════════════ */}
-      <section id="faq" className={`${!(d.show.faq) ? 'hidden ' : ''}t5 py-24 px-4 sm:px-6 lg:px-8`} style={{ backgroundColor: C.white }}>
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12">
+      <section id="faq" className={`${!(d.show.faq) ? 'hidden ' : ''}t5 py-24 px-4 csm:px-6 clg:px-8`} style={{ backgroundColor: C.white }}>
+        <div className="max-w-7xl mx-auto grid clg:grid-cols-2 gap-12">
           {/* Left: Image + CTA */}
           <div className="space-y-6">
             <div className="rounded-2xl overflow-hidden shadow-lg">
@@ -571,7 +572,7 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
       {/* ═══════════════════════════════════════════════════════════════
           INDUSTRIES — Horizontal card row (NavikX-inspired)
       ═══════════════════════════════════════════════════════════════ */}
-      <section id="industries" className={`${!(d.show.portfolio) ? 'hidden ' : ''}t5 py-24 px-4 sm:px-6 lg:px-8`} style={{ backgroundColor: C.surfaceAlt }}>
+      <section id="industries" className={`${!(d.show.portfolio) ? 'hidden ' : ''}t5 py-24 px-4 csm:px-6 clg:px-8`} style={{ backgroundColor: C.surfaceAlt }}>
         <div className="max-w-7xl mx-auto space-y-12">
           <div className="flex items-end justify-between gap-4 flex-wrap">
             <div className="space-y-2">
@@ -583,7 +584,7 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
             </button>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid csm:grid-cols-2 clg:grid-cols-4 gap-6">
             {industries.map((ind, i) => (
               <div key={i} className="t5-card bg-white rounded-2xl overflow-hidden border" style={{ borderColor: C.border }}>
                 <div className="h-44 overflow-hidden">
@@ -602,15 +603,15 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
       {/* ═══════════════════════════════════════════════════════════════
           CONTACT SECTION
       ═══════════════════════════════════════════════════════════════ */}
-      <section id="contact" className={`${!(d.show.contact) ? 'hidden ' : ''}t5 py-24 px-4 sm:px-6 lg:px-8`} style={{ backgroundColor: C.white }}>
+      <section id="contact" className={`${!(d.show.contact) ? 'hidden ' : ''}t5 py-24 px-4 csm:px-6 clg:px-8`} style={{ backgroundColor: C.white }}>
         <div className="max-w-7xl mx-auto space-y-12">
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <div className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: C.accent }}>Get In Touch</div>
             <h2 className="text-3xl font-extrabold" style={{ color: C.text }}>Visit Our Office Or Message Us</h2>
           </div>
 
-          <div className="grid lg:grid-cols-12 gap-8">
-            <div className="lg:col-span-5 space-y-4">
+          <div className="grid clg:grid-cols-12 gap-8">
+            <div className="clg:col-span-5 space-y-4">
               {[
                 { icon: <MapPin className="w-5 h-5" />, title: 'Headquarters Address', desc: c.address },
                 { icon: <Phone className="w-5 h-5" />, title: 'Direct Phone Line', desc: c.phone ? `Call: ${c.phone}` : '' },
@@ -630,10 +631,10 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
               <CloneMap d={d} className="h-56 overflow-hidden rounded-xl border" title="Office location" />
             </div>
 
-            <div className="lg:col-span-7 bg-white p-8 rounded-2xl border space-y-6" style={{ borderColor: C.border }}>
+            <div className="clg:col-span-7 bg-white p-8 rounded-2xl border space-y-6" style={{ borderColor: C.border }}>
               <h3 className="text-xl font-bold" style={{ color: C.text }}>Send A Direct Message</h3>
               <form onSubmit={handleContactSubmit} className="space-y-4">
-                <div className="grid sm:grid-cols-2 gap-4">
+                <div className="grid csm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-semibold mb-1" style={{ color: C.textMuted }}>Your Name *</label>
                     <input type="text" required placeholder="John Smith" value={contactForm.name} onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
@@ -673,9 +674,9 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
           CTA BANNER — Full-width dark (NavikX-inspired)
       ═══════════════════════════════════════════════════════════════ */}
       {d.show.cta && (
-      <section className="t5 py-16 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: C.primaryDeep }}>
+      <section className="t5 py-16 px-4 csm:px-6 clg:px-8" style={{ backgroundColor: C.primaryDeep }}>
         <div className="max-w-4xl mx-auto text-center space-y-5">
-          <h2 className="text-3xl sm:text-4xl font-black text-white">
+          <h2 className="text-3xl csm:text-4xl font-black text-white">
             Ready to Simplify Your Taxes?
           </h2>
           <p className="text-sm text-blue-200/70 max-w-lg mx-auto">
@@ -695,9 +696,9 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
       {/* ═══════════════════════════════════════════════════════════════
           FOOTER — Multi-column (NavikX-inspired)
       ═══════════════════════════════════════════════════════════════ */}
-      <footer className="t5 text-xs pt-16 pb-8 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: C.primaryDeep, color: '#7A9BB8' }}>
-        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-5 gap-8 pb-10 border-b border-white/10">
-          <div className="col-span-2 md:col-span-1 space-y-4">
+      <footer className="t5 text-xs pt-16 pb-8 px-4 csm:px-6 clg:px-8" style={{ backgroundColor: C.primaryDeep, color: '#7A9BB8' }}>
+        <div className="max-w-7xl mx-auto grid grid-cols-2 cmd:grid-cols-5 gap-8 pb-10 border-b border-white/10">
+          <div className="col-span-2 cmd:col-span-1 space-y-4">
             <div className="flex items-center gap-2">
               <div className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ backgroundColor: C.accent }}>
                 <Shield className="w-5 h-5 text-white" />
@@ -738,8 +739,8 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
           BOOKING MODAL
       ═══════════════════════════════════════════════════════════════ */}
       {isBookingModalOpen && (
-        <div className="t5 fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="border rounded-2xl p-6 sm:p-8 max-w-md w-full relative shadow-2xl space-y-4 bg-white" style={{ borderColor: C.border }}>
+        <div className="t5 fixed inset-0 z-50 flex items-end justify-center overflow-y-auto bg-black/60 p-4 backdrop-blur-sm csm:items-center">
+          <div className="border rounded-2xl p-6 csm:p-8 max-w-md w-full relative shadow-2xl space-y-4 bg-white" style={{ borderColor: C.border }}>
             <button onClick={() => setIsBookingModalOpen(false)} className="absolute top-4 right-4 p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition">
               <X className="w-5 h-5" style={{ color: C.textMuted }} />
             </button>

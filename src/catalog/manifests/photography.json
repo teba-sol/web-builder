@@ -59,7 +59,7 @@
     "navCta": "text-sm uppercase tracking-[0.2em] border-b border-white pb-0.5 text-white",
     "hero": "relative min-h-screen flex flex-col justify-end",
     "heroBadge": "text-xs uppercase tracking-[0.4em] text-neutral-400",
-    "heroTitle": "text-4xl md:text-6xl lg:text-7xl font-light max-w-4xl leading-tight",
+    "heroTitle": "text-4xl cmd:text-6xl clg:text-7xl font-light max-w-4xl leading-tight",
     "heroText": "text-neutral-400 text-lg mt-4",
     "heroCta": "border border-neutral-600 px-12 py-4 text-sm uppercase tracking-[0.2em] hover:bg-white hover:text-black",
     "stats": "border-y border-neutral-800 py-16",

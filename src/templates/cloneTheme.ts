@@ -77,21 +77,29 @@ export function brandColorsFromScheme(
 
 export function resolveClonePalette(
   templateId: string,
-  _content: SiteContent,
+  content: SiteContent,
   colorSchemeId?: string,
 ): ClonePalette {
   const manifest = requireManifest(templateId)
   const scheme =
-    manifest.colorSchemes.find((item) => item.id === colorSchemeId) ?? manifest.colorSchemes[0]
+    colorSchemeId && colorSchemeId !== 'custom'
+      ? manifest.colorSchemes.find((item) => item.id === colorSchemeId) ?? manifest.colorSchemes[0]
+      : manifest.colorSchemes[0]
   const [ink, accent, highlight] = scheme?.swatches ?? ['#111827', manifest.accentColor, '#f8fafc']
-  const nativeLook = !colorSchemeId || scheme?.id === (manifest.defaultColorSchemeId || manifest.colorSchemes[0]?.id)
-  const surface = resolveSurface(templateId, highlight, accent, nativeLook)
+  const resolvedInk = isHexColor(content.brandSecondary) ? content.brandSecondary.trim() : ink
+  const resolvedAccent = isHexColor(content.brandPrimary) ? content.brandPrimary.trim() : accent
+  const resolvedHighlight = isHexColor(content.brandAccent) ? content.brandAccent.trim() : highlight
+  const defaultSchemeId = manifest.defaultColorSchemeId || manifest.colorSchemes[0]?.id
+  const usingBrand = isHexColor(content.brandPrimary) || isHexColor(content.brandSecondary) || isHexColor(content.brandAccent)
+  const nativeLook =
+    !usingBrand && (!colorSchemeId || colorSchemeId === 'custom' || scheme?.id === defaultSchemeId)
+  const surface = resolveSurface(templateId, resolvedHighlight, resolvedAccent, nativeLook)
   return {
-    ink,
-    accent,
-    highlight,
+    ink: resolvedInk,
+    accent: resolvedAccent,
+    highlight: resolvedHighlight,
     surface,
-    accentFg: isLightColor(accent) ? ink : '#ffffff',
+    accentFg: isLightColor(resolvedAccent) ? resolvedInk : '#ffffff',
   }
 }
 

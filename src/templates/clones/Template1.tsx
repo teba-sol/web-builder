@@ -89,7 +89,7 @@ export function Template1({ c, basePath }: { c: SiteContent; basePath: string })
     <div className="min-h-screen bg-[var(--clone-surface)] text-[var(--clone-ink)] font-sans selection:bg-rose-900 selection:text-slate-900 relative">
       <CloneNav templateId="taxfighters" d={d} onBook={() => setIsBookingModalOpen(true)} />
       {/* HERO SECTION */}
-      <section id="hero" className="relative z-0 isolate py-20 lg:py-28 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      <section id="hero" className="relative z-0 isolate py-20 clg:py-28 px-4 csm:px-6 clg:px-8 overflow-hidden">
         
         {/* Background Visual Overlay */}
         <div className="absolute inset-0 z-0">
@@ -101,26 +101,26 @@ export function Template1({ c, basePath }: { c: SiteContent; basePath: string })
           <div className="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-white/70" />
         </div>
 
-        <div className="max-w-7xl mx-auto relative z-10 grid lg:grid-cols-12 gap-12 items-center">
+        <div className="max-w-7xl mx-auto relative z-10 grid clg:grid-cols-12 gap-12 items-center">
           
-          <div className="lg:col-span-7 space-y-8">
+          <div className="clg:col-span-7 space-y-8">
             
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-white text-xs font-bold uppercase tracking-wider border border-rose-200/60 shadow-sm" style={{ backgroundColor: 'var(--clone-highlight)' }}>
-              <Award className="w-4 h-4 text-white" /> Authorized IRS e-File Provider
+            <div className="inline-flex max-w-full flex-wrap items-center gap-2 px-4 py-1.5 rounded-full text-white text-xs font-bold uppercase tracking-wider border border-rose-200/60 shadow-sm" style={{ backgroundColor: 'var(--clone-highlight)' }}>
+              <Award className="w-4 h-4 shrink-0 text-white" /> Authorized IRS e-File Provider
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 leading-[1.15] tracking-tight">
+            <h1 className="text-4xl csm:text-5xl clg:text-6xl font-black text-slate-900 leading-[1.15] tracking-tight">
               {c.tagline}
             </h1>
 
-            <p className="text-slate-700 text-base sm:text-lg max-w-2xl leading-relaxed">
+            <p className="text-slate-700 text-base csm:text-lg max-w-2xl leading-relaxed">
               {c.heroSubtext}
             </p>
 
-            <div className="flex flex-wrap items-center gap-4 pt-2">
+            <div className="flex flex-col items-stretch gap-3 pt-2 csm:flex-row csm:flex-wrap csm:items-center csm:gap-4">
               <button
                 onClick={() => setIsBookingModalOpen(true)}
-                className="px-8 py-4 rounded-xl text-white font-extrabold text-base shadow-2xl hover:scale-105 active:scale-95 transition-all flex items-center gap-3"
+                className="flex w-full items-center justify-center gap-3 rounded-xl px-8 py-4 text-base font-extrabold text-white shadow-2xl transition-all hover:scale-105 active:scale-95 csm:w-auto"
                 style={{ backgroundColor: 'var(--clone-accent)' }}
               >
                 {c.ctaText || 'Pre-Qualify Now'} <ArrowRight className="w-5 h-5 text-amber-300" />
@@ -128,14 +128,14 @@ export function Template1({ c, basePath }: { c: SiteContent; basePath: string })
 
               <Link
                 to={d.hrefs.about}
-                className="px-7 py-4 rounded-xl bg-slate-100 border border-slate-400/80 hover:border-slate-500 text-slate-800 font-bold text-base transition-all flex items-center gap-2"
+                className="flex w-full items-center justify-center gap-2 rounded-xl border border-slate-400/80 bg-slate-100 px-7 py-4 text-base font-bold text-slate-800 transition-all hover:border-slate-500 csm:w-auto"
               >
                 Learn More
               </Link>
             </div>
 
             {d.show.stats && d.stats.length > 0 && (
-            <div className="grid sm:grid-cols-3 gap-4 pt-6 border-t border-slate-300">
+            <div className="grid csm:grid-cols-3 gap-4 pt-6 border-t border-slate-300">
               {d.stats.slice(0, 3).map((stat) => (
               <div key={stat.label} className="flex items-center gap-2.5 text-xs text-slate-700 font-semibold">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" /> {stat.value} {stat.label}
@@ -147,8 +147,8 @@ export function Template1({ c, basePath }: { c: SiteContent; basePath: string })
           </div>
 
           {/* Side Fast Pre-Qualify Booking Form */}
-          <div className="lg:col-span-5 relative">
-            <div className="bg-slate-100/90 border border-slate-300 p-6 sm:p-8 rounded-3xl shadow-2xl space-y-6 relative overflow-hidden">
+          <div className="clg:col-span-5 relative">
+            <div className="bg-slate-100/90 border border-slate-300 p-6 csm:p-8 rounded-3xl shadow-2xl space-y-6 relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-rose-900/20 rounded-full blur-2xl pointer-events-none" />
 
               <div>
@@ -160,7 +160,7 @@ export function Template1({ c, basePath }: { c: SiteContent; basePath: string })
               </div>
 
               <form onSubmit={handleBookingSubmit} className="space-y-4">
-                <div className="grid sm:grid-cols-2 gap-3">
+                <div className="grid csm:grid-cols-2 gap-3">
                   <div>
                     <label className="block text-xs font-semibold text-slate-700 mb-1">First Name *</label>
                     <input
@@ -243,8 +243,8 @@ export function Template1({ c, basePath }: { c: SiteContent; basePath: string })
 
       {d.show.stats && d.stats.length > 0 && (
       <section className="py-12 bg-slate-100/60 border-y border-slate-300">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+        <div className="max-w-7xl mx-auto px-4 csm:px-6 clg:px-8">
+          <div className="grid grid-cols-1 cmd:grid-cols-3 gap-6 text-center">
             {d.stats.slice(0, 4).map((stat) => (
             <div key={stat.label} className="p-6 rounded-2xl bg-slate-50/60 border border-slate-300">
               <div className="text-4xl font-extrabold text-slate-900">{stat.value}</div>
@@ -257,22 +257,22 @@ export function Template1({ c, basePath }: { c: SiteContent; basePath: string })
       )}
 
       {d.show.about && (
-      <section id="about" className="py-24 px-4 sm:px-6 lg:px-8 relative">
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-12 gap-12 items-center">
+      <section id="about" className="py-24 px-4 csm:px-6 clg:px-8 relative">
+        <div className="max-w-7xl mx-auto grid clg:grid-cols-12 gap-12 items-center">
           
-          <div className="lg:col-span-6 relative">
+          <div className="clg:col-span-6 relative">
             <div className="rounded-3xl overflow-hidden shadow-2xl border border-slate-300">
               {c.aboutImage ? (
               <img
                 src={c.aboutImage}
                 alt=""
-                className="w-full h-[640px] object-cover"
+                className="h-56 w-full object-cover csm:h-80 clg:h-[640px]"
               />
               ) : null}
             </div>
             
             {/* Floating Experience Badge */}
-            <div className="absolute -bottom-6 -right-2 sm:right-6 bg-slate-100 border border-slate-300 p-5 rounded-2xl shadow-2xl flex items-center gap-4 max-w-xs">
+            <div className="relative mt-4 flex max-w-xs items-center gap-4 rounded-2xl border border-slate-300 bg-slate-100 p-5 shadow-2xl csm:absolute csm:-bottom-6 csm:right-6 csm:mt-0">
               <div className="w-12 h-12 rounded-xl flex items-center justify-center text-amber-300 flex-shrink-0" style={{ backgroundColor: 'var(--clone-accent)' }}>
                 <Shield className="w-6 h-6" />
               </div>
@@ -283,13 +283,13 @@ export function Template1({ c, basePath }: { c: SiteContent; basePath: string })
             </div>
           </div>
 
-          <div className="lg:col-span-6 space-y-6">
+          <div className="clg:col-span-6 space-y-6">
             <div className="text-xs font-bold text-rose-600 uppercase tracking-widest">Who We Are</div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 leading-tight">
+            <h2 className="text-3xl csm:text-4xl font-extrabold text-slate-900 leading-tight">
               {c.aboutTitle}
             </h2>
 
-            <p className="text-slate-700 text-sm sm:text-base leading-relaxed">
+            <p className="text-slate-700 text-sm csm:text-base leading-relaxed">
               {c.about}
             </p>
 
@@ -324,12 +324,12 @@ export function Template1({ c, basePath }: { c: SiteContent; basePath: string })
       )}
 
       {d.show.services && (
-      <section id="services" className="py-24 px-4 sm:px-6 lg:px-8 bg-slate-100/50 border-t border-slate-300">
+      <section id="services" className="py-24 px-4 csm:px-6 clg:px-8 bg-slate-100/50 border-t border-slate-300">
         <div className="max-w-7xl mx-auto space-y-12">
           
           <div className="text-center max-w-3xl mx-auto space-y-3">
             <div className="text-xs font-bold text-rose-600 uppercase tracking-widest">Our Expertise</div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900">
+            <h2 className="text-3xl csm:text-4xl font-extrabold text-slate-900">
               {c.servicesSectionTitle}
             </h2>
             <p className="text-slate-700 text-sm">
@@ -337,7 +337,7 @@ export function Template1({ c, basePath }: { c: SiteContent; basePath: string })
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid cmd:grid-cols-3 gap-8">
             {d.services.slice(0, 3).map((service) => (
             <div key={service.title} className="bg-slate-50/80 p-8 rounded-3xl border border-slate-300 hover:border-rose-600/60 transition space-y-4 group">
               <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-slate-900" style={{ backgroundColor: 'var(--clone-accent)' }}>
@@ -364,14 +364,14 @@ export function Template1({ c, basePath }: { c: SiteContent; basePath: string })
       )}
 
       {/* WHAT IS REFUND ADVANCE EXPLANATION */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 border-t border-slate-300">
-        <div className="max-w-7xl mx-auto bg-slate-100 border border-slate-300 rounded-3xl p-8 sm:p-12 space-y-6">
+      <section className="py-20 px-4 csm:px-6 clg:px-8 border-t border-slate-300">
+        <div className="max-w-7xl mx-auto bg-slate-100 border border-slate-300 rounded-3xl p-8 csm:p-12 space-y-6">
           <div className="text-xs font-bold text-rose-600 uppercase tracking-widest">Financial Transparency</div>
           <h2 className="text-3xl font-extrabold text-slate-900">What Is A Tax Preparation Refund Advance?</h2>
           <p className="text-slate-700 text-sm leading-relaxed">
             A refund advance is a short-term loan issued prior to the IRS disbursing your official tax refund check or direct deposit. Instead of waiting 3 to 4 weeks for federal processing, approved clients receive their funds in as little as 24 hours.
           </p>
-          <div className="grid sm:grid-cols-2 gap-4 text-xs text-slate-600 pt-2">
+          <div className="grid csm:grid-cols-2 gap-4 text-xs text-slate-600 pt-2">
             <div className="p-4 bg-slate-50 rounded-xl border border-slate-300">
               <strong className="text-slate-900 block mb-1 text-sm">✓ No Impact On Credit Score</strong>
               Pre-qualifying for a refund advance does not hurt your personal credit rating.
@@ -385,15 +385,15 @@ export function Template1({ c, basePath }: { c: SiteContent; basePath: string })
       </section>
 
       {d.show.steps && d.steps.length > 0 && (
-      <section id="process" className="py-24 px-4 sm:px-6 lg:px-8 border-t border-slate-300">
+      <section id="process" className="py-24 px-4 csm:px-6 clg:px-8 border-t border-slate-300">
         <div className="max-w-7xl mx-auto space-y-16">
           
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <div className="text-xs font-bold text-rose-600 uppercase tracking-widest">Process</div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900">{c.stepsSectionTitle || 'How It Works'}</h2>
+            <h2 className="text-3xl csm:text-4xl font-extrabold text-slate-900">{c.stepsSectionTitle || 'How It Works'}</h2>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 relative">
+          <div className="grid cmd:grid-cols-3 gap-8 relative">
             {d.steps.slice(0, 4).map((step, index) => (
             <div key={step.title} className="bg-slate-100 p-8 rounded-3xl border border-slate-300 text-center space-y-4 relative">
               <div className="w-12 h-12 rounded-full font-black text-lg text-slate-900 mx-auto flex items-center justify-center" style={{ backgroundColor: 'var(--clone-accent)' }}>
@@ -412,7 +412,7 @@ export function Template1({ c, basePath }: { c: SiteContent; basePath: string })
       )}
 
       {d.show.testimonials && reviews.length > 0 && (
-      <section id="reviews" className="py-24 px-4 sm:px-6 lg:px-8 bg-slate-100/60 border-t border-slate-300">
+      <section id="reviews" className="py-24 px-4 csm:px-6 clg:px-8 bg-slate-100/60 border-t border-slate-300">
         <div className="max-w-7xl mx-auto space-y-12">
           
           <div className="text-center max-w-2xl mx-auto space-y-3">
@@ -420,7 +420,7 @@ export function Template1({ c, basePath }: { c: SiteContent; basePath: string })
             <h2 className="text-3xl font-extrabold text-slate-900">{c.testimonialsSectionTitle || 'What Our Clients Say'}</h2>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid cmd:grid-cols-3 gap-8">
             {reviews.map((r, idx) => (
               <div key={idx} className="bg-slate-50 p-6 rounded-2xl border border-slate-300 space-y-4">
                 <div className="flex items-center gap-1 text-amber-400">
@@ -445,7 +445,7 @@ export function Template1({ c, basePath }: { c: SiteContent; basePath: string })
       <CloneTeamSection templateId="taxfighters" d={d} />
 
       {d.show.faq && faqs.length > 0 && (
-      <section id="faq" className="py-24 px-4 sm:px-6 lg:px-8 border-t border-slate-300">
+      <section id="faq" className="py-24 px-4 csm:px-6 clg:px-8 border-t border-slate-300">
         <div className="max-w-4xl mx-auto space-y-8">
           
           <div className="text-center space-y-3">
@@ -479,7 +479,7 @@ export function Template1({ c, basePath }: { c: SiteContent; basePath: string })
       <CloneCtaSection d={d} onBook={() => setIsBookingModalOpen(true)} />
 
       {d.show.contact && (
-      <section id="contact" className="py-24 px-4 sm:px-6 lg:px-8 bg-slate-100/80 border-t border-slate-300">
+      <section id="contact" className="py-24 px-4 csm:px-6 clg:px-8 bg-slate-100/80 border-t border-slate-300">
         <div className="max-w-7xl mx-auto space-y-12">
           
           <div className="text-center max-w-2xl mx-auto space-y-3">
@@ -487,9 +487,9 @@ export function Template1({ c, basePath }: { c: SiteContent; basePath: string })
             <h2 className="text-3xl font-extrabold text-slate-900">{c.contactSectionTitle || 'Visit Our Tax Office Or Message Us'}</h2>
           </div>
 
-          <div className="grid lg:grid-cols-12 gap-12">
+          <div className="grid clg:grid-cols-12 gap-12">
             
-            <div className="lg:col-span-5 space-y-6">
+            <div className="clg:col-span-5 space-y-6">
               <div className="bg-slate-50 p-6 rounded-2xl border border-slate-300 space-y-4">
                 <div className="w-10 h-10 rounded-xl flex items-center justify-center text-slate-900" style={{ backgroundColor: 'var(--clone-accent)' }}>
                   <MapPin className="w-5 h-5 text-amber-300" />
@@ -523,11 +523,11 @@ export function Template1({ c, basePath }: { c: SiteContent; basePath: string })
             </div>
 
             {/* Direct Message Form */}
-            <div className="lg:col-span-7 bg-slate-50 p-8 rounded-3xl border border-slate-300 space-y-6">
+            <div className="clg:col-span-7 bg-slate-50 p-8 rounded-3xl border border-slate-300 space-y-6">
               <h3 className="text-xl font-bold text-slate-900">{c.contactFormTitle || 'Send A Direct Message'}</h3>
 
               <form onSubmit={handleContactSubmit} className="space-y-4">
-                <div className="grid sm:grid-cols-2 gap-4">
+                <div className="grid csm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-semibold text-slate-700 mb-1">Your Name *</label>
                     <input
@@ -596,8 +596,8 @@ export function Template1({ c, basePath }: { c: SiteContent; basePath: string })
       </section>
       )}
 
-      <footer className="bg-slate-50 border-t border-slate-300 text-slate-600 text-xs py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+      <footer className="bg-slate-50 border-t border-slate-300 text-slate-600 text-xs py-12 px-4 csm:px-6 clg:px-8">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 cmd:grid-cols-4 gap-8">
           
           <div className="space-y-3">
             <div className="flex items-center gap-2 font-bold text-base text-slate-900">
@@ -640,8 +640,8 @@ export function Template1({ c, basePath }: { c: SiteContent; basePath: string })
 
       {/* BOOKING MODAL */}
       {isBookingModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-50/80 backdrop-blur-sm">
-          <div className="bg-slate-100 border border-slate-300 rounded-3xl p-6 sm:p-8 max-w-md w-full relative shadow-2xl space-y-4">
+        <div className="fixed inset-0 z-50 flex items-end justify-center overflow-y-auto bg-slate-50/80 p-4 backdrop-blur-sm csm:items-center">
+          <div className="relative max-h-[90vh] w-full max-w-md space-y-4 overflow-y-auto rounded-3xl border border-slate-300 bg-slate-100 p-6 shadow-2xl csm:p-8">
             
             <button
               onClick={() => setIsBookingModalOpen(false)}

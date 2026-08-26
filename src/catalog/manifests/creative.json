@@ -59,7 +59,7 @@
     "navCta": "rounded-full border border-violet-500/50 px-6 py-2 text-sm hover:bg-violet-500/10",
     "hero": "relative min-h-screen flex items-center pt-20",
     "heroBadge": "text-violet-400 uppercase tracking-widest text-sm",
-    "heroTitle": "text-5xl md:text-7xl lg:text-8xl font-black leading-none",
+    "heroTitle": "text-5xl cmd:text-7xl clg:text-8xl font-black leading-none",
     "heroText": "text-lg text-zinc-400",
     "heroCta": "rounded-full bg-gradient-to-r from-violet-600 to-fuchsia-600 px-8 py-4 font-bold",
     "stats": "border-y border-zinc-800 py-16",

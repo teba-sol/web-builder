@@ -14,6 +14,7 @@ import './templateShells.css'
 import type { SiteContent, TemplateId } from '../types'
 import { ContactSectionView, ExploreSectionView, FaqSectionView } from './sectionLayouts'
 import { brandCss, brandCtaStyle, brandFontHref, resolveBrandAccent } from '../data/brand'
+import { CUSTOM_COLOR_SCHEME_ID } from '../data/pickTemplate'
 import { getTheme } from './getTheme'
 import {
   BlogListPage,
@@ -112,6 +113,7 @@ export function RichTemplateLayout({
   colorSchemeId,
   layoutVariantId,
 }: Props) {
+  const customPalette = colorSchemeId === CUSTOM_COLOR_SCHEME_ID
   const t = getTheme(variant, colorSchemeId)
   const layout = getLayoutVariant(variant, layoutVariantId)
   const meta = getTemplateMeta(variant)
@@ -174,7 +176,7 @@ export function RichTemplateLayout({
 
   if (custom || (isCloneTemplate(variant) && page !== 'home')) {
     return (
-      <div data-site-brand className={cloneClass}>
+      <div data-site-brand {...(customPalette ? { 'data-custom-palette': '' } : {})} className={`@container ${cloneClass}`}>
         {fontHref ? <link rel="stylesheet" href={fontHref} /> : null}
         {brandStyles ? <style>{brandStyles}</style> : null}
         {cloneCss ? <style>{cloneCss}</style> : null}
@@ -194,7 +196,7 @@ export function RichTemplateLayout({
   }
 
   return (
-    <div data-site-brand className={`min-h-screen tpl-${variant} ${layout.shellClass} ${t.page} ${isCloneTemplate(variant) ? 'webtemplate-clone' : ''}`}>
+    <div data-site-brand {...(customPalette ? { 'data-custom-palette': '' } : {})} className={`@container min-h-screen tpl-${variant} ${layout.shellClass} ${t.page} ${isCloneTemplate(variant) ? 'webtemplate-clone' : ''}`}>
       {fontHref ? <link rel="stylesheet" href={fontHref} /> : null}
       {brandStyles ? <style>{brandStyles}</style> : null}
       {cloneCss ? <style>{cloneCss}</style> : null}
@@ -213,9 +215,9 @@ export function RichTemplateLayout({
 }
 
 function heroContentClass(variant: TemplateId, heroLayout: HeroLayout): string {
-  const base = 'relative mx-auto max-w-6xl px-6 w-full'
+  const base = 'relative mx-auto max-w-6xl px-4 csm:px-6 w-full'
   if (heroLayout === 'centered') {
-    return `${base} text-center py-24 flex flex-col items-center`
+    return `${base} text-center py-16 csm:py-24 flex flex-col items-center`
   }
   switch (variant) {
     case 'boutique':
@@ -231,7 +233,7 @@ function heroContentClass(variant: TemplateId, heroLayout: HeroLayout): string {
     case 'helix':
       return heroLayout === 'immersive'
         ? `${base} py-32 text-center`
-        : `${base} grid lg:grid-cols-2 gap-12 items-center py-24`
+        : `${base} grid clg:grid-cols-2 gap-12 items-center py-24`
     case 'restaurant':
       return `${base} pb-16 pt-28`
     case 'realtor':
@@ -256,7 +258,7 @@ function heroContentClass(variant: TemplateId, heroLayout: HeroLayout): string {
       return `${base} pb-20 pt-28 text-center`
     case 'guesthouse':
     case 'terra':
-      return `${base} grid lg:grid-cols-2 gap-12 items-center py-24`
+      return `${base} grid clg:grid-cols-2 gap-12 items-center py-24`
     default:
       return `${base} py-32`
   }
@@ -277,7 +279,7 @@ function RoomsTeaser({
   if (!rooms.length) return null
   return (
     <section className={`${t.sectionAlt || t.section} py-20`}>
-      <div className="mx-auto max-w-6xl px-6">
+      <div className="mx-auto max-w-6xl px-4 csm:px-6">
         <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
           <div>
             <h2 className={t.sectionTitle}>{c.roomsSectionTitle || 'Rooms & Suites'}</h2>
@@ -287,7 +289,7 @@ function RoomsTeaser({
             Check availability →
           </Link>
         </div>
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="grid gap-6 cmd:grid-cols-3">
           {rooms.map((room) => (
             <Link
               key={room.slug}
@@ -335,7 +337,7 @@ function HeroSection({ c, t, variant, heroLayout, basePath }: { c: SiteContent; 
         <p data-part="subtitle" className={`mb-8 ${t.heroText}`}>{c.heroSubtext || c.about.slice(0, 160)}</p>
         <Link data-part="cta" data-brand-cta to={ctaHref} className={`inline-block ${t.heroCta}`} style={brandCtaStyle(c)}>{c.ctaText} →</Link>
         {!hasOverlay && c.heroImage && variant !== 'boutique' && (
-          <img data-part="image" src={c.heroImage} alt="" className="rounded-2xl shadow-2xl w-full mt-8 lg:mt-0" />
+          <img data-part="image" src={c.heroImage} alt="" className="rounded-2xl shadow-2xl w-full mt-8 clg:mt-0" />
         )}
         {variant === 'boutique' && c.heroImage && (
           <img data-part="image" src={c.heroImage} alt="" className="mx-auto mt-10 max-h-[500px] w-full max-w-4xl object-cover" />
@@ -350,19 +352,19 @@ function statsGridClass(variant: TemplateId): string {
     case 'realtor':
     case 'lawfirm':
     case 'cpa':
-      return 'grid grid-cols-2 gap-8 md:grid-cols-4 text-left'
+      return 'grid grid-cols-2 gap-8 cmd:grid-cols-4 text-left'
     case 'photography':
       return 'flex flex-wrap justify-around gap-8 py-4'
     case 'medical':
-      return 'grid grid-cols-2 gap-6 md:grid-cols-4'
+      return 'grid grid-cols-2 gap-6 cmd:grid-cols-4'
     case 'salon':
       return 'flex flex-wrap justify-center gap-4'
     case 'fitness':
     case 'arcade':
     case 'taxfighters':
-      return 'grid grid-cols-2 gap-6 md:grid-cols-4 text-center uppercase tracking-wide'
+      return 'grid grid-cols-2 gap-6 cmd:grid-cols-4 text-center uppercase tracking-wide'
     default:
-      return 'grid grid-cols-2 gap-8 md:grid-cols-4 text-center'
+      return 'grid grid-cols-2 gap-8 cmd:grid-cols-4 text-center'
   }
 }
 
@@ -371,10 +373,10 @@ function StatsSection({ c, t, variant }: { c: SiteContent; t: TemplateTheme; var
   if (stats.length === 0) return null
   return (
     <section className={t.stats}>
-      <div data-part="heading" className="mx-auto max-w-6xl px-6 pb-4 text-center">
+      <div data-part="heading" className="mx-auto max-w-6xl px-4 csm:px-6 pb-4 text-center">
         <p className="text-sm font-semibold uppercase tracking-widest opacity-80">Trust signals</p>
       </div>
-      <div className={`tpl-stats-inner mx-auto max-w-6xl px-6 ${statsGridClass(variant)}`}>
+      <div className={`tpl-stats-inner mx-auto max-w-6xl px-4 csm:px-6 ${statsGridClass(variant)}`}>
         {stats.map((s, i) => (
           <div key={i}>
             <p className={t.statValue}>{s.value}</p>
@@ -389,8 +391,8 @@ function StatsSection({ c, t, variant }: { c: SiteContent; t: TemplateTheme; var
 function AboutSection({ c, t }: { c: SiteContent; t: TemplateTheme }) {
   return (
     <section id="about" className={t.section}>
-      <div className="mx-auto max-w-6xl px-6">
-        <div className="grid items-center gap-12 lg:grid-cols-2">
+      <div className="mx-auto max-w-6xl px-4 csm:px-6">
+        <div className="grid items-center gap-8 clg:grid-cols-2 clg:gap-12">
           <div>
             <h2 className={t.sectionTitle}>{c.aboutTitle}</h2>
             <p className={`mt-6 text-lg leading-relaxed ${t.cardText}`}>{c.about}</p>
@@ -412,12 +414,12 @@ function ServicesSection({ c, t, meta }: { c: SiteContent; t: TemplateTheme; met
   if (services.length === 0) return null
   return (
     <section id="services" className={t.sectionAlt}>
-      <div className="mx-auto max-w-6xl px-6">
+      <div className="mx-auto max-w-6xl px-4 csm:px-6">
         <div className="mb-14 text-center">
           <h2 className={t.sectionTitle}>{c.servicesSectionTitle || meta}</h2>
           <p className={t.sectionSubtitle}>{c.servicesSectionSubtitle}</p>
         </div>
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid gap-8 cmd:grid-cols-2 clg:grid-cols-3 cxl:grid-cols-4">
           {services.map((s, i) => (
             <div key={i} className={t.card}>
               <div className={`mb-4 ${t.stepNum}`}>{i + 1}</div>
@@ -436,9 +438,9 @@ function StepsSection({ c, t }: { c: SiteContent; t: TemplateTheme }) {
   if (steps.length === 0) return null
   return (
     <section className={t.section}>
-      <div className="mx-auto max-w-6xl px-6">
+      <div className="mx-auto max-w-6xl px-4 csm:px-6">
         <h2 className={`mb-14 text-center ${t.sectionTitle}`}>{c.stepsSectionTitle}</h2>
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-8 cmd:grid-cols-2 clg:grid-cols-4">
           {steps.map((step, i) => (
             <div key={i} className="relative">
               <div className={`mb-4 ${t.stepNum}`}>{String(i + 1).padStart(2, '0')}</div>
@@ -478,7 +480,7 @@ function TestimonialsSection({ c, t, layout }: { c: SiteContent; t: TemplateThem
 
   return (
     <section id="testimonials" className={t.sectionAlt}>
-      <div className="mx-auto max-w-6xl px-6">
+      <div className="mx-auto max-w-6xl px-4 csm:px-6">
         <h2 className={`mb-4 text-center ${t.sectionTitle}`}>{c.testimonialsSectionTitle}</h2>
         <p className={`mb-14 text-center ${t.sectionSubtitle}`}>What our clients say about us</p>
         {testimonials.length === 0 ? (
@@ -492,7 +494,7 @@ function TestimonialsSection({ c, t, layout }: { c: SiteContent; t: TemplateThem
               <p className={t.cardText}>{testimonials[0].role}</p>
             </div>
             {testimonials.length > 1 && (
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              <div className="grid gap-6 cmd:grid-cols-2 clg:grid-cols-3">
                 {testimonials.slice(1).map((item, i) => (
                   <ReviewCard key={i} item={item} t={t} />
                 ))}
@@ -502,7 +504,7 @@ function TestimonialsSection({ c, t, layout }: { c: SiteContent; t: TemplateThem
         ) : layout === 'list' ? (
           <div className="mx-auto max-w-3xl space-y-6">
             {testimonials.map((item, i) => (
-              <div key={i} className={`${t.testimonial} flex flex-col sm:flex-row sm:items-start sm:gap-6`}>
+              <div key={i} className={`${t.testimonial} flex flex-col csm:flex-row csm:items-start csm:gap-6`}>
                 <StarRating />
                 <div>
                   <p className={`mb-4 text-lg leading-relaxed ${t.cardText}`}>"{item.quote}"</p>
@@ -513,7 +515,7 @@ function TestimonialsSection({ c, t, layout }: { c: SiteContent; t: TemplateThem
             ))}
           </div>
         ) : (
-          <div className="grid gap-8 md:grid-cols-3">
+          <div className="grid gap-8 cmd:grid-cols-3">
             {testimonials.map((item, i) => (
               <ReviewCard key={i} item={item} t={t} />
             ))}
@@ -529,9 +531,9 @@ function TeamSection({ c, t }: { c: SiteContent; t: TemplateTheme }) {
   if (members.length === 0) return null
   return (
     <section className={t.sectionAlt}>
-      <div className="mx-auto max-w-6xl px-6">
+      <div className="mx-auto max-w-6xl px-4 csm:px-6">
         <h2 className={`mb-14 text-center ${t.sectionTitle}`}>{c.teamSectionTitle}</h2>
-        <div className="grid gap-10 md:grid-cols-3">
+        <div className="grid gap-10 cmd:grid-cols-3">
           {members.map((m, i) => (
             <div key={i} className={t.teamCard}>
               {m.image && (
@@ -563,7 +565,7 @@ function CtaBannerSection({ c, t, basePath }: { c: SiteContent; t: TemplateTheme
 function FooterSection({ c, t, navItems, basePath }: { c: SiteContent; t: TemplateTheme; navItems: SiteNavItem[]; basePath: string }) {
   return (
     <footer className={t.footer}>
-      <div className="mx-auto max-w-6xl px-6">
+      <div className="mx-auto max-w-6xl px-4 csm:px-6">
         <div className="mb-4 flex flex-wrap justify-center gap-6 text-sm">
           {navItems.map((item) => (
             <Link key={item.page} to={sitePath(basePath, item.segment)} className="hover:underline opacity-70">{item.label}</Link>

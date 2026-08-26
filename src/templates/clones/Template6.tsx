@@ -45,7 +45,7 @@ export function Template6({ c, basePath }: Props) {
     <div className="bg-[var(--clone-surface)] font-sans text-[var(--clone-ink)]">
       <CloneNav templateId="helix" d={d} onBook={() => { setFormOpen(true); setSubmitted(false) }} />
 
-      <header className="relative z-0 isolate h-screen min-h-[640px] overflow-hidden">
+      <header className="relative z-0 isolate min-h-[70vh] overflow-hidden csm:h-screen csm:min-h-[640px]">
         {c.heroImage ? (
           <img src={c.heroImage} alt="" className="absolute inset-0 h-full w-full object-cover" />
         ) : (
@@ -53,8 +53,8 @@ export function Template6({ c, basePath }: Props) {
         )}
         <div className="absolute inset-0 bg-black/50" />
         <div className="relative z-10 mx-auto flex h-full max-w-3xl flex-col items-center justify-center px-6 text-center">
-          <h1 className="mb-6 text-4xl font-bold text-white sm:text-5xl lg:text-6xl">{c.tagline}</h1>
-          <p className="mb-8 text-lg leading-relaxed text-gray-200 sm:text-xl">{c.heroSubtext}</p>
+          <h1 className="mb-6 text-4xl font-bold text-white csm:text-5xl clg:text-6xl">{c.tagline}</h1>
+          <p className="mb-8 text-lg leading-relaxed text-gray-200 csm:text-xl">{c.heroSubtext}</p>
           <Link
             to={ctaHref}
             className="rounded-full border-2 px-8 py-3 text-lg font-semibold text-white transition hover:bg-white hover:text-[var(--clone-accent)]"
@@ -64,11 +64,11 @@ export function Template6({ c, basePath }: Props) {
           </Link>
         </div>
         {c.sectionVisibility.stats && stats.length > 0 && (
-          <div className="absolute right-0 bottom-10 left-0 z-10 flex flex-wrap justify-center gap-8 px-4 sm:gap-16">
+          <div className="absolute right-0 bottom-10 left-0 z-10 flex flex-wrap justify-center gap-8 px-4 csm:gap-16">
             {stats.map((s) => (
               <div key={s.label} className="text-center">
-                <div className="text-2xl font-bold text-white sm:text-3xl">{s.value}</div>
-                <div className="text-sm text-gray-300 sm:text-base">{s.label}</div>
+                <div className="text-2xl font-bold text-white csm:text-3xl">{s.value}</div>
+                <div className="text-sm text-gray-300 csm:text-base">{s.label}</div>
               </div>
             ))}
           </div>
@@ -79,12 +79,12 @@ export function Template6({ c, basePath }: Props) {
         <section className="w-full px-6 py-24 text-white" style={{ backgroundColor: WINE }}>
           <div className="mx-auto max-w-7xl">
             <div className="mb-20 text-center">
-              <h2 className="mb-4 text-6xl font-bold tracking-tight md:text-7xl">{c.stepsSectionTitle || 'How It Works'}</h2>
+              <h2 className="mb-4 text-3xl font-bold tracking-tight csm:text-6xl cmd:text-7xl">{c.stepsSectionTitle || 'How It Works'}</h2>
               <div className="flex justify-center">
                 <div className="h-1 w-20 bg-white" />
               </div>
             </div>
-            <div className="mb-28 grid items-start gap-16 lg:grid-cols-2">
+            <div className="mb-28 grid items-start gap-16 clg:grid-cols-2">
               <div className="space-y-12">
                 {steps.slice(0, 2).map((step, i) => (
                   <div key={step.title} className="border-l-4 border-white pl-6">
@@ -108,14 +108,14 @@ export function Template6({ c, basePath }: Props) {
             {steps[3] && (
               <>
                 <div className="mb-24 h-px bg-white/20" />
-                <div className="grid items-center gap-16 lg:grid-cols-2">
-                  <div className="flex items-center justify-center lg:order-2">
+                <div className="grid items-center gap-16 clg:grid-cols-2">
+                  <div className="flex items-center justify-center clg:order-2">
                     <div className="h-96 w-full overflow-hidden rounded-lg shadow-2xl">
                       <img src={c.galleryImages[1] || c.aboutImage} alt="" className="h-full w-full object-cover" />
                     </div>
                   </div>
-                  <div className="lg:order-1">
-                    <h2 className="mb-8 text-5xl font-bold leading-tight tracking-tight md:text-6xl">{steps[3].title}</h2>
+                  <div className="clg:order-1">
+                    <h2 className="mb-8 text-3xl font-bold leading-tight tracking-tight csm:text-5xl cmd:text-6xl">{steps[3].title}</h2>
                     <p className="text-lg leading-relaxed text-white/90">{steps[3].description}</p>
                   </div>
                 </div>
@@ -134,10 +134,10 @@ export function Template6({ c, basePath }: Props) {
       )}
 
       {c.sectionVisibility.testimonials && reviews.length > 0 && (
-        <section className="relative min-h-[70vh] bg-black px-4 py-12 sm:px-6 lg:px-8">
-          <div className="mx-auto grid max-w-7xl gap-16 lg:grid-cols-2">
+        <section className="relative min-h-[70vh] bg-black px-4 py-12 csm:px-6 clg:px-8">
+          <div className="mx-auto grid max-w-7xl gap-16 clg:grid-cols-2">
             <div>
-              <p className="mb-2 text-5xl font-bold text-white italic sm:text-6xl">{c.teamSectionTitle || 'Meet Your Team'}</p>
+              <p className="mb-2 text-3xl font-bold text-white italic csm:text-5xl cmd:text-6xl">{c.teamSectionTitle || 'Meet Your Team'}</p>
               <div className="mb-12 h-1 w-16 bg-red-500" />
               <div className="space-y-4">
                 {reviews.map((review) => (
@@ -166,13 +166,13 @@ export function Template6({ c, basePath }: Props) {
       )}
 
       {c.pageVisibility.services && services.length > 0 && (
-        <section className="px-4 py-20 sm:px-6 lg:px-8" style={{ backgroundColor: '#f9f9f9' }}>
+        <section className="px-4 py-20 csm:px-6 clg:px-8" style={{ backgroundColor: '#f9f9f9' }}>
           <div className="mx-auto max-w-7xl">
             <div className="mb-16 text-center">
-              <h2 className="mb-4 text-4xl font-bold text-gray-900 sm:text-5xl">{c.servicesSectionTitle || 'Our Services'}</h2>
+              <h2 className="mb-4 text-4xl font-bold text-gray-900 csm:text-5xl">{c.servicesSectionTitle || 'Our Services'}</h2>
               <p className="text-xl text-gray-600">{c.servicesSectionSubtitle}</p>
             </div>
-            <div className="grid gap-8 md:grid-cols-3">
+            <div className="grid gap-8 cmd:grid-cols-3">
               {services.map((service) => (
                 <Link
                   key={service.title}
@@ -190,10 +190,10 @@ export function Template6({ c, basePath }: Props) {
       )}
 
       <section className="w-full bg-white">
-        <div className="mx-auto max-w-7xl px-6 py-16 lg:py-24">
-          <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+        <div className="mx-auto max-w-7xl px-6 py-16 clg:py-24">
+          <div className="grid items-center gap-12 clg:grid-cols-2 clg:gap-16">
             <div className="flex flex-col justify-center space-y-8">
-              <p className="text-4xl font-bold leading-tight lg:text-5xl" style={{ color: MAROON }}>
+              <p className="text-4xl font-bold leading-tight clg:text-5xl" style={{ color: MAROON }}>
                 {c.aboutTitle}
               </p>
               <p className="text-lg leading-relaxed" style={{ color: MAROON }}>
@@ -212,7 +212,7 @@ export function Template6({ c, basePath }: Props) {
               </div>
             </div>
             {c.aboutImage ? (
-              <div className="flex justify-center lg:justify-end">
+              <div className="flex justify-center clg:justify-end">
                 <div className="w-full overflow-hidden rounded-xl shadow-lg">
                   <img src={c.aboutImage} alt="" className="h-[550px] w-full object-cover" />
                 </div>
@@ -223,13 +223,13 @@ export function Template6({ c, basePath }: Props) {
       </section>
 
       {specialize.some((s) => s.title) && (
-        <section className="relative w-full bg-gradient-to-b from-[var(--clone-accent)] via-[var(--clone-ink)] to-[var(--clone-ink)] px-4 py-20 sm:px-6 lg:px-8">
+        <section className="relative w-full bg-gradient-to-b from-[var(--clone-accent)] via-[var(--clone-ink)] to-[var(--clone-ink)] px-4 py-20 csm:px-6 clg:px-8">
           <div className="relative z-10 mx-auto max-w-7xl">
             <div className="mb-16 text-center">
-              <h2 className="mb-4 text-4xl font-bold text-white italic md:text-5xl lg:text-6xl">The Tax Fighters Specializes In:</h2>
+              <h2 className="mb-4 text-4xl font-bold text-white italic cmd:text-5xl clg:text-6xl">The Tax Fighters Specializes In:</h2>
               <div className="mx-auto h-1 w-24 rounded-full bg-gradient-to-r from-[var(--clone-ink)] to-[var(--clone-accent)]" />
             </div>
-            <div className="grid gap-8 md:grid-cols-3 lg:gap-12">
+            <div className="grid gap-8 cmd:grid-cols-3 clg:gap-12">
               {specialize.map((item) => (
                 <Link key={item.title} to={servicesHref} className="group text-center">
                   {item.image ? (
@@ -249,7 +249,7 @@ export function Template6({ c, basePath }: Props) {
       {c.pageVisibility.portfolio && locations.length > 0 && (
         <section className="bg-white px-4 py-20">
           <h2 className="mb-12 pt-6 text-center text-4xl font-bold text-black">{c.showcaseSectionTitle}</h2>
-          <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-5">
+          <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 csm:grid-cols-3 cmd:grid-cols-5">
             {locations.slice(0, 5).map((loc) => (
               <Link key={loc.title} to={locationsHref} className="group">
                 {loc.image ? (
@@ -285,9 +285,9 @@ export function Template6({ c, basePath }: Props) {
       )}
 
       {d.show.cta && (
-      <section className="px-4 py-20 sm:px-6 lg:px-8" style={{ backgroundColor: MAROON }}>
+      <section className="px-4 py-20 csm:px-6 clg:px-8" style={{ backgroundColor: MAROON }}>
         <div className="mx-auto max-w-4xl text-center">
-          <h2 className="mb-6 text-4xl font-bold text-white sm:text-5xl">{c.ctaBannerTitle}</h2>
+          <h2 className="mb-6 text-4xl font-bold text-white csm:text-5xl">{c.ctaBannerTitle}</h2>
           <p className="mb-8 text-xl leading-relaxed text-gray-100">{c.ctaBannerText}</p>
           <button
             type="button"
@@ -304,8 +304,8 @@ export function Template6({ c, basePath }: Props) {
       <section className="bg-white px-6 py-20">
         <div className="mx-auto max-w-6xl">
           <h2 className="mb-10 text-3xl font-bold text-black">{c.contactSectionTitle || 'Contact Us'}</h2>
-          <div className="grid gap-12 lg:grid-cols-2">
-            <div className="grid gap-6 text-sm sm:grid-cols-2">
+          <div className="grid gap-12 clg:grid-cols-2">
+            <div className="grid gap-6 text-sm csm:grid-cols-2">
               {c.phone ? (
                 <div>
                   <p className="mb-1 text-xs font-bold tracking-wider uppercase" style={{ color: MAROON }}>
@@ -348,8 +348,8 @@ export function Template6({ c, basePath }: Props) {
 
       <footer className="bg-black px-6 py-16 text-white">
         <div className="mx-auto max-w-7xl">
-          <p className="mb-6 text-center text-sm font-semibold tracking-widest uppercase md:text-left">Social Media</p>
-          <div className="mb-8 flex justify-center gap-6 md:justify-start">
+          <p className="mb-6 text-center text-sm font-semibold tracking-widest uppercase cmd:text-left">Social Media</p>
+          <div className="mb-8 flex justify-center gap-6 cmd:justify-start">
             <a href="https://web.facebook.com/people/The-Tax-Fighters/61554192368133/" className="p-2" target="_blank" rel="noreferrer">
               Facebook
             </a>
@@ -364,7 +364,7 @@ export function Template6({ c, basePath }: Props) {
               </a>
             ) : null}
           </div>
-          <div className="flex flex-col items-center justify-between gap-4 border-t border-gray-600 pt-8 md:flex-row">
+          <div className="flex flex-col items-center justify-between gap-4 border-t border-gray-600 pt-8 cmd:flex-row">
             {c.logo ? <img src={c.logo} alt="" className="h-16 w-auto" /> : <span className="font-bold">{c.businessName}</span>}
             <p className="font-semibold">© {new Date().getFullYear()} {c.businessName}. All Rights Reserved.</p>
           </div>
@@ -372,9 +372,9 @@ export function Template6({ c, basePath }: Props) {
       </footer>
 
       {formOpen ? (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 flex items-end justify-center overflow-y-auto p-4 csm:items-center">
           <button type="button" className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setFormOpen(false)} aria-label="Close" />
-          <div className="relative w-full max-w-md overflow-hidden rounded-lg shadow-2xl" style={{ backgroundColor: SIGNAL }}>
+          <div className="relative max-h-[90vh] w-full max-w-md overflow-y-auto rounded-lg shadow-2xl" style={{ backgroundColor: SIGNAL }}>
             {submitted ? (
               <div className="bg-white p-8 text-center">
                 <h2 className="mb-2 text-2xl font-bold text-gray-800">Success!</h2>

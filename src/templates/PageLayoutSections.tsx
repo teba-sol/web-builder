@@ -27,7 +27,7 @@ interface LayoutProps {
 
 function BlogCard({ post, t, basePath, c, featured }: { post: BlogPostItem; t: TemplateTheme; basePath: string; c: SiteContent; featured?: boolean }) {
   const slug = postSlug(post.title, post.slug)
-  const cls = featured ? `lg:col-span-2 ${t.showcaseCard} block` : `${t.showcaseCard} block`
+  const cls = featured ? `clg:col-span-2 ${t.showcaseCard} block` : `${t.showcaseCard} block`
   return (
     <Link to={resolveSiteHref(basePath, `blog/${slug}`, c)} className={cls}>
       {post.image && <img src={post.image} alt="" className={t.showcaseImage} />}
@@ -49,12 +49,12 @@ export function BlogListPage({ c, t, variant, basePath }: LayoutProps) {
 
   return (
     <section className={t.sectionAlt}>
-      <div className="mx-auto max-w-6xl px-6 py-12">
+      <div className="mx-auto max-w-6xl px-4 csm:px-6 py-12">
         <PageHeader title={c.blogSectionTitle} subtitle={c.blogSectionSubtitle} t={t} />
         {layout === 'magazine' ? (
-          <div className="grid gap-8 lg:grid-cols-3">
+          <div className="grid gap-8 clg:grid-cols-3">
             <BlogCard post={posts[0]} t={t} basePath={basePath} c={c} featured />
-            <div className="grid gap-8 sm:grid-cols-2 lg:col-span-1 lg:grid-cols-1">
+            <div className="grid gap-8 csm:grid-cols-2 clg:col-span-1 clg:grid-cols-1">
               {posts.slice(1).map((post, i) => <BlogCard key={i} post={post} t={t} basePath={basePath} c={c} />)}
             </div>
           </div>
@@ -72,7 +72,7 @@ export function BlogListPage({ c, t, variant, basePath }: LayoutProps) {
             })}
           </div>
         ) : (
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-8 csm:grid-cols-2 clg:grid-cols-3">
             {posts.map((post, i) => <BlogCard key={i} post={post} t={t} basePath={basePath} c={c} />)}
           </div>
         )}
@@ -91,7 +91,7 @@ export function BlogPostPage({ c, t, variant, basePath, slug }: LayoutProps & { 
   if (layout === 'split') {
     return (
       <section className={t.section}>
-        <div className="mx-auto grid max-w-6xl gap-12 px-6 py-12 lg:grid-cols-2 lg:items-start">
+        <div className="mx-auto grid max-w-6xl gap-12 px-6 py-12 clg:grid-cols-2 clg:items-start">
           <div>
             <BackLink to={resolveSiteHref(basePath, 'blog', c)} />
             {post.date && <p className={`mb-3 text-sm uppercase tracking-wider ${t.showcaseTag}`}>{formatPostDate(post.date)}</p>}
@@ -112,11 +112,11 @@ export function BlogPostPage({ c, t, variant, basePath, slug }: LayoutProps & { 
     return (
       <section className={t.section}>
         {post.image && (
-          <div className="relative mb-12 h-72 md:h-96">
+          <div className="relative mb-12 h-72 cmd:h-96">
             <img src={post.image} alt="" className="h-full w-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
             <div className="absolute bottom-0 left-0 right-0 mx-auto max-w-4xl px-6 pb-10">
-              <h1 className="text-4xl font-bold text-white md:text-5xl">{post.title}</h1>
+              <h1 className="text-4xl font-bold text-white cmd:text-5xl">{post.title}</h1>
             </div>
           </div>
         )}
@@ -172,7 +172,7 @@ export function NewsListPage({ c, t, variant, basePath }: LayoutProps) {
 
   return (
     <section className={t.section}>
-      <div className="mx-auto max-w-6xl px-6 py-12">
+      <div className="mx-auto max-w-6xl px-4 csm:px-6 py-12">
         <PageHeader title={c.newsSectionTitle} subtitle={c.newsSectionSubtitle} t={t} />
         {layout === 'timeline' ? (
           <div className="mx-auto max-w-3xl space-y-0">
@@ -204,7 +204,7 @@ export function NewsListPage({ c, t, variant, basePath }: LayoutProps) {
             })}
           </div>
         ) : (
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-8 csm:grid-cols-2 clg:grid-cols-3">
             {posts.map((post, i) => <NewsCard key={i} post={post} t={t} basePath={basePath} c={c} />)}
           </div>
         )}
@@ -239,7 +239,7 @@ export function NewsPostPage({ c, t, variant, basePath, slug }: LayoutProps & { 
   if (layout === 'split') {
     return (
       <section className={t.section}>
-        <div className="mx-auto grid max-w-6xl gap-12 px-6 py-12 lg:grid-cols-[1fr_1.4fr]">
+        <div className="mx-auto grid max-w-6xl gap-12 px-6 py-12 clg:grid-cols-[1fr_1.4fr]">
           <div>
             <BackLink to={resolveSiteHref(basePath, 'news', c)} />
             <h1 className={`mb-4 text-3xl font-bold ${t.cardTitle}`}>{post.title}</h1>
@@ -276,10 +276,10 @@ export function GalleryPage({ c, t, variant }: Omit<LayoutProps, 'basePath'>) {
 
   return (
     <section className={t.sectionAlt}>
-      <div className="mx-auto max-w-6xl px-6 py-12">
+      <div className="mx-auto max-w-6xl px-4 csm:px-6 py-12">
         <PageHeader title={c.gallerySectionTitle} t={t} centered />
         {layout === 'masonry' ? (
-          <div className="columns-1 gap-4 sm:columns-2 lg:columns-3">
+          <div className="columns-1 gap-4 csm:columns-2 clg:columns-3">
             {images.map((img, i) => (
               <img key={i} src={img} alt="" className={`mb-4 w-full break-inside-avoid ${t.gallery}`} />
             ))}
@@ -291,7 +291,7 @@ export function GalleryPage({ c, t, variant }: Omit<LayoutProps, 'basePath'>) {
             ))}
           </div>
         ) : (
-          <div className="grid gap-4 md:grid-cols-3">
+          <div className="grid gap-4 cmd:grid-cols-3">
             {images.map((img, i) => <img key={i} src={img} alt="" className={t.gallery} />)}
           </div>
         )}
@@ -328,22 +328,22 @@ export function PortfolioPage({ c, t, variant, basePath }: LayoutProps) {
 
   return (
     <section className={t.showcase}>
-      <div className="mx-auto max-w-6xl px-6 py-12">
+      <div className="mx-auto max-w-6xl px-4 csm:px-6 py-12">
         <PageHeader title={c.showcaseSectionTitle || cfg.sectionTitle} subtitle={c.showcaseSectionSubtitle || cfg.sectionSubtitle} t={t} />
         {layout === 'case-study' ? (
           <div className="space-y-16">
             {items.map((item, i) => <ItemCard key={i} item={item} i={i} large />)}
           </div>
         ) : layout === 'showcase' ? (
-          <div className="grid gap-6 sm:grid-cols-2">
+          <div className="grid gap-6 csm:grid-cols-2">
             {items.map((item, i) => (
-              <div key={i} className={i === 0 ? 'sm:col-span-2' : ''}>
+              <div key={i} className={i === 0 ? 'csm:col-span-2' : ''}>
                 <ItemCard item={item} i={i} large={i === 0} />
               </div>
             ))}
           </div>
         ) : (
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-8 csm:grid-cols-2 clg:grid-cols-3">
             {items.map((item, i) => <ItemCard key={i} item={item} i={i} />)}
           </div>
         )}
@@ -359,7 +359,7 @@ export function BlogTeaser({ c, t, basePath }: Omit<LayoutProps, 'variant'>) {
   if (posts.length === 0 || !canLinkToPage('blog', c)) return null
   return (
     <section className={t.sectionAlt}>
-      <div className="mx-auto max-w-6xl px-6">
+      <div className="mx-auto max-w-6xl px-4 csm:px-6">
         <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
           <div>
             <h2 className={`tpl-teaser-heading ${t.sectionTitle}`}>{c.blogSectionTitle}</h2>
@@ -367,7 +367,7 @@ export function BlogTeaser({ c, t, basePath }: Omit<LayoutProps, 'variant'>) {
           </div>
           <Link to={resolveSiteHref(basePath, 'blog', c)} className={`text-sm font-semibold ${t.showcasePrice}`}>View all posts →</Link>
         </div>
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-8 csm:grid-cols-2 clg:grid-cols-3">
           {posts.map((post, i) => <BlogCard key={i} post={post} t={t} basePath={basePath} c={c} />)}
         </div>
       </div>
@@ -380,7 +380,7 @@ export function NewsTeaser({ c, t, basePath }: Omit<LayoutProps, 'variant'>) {
   if (posts.length === 0 || !canLinkToPage('news', c)) return null
   return (
     <section className={t.section}>
-      <div className="mx-auto max-w-6xl px-6">
+      <div className="mx-auto max-w-6xl px-4 csm:px-6">
         <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
           <div>
             <h2 className={`tpl-teaser-heading ${t.sectionTitle}`}>{c.newsSectionTitle}</h2>
@@ -388,7 +388,7 @@ export function NewsTeaser({ c, t, basePath }: Omit<LayoutProps, 'variant'>) {
           </div>
           <Link to={resolveSiteHref(basePath, 'news', c)} className={`text-sm font-semibold ${t.showcasePrice}`}>All news →</Link>
         </div>
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="grid gap-6 cmd:grid-cols-3">
           {posts.map((post, i) => <NewsCard key={i} post={post} t={t} basePath={basePath} c={c} />)}
         </div>
       </div>
@@ -402,7 +402,7 @@ export function ServicesTeaser({ c, t, basePath }: LayoutProps) {
   const servicesHref = resolveSiteHref(basePath, 'services', c)
   return (
     <section className={t.section}>
-      <div className="mx-auto max-w-6xl px-6">
+      <div className="mx-auto max-w-6xl px-4 csm:px-6">
         <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
           <div>
             <h2 className={`tpl-teaser-heading ${t.sectionTitle}`}>{c.servicesSectionTitle}</h2>
@@ -410,7 +410,7 @@ export function ServicesTeaser({ c, t, basePath }: LayoutProps) {
           </div>
           <Link to={servicesHref} className={`text-sm font-semibold ${t.showcasePrice}`}>Explore all →</Link>
         </div>
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-6 cmd:grid-cols-2 clg:grid-cols-4">
           {services.map((service, i) => (
             <Link key={i} to={servicesHref} className={`block ${t.card}`}>
               <div className={`mb-3 ${t.stepNum}`}>{i + 1}</div>
@@ -430,8 +430,8 @@ export function AboutTeaser({ c, t, basePath }: Omit<LayoutProps, 'variant'>) {
   const excerpt = c.about.length > 280 ? `${c.about.slice(0, 280).trim()}…` : c.about
   return (
     <section className={t.section}>
-      <div className="mx-auto max-w-6xl px-6">
-        <div className="grid items-center gap-12 lg:grid-cols-2">
+      <div className="mx-auto max-w-6xl px-4 csm:px-6">
+        <div className="grid items-center gap-12 clg:grid-cols-2">
           <div>
             <h2 className={`tpl-teaser-heading ${t.sectionTitle}`}>{c.aboutTitle}</h2>
             <p className={`mt-6 text-lg leading-relaxed ${t.cardText}`}>{excerpt}</p>
@@ -454,7 +454,7 @@ export function PortfolioTeaser({ c, t, variant, basePath }: LayoutProps) {
   const portfolioHref = resolveSiteHref(basePath, 'portfolio', c)
   return (
     <section className={t.showcase}>
-      <div className="mx-auto max-w-6xl px-6">
+      <div className="mx-auto max-w-6xl px-4 csm:px-6">
         <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
           <div>
             <h2 className={`tpl-teaser-heading ${t.sectionTitle}`}>{c.showcaseSectionTitle || cfg.sectionTitle}</h2>
@@ -462,7 +462,7 @@ export function PortfolioTeaser({ c, t, variant, basePath }: LayoutProps) {
           </div>
           <Link to={portfolioHref} className={`text-sm font-semibold ${t.showcasePrice}`}>Explore all →</Link>
         </div>
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-8 csm:grid-cols-2 clg:grid-cols-3">
           {items.map((item, i) => {
             const inner = (
               <>
@@ -488,9 +488,9 @@ export function PricingSection({ c, t }: { c: SiteContent; t: TemplateTheme }) {
   if (plans.length === 0) return null
   return (
     <section className={t.sectionAlt}>
-      <div className="mx-auto max-w-6xl px-6">
+      <div className="mx-auto max-w-6xl px-4 csm:px-6">
         <h2 className={`mb-14 text-center ${t.sectionTitle}`}>{c.pricingSectionTitle}</h2>
-        <div className="grid gap-8 md:grid-cols-3">
+        <div className="grid gap-8 cmd:grid-cols-3">
           {plans.map((plan, i) => (
             <div key={i} className={`${t.card} ${plan.featured ? 'ring-2 ring-current scale-105' : ''}`}>
               {plan.tag && <p className={`mb-2 text-xs font-bold uppercase tracking-wider ${t.showcaseTag}`}>{plan.tag}</p>}

@@ -3,6 +3,20 @@ import type { SiteContent } from '../types'
 import { escapeHtml } from './imageUtils'
 import { buildSeoMetaTags, resolveDocumentTitle, type PageSeoInput } from './seoExport'
 
+/** Map live container-query variants back to viewport variants for static HTML. */
+export function rewriteContainerVariantsForExport(html: string): string {
+  return html
+    .replaceAll('max-csm:', 'max-sm:')
+    .replaceAll('max-cmd:', 'max-md:')
+    .replaceAll('max-clg:', 'max-lg:')
+    .replaceAll('max-cxl:', 'max-xl:')
+    .replaceAll('c2xl:', '2xl:')
+    .replaceAll('cxl:', 'xl:')
+    .replaceAll('clg:', 'lg:')
+    .replaceAll('cmd:', 'md:')
+    .replaceAll('csm:', 'sm:')
+}
+
 /** Shared CSS for classic / modern / luxury look-and-feel (exports + Blade). */
 export const LAYOUT_SHELL_CSS = `
 .layout-classic { --layout-radius: 0.75rem; --layout-shadow: 0 1px 3px rgba(15,23,42,.08); --layout-title-weight: 700; --layout-title-tracking: 0; --layout-title-transform: none; }
@@ -34,7 +48,11 @@ export function tailwindHead(title: string, seo?: PageSeoInput, content?: SiteCo
   ${seoTags ? `${seoTags}\n  ` : ''}<script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="${fontHref || 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap'}" rel="stylesheet" />
-  <style>body { font-family: Inter, system-ui, sans-serif; }
+  <style>html,body { overflow-x: hidden; max-width: 100%; } body { font-family: Inter, system-ui, sans-serif; }
+iframe { max-width: 100%; }
+img:not([class*="object-cover"]):not([class*="h-full"]) { max-width: 100%; height: auto; }
+h1, h2, h3, p { overflow-wrap: break-word; }
+@media (max-width: 640px) { h1 { font-size: clamp(1.75rem, 8vw, 2.75rem) !important; line-height: 1.15 !important; } }
 ${LAYOUT_SHELL_CSS}
 ${extraCss}
 </style>

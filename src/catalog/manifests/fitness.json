@@ -60,7 +60,7 @@
     "navCta": "bg-orange-600 px-6 py-2 font-bold uppercase tracking-wider hover:bg-orange-500",
     "hero": "relative min-h-[85vh] flex items-center",
     "heroBadge": "text-orange-500 font-bold uppercase tracking-[0.3em] text-sm",
-    "heroTitle": "text-5xl md:text-7xl font-black uppercase leading-none max-w-4xl",
+    "heroTitle": "text-5xl cmd:text-7xl font-black uppercase leading-none max-w-4xl",
     "heroText": "text-lg text-gray-400 max-w-xl",
     "heroCta": "bg-orange-600 px-10 py-4 text-lg font-black uppercase hover:bg-orange-500",
     "stats": "bg-orange-600 py-16",
