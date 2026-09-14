@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
-import { ImportTemplateButton } from '../components/ImportTemplateButton'
+import { AppHeader } from '../components/AppHeader'
+import { RecentlyUsed } from '../components/RecentlyUsed'
 import { TemplateCard } from '../components/TemplateCard'
 import { CategoryFilter } from '../components/CategoryFilter'
 import { useTemplateCatalog } from '../catalog/useTemplateCatalog'
@@ -33,17 +34,7 @@ export function HomePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
-      <header className="border-b border-slate-200 bg-white/80 backdrop-blur-sm">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
-          <div className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-600 text-sm font-bold text-white">
-              WB
-            </div>
-            <span className="text-lg font-bold text-slate-900">WebBuilder</span>
-          </div>
-          <ImportTemplateButton />
-        </div>
-      </header>
+      <AppHeader />
 
       <main className="mx-auto max-w-6xl px-6 py-16">
         <div className="mb-16 text-center">
@@ -55,6 +46,8 @@ export function HomePage() {
             Every export includes site.json — import that file later to restore your exact edits.
           </p>
         </div>
+
+        <RecentlyUsed />
 
         <div className="mb-8">
           <h2 className="mb-4 text-xl font-semibold text-slate-900">Filter by business type</h2>

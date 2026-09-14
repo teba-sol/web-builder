@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { recordExportEvent } from '../api/projects'
 import { downloadWebsiteZip } from '../export/downloadZip'
 import type { SiteContent, TemplateId } from '../types'
 
@@ -9,15 +10,35 @@ interface Props {
   layoutVariantId?: string
   className?: string
   label?: string
+  canExport?: boolean
+  projectId?: string | null
+  onNeedPayment?: () => void
 }
 
-export function DownloadButton({ templateId, content, colorSchemeId, layoutVariantId, className, label = 'Download Full Stack (.zip)' }: Props) {
+export function DownloadButton({
+  templateId,
+  content,
+  colorSchemeId,
+  layoutVariantId,
+  className,
+  label = 'Download Full Stack (.zip)',
+  canExport = true,
+  projectId,
+  onNeedPayment,
+}: Props) {
   const [status, setStatus] = useState<'idle' | 'loading' | 'done'>('idle')
 
   const handleDownload = async () => {
+    if (!canExport) {
+      onNeedPayment?.()
+      return
+    }
     setStatus('loading')
     try {
       await downloadWebsiteZip(templateId, content, colorSchemeId, layoutVariantId)
+      if (projectId) {
+        await recordExportEvent(projectId).catch(() => undefined)
+      }
       setStatus('done')
       setTimeout(() => setStatus('idle'), 3000)
     } catch {

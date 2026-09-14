@@ -1,7 +1,9 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { createProject, getProject } from '../api/projects'
 import { ContentForm } from '../components/ContentForm'
 import { DownloadButton } from '../components/DownloadButton'
+import { PaywallModal } from '../components/PaywallModal'
 import { useWebsite } from '../context/WebsiteContext'
 import { TemplateRenderer } from '../templates/TemplateRenderer'
 import { getTemplateDefaults, getTemplateMeta } from '../data/defaults'
@@ -13,11 +15,24 @@ export function EditorPage() {
   const { templateId } = useParams<{ templateId: string }>()
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
-  const { selectTemplate, templateId: selectedId, content, colorSchemeId, layoutVariantId } = useWebsite()
+  const {
+    selectTemplate,
+    templateId: selectedId,
+    content,
+    colorSchemeId,
+    layoutVariantId,
+    projectId,
+    canExport,
+    bindProject,
+    markProjectPaid,
+  } = useWebsite()
   const appliedQuery = useRef<string | null>(null)
+  const bootedKey = useRef<string | null>(null)
+  const [paywallOpen, setPaywallOpen] = useState(false)
 
   const id = templateId ?? ''
   const template = isValidTemplateId(id) ? getTemplateMeta(id) : undefined
+  const projectQuery = searchParams.get('project')
 
   useEffect(() => {
     if (!isValidTemplateId(id)) {
@@ -30,7 +45,6 @@ export function EditorPage() {
       if (appliedQuery.current !== queryKey) {
         appliedQuery.current = queryKey
         selectTemplate(id, appearance)
-        navigate(`/editor/${id}`, { replace: true })
       }
       return
     }
@@ -44,6 +58,31 @@ export function EditorPage() {
       selectTemplate(id)
     }
   }, [id, selectedId, searchParams, content.businessName, selectTemplate, navigate])
+
+  useEffect(() => {
+    if (!isValidTemplateId(id)) return
+    const key = `${id}:${projectQuery ?? 'new'}`
+    if (bootedKey.current === key) return
+    bootedKey.current = key
+    const run = async () => {
+      try {
+        if (projectQuery) {
+          const project = await getProject(projectQuery)
+          bindProject(project)
+          return
+        }
+        const project = await createProject({
+          templateId: id,
+          name: template?.name ?? id,
+        })
+        bindProject(project)
+        navigate(`/editor/${id}?project=${project.id}`, { replace: true })
+      } catch {
+        bootedKey.current = null
+      }
+    }
+    void run()
+  }, [id, projectQuery, bindProject, navigate, template?.name])
 
   if (!template || !isValidTemplateId(id)) return null
 
@@ -60,6 +99,11 @@ export function EditorPage() {
           </Link>
           <div className="h-5 w-px bg-slate-200" />
           <span className="font-semibold text-slate-900">{template.name}</span>
+          {!canExport && (
+            <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-800">
+              Unpaid — export locked
+            </span>
+          )}
         </div>
         <div className="flex items-center gap-2">
           <button
@@ -81,7 +125,15 @@ export function EditorPage() {
           >
             Save site JSON
           </button>
-          <DownloadButton templateId={id} content={content} colorSchemeId={colorSchemeId} layoutVariantId={layoutVariantId} />
+          <DownloadButton
+            templateId={id}
+            content={content}
+            colorSchemeId={colorSchemeId}
+            layoutVariantId={layoutVariantId}
+            canExport={canExport}
+            projectId={projectId}
+            onNeedPayment={() => setPaywallOpen(true)}
+          />
         </div>
       </header>
 
@@ -116,6 +168,17 @@ export function EditorPage() {
           </div>
         </main>
       </div>
+      {projectId && (
+        <PaywallModal
+          projectId={projectId}
+          open={paywallOpen}
+          onClose={() => setPaywallOpen(false)}
+          onPaid={() => {
+            markProjectPaid()
+            setPaywallOpen(false)
+          }}
+        />
+      )}
     </div>
   )
 }
