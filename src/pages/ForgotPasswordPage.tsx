@@ -2,7 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { forgotPassword } from '../api/auth'
 import { ApiError } from '../api/types'
-import { AuthShell } from './LoginPage'
+import { AuthShell } from '../components/AuthShell'
 
 export function ForgotPasswordPage() {
   const [email, setEmail] = useState('')

@@ -2,7 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { resetPassword } from '../api/auth'
 import { ApiError } from '../api/types'
-import { AuthShell } from './LoginPage'
+import { AuthShell } from '../components/AuthShell'
 
 export function ResetPasswordPage() {
   const [params] = useSearchParams()

@@ -31,6 +31,7 @@ interface WebsiteContextValue {
   projectId: string | null
   canExport: boolean
   canCloudSave: boolean
+  canEdit: boolean
   entitlementStatus: ProjectResponse['entitlementStatus'] | null
   selectTemplate: (id: TemplateId, appearance?: EditorAppearance | null) => void
   setColorScheme: (schemeId: string) => void
@@ -80,6 +81,7 @@ export function WebsiteProvider({ children }: { children: ReactNode }) {
   const [projectId, setProjectId] = useState<string | null>(null)
   const [canExport, setCanExport] = useState(false)
   const [canCloudSave, setCanCloudSave] = useState(false)
+  const [canEdit, setCanEdit] = useState(true)
   const [entitlementStatus, setEntitlementStatus] = useState<ProjectResponse['entitlementStatus'] | null>(null)
   const skipNextCloudSave = useRef(false)
 
@@ -207,6 +209,7 @@ export function WebsiteProvider({ children }: { children: ReactNode }) {
     setProjectId(project.id)
     setCanExport(project.canExport)
     setCanCloudSave(project.canCloudSave)
+    setCanEdit(project.canEdit)
     setEntitlementStatus(project.entitlementStatus)
     const document = project.document as SiteDocument | null
     if (document && document.content) {
@@ -234,6 +237,7 @@ export function WebsiteProvider({ children }: { children: ReactNode }) {
     setProjectId(null)
     setCanExport(false)
     setCanCloudSave(false)
+    setCanEdit(true)
     setEntitlementStatus(null)
     clearSavedSite()
   }
@@ -248,6 +252,7 @@ export function WebsiteProvider({ children }: { children: ReactNode }) {
         projectId,
         canExport,
         canCloudSave,
+        canEdit,
         entitlementStatus,
         selectTemplate,
         setColorScheme,

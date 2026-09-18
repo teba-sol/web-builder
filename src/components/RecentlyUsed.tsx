@@ -22,8 +22,8 @@ export function RecentlyUsed() {
   if (!user || !items || items.length === 0) return null
 
   return (
-    <section className="mb-14">
-      <h2 className="mb-4 text-xl font-semibold text-slate-900">Recently used</h2>
+    <section className="mb-12">
+      <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-500">Continue</h2>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {items.map((project) => {
           const meta = getTemplateMeta(project.templateId)
@@ -31,11 +31,11 @@ export function RecentlyUsed() {
             <Link
               key={project.id}
               to={`/editor/${project.templateId}?project=${project.id}`}
-              className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+              className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
             >
               <p className="text-sm font-semibold text-slate-900">{project.name}</p>
               <p className="mt-1 text-xs text-slate-500">{meta?.name ?? project.templateId}</p>
-              <p className="mt-3 text-[11px] font-medium uppercase tracking-wide text-slate-400">
+              <p className="mt-3 text-[11px] font-medium text-slate-400">
                 {project.entitlementStatus === 'UNPAID' ? 'Unpaid' : 'Ready to export'}
               </p>
             </Link>

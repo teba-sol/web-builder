@@ -10,6 +10,9 @@ export function createProject(input: {
   name?: string
   colorSchemeId?: string
   layoutVariantId?: string
+  clientId?: string
+  clientName?: string
+  clientEmail?: string
 }) {
   return apiFetch<ProjectResponse>('/api/v1/projects', {
     method: 'POST',

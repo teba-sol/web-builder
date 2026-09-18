@@ -1,10 +1,22 @@
 import { apiFetch, clearTokens, storeTokens } from './client'
 import type { AuthResponse, MeResponse } from './types'
 
-export async function register(fullName: string, email: string, password: string) {
+export async function register(
+  fullName: string,
+  email: string,
+  password: string,
+  accountType: 'personal' | 'agency' = 'personal',
+  agencyName?: string,
+) {
   const response = await apiFetch<AuthResponse>('/api/v1/auth/register', {
     method: 'POST',
-    body: JSON.stringify({ fullName, email, password, accountType: 'consumer' }),
+    body: JSON.stringify({
+      fullName,
+      email,
+      password,
+      accountType,
+      agencyName: accountType === 'agency' ? agencyName : undefined,
+    }),
   })
   storeTokens(response.accessToken, response.refreshToken)
   return response
@@ -56,4 +68,13 @@ export async function resetPassword(token: string, password: string) {
 
 export function fetchMe() {
   return apiFetch<MeResponse>('/api/v1/me')
+}
+
+export async function consumeHandoff(code: string) {
+  const response = await apiFetch<AuthResponse>('/api/v1/auth/handoff/consume', {
+    method: 'POST',
+    body: JSON.stringify({ code }),
+  })
+  storeTokens(response.accessToken, response.refreshToken)
+  return response
 }

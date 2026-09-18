@@ -49,23 +49,41 @@ export interface PricingSettings {
   crsQuarterlyDays: number
 }
 
+export type ProjectStatus = 'DRAFT' | 'IN_PROGRESS' | 'EXPORTED'
+
 export interface ProjectResponse {
   id: string
   ownerId: string
   createdBy: string
   agencyId: string | null
+  clientId: string | null
+  clientName: string | null
+  ownerName: string | null
+  ownerEmail: string | null
   templateId: string
   name: string
+  status: ProjectStatus
+  progressPercent: number
   colorSchemeId: string | null
   layoutVariantId: string | null
   document: unknown
   entitlementStatus: EntitlementStatus
   canExport: boolean
   canCloudSave: boolean
+  canEdit: boolean
   lastOpenedAt: string | null
   lastExportedAt: string | null
   createdAt: string
   updatedAt: string
+}
+
+export interface ClientRecord {
+  id: string
+  agencyId: string
+  name: string
+  contactEmail: string | null
+  phone: string | null
+  createdAt: string
 }
 
 export interface ProjectListResponse {

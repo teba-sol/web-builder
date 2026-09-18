@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { useAuth } from '../auth/AuthContext'
 import { isImportedTemplate, removeImportedManifest } from '../catalog/catalog'
 import { getTemplateThumbnail } from '../catalog/thumbnails'
 import { categories } from '../data/categories'
@@ -10,6 +11,8 @@ interface Props {
 }
 
 export function TemplateCard({ template }: Props) {
+  const { user } = useAuth()
+  const useHref = user?.role === 'SALESPERSON' ? `/new-site?template=${template.id}` : `/editor/${template.id}`
   const categoryLabel = categories.find((c) => c.id === template.category)?.label ?? template.category
   const layoutCount = getLayoutVariants(template.id).length
   const imported = isImportedTemplate(template.id)
@@ -48,8 +51,8 @@ export function TemplateCard({ template }: Props) {
         </div>
       </div>
       <div className="flex flex-1 flex-col p-6">
-        <h3 className="mb-2 text-xl font-bold text-slate-900">{template.name}</h3>
-        <p className="flex-1 text-sm leading-relaxed text-slate-600">{template.description}</p>
+        <h3 className="mb-2 text-lg font-semibold text-slate-900">{template.name}</h3>
+        <p className="flex-1 text-sm leading-relaxed text-slate-500">{template.description}</p>
         <div className="mt-5 flex gap-3">
           <Link
             to={`/demo/${template.id}`}
@@ -59,7 +62,7 @@ export function TemplateCard({ template }: Props) {
             Preview
           </Link>
           <Link
-            to={`/editor/${template.id}`}
+            to={useHref}
             className="flex-1 rounded-lg bg-indigo-600 px-4 py-2.5 text-center text-sm font-semibold text-white hover:bg-indigo-700 transition-colors"
           >
             Use Template

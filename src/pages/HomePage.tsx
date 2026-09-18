@@ -5,8 +5,12 @@ import { TemplateCard } from '../components/TemplateCard'
 import { CategoryFilter } from '../components/CategoryFilter'
 import { useTemplateCatalog } from '../catalog/useTemplateCatalog'
 import type { TemplateCategory } from '../types'
+import { useAuth } from '../auth/AuthContext'
+import { AgencyReviewHome } from './AgencyReviewHome'
+import { SalespersonHome } from './SalespersonHome'
 
 export function HomePage() {
+  const { user, loading } = useAuth()
   const templates = useTemplateCatalog()
   const [category, setCategory] = useState<TemplateCategory | 'all'>('all')
 
@@ -32,25 +36,32 @@ export function HomePage() {
     return result
   }, [templates])
 
+  if (!loading && user?.role === 'SALESPERSON') {
+    return <SalespersonHome />
+  }
+  if (!loading && (user?.role === 'AGENCY_ADMIN' || user?.role === 'PLATFORM_ADMIN')) {
+    return <AgencyReviewHome />
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+    <div className="min-h-screen bg-[#f6f7fb]">
       <AppHeader />
 
-      <main className="mx-auto max-w-6xl px-6 py-16">
-        <div className="mb-16 text-center">
-          <h1 className="mb-4 text-4xl font-bold tracking-tight text-slate-900 md:text-5xl">
-            Build your website in minutes
+      <main className="mx-auto max-w-6xl px-6 py-14">
+        <div className="mb-12 max-w-2xl">
+          <p className="text-sm font-medium text-indigo-700">Website builder</p>
+          <h1 className="mt-2 text-4xl font-semibold tracking-tight text-slate-900 md:text-[2.75rem]">
+            Choose a template. Ship a working site.
           </h1>
-          <p className="mx-auto max-w-2xl text-lg text-slate-600">
-            Browse {templates.length} templates, edit your content, then download a working site.
-            Every export includes site.json — import that file later to restore your exact edits.
+          <p className="mt-4 text-base leading-relaxed text-slate-500">
+            Browse {templates.length} designs, edit your content, then export. Every download includes site.json so you can restore later.
           </p>
         </div>
 
         <RecentlyUsed />
 
         <div className="mb-8">
-          <h2 className="mb-4 text-xl font-semibold text-slate-900">Filter by business type</h2>
+          <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-500">Filter by business type</h2>
           <CategoryFilter active={category} onChange={setCategory} counts={counts} />
         </div>
 
@@ -72,22 +83,18 @@ export function HomePage() {
           </div>
         )}
 
-        <div className="mt-20 rounded-2xl border border-slate-200 bg-white p-8 md:p-12">
-          <div className="grid gap-8 md:grid-cols-3">
-            {[
-              { step: '1', title: 'Browse & filter', desc: 'Find the right template for your business type.' },
-              { step: '2', title: 'Preview & customize', desc: 'See the full design, then add your content and images.' },
-              { step: '3', title: 'Download your site', desc: 'Get a .zip with index.html ready to publish anywhere.' },
-            ].map((item) => (
-              <div key={item.step} className="text-center">
-                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-indigo-100 text-lg font-bold text-indigo-600">
-                  {item.step}
-                </div>
-                <h3 className="mb-2 font-semibold text-slate-900">{item.title}</h3>
-                <p className="text-sm text-slate-600">{item.desc}</p>
-              </div>
-            ))}
-          </div>
+        <div className="mt-16 grid gap-4 md:grid-cols-3">
+          {[
+            { step: '01', title: 'Browse', desc: 'Filter by business type and preview the live design.' },
+            { step: '02', title: 'Customize', desc: 'Edit copy, images, colors, and layout in the builder.' },
+            { step: '03', title: 'Export', desc: 'Download a working site with site.json for later restore.' },
+          ].map((item) => (
+            <div key={item.step} className="rounded-2xl border border-slate-200 bg-white p-6">
+              <p className="text-xs font-semibold tracking-wide text-indigo-600">{item.step}</p>
+              <h3 className="mt-2 font-semibold text-slate-900">{item.title}</h3>
+              <p className="mt-1 text-sm text-slate-500">{item.desc}</p>
+            </div>
+          ))}
         </div>
       </main>
     </div>

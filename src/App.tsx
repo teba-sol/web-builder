@@ -8,7 +8,9 @@ import { PickTemplatePage } from './pages/PickTemplatePage'
 import { PreviewPage } from './pages/PreviewPage'
 import { TemplateDemoPage } from './pages/TemplateDemoPage'
 import { SiteViewPage } from './pages/SiteViewPage'
+import { HandoffPage } from './pages/HandoffPage'
 import { LoginPage } from './pages/LoginPage'
+import { NewSitePage } from './pages/NewSitePage'
 import { SignupPage } from './pages/SignupPage'
 import { ForgotPasswordPage } from './pages/ForgotPasswordPage'
 import { ResetPasswordPage } from './pages/ResetPasswordPage'
@@ -23,7 +25,16 @@ export default function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/handoff" element={<HandoffPage />} />
             <Route path="/signup" element={<SignupPage />} />
+            <Route
+              path="/new-site"
+              element={
+                <RequireAuth>
+                  <NewSitePage />
+                </RequireAuth>
+              }
+            />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route path="/reset-password" element={<ResetPasswordPage />} />
             <Route path="/account" element={<AccountPage />} />
