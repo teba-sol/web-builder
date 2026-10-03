@@ -242,6 +242,7 @@ export interface CategoryMeta {
   id: TemplateCategory | 'all'
   label: string
   icon: string
+  blurb?: string
 }
 
 export interface TemplateMeta {

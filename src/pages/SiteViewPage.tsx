@@ -57,7 +57,7 @@ export function SiteViewPage() {
         )}
         <button
           onClick={openFullscreen}
-          className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700"
+          className="rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-white hover:bg-accent-dark"
         >
           Open Full Window
         </button>

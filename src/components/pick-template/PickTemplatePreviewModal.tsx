@@ -45,7 +45,7 @@ export function PickTemplatePreviewModal({ template, content, onClose, onUse }: 
             <button
               type="button"
               onClick={onUse}
-              className="rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700"
+              className="rounded-xl bg-accent px-4 py-2 text-sm font-semibold text-white hover:bg-accent-dark"
             >
               Use this template
             </button>

@@ -8,9 +8,9 @@ interface Props {
 
 export function BrandIdentityForm({ content, onChange }: Props) {
   return (
-    <div className="space-y-4 rounded-xl border border-indigo-200 bg-indigo-50/40 p-4">
+    <div className="space-y-4 rounded-xl border border-navy/20 bg-navy/5 p-4">
       <div>
-        <p className="text-sm font-bold uppercase tracking-wider text-indigo-600">Logo</p>
+        <p className="text-sm font-bold uppercase tracking-wider text-accent">Logo</p>
         <p className="mt-1 text-xs text-slate-500">Shown in the navigation. PNG or SVG works best.</p>
       </div>
 
@@ -27,7 +27,7 @@ export function BrandIdentityForm({ content, onChange }: Props) {
             type="checkbox"
             checked={content.logoShowName !== false}
             onChange={(e) => onChange({ logoShowName: e.target.checked })}
-            className="h-4 w-4 rounded border-slate-300 text-indigo-600"
+            className="h-4 w-4 rounded border-slate-300 text-accent"
           />
           Show business name next to logo
         </label>

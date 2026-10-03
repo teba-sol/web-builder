@@ -217,6 +217,10 @@ npm ci
 # Dev server (HMR)
 npm run dev
 
+# Windows PowerShell on a \\\\wsl.localhost\\... path: npm run dev still works.
+# It re-runs Vite inside WSL so Linux node_modules (lightningcss) load.
+# From Ubuntu itself: cd ~/projects/hope21/buildaura/web-builder-exp && npm run dev
+
 # Typecheck + production build → dist/
 npm run build
 

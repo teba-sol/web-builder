@@ -661,6 +661,10 @@ DOCTOR_TOKEN=${setupToken}
 ADMIN_NAME=Admin
 ADMIN_EMAIL=${adminEmailLocal(payload.content.businessName)}
 ADMIN_PASSWORD=password
+
+CRS_API_URL=http://localhost:8080
+CRS_API_KEY=
+CRS_HOTEL_ID=
 `,
 
     'artisan': `#!/usr/bin/env php
@@ -1544,20 +1548,14 @@ ${Object.entries(payload.content.sectionVisibility)
 ${hasBookingFeature(payload.content) ? `
 ## Hospitality booking
 
-This site includes a full property management booking stack:
+This site includes hospitality booking backed by **BuildAura CRS**:
 
-- **Room Types** — categories and subtypes (parent/child) with pricing, occupancy, amenities
-- **Room Units** — physical inventory (codes, status: available / maintenance / out of service)
-- **Seasonal Rates** — date-range price overrides per room type
-- **Reservations** — guest stays with status workflow (pending → confirmed → checked in → checked out / cancelled / no-show)
+- **Inventory** (hotel, room types, physical units, rates, occupancy windows) lives in BuildAura. Set \`CRS_API_URL\`, \`CRS_API_KEY\`, and \`CRS_HOTEL_ID\` in \`.env\`.
+- **Reservations** (guest name, email, phone, and fake card last-4) stay in this site's database only. They are never sent to BuildAura.
+- Public booking updates CRS occupancy and room status when a stay is reserved.
+- Filament **Hospitality → CRS inventory** manages types/units through the same API. **Reservations** stay local.
 
-Public pages:
-- \`/rooms\` — catalogue
-- \`/rooms/{slug}\` — detail
-- \`/book\` — availability search + reserve
-- \`/book/confirm/{code}\` — confirmation
-
-Only free units can be booked for overlapping dates. Manage inventory and stays in **Admin → Hospitality**.
+Public pages: \`/rooms\`, \`/rooms/{slug}\`, \`/book\`, \`/book/confirm/{code}\`.
 ` : ''}
 
 ## Deploying to production

@@ -32,7 +32,7 @@ export function FontPicker({
           onClick={() => onChange('', '')}
           className={`text-left font-semibold ${toolbar ? 'rounded-lg border px-2.5 py-1.5 text-xs' : 'rounded-xl border px-3 py-3 text-sm'} ${
             !fontHeading && !fontBody
-              ? 'border-indigo-500 bg-indigo-50 text-indigo-950 ring-2 ring-indigo-100'
+              ? 'border-navy bg-navy/5 text-navy ring-2 ring-accent/20'
               : 'border-slate-200 bg-white text-slate-900 hover:border-slate-300'
           }`}
         >
@@ -49,7 +49,7 @@ export function FontPicker({
               onClick={() => onChange(pair.heading, pair.body)}
               className={`text-left ${toolbar ? 'rounded-lg border px-2.5 py-1.5' : 'rounded-xl border px-3 py-3'} ${
                 active
-                  ? 'border-indigo-500 bg-indigo-50 text-indigo-950 ring-2 ring-indigo-100'
+                  ? 'border-navy bg-navy/5 text-navy ring-2 ring-accent/20'
                   : 'border-slate-200 bg-white text-slate-900 hover:border-slate-300'
               }`}
             >

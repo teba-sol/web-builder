@@ -28,7 +28,7 @@ export function TemplateSelectCard({
       }}
       className={`group flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl border bg-white text-left shadow-sm transition ${
         selected
-          ? 'border-indigo-600 ring-2 ring-indigo-600'
+          ? 'border-navy ring-2 ring-navy'
           : 'border-slate-200 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md'
       }`}
     >
@@ -46,7 +46,7 @@ export function TemplateSelectCard({
           {categoryLabel}
         </span>
         {selected && (
-          <span className="absolute right-3 top-3 inline-flex h-7 w-7 items-center justify-center rounded-full bg-indigo-600 text-white shadow">
+          <span className="absolute right-3 top-3 inline-flex h-7 w-7 items-center justify-center rounded-full bg-accent text-white shadow">
             <Check className="h-4 w-4" />
           </span>
         )}
@@ -59,7 +59,7 @@ export function TemplateSelectCard({
           target="_blank"
           rel="noreferrer"
           onClick={(event) => event.stopPropagation()}
-          className="mt-3 text-xs font-semibold text-indigo-700 hover:underline"
+          className="mt-3 text-xs font-semibold text-navy hover:underline"
         >
           Preview live
         </a>

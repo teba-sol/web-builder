@@ -1,11 +1,11 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
 import {
-  acceptInvite,
   consumeHandoff as consumeHandoffRequest,
   fetchMe,
   login as loginRequest,
   logout as logoutRequest,
   register as registerRequest,
+  updateMe,
 } from '../api/auth'
 import { ApiError } from '../api/types'
 import { clearTokens, getAccessToken } from '../api/client'
@@ -22,8 +22,8 @@ interface AuthContextValue {
     accountType?: 'personal' | 'agency',
     agencyName?: string,
   ) => Promise<void>
-  completeInvite: (token: string, fullName: string, password: string) => Promise<void>
   completeHandoff: (code: string) => Promise<void>
+  updateProfile: (body: { fullName?: string; currentPassword?: string; newPassword?: string }) => Promise<void>
   logout: () => Promise<void>
 }
 
@@ -69,13 +69,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     [],
   )
 
-  const completeInvite = useCallback(async (token: string, fullName: string, password: string) => {
-    const response = await acceptInvite(token, fullName, password)
+  const completeHandoff = useCallback(async (code: string) => {
+    const response = await consumeHandoffRequest(code)
     setUser(response.user)
   }, [])
 
-  const completeHandoff = useCallback(async (code: string) => {
-    const response = await consumeHandoffRequest(code)
+  const updateProfile = useCallback(async (body: { fullName?: string; currentPassword?: string; newPassword?: string }) => {
+    const response = await updateMe(body)
     setUser(response.user)
   }, [])
 
@@ -85,8 +85,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const value = useMemo(
-    () => ({ user, loading, login, register, completeInvite, completeHandoff, logout }),
-    [user, loading, login, register, completeInvite, completeHandoff, logout],
+    () => ({ user, loading, login, register, completeHandoff, updateProfile, logout }),
+    [user, loading, login, register, completeHandoff, updateProfile, logout],
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

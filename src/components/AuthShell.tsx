@@ -1,5 +1,11 @@
 import { Link } from 'react-router-dom'
-import { Building2, UserRound } from 'lucide-react'
+import { BrowserFrame } from './landing/BrowserFrame'
+import { showcaseSites } from './landing/sites'
+
+export const authFieldClass =
+  'mt-2 w-full border-0 border-b border-navy/20 bg-transparent px-0 py-2.5 text-navy outline-none transition placeholder:text-navy/30 focus:border-accent'
+export const authButtonClass =
+  'mt-2 text-[12px] font-semibold uppercase tracking-[0.24em] text-accent disabled:opacity-50'
 
 export function AuthShell({
   title,
@@ -10,50 +16,64 @@ export function AuthShell({
   subtitle: string
   children: React.ReactNode
 }) {
+  const peek = showcaseSites().find((s) => s.id === 'hotel') ?? showcaseSites()[0]
+  const adminOrigin = import.meta.env.VITE_ADMIN_ORIGIN || 'http://localhost:5174'
+
   return (
-    <div className="min-h-screen bg-slate-50 lg:grid lg:grid-cols-2">
-      <div className="relative hidden overflow-hidden bg-indigo-700 px-12 py-16 text-white lg:flex lg:flex-col lg:justify-between">
-        <Link to="/" className="flex items-center gap-2.5">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white text-sm font-bold text-indigo-700">
-            B
+    <div className="landing min-h-screen bg-[#f6f7fb] text-navy lg:grid lg:grid-cols-2">
+      <div className="relative hidden overflow-hidden bg-navy px-10 py-12 text-white lg:flex lg:flex-col lg:justify-between">
+        {peek && (
+          <div className="pointer-events-none absolute -right-[18%] bottom-[8%] w-[72%] rotate-8 opacity-30">
+            <BrowserFrame src={peek.src} alt="" compact />
           </div>
-          <span className="text-lg font-semibold">Buildoura</span>
+        )}
+        <Link to="/" className="relative text-[13px] font-semibold uppercase tracking-[0.18em]">
+          BuildAura
         </Link>
-        <div>
-          <h2 className="max-w-md text-4xl font-bold leading-tight">Build for yourself, or as an agency.</h2>
-          <p className="mt-4 max-w-md text-indigo-100">
-            Personal accounts pay when they export. Agencies get a workspace for salespeople who build client sites without the website fee.
+        <div className="relative max-w-lg">
+          <p className="text-[10px] uppercase tracking-[0.32em] text-accent">Template studio</p>
+          <h2 className="font-display mt-4 text-[clamp(2.4rem,calc((50vw-5rem)/9.2),4.4rem)]">
+            Start
+            <br />
+            from
+            <br />
+            designed.
+          </h2>
+          <p className="mt-8 max-w-sm text-sm leading-relaxed text-white/65">
+            Pick a template, make it yours, and publish a real website.
           </p>
-          <div className="mt-10 grid max-w-md gap-4">
-            <div className="flex gap-3 rounded-2xl bg-white/10 p-4">
-              <UserRound className="mt-0.5 h-5 w-5 shrink-0" />
-              <div>
-                <p className="font-semibold">Personal use</p>
-                <p className="text-sm text-indigo-100">Your own sites. Pay 9,000 birr per website when you export.</p>
-              </div>
-            </div>
-            <div className="flex gap-3 rounded-2xl bg-white/10 p-4">
-              <Building2 className="mt-0.5 h-5 w-5 shrink-0" />
-              <div>
-                <p className="font-semibold">Agency</p>
-                <p className="text-sm text-indigo-100">Register your agency, then add salespeople from the admin console.</p>
-              </div>
-            </div>
-          </div>
+          <ul className="mt-12 max-w-sm space-y-6 text-[11px] uppercase tracking-[0.22em] text-white/55">
+            <li>
+              <span className="text-accent">01</span>
+              <span className="ml-4 text-white">Personal — one site, one payment</span>
+            </li>
+            <li>
+              <span className="text-accent">02</span>
+              <span className="ml-4 text-white">Agency — contact us</span>
+            </li>
+            <li>
+              <span className="text-accent">03</span>
+              <span className="ml-4 text-white">Cloud save after unlock</span>
+            </li>
+          </ul>
         </div>
-        <p className="text-sm text-indigo-200">Export includes site.json so you can restore your edits later.</p>
+        <p className="relative text-[10px] uppercase tracking-[0.22em] text-white/40">
+          Agency portal · {adminOrigin.replace(/^https?:\/\//, '')}
+        </p>
       </div>
-      <div className="flex min-h-screen flex-col justify-center px-6 py-16">
-        <div className="mx-auto w-full max-w-md">
-          <Link to="/" className="mb-8 flex items-center gap-2.5 lg:hidden">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600 text-[11px] font-bold text-white">
-              B
-            </div>
-            <span className="text-[15px] font-semibold text-slate-900">Buildoura</span>
-          </Link>
-          <h1 className="text-2xl font-bold text-slate-900">{title}</h1>
-          <p className="mt-2 text-sm text-slate-600">{subtitle}</p>
-          <div className="mt-8">{children}</div>
+
+      <div className="flex min-h-screen flex-col px-6 py-10 md:px-12 md:py-16">
+        <Link
+          to="/"
+          className="mb-16 text-[13px] font-semibold uppercase tracking-[0.18em] text-navy lg:hidden"
+        >
+          BuildAura
+        </Link>
+        <div className="mx-auto w-full max-w-md flex-1">
+          <p className="text-[10px] uppercase tracking-[0.32em] text-accent">Account</p>
+          <h1 className="font-display mt-3 text-[clamp(2rem,calc(100%/7.6),3.25rem)]">{title}</h1>
+          <p className="mt-4 max-w-sm text-sm leading-relaxed text-navy/55">{subtitle}</p>
+          <div className="mt-10">{children}</div>
         </div>
       </div>
     </div>

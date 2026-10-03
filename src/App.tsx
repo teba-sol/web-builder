@@ -15,6 +15,8 @@ import { SignupPage } from './pages/SignupPage'
 import { ForgotPasswordPage } from './pages/ForgotPasswordPage'
 import { ResetPasswordPage } from './pages/ResetPasswordPage'
 import { AccountPage } from './pages/AccountPage'
+import { AboutPage } from './pages/AboutPage'
+import { PricingPublicPage } from './pages/PricingPublicPage'
 import { SandboxBillingPage } from './pages/SandboxBillingPage'
 
 export default function App() {
@@ -24,6 +26,8 @@ export default function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/pricing" element={<PricingPublicPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/handoff" element={<HandoffPage />} />
             <Route path="/signup" element={<SignupPage />} />

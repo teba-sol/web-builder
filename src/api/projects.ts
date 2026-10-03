@@ -9,10 +9,10 @@ export function createProject(input: {
   templateId: string
   name?: string
   colorSchemeId?: string
-  layoutVariantId?: string
   clientId?: string
   clientName?: string
   clientEmail?: string
+  clientPhone?: string
 }) {
   return apiFetch<ProjectResponse>('/api/v1/projects', {
     method: 'POST',
@@ -38,4 +38,8 @@ export function saveProjectDraft(id: string, input: {
 
 export function recordExportEvent(id: string) {
   return apiFetch<void>(`/api/v1/projects/${id}/export-event`, { method: 'POST' })
+}
+
+export function getExportEntitlement(id: string) {
+  return apiFetch<ProjectResponse>(`/api/v1/projects/${id}/export-entitlement`)
 }

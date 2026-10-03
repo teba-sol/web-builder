@@ -36,7 +36,7 @@ export function PickTemplateGallery({
   return (
     <div>
       <div className="mb-10 max-w-2xl">
-        <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-indigo-600">Step 1 of 2</p>
+        <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-accent">Step 1 of 2</p>
         <h1 className="text-3xl font-semibold tracking-tight text-slate-950 md:text-5xl">Pick a template</h1>
         <p className="mt-4 text-base leading-relaxed text-slate-600 md:text-lg">
           Choose a starting look. Next you can change the color palette and fonts, then send it back to your project.
@@ -54,12 +54,12 @@ export function PickTemplateGallery({
                 onClick={() => onCategoryChange(item.id)}
                 className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-colors ${
                   active
-                    ? 'bg-indigo-600 text-white shadow-sm'
-                    : 'bg-white text-slate-600 ring-1 ring-slate-200 hover:border-indigo-300 hover:text-indigo-700'
+                    ? 'bg-accent text-white shadow-sm'
+                    : 'bg-white text-slate-600 ring-1 ring-slate-200 hover:border-accent hover:text-navy'
                 }`}
               >
                 {item.label}
-                <span className={`rounded-full px-2 py-0.5 text-[11px] ${active ? 'bg-indigo-500 text-white' : 'bg-slate-100 text-slate-500'}`}>
+                <span className={`rounded-full px-2 py-0.5 text-[11px] ${active ? 'bg-accent text-white' : 'bg-slate-100 text-slate-500'}`}>
                   {counts[item.id] ?? 0}
                 </span>
               </button>
@@ -73,7 +73,7 @@ export function PickTemplateGallery({
             value={query}
             onChange={(event) => onQueryChange(event.target.value)}
             placeholder="Search templates"
-            className="w-full rounded-full border border-slate-200 bg-white py-2.5 pl-10 pr-4 text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
+            className="w-full rounded-full border border-slate-200 bg-white py-2.5 pl-10 pr-4 text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-navy focus:ring-2 focus:ring-accent/20"
           />
         </label>
       </div>
@@ -146,7 +146,7 @@ function GalleryCard({
           <button
             type="button"
             onClick={onSelect}
-            className="flex-1 rounded-xl bg-indigo-600 px-3 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700"
+            className="flex-1 rounded-xl bg-accent px-3 py-2.5 text-sm font-semibold text-white hover:bg-accent-dark"
           >
             Use this
           </button>

@@ -1,5 +1,5 @@
 import { apiFetch, clearTokens, storeTokens } from './client'
-import type { AuthResponse, MeResponse } from './types'
+import type { AuthResponse, MeResponse, UserProfile } from './types'
 
 export async function register(
   fullName: string,
@@ -26,15 +26,6 @@ export async function login(email: string, password: string) {
   const response = await apiFetch<AuthResponse>('/api/v1/auth/login', {
     method: 'POST',
     body: JSON.stringify({ email, password }),
-  })
-  storeTokens(response.accessToken, response.refreshToken)
-  return response
-}
-
-export async function acceptInvite(token: string, fullName: string, password: string) {
-  const response = await apiFetch<AuthResponse>('/api/v1/auth/accept-invite', {
-    method: 'POST',
-    body: JSON.stringify({ token, fullName, password }),
   })
   storeTokens(response.accessToken, response.refreshToken)
   return response
@@ -68,6 +59,23 @@ export async function resetPassword(token: string, password: string) {
 
 export function fetchMe() {
   return apiFetch<MeResponse>('/api/v1/me')
+}
+
+export async function updateMe(body: { fullName?: string; currentPassword?: string; newPassword?: string }) {
+  const response = await apiFetch<{
+    user: UserProfile
+    agencyName: string | null
+    websiteCount: number
+    accessToken?: string | null
+    refreshToken?: string | null
+  }>('/api/v1/me', {
+    method: 'PATCH',
+    body: JSON.stringify(body),
+  })
+  if (response.accessToken && response.refreshToken) {
+    storeTokens(response.accessToken, response.refreshToken)
+  }
+  return response
 }
 
 export async function consumeHandoff(code: string) {

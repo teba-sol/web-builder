@@ -50,6 +50,7 @@ interface WebsiteContextValue {
   restoreSite: (document: SiteDocument) => void
   bindProject: (project: ProjectResponse) => void
   markProjectPaid: () => void
+  persistNow: () => Promise<void>
   reset: () => void
 }
 
@@ -229,6 +230,18 @@ export function WebsiteProvider({ children }: { children: ReactNode }) {
     setEntitlementStatus('PAID')
   }
 
+  const persistNow = async () => {
+    if (!projectId || !templateId) throw new Error('No project to save')
+    if (!canCloudSave) throw new Error('Save is locked until this website is unlocked')
+    const document = buildSiteDocument(templateId, content, colorSchemeId, layoutVariantId)
+    await saveProjectDraft(projectId, {
+      name: content.businessName || templateId,
+      colorSchemeId,
+      layoutVariantId,
+      document,
+    })
+  }
+
   const reset = () => {
     setTemplateId(null)
     setContent(defaultContent)
@@ -266,6 +279,7 @@ export function WebsiteProvider({ children }: { children: ReactNode }) {
         restoreSite,
         bindProject,
         markProjectPaid,
+        persistNow,
         reset,
       }}
     >

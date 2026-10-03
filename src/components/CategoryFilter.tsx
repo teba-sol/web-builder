@@ -16,15 +16,15 @@ export function CategoryFilter({ active, onChange, counts }: Props) {
           onClick={() => onChange(cat.id)}
           className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all ${
             active === cat.id
-              ? 'bg-indigo-600 text-white shadow-md shadow-indigo-200'
-              : 'bg-white text-slate-600 border border-slate-200 hover:border-indigo-300 hover:text-indigo-600'
+              ? 'bg-accent text-white shadow-md shadow-accent/20'
+              : 'bg-white text-slate-600 border border-slate-200 hover:border-accent hover:text-accent'
           }`}
         >
           <span>{cat.icon}</span>
           {cat.label}
           <span
             className={`rounded-full px-2 py-0.5 text-xs ${
-              active === cat.id ? 'bg-indigo-500 text-white' : 'bg-slate-100 text-slate-500'
+              active === cat.id ? 'bg-accent text-white' : 'bg-slate-100 text-slate-500'
             }`}
           >
             {counts[cat.id]}

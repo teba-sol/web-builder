@@ -2,7 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { forgotPassword } from '../api/auth'
 import { ApiError } from '../api/types'
-import { AuthShell } from '../components/AuthShell'
+import { AuthShell, authButtonClass, authFieldClass } from '../components/AuthShell'
 
 export function ForgotPasswordPage() {
   const [email, setEmail] = useState('')
@@ -23,29 +23,29 @@ export function ForgotPasswordPage() {
   return (
     <AuthShell title="Reset password" subtitle="If the email exists, we send a one-time reset link.">
       {sent ? (
-        <p className="rounded-lg bg-emerald-50 px-3 py-2 text-sm text-emerald-800">
+        <p className="text-sm leading-relaxed text-navy/70">
           If an account exists for that email, a reset link was sent. In local development the link is printed in the API logs.
         </p>
       ) : (
-        <form onSubmit={onSubmit} className="space-y-4">
-          {error && <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>}
-          <label className="block text-sm font-medium text-slate-700">
+        <form onSubmit={onSubmit} className="space-y-6">
+          {error && <p className="text-sm text-red-600">{error}</p>}
+          <label className="block text-[11px] font-semibold uppercase tracking-[0.22em] text-navy/50">
             Email
             <input
               type="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2"
+              className={authFieldClass}
             />
           </label>
-          <button type="submit" className="w-full rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700">
+          <button type="submit" className={authButtonClass}>
             Send reset link
           </button>
         </form>
       )}
-      <p className="mt-6 text-center text-sm">
-        <Link to="/login" className="text-indigo-700 font-semibold">
+      <p className="mt-10 text-[11px] uppercase tracking-[0.22em]">
+        <Link to="/login" className="text-navy">
           Back to sign in
         </Link>
       </p>

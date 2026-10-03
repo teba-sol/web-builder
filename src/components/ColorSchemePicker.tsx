@@ -30,7 +30,7 @@ export function ColorSchemePicker({ templateId, activeSchemeId, customSwatches, 
               onClick={() => onChange(scheme.id)}
               className={`flex items-center gap-3 rounded-xl border-2 p-3 text-left transition-all ${
                 active
-                  ? 'border-indigo-500 bg-indigo-50 ring-2 ring-indigo-200'
+                  ? 'border-navy bg-navy/5 ring-2 ring-accent/30'
                   : 'border-slate-200 bg-white hover:border-slate-300'
               }`}
             >
@@ -44,12 +44,12 @@ export function ColorSchemePicker({ templateId, activeSchemeId, customSwatches, 
                 ))}
               </div>
               <div className="flex-1">
-                <p className={`text-sm font-semibold ${active ? 'text-indigo-900' : 'text-slate-900'}`}>
+                <p className={`text-sm font-semibold ${active ? 'text-navy' : 'text-slate-900'}`}>
                   {scheme.name}
                 </p>
               </div>
               {active && (
-                <span className="rounded-full bg-indigo-600 px-2 py-0.5 text-xs font-medium text-white">
+                <span className="rounded-full bg-accent px-2 py-0.5 text-xs font-medium text-white">
                   Active
                 </span>
               )}
@@ -61,7 +61,7 @@ export function ColorSchemePicker({ templateId, activeSchemeId, customSwatches, 
           onClick={() => onChange(CUSTOM_COLOR_SCHEME_ID)}
           className={`flex items-center gap-3 rounded-xl border-2 p-3 text-left transition-all ${
             customActive
-              ? 'border-indigo-500 bg-indigo-50 ring-2 ring-indigo-200'
+              ? 'border-navy bg-navy/5 ring-2 ring-accent/30'
               : 'border-slate-200 bg-white hover:border-slate-300'
           }`}
         >
@@ -75,13 +75,13 @@ export function ColorSchemePicker({ templateId, activeSchemeId, customSwatches, 
             ))}
           </div>
           <div className="flex-1">
-            <p className={`text-sm font-semibold ${customActive ? 'text-indigo-900' : 'text-slate-900'}`}>
+            <p className={`text-sm font-semibold ${customActive ? 'text-navy' : 'text-slate-900'}`}>
               Custom palette
             </p>
             <p className="text-xs text-slate-500">Uses the brand colors above</p>
           </div>
           {customActive && (
-            <span className="rounded-full bg-indigo-600 px-2 py-0.5 text-xs font-medium text-white">
+            <span className="rounded-full bg-accent px-2 py-0.5 text-xs font-medium text-white">
               Active
             </span>
           )}

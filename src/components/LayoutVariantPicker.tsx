@@ -34,13 +34,13 @@ export function LayoutVariantPicker({ templateId, activeVariantId, onChange }: P
               onClick={() => onChange(variant.id)}
               className={`rounded-xl border-2 p-3 text-left transition-all ${
                 active
-                  ? 'border-indigo-500 bg-indigo-50 ring-2 ring-indigo-200'
+                  ? 'border-navy bg-navy/5 ring-2 ring-accent/30'
                   : 'border-slate-200 bg-white hover:border-slate-300'
               }`}
             >
               <div className="flex items-start justify-between gap-2">
                 <div>
-                  <p className={`text-sm font-semibold ${active ? 'text-indigo-900' : 'text-slate-900'}`}>
+                  <p className={`text-sm font-semibold ${active ? 'text-navy' : 'text-slate-900'}`}>
                     {variant.name}
                   </p>
                   <p className="mt-1 text-xs text-slate-500">{variant.description}</p>
@@ -57,7 +57,7 @@ export function LayoutVariantPicker({ templateId, activeVariantId, onChange }: P
                   </div>
                 </div>
                 {active && (
-                  <span className="shrink-0 rounded-full bg-indigo-600 px-2 py-0.5 text-xs font-medium text-white">
+                  <span className="shrink-0 rounded-full bg-accent px-2 py-0.5 text-xs font-medium text-white">
                     Active
                   </span>
                 )}

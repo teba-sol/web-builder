@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { Lock, Save } from 'lucide-react'
+import { toast } from 'sonner'
 import { createProject, getProject } from '../api/projects'
 import { ContentForm } from '../components/ContentForm'
 import { DownloadButton } from '../components/DownloadButton'
@@ -10,7 +12,6 @@ import { TemplateRenderer } from '../templates/TemplateRenderer'
 import { getTemplateDefaults, getTemplateMeta } from '../data/defaults'
 import { appearanceFromSearchParams } from '../data/pickTemplate'
 import { isValidTemplateId } from '../data/templateIds'
-import { buildSiteDocument, downloadSiteDocument } from '../siteDocument/io'
 
 export function EditorPage() {
   const { templateId } = useParams<{ templateId: string }>()
@@ -24,14 +25,17 @@ export function EditorPage() {
     layoutVariantId,
     projectId,
     canExport,
+    canCloudSave,
     canEdit,
     bindProject,
     markProjectPaid,
+    persistNow,
   } = useWebsite()
   const { user } = useAuth()
   const appliedQuery = useRef<string | null>(null)
   const bootedKey = useRef<string | null>(null)
   const [paywallOpen, setPaywallOpen] = useState(false)
+  const [saving, setSaving] = useState(false)
 
   const id = templateId ?? ''
   const template = isValidTemplateId(id) ? getTemplateMeta(id) : undefined
@@ -116,7 +120,7 @@ export function EditorPage() {
           )}
           {!canExport && !readOnly && (
             <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-800">
-              Unpaid — export locked
+              {user?.role === 'SALESPERSON' ? 'Contact us — export locked' : 'Unpaid — export locked'}
             </span>
           )}
         </div>
@@ -137,10 +141,22 @@ export function EditorPage() {
               </Link>
               <button
                 type="button"
-                onClick={() => downloadSiteDocument(buildSiteDocument(id, content, colorSchemeId, layoutVariantId))}
-                className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
+                disabled={saving}
+                onClick={() => {
+                  if (!canCloudSave) {
+                    setPaywallOpen(true)
+                    return
+                  }
+                  setSaving(true)
+                  void persistNow()
+                    .then(() => toast.success('Site saved'))
+                    .catch((err: Error) => toast.error(err.message))
+                    .finally(() => setSaving(false))
+                }}
+                className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-60"
               >
-                Save JSON
+                {canCloudSave ? <Save size={14} /> : <Lock size={14} />}
+                {saving ? 'Saving…' : canCloudSave ? 'Save' : 'Save locked'}
               </button>
               <DownloadButton
                 templateId={id}

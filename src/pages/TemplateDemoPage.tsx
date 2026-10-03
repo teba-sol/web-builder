@@ -11,7 +11,7 @@ export function TemplateDemoPage() {
   if (!isValidTemplateId(id) || !template) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <Link to="/" className="text-indigo-600 hover:underline">← Back to templates</Link>
+        <Link to="/" className="text-accent hover:underline">← Back to templates</Link>
       </div>
     )
   }
@@ -34,7 +34,7 @@ export function TemplateDemoPage() {
           </button>
           <Link
             to={`/editor/${id}`}
-            className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700"
+            className="rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-white hover:bg-accent-dark"
           >
             Use This Template
           </Link>

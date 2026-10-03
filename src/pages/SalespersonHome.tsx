@@ -22,7 +22,7 @@ export function SalespersonHome() {
     <PageShell>
       <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-sm font-medium text-indigo-700">Workspace</p>
+          <p className="text-sm font-medium text-navy">Workspace</p>
           <h1 className="mt-1 text-3xl font-semibold tracking-tight">
             {user ? `Hello, ${user.fullName.split(' ')[0]}` : 'Your sites'}
           </h1>
@@ -32,7 +32,7 @@ export function SalespersonHome() {
         </div>
         <Link
           to="/new-site"
-          className="rounded-lg bg-indigo-600 px-4 py-2.5 text-center text-sm font-semibold text-white hover:bg-indigo-700"
+          className="rounded-lg bg-accent px-4 py-2.5 text-center text-sm font-semibold text-white hover:bg-accent-dark"
         >
           New site
         </Link>
@@ -44,7 +44,7 @@ export function SalespersonHome() {
         <div className="rounded-2xl border border-dashed border-slate-300 bg-white py-20 text-center">
           <p className="text-base font-semibold text-slate-900">No client sites yet</p>
           <p className="mt-1 text-sm text-slate-500">Pick a client and a template to begin.</p>
-          <Link to="/new-site" className="mt-5 inline-flex rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700">
+          <Link to="/new-site" className="mt-5 inline-flex rounded-lg bg-accent px-4 py-2.5 text-sm font-semibold text-white hover:bg-accent-dark">
             Create first site
           </Link>
         </div>

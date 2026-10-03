@@ -23,7 +23,7 @@ export function AgencyReviewHome() {
     <PageShell width="wide">
       <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-sm font-medium text-indigo-700">Review</p>
+          <p className="text-sm font-medium text-navy">Review</p>
           <h1 className="mt-1 text-3xl font-semibold tracking-tight">
             {user?.role === 'PLATFORM_ADMIN' ? 'All sites' : 'Agency sites'}
           </h1>
@@ -79,7 +79,7 @@ export function AgencyReviewHome() {
                   <td className="px-5 py-4 text-right">
                     <Link
                       to={`/editor/${site.templateId}?project=${site.id}&mode=view`}
-                      className="text-sm font-semibold text-indigo-700 hover:underline"
+                      className="text-sm font-semibold text-navy hover:underline"
                     >
                       View site
                     </Link>

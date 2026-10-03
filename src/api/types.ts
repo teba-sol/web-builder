@@ -25,7 +25,16 @@ export interface UserProfile {
   fullName: string
   role: Role
   status: AccountStatus
+  phone: string | null
   agencyId: string | null
+}
+
+export interface Page<T> {
+  items: T[]
+  page: number
+  size: number
+  totalElements: number
+  totalPages: number
 }
 
 export interface AuthResponse {
@@ -40,13 +49,18 @@ export interface MeResponse {
   websiteCount: number
 }
 
-export interface PricingSettings {
+export type PriceUserType = 'USER' | 'AGENCY'
+
+export interface PriceTier {
+  userType: PriceUserType
   currency: string
-  websitePrice: number
-  crsMonthlyPrice: number
-  crsMonthlyDays: number
-  crsQuarterlyPrice: number
-  crsQuarterlyDays: number
+  price: number | null
+  contactUs: boolean
+  displayPrice: string
+}
+
+export interface PricingSettings {
+  prices: PriceTier[]
 }
 
 export type ProjectStatus = 'DRAFT' | 'IN_PROGRESS' | 'EXPORTED'
@@ -83,6 +97,8 @@ export interface ClientRecord {
   name: string
   contactEmail: string | null
   phone: string | null
+  createdBy: string | null
+  createdByName: string | null
   createdAt: string
 }
 
@@ -94,8 +110,10 @@ export interface ProjectListResponse {
 export interface WebsiteBilling {
   projectId: string
   status: EntitlementStatus
-  price: number
+  price: number | null
   currency: string
+  contactUs: boolean
+  displayPrice: string
   canExport: boolean
   canCloudSave: boolean
 }

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Lock } from 'lucide-react'
 import { recordExportEvent } from '../api/projects'
 import { downloadWebsiteZip } from '../export/downloadZip'
 import type { SiteContent, TemplateId } from '../types'
@@ -48,7 +49,7 @@ export function DownloadButton({
   }
 
   const text =
-    status === 'loading' ? 'Preparing...' : status === 'done' ? 'Downloaded!' : label
+    status === 'loading' ? 'Preparing...' : status === 'done' ? 'Downloaded!' : canExport ? label : 'Download locked'
 
   return (
     <button
@@ -56,9 +57,10 @@ export function DownloadButton({
       disabled={status === 'loading'}
       className={
         className ??
-        'rounded-lg bg-emerald-600 px-5 py-2 text-sm font-semibold text-white hover:bg-emerald-700 disabled:opacity-60 transition-colors'
+        'inline-flex items-center gap-2 rounded-lg bg-accent px-5 py-2 text-sm font-semibold text-white hover:bg-accent-dark disabled:opacity-60 transition-colors'
       }
     >
+      {!canExport && <Lock size={14} />}
       {text}
     </button>
   )

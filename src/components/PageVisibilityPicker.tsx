@@ -9,8 +9,8 @@ interface Props {
 
 export function PageVisibilityPicker({ visibility, onToggle, pages = pageMetas }: Props) {
   return (
-    <div className="rounded-xl border border-indigo-200 bg-indigo-50/50 p-4">
-      <p className="mb-1 text-sm font-bold uppercase tracking-wider text-indigo-600">Site Pages</p>
+    <div className="rounded-xl border border-navy/20 bg-navy/5 p-4">
+      <p className="mb-1 text-sm font-bold uppercase tracking-wider text-accent">Site Pages</p>
       <p className="mb-4 text-xs text-slate-500">Toggle which pages this template includes. Home is always included. Unused page types stay out of this editor.</p>
       <div className="grid gap-2 sm:grid-cols-2">
         <div className="flex items-start gap-3 rounded-lg border border-slate-200 bg-white px-3 py-2.5 opacity-70">
@@ -23,13 +23,13 @@ export function PageVisibilityPicker({ visibility, onToggle, pages = pageMetas }
         {pages.map((meta) => (
           <label
             key={meta.key}
-            className="flex cursor-pointer items-start gap-3 rounded-lg border border-slate-200 bg-white px-3 py-2.5 hover:border-indigo-300 transition-colors"
+            className="flex cursor-pointer items-start gap-3 rounded-lg border border-slate-200 bg-white px-3 py-2.5 hover:border-accent transition-colors"
           >
             <input
               type="checkbox"
               checked={visibility[meta.key]}
               onChange={() => onToggle(meta.key)}
-              className="mt-0.5 h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+              className="mt-0.5 h-4 w-4 rounded border-slate-300 text-accent focus:ring-navy"
             />
             <span>
               <span className="block text-sm font-medium text-slate-800">{meta.label}</span>

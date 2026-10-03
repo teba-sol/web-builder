@@ -17,15 +17,27 @@ export function PageShell({
   )
 }
 
-export function Initials({ name }: { name: string }) {
+export function Initials({
+  name,
+  size = 'sm',
+}: {
+  name: string
+  size?: 'sm' | 'md' | 'lg'
+}) {
   const letters = name
     .split(/\s+/)
     .filter(Boolean)
     .slice(0, 2)
     .map((part) => part[0]?.toUpperCase() ?? '')
     .join('')
+  const box =
+    size === 'lg'
+      ? 'h-20 w-20 text-2xl'
+      : size === 'md'
+        ? 'h-11 w-11 text-sm'
+        : 'h-8 w-8 text-xs'
   return (
-    <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-indigo-50 text-xs font-semibold text-indigo-700">
+    <span className={`inline-flex ${box} items-center justify-center rounded-full bg-navy text-white font-semibold`}>
       {letters || 'U'}
     </span>
   )
@@ -45,7 +57,7 @@ export function StatusBadge({ status }: { status: ProjectStatus | string }) {
 export function ProgressBar({ value }: { value: number }) {
   return (
     <div className="h-1.5 overflow-hidden rounded-full bg-slate-100">
-      <div className="h-full rounded-full bg-indigo-600 transition-all" style={{ width: `${Math.max(0, Math.min(100, value))}%` }} />
+      <div className="h-full rounded-full bg-accent transition-all" style={{ width: `${Math.max(0, Math.min(100, value))}%` }} />
     </div>
   )
 }

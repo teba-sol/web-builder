@@ -1,8 +1,14 @@
 import { apiFetch } from './client'
-import type { CheckoutResponse, PricingSettings, WebsiteBilling } from './types'
+import type { CheckoutResponse, PriceTier, PricingSettings, Role, WebsiteBilling } from './types'
 
 export function fetchPricing() {
   return apiFetch<PricingSettings>('/api/v1/billing/pricing')
+}
+
+export function pricingTierForRole(pricing: PricingSettings | null, role: Role | undefined): PriceTier | null {
+  if (!pricing) return null
+  const userType = role === 'SALESPERSON' || role === 'AGENCY_ADMIN' ? 'AGENCY' : 'USER'
+  return pricing.prices.find((tier) => tier.userType === userType) ?? pricing.prices[0] ?? null
 }
 
 export function fetchWebsiteBilling(projectId: string) {

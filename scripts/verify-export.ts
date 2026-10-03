@@ -44,12 +44,14 @@ for (const manifest of manifests) {
     assert(defaults.pageVisibility.rooms, `${manifest.id}: hospitality template should enable rooms`)
     assert(defaults.roomTypes.length > 0, `${manifest.id}: hospitality template should seed rooms`)
     assert(hasBookingFeature(defaults), `${manifest.id}: booking feature should be on`)
-    assert(backend['app/Models/RoomType.php'], `${manifest.id}: missing RoomType model`)
+    assert(backend['app/Services/CrsClient.php'], `${manifest.id}: missing CRS client`)
+    assert(backend['app/Models/Reservation.php'], `${manifest.id}: missing Reservation model`)
+    assert(!backend['app/Models/RoomType.php'], `${manifest.id}: inventory must live in BuildAura CRS, not local RoomType`)
     assert(backend['app/Http/Controllers/BookingController.php'], `${manifest.id}: missing BookingController`)
-    assert(backend['resources/views/rooms/index.blade.php'] || Object.keys(backend).some((p) => p.includes('rooms')), `${manifest.id}: missing rooms Blade view`)
+    assert(Object.keys(backend).some((p) => p.includes('rooms')), `${manifest.id}: missing rooms Blade view`)
   } else {
     assert(!hasBookingFeature(defaults), `${manifest.id}: booking should stay off`)
-    assert(!backend['app/Models/RoomType.php'], `${manifest.id}: business CMS should not emit booking models`)
+    assert(!backend['app/Services/CrsClient.php'], `${manifest.id}: business CMS should not emit CRS client`)
   }
 }
 

@@ -12,7 +12,11 @@ interface Props {
 
 export function TemplateCard({ template }: Props) {
   const { user } = useAuth()
-  const useHref = user?.role === 'SALESPERSON' ? `/new-site?template=${template.id}` : `/editor/${template.id}`
+  const useHref = user
+    ? user.role === 'SALESPERSON'
+      ? `/new-site?template=${template.id}`
+      : `/editor/${template.id}`
+    : `/login?return=${encodeURIComponent(`/editor/${template.id}`)}`
   const categoryLabel = categories.find((c) => c.id === template.category)?.label ?? template.category
   const layoutCount = getLayoutVariants(template.id).length
   const imported = isImportedTemplate(template.id)
@@ -63,7 +67,7 @@ export function TemplateCard({ template }: Props) {
           </Link>
           <Link
             to={useHref}
-            className="flex-1 rounded-lg bg-indigo-600 px-4 py-2.5 text-center text-sm font-semibold text-white hover:bg-indigo-700 transition-colors"
+            className="flex-1 rounded-lg bg-accent px-4 py-2.5 text-center text-sm font-semibold text-white hover:bg-accent-dark transition-colors"
           >
             Use Template
           </Link>

@@ -256,7 +256,7 @@ export function ContentForm() {
                     rooms[i] = { ...rooms[i], isActive: e.target.checked }
                     updateContent({ roomTypes: rooms })
                   }}
-                  className="h-4 w-4 rounded border-slate-300 text-indigo-600"
+                  className="h-4 w-4 rounded border-slate-300 text-accent"
                 />
                 Active (bookable on the public site)
               </label>
@@ -429,7 +429,7 @@ export function ContentForm() {
                     plans[i] = { ...plans[i], featured: e.target.checked }
                     updateContent({ pricing: plans })
                   }}
-                  className="h-4 w-4 rounded border-slate-300 text-indigo-600"
+                  className="h-4 w-4 rounded border-slate-300 text-accent"
                 />
                 Highlight as featured plan
               </label>
@@ -537,7 +537,7 @@ function FormSection({
             type="button"
             onClick={onAdd}
             disabled={!canAdd}
-            className="shrink-0 rounded-lg border border-indigo-200 bg-indigo-50 px-3 py-1.5 text-xs font-semibold text-indigo-700 hover:bg-indigo-100 disabled:cursor-not-allowed disabled:opacity-40"
+            className="shrink-0 rounded-lg border border-navy/20 bg-navy/5 px-3 py-1.5 text-xs font-semibold text-navy hover:bg-accent/15 disabled:cursor-not-allowed disabled:opacity-40"
           >
             + {addLabel ?? 'Add'}
           </button>
@@ -581,7 +581,7 @@ function Field({
   label: string; value: string; onChange: (v: string) => void
   placeholder?: string; multiline?: boolean; rows?: number
 }) {
-  const cls = 'w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20'
+  const cls = 'w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-navy focus:outline-none focus:ring-2 focus:ring-navy/20'
   return (
     <label className="block">
       <span className="mb-1.5 block text-sm font-medium text-slate-700">{label}</span>

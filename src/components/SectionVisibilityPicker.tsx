@@ -16,13 +16,13 @@ export function SectionVisibilityPicker({ visibility, onToggle, sections = secti
         {sections.map((meta) => (
           <label
             key={meta.key}
-            className="flex cursor-pointer items-start gap-3 rounded-lg border border-slate-200 bg-white px-3 py-2.5 hover:border-indigo-300 transition-colors"
+            className="flex cursor-pointer items-start gap-3 rounded-lg border border-slate-200 bg-white px-3 py-2.5 hover:border-accent transition-colors"
           >
             <input
               type="checkbox"
               checked={visibility[meta.key]}
               onChange={() => onToggle(meta.key)}
-              className="mt-0.5 h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+              className="mt-0.5 h-4 w-4 rounded border-slate-300 text-accent focus:ring-navy"
             />
             <span>
               <span className="block text-sm font-medium text-slate-800">{meta.label}</span>

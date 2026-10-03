@@ -2,7 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { ApiError } from '../api/types'
 import { useAuth } from '../auth/AuthContext'
-import { AuthShell } from '../components/AuthShell'
+import { AuthShell, authButtonClass, authFieldClass } from '../components/AuthShell'
 
 export function LoginPage() {
   const { login } = useAuth()
@@ -33,10 +33,10 @@ export function LoginPage() {
   if (returnTo) signupQuery.set('return', returnTo)
 
   return (
-    <AuthShell title="Sign in" subtitle="Personal accounts and Addis Web Studio salespeople sign in here. Agency admins open the agency dashboard at localhost:5174 (selam@addisweb.et).">
-      <form onSubmit={onSubmit} className="space-y-4">
-        {error && <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>}
-        <label className="block text-sm font-medium text-slate-700">
+    <AuthShell title="Welcome back" subtitle="Personal accounts and salespeople sign in here. Agency admins use the agency portal.">
+      <form onSubmit={onSubmit} className="space-y-6">
+        {error && <p className="text-sm text-red-600">{error}</p>}
+        <label className="block text-[11px] font-semibold uppercase tracking-[0.22em] text-navy/50">
           Email
           <input
             type="email"
@@ -44,10 +44,11 @@ export function LoginPage() {
             autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900"
+            placeholder="you@studio.et"
+            className={authFieldClass}
           />
         </label>
-        <label className="block text-sm font-medium text-slate-700">
+        <label className="block text-[11px] font-semibold uppercase tracking-[0.22em] text-navy/50">
           Password
           <input
             type="password"
@@ -55,26 +56,22 @@ export function LoginPage() {
             autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900"
+            className={authFieldClass}
           />
         </label>
-        <button
-          type="submit"
-          disabled={submitting}
-          className="w-full rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-60"
-        >
+        <button type="submit" disabled={submitting} className={authButtonClass}>
           {submitting ? 'Signing in…' : 'Sign in'}
         </button>
       </form>
-      <p className="mt-6 text-center text-sm text-slate-600">
+      <p className="mt-10 text-[11px] uppercase tracking-[0.22em] text-navy/45">
         No account?{' '}
-        <Link to={`/signup${signupQuery.toString() ? `?${signupQuery}` : ''}`} className="font-semibold text-indigo-700">
-          Create a personal or agency account
+        <Link to={`/signup${signupQuery.toString() ? `?${signupQuery}` : ''}`} className="text-navy">
+          Create one
         </Link>
       </p>
-      <p className="mt-2 text-center text-sm">
-        <Link to="/forgot-password" className="text-slate-500 hover:text-slate-800">
-          Forgot password?
+      <p className="mt-4 text-[11px] uppercase tracking-[0.22em]">
+        <Link to="/forgot-password" className="text-navy/45 hover:text-navy">
+          Forgot password
         </Link>
       </p>
     </AuthShell>
