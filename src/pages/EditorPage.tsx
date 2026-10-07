@@ -7,6 +7,7 @@ import { TemplateRenderer } from '../templates/TemplateRenderer'
 import { getTemplateDefaults, getTemplateMeta } from '../data/defaults'
 import { appearanceFromSearchParams } from '../data/pickTemplate'
 import { isValidTemplateId } from '../data/templateIds'
+import { rememberProjectId } from '../auth/builderSession'
 import { buildSiteDocument, downloadSiteDocument } from '../siteDocument/io'
 
 export function EditorPage() {
@@ -24,6 +25,7 @@ export function EditorPage() {
       navigate('/')
       return
     }
+    rememberProjectId(searchParams.get('project'))
     const appearance = appearanceFromSearchParams(searchParams)
     const queryKey = `${id}?${searchParams.toString()}`
     if (appearance) {
