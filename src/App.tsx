@@ -11,7 +11,7 @@ import { SiteViewPage } from './pages/SiteViewPage'
 export default function App() {
   return (
     <WebsiteProvider>
-      <BrowserRouter>implment hanoff logic.
+      <BrowserRouter>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/handoff" element={<HandoffPage />} />
