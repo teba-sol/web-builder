@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { WebsiteProvider } from './context/WebsiteContext'
 import { HomePage } from './pages/HomePage'
 import { EditorPage } from './pages/EditorPage'
+import { HandoffPage } from './pages/HandoffPage'
 import { PickTemplatePage } from './pages/PickTemplatePage'
 import { PreviewPage } from './pages/PreviewPage'
 import { TemplateDemoPage } from './pages/TemplateDemoPage'
@@ -13,6 +14,7 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/handoff" element={<HandoffPage />} />
           <Route path="/pick-template" element={<PickTemplatePage />} />
           <Route path="/demo/:templateId/*" element={<TemplateDemoPage />} />
           <Route path="/editor/:templateId/*" element={<EditorPage />} />

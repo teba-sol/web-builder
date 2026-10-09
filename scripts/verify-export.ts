@@ -8,6 +8,7 @@ import { buildSiteDocument, parseSiteDocument, stringifySiteDocument } from '../
 import { templateDefaults } from '../src/data/defaults.ts'
 import { generateBackend } from '../src/export/backend/generateBackend.ts'
 import { hasBookingFeature } from '../src/export/backend/generateBooking.ts'
+import { usesBuildauraCrs } from '../src/export/backend/generateCrsBooking.ts'
 import { buildAllSitePages } from '../src/export/buildSitePages.ts'
 import { clonePaletteCss, resolveClonePalette } from '../src/templates/cloneTheme.ts'
 
@@ -44,9 +45,24 @@ for (const manifest of manifests) {
     assert(defaults.pageVisibility.rooms, `${manifest.id}: hospitality template should enable rooms`)
     assert(defaults.roomTypes.length > 0, `${manifest.id}: hospitality template should seed rooms`)
     assert(hasBookingFeature(defaults), `${manifest.id}: booking feature should be on`)
-    assert(backend['app/Models/RoomType.php'], `${manifest.id}: missing RoomType model`)
     assert(backend['app/Http/Controllers/BookingController.php'], `${manifest.id}: missing BookingController`)
     assert(backend['resources/views/rooms/index.blade.php'] || Object.keys(backend).some((p) => p.includes('rooms')), `${manifest.id}: missing rooms Blade view`)
+    if (usesBuildauraCrs(manifest.id)) {
+      const client = backend['app/Services/BuildauraClient.php'] ?? ''
+      const booking = backend['app/Http/Controllers/BookingController.php'] ?? ''
+      assert(!backend['app/Models/RoomType.php'], `${manifest.id}: Buildaura hotels must not use a local RoomType`)
+      assert(client.includes('externalRef'), `${manifest.id}: occupancy must send the confirmation code`)
+      assert(!client.includes('guestName'), `${manifest.id}: guest name must stay off the API client`)
+      assert(!client.includes('guestEmail'), `${manifest.id}: guest email must stay off the API client`)
+      assert(booking.includes("'guest_phone' => 'required"), `${manifest.id}: phone is required`)
+      assert(booking.includes("'guest_email' => 'nullable"), `${manifest.id}: email is optional`)
+      assert(backend['.env.example']?.includes('BUILDAURA_API_KEY='), `${manifest.id}: .env.example should include the API key`)
+      assert(!backend['database/seeders/DatabaseSeeder.php']?.includes('HospitalitySeeder'), `${manifest.id}: catalogue comes from Buildaura`)
+      assert(!backend['resources/views/site/index.blade.php']?.includes('RoomType::'), `${manifest.id}: home must not query a local RoomType`)
+    } else {
+      assert(backend['app/Models/RoomType.php'], `${manifest.id}: missing RoomType model`)
+      assert(!backend['.env.example']?.includes('BUILDAURA_API_KEY'), `${manifest.id}: local booking must not embed a Buildaura key`)
+    }
   } else {
     assert(!hasBookingFeature(defaults), `${manifest.id}: booking should stay off`)
     assert(!backend['app/Models/RoomType.php'], `${manifest.id}: business CMS should not emit booking models`)
@@ -208,8 +224,18 @@ assert(cpaCss.includes('--clone-surface: #F6F3EA') || cpaCss.toLowerCase().inclu
 const cpaAltCss = clonePaletteCss('cpa', cpaAlt)
 assert(cpaAltCss.includes('#0f766e') || cpaAltCss.includes('#0F766E'), 'alternate scheme css emits new accent')
 
-const hotelBackend = generateBackend('hotel', templateDefaults.hotel, hotel.defaultColorSchemeId, hotel.defaultLayoutVariantId, [])
-assert(hotelBackend['app/Models/RoomType.php']?.includes('class RoomType'), 'hotel Laravel export should include RoomType')
+const hotelBackend = generateBackend('hotel', templateDefaults.hotel, hotel.defaultColorSchemeId, hotel.defaultLayoutVariantId, [], {
+  apiBaseUrl: 'http://localhost:8080',
+  hotelId: '11111111-1111-1111-1111-111111111111',
+  apiKey: 'crs_abc',
+})
+assert(!hotelBackend['app/Models/RoomType.php'], 'hotel Laravel export should manage rooms through Buildaura')
+assert(hotelBackend['.env.example']?.includes('BUILDAURA_API_KEY="crs_abc"'), 'hotel .env.example should contain the working key')
+assert(hotelBackend['.env.example']?.includes('BUILDAURA_HOTEL_ID="11111111-1111-1111-1111-111111111111"'), 'hotel .env.example should contain the hotel id')
 assert(Object.keys(hotelBackend).some((path) => path.includes('BookingController')), 'hotel Laravel export should include booking')
+assert(hotelBackend['app/Filament/Pages/ApiKey.php']?.includes('class ApiKey'), 'hotel admin should request a new API key')
+const alpineBackend = generateBackend('alpine', templateDefaults.alpine, requireManifest('alpine').defaultColorSchemeId, requireManifest('alpine').defaultLayoutVariantId, [])
+assert(alpineBackend['app/Models/RoomType.php']?.includes('class RoomType'), 'alpine stays on the local booking stack')
+assert(!alpineBackend['.env.example']?.includes('BUILDAURA_API_KEY'), 'alpine must not receive a Buildaura key')
 
 console.log(`ok: ${manifests.length} templates, preview defaults + static ZIP + Laravel ZIP`)

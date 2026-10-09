@@ -2,6 +2,8 @@ import JSZip from 'jszip'
 import { buildSiteDocument, stringifySiteDocument } from '../siteDocument/io'
 import type { SiteContent, TemplateId } from '../types'
 import { generateBackend, mapAssetsForBackend } from './backend/generateBackend'
+import type { CrsExportCredentials } from './backend/generateCrsBooking'
+import { usesBuildauraCrs } from './backend/generateCrsBooking'
 import { buildAllSitePages } from './buildSitePages'
 
 function slugify(name: string): string {
@@ -16,6 +18,7 @@ export async function downloadWebsiteZip(
   content: SiteContent,
   colorSchemeId?: string,
   layoutVariantId?: string,
+  credentials?: CrsExportCredentials,
 ) {
   const { pages, assets, seoFiles } = buildAllSitePages(templateId, content, colorSchemeId, layoutVariantId)
   const zip = new JSZip()
@@ -32,7 +35,7 @@ export async function downloadWebsiteZip(
   }
 
   // Laravel + Filament backend
-  const backendFiles = generateBackend(templateId, content, colorSchemeId, layoutVariantId, assets)
+  const backendFiles = generateBackend(templateId, content, colorSchemeId, layoutVariantId, assets, credentials)
   for (const [path, fileContent] of Object.entries(backendFiles)) {
     zip.file(`backend/${path}`, fileContent)
   }
@@ -86,7 +89,14 @@ Then visit:
 Website images live in storage/ — run Storage Link from Site Doctor (included in Run All).
 
 See backend/README.md for full deployment instructions.
-
+${usesBuildauraCrs(templateId) ? `
+HOTEL / GUEST HOUSE
+Reservations run on the Laravel site, not the static frontend folder.
+Copy backend/.env.example to backend/.env. When you download from Buildaura,
+BUILDAURA_API_KEY is a working key. Downloading again replaces that key.
+Guest name, email, and phone stay in this website's database.
+Buildaura only updates the room status.
+` : ''}
 Built with WebBuilder
 `,
   )
