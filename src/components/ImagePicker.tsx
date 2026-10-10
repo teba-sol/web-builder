@@ -48,7 +48,7 @@ export function ImagePicker({ label, value, onChange, hint, fit = 'cover' }: Pro
           const file = e.dataTransfer.files[0]
           if (file) handleFile(file)
         }}
-        className="rounded-lg border-2 border-dashed border-slate-300 bg-slate-50 p-4 text-center transition-colors hover:border-indigo-400 hover:bg-indigo-50/50"
+        className="rounded-lg border-2 border-dashed border-slate-300 bg-slate-50 p-4 text-center transition-colors hover:border-accent hover:bg-navy/5"
       >
         <input
           ref={inputRef}
@@ -65,7 +65,7 @@ export function ImagePicker({ label, value, onChange, hint, fit = 'cover' }: Pro
         <button
           type="button"
           onClick={() => inputRef.current?.click()}
-          className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700"
+          className="rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-white hover:bg-accent-dark"
         >
           Upload Image
         </button>
@@ -82,7 +82,7 @@ export function ImagePicker({ label, value, onChange, hint, fit = 'cover' }: Pro
         value={value.startsWith('data:') ? '' : value}
         onChange={(e) => onChange(e.target.value)}
         placeholder="https://images.unsplash.com/..."
-        className="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+        className="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-navy focus:outline-none focus:ring-2 focus:ring-navy/20"
       />
 
       {hint && <p className="text-xs text-slate-500">{hint}</p>}

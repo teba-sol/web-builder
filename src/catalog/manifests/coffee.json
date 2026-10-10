@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "id": "coffee",
-  "name": "Ember & Grain",
-  "description": "Warm artisan caf\u00e9 aesthetic \u2014 immersive hero, signature menu showcase, and cozy hospitality.",
+  "name": "Yirgacheffe House",
+  "description": "Warm artisan café aesthetic — immersive hero, signature menu showcase, and cozy hospitality.",
   "category": "food",
   "previewGradient": "from-amber-950 via-[#3d2314] to-amber-700",
   "accentColor": "#c9a66b",
@@ -155,7 +155,7 @@
     "explore": "compass",
     "contactShell": "coffee-warm",
     "contactForm": "soft-rounded",
-    "exploreTitle": "The Caf\u00e9",
+    "exploreTitle": "The Café",
     "exploreSubtitle": "Menu, beans, events, and visit us",
     "exploreLinkLabel": "Order"
   },
@@ -172,9 +172,9 @@
   "defaultShowcase": [
     {
       "title": "Ethiopian Yirgacheffe",
-      "description": "Bright floral notes with bergamot and honey \u2014 pour-over or espresso.",
+      "description": "Bright floral notes with bergamot and honey — pour-over or espresso.",
       "image": "https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=600&q=80",
-      "price": "$5.50",
+      "price": "302 ETB",
       "tag": "Light",
       "link": "contact"
     },
@@ -182,15 +182,15 @@
       "title": "Velvet Oat Latte",
       "description": "House espresso, oat milk microfoam, and a touch of vanilla bean.",
       "image": "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=600&q=80",
-      "price": "$6.25",
+      "price": "344 ETB",
       "tag": "Signature",
       "link": "contact"
     },
     {
       "title": "Midnight Mocha",
-      "description": "72% dark chocolate, double shot, and whipped crema \u2014 indulgent and bold.",
+      "description": "72% dark chocolate, double shot, and whipped crema — indulgent and bold.",
       "image": "https://images.unsplash.com/photo-1572442388796-11668a67e3d9?w=600&q=80",
-      "price": "$6.75",
+      "price": "371 ETB",
       "tag": "Dark",
       "link": "contact"
     },
@@ -198,15 +198,15 @@
       "title": "Honey Cinnamon Cortado",
       "description": "Equal parts espresso and steamed milk with raw honey and Ceylon cinnamon.",
       "image": "https://images.unsplash.com/photo-1514434758858-3e2c5c8f8c0e?w=600&q=80",
-      "price": "$5.95",
+      "price": "327 ETB",
       "tag": "Seasonal",
       "link": "contact"
     },
     {
       "title": "Cold Brew Tonic",
-      "description": "18-hour steep, tonic water, and orange peel \u2014 crisp and refreshing.",
+      "description": "18-hour steep, tonic water, and orange peel — crisp and refreshing.",
       "image": "https://images.unsplash.com/photo-1517487881594-278fdf133cde?w=600&q=80",
-      "price": "$5.50",
+      "price": "302 ETB",
       "tag": "Iced",
       "link": "contact"
     },
@@ -214,7 +214,7 @@
       "title": "Affogato Classico",
       "description": "Double ristretto poured over artisan vanilla gelato.",
       "image": "https://images.unsplash.com/photo-1559496417-e7f25cb247b3?w=600&q=80",
-      "price": "$7.50",
+      "price": "412 ETB",
       "tag": "Dessert",
       "link": "contact"
     }
@@ -224,22 +224,22 @@
     {
       "key": "email",
       "label": "Email",
-      "placeholder": "hello@emberandgrain.coffee"
+      "placeholder": "hello@yirgacheffehouse.et"
     },
     {
       "key": "phone",
       "label": "Phone",
-      "placeholder": "(555) 847-0921"
+      "placeholder": "+251 11 111 2040"
     },
     {
       "key": "address",
-      "label": "Caf\u00e9 Address",
-      "placeholder": "42 Roastery Lane, Portland"
+      "label": "Café Address",
+      "placeholder": "Piazza, Addis Ababa"
     },
     {
       "key": "hours",
       "label": "Opening Hours",
-      "placeholder": "Mon\u2013Sun 7am\u20136pm"
+      "placeholder": "Mon–Sun 7am–6pm"
     },
     {
       "key": "instagram",
@@ -269,12 +269,12 @@
     "grayscaleImage": false
   },
   "defaults": {
-    "businessName": "Ember & Grain",
-    "tagline": "Craft coffee, roasted with intention",
-    "heroSubtext": "Small-batch roasts, pour-over rituals, and a warm corner to slow down \u2014 from bean to cup, every detail matters.",
+    "businessName": "Yirgacheffe House",
+    "tagline": "Coffee from the source",
+    "heroSubtext": "Yirgacheffe, Guji, and Sidama — roasted in Piazza and poured all day.",
     "heroImage": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1200&q=80",
     "aboutTitle": "Our Roastery Story",
-    "about": "Ember & Grain began as a weekend market stall and grew into a neighborhood sanctuary for coffee lovers. We source directly from farmers we know by name, roast in micro-batches on our Probat, and serve each cup with the care it deserves.",
+    "about": "Yirgacheffe House began as a weekend market stall and grew into a neighborhood sanctuary for coffee lovers. We source directly from farmers we know by name, roast in micro-batches on our Probat, and serve each cup with the care it deserves.",
     "aboutImage": "https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=800&q=80",
     "missionStatement": "Great coffee is a conversation between soil, craft, and community.",
     "pageVisibility": {
@@ -302,7 +302,7 @@
         "label": "Origin Farms"
       },
       {
-        "value": "4.9\u2605",
+        "value": "4.9★",
         "label": "Guest Rating"
       },
       {
@@ -315,7 +315,7 @@
       }
     ],
     "servicesSectionTitle": "The Experience",
-    "servicesSectionSubtitle": "More than caffeine \u2014 a ritual worth savoring",
+    "servicesSectionSubtitle": "More than caffeine — a ritual worth savoring",
     "services": [
       {
         "title": "Pour-Over Bar",
@@ -323,7 +323,7 @@
       },
       {
         "title": "Espresso Program",
-        "description": "Dialled daily \u2014 honey-sweet shots and silky microfoam."
+        "description": "Dialled daily — honey-sweet shots and silky microfoam."
       },
       {
         "title": "Pastry & Bites",
@@ -358,9 +358,9 @@
     "showcaseItems": [
       {
         "title": "Ethiopian Yirgacheffe",
-        "description": "Bright floral notes with bergamot and honey \u2014 pour-over or espresso.",
+        "description": "Bright floral notes with bergamot and honey — pour-over or espresso.",
         "image": "https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=600&q=80",
-        "price": "$5.50",
+        "price": "302 ETB",
         "tag": "Light",
         "link": "contact"
       },
@@ -368,15 +368,15 @@
         "title": "Velvet Oat Latte",
         "description": "House espresso, oat milk microfoam, and a touch of vanilla bean.",
         "image": "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=600&q=80",
-        "price": "$6.25",
+        "price": "344 ETB",
         "tag": "Signature",
         "link": "contact"
       },
       {
         "title": "Midnight Mocha",
-        "description": "72% dark chocolate, double shot, and whipped crema \u2014 indulgent and bold.",
+        "description": "72% dark chocolate, double shot, and whipped crema — indulgent and bold.",
         "image": "https://images.unsplash.com/photo-1572442388796-11668a67e3d9?w=600&q=80",
-        "price": "$6.75",
+        "price": "371 ETB",
         "tag": "Dark",
         "link": "contact"
       },
@@ -384,15 +384,15 @@
         "title": "Honey Cinnamon Cortado",
         "description": "Equal parts espresso and steamed milk with raw honey and Ceylon cinnamon.",
         "image": "https://images.unsplash.com/photo-1514434758858-3e2c5c8f8c0e?w=600&q=80",
-        "price": "$5.95",
+        "price": "327 ETB",
         "tag": "Seasonal",
         "link": "contact"
       },
       {
         "title": "Cold Brew Tonic",
-        "description": "18-hour steep, tonic water, and orange peel \u2014 crisp and refreshing.",
+        "description": "18-hour steep, tonic water, and orange peel — crisp and refreshing.",
         "image": "https://images.unsplash.com/photo-1517487881594-278fdf133cde?w=600&q=80",
-        "price": "$5.50",
+        "price": "302 ETB",
         "tag": "Iced",
         "link": "contact"
       },
@@ -400,12 +400,12 @@
         "title": "Affogato Classico",
         "description": "Double ristretto poured over artisan vanilla gelato.",
         "image": "https://images.unsplash.com/photo-1559496417-e7f25cb247b3?w=600&q=80",
-        "price": "$7.50",
+        "price": "412 ETB",
         "tag": "Dessert",
         "link": "contact"
       }
     ],
-    "gallerySectionTitle": "Inside Ember & Grain",
+    "gallerySectionTitle": "Inside Yirgacheffe House",
     "galleryImages": [
       "https://images.unsplash.com/photo-1501339847302-ac711a0a6587?w=600&q=80",
       "https://images.unsplash.com/photo-1453614512568-c4024d13c247?w=600&q=80",
@@ -415,17 +415,17 @@
     "testimonials": [
       {
         "quote": "Outstanding service and incredible results. Highly recommended!",
-        "author": "Sarah Johnson",
+        "author": "Selam Tadesse",
         "role": "CEO, TechStart"
       },
       {
         "quote": "They transformed our business. Professional, creative, and reliable.",
-        "author": "Michael Chen",
+        "author": "Yonas Gebre",
         "role": "Founder, Bloom Co"
       },
       {
         "quote": "The best decision we made this year. Exceeded every expectation.",
-        "author": "Emily Rodriguez",
+        "author": "Meron Assefa",
         "role": "Director, Apex Group"
       }
     ],
@@ -441,7 +441,7 @@
       },
       {
         "question": "How long does a typical project take?",
-        "answer": "Timelines vary by scope, but most projects are completed within 2\u20138 weeks."
+        "answer": "Timelines vary by scope, but most projects are completed within 2–8 weeks."
       },
       {
         "question": "Do you offer ongoing support?",
@@ -458,7 +458,7 @@
         "title": "We Are Expanding to Serve You Better",
         "slug": "expanding-to-serve-you-better",
         "excerpt": "New locations, extended hours, and more ways to connect with our team.",
-        "body": "We are thrilled to announce expanded service hours and a new consultation space designed around your comfort and convenience.\n\nThis investment reflects our commitment to accessibility and excellence. Thank you for being part of our journey \u2014 we cannot wait to welcome you.",
+        "body": "We are thrilled to announce expanded service hours and a new consultation space designed around your comfort and convenience.\n\nThis investment reflects our commitment to accessibility and excellence. Thank you for being part of our journey — we cannot wait to welcome you.",
         "image": "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80",
         "author": "Press Team",
         "date": "2026-04-01"
@@ -467,7 +467,7 @@
         "title": "Award Recognizes Our Commitment to Quality",
         "slug": "award-quality-commitment",
         "excerpt": "Industry leaders honored our team for outstanding client satisfaction.",
-        "body": "Receiving this recognition is a testament to the people behind our work \u2014 dedicated professionals who show up every day with care and craft.\n\nWe share this award with every client who trusted us with their goals. Your feedback shapes how we grow and improve.",
+        "body": "Receiving this recognition is a testament to the people behind our work — dedicated professionals who show up every day with care and craft.\n\nWe share this award with every client who trusted us with their goals. Your feedback shapes how we grow and improve.",
         "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80",
         "author": "Communications",
         "date": "2026-03-18"
@@ -487,14 +487,14 @@
       {
         "title": "Starter",
         "description": "Essential features for individuals and small teams getting started.",
-        "price": "$29/mo",
+        "price": "1,600 ETB/mo",
         "tag": "Most popular",
         "featured": false
       },
       {
         "title": "Professional",
         "description": "Advanced tools, priority support, and integrations for growing businesses.",
-        "price": "$79/mo",
+        "price": "4,340 ETB/mo",
         "tag": "Best value",
         "featured": true
       },
@@ -516,7 +516,7 @@
         "title": "5 Strategies to Grow Your Business This Year",
         "slug": "5-strategies-to-grow-your-business",
         "excerpt": "Practical steps you can take today to build momentum and reach more customers.",
-        "body": "Growing a business takes focus, consistency, and a willingness to adapt. Start by clarifying your core offer, then double down on the channels that already bring results.\n\nReview your customer journey from first touch to repeat purchase. Small improvements at each step compound into meaningful revenue gains. Finally, invest in relationships \u2014 referrals and retention often outperform cold outreach.",
+        "body": "Growing a business takes focus, consistency, and a willingness to adapt. Start by clarifying your core offer, then double down on the channels that already bring results.\n\nReview your customer journey from first touch to repeat purchase. Small improvements at each step compound into meaningful revenue gains. Finally, invest in relationships — referrals and retention often outperform cold outreach.",
         "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
         "author": "Alex Morgan",
         "date": "2026-03-12"
@@ -524,8 +524,8 @@
       {
         "title": "What Clients Are Asking Us Right Now",
         "slug": "what-clients-are-asking-us",
-        "excerpt": "A quick roundup of the most common questions we hear \u2014 and how we answer them.",
-        "body": "Every season brings a new set of priorities. Lately, clients ask about pricing transparency, faster turnaround times, and how to stand out in crowded markets.\n\nOur advice stays grounded in fundamentals: deliver exceptional value, communicate clearly, and measure what matters. When in doubt, talk to your customers \u2014 their feedback is the best roadmap.",
+        "excerpt": "A quick roundup of the most common questions we hear — and how we answer them.",
+        "body": "Every season brings a new set of priorities. Lately, clients ask about pricing transparency, faster turnaround times, and how to stand out in crowded markets.\n\nOur advice stays grounded in fundamentals: deliver exceptional value, communicate clearly, and measure what matters. When in doubt, talk to your customers — their feedback is the best roadmap.",
         "image": "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80",
         "author": "Jordan Lee",
         "date": "2026-02-28"
@@ -534,7 +534,7 @@
         "title": "Behind the Scenes: How We Work",
         "slug": "behind-the-scenes-how-we-work",
         "excerpt": "Take a peek at our process, tools, and the principles that guide every project.",
-        "body": "We believe great outcomes come from clear goals, collaborative planning, and disciplined execution. Every engagement starts with listening \u2014 understanding where you are and where you want to go.\n\nFrom there we build a tailored plan with milestones you can track. Throughout delivery we keep communication open so there are no surprises, only steady progress toward results you can measure.",
+        "body": "We believe great outcomes come from clear goals, collaborative planning, and disciplined execution. Every engagement starts with listening — understanding where you are and where you want to go.\n\nFrom there we build a tailored plan with milestones you can track. Throughout delivery we keep communication open so there are no surprises, only steady progress toward results you can measure.",
         "image": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80",
         "author": "Taylor Brooks",
         "date": "2026-01-15"
@@ -542,23 +542,23 @@
     ],
     "team": [
       {
-        "name": "Maya Chen",
+        "name": "Mekdes Haile",
         "role": "Head Roaster",
         "image": "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80"
       },
       {
-        "name": "James Okonkwo",
+        "name": "Dawit Bekele",
         "role": "Lead Barista",
         "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80"
       },
       {
-        "name": "Sofia Reyes",
+        "name": "Hiwot Alemu",
         "role": "Pastry Chef",
         "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
       }
     ],
     "ctaBannerTitle": "Join us for a cup this morning",
-    "ctaBannerText": "Open daily from 7am \u2014 grab a seat by the window or order ahead.",
+    "ctaBannerText": "Open daily from 7am — grab a seat by the window or order ahead.",
     "ctaText": "Order Ahead",
     "ctaLink": "contact",
     "seoEnabled": false,
@@ -566,10 +566,10 @@
     "seoDescription": "",
     "seoKeywords": "",
     "seoSiteUrl": "",
-    "email": "",
-    "phone": "(555) 847-0921",
-    "address": "42 Roastery Lane, Portland, OR",
-    "hours": "Mon\u2013Sun 7am\u20136pm",
+    "email": "hello@yirgacheffehouse.et",
+    "phone": "+251 11 111 2040",
+    "address": "Piazza, Addis Ababa",
+    "hours": "Mon–Sun 7am–6pm",
     "instagram": "@emberandgrain",
     "website": "",
     "linkedin": "",

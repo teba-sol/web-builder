@@ -2,8 +2,7 @@ import JSZip from 'jszip'
 import { buildSiteDocument, stringifySiteDocument } from '../siteDocument/io'
 import type { SiteContent, TemplateId } from '../types'
 import { generateBackend, mapAssetsForBackend } from './backend/generateBackend'
-import type { CrsExportCredentials } from './backend/generateCrsBooking'
-import { usesBuildauraCrs } from './backend/generateCrsBooking'
+import type { CrsExportSecrets } from './backend/exportPayload'
 import { buildAllSitePages } from './buildSitePages'
 
 function slugify(name: string): string {
@@ -18,7 +17,7 @@ export async function downloadWebsiteZip(
   content: SiteContent,
   colorSchemeId?: string,
   layoutVariantId?: string,
-  credentials?: CrsExportCredentials,
+  crs?: CrsExportSecrets,
 ) {
   const { pages, assets, seoFiles } = buildAllSitePages(templateId, content, colorSchemeId, layoutVariantId)
   const zip = new JSZip()
@@ -35,7 +34,7 @@ export async function downloadWebsiteZip(
   }
 
   // Laravel + Filament backend
-  const backendFiles = generateBackend(templateId, content, colorSchemeId, layoutVariantId, assets, credentials)
+  const backendFiles = generateBackend(templateId, content, colorSchemeId, layoutVariantId, assets, crs)
   for (const [path, fileContent] of Object.entries(backendFiles)) {
     zip.file(`backend/${path}`, fileContent)
   }

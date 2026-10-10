@@ -7,7 +7,6 @@ import { useWebsite } from '../context/WebsiteContext'
 import type { ContactFieldKey } from '../types'
 import { slugify } from '../utils/slugify'
 import type { ContentListKey } from '../data/listDefaults'
-import { getDefaultLayoutVariantId } from '../data/layoutVariants'
 import {
   getEditablePageMetas,
   getEditableSectionMetas,
@@ -22,13 +21,12 @@ import { CUSTOM_COLOR_SCHEME_ID } from '../data/pickTemplate'
 import { FontPicker } from './style/FontPicker'
 import { PalettePicker } from './style/PalettePicker'
 import { ImagePicker } from './ImagePicker'
-import { LayoutVariantPicker } from './LayoutVariantPicker'
 import { PageVisibilityPicker } from './PageVisibilityPicker'
 import { SectionVisibilityPicker } from './SectionVisibilityPicker'
 
 export function ContentForm() {
   const {
-    templateId, content, colorSchemeId, layoutVariantId, setColorScheme, setLayoutVariant,
+    templateId, content, colorSchemeId, setColorScheme,
     updateContent, updateListItem, addListItem, removeListItem,
     toggleSectionVisibility,
     togglePageVisibility,
@@ -94,14 +92,6 @@ export function ContentForm() {
       )}
 
       <BrandIdentityForm content={content} onChange={updateContent} />
-
-      {templateId && (
-        <LayoutVariantPicker
-          templateId={templateId}
-          activeVariantId={layoutVariantId || getDefaultLayoutVariantId(templateId)}
-          onChange={setLayoutVariant}
-        />
-      )}
 
       <PageVisibilityPicker
         visibility={content.pageVisibility}
@@ -200,9 +190,42 @@ export function ContentForm() {
       )}
 
       {pageOn('rooms') && (
+        <FormSection title="Property">
+          <p className="mb-3 text-xs text-slate-500">
+            Saved onto the hotel in BuildAura when you export. Address, phone, and email come from Contact Details.
+          </p>
+          <label className="block">
+            <span className="mb-1.5 block text-sm font-medium text-slate-700">Star rating</span>
+            <select
+              value={content.starRating ?? ''}
+              onChange={(event) => updateContent({ starRating: event.target.value })}
+              className="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 focus:border-navy focus:outline-none focus:ring-2 focus:ring-navy/20"
+            >
+              <option value="">Not set</option>
+              <option value="1">1 star</option>
+              <option value="2">2 stars</option>
+              <option value="3">3 stars</option>
+              <option value="4">4 stars</option>
+              <option value="5">5 stars</option>
+            </select>
+          </label>
+          <Field label="City" value={content.city ?? ''} onChange={(v) => updateContent({ city: v })} placeholder="Addis Ababa" />
+          <Field label="Country" value={content.country ?? ''} onChange={(v) => updateContent({ country: v })} placeholder="Ethiopia" />
+          <Field label="Check-in" value={content.checkInTime ?? ''} onChange={(v) => updateContent({ checkInTime: v })} placeholder="15:00" />
+          <Field label="Check-out" value={content.checkOutTime ?? ''} onChange={(v) => updateContent({ checkOutTime: v })} placeholder="11:00" />
+          <Field
+            label="Property amenities"
+            value={content.propertyAmenities ?? ''}
+            onChange={(v) => updateContent({ propertyAmenities: v })}
+            placeholder="Pool, Spa, Parking"
+          />
+        </FormSection>
+      )}
+
+      {pageOn('rooms') && (
         <FormSection title="Rooms & Booking" {...listControls('roomTypes', 'Add Room Type')}>
           <p className="mb-3 text-xs text-slate-500">
-            Define room types and optional subtypes (set Parent slug). Unit count seeds inventory in the exported admin. Guests can only book available units.
+            Define room types and optional subtypes (set Parent slug). Unit count is sent to the BuildAura hotel warehouse on export. Guests can only book available units.
           </p>
           <Field label="Rooms Section Title" value={content.roomsSectionTitle} onChange={(v) => updateContent({ roomsSectionTitle: v })} />
           <Field label="Rooms Section Subtitle" value={content.roomsSectionSubtitle} onChange={(v) => updateContent({ roomsSectionSubtitle: v })} />
@@ -236,7 +259,7 @@ export function ContentForm() {
               <Field label="Full description" value={room.description} onChange={(v) => updateListItem('roomTypes', i, 'description', v)} multiline rows={3} />
               <div className="grid grid-cols-2 gap-3">
                 <Field label="Nightly price" value={room.basePrice} onChange={(v) => updateListItem('roomTypes', i, 'basePrice', v)} placeholder="250" />
-                <Field label="Currency" value={room.currency} onChange={(v) => updateListItem('roomTypes', i, 'currency', v)} placeholder="USD" />
+                <Field label="Currency" value={room.currency} onChange={(v) => updateListItem('roomTypes', i, 'currency', v)} placeholder="ETB" />
                 <Field label="Max adults" value={room.maxAdults} onChange={(v) => updateListItem('roomTypes', i, 'maxAdults', v)} />
                 <Field label="Max children" value={room.maxChildren} onChange={(v) => updateListItem('roomTypes', i, 'maxChildren', v)} />
                 <Field label="Max occupancy" value={room.maxOccupancy} onChange={(v) => updateListItem('roomTypes', i, 'maxOccupancy', v)} />
@@ -256,7 +279,7 @@ export function ContentForm() {
                     rooms[i] = { ...rooms[i], isActive: e.target.checked }
                     updateContent({ roomTypes: rooms })
                   }}
-                  className="h-4 w-4 rounded border-slate-300 text-indigo-600"
+                  className="h-4 w-4 rounded border-slate-300 text-accent"
                 />
                 Active (bookable on the public site)
               </label>
@@ -429,7 +452,7 @@ export function ContentForm() {
                     plans[i] = { ...plans[i], featured: e.target.checked }
                     updateContent({ pricing: plans })
                   }}
-                  className="h-4 w-4 rounded border-slate-300 text-indigo-600"
+                  className="h-4 w-4 rounded border-slate-300 text-accent"
                 />
                 Highlight as featured plan
               </label>
@@ -537,7 +560,7 @@ function FormSection({
             type="button"
             onClick={onAdd}
             disabled={!canAdd}
-            className="shrink-0 rounded-lg border border-indigo-200 bg-indigo-50 px-3 py-1.5 text-xs font-semibold text-indigo-700 hover:bg-indigo-100 disabled:cursor-not-allowed disabled:opacity-40"
+            className="shrink-0 rounded-lg border border-navy/20 bg-navy/5 px-3 py-1.5 text-xs font-semibold text-navy hover:bg-accent/15 disabled:cursor-not-allowed disabled:opacity-40"
           >
             + {addLabel ?? 'Add'}
           </button>
@@ -581,7 +604,7 @@ function Field({
   label: string; value: string; onChange: (v: string) => void
   placeholder?: string; multiline?: boolean; rows?: number
 }) {
-  const cls = 'w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20'
+  const cls = 'w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-navy focus:outline-none focus:ring-2 focus:ring-navy/20'
   return (
     <label className="block">
       <span className="mb-1.5 block text-sm font-medium text-slate-700">{label}</span>

@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "id": "axiom",
-  "name": "Axiom Audit",
-  "description": "Blue professional tax recovery and protection \u2014 filing, refund advances, and IRS representation.",
+  "name": "Abay Audit",
+  "description": "Blue professional tax recovery and protection — filing, refund advances, and Ministry of Revenue representation.",
   "category": "finance",
   "previewGradient": "from-[#061F3A] via-[#0B4F8A] to-[#2196F3]",
   "accentColor": "#0B4F8A",
@@ -199,22 +199,22 @@
     {
       "key": "phone",
       "label": "Intake",
-      "placeholder": "(312) 555-0144"
+      "placeholder": "+251 11 551 8299"
     },
     {
       "key": "email",
       "label": "Email",
-      "placeholder": "intake@axiom.audit"
+      "placeholder": "hello@abayaudit.et"
     },
     {
       "key": "address",
       "label": "Office",
-      "placeholder": "200 LaSalle, Suite 1800, Chicago"
+      "placeholder": "Mexico Square, Addis Ababa"
     },
     {
       "key": "hours",
       "label": "Hours",
-      "placeholder": "Mon\u2013Fri 8:30am\u20135:30pm"
+      "placeholder": "Mon–Fri 8:30am–5:30pm"
     },
     {
       "key": "licenseNumber",
@@ -239,7 +239,7 @@
     "grayscaleImage": false
   },
   "defaults": {
-    "businessName": "Axiom Audit",
+    "businessName": "Abay Audit",
     "tagline": "Delivering savings, protecting your future.",
     "heroSubtext": "End-to-end tax solutions that drive efficiency, maximize refunds, and provide year-round financial protection.",
     "heroImage": "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1800&q=80",
@@ -251,7 +251,7 @@
     "fontHeading": "playfair",
     "fontBody": "source-sans",
     "aboutTitle": "Tax solutions built around you",
-    "about": "At Axiom Audit, we simplify complex tax situations with smart technology, expert support, and a commitment to excellence. We are here to protect your finances year-round.",
+    "about": "At Abay Audit, we simplify complex tax situations with smart technology, expert support, and a commitment to excellence. We are here to protect your finances year-round.",
     "aboutImage": "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=900&q=80",
     "missionStatement": "Smart tax filing. Stronger finances. National coverage.",
     "pageVisibility": {
@@ -292,7 +292,7 @@
       }
     ],
     "servicesSectionTitle": "Comprehensive tax services tailored to you",
-    "servicesSectionSubtitle": "Refund advances, business prep, IRS defense, and referral bonuses \u2014 one desk.",
+    "servicesSectionSubtitle": "Refund advances, business prep, Ministry of Revenue defense, and referral bonuses — one desk.",
     "services": [
       {
         "title": "Income tax examinations",
@@ -300,7 +300,7 @@
       },
       {
         "title": "Penalty defense",
-        "description": "Accuracy, late-file, and trust-fund penalties \u2014 abatement with a record, not a plea."
+        "description": "Accuracy, late-file, and trust-fund penalties — abatement with a record, not a plea."
       },
       {
         "title": "Appeals & CDP",
@@ -376,17 +376,17 @@
     "testimonials": [
       {
         "quote": "They treated the CP2000 like a brief, not a bill. The examiner closed it.",
-        "author": "R. Hale",
+        "author": "Selam Tadesse",
         "role": "Physician practice"
       },
       {
         "quote": "I had three unfiled years. They rebuilt them before anyone talked penalties.",
-        "author": "M. Ortiz",
+        "author": "Yonas Gebre",
         "role": "Contractor"
       },
       {
         "quote": "Appeals was a conversation, not a fight. That was the point.",
-        "author": "S. Lind",
+        "author": "Meron Assefa",
         "role": "Family office"
       }
     ],
@@ -402,7 +402,7 @@
       },
       {
         "question": "Will you speak for me?",
-        "answer": "Yes. Form 2848 is the first filing. You are copied. You are not left in the room alone."
+        "answer": "Yes. a power of attorney is the first filing. You are copied. You are not left in the room alone."
       },
       {
         "question": "How are you paid?",
@@ -434,7 +434,7 @@
     "roomTypes": [],
     "blogPosts": [
       {
-        "title": "What a CP2000 is \u2014 and is not",
+        "title": "What a CP2000 is — and is not",
         "slug": "what-a-cp2000-is",
         "excerpt": "A matching notice is not an assessment. Treat it like one and you invent the tax.",
         "body": "A CP2000 proposes a change based on third-party reports. It is not a bill until you let it become one. The reply is a record, not a phone script.",
@@ -454,17 +454,17 @@
     ],
     "team": [
       {
-        "name": "Claire Darnell, JD, CPA",
+        "name": "Mekdes Haile",
         "role": "Managing counsel",
         "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
       },
       {
-        "name": "Owen Hart, EA",
+        "name": "Dawit Bekele",
         "role": "Examinations",
         "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80"
       },
       {
-        "name": "Imani Brooks, CPA",
+        "name": "Hiwot Alemu",
         "role": "Appeals",
         "image": "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80"
       }
@@ -474,13 +474,13 @@
     "ctaText": "Get a free quote",
     "ctaLink": "contact",
     "seoEnabled": true,
-    "seoTitle": "Axiom Audit \u2014 IRS exam and tax controversy",
-    "seoDescription": "Tax controversy counsel for IRS examinations, appeals, penalties, and collections.",
-    "seoKeywords": "IRS audit, tax controversy, tax examination, penalty abatement, tax appeals",
+    "seoTitle": "Abay Audit — Ministry of Revenue exam and tax controversy",
+    "seoDescription": "Tax controversy counsel for Ministry of Revenue examinations, appeals, penalties, and collections.",
+    "seoKeywords": "Ministry of Revenue audit, tax controversy, tax examination, penalty abatement, tax appeals",
     "seoSiteUrl": "",
-    "email": "hello@axiomaudit.com",
-    "phone": "(800) 555-8299",
-    "address": "85 Commerce Street",
+    "email": "hello@abayaudit.et",
+    "phone": "+251 11 551 8299",
+    "address": "Mexico Square, Addis Ababa",
     "mapUrl": "https://www.google.com/maps?q=85+Commerce+Street&output=embed",
     "hours": "Mon-Fri: 9AM - 6PM",
     "instagram": "",
@@ -489,7 +489,7 @@
     "whatsapp": "",
     "supportEmail": "",
     "reservationEmail": "",
-    "licenseNumber": "CPA \u00b7 EA \u00b7 JD",
+    "licenseNumber": "CPA · EA · JD",
     "bookingUrl": "",
     "contactSectionTitle": "Confidential intake",
     "contactFormTitle": "Describe the notice",

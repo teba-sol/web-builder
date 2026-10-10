@@ -1,4 +1,6 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
+import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react'
+import { saveProjectDraft } from '../api/projects'
+import type { ProjectResponse } from '../api/types'
 import { getDefaultColorSchemeId } from '../data/colorSchemes'
 import { getDefaultLayoutVariantId } from '../data/layoutVariants'
 import { brandColorsFromScheme } from '../templates/cloneTheme'
@@ -15,6 +17,7 @@ import {
   LIST_MIN_COUNT,
   type ContentListKey,
 } from '../data/listDefaults'
+import { buildSiteDocument } from '../siteDocument/io'
 import type { SiteDocument } from '../siteDocument/types'
 import { sanitizeContentLinks } from '../utils/linkResolver'
 import { migrateContent } from '../utils/migrateContent'
@@ -25,6 +28,11 @@ interface WebsiteContextValue {
   content: SiteContent
   colorSchemeId: string
   layoutVariantId: string
+  projectId: string | null
+  canExport: boolean
+  canCloudSave: boolean
+  canEdit: boolean
+  entitlementStatus: ProjectResponse['entitlementStatus'] | null
   selectTemplate: (id: TemplateId, appearance?: EditorAppearance | null) => void
   setColorScheme: (schemeId: string) => void
   setLayoutVariant: (variantId: string) => void
@@ -40,6 +48,9 @@ interface WebsiteContextValue {
   toggleSectionVisibility: (section: ToggleableSection) => void
   togglePageVisibility: (page: keyof PageVisibility) => void
   restoreSite: (document: SiteDocument) => void
+  bindProject: (project: ProjectResponse) => void
+  markProjectPaid: () => void
+  persistNow: () => Promise<void>
   reset: () => void
 }
 
@@ -68,6 +79,12 @@ export function WebsiteProvider({ children }: { children: ReactNode }) {
   const [content, setContent] = useState<SiteContent>(() => getInitialState().content)
   const [colorSchemeId, setColorSchemeId] = useState<string>(() => getInitialState().colorSchemeId)
   const [layoutVariantId, setLayoutVariantId] = useState<string>(() => getInitialState().layoutVariantId)
+  const [projectId, setProjectId] = useState<string | null>(null)
+  const [canExport, setCanExport] = useState(false)
+  const [canCloudSave, setCanCloudSave] = useState(false)
+  const [canEdit, setCanEdit] = useState(true)
+  const [entitlementStatus, setEntitlementStatus] = useState<ProjectResponse['entitlementStatus'] | null>(null)
+  const skipNextCloudSave = useRef(false)
 
   useEffect(() => {
     if (templateId) {
@@ -79,6 +96,26 @@ export function WebsiteProvider({ children }: { children: ReactNode }) {
       )
     }
   }, [templateId, content, colorSchemeId, layoutVariantId])
+
+  useEffect(() => {
+    if (!projectId || !canCloudSave || !templateId) return
+    if (skipNextCloudSave.current) {
+      skipNextCloudSave.current = false
+      return
+    }
+    const handle = window.setTimeout(() => {
+      const document = buildSiteDocument(templateId, content, colorSchemeId, layoutVariantId)
+      saveProjectDraft(projectId, {
+        name: content.businessName || templateId,
+        colorSchemeId,
+        layoutVariantId,
+        document,
+      }).catch(() => {
+        /* keep localStorage fallback */
+      })
+    }, 2500)
+    return () => window.clearTimeout(handle)
+  }, [projectId, canCloudSave, templateId, content, colorSchemeId, layoutVariantId])
 
   const selectTemplate = (id: TemplateId, appearance?: EditorAppearance | null) => {
     setTemplateId(id)
@@ -168,11 +205,53 @@ export function WebsiteProvider({ children }: { children: ReactNode }) {
     setLayoutVariantId(document.layoutVariantId || getDefaultLayoutVariantId(document.templateId))
   }
 
+  const bindProject = (project: ProjectResponse) => {
+    skipNextCloudSave.current = true
+    setProjectId(project.id)
+    setCanExport(project.canExport)
+    setCanCloudSave(project.canCloudSave)
+    setCanEdit(project.canEdit)
+    setEntitlementStatus(project.entitlementStatus)
+    const document = project.document as SiteDocument | null
+    if (document && document.content) {
+      restoreSite(document)
+      return
+    }
+    if (project.templateId) {
+      setTemplateId(project.templateId)
+      setColorSchemeId(project.colorSchemeId || getDefaultColorSchemeId(project.templateId))
+      setLayoutVariantId(project.layoutVariantId || getDefaultLayoutVariantId(project.templateId))
+    }
+  }
+
+  const markProjectPaid = () => {
+    setCanExport(true)
+    setCanCloudSave(true)
+    setEntitlementStatus('PAID')
+  }
+
+  const persistNow = async () => {
+    if (!projectId || !templateId) throw new Error('No project to save')
+    if (!canCloudSave) throw new Error('Save is locked until this website is unlocked')
+    const document = buildSiteDocument(templateId, content, colorSchemeId, layoutVariantId)
+    await saveProjectDraft(projectId, {
+      name: content.businessName || templateId,
+      colorSchemeId,
+      layoutVariantId,
+      document,
+    })
+  }
+
   const reset = () => {
     setTemplateId(null)
     setContent(defaultContent)
     setColorSchemeId('')
     setLayoutVariantId('')
+    setProjectId(null)
+    setCanExport(false)
+    setCanCloudSave(false)
+    setCanEdit(true)
+    setEntitlementStatus(null)
     clearSavedSite()
   }
 
@@ -183,6 +262,11 @@ export function WebsiteProvider({ children }: { children: ReactNode }) {
         content,
         colorSchemeId,
         layoutVariantId,
+        projectId,
+        canExport,
+        canCloudSave,
+        canEdit,
+        entitlementStatus,
         selectTemplate,
         setColorScheme,
         setLayoutVariant,
@@ -193,6 +277,9 @@ export function WebsiteProvider({ children }: { children: ReactNode }) {
         toggleSectionVisibility,
         togglePageVisibility,
         restoreSite,
+        bindProject,
+        markProjectPaid,
+        persistNow,
         reset,
       }}
     >

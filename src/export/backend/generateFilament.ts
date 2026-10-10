@@ -335,12 +335,6 @@ class SiteSettingResource extends Resource
                     Forms\\Components\\TextInput::make('tagline'),
                     Forms\\Components\\Textarea::make('hero_subtext'),
                     Forms\\Components\\FileUpload::make('hero_image')->image()->disk('public')->directory('uploads'),
-                    Forms\\Components\\Select::make('layout_variant_id')
-                        ->label('Look & Feel')
-                        ->helperText('Changes presentation only — content and theme colors stay the same. All three variants ship with the export.')
-                        ->options(\\App\\Support\\LayoutVariants::selectOptions())
-                        ->required()
-                        ->native(false),
                 ]),
                 Forms\\Components\\Tabs\\Tab::make('Brand')->schema([
                     Forms\\Components\\FileUpload::make('logo')->image()->disk('public')->directory('uploads')->helperText('Shown in the site navigation.'),

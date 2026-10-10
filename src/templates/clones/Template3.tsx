@@ -113,7 +113,7 @@ export function Template3({ c, basePath }: { c: SiteContent; basePath: string })
           <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z" />
         </svg>
         <span className="text-[13px] font-bold tracking-[0.2em] uppercase text-[#E8D9CB]">
-          Your Success. Your Legacy. For Posterity.
+          Your Success. Your Legacy. For Bole Tax Desk.
         </span>
       </div>
 
@@ -240,7 +240,7 @@ export function Template3({ c, basePath }: { c: SiteContent; basePath: string })
                 Digital Product & Brand Agency
               </h3>
               <p className="text-[#7A6A58] text-sm leading-relaxed">
-                Fast e-filing with refund advance options from $500 up to $7,500 deposited directly to your bank account.
+                Fast e-filing with refund advance options from 27,500 ETB up to 412,500 ETB deposited directly to your bank account.
               </p>
               <button
                 onClick={() => setIsBookingModalOpen(true)}
@@ -260,7 +260,7 @@ export function Template3({ c, basePath }: { c: SiteContent; basePath: string })
                 Referral Bonus Program
               </h3>
               <p className="text-[#7A6A58] text-sm leading-relaxed">
-                Refer friends, family, or colleagues and receive $50 cash per completed client filing with zero payout limits!
+                Refer friends, family, or colleagues and receive 2,750 ETB cash per completed client filing with zero payout limits!
               </p>
               <button
                 onClick={() => setIsBookingModalOpen(true)}
@@ -280,7 +280,7 @@ export function Template3({ c, basePath }: { c: SiteContent; basePath: string })
                 Business Tax & Audit Defense
               </h3>
               <p className="text-[#7A6A58] text-sm leading-relaxed">
-                Dedicated business accounting, LLC filing, payroll tax optimization, and 100% IRS audit defense coverage.
+                Dedicated business accounting, LLC filing, payroll tax optimization, and 100% Ministry of Revenue audit defense coverage.
               </p>
               <button
                 onClick={() => setIsBookingModalOpen(true)}
@@ -497,7 +497,7 @@ export function Template3({ c, basePath }: { c: SiteContent; basePath: string })
                     <input
                       type="tel"
                       required
-                      placeholder="(555) 000-0000"
+                      placeholder="+251 911 000 000"
                       value={contactForm.phone}
                       onChange={(e) => setContactForm({ ...contactForm, phone: e.target.value })}
                       className="w-full bg-[var(--clone-surface)] border border-[#EEDFCF] rounded-xl py-3 px-4 text-sm text-[#241C15] focus:outline-none focus:border-[var(--clone-accent)] focus:ring-2 focus:ring-[var(--clone-accent)]/20 transition"
@@ -566,8 +566,8 @@ export function Template3({ c, basePath }: { c: SiteContent; basePath: string })
             <ul className="space-y-2">
               <li><Link to={d.hrefs.services} className="hover:text-[var(--clone-accent)] transition-colors">Individual Tax Prep</Link></li>
               <li><Link to={d.hrefs.services} className="hover:text-[var(--clone-accent)] transition-colors">Refund Advance Loans</Link></li>
-              <li><Link to={d.hrefs.services} className="hover:text-[var(--clone-accent)] transition-colors">$50 Referral Bonus</Link></li>
-              <li><Link to={d.hrefs.services} className="hover:text-[var(--clone-accent)] transition-colors">Business Tax & IRS Audit</Link></li>
+              <li><Link to={d.hrefs.services} className="hover:text-[var(--clone-accent)] transition-colors">2,750 ETB Referral Bonus</Link></li>
+              <li><Link to={d.hrefs.services} className="hover:text-[var(--clone-accent)] transition-colors">Business Tax & Ministry of Revenue Audit</Link></li>
             </ul>
           </div>
 
@@ -584,7 +584,7 @@ export function Template3({ c, basePath }: { c: SiteContent; basePath: string })
           <div>
             <h4 className="text-white font-bold mb-3 uppercase tracking-wider">Legal Disclaimer</h4>
             <p className="text-[11px] text-[#8C7C6A] leading-relaxed">
-              Refund advances are short-term loans provided by partner financial institutions upon IRS return filing acceptance. Terms and conditions apply.
+              Refund advances are short-term loans provided by partner financial institutions upon Ministry of Revenue return filing acceptance. Terms and conditions apply.
             </p>
           </div>
 
@@ -644,7 +644,7 @@ export function Template3({ c, basePath }: { c: SiteContent; basePath: string })
                 <input
                   type="tel"
                   required
-                  placeholder="(555) 000-0000"
+                  placeholder="+251 911 000 000"
                   value={bookingForm.phone}
                   onChange={(e) => setBookingForm({ ...bookingForm, phone: e.target.value })}
                   className="w-full bg-white border border-[#EEDFCF] rounded-xl py-2.5 px-3.5 text-xs text-[#241C15] focus:outline-none focus:border-[var(--clone-accent)] focus:ring-2 focus:ring-[var(--clone-accent)]/20 transition"

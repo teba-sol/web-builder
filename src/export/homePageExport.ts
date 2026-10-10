@@ -2,6 +2,7 @@ import { getShowcaseConfig } from '../data/sectionConfig'
 import { canLinkToPage, resolveStaticHref, staticSitePath } from '../data/siteNav'
 import type { SiteContent, TemplateId } from '../types'
 import { escapeHtml } from './imageUtils'
+import { isHospitalityTemplate } from '../data/hospitality'
 import { buildContactSectionHtml, buildExploreSectionHtml, buildFaqSectionHtml } from './sectionExport'
 
 export interface HomeExportContext {
@@ -255,8 +256,10 @@ export function buildStaticHomePageBody(ctx: HomeExportContext): string {
     parts.push(buildContactSectionHtml(ctx.templateId, c, ctx.contactFormHtml))
   }
 
-  const exploreHtml = buildExploreSectionHtml(ctx.templateId, c, accent, fromNested)
-  if (exploreHtml) parts.push(exploreHtml)
+  if (!isHospitalityTemplate(ctx.templateId)) {
+    const exploreHtml = buildExploreSectionHtml(ctx.templateId, c, accent, fromNested)
+    if (exploreHtml) parts.push(exploreHtml)
+  }
 
   return parts.join('\n')
 }

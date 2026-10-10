@@ -5,6 +5,7 @@ import { generateBladeSectionPartials } from '../bladeSectionPartials'
 import { buildBladeHeroHtml } from '../heroExport'
 import { LAYOUT_SHELL_CSS, rewriteContainerVariantsForExport } from '../htmlShared'
 import type { SiteExportPayload } from './exportPayload'
+import { isHospitalityTemplate } from '../../data/hospitality'
 import { hasBookingFeature } from './generateBooking'
 import { usesBuildauraCrs } from './generateCrsBooking'
 import { generateFinanceHomeBlade } from './generateFinanceBlade'
@@ -13,7 +14,6 @@ const NAV_LINKS = `@if($settings->page_visibility['about'] ?? false)<a href="{{ 
     @if($settings->page_visibility['services'] ?? false)<a href="{{ route('services') }}" class="hover:underline opacity-80">Services</a>@endif
     @if($settings->page_visibility['portfolio'] ?? false)<a href="{{ route('portfolio') }}" class="hover:underline opacity-80">Portfolio</a>@endif
     @if($settings->page_visibility['rooms'] ?? false)<a href="{{ route('rooms.index') }}" class="hover:underline opacity-80">Rooms</a>@endif
-    @if($settings->page_visibility['rooms'] ?? false)<a href="{{ route('book') }}" class="hover:underline opacity-80">Book</a>@endif
     @if($settings->page_visibility['blog'] ?? false)<a href="{{ route('blog.index') }}" class="hover:underline opacity-80">Blog</a>@endif
     @if($settings->page_visibility['news'] ?? false)<a href="{{ route('news.index') }}" class="hover:underline opacity-80">News</a>@endif
     @if($settings->page_visibility['gallery'] ?? false)<a href="{{ route('gallery') }}" class="hover:underline opacity-80">Gallery</a>@endif
@@ -23,7 +23,7 @@ const BRAND_MARK = `<span class="inline-flex items-center gap-2">@if($settings->
 
 function navPartial(payload: SiteExportPayload): string {
   const { accent, templateId } = payload
-  const ctaRoute = hasBookingFeature(payload.content) ? 'book' : 'contact'
+  const ctaRoute = hasBookingFeature(payload.content) ? 'rooms.index' : 'contact'
   const cta = `<a href="{{ route('${ctaRoute}') }}" data-brand-cta class="text-white px-5 py-2 rounded-lg text-sm font-semibold shrink-0" style="background-color:{{ filled($settings->brand_primary) ? $settings->brand_primary : '${accent}' }}">{{ $settings->cta_text }}</a>`
 
   const shells: Record<string, string> = {
@@ -86,7 +86,6 @@ function footerPartial(): string {
     @if($settings->page_visibility['services'] ?? false)<a href="{{ route('services') }}" class="hover:underline opacity-70">Services</a>@endif
     @if($settings->page_visibility['portfolio'] ?? false)<a href="{{ route('portfolio') }}" class="hover:underline opacity-70">Portfolio</a>@endif
     @if($settings->page_visibility['rooms'] ?? false)<a href="{{ route('rooms.index') }}" class="hover:underline opacity-70">Rooms</a>@endif
-    @if($settings->page_visibility['rooms'] ?? false)<a href="{{ route('book') }}" class="hover:underline opacity-70">Book</a>@endif
     @if($settings->page_visibility['blog'] ?? false)<a href="{{ route('blog.index') }}" class="hover:underline opacity-70">Blog</a>@endif
     @if($settings->page_visibility['news'] ?? false)<a href="{{ route('news.index') }}" class="hover:underline opacity-70">News</a>@endif
     @if($settings->page_visibility['gallery'] ?? false)<a href="{{ route('gallery') }}" class="hover:underline opacity-70">Gallery</a>@endif
@@ -97,7 +96,7 @@ function footerPartial(): string {
 }
 
 function generateHeroPartials(payload: SiteExportPayload): Record<string, string> {
-  const heroCta = hasBookingFeature(payload.content) ? 'book' : 'contact'
+  const heroCta = hasBookingFeature(payload.content) ? 'rooms.index' : 'contact'
   const files: Record<string, string> = {}
 
   for (const id of LAYOUT_VARIANT_IDS) {
@@ -215,8 +214,8 @@ export function generateBladeView(payload: SiteExportPayload): string {
       : `
 @if($settings->page_visibility['rooms'] ?? false)
 <section class="py-20 bg-slate-50"><div class="max-w-6xl mx-auto px-6">
-  <div class="flex flex-wrap justify-between items-end gap-4 mb-10"><div><h2 class="text-3xl font-bold">{{ $settings->rooms_section_title ?? 'Rooms & Suites' }}</h2><p class="text-slate-600 mt-2">{{ $settings->rooms_section_subtitle }}</p></div><a href="{{ route('book') }}" class="text-sm font-semibold" style="color:${accent}">Check availability →</a></div>
-  <div class="grid md:grid-cols-3 gap-6">@foreach(\\App\\Models\\RoomType::where('is_active', true)->whereNull('parent_id')->orderBy('sort_order')->take(3)->get() as $room)<a href="{{ route('rooms.show', $room->slug) }}" class="block rounded-xl border overflow-hidden bg-white hover:shadow-lg">@if($room->image)<img src="{{ \\App\\Support\\PublicAsset::url($room->image) }}" class="w-full aspect-[4/3] object-cover" alt="" />@endif<div class="p-5"><h3 class="font-semibold">{{ $room->name }}</h3><p class="text-sm opacity-70 mt-1 line-clamp-2">{{ $room->short_description }}</p><p class="mt-3 font-bold" style="color:${accent}">{{ number_format($room->base_price, 0) }} {{ $room->currency }} <span class="text-sm font-normal opacity-60">/ night</span></p></div></a>@endforeach</div>
+  <div class="flex flex-wrap justify-between items-end gap-4 mb-10"><div><h2 class="text-3xl font-bold">{{ $settings->rooms_section_title ?? 'Rooms & Suites' }}</h2><p class="text-slate-600 mt-2">{{ $settings->rooms_section_subtitle }}</p></div><a href="{{ route('rooms.index') }}" class="text-sm font-semibold" style="color:${accent}">Check availability →</a></div>
+  <div class="grid md:grid-cols-3 gap-6">@forelse(array_slice($roomTypes ?? [], 0, 3) as $room)<a href="{{ route('rooms.show', $room->slug) }}" class="block rounded-xl border overflow-hidden bg-white hover:shadow-lg">@if($room->image)<img src="{{ \\App\\Support\\PublicAsset::url($room->image) }}" class="w-full aspect-[4/3] object-cover" alt="" />@endif<div class="p-5"><h3 class="font-semibold">{{ $room->name }}</h3><p class="text-sm opacity-70 mt-1 line-clamp-2">{{ $room->short_description }}</p><p class="mt-3 font-bold" style="color:${accent}">{{ number_format($room->base_price, 0) }} {{ $room->currency }} <span class="text-sm font-normal opacity-60">/ night</span></p></div></a>@empty<p class="text-slate-500">Rooms appear here once this site can reach BuildAura.</p>@endforelse</div>
 </div></section>
 @endif`
   return `@extends('layouts.site')
@@ -277,8 +276,7 @@ ${roomsTeaser}
 @if($settings->page_visibility['contact'] ?? false)
 @include('partials.home-contact')
 @endif
-
-@include('partials.home-explore')
+${isHospitalityTemplate(payload.templateId) ? '' : "\n@include('partials.home-explore')"}
 @endsection`
 }
 

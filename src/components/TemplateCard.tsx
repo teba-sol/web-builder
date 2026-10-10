@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom'
+import { useAuth } from '../auth/AuthContext'
 import { isImportedTemplate, removeImportedManifest } from '../catalog/catalog'
 import { getTemplateThumbnail } from '../catalog/thumbnails'
 import { categories } from '../data/categories'
-import { getLayoutVariants } from '../data/layoutVariants'
 import type { TemplateMeta } from '../types'
 
 interface Props {
@@ -10,8 +10,13 @@ interface Props {
 }
 
 export function TemplateCard({ template }: Props) {
+  const { user } = useAuth()
+  const useHref = user
+    ? user.role === 'SALESPERSON'
+      ? `/new-site?template=${template.id}`
+      : `/editor/${template.id}`
+    : `/login?return=${encodeURIComponent(`/editor/${template.id}`)}`
   const categoryLabel = categories.find((c) => c.id === template.category)?.label ?? template.category
-  const layoutCount = getLayoutVariants(template.id).length
   const imported = isImportedTemplate(template.id)
   const thumbnail = getTemplateThumbnail(template.id)
 
@@ -32,9 +37,6 @@ export function TemplateCard({ template }: Props) {
           <span className="inline-block rounded-full bg-black/45 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur-sm">
             {categoryLabel}
           </span>
-          <span className="inline-block rounded-full bg-white/20 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur-sm">
-            {layoutCount} styles
-          </span>
           {template.premium && (
             <span className="inline-block rounded-full bg-amber-400/90 px-2.5 py-1 text-[11px] font-bold text-amber-950 backdrop-blur-sm">
               Premium
@@ -48,8 +50,8 @@ export function TemplateCard({ template }: Props) {
         </div>
       </div>
       <div className="flex flex-1 flex-col p-6">
-        <h3 className="mb-2 text-xl font-bold text-slate-900">{template.name}</h3>
-        <p className="flex-1 text-sm leading-relaxed text-slate-600">{template.description}</p>
+        <h3 className="mb-2 text-lg font-semibold text-slate-900">{template.name}</h3>
+        <p className="flex-1 text-sm leading-relaxed text-slate-500">{template.description}</p>
         <div className="mt-5 flex gap-3">
           <Link
             to={`/demo/${template.id}`}
@@ -59,8 +61,8 @@ export function TemplateCard({ template }: Props) {
             Preview
           </Link>
           <Link
-            to={`/editor/${template.id}`}
-            className="flex-1 rounded-lg bg-indigo-600 px-4 py-2.5 text-center text-sm font-semibold text-white hover:bg-indigo-700 transition-colors"
+            to={useHref}
+            className="flex-1 rounded-lg bg-accent px-4 py-2.5 text-center text-sm font-semibold text-white hover:bg-accent-dark transition-colors"
           >
             Use Template
           </Link>

@@ -42,7 +42,7 @@ export function PalettePicker({
                 toolbar ? 'rounded-lg border px-2 py-1.5' : 'rounded-xl border-2 p-3'
               } ${
                 active
-                  ? 'border-indigo-500 bg-indigo-50 text-indigo-950 ring-2 ring-indigo-100'
+                  ? 'border-navy bg-navy/5 text-navy ring-2 ring-accent/20'
                   : 'border-slate-200 bg-white text-slate-900 hover:border-slate-300'
               }`}
             >
@@ -56,7 +56,7 @@ export function PalettePicker({
                 ))}
               </span>
               <span className={`font-semibold ${toolbar ? 'text-xs' : 'text-sm'}`}>{scheme.name}</span>
-              {active && !toolbar ? <Check className="ml-auto h-4 w-4 text-indigo-600" /> : null}
+              {active && !toolbar ? <Check className="ml-auto h-4 w-4 text-accent" /> : null}
             </button>
           )
         })}
@@ -64,7 +64,7 @@ export function PalettePicker({
         <div
           className={`${toolbar ? 'rounded-lg border px-2 py-1.5' : 'rounded-xl border-2 p-3'} ${
             customActive
-              ? 'border-indigo-500 bg-indigo-50 text-indigo-950 ring-2 ring-indigo-100'
+              ? 'border-navy bg-navy/5 text-navy ring-2 ring-accent/20'
               : 'border-slate-200 bg-white text-slate-900'
           }`}
         >
@@ -79,7 +79,7 @@ export function PalettePicker({
               ))}
             </span>
             <span className={`font-semibold ${toolbar ? 'text-xs' : 'text-sm'}`}>Your palette</span>
-            {customActive && !toolbar ? <Check className="ml-auto h-4 w-4 text-indigo-600" /> : null}
+            {customActive && !toolbar ? <Check className="ml-auto h-4 w-4 text-accent" /> : null}
           </button>
           {customActive && (
             <div className={`mt-3 grid gap-2 ${toolbar ? 'sm:grid-cols-3' : ''}`}>

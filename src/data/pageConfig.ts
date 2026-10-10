@@ -96,11 +96,6 @@ export function getSiteNavItems(templateId: TemplateId, content: SiteContent): S
     })
   }
 
-  // Secondary booking entry when rooms page is enabled
-  if (pv.rooms && pageHasContent('rooms', content)) {
-    items.push({ page: 'book', label: 'Book', segment: 'book' })
-  }
-
   return items
 }
 

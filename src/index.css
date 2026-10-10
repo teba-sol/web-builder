@@ -1,8 +1,14 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Inter", system-ui, sans-serif;
+  --font-sans: "Plus Jakarta Sans", Inter, system-ui, sans-serif;
   --font-serif: "Georgia", "Times New Roman", serif;
+  --font-chrome: "Poppins", system-ui, sans-serif;
+  --font-display: "Syne", Manrope, system-ui, sans-serif;
+  --color-navy: #04245c;
+  --color-navy-mid: #0b3a86;
+  --color-accent: #ff701f;
+  --color-accent-dark: #e05f12;
 }
 
 /* Template layouts follow the preview/site container, not the browser chrome. */
@@ -26,10 +32,33 @@ body {
   max-width: 100%;
 }
 
+/* ScrollTrigger pinning breaks if html/body is a hidden overflow container. */
+html.landing-active,
+html.landing-active body {
+  overflow-x: visible;
+  overflow-y: scroll;
+  max-width: none;
+}
+
 body {
   margin: 0;
-  font-family: var(--font-sans);
+  font-family: var(--font-chrome);
   -webkit-font-smoothing: antialiased;
+}
+
+.landing {
+  font-family: Manrope, Inter, system-ui, sans-serif;
+  background: #f6f7fb;
+  color: #04245c;
+  overflow-x: visible;
+}
+
+.landing .font-display {
+  font-family: Syne, Manrope, system-ui, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.07em;
+  line-height: 0.8;
+  text-transform: uppercase;
 }
 
 [data-site-brand] {

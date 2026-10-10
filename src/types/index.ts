@@ -204,6 +204,12 @@ export interface SiteContent {
   bookingSectionTitle: string
   bookingSectionSubtitle: string
   roomTypes: RoomTypeItem[]
+  starRating: string
+  city: string
+  country: string
+  checkInTime: string
+  checkOutTime: string
+  propertyAmenities: string
   ctaBannerTitle: string
   ctaBannerText: string
   ctaText: string
@@ -242,6 +248,7 @@ export interface CategoryMeta {
   id: TemplateCategory | 'all'
   label: string
   icon: string
+  blurb?: string
 }
 
 export interface TemplateMeta {

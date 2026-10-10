@@ -45,29 +45,66 @@ for (const manifest of manifests) {
     assert(defaults.pageVisibility.rooms, `${manifest.id}: hospitality template should enable rooms`)
     assert(defaults.roomTypes.length > 0, `${manifest.id}: hospitality template should seed rooms`)
     assert(hasBookingFeature(defaults), `${manifest.id}: booking feature should be on`)
+    assert(backend['app/Services/CrsClient.php'], `${manifest.id}: missing CRS client`)
+    assert(backend['app/Models/Reservation.php'], `${manifest.id}: missing Reservation model`)
+    assert(!backend['app/Models/RoomType.php'], `${manifest.id}: inventory must live in BuildAura CRS, not local RoomType`)
     assert(backend['app/Http/Controllers/BookingController.php'], `${manifest.id}: missing BookingController`)
-    assert(backend['resources/views/rooms/index.blade.php'] || Object.keys(backend).some((p) => p.includes('rooms')), `${manifest.id}: missing rooms Blade view`)
-    if (usesBuildauraCrs(manifest.id)) {
-      const client = backend['app/Services/BuildauraClient.php'] ?? ''
-      const booking = backend['app/Http/Controllers/BookingController.php'] ?? ''
-      assert(!backend['app/Models/RoomType.php'], `${manifest.id}: Buildaura hotels must not use a local RoomType`)
-      assert(client.includes('externalRef'), `${manifest.id}: occupancy must send the confirmation code`)
-      assert(!client.includes('guestName'), `${manifest.id}: guest name must stay off the API client`)
-      assert(!client.includes('guestEmail'), `${manifest.id}: guest email must stay off the API client`)
-      assert(booking.includes("'guest_phone' => 'required"), `${manifest.id}: phone is required`)
-      assert(booking.includes("'guest_email' => 'nullable"), `${manifest.id}: email is optional`)
-      assert(backend['.env.example']?.includes('BUILDAURA_API_KEY='), `${manifest.id}: .env.example should include the API key`)
-      assert(!backend['database/seeders/DatabaseSeeder.php']?.includes('HospitalitySeeder'), `${manifest.id}: catalogue comes from Buildaura`)
-      assert(!backend['resources/views/site/index.blade.php']?.includes('RoomType::'), `${manifest.id}: home must not query a local RoomType`)
-    } else {
-      assert(backend['app/Models/RoomType.php'], `${manifest.id}: missing RoomType model`)
-      assert(!backend['.env.example']?.includes('BUILDAURA_API_KEY'), `${manifest.id}: local booking must not embed a Buildaura key`)
-    }
+    assert(Object.keys(backend).some((p) => p.includes('rooms')), `${manifest.id}: missing rooms Blade view`)
+    const home = backend['resources/views/site/index.blade.php'] ?? ''
+    assert(!home.includes('App\\Models\\RoomType'), `${manifest.id}: home must not query a local RoomType model`)
+    assert(home.includes('$roomTypes'), `${manifest.id}: home should list CRS room types`)
+    assert(backend['.env']?.includes('CRS_HOTEL_ID='), `${manifest.id}: .env should carry the hotel id slot`)
+    assert(backend['.env.example']?.includes('CRS_API_KEY='), `${manifest.id}: .env.example should carry the site key slot`)
+    const roomTypesAdmin = backend['app/Filament/Pages/ManageRoomTypes.php'] ?? ''
+    const roomsPage = backend['app/Filament/Pages/ManageRooms.php'] ?? ''
+    const inventoryTrait = backend['app/Filament/Concerns/LoadsCrsInventory.php'] ?? ''
+    assert(!backend['app/Filament/Pages/ManageInventory.php'], `${manifest.id}: rooms admin is split into room types and rooms`)
+    assert(roomTypesAdmin.includes('updateRoomType'), `${manifest.id}: room types admin must update types through CRS`)
+    assert(roomTypesAdmin.includes('deleteRoomType'), `${manifest.id}: room types admin must delete types through CRS`)
+    assert(roomTypesAdmin.includes('maxSize(5120)'), `${manifest.id}: room photos must allow 5 MB`)
+    assert(roomTypesAdmin.includes('parentId'), `${manifest.id}: room types admin must offer a parent type`)
+    assert(!roomTypesAdmin.includes('imageUrl'), `${manifest.id}: room type form must not ask for an image URL`)
+    assert(!roomTypesAdmin.includes('RoomType::'), `${manifest.id}: room types admin must not use a local room model`)
+    assert(inventoryTrait.includes('uploadImage'), `${manifest.id}: room photos must upload to BuildAura`)
+    assert(roomsPage.includes('createUnit'), `${manifest.id}: rooms admin must create rooms through CRS`)
+    assert(roomsPage.includes("'floor'"), `${manifest.id}: rooms admin must edit the floor`)
+    assert(!roomsPage.includes('RoomType::'), `${manifest.id}: rooms admin must not use a local room model`)
+    assert(backend['resources/views/filament/pages/manage-room-types.blade.php']?.includes('width:72px'), `${manifest.id}: room type table must size the photo itself`)
+    assert(backend['public/.user.ini']?.includes('upload_max_filesize = 8M'), `${manifest.id}: PHP must accept a 5 MB room photo`)
+    const desk = backend['app/Services/ReservationDesk.php'] ?? ''
+    assert(desk.includes('occupy'), `${manifest.id}: reservation desk must hold rooms in CRS`)
+    assert(desk.includes('release'), `${manifest.id}: reservation desk must release CRS holds`)
+    assert(desk.includes("'admin'"), `${manifest.id}: admin reservations stay unpaid on this site`)
+    assert(!desk.includes('guest_name') || desk.includes("'guest_name'"), `${manifest.id}: guest name stays on the local reservation`)
+    assert(!desk.includes('card_number'), `${manifest.id}: card numbers must not be sent to CRS`)
+    assert(backend['app/Filament/Resources/ReservationResource/Pages/CreateReservation.php'], `${manifest.id}: reservations need a create page`)
+    assert(backend['app/Filament/Resources/ReservationResource.php']?.includes('crs_room_type_id'), `${manifest.id}: reservation form must pick a CRS room type`)
+    assert(backend['app/Services/CrsClient.php']?.includes('updateRoomType'), `${manifest.id}: CRS client must patch room types`)
+    assert(backend['app/Services/CrsClient.php']?.includes('function uploadImage'), `${manifest.id}: CRS client must upload room photos`)
+    assert(backend['app/Providers/Filament/AdminPanelProvider.php']?.includes('discoverPages'), `${manifest.id}: Filament must register the rooms page`)
+    assert(backend['app/Providers/Filament/AdminPanelProvider.php']?.includes('is_dir($pageDirectory)'), `${manifest.id}: missing pages directory must not crash the panel`)
+    assert(backend['app/Support/PublicAsset.php']?.includes("str_starts_with($path, 'data:')"), `${manifest.id}: room photos stored as data URLs must render`)
   } else {
     assert(!hasBookingFeature(defaults), `${manifest.id}: booking should stay off`)
-    assert(!backend['app/Models/RoomType.php'], `${manifest.id}: business CMS should not emit booking models`)
+    assert(!backend['app/Services/CrsClient.php'], `${manifest.id}: business CMS should not emit CRS client`)
+    assert(!backend['app/Filament/Pages/ManageInventory.php'], `${manifest.id}: business CMS should not emit the rooms page`)
+    assert(!backend['app/Filament/Pages/ManageRoomTypes.php'], `${manifest.id}: business CMS should not emit the room types page`)
+    assert(!backend['app/Filament/Pages/ManageRooms.php'], `${manifest.id}: business CMS should not emit the rooms page`)
+    assert(backend['app/Providers/Filament/AdminPanelProvider.php']?.includes('is_dir($pageDirectory)'), `${manifest.id}: missing pages directory must not crash the panel`)
   }
 }
+
+const keyed = generateBackend(
+  'hotel',
+  templateDefaults.hotel,
+  requireManifest('hotel').defaultColorSchemeId,
+  requireManifest('hotel').defaultLayoutVariantId,
+  [],
+  { apiBaseUrl: 'http://localhost:8080', apiKey: 'crs_abc', hotelId: '11111111-1111-4111-8111-111111111111' },
+)
+assert(keyed['.env']?.includes('CRS_API_KEY=crs_abc'), 'export should bake the site key into .env')
+assert(keyed['.env.example']?.includes('CRS_HOTEL_ID=11111111-1111-4111-8111-111111111111'), 'export should bake the hotel id into .env.example')
+assert(!keyed['resources/views/site/index.blade.php']?.includes('Models\\\\RoomType') && !keyed['resources/views/site/index.blade.php']?.includes('App\\Models\\RoomType'), 'keyed hotel home has no RoomType class')
 
 const hotelJson = stringifyManifest(requireManifest('hotel'))
 const parsedHotel = parseTemplateJson(hotelJson)
@@ -146,28 +183,28 @@ assert(templateDefaults.cpa?.licenseNumber, 'cpa should seed a license number')
 const taxfighters = requireManifest('taxfighters')
 assert(taxfighters.category === 'finance', 'taxfighters should be in the finance category')
 assert(taxfighters.navShell === 'taxfighters', 'taxfighters nav shell should stay taxfighters')
-assert(templateDefaults.taxfighters?.businessName === 'TaxGuardians', 'taxfighters should seed TaxGuardians')
-assert(templateDefaults.taxfighters?.phone?.includes('555'), 'taxfighters should seed the storefront phone')
+assert(templateDefaults.taxfighters?.businessName === 'Bole Revenue Desk', 'taxfighters should seed Bole Revenue Desk')
+assert(templateDefaults.taxfighters?.phone === '+251 11 661 8299', 'taxfighters should seed the Addis storefront phone')
 
 const aureum = requireManifest('aureum')
 assert(aureum.category === 'finance', 'aureum should be in the finance category')
 assert(aureum.navShell === 'aureum', 'aureum nav shell should stay aureum')
-assert(templateDefaults.aureum?.businessName === 'Ledger Studio', 'aureum should seed Ledger Studio')
+assert(templateDefaults.aureum?.businessName === 'Bole Ledger Studio', 'aureum should seed Bole Ledger Studio')
 
 const flux = requireManifest('flux')
 assert(flux.category === 'finance', 'flux should be in the finance category')
 assert(flux.navShell === 'flux', 'flux nav shell should stay flux')
-assert(templateDefaults.flux?.businessName === 'Posterity', 'flux should seed Posterity')
+assert(templateDefaults.flux?.businessName === 'Bole Tax Desk', 'flux should seed Bole Tax Desk')
 
 const axiom = requireManifest('axiom')
 assert(axiom.category === 'finance', 'axiom should be in the finance category')
 assert(axiom.navShell === 'axiom', 'axiom nav shell should stay axiom')
-assert(templateDefaults.axiom?.businessName === 'Axiom Audit', 'axiom should seed Axiom Audit')
+assert(templateDefaults.axiom?.businessName === 'Abay Audit', 'axiom should seed Abay Audit')
 
 const helix = requireManifest('helix')
 assert(helix.category === 'finance', 'helix should be the sixth tax template')
 assert(helix.navShell === 'helix', 'helix nav shell should stay helix')
-assert(templateDefaults.helix?.businessName === 'The Tax Fighters', 'helix should seed The Tax Fighters')
+assert(templateDefaults.helix?.businessName === 'Addis Tax Desk', 'helix should seed Addis Tax Desk')
 
 const financeIds = ['cpa', 'taxfighters', 'aureum', 'flux', 'axiom', 'helix'] as const
 for (const id of financeIds) {

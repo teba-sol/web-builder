@@ -56,7 +56,7 @@ export function PickTemplateCustomize({
             All templates
           </button>
           <div className="text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-indigo-600">Step 2 of 2</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-accent">Step 2 of 2</p>
             <h2 className="text-lg font-semibold text-slate-950">{template.name}</h2>
           </div>
           <button
@@ -64,7 +64,7 @@ export function PickTemplateCustomize({
             data-pick-submit
             onClick={onSubmit}
             disabled={submitting}
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-60"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-white hover:bg-accent-dark disabled:opacity-60"
           >
             {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
             Use this look

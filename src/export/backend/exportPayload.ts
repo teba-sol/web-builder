@@ -4,6 +4,12 @@ import { getShowcaseConfig } from '../../data/sectionConfig'
 import type { SiteContent, TemplateId } from '../../types'
 import type { ImageAsset } from '../imageUtils'
 
+export interface CrsExportSecrets {
+  apiBaseUrl: string
+  apiKey: string
+  hotelId: string
+}
+
 export interface SiteExportPayload {
   templateId: TemplateId
   colorSchemeId: string
@@ -14,6 +20,7 @@ export interface SiteExportPayload {
   layout: ReturnType<typeof getLayoutVariant>
   content: SiteContent
   assetMap: Record<string, string>
+  crs?: CrsExportSecrets
 }
 
 export function buildExportPayload(

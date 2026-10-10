@@ -226,7 +226,7 @@ export function Template6({ c, basePath }: Props) {
         <section className="relative w-full bg-gradient-to-b from-[var(--clone-accent)] via-[var(--clone-ink)] to-[var(--clone-ink)] px-4 py-20 csm:px-6 clg:px-8">
           <div className="relative z-10 mx-auto max-w-7xl">
             <div className="mb-16 text-center">
-              <h2 className="mb-4 text-4xl font-bold text-white italic cmd:text-5xl clg:text-6xl">The Tax Fighters Specializes In:</h2>
+              <h2 className="mb-4 text-4xl font-bold text-white italic cmd:text-5xl clg:text-6xl">Addis Tax Desk Specializes In:</h2>
               <div className="mx-auto h-1 w-24 rounded-full bg-gradient-to-r from-[var(--clone-ink)] to-[var(--clone-accent)]" />
             </div>
             <div className="grid gap-8 cmd:grid-cols-3 clg:gap-12">

@@ -155,7 +155,7 @@ export function PickTemplatePage() {
     return (
       <PickerShell>
         <div className="mx-auto max-w-lg rounded-3xl border border-slate-200 bg-white px-8 py-14 text-center shadow-sm">
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-indigo-600">WebBuilder</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-accent">WebBuilder</p>
           <h1 className="mt-3 text-3xl font-semibold text-slate-950">This link needs a token</h1>
           <p className="mt-4 text-sm leading-relaxed text-slate-600">
             Open this page from your project so we can attach your choices to the right account.
@@ -236,7 +236,7 @@ function PickerShell({
       <header className={`shrink-0 border-b border-slate-200 bg-white ${fill ? 'sticky top-0 z-40' : ''}`}>
         <div className={`mx-auto flex w-full items-center justify-between px-4 sm:px-6 ${wide ? 'max-w-[96%] py-2.5' : 'max-w-7xl py-4'}`}>
           <div className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-600 text-sm font-bold text-white">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent text-sm font-bold text-white">
               WB
             </div>
             <div>
@@ -294,7 +294,7 @@ function DoneState({
       {safeReturn ? (
         <a
           href={safeReturn}
-          className="mt-8 rounded-2xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white hover:bg-indigo-700"
+          className="mt-8 rounded-2xl bg-accent px-5 py-3 text-sm font-semibold text-white hover:bg-accent-dark"
         >
           Continue
         </a>

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "flux",
-  "name": "Posterity",
+  "name": "Bole Tax Desk",
   "description": "Warm cream-and-orange advisory firm invested in long-term wealth, tax planning, and family success.",
   "category": "finance",
   "previewGradient": "from-[#241C15] via-[#FA6B34] to-[#FFF9F4]",
@@ -152,7 +152,7 @@
   },
   "showcase": {
     "sectionTitle": "We pop up where you live",
-    "sectionSubtitle": "Atlanta neighborhoods, same-week funds",
+    "sectionSubtitle": "Addis Ababa neighborhoods, same-week funds",
     "navLabel": "Locations",
     "itemLabel": "Zone",
     "showPrice": false,
@@ -170,7 +170,7 @@
       "link": "contact"
     },
     {
-      "title": "Buckhead",
+      "title": "Old Airport",
       "description": "Entity returns and Shield advances.",
       "image": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80",
       "price": "",
@@ -179,14 +179,14 @@
     },
     {
       "title": "Downtown",
-      "description": "Walk in with W-2s. Walk out with a number.",
+      "description": "Walk in with employment income statements. Walk out with a number.",
       "image": "https://images.unsplash.com/photo-1575917649705-5b59aaa12e6b?w=800&q=80",
       "price": "",
       "tag": "Core",
       "link": "contact"
     },
     {
-      "title": "West Midtown",
+      "title": "CMC",
       "description": "Founders, contractors, 1099 stacks.",
       "image": "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=800&q=80",
       "price": "",
@@ -194,8 +194,8 @@
       "link": "contact"
     },
     {
-      "title": "Eastside",
-      "description": "Inman, Reynoldstown, Kirkwood \u2014 same week.",
+      "title": "Gerji",
+      "description": "Inman, Reynoldstown, Kirkwood — same week.",
       "image": "https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=800&q=80",
       "price": "",
       "tag": "East",
@@ -207,22 +207,22 @@
     {
       "key": "phone",
       "label": "Text / Call",
-      "placeholder": "(404) 555-0199"
+      "placeholder": "+251 11 661 8299"
     },
     {
       "key": "email",
       "label": "Email",
-      "placeholder": "hi@fluxtax.com"
+      "placeholder": "hello@boletax.et"
     },
     {
       "key": "address",
       "label": "Studio",
-      "placeholder": "404 Edgewood, Atlanta"
+      "placeholder": "Bole Road, Addis Ababa"
     },
     {
       "key": "hours",
       "label": "Hours",
-      "placeholder": "Mon\u2013Sat 11am\u20137pm"
+      "placeholder": "Mon–Sat 11am–7pm"
     },
     {
       "key": "instagram",
@@ -247,7 +247,7 @@
     "grayscaleImage": false
   },
   "defaults": {
-    "businessName": "Posterity",
+    "businessName": "Bole Tax Desk",
     "tagline": "Invested in your long term success.",
     "heroSubtext": "To assist individuals and help businesses realize their financial ambitions and be successful is our mission.",
     "heroImage": "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=2000&q=80",
@@ -259,7 +259,7 @@
     "fontHeading": "space-grotesk",
     "fontBody": "space-grotesk",
     "aboutTitle": "Your strategic partner for lasting wealth",
-    "about": "Posterity helps families and owners plan beyond this tax year \u2014 entity choice, estimated taxes, and a written plan that still works in five years.",
+    "about": "Bole Tax Desk helps families and owners plan beyond this tax year — entity choice, estimated taxes, and a written plan that still works in five years.",
     "aboutImage": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1200&q=80",
     "missionStatement": "Your success. Your legacy. For posterity.",
     "pageVisibility": {
@@ -287,7 +287,7 @@
         "label": "Fastest fund"
       },
       {
-        "value": "$7.5k",
+        "value": "412,500 ETB",
         "label": "Top advance"
       },
       {
@@ -304,7 +304,7 @@
     "services": [
       {
         "title": "Prep + refund advance",
-        "description": "We finish the return, then push Holiday or Shield funds \u2014 often the same day, always the same week when the file is clean."
+        "description": "We finish the return, then push Holiday or Shield funds — often the same day, always the same week when the file is clean."
       },
       {
         "title": "Referral drop",
@@ -312,14 +312,14 @@
       },
       {
         "title": "Business + audit armor",
-        "description": "Schedule C, 1120, 1099 stacks. If the IRS writes, existing clients do not get a new invoice."
+        "description": "Schedule C, 1120, 1099 stacks. If the Ministry of Revenue writes, existing clients do not get a new invoice."
       }
     ],
     "stepsSectionTitle": "Four moves. Then money.",
     "steps": [
       {
         "title": "Dump the docs",
-        "description": "ID, SSN, W-2s, dependents. We text a list so you only come once."
+        "description": "ID, TIN, employment income statements, dependents. We text a list so you only come once."
       },
       {
         "title": "We run the year",
@@ -327,15 +327,15 @@
       },
       {
         "title": "Pick the product",
-        "description": "Holiday (no Flux fee) or Shield ($500\u2013$7,500). Or take nothing. Your call."
+        "description": "Holiday (no Flux fee) or Shield (27,500 ETB–412,500 ETB). Or take nothing. Your call."
       },
       {
         "title": "Get wired",
-        "description": "Approved files fund in 30 minutes to 48 hours. IRS pays us back. You keep living."
+        "description": "Approved files fund in 30 minutes to 48 hours. Ministry of Revenue pays us back. You keep living."
       }
     ],
     "showcaseSectionTitle": "We pop up where you live",
-    "showcaseSectionSubtitle": "Atlanta neighborhoods, same-week funds",
+    "showcaseSectionSubtitle": "Addis Ababa neighborhoods, same-week funds",
     "showcaseItems": [
       {
         "title": "Midtown",
@@ -346,7 +346,7 @@
         "link": "contact"
       },
       {
-        "title": "Buckhead",
+        "title": "Old Airport",
         "description": "Entity returns and Shield advances.",
         "image": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80",
         "price": "",
@@ -355,14 +355,14 @@
       },
       {
         "title": "Downtown",
-        "description": "Walk in with W-2s. Walk out with a number.",
+        "description": "Walk in with employment income statements. Walk out with a number.",
         "image": "https://images.unsplash.com/photo-1575917649705-5b59aaa12e6b?w=800&q=80",
         "price": "",
         "tag": "Core",
         "link": "contact"
       },
       {
-        "title": "West Midtown",
+        "title": "CMC",
         "description": "Founders, contractors, 1099 stacks.",
         "image": "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=800&q=80",
         "price": "",
@@ -370,8 +370,8 @@
         "link": "contact"
       },
       {
-        "title": "Eastside",
-        "description": "Inman, Reynoldstown, Kirkwood \u2014 same week.",
+        "title": "Gerji",
+        "description": "Inman, Reynoldstown, Kirkwood — same week.",
         "image": "https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=800&q=80",
         "price": "",
         "tag": "East",
@@ -389,17 +389,17 @@
     "testimonials": [
       {
         "quote": "I walked in at noon. The advance hit before dinner. That is not a slogan.",
-        "author": "Dee Morales",
+        "author": "Selam Tadesse",
         "role": "Rideshare + 1099"
       },
       {
         "quote": "They did not upsell the bigger Shield. They told me Holiday was enough. I stayed.",
-        "author": "Chris Nguyen",
+        "author": "Yonas Gebre",
         "role": "Salon owner"
       },
       {
-        "quote": "Texted a photo of the IRS letter. They handled it. I kept working.",
-        "author": "Asha Bennett",
+        "quote": "Texted a photo of the Ministry of Revenue letter. They handled it. I kept working.",
+        "author": "Meron Assefa",
         "role": "Stylist"
       }
     ],
@@ -415,11 +415,11 @@
       },
       {
         "question": "What do I bring?",
-        "answer": "ID, Socials, W-2s or pay stubs, dependent docs. We text the list when you book."
+        "answer": "ID, TINs, employment income statements or pay stubs, dependent docs. We text the list when you book."
       },
       {
         "question": "Holiday vs Shield?",
-        "answer": "Holiday: no Flux fee, smaller. Shield: $500\u2013$7,500, bank fees shown before you tap yes."
+        "answer": "Holiday: no Flux fee, smaller. Shield: 27,500 ETB–412,500 ETB, bank fees shown before you tap yes."
       }
     ],
     "teamSectionTitle": "The desk",
@@ -431,7 +431,7 @@
       {
         "title": "Holiday window is live",
         "slug": "holiday-window-live",
-        "excerpt": "Zero Flux fee through April 15. Book before the slate fills.",
+        "excerpt": "Zero Flux fee through the filing deadline. Book before the slate fills.",
         "body": "Holiday advances have no Flux fee. Shield is still there if you need more. We show every bank fee before you accept.",
         "image": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&q=80",
         "author": "Desk",
@@ -452,20 +452,20 @@
       {
         "title": "Holiday",
         "description": "No Flux fee. Sized from the finished return.",
-        "price": "$0 fee",
+        "price": "0 ETB fee",
         "tag": "Season",
         "featured": false
       },
       {
         "title": "Shield",
-        "description": "$500 to $7,500. Fees on the table first.",
-        "price": "Up to $7.5k",
+        "description": "27,500 ETB to 412,500 ETB. Fees on the table first.",
+        "price": "Up to 412,500 ETB",
         "tag": "Most used",
         "featured": true
       },
       {
         "title": "Wait",
-        "description": "We still file. You take the full IRS hit when it lands.",
+        "description": "We still file. You take the full Ministry of Revenue hit when it lands.",
         "price": "Your call",
         "tag": "No advance",
         "featured": false
@@ -481,7 +481,7 @@
         "title": "An advance is a loan. We say that out loud.",
         "slug": "an-advance-is-a-loan",
         "excerpt": "Why we refuse to quote a number until the return exists.",
-        "body": "The IRS refund pays the advance back. Fees, if any, come out of that refund. If the year cannot carry the number, we will tell you to take less \u2014 or none.",
+        "body": "The Ministry of Revenue refund pays the advance back. Fees, if any, come out of that refund. If the year cannot carry the number, we will tell you to take less — or none.",
         "image": "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&q=80",
         "author": "Flux desk",
         "date": "2026-02-11"
@@ -490,7 +490,7 @@
         "title": "Bring this. Skip the second trip.",
         "slug": "bring-this",
         "excerpt": "The only list that matters.",
-        "body": "Photo ID. Socials. W-2s or stubs. Kids\u2019 birth certificates. Proof they lived with you. That is it for most files.",
+        "body": "Photo ID. TINs. employment income statements or stubs. Kids’ birth certificates. Proof they lived with you. That is it for most files.",
         "image": "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&q=80",
         "author": "Flux desk",
         "date": "2026-01-18"
@@ -498,17 +498,17 @@
     ],
     "team": [
       {
-        "name": "Jules Kade",
+        "name": "Mekdes Haile",
         "role": "Desk lead",
         "image": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80"
       },
       {
-        "name": "Rin Alvarez",
+        "name": "Dawit Bekele",
         "role": "Advances",
         "image": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80"
       },
       {
-        "name": "Theo Park",
+        "name": "Hiwot Alemu",
         "role": "Business files",
         "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80"
       }
@@ -518,13 +518,13 @@
     "ctaText": "Discover more",
     "ctaLink": "contact",
     "seoEnabled": true,
-    "seoTitle": "Flux Tax \u2014 same-week refund advances",
-    "seoDescription": "Atlanta tax prep and refund advances up to $7,500. Holiday product with zero Flux fee.",
-    "seoKeywords": "refund advance, tax prep Atlanta, same week refund, Holiday advance",
+    "seoTitle": "Flux Tax — same-week refund advances",
+    "seoDescription": "Addis Ababa tax prep and refund advances up to 412,500 ETB. Holiday product with zero Flux fee.",
+    "seoKeywords": "refund advance, tax prep Addis Ababa, same week refund, Holiday advance",
     "seoSiteUrl": "",
-    "email": "hello@posterity.tax",
-    "phone": "(800) 555-8299",
-    "address": "450 Peachtree Ave NE",
+    "email": "hello@boletax.et",
+    "phone": "+251 11 661 8299",
+    "address": "Bole Road, Addis Ababa",
     "mapUrl": "",
     "hours": "Mon-Fri: 9AM - 7PM | Sat: 10AM - 4PM",
     "instagram": "https://instagram.com/fluxtax",

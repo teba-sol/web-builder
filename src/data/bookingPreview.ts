@@ -124,6 +124,21 @@ export function countAvailableUnits(
   ).length
 }
 
+export function unitsOfType(
+  roomTypeSlug: string,
+  checkIn: string,
+  checkOut: string,
+  units: PreviewRoomUnit[],
+  reservations: PreviewReservation[],
+): PreviewRoomUnit[] {
+  return units.filter(
+    (unit) =>
+      unit.roomTypeSlug === roomTypeSlug &&
+      unit.status === 'available' &&
+      isUnitAvailable(unit.id, checkIn, checkOut, reservations),
+  )
+}
+
 export function findAvailableUnit(
   roomTypeSlug: string,
   checkIn: string,
@@ -167,7 +182,7 @@ export function computeStayTotal(roomType: RoomTypeItem, checkIn: string, checkO
   const nights = stayNights(checkIn, checkOut)
   const nightlyRate = parseRoomPrice(roomType.basePrice)
   const total = nights * nightlyRate
-  const currency = roomType.currency || 'USD'
+  const currency = roomType.currency || 'ETB'
   return {
     nights,
     nightlyRate,

@@ -6,7 +6,7 @@ import {
 import type { SiteContent, TemplateId } from '../../types'
 import type { ImageAsset } from '../imageUtils'
 import { buildRobotsTxt, buildSitemapXml, collectLaravelSitemapPaths } from '../seoExport'
-import { buildExportPayload, resolveAssetPath, type SiteExportPayload } from './exportPayload'
+import { buildExportPayload, resolveAssetPath, type CrsExportSecrets, type SiteExportPayload } from './exportPayload'
 import { generateAllBladeViews } from './generateBlade'
 import {
   bookingRouteLines,
@@ -672,7 +672,9 @@ DOCTOR_TOKEN=${setupToken}
 ADMIN_NAME=Admin
 ADMIN_EMAIL=${adminEmailLocal(payload.content.businessName)}
 ADMIN_PASSWORD=password
-${usesBuildauraCrs(payload.templateId) ? crsEnvExample(credentials) : ''}`,
+
+${crsEnvBlock(payload.crs)}
+`,
 
     'artisan': `#!/usr/bin/env php
 <?php
@@ -799,7 +801,7 @@ class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
-        return $panel
+        $panel = $panel
             ->default()
             ->id('admin')
             ->path('admin')
@@ -807,7 +809,14 @@ class AdminPanelProvider extends PanelProvider
             ->colors(['primary' => Color::Indigo])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\\\Filament\\\\Resources')
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\\\Filament\\\\Widgets')
-${usesBuildauraCrs(payload.templateId) ? "            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\\\Filament\\\\Pages')\n" : ''}            ->pages([Pages\\Dashboard::class])
+            ->pages([Pages\\Dashboard::class]);
+
+        $pageDirectory = app_path('Filament/Pages');
+        if (is_dir($pageDirectory)) {
+            $panel = $panel->discoverPages(in: $pageDirectory, for: 'App\\\\Filament\\\\Pages');
+        }
+
+        return $panel
             ->widgets([
                 Widgets\\AccountWidget::class,
             ])
@@ -1009,7 +1018,16 @@ class SiteController extends Controller
 {
     public function index(): View
     {
-        return view('site.index', [
+        ${hasBookingFeature(payload.content) ? `$roomTypes = [];
+        try {
+            $crs = app(\\App\\Services\\CrsClient::class);
+            if ($crs->configured()) {
+                $roomTypes = array_slice(\\App\\Support\\CrsInventory::types($crs->inventory()), 0, 3);
+            }
+        } catch (\\Throwable) {
+            $roomTypes = [];
+        }
+        return view('site.index', [` : `return view('site.index', [`}
             'settings' => SiteSetting::current(),
             'stats' => Stat::orderBy('sort_order')->get(),
             'services' => Service::orderBy('sort_order')->get(),
@@ -1018,7 +1036,8 @@ class SiteController extends Controller
             'blogPosts' => BlogPost::where('is_published', true)->orderByDesc('published_at')->orderBy('sort_order')->get(),
             'newsPosts' => NewsPost::where('is_published', true)->orderByDesc('published_at')->orderBy('sort_order')->get(),
             'testimonials' => Testimonial::orderBy('sort_order')->get(),
-            'faqs' => Faq::orderBy('sort_order')->get(),${usesBuildauraCrs(payload.templateId) ? "\n            'crsRoomTypes' => $this->crsRoomTypes()," : ''}
+            'faqs' => Faq::orderBy('sort_order')->get(),${hasBookingFeature(payload.content) ? `
+            'roomTypes' => $roomTypes,` : ''}
         ]);
     }
 ${usesBuildauraCrs(payload.templateId) ? `
@@ -1494,7 +1513,6 @@ This folder is a **deploy-ready** Laravel 11 + Filament 3 admin panel, pre-fille
 
 - **Public website** at \`/\` — dynamic Blade template powered by your database
 - **Filament admin** at \`/admin\` — full styled dashboard to manage content
-- **3 look-and-feel variants** — Classic, Modern, and Luxury ship with every export; switch anytime under **Admin → Site Settings → Look & Feel**
 - **MySQL by default** — configure credentials in \`.env\` before migrate/seed
 
 ## Quick start — browser setup (no terminal)
@@ -1546,16 +1564,6 @@ Set these in your \`.env\` before running migrate/seed:
 
 Change \`ADMIN_PASSWORD\` immediately after first login, then re-run **Migrate & Seed** from Site Doctor (or \`php artisan db:seed\`).
 
-## Look & Feel (layout variants)
-
-Every export includes **Classic**, **Modern**, and **Luxury** presentation styles.
-
-1. Open **Admin → Site Settings → General**
-2. Change **Look & Feel**
-3. Save — the public site updates immediately (hero layout, review layout, spacing/radius)
-
-This does **not** change your content or color theme. The style chosen in the WebBuilder export is the default seed value.
-
 ## Filament resources (based on your template)
 
 Your export includes admin panels for the sections you enabled:
@@ -1587,20 +1595,16 @@ Public pages:
 ` : hasBookingFeature(payload.content) ? `
 ## Hospitality booking
 
-This site includes a full property management booking stack:
+This site includes hospitality booking backed by **BuildAura CRS**:
 
-- **Room Types** — categories and subtypes (parent/child) with pricing, occupancy, amenities
-- **Room Units** — physical inventory (codes, status: available / maintenance / out of service)
-- **Seasonal Rates** — date-range price overrides per room type
-- **Reservations** — guest stays with status workflow (pending → confirmed → checked in → checked out / cancelled / no-show)
+- **Inventory** (hotel, room types, physical units, rates, occupancy windows) lives in BuildAura. A download from the builder fills \`CRS_API_URL\`, \`CRS_API_KEY\`, and \`CRS_HOTEL_ID\` in \`.env\` and \`.env.example\`. The homepage reads rooms from that API, not from a local RoomType table.
+- **Reservations** (guest name, email, phone, and fake card last-4) stay in this site's database only. They are never sent to BuildAura.
+- Public booking updates CRS occupancy and room status when a stay is reserved.
+- Filament **Hospitality → Room types** and **Hospitality → Rooms** create, edit, and delete inventory through that API. Room-type photos are file uploads (up to 5 MB) stored in BuildAura. There is no image URL field and no local room table.
+- PHP often rejects uploads above 2 MB before BuildAura sees them. \`public/.user.ini\` raises the limit for Apache and php-fpm. \`php artisan serve\` ignores that file, so start it with \`php -d upload_max_filesize=8M -d post_max_size=8M artisan serve\`.
+- Filament **Hospitality → Reservations** creates and updates stays. Guest details stay in this site's database. The matching date hold is written to BuildAura.
 
-Public pages:
-- \`/rooms\` — catalogue
-- \`/rooms/{slug}\` — detail
-- \`/book\` — availability search + reserve
-- \`/book/confirm/{code}\` — confirmation
-
-Only free units can be booked for overlapping dates. Manage inventory and stays in **Admin → Hospitality**.
+Public pages: \`/rooms\`, \`/rooms/{slug}\`, \`/book\`, \`/book/confirm/{code}\`.
 ` : ''}
 
 ## Deploying to production
@@ -1620,19 +1624,32 @@ Use the \`backend/\` folder when you want dynamic content and an admin dashboard
   }
 }
 
+function crsEnvBlock(secrets?: CrsExportSecrets): string {
+  const url = (secrets?.apiBaseUrl || 'http://localhost:8080').replace(/\/+$/, '')
+  return `CRS_API_URL=${url}
+CRS_API_KEY=${secrets?.apiKey ?? ''}
+CRS_HOTEL_ID=${secrets?.hotelId ?? ''}`
+}
+
 export function generateBackend(
   templateId: TemplateId,
   content: SiteContent,
   colorSchemeId: string | undefined,
   layoutVariantId: string | undefined,
   assets: ImageAsset[],
-  credentials?: CrsExportCredentials,
+  crs?: CrsExportSecrets,
 ): BackendFileMap {
-  const payload = buildExportPayload(templateId, content, colorSchemeId, layoutVariantId, assets)
+  const payload: SiteExportPayload = {
+    ...buildExportPayload(templateId, content, colorSchemeId, layoutVariantId, assets),
+    crs,
+  }
   const setupToken = generateSetupToken()
   const files: BackendFileMap = {}
 
-  Object.assign(files, generateSkeleton(payload, setupToken, credentials))
+  Object.assign(files, generateSkeleton(payload, setupToken))
+  if (files['.env.example']) {
+    files['.env'] = files['.env.example']
+  }
   Object.assign(files, generateSetupFiles())
 
   for (const model of LIST_MODELS) {
