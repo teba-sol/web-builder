@@ -234,11 +234,11 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
               <span className="italic" style={{ color: C.primary }}>Built Around</span> You
             </h2>
             <p className="text-sm leading-relaxed" style={{ color: C.textMuted }}>
-              At Axiom Audit, we simplify complex tax situations with smart technology, expert support, and a commitment to excellence. We're here to protect your finances year-round.
+              At Abay Audit, we simplify complex tax situations with smart technology, expert support, and a commitment to excellence. We're here to protect your finances year-round.
             </p>
 
             <div className="space-y-2.5 pt-1">
-              {['Certified Preparers & Enrolled Agents', 'Transparent Pricing — No Hidden Fees', 'Year-Round Audit & IRS Support', 'Fast Refund Advances Up To $7,500'].map((item, i) => (
+              {['Certified Preparers & Enrolled Agents', 'Transparent Pricing — No Hidden Fees', 'Year-Round Audit & Ministry of Revenue Support', 'Fast Refund Advances Up To 412,500 ETB'].map((item, i) => (
                 <div key={i} className="flex items-center gap-2.5 text-sm" style={{ color: C.text }}>
                   <CheckCircle2 className="w-4.5 h-4.5 flex-shrink-0" style={{ color: C.accent }} />
                   <span className="font-medium">{item}</span>
@@ -274,10 +274,10 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
 
           <div className="grid csm:grid-cols-2 clg:grid-cols-4 gap-6">
             {[
-              { icon: <DollarSign className="w-7 h-7" />, title: 'Refund Advances', desc: 'Access $500 to $7,500 deposited directly to your account.' },
+              { icon: <DollarSign className="w-7 h-7" />, title: 'Refund Advances', desc: 'Access 27,500 ETB to 412,500 ETB deposited directly to your account.' },
               { icon: <Briefcase className="w-7 h-7" />, title: 'Business Tax Prep', desc: 'LLC, S-Corp, partnership filing and compliance.' },
-              { icon: <Shield className="w-7 h-7" />, title: 'IRS Audit Defense', desc: 'Full representation and penalty abatement support.' },
-              { icon: <Gift className="w-7 h-7" />, title: 'Referral Bonuses', desc: '$50 cash per referred client with zero limits.' },
+              { icon: <Shield className="w-7 h-7" />, title: 'Ministry of Revenue Audit Defense', desc: 'Full representation and penalty abatement support.' },
+              { icon: <Gift className="w-7 h-7" />, title: 'Referral Bonuses', desc: '2,750 ETB cash per referred client with zero limits.' },
             ].map((s, i) => (
               <div key={i} className="t5-card text-center p-8 rounded-2xl border bg-white" style={{ borderColor: C.border }}>
                 <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: C.accentSoft, color: C.primary }}>
@@ -325,7 +325,7 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
 
           {/* Right: Why Choose Us */}
           <div className="bg-white rounded-2xl border p-8 clg:p-10 space-y-6" style={{ borderColor: C.border }}>
-            <h3 className="text-2xl font-black" style={{ color: C.text }}>Why Choose Axiom Audit?</h3>
+            <h3 className="text-2xl font-black" style={{ color: C.text }}>Why Choose Abay Audit?</h3>
             <div className="space-y-4">
               {[
                 { icon: <Award className="w-5 h-5" />, label: 'Industry Expertise' },
@@ -451,7 +451,7 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
             <div className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: C.accent }}>Upcoming Deadlines</div>
             <div className="space-y-4">
               {[
-                { month: 'JAN', day: '29', title: 'IRS Begins Processing Returns', desc: 'January 29 – Filing Season Opens' },
+                { month: 'JAN', day: '29', title: 'Ministry of Revenue Begins Processing Returns', desc: 'January 29 – Filing Season Opens' },
                 { month: 'APR', day: '15', title: 'Individual Tax Filing Deadline', desc: 'April 15, 2026 – Federal Deadline' },
                 { month: 'JUN', day: '15', title: 'Estimated Tax Payment Due', desc: 'June 15, 2026 – Q2 Estimated Tax' },
               ].map((ev, i) => (
@@ -496,9 +496,9 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
               </div>
               <div className="flex-1">
                 <div className="text-sm font-bold" style={{ color: C.text }}>Need immediate help?</div>
-                <div className="text-xs" style={{ color: C.textMuted }}>Call us at <strong>(800) 555-8299</strong></div>
+                <div className="text-xs" style={{ color: C.textMuted }}>Call us at <strong>{c.phone || '+251 11 551 8299'}</strong></div>
               </div>
-              <a href="tel:+18005558299" className="px-4 py-2 rounded-lg font-bold text-xs text-white" style={{ backgroundColor: C.accent }}>
+              <a href={`tel:${(c.phone || '+251115518299').replace(/\s/g, '')}`} className="px-4 py-2 rounded-lg font-bold text-xs text-white" style={{ backgroundColor: C.accent }}>
                 Call Now
               </a>
             </div>
@@ -642,7 +642,7 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
                   </div>
                   <div>
                     <label className="block text-xs font-semibold mb-1" style={{ color: C.textMuted }}>Your Phone *</label>
-                    <input type="tel" required placeholder="(555) 000-0000" value={contactForm.phone} onChange={(e) => setContactForm({ ...contactForm, phone: e.target.value })}
+                    <input type="tel" required placeholder="+251 911 000 000" value={contactForm.phone} onChange={(e) => setContactForm({ ...contactForm, phone: e.target.value })}
                       className="w-full border rounded-lg py-3 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-200 transition" style={{ backgroundColor: C.surface, borderColor: C.border, color: C.text }} />
                   </div>
                 </div>
@@ -703,7 +703,7 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
               <div className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ backgroundColor: C.accent }}>
                 <Shield className="w-5 h-5 text-white" />
               </div>
-              <span className="text-white font-black text-base">Axiom Audit</span>
+              <span className="text-white font-black text-base">Abay Audit</span>
             </div>
             <p className="text-xs leading-relaxed">
               Empowering individuals and businesses with intelligent tax solutions that deliver results.
@@ -731,7 +731,7 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
         </div>
 
         <div className="max-w-7xl mx-auto pt-6 text-center" style={{ color: '#5B7D9C' }}>
-          © {new Date().getFullYear()} Axiom Audit LLC. All rights reserved.
+          © {new Date().getFullYear()} Abay Audit LLC. All rights reserved.
         </div>
       </footer>
 
@@ -759,7 +759,7 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
               {[
                 { label: 'First Name *', ph: 'Jane', key: 'firstName' as const },
                 { label: 'Last Name *', ph: 'Doe', key: 'lastName' as const },
-                { label: 'Phone Number *', ph: '(555) 000-0000', key: 'phone' as const },
+                { label: 'Phone Number *', ph: '+251 911 000 000', key: 'phone' as const },
               ].map((f) => (
                 <div key={f.key}>
                   <label className="block text-xs font-semibold mb-1" style={{ color: C.textMuted }}>{f.label}</label>
@@ -781,7 +781,7 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
                   <option value="Individual Tax Filing">Individual Tax Filing</option>
                   <option value="Business Tax Prep">Business Tax Prep</option>
                   <option value="Refund Advance Loan">Refund Advance Loan</option>
-                  <option value="IRS Audit Defense">IRS Audit Defense</option>
+                  <option value="Ministry of Revenue Audit Defense">Ministry of Revenue Audit Defense</option>
                 </select>
               </div>
 

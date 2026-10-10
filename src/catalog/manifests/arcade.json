@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "id": "arcade",
-  "name": "Pixel District",
-  "description": "Neon cyber-noir \u2014 electric gradients, glitch energy, perfect for gaming and nightlife brands.",
+  "name": "Bole Pixel House",
+  "description": "Neon cyber-noir — electric gradients, glitch energy, perfect for gaming and nightlife brands.",
   "category": "tech",
   "previewGradient": "from-fuchsia-600 via-violet-950 to-lime-400",
   "accentColor": "#a3e635",
@@ -171,33 +171,33 @@
   "defaultShowcase": [
     {
       "title": "Friday Night LAN",
-      "description": "Open-format LAN party \u2014 bring your rig or rent a station. Prizes at midnight.",
+      "description": "Open-format LAN party — bring your rig or rent a station. Prizes at midnight.",
       "image": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&q=80",
-      "price": "$25",
+      "price": "1,380 ETB",
       "tag": "Weekly",
       "link": "contact"
     },
     {
       "title": "Fighting Game Tournament",
-      "description": "Double-elimination bracket \u2014 $2,000 prize pool. All skill levels welcome.",
+      "description": "Double-elimination bracket — 110,000 ETB prize pool. All skill levels welcome.",
       "image": "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?w=600&q=80",
-      "price": "$15",
+      "price": "825 ETB",
       "tag": "Monthly",
       "link": "contact"
     },
     {
       "title": "VR Arena Sessions",
-      "description": "Six-player free-roam VR \u2014 tactical shooters and cooperative adventures.",
+      "description": "Six-player free-roam VR — tactical shooters and cooperative adventures.",
       "image": "https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?w=600&q=80",
-      "price": "$35",
+      "price": "1,920 ETB",
       "tag": "Per hour",
       "link": "contact"
     },
     {
       "title": "Retro Arcade Pass",
-      "description": "All-day access to 40+ restored cabinets \u2014 Pac-Man to modern indie.",
+      "description": "All-day access to 40+ restored cabinets — Pac-Man to modern indie.",
       "image": "https://images.unsplash.com/photo-1511882150382-421056c89033?w=600&q=80",
-      "price": "$20",
+      "price": "1,100 ETB",
       "tag": "All day",
       "link": "contact"
     },
@@ -205,7 +205,7 @@
       "title": "Neon Nights DJ Set",
       "description": "Live DJs, laser show, and themed cocktails every Saturday after 10pm.",
       "image": "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&q=80",
-      "price": "$12",
+      "price": "660 ETB",
       "tag": "Sat nights",
       "link": "contact"
     },
@@ -223,7 +223,7 @@
     {
       "key": "email",
       "label": "General Email",
-      "placeholder": "hello@pixeldistrict.gg"
+      "placeholder": "hello@bolepixel.et"
     },
     {
       "key": "supportEmail",
@@ -263,12 +263,12 @@
     "grayscaleImage": false
   },
   "defaults": {
-    "businessName": "Pixel District",
+    "businessName": "Bole Pixel House",
     "tagline": "Play louder. Stay later.",
-    "heroSubtext": "The city's premier gaming lounge \u2014 neon-lit arenas, retro cabinets, VR battles, and tournaments every weekend.",
+    "heroSubtext": "The city's premier gaming lounge — neon-lit arenas, retro cabinets, VR battles, and tournaments every weekend.",
     "heroImage": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1200&q=80",
     "aboutTitle": "Level Up",
-    "about": "Pixel District opened in 2021 as a love letter to gaming culture \u2014 from pixel art to esports. Our 15,000 sq ft space hosts LAN parties, indie showcases, and the rowdiest fighting game brackets on the West Coast.",
+    "about": "Bole Pixel House opened in 2021 as a love letter to gaming culture — from pixel art to esports. Our 15,000 sq ft space hosts LAN parties, indie showcases, and the rowdiest fighting game brackets on the West Coast.",
     "aboutImage": "https://images.unsplash.com/photo-1511882150382-421056c89033?w=800&q=80",
     "missionStatement": "Games bring people together. We just add neon.",
     "pageVisibility": {
@@ -300,7 +300,7 @@
         "label": "LAN Stations"
       },
       {
-        "value": "$50k",
+        "value": "2.8M ETB",
         "label": "Prize Pools / Year"
       },
       {
@@ -317,11 +317,11 @@
       },
       {
         "title": "Retro Floor",
-        "description": "Restored classics from the golden age \u2014 tokens and free play nights."
+        "description": "Restored classics from the golden age — tokens and free play nights."
       },
       {
         "title": "VR Battlespace",
-        "description": "Free-roam multiplayer VR \u2014 six players, zero wires, full chaos."
+        "description": "Free-roam multiplayer VR — six players, zero wires, full chaos."
       },
       {
         "title": "Private Events",
@@ -352,33 +352,33 @@
     "showcaseItems": [
       {
         "title": "Friday Night LAN",
-        "description": "Open-format LAN party \u2014 bring your rig or rent a station. Prizes at midnight.",
+        "description": "Open-format LAN party — bring your rig or rent a station. Prizes at midnight.",
         "image": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&q=80",
-        "price": "$25",
+        "price": "1,380 ETB",
         "tag": "Weekly",
         "link": "contact"
       },
       {
         "title": "Fighting Game Tournament",
-        "description": "Double-elimination bracket \u2014 $2,000 prize pool. All skill levels welcome.",
+        "description": "Double-elimination bracket — 110,000 ETB prize pool. All skill levels welcome.",
         "image": "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?w=600&q=80",
-        "price": "$15",
+        "price": "825 ETB",
         "tag": "Monthly",
         "link": "contact"
       },
       {
         "title": "VR Arena Sessions",
-        "description": "Six-player free-roam VR \u2014 tactical shooters and cooperative adventures.",
+        "description": "Six-player free-roam VR — tactical shooters and cooperative adventures.",
         "image": "https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?w=600&q=80",
-        "price": "$35",
+        "price": "1,920 ETB",
         "tag": "Per hour",
         "link": "contact"
       },
       {
         "title": "Retro Arcade Pass",
-        "description": "All-day access to 40+ restored cabinets \u2014 Pac-Man to modern indie.",
+        "description": "All-day access to 40+ restored cabinets — Pac-Man to modern indie.",
         "image": "https://images.unsplash.com/photo-1511882150382-421056c89033?w=600&q=80",
-        "price": "$20",
+        "price": "1,100 ETB",
         "tag": "All day",
         "link": "contact"
       },
@@ -386,7 +386,7 @@
         "title": "Neon Nights DJ Set",
         "description": "Live DJs, laser show, and themed cocktails every Saturday after 10pm.",
         "image": "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&q=80",
-        "price": "$12",
+        "price": "660 ETB",
         "tag": "Sat nights",
         "link": "contact"
       },
@@ -409,17 +409,17 @@
     "testimonials": [
       {
         "quote": "Outstanding service and incredible results. Highly recommended!",
-        "author": "Sarah Johnson",
+        "author": "Selam Tadesse",
         "role": "CEO, TechStart"
       },
       {
         "quote": "They transformed our business. Professional, creative, and reliable.",
-        "author": "Michael Chen",
+        "author": "Yonas Gebre",
         "role": "Founder, Bloom Co"
       },
       {
         "quote": "The best decision we made this year. Exceeded every expectation.",
-        "author": "Emily Rodriguez",
+        "author": "Meron Assefa",
         "role": "Director, Apex Group"
       }
     ],
@@ -435,7 +435,7 @@
       },
       {
         "question": "How long does a typical project take?",
-        "answer": "Timelines vary by scope, but most projects are completed within 2\u20138 weeks."
+        "answer": "Timelines vary by scope, but most projects are completed within 2–8 weeks."
       },
       {
         "question": "Do you offer ongoing support?",
@@ -452,7 +452,7 @@
         "title": "We Are Expanding to Serve You Better",
         "slug": "expanding-to-serve-you-better",
         "excerpt": "New locations, extended hours, and more ways to connect with our team.",
-        "body": "We are thrilled to announce expanded service hours and a new consultation space designed around your comfort and convenience.\n\nThis investment reflects our commitment to accessibility and excellence. Thank you for being part of our journey \u2014 we cannot wait to welcome you.",
+        "body": "We are thrilled to announce expanded service hours and a new consultation space designed around your comfort and convenience.\n\nThis investment reflects our commitment to accessibility and excellence. Thank you for being part of our journey — we cannot wait to welcome you.",
         "image": "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80",
         "author": "Press Team",
         "date": "2026-04-01"
@@ -461,7 +461,7 @@
         "title": "Award Recognizes Our Commitment to Quality",
         "slug": "award-quality-commitment",
         "excerpt": "Industry leaders honored our team for outstanding client satisfaction.",
-        "body": "Receiving this recognition is a testament to the people behind our work \u2014 dedicated professionals who show up every day with care and craft.\n\nWe share this award with every client who trusted us with their goals. Your feedback shapes how we grow and improve.",
+        "body": "Receiving this recognition is a testament to the people behind our work — dedicated professionals who show up every day with care and craft.\n\nWe share this award with every client who trusted us with their goals. Your feedback shapes how we grow and improve.",
         "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80",
         "author": "Communications",
         "date": "2026-03-18"
@@ -481,14 +481,14 @@
       {
         "title": "Starter",
         "description": "Essential features for individuals and small teams getting started.",
-        "price": "$29/mo",
+        "price": "1,600 ETB/mo",
         "tag": "Most popular",
         "featured": false
       },
       {
         "title": "Professional",
         "description": "Advanced tools, priority support, and integrations for growing businesses.",
-        "price": "$79/mo",
+        "price": "4,340 ETB/mo",
         "tag": "Best value",
         "featured": true
       },
@@ -510,7 +510,7 @@
         "title": "5 Strategies to Grow Your Business This Year",
         "slug": "5-strategies-to-grow-your-business",
         "excerpt": "Practical steps you can take today to build momentum and reach more customers.",
-        "body": "Growing a business takes focus, consistency, and a willingness to adapt. Start by clarifying your core offer, then double down on the channels that already bring results.\n\nReview your customer journey from first touch to repeat purchase. Small improvements at each step compound into meaningful revenue gains. Finally, invest in relationships \u2014 referrals and retention often outperform cold outreach.",
+        "body": "Growing a business takes focus, consistency, and a willingness to adapt. Start by clarifying your core offer, then double down on the channels that already bring results.\n\nReview your customer journey from first touch to repeat purchase. Small improvements at each step compound into meaningful revenue gains. Finally, invest in relationships — referrals and retention often outperform cold outreach.",
         "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
         "author": "Alex Morgan",
         "date": "2026-03-12"
@@ -518,8 +518,8 @@
       {
         "title": "What Clients Are Asking Us Right Now",
         "slug": "what-clients-are-asking-us",
-        "excerpt": "A quick roundup of the most common questions we hear \u2014 and how we answer them.",
-        "body": "Every season brings a new set of priorities. Lately, clients ask about pricing transparency, faster turnaround times, and how to stand out in crowded markets.\n\nOur advice stays grounded in fundamentals: deliver exceptional value, communicate clearly, and measure what matters. When in doubt, talk to your customers \u2014 their feedback is the best roadmap.",
+        "excerpt": "A quick roundup of the most common questions we hear — and how we answer them.",
+        "body": "Every season brings a new set of priorities. Lately, clients ask about pricing transparency, faster turnaround times, and how to stand out in crowded markets.\n\nOur advice stays grounded in fundamentals: deliver exceptional value, communicate clearly, and measure what matters. When in doubt, talk to your customers — their feedback is the best roadmap.",
         "image": "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80",
         "author": "Jordan Lee",
         "date": "2026-02-28"
@@ -528,7 +528,7 @@
         "title": "Behind the Scenes: How We Work",
         "slug": "behind-the-scenes-how-we-work",
         "excerpt": "Take a peek at our process, tools, and the principles that guide every project.",
-        "body": "We believe great outcomes come from clear goals, collaborative planning, and disciplined execution. Every engagement starts with listening \u2014 understanding where you are and where you want to go.\n\nFrom there we build a tailored plan with milestones you can track. Throughout delivery we keep communication open so there are no surprises, only steady progress toward results you can measure.",
+        "body": "We believe great outcomes come from clear goals, collaborative planning, and disciplined execution. Every engagement starts with listening — understanding where you are and where you want to go.\n\nFrom there we build a tailored plan with milestones you can track. Throughout delivery we keep communication open so there are no surprises, only steady progress toward results you can measure.",
         "image": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80",
         "author": "Taylor Brooks",
         "date": "2026-01-15"
@@ -536,23 +536,23 @@
     ],
     "team": [
       {
-        "name": "Alex Morgan",
+        "name": "Mekdes Haile",
         "role": "Founder & CEO",
         "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80"
       },
       {
-        "name": "Jordan Lee",
+        "name": "Dawit Bekele",
         "role": "Creative Director",
         "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
       },
       {
-        "name": "Taylor Brooks",
+        "name": "Hiwot Alemu",
         "role": "Operations Lead",
         "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80"
       }
     ],
     "ctaBannerTitle": "Join the next tournament",
-    "ctaBannerText": "Sign up for our newsletter \u2014 early bird brackets and exclusive event access.",
+    "ctaBannerText": "Sign up for our newsletter — early bird brackets and exclusive event access.",
     "ctaText": "Get Tickets",
     "ctaLink": "contact",
     "seoEnabled": false,
@@ -560,9 +560,9 @@
     "seoDescription": "",
     "seoKeywords": "",
     "seoSiteUrl": "",
-    "email": "hello@pixeldistrict.gg",
-    "phone": "",
-    "address": "",
+    "email": "hello@bolepixel.et",
+    "phone": "+251 11 661 4400",
+    "address": "Cameroon Street, Bole, Addis Ababa",
     "hours": "",
     "instagram": "@pixeldistrict",
     "website": "https://discord.gg/pixeldistrict",

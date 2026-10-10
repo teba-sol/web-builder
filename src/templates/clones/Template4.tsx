@@ -136,13 +136,13 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
                 </span>
               </button>
 
-              <a href="tel:+18005558299" className="flex items-center gap-3 group">
+              <a href={`tel:${(c.phone || '+251116618299').replace(/\s/g, '')}`} className="flex items-center gap-3 group">
                 <span className="w-11 h-11 rounded-full flex items-center justify-center border border-white/20 group-hover:border-[var(--clone-accent)] transition" style={{ backgroundColor: 'var(--clone-ink)' }}>
                   <Phone className="w-4 h-4" style={{ color: 'var(--clone-accent)' }} />
                 </span>
                 <span className="text-xs">
                   <div className="text-[#8FA396] font-medium">Call Us Now</div>
-                  <div className="font-bold text-white">+1 (800) 555-8299</div>
+                  <div className="font-bold text-white">{c.phone || '+251 11 661 8299'}</div>
                 </span>
               </a>
             </div>
@@ -163,7 +163,7 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
                 <FileCheck2 className="w-5 h-5" style={{ color: 'var(--clone-accent)' }} />
               </div>
               <div>
-                <div className="text-sm font-black leading-none">$500-$7.5K</div>
+                <div className="text-sm font-black leading-none">27,500 ETB-412,500 ETB</div>
                 <div className="text-[10px] text-[#6B7A70] mt-1">Refund advance, 24hrs</div>
               </div>
             </div>
@@ -233,7 +233,7 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
               </div>
               <h3 className="text-lg font-bold text-[var(--clone-ink)] relative">Refund Advance Loans</h3>
               <p className="text-xs text-[#1F3A2E] leading-relaxed relative">
-                Access $500 to $7,500 of your refund the same day you file, deposited directly.
+                Access 27,500 ETB to 412,500 ETB of your refund the same day you file, deposited directly.
               </p>
               <button onClick={() => setIsBookingModalOpen(true)} className="relative inline-flex items-center gap-1.5 text-xs font-bold text-[var(--clone-ink)] pt-1 hover:underline">
                 Explore More <ArrowRight className="w-3.5 h-3.5" />
@@ -245,9 +245,9 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
               <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ backgroundColor: 'var(--clone-accent)' }}>
                 <Shield className="w-6 h-6" style={{ color: 'var(--clone-ink)' }} />
               </div>
-              <h3 className="text-lg font-bold text-white">IRS Audit Defense</h3>
+              <h3 className="text-lg font-bold text-white">Ministry of Revenue Audit Defense</h3>
               <p className="text-xs text-[#B9C9BC] leading-relaxed">
-                Full representation and penalty abatement support if the IRS ever comes calling.
+                Full representation and penalty abatement support if the Ministry of Revenue ever comes calling.
               </p>
               <button onClick={() => setIsBookingModalOpen(true)} className="inline-flex items-center gap-1.5 text-xs font-bold pt-1 hover:underline" style={{ color: 'var(--clone-accent)' }}>
                 Explore More <ArrowRight className="w-3.5 h-3.5" />
@@ -317,7 +317,7 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
             </h2>
 
             <p className="text-[#4A554D] text-sm csm:text-base leading-relaxed">
-              TaxGuardians was founded to make professional tax help fast, transparent, and genuinely useful, whether you're filing a simple return or navigating a multi-entity business.
+              Entoto Tax Studio was founded to make professional tax help fast, transparent, and genuinely useful, whether you're filing a simple return or navigating a multi-entity business.
             </p>
 
             <div className="space-y-3 pt-2">
@@ -379,7 +379,7 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
                 Refund Advance & E-Filing
               </h3>
               <p className="text-[#6B7A70] text-sm leading-relaxed">
-                Fast e-filing with refund advance options from $500 up to $7,500 deposited directly to your bank account.
+                Fast e-filing with refund advance options from 27,500 ETB up to 412,500 ETB deposited directly to your bank account.
               </p>
               <button
                 onClick={() => setIsBookingModalOpen(true)}
@@ -399,7 +399,7 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
                 Referral Bonus Program
               </h3>
               <p className="text-[#6B7A70] text-sm leading-relaxed">
-                Refer friends, family, or colleagues and receive $50 cash per completed client filing with zero payout limits!
+                Refer friends, family, or colleagues and receive 2,750 ETB cash per completed client filing with zero payout limits!
               </p>
               <button
                 onClick={() => setIsBookingModalOpen(true)}
@@ -419,7 +419,7 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
                 Business Tax & Audit Defense
               </h3>
               <p className="text-[#6B7A70] text-sm leading-relaxed">
-                Dedicated business accounting, LLC filing, payroll tax optimization, and 100% IRS audit defense coverage.
+                Dedicated business accounting, LLC filing, payroll tax optimization, and 100% Ministry of Revenue audit defense coverage.
               </p>
               <button
                 onClick={() => setIsBookingModalOpen(true)}
@@ -454,7 +454,7 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
               <div key={idx} className={`rounded-2xl overflow-hidden group ${idx === 0 ? 'row-span-2 h-full' : 'h-48 cmd:h-56'}`}>
                 <img
                   src={src}
-                  alt="Inside the TaxGuardians office"
+                  alt="Inside the Entoto Tax Studio office"
                   className="w-full h-full object-cover grayscale-[15%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500"
                 />
               </div>
@@ -483,7 +483,7 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
               </div>
               <h3 className="text-xl font-bold text-[var(--clone-ink)]">Book & Upload Docs</h3>
               <p className="text-xs text-[#6B7A70] leading-relaxed">
-                Schedule a slot online and securely upload your ID, W-2s, and 1099s ahead of time.
+                Schedule a slot online and securely upload your ID, employment income statements, and other income records ahead of time.
               </p>
             </div>
 
@@ -505,7 +505,7 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
               </div>
               <h3 className="text-xl font-bold text-[var(--clone-ink)]">Get Your Refund</h3>
               <p className="text-xs text-[#6B7A70] leading-relaxed">
-                Choose a refund advance within 24 hours, or wait for your standard IRS deposit.
+                Choose a refund advance within 24 hours, or wait for your standard Ministry of Revenue deposit.
               </p>
             </div>
 
@@ -654,7 +654,7 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
                     <input
                       type="tel"
                       required
-                      placeholder="(555) 000-0000"
+                      placeholder="+251 911 000 000"
                       value={contactForm.phone}
                       onChange={(e) => setContactForm({ ...contactForm, phone: e.target.value })}
                       className="w-full bg-[var(--clone-surface)] border border-[#E4E0D4] rounded-xl py-3 px-4 text-sm text-[var(--clone-ink)] focus:outline-none focus:border-[var(--clone-highlight)] focus:ring-2 focus:ring-[var(--clone-accent)]/30 transition"
@@ -717,7 +717,7 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
               <div className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'var(--clone-accent)' }}>
                 <Shield className="w-5 h-5" style={{ color: 'var(--clone-ink)' }} />
               </div>
-              <span className="text-white font-black text-base">TaxGuardians</span>
+              <span className="text-white font-black text-base">Entoto Tax Studio</span>
             </div>
             <p className="text-[#7E9084] text-xs leading-relaxed">
               A full-service tax and accounting firm helping individuals and businesses file with confidence, all year round.
@@ -735,8 +735,8 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
             <ul className="space-y-2.5">
               <li><Link to={d.hrefs.services} className="hover:text-[var(--clone-accent)] transition-colors">Individual Tax Prep</Link></li>
               <li><Link to={d.hrefs.services} className="hover:text-[var(--clone-accent)] transition-colors">Refund Advance Loans</Link></li>
-              <li><Link to={d.hrefs.services} className="hover:text-[var(--clone-accent)] transition-colors">$50 Referral Bonus</Link></li>
-              <li><Link to={d.hrefs.services} className="hover:text-[var(--clone-accent)] transition-colors">Business Tax & IRS Audit</Link></li>
+              <li><Link to={d.hrefs.services} className="hover:text-[var(--clone-accent)] transition-colors">2,750 ETB Referral Bonus</Link></li>
+              <li><Link to={d.hrefs.services} className="hover:text-[var(--clone-accent)] transition-colors">Business Tax & Ministry of Revenue Audit</Link></li>
             </ul>
           </div>
 
@@ -753,14 +753,14 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
           <div>
             <h4 className="text-white font-bold mb-4 uppercase tracking-wider text-[11px]">Legal Disclaimer</h4>
             <p className="text-[11px] text-[#7E9084] leading-relaxed">
-              Refund advances are short-term loans provided by partner financial institutions upon IRS return filing acceptance. Terms and conditions apply.
+              Refund advances are short-term loans provided by partner financial institutions upon Ministry of Revenue return filing acceptance. Terms and conditions apply.
             </p>
           </div>
 
         </div>
 
         <div className="max-w-7xl mx-auto pt-6 text-center text-[#7E9084]">
-          © {new Date().getFullYear()} TaxGuardians LLC. All rights reserved.
+          © {new Date().getFullYear()} Entoto Tax Studio LLC. All rights reserved.
         </div>
       </footer>
 
@@ -816,7 +816,7 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
                 <input
                   type="tel"
                   required
-                  placeholder="(555) 000-0000"
+                  placeholder="+251 911 000 000"
                   value={bookingForm.phone}
                   onChange={(e) => setBookingForm({ ...bookingForm, phone: e.target.value })}
                   className="w-full bg-white border border-[#E4E0D4] rounded-xl py-2.5 px-3.5 text-xs text-[var(--clone-ink)] focus:outline-none focus:border-[var(--clone-highlight)] focus:ring-2 focus:ring-[var(--clone-accent)]/30 transition"
@@ -833,7 +833,7 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
                   <option value="Individual Tax Filing">Individual Tax Filing</option>
                   <option value="Business Tax Prep">Business Tax Prep</option>
                   <option value="Refund Advance Loan">Refund Advance Loan</option>
-                  <option value="IRS Audit Defense">IRS Audit Defense</option>
+                  <option value="Ministry of Revenue Audit Defense">Ministry of Revenue Audit Defense</option>
                 </select>
               </div>
 

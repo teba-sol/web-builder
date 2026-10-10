@@ -1,7 +1,11 @@
 import { useState } from 'react'
 import { Lock } from 'lucide-react'
-import { recordExportEvent } from '../api/projects'
+import { ApiError } from '../api/types'
+import { issueCrsCredentials, recordExportEvent, saveProjectDraft } from '../api/projects'
+import { isHospitalityTemplate } from '../data/hospitality'
 import { downloadWebsiteZip } from '../export/downloadZip'
+import type { CrsExportSecrets } from '../export/backend/exportPayload'
+import { buildSiteDocument } from '../siteDocument/io'
 import type { SiteContent, TemplateId } from '../types'
 
 interface Props {
@@ -36,15 +40,17 @@ export function DownloadButton({
     }
     setStatus('loading')
     try {
-      await downloadWebsiteZip(templateId, content, colorSchemeId, layoutVariantId)
+      const crs = await crsSecretsForExport(templateId, content, colorSchemeId, layoutVariantId, projectId)
+      await downloadWebsiteZip(templateId, content, colorSchemeId, layoutVariantId, crs)
       if (projectId) {
         await recordExportEvent(projectId).catch(() => undefined)
       }
       setStatus('done')
       setTimeout(() => setStatus('idle'), 3000)
-    } catch {
+    } catch (err) {
       setStatus('idle')
-      alert('Download failed. Please try again.')
+      const message = err instanceof ApiError ? err.message : err instanceof Error ? err.message : 'Download failed. Please try again.'
+      alert(message)
     }
   }
 
@@ -64,4 +70,27 @@ export function DownloadButton({
       {text}
     </button>
   )
+}
+
+/** Saves the site, then asks BuildAura for the hotel id and site key baked into .env. */
+async function crsSecretsForExport(
+  templateId: TemplateId,
+  content: SiteContent,
+  colorSchemeId: string | undefined,
+  layoutVariantId: string | undefined,
+  projectId: string | null | undefined,
+): Promise<CrsExportSecrets | undefined> {
+  if (!projectId || !isHospitalityTemplate(templateId)) return undefined
+  await saveProjectDraft(projectId, {
+    name: content.businessName || templateId,
+    colorSchemeId,
+    layoutVariantId,
+    document: buildSiteDocument(templateId, content, colorSchemeId, layoutVariantId),
+  })
+  const issued = await issueCrsCredentials(projectId)
+  return {
+    apiBaseUrl: issued.apiBaseUrl,
+    apiKey: issued.apiKey,
+    hotelId: issued.hotelId,
+  }
 }

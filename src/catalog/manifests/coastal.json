@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "id": "coastal",
-  "name": "Azure Coast",
-  "description": "Mediterranean resort with full room catalogue, availability search, and online booking.",
+  "name": "Lake Tana Resort",
+  "description": "Bahir Dar lakeside resort with suites, a garden wing, and online booking.",
   "category": "hospitality",
   "previewGradient": "from-sky-400 via-cyan-600 to-amber-200",
   "accentColor": "#0284c7",
@@ -34,7 +34,6 @@
     "about-teaser",
     "faq",
     "contact",
-    "explore",
     "footer"
   ],
   "sectionOrder": [
@@ -150,7 +149,7 @@
   },
   "showcase": {
     "sectionTitle": "Suites & Experiences",
-    "sectionSubtitle": "Wake to the Aegean \u2014 curated stays and unforgettable coastal moments",
+    "sectionSubtitle": "Wake to Lake Tana — curated stays and unforgettable coastal moments",
     "navLabel": "Stay",
     "itemLabel": "Experience",
     "showPrice": true,
@@ -160,18 +159,18 @@
   },
   "defaultShowcase": [
     {
-      "title": "Aegean Suite",
-      "description": "Private terrace, plunge pool, and panoramic sea views \u2014 breakfast included.",
+      "title": "Lake View Suite",
+      "description": "Private terrace, plunge pool, and panoramic sea views — breakfast included.",
       "image": "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600&q=80",
-      "price": "$420",
+      "price": "23,100 ETB",
       "tag": "Suite",
       "link": "contact"
     },
     {
-      "title": "Cliffside Villa",
+      "title": "Shore Villa",
       "description": "Two-bedroom villa with infinity pool and personal concierge service.",
       "image": "https://images.unsplash.com/photo-1582719508461-905c994771df?w=600&q=80",
-      "price": "$890",
+      "price": "48,950 ETB",
       "tag": "Villa",
       "link": "contact"
     },
@@ -179,15 +178,15 @@
       "title": "Sunset Yacht Cruise",
       "description": "Three-hour private cruise with champagne and mezze platter.",
       "image": "https://images.unsplash.com/photo-1567894340315-735d7c361db0?w=600&q=80",
-      "price": "$280",
+      "price": "15,400 ETB",
       "tag": "Experience",
       "link": "contact"
     },
     {
       "title": "Spa Ritual Package",
-      "description": "Olive oil massage, sea salt scrub, and herbal steam \u2014 2.5 hours of bliss.",
+      "description": "Olive oil massage, sea salt scrub, and herbal steam — 2.5 hours of bliss.",
       "image": "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600&q=80",
-      "price": "$195",
+      "price": "10,720 ETB",
       "tag": "Wellness",
       "link": "contact"
     },
@@ -195,15 +194,15 @@
       "title": "Chef's Table Dinner",
       "description": "Seven-course tasting menu with wine pairings on our ocean-view terrace.",
       "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80",
-      "price": "$165",
+      "price": "9,080 ETB",
       "tag": "Dining",
       "link": "contact"
     },
     {
       "title": "Coastal Room",
-      "description": "Cozy room steps from the beach \u2014 linen bedding and sea-breeze balcony.",
+      "description": "Cozy room steps from the beach — linen bedding and sea-breeze balcony.",
       "image": "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=80",
-      "price": "$210",
+      "price": "11,550 ETB",
       "tag": "Room",
       "link": "contact"
     }
@@ -213,17 +212,17 @@
     {
       "key": "reservationEmail",
       "label": "Reservations",
-      "placeholder": "stay@azurecoast.com"
+      "placeholder": "book@laketanaresort.et"
     },
     {
       "key": "phone",
       "label": "Concierge",
-      "placeholder": "+30 210 555 0100"
+      "placeholder": "+251 58 220 4455"
     },
     {
       "key": "address",
       "label": "Property Address",
-      "placeholder": "Aegean Coast, Mykonos"
+      "placeholder": "Lakeshore, Bahir Dar"
     },
     {
       "key": "hours",
@@ -233,7 +232,7 @@
     {
       "key": "email",
       "label": "General Email",
-      "placeholder": "hello@azurecoast.com"
+      "placeholder": "book@laketanaresort.et"
     }
   ],
   "servicesLabel": "Experiences",
@@ -253,14 +252,14 @@
     "grayscaleImage": false
   },
   "defaults": {
-    "businessName": "Azure Coast",
-    "tagline": "Where the horizon never ends",
-    "heroSubtext": "A cliffside retreat on the Aegean \u2014 white-washed suites, private pools, and the kind of stillness only the sea can bring.",
+    "businessName": "Lake Tana Resort",
+    "tagline": "On the water at Bahir Dar",
+    "heroSubtext": "Lakeside suites, a garden wing, and a jetty for the islands of Lake Tana.",
     "heroImage": "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1200&q=80",
-    "aboutTitle": "The Retreat",
-    "about": "Azure Coast opened in 2019 on a terraced hillside overlooking the Cyclades. Every suite faces the water. Every meal celebrates Mediterranean simplicity. Every guest leaves lighter than they arrived.",
+    "aboutTitle": "The resort",
+    "about": "Lake Tana Resort faces the water at Bahir Dar. Mornings start on the jetty, and rooms look either onto the lake or into the garden court.",
     "aboutImage": "https://images.unsplash.com/photo-1582719508461-905c994771df?w=800&q=80",
-    "missionStatement": "Hospitality as art \u2014 unhurried, generous, unforgettable.",
+    "missionStatement": "A Bahir Dar stay with a clear view and a room you can book yourself.",
     "pageVisibility": {
       "about": true,
       "services": true,
@@ -286,7 +285,7 @@
         "label": "Suites & Villas"
       },
       {
-        "value": "4.9\u2605",
+        "value": "4.9★",
         "label": "Guest Rating"
       },
       {
@@ -303,7 +302,7 @@
     "services": [
       {
         "title": "Infinity Pools",
-        "description": "Heated saltwater pools on every terrace \u2014 swim into the horizon."
+        "description": "Heated saltwater pools on every terrace — swim into the horizon."
       },
       {
         "title": "Spa & Wellness",
@@ -311,7 +310,7 @@
       },
       {
         "title": "Coastal Dining",
-        "description": "Farm-to-table Mediterranean cuisine with a dedicated sommelier."
+        "description": "Farm-to-table lakeside cuisine with a dedicated sommelier."
       },
       {
         "title": "Concierge",
@@ -338,21 +337,21 @@
       }
     ],
     "showcaseSectionTitle": "Suites & Experiences",
-    "showcaseSectionSubtitle": "Wake to the Aegean \u2014 curated stays and unforgettable coastal moments",
+    "showcaseSectionSubtitle": "Wake to the Lake Tana — curated stays and unforgettable coastal moments",
     "showcaseItems": [
       {
-        "title": "Aegean Suite",
-        "description": "Private terrace, plunge pool, and panoramic sea views \u2014 breakfast included.",
+        "title": "Lake Tana Suite",
+        "description": "Private terrace, plunge pool, and panoramic sea views — breakfast included.",
         "image": "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600&q=80",
-        "price": "$420",
+        "price": "23,100 ETB",
         "tag": "Suite",
         "link": "contact"
       },
       {
-        "title": "Cliffside Villa",
+        "title": "Shore Villa",
         "description": "Two-bedroom villa with infinity pool and personal concierge service.",
         "image": "https://images.unsplash.com/photo-1582719508461-905c994771df?w=600&q=80",
-        "price": "$890",
+        "price": "48,950 ETB",
         "tag": "Villa",
         "link": "contact"
       },
@@ -360,15 +359,15 @@
         "title": "Sunset Yacht Cruise",
         "description": "Three-hour private cruise with champagne and mezze platter.",
         "image": "https://images.unsplash.com/photo-1567894340315-735d7c361db0?w=600&q=80",
-        "price": "$280",
+        "price": "15,400 ETB",
         "tag": "Experience",
         "link": "contact"
       },
       {
         "title": "Spa Ritual Package",
-        "description": "Olive oil massage, sea salt scrub, and herbal steam \u2014 2.5 hours of bliss.",
+        "description": "Olive oil massage, sea salt scrub, and herbal steam — 2.5 hours of bliss.",
         "image": "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600&q=80",
-        "price": "$195",
+        "price": "10,700 ETB",
         "tag": "Wellness",
         "link": "contact"
       },
@@ -376,15 +375,15 @@
         "title": "Chef's Table Dinner",
         "description": "Seven-course tasting menu with wine pairings on our ocean-view terrace.",
         "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80",
-        "price": "$165",
+        "price": "9,100 ETB",
         "tag": "Dining",
         "link": "contact"
       },
       {
         "title": "Coastal Room",
-        "description": "Cozy room steps from the beach \u2014 linen bedding and sea-breeze balcony.",
+        "description": "Cozy room steps from the beach — linen bedding and sea-breeze balcony.",
         "image": "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=80",
-        "price": "$210",
+        "price": "11,550 ETB",
         "tag": "Room",
         "link": "contact"
       }
@@ -399,17 +398,17 @@
     "testimonials": [
       {
         "quote": "Outstanding service and incredible results. Highly recommended!",
-        "author": "Sarah Johnson",
+        "author": "Mekdes Haile",
         "role": "CEO, TechStart"
       },
       {
         "quote": "They transformed our business. Professional, creative, and reliable.",
-        "author": "Michael Chen",
+        "author": "Dawit Bekele",
         "role": "Founder, Bloom Co"
       },
       {
         "quote": "The best decision we made this year. Exceeded every expectation.",
-        "author": "Emily Rodriguez",
+        "author": "Hiwot Alemu",
         "role": "Director, Apex Group"
       }
     ],
@@ -425,7 +424,7 @@
       },
       {
         "question": "How long does a typical project take?",
-        "answer": "Timelines vary by scope, but most projects are completed within 2\u20138 weeks."
+        "answer": "Timelines vary by scope, but most projects are completed within 2–8 weeks."
       },
       {
         "question": "Do you offer ongoing support?",
@@ -442,16 +441,16 @@
         "title": "We Are Expanding to Serve You Better",
         "slug": "expanding-to-serve-you-better",
         "excerpt": "New locations, extended hours, and more ways to connect with our team.",
-        "body": "We are thrilled to announce expanded service hours and a new consultation space designed around your comfort and convenience.\n\nThis investment reflects our commitment to accessibility and excellence. Thank you for being part of our journey \u2014 we cannot wait to welcome you.",
+        "body": "We are thrilled to announce expanded service hours and a new consultation space designed around your comfort and convenience.\n\nThis investment reflects our commitment to accessibility and excellence. Thank you for being part of our journey — we cannot wait to welcome you.",
         "image": "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80",
-        "author": "Press Team",
+        "author": "Selam Tadesse",
         "date": "2026-04-01"
       },
       {
         "title": "Award Recognizes Our Commitment to Quality",
         "slug": "award-quality-commitment",
         "excerpt": "Industry leaders honored our team for outstanding client satisfaction.",
-        "body": "Receiving this recognition is a testament to the people behind our work \u2014 dedicated professionals who show up every day with care and craft.\n\nWe share this award with every client who trusted us with their goals. Your feedback shapes how we grow and improve.",
+        "body": "Receiving this recognition is a testament to the people behind our work — dedicated professionals who show up every day with care and craft.\n\nWe share this award with every client who trusted us with their goals. Your feedback shapes how we grow and improve.",
         "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80",
         "author": "Communications",
         "date": "2026-03-18"
@@ -471,14 +470,14 @@
       {
         "title": "Starter",
         "description": "Essential features for individuals and small teams getting started.",
-        "price": "$29/mo",
+        "price": "1,600 ETB/mo",
         "tag": "Most popular",
         "featured": false
       },
       {
         "title": "Professional",
         "description": "Advanced tools, priority support, and integrations for growing businesses.",
-        "price": "$79/mo",
+        "price": "4,350 ETB/mo",
         "tag": "Best value",
         "featured": true
       },
@@ -491,62 +490,62 @@
       }
     ],
     "roomsSectionTitle": "Suites & Villas",
-    "roomsSectionSubtitle": "Cliffside stays with private terraces and Aegean light",
+    "roomsSectionSubtitle": "Lake suites and garden rooms, priced per night in birr.",
     "bookingSectionTitle": "Reserve Your Escape",
-    "bookingSectionSubtitle": "Search live availability by dates and guests",
+    "bookingSectionSubtitle": "Search your Bahir Dar dates and reserve a room.",
     "roomTypes": [
       {
-        "name": "Sea View Suite",
+        "name": "Lake View Suite",
         "slug": "sea-view-suite",
         "parentSlug": "",
-        "description": "Whitewashed suite with floor-to-ceiling windows, private terrace, and uninterrupted Aegean views.",
-        "shortDescription": "Sea view \u00b7 Terrace \u00b7 42 m\u00b2",
-        "basePrice": "420",
-        "currency": "EUR",
+        "description": "A bright suite with a private terrace and an open view across Lake Tana.",
+        "shortDescription": "Lake view · Terrace · 42 m²",
+        "basePrice": "9200",
+        "currency": "ETB",
         "maxAdults": "2",
         "maxChildren": "1",
         "maxOccupancy": "3",
         "bedConfiguration": "1 King",
         "sizeSqm": "42",
-        "amenities": "Wi-Fi, Private terrace, Mini bar, Rain shower, Safe, Daily housekeeping",
+        "amenities": "Wi-Fi, Private terrace, Mini bar, Rain shower, Safe",
         "image": "https://images.unsplash.com/photo-1582719508461-905c994771df?w=900&q=80",
         "unitCount": "6",
         "unitPrefix": "SEA-",
         "isActive": true
       },
       {
-        "name": "Sea View Suite \u00b7 Plunge Pool",
+        "name": "Lake View Suite · Plunge Pool",
         "slug": "sea-view-plunge-pool",
         "parentSlug": "sea-view-suite",
-        "description": "All the Sea View Suite comforts plus a private heated plunge pool on your terrace.",
-        "shortDescription": "Plunge pool \u00b7 Sea view \u00b7 48 m\u00b2",
-        "basePrice": "580",
-        "currency": "EUR",
+        "description": "The lake suite with a small heated plunge pool on the terrace.",
+        "shortDescription": "Plunge pool · Lake view · 48 m²",
+        "basePrice": "12800",
+        "currency": "ETB",
         "maxAdults": "2",
         "maxChildren": "1",
         "maxOccupancy": "3",
         "bedConfiguration": "1 King",
         "sizeSqm": "48",
-        "amenities": "Wi-Fi, Plunge pool, Private terrace, Mini bar, Rain shower, Safe, Robes",
+        "amenities": "Wi-Fi, Plunge pool, Private terrace, Mini bar, Rain shower, Safe",
         "image": "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=900&q=80",
         "unitCount": "3",
         "unitPrefix": "SEA-P-",
         "isActive": true
       },
       {
-        "name": "Cliff Villa",
+        "name": "Shore Villa",
         "slug": "cliff-villa",
         "parentSlug": "",
-        "description": "Standalone villa carved into the cliff with infinity edge pool, outdoor dining, and concierge butler.",
-        "shortDescription": "Private villa \u00b7 Infinity pool \u00b7 95 m\u00b2",
-        "basePrice": "980",
-        "currency": "EUR",
+        "description": "A standalone villa above the shore with a pool, outdoor dining, and room for a family.",
+        "shortDescription": "Private villa · Pool · 95 m²",
+        "basePrice": "22000",
+        "currency": "ETB",
         "maxAdults": "4",
         "maxChildren": "2",
         "maxOccupancy": "6",
         "bedConfiguration": "2 Kings",
         "sizeSqm": "95",
-        "amenities": "Wi-Fi, Infinity pool, Full kitchen, Butler, Outdoor dining, Safe, Parking",
+        "amenities": "Wi-Fi, Pool, Full kitchen, Outdoor dining, Parking",
         "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=900&q=80",
         "unitCount": "2",
         "unitPrefix": "VIL-",
@@ -556,10 +555,10 @@
         "name": "Garden Junior Suite",
         "slug": "garden-junior-suite",
         "parentSlug": "",
-        "description": "Quiet courtyard-facing junior suite with olive trees and morning sun.",
-        "shortDescription": "Garden \u00b7 36 m\u00b2",
-        "basePrice": "310",
-        "currency": "EUR",
+        "description": "A quieter suite on the garden court, with morning sun and a short walk to the jetty.",
+        "shortDescription": "Garden · 36 m²",
+        "basePrice": "7800",
+        "currency": "ETB",
         "maxAdults": "2",
         "maxChildren": "2",
         "maxOccupancy": "3",
@@ -577,43 +576,43 @@
         "title": "5 Strategies to Grow Your Business This Year",
         "slug": "5-strategies-to-grow-your-business",
         "excerpt": "Practical steps you can take today to build momentum and reach more customers.",
-        "body": "Growing a business takes focus, consistency, and a willingness to adapt. Start by clarifying your core offer, then double down on the channels that already bring results.\n\nReview your customer journey from first touch to repeat purchase. Small improvements at each step compound into meaningful revenue gains. Finally, invest in relationships \u2014 referrals and retention often outperform cold outreach.",
+        "body": "Growing a business takes focus, consistency, and a willingness to adapt. Start by clarifying your core offer, then double down on the channels that already bring results.\n\nReview your customer journey from first touch to repeat purchase. Small improvements at each step compound into meaningful revenue gains. Finally, invest in relationships — referrals and retention often outperform cold outreach.",
         "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
-        "author": "Alex Morgan",
+        "author": "Yonas Gebre",
         "date": "2026-03-12"
       },
       {
         "title": "What Clients Are Asking Us Right Now",
         "slug": "what-clients-are-asking-us",
-        "excerpt": "A quick roundup of the most common questions we hear \u2014 and how we answer them.",
-        "body": "Every season brings a new set of priorities. Lately, clients ask about pricing transparency, faster turnaround times, and how to stand out in crowded markets.\n\nOur advice stays grounded in fundamentals: deliver exceptional value, communicate clearly, and measure what matters. When in doubt, talk to your customers \u2014 their feedback is the best roadmap.",
+        "excerpt": "A quick roundup of the most common questions we hear — and how we answer them.",
+        "body": "Every season brings a new set of priorities. Lately, clients ask about pricing transparency, faster turnaround times, and how to stand out in crowded markets.\n\nOur advice stays grounded in fundamentals: deliver exceptional value, communicate clearly, and measure what matters. When in doubt, talk to your customers — their feedback is the best roadmap.",
         "image": "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80",
-        "author": "Jordan Lee",
+        "author": "Meron Assefa",
         "date": "2026-02-28"
       },
       {
         "title": "Behind the Scenes: How We Work",
         "slug": "behind-the-scenes-how-we-work",
         "excerpt": "Take a peek at our process, tools, and the principles that guide every project.",
-        "body": "We believe great outcomes come from clear goals, collaborative planning, and disciplined execution. Every engagement starts with listening \u2014 understanding where you are and where you want to go.\n\nFrom there we build a tailored plan with milestones you can track. Throughout delivery we keep communication open so there are no surprises, only steady progress toward results you can measure.",
+        "body": "We believe great outcomes come from clear goals, collaborative planning, and disciplined execution. Every engagement starts with listening — understanding where you are and where you want to go.\n\nFrom there we build a tailored plan with milestones you can track. Throughout delivery we keep communication open so there are no surprises, only steady progress toward results you can measure.",
         "image": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80",
-        "author": "Taylor Brooks",
+        "author": "Kalkidan Tesfaye",
         "date": "2026-01-15"
       }
     ],
     "team": [
       {
-        "name": "Alex Morgan",
+        "name": "Abel Desta",
         "role": "Founder & CEO",
         "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80"
       },
       {
-        "name": "Jordan Lee",
+        "name": "Mekdes Haile",
         "role": "Creative Director",
         "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
       },
       {
-        "name": "Taylor Brooks",
+        "name": "Dawit Bekele",
         "role": "Operations Lead",
         "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80"
       }
@@ -627,21 +626,27 @@
     "seoDescription": "",
     "seoKeywords": "",
     "seoSiteUrl": "",
-    "email": "hello@azurecoast.com",
-    "phone": "+30 210 555 0100",
-    "address": "Aegean Coast, Mykonos, Greece",
-    "hours": "24/7 Concierge",
+    "email": "stay@laketanaresort.et",
+    "phone": "+251 58 220 4455",
+    "address": "Lakeshore, Bahir Dar",
+    "hours": "Front desk open 24 hours",
     "instagram": "",
     "website": "",
     "linkedin": "",
     "whatsapp": "",
     "supportEmail": "",
-    "reservationEmail": "stay@azurecoast.com",
+    "reservationEmail": "book@laketanaresort.et",
     "licenseNumber": "",
     "bookingUrl": "",
     "contactSectionTitle": "Get in Touch",
     "contactFormTitle": "Send Us a Message",
     "contactFormUrl": "",
-    "contactFormButtonText": "Open Contact Form"
+    "contactFormButtonText": "Open Contact Form",
+    "city": "Bahir Dar",
+    "country": "Ethiopia",
+    "starRating": "4",
+    "checkInTime": "14:00",
+    "checkOutTime": "12:00",
+    "propertyAmenities": "Wi-Fi, Lake jetty, Restaurant, Pool, Parking, Generator backup"
   }
 }

@@ -101,8 +101,8 @@ export const baseRichContent: SiteContent = {
   ],
   pricingSectionTitle: 'Pricing Plans',
   pricing: [
-    { title: 'Starter', description: 'Essential features for individuals and small teams getting started.', price: '$29/mo', tag: 'Most popular', featured: false },
-    { title: 'Professional', description: 'Advanced tools, priority support, and integrations for growing businesses.', price: '$79/mo', tag: 'Best value', featured: true },
+    { title: 'Starter', description: 'Essential features for individuals and small teams getting started.', price: '1,600 ETB/mo', tag: 'Most popular', featured: false },
+    { title: 'Professional', description: 'Advanced tools, priority support, and integrations for growing businesses.', price: '4,350 ETB/mo', tag: 'Best value', featured: true },
     { title: 'Enterprise', description: 'Custom solutions, dedicated account management, and SLA guarantees.', price: 'Custom', tag: 'Contact us', featured: false },
   ],
   roomsSectionTitle: 'Rooms & Suites',
@@ -110,6 +110,12 @@ export const baseRichContent: SiteContent = {
   bookingSectionTitle: 'Book Your Stay',
   bookingSectionSubtitle: 'Select dates, guests, and your preferred room type',
   roomTypes: [],
+  starRating: '',
+  city: '',
+  country: '',
+  checkInTime: '15:00',
+  checkOutTime: '11:00',
+  propertyAmenities: '',
   blogPosts: [
     {
       title: '5 Strategies to Grow Your Business This Year',

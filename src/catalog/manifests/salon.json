@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "salon",
-  "name": "Lumi\u00e8re Salon",
+  "name": "Lideta Salon",
   "description": "Soft, luxurious spa aesthetic with service menu and online booking for beauty brands.",
   "category": "retail",
   "previewGradient": "from-rose-200 to-fuchsia-300",
@@ -185,7 +185,7 @@
       "title": "Signature Haircut & Style",
       "description": "Consultation, precision cut, wash, and blowout with your stylist.",
       "image": "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=600&q=80",
-      "price": "$85",
+      "price": "4,680 ETB",
       "tag": "60 min",
       "link": "contact"
     },
@@ -193,7 +193,7 @@
       "title": "Balayage & Color",
       "description": "Hand-painted highlights or full color with bond-protecting treatment.",
       "image": "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600&q=80",
-      "price": "$195",
+      "price": "10,720 ETB",
       "tag": "2.5 hrs",
       "link": "contact"
     },
@@ -201,7 +201,7 @@
       "title": "HydraFacial Glow",
       "description": "Deep cleanse, exfoliate, extract, and hydrate for instantly radiant skin.",
       "image": "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=600&q=80",
-      "price": "$165",
+      "price": "9,080 ETB",
       "tag": "50 min",
       "link": "contact"
     },
@@ -209,7 +209,7 @@
       "title": "Swedish Massage",
       "description": "Full-body relaxation massage with aromatherapy oils and hot towel finish.",
       "image": "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600&q=80",
-      "price": "$120",
+      "price": "6,600 ETB",
       "tag": "60 min",
       "link": "contact"
     },
@@ -217,7 +217,7 @@
       "title": "Gel Manicure",
       "description": "Shape, cuticle care, gel polish application with 2-week chip-free wear.",
       "image": "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=600&q=80",
-      "price": "$55",
+      "price": "3,020 ETB",
       "tag": "45 min",
       "link": "contact"
     },
@@ -225,7 +225,7 @@
       "title": "Bridal Beauty Package",
       "description": "Trial run, day-of hair & makeup, and touch-up kit for your wedding party.",
       "image": "https://images.unsplash.com/photo-1519741497674-611481863552?w=600&q=80",
-      "price": "$450",
+      "price": "24,750 ETB",
       "tag": "Full day",
       "link": "contact"
     }
@@ -235,22 +235,22 @@
     {
       "key": "phone",
       "label": "Salon Phone",
-      "placeholder": "(555) 333-7788"
+      "placeholder": "+251 11 551 3344"
     },
     {
       "key": "email",
       "label": "Email",
-      "placeholder": "hello@salon.com"
+      "placeholder": "hello@lidetasalon.et"
     },
     {
       "key": "address",
       "label": "Salon Address",
-      "placeholder": "42 Beauty Lane, LA"
+      "placeholder": "Lideta, Addis Ababa"
     },
     {
       "key": "hours",
       "label": "Salon Hours",
-      "placeholder": "Tue\u2013Sat 9am\u20137pm"
+      "placeholder": "Tue–Sat 9am–7pm"
     },
     {
       "key": "instagram",
@@ -280,14 +280,14 @@
     "grayscaleImage": false
   },
   "defaults": {
-    "businessName": "Lumi\u00e8re Salon & Spa",
+    "businessName": "Lideta Salon",
     "tagline": "Where beauty meets tranquility",
-    "heroSubtext": "A sanctuary for hair, skin, and soul \u2014 expert stylists and therapists in an atmosphere of calm luxury.",
+    "heroSubtext": "Hair, skin, and a quiet room — stylists in Lideta for cuts, color, and wedding days.",
     "heroImage": "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=1200&q=80",
-    "aboutTitle": "Welcome to Lumi\u00e8re",
-    "about": "Lumi\u00e8re Salon & Spa opened its doors in 2018 with a simple vision: every guest leaves feeling more confident and more relaxed than when they arrived. Our team of certified stylists, colorists, and licensed estheticians use premium products and the latest techniques.",
+    "aboutTitle": "Welcome to Lumière",
+    "about": "Lideta Salon opened its doors in 2018 with a simple vision: every guest leaves feeling more confident and more relaxed than when they arrived. Our team of certified stylists, colorists, and licensed estheticians use premium products and the latest techniques.",
     "aboutImage": "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&q=80",
-    "missionStatement": "We believe self-care isn't vanity \u2014 it's wellness.",
+    "missionStatement": "We believe self-care isn't vanity — it's wellness.",
     "pageVisibility": {
       "about": true,
       "services": true,
@@ -313,7 +313,7 @@
         "label": "Expert Stylists"
       },
       {
-        "value": "4.9\u2605",
+        "value": "4.9★",
         "label": "Google Rating"
       },
       {
@@ -349,7 +349,7 @@
     "steps": [
       {
         "title": "Book Online",
-        "description": "Choose your service and stylist \u2014 instant confirmation."
+        "description": "Choose your service and stylist — instant confirmation."
       },
       {
         "title": "Arrive & Unwind",
@@ -371,7 +371,7 @@
         "title": "Signature Haircut & Style",
         "description": "Consultation, precision cut, wash, and blowout with your stylist.",
         "image": "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=600&q=80",
-        "price": "$85",
+        "price": "4,680 ETB",
         "tag": "60 min",
         "link": "contact"
       },
@@ -379,7 +379,7 @@
         "title": "Balayage & Color",
         "description": "Hand-painted highlights or full color with bond-protecting treatment.",
         "image": "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600&q=80",
-        "price": "$195",
+        "price": "10,720 ETB",
         "tag": "2.5 hrs",
         "link": "contact"
       },
@@ -387,7 +387,7 @@
         "title": "HydraFacial Glow",
         "description": "Deep cleanse, exfoliate, extract, and hydrate for instantly radiant skin.",
         "image": "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=600&q=80",
-        "price": "$165",
+        "price": "9,080 ETB",
         "tag": "50 min",
         "link": "contact"
       },
@@ -395,7 +395,7 @@
         "title": "Swedish Massage",
         "description": "Full-body relaxation massage with aromatherapy oils and hot towel finish.",
         "image": "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600&q=80",
-        "price": "$120",
+        "price": "6,600 ETB",
         "tag": "60 min",
         "link": "contact"
       },
@@ -403,7 +403,7 @@
         "title": "Gel Manicure",
         "description": "Shape, cuticle care, gel polish application with 2-week chip-free wear.",
         "image": "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=600&q=80",
-        "price": "$55",
+        "price": "3,020 ETB",
         "tag": "45 min",
         "link": "contact"
       },
@@ -411,7 +411,7 @@
         "title": "Bridal Beauty Package",
         "description": "Trial run, day-of hair & makeup, and touch-up kit for your wedding party.",
         "image": "https://images.unsplash.com/photo-1519741497674-611481863552?w=600&q=80",
-        "price": "$450",
+        "price": "24,750 ETB",
         "tag": "Full day",
         "link": "contact"
       }
@@ -426,17 +426,17 @@
     "testimonials": [
       {
         "quote": "Outstanding service and incredible results. Highly recommended!",
-        "author": "Sarah Johnson",
+        "author": "Selam Tadesse",
         "role": "CEO, TechStart"
       },
       {
         "quote": "They transformed our business. Professional, creative, and reliable.",
-        "author": "Michael Chen",
+        "author": "Yonas Gebre",
         "role": "Founder, Bloom Co"
       },
       {
         "quote": "The best decision we made this year. Exceeded every expectation.",
-        "author": "Emily Rodriguez",
+        "author": "Meron Assefa",
         "role": "Director, Apex Group"
       }
     ],
@@ -452,7 +452,7 @@
       },
       {
         "question": "How long does a typical project take?",
-        "answer": "Timelines vary by scope, but most projects are completed within 2\u20138 weeks."
+        "answer": "Timelines vary by scope, but most projects are completed within 2–8 weeks."
       },
       {
         "question": "Do you offer ongoing support?",
@@ -469,7 +469,7 @@
         "title": "We Are Expanding to Serve You Better",
         "slug": "expanding-to-serve-you-better",
         "excerpt": "New locations, extended hours, and more ways to connect with our team.",
-        "body": "We are thrilled to announce expanded service hours and a new consultation space designed around your comfort and convenience.\n\nThis investment reflects our commitment to accessibility and excellence. Thank you for being part of our journey \u2014 we cannot wait to welcome you.",
+        "body": "We are thrilled to announce expanded service hours and a new consultation space designed around your comfort and convenience.\n\nThis investment reflects our commitment to accessibility and excellence. Thank you for being part of our journey — we cannot wait to welcome you.",
         "image": "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80",
         "author": "Press Team",
         "date": "2026-04-01"
@@ -478,7 +478,7 @@
         "title": "Award Recognizes Our Commitment to Quality",
         "slug": "award-quality-commitment",
         "excerpt": "Industry leaders honored our team for outstanding client satisfaction.",
-        "body": "Receiving this recognition is a testament to the people behind our work \u2014 dedicated professionals who show up every day with care and craft.\n\nWe share this award with every client who trusted us with their goals. Your feedback shapes how we grow and improve.",
+        "body": "Receiving this recognition is a testament to the people behind our work — dedicated professionals who show up every day with care and craft.\n\nWe share this award with every client who trusted us with their goals. Your feedback shapes how we grow and improve.",
         "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80",
         "author": "Communications",
         "date": "2026-03-18"
@@ -498,14 +498,14 @@
       {
         "title": "Starter",
         "description": "Essential features for individuals and small teams getting started.",
-        "price": "$29/mo",
+        "price": "1,600 ETB/mo",
         "tag": "Most popular",
         "featured": false
       },
       {
         "title": "Professional",
         "description": "Advanced tools, priority support, and integrations for growing businesses.",
-        "price": "$79/mo",
+        "price": "4,340 ETB/mo",
         "tag": "Best value",
         "featured": true
       },
@@ -527,7 +527,7 @@
         "title": "5 Strategies to Grow Your Business This Year",
         "slug": "5-strategies-to-grow-your-business",
         "excerpt": "Practical steps you can take today to build momentum and reach more customers.",
-        "body": "Growing a business takes focus, consistency, and a willingness to adapt. Start by clarifying your core offer, then double down on the channels that already bring results.\n\nReview your customer journey from first touch to repeat purchase. Small improvements at each step compound into meaningful revenue gains. Finally, invest in relationships \u2014 referrals and retention often outperform cold outreach.",
+        "body": "Growing a business takes focus, consistency, and a willingness to adapt. Start by clarifying your core offer, then double down on the channels that already bring results.\n\nReview your customer journey from first touch to repeat purchase. Small improvements at each step compound into meaningful revenue gains. Finally, invest in relationships — referrals and retention often outperform cold outreach.",
         "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
         "author": "Alex Morgan",
         "date": "2026-03-12"
@@ -535,8 +535,8 @@
       {
         "title": "What Clients Are Asking Us Right Now",
         "slug": "what-clients-are-asking-us",
-        "excerpt": "A quick roundup of the most common questions we hear \u2014 and how we answer them.",
-        "body": "Every season brings a new set of priorities. Lately, clients ask about pricing transparency, faster turnaround times, and how to stand out in crowded markets.\n\nOur advice stays grounded in fundamentals: deliver exceptional value, communicate clearly, and measure what matters. When in doubt, talk to your customers \u2014 their feedback is the best roadmap.",
+        "excerpt": "A quick roundup of the most common questions we hear — and how we answer them.",
+        "body": "Every season brings a new set of priorities. Lately, clients ask about pricing transparency, faster turnaround times, and how to stand out in crowded markets.\n\nOur advice stays grounded in fundamentals: deliver exceptional value, communicate clearly, and measure what matters. When in doubt, talk to your customers — their feedback is the best roadmap.",
         "image": "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80",
         "author": "Jordan Lee",
         "date": "2026-02-28"
@@ -545,7 +545,7 @@
         "title": "Behind the Scenes: How We Work",
         "slug": "behind-the-scenes-how-we-work",
         "excerpt": "Take a peek at our process, tools, and the principles that guide every project.",
-        "body": "We believe great outcomes come from clear goals, collaborative planning, and disciplined execution. Every engagement starts with listening \u2014 understanding where you are and where you want to go.\n\nFrom there we build a tailored plan with milestones you can track. Throughout delivery we keep communication open so there are no surprises, only steady progress toward results you can measure.",
+        "body": "We believe great outcomes come from clear goals, collaborative planning, and disciplined execution. Every engagement starts with listening — understanding where you are and where you want to go.\n\nFrom there we build a tailored plan with milestones you can track. Throughout delivery we keep communication open so there are no surprises, only steady progress toward results you can measure.",
         "image": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80",
         "author": "Taylor Brooks",
         "date": "2026-01-15"
@@ -553,17 +553,17 @@
     ],
     "team": [
       {
-        "name": "Sophie Laurent",
+        "name": "Mekdes Haile",
         "role": "Lead Stylist & Colorist",
         "image": "https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?w=400&q=80"
       },
       {
-        "name": "Mia Rodriguez",
+        "name": "Dawit Bekele",
         "role": "Esthetician",
         "image": "https://images.unsplash.com/photo-1580618672591-eb180b1a973f?w=400&q=80"
       },
       {
-        "name": "Jordan Blake",
+        "name": "Hiwot Alemu",
         "role": "Massage Therapist",
         "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80"
       }
@@ -577,10 +577,10 @@
     "seoDescription": "",
     "seoKeywords": "",
     "seoSiteUrl": "",
-    "email": "hello@lumieresalon.com",
-    "phone": "(555) 333-7788",
-    "address": "42 Beauty Lane, Los Angeles, CA",
-    "hours": "Tue\u2013Sat 9am\u20137pm, Sun 10am\u20134pm",
+    "email": "hello@lidetasalon.et",
+    "phone": "+251 11 551 3344",
+    "address": "Lideta, Addis Ababa",
+    "hours": "Tue–Sat 9am–7pm, Sun 10am–4pm",
     "instagram": "@lumieresalon",
     "website": "",
     "linkedin": "",

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "medical",
-  "name": "Wellness Clinic",
+  "name": "Harmony Clinic",
   "description": "Clean, trustworthy healthcare design with appointment booking emphasis.",
   "category": "health",
   "previewGradient": "from-teal-600 to-emerald-800",
@@ -241,22 +241,22 @@
     {
       "key": "phone",
       "label": "Appointments Phone",
-      "placeholder": "(555) 111-2233"
+      "placeholder": "+251 11 552 7700"
     },
     {
       "key": "email",
       "label": "Email",
-      "placeholder": "care@clinic.com"
+      "placeholder": "care@harmonyclinic.et"
     },
     {
       "key": "address",
       "label": "Clinic Address",
-      "placeholder": "200 Health Park Dr"
+      "placeholder": "Kazanchis, Addis Ababa"
     },
     {
       "key": "hours",
       "label": "Clinic Hours",
-      "placeholder": "Mon\u2013Fri 8am\u20136pm"
+      "placeholder": "Mon–Fri 8am–6pm"
     },
     {
       "key": "bookingUrl",
@@ -281,14 +281,14 @@
     "grayscaleImage": false
   },
   "defaults": {
-    "businessName": "Harmony Wellness Clinic",
+    "businessName": "Harmony Clinic",
     "tagline": "Compassionate care for your whole family",
     "heroSubtext": "Board-certified physicians providing comprehensive primary and preventive care.",
     "heroImage": "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=1200&q=80",
     "aboutTitle": "Patient-Centered Care",
-    "about": "Harmony Wellness Clinic has served the Austin community for over a decade. Our integrated care model combines primary care, preventive medicine, and wellness coaching under one roof \u2014 so you spend less time navigating healthcare and more time living well.",
+    "about": "Harmony Clinic sees families in Kazanchis for checkups, children, and long-term care. The same clinicians follow you from visit to visit.",
     "aboutImage": "https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?w=800&q=80",
-    "missionStatement": "Healthcare should be personal, accessible, and focused on prevention \u2014 not just treatment.",
+    "missionStatement": "Healthcare should be personal, accessible, and focused on prevention — not just treatment.",
     "pageVisibility": {
       "about": true,
       "services": true,
@@ -318,7 +318,7 @@
         "label": "Physicians"
       },
       {
-        "value": "4.9\u2605",
+        "value": "4.9★",
         "label": "Patient Rating"
       },
       {
@@ -350,7 +350,7 @@
     "steps": [
       {
         "title": "Book",
-        "description": "Schedule online or call \u2014 same-day appointments often available."
+        "description": "Schedule online or call — same-day appointments often available."
       },
       {
         "title": "Check In",
@@ -427,17 +427,17 @@
     "testimonials": [
       {
         "quote": "Outstanding service and incredible results. Highly recommended!",
-        "author": "Sarah Johnson",
+        "author": "Selam Tadesse",
         "role": "CEO, TechStart"
       },
       {
         "quote": "They transformed our business. Professional, creative, and reliable.",
-        "author": "Michael Chen",
+        "author": "Yonas Gebre",
         "role": "Founder, Bloom Co"
       },
       {
         "quote": "The best decision we made this year. Exceeded every expectation.",
-        "author": "Emily Rodriguez",
+        "author": "Meron Assefa",
         "role": "Director, Apex Group"
       }
     ],
@@ -453,7 +453,7 @@
       },
       {
         "question": "How long does a typical project take?",
-        "answer": "Timelines vary by scope, but most projects are completed within 2\u20138 weeks."
+        "answer": "Timelines vary by scope, but most projects are completed within 2–8 weeks."
       },
       {
         "question": "Do you offer ongoing support?",
@@ -470,7 +470,7 @@
         "title": "We Are Expanding to Serve You Better",
         "slug": "expanding-to-serve-you-better",
         "excerpt": "New locations, extended hours, and more ways to connect with our team.",
-        "body": "We are thrilled to announce expanded service hours and a new consultation space designed around your comfort and convenience.\n\nThis investment reflects our commitment to accessibility and excellence. Thank you for being part of our journey \u2014 we cannot wait to welcome you.",
+        "body": "We are thrilled to announce expanded service hours and a new consultation space designed around your comfort and convenience.\n\nThis investment reflects our commitment to accessibility and excellence. Thank you for being part of our journey — we cannot wait to welcome you.",
         "image": "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80",
         "author": "Press Team",
         "date": "2026-04-01"
@@ -479,7 +479,7 @@
         "title": "Award Recognizes Our Commitment to Quality",
         "slug": "award-quality-commitment",
         "excerpt": "Industry leaders honored our team for outstanding client satisfaction.",
-        "body": "Receiving this recognition is a testament to the people behind our work \u2014 dedicated professionals who show up every day with care and craft.\n\nWe share this award with every client who trusted us with their goals. Your feedback shapes how we grow and improve.",
+        "body": "Receiving this recognition is a testament to the people behind our work — dedicated professionals who show up every day with care and craft.\n\nWe share this award with every client who trusted us with their goals. Your feedback shapes how we grow and improve.",
         "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80",
         "author": "Communications",
         "date": "2026-03-18"
@@ -499,14 +499,14 @@
       {
         "title": "Starter",
         "description": "Essential features for individuals and small teams getting started.",
-        "price": "$29/mo",
+        "price": "1,600 ETB/mo",
         "tag": "Most popular",
         "featured": false
       },
       {
         "title": "Professional",
         "description": "Advanced tools, priority support, and integrations for growing businesses.",
-        "price": "$79/mo",
+        "price": "4,340 ETB/mo",
         "tag": "Best value",
         "featured": true
       },
@@ -528,7 +528,7 @@
         "title": "5 Strategies to Grow Your Business This Year",
         "slug": "5-strategies-to-grow-your-business",
         "excerpt": "Practical steps you can take today to build momentum and reach more customers.",
-        "body": "Growing a business takes focus, consistency, and a willingness to adapt. Start by clarifying your core offer, then double down on the channels that already bring results.\n\nReview your customer journey from first touch to repeat purchase. Small improvements at each step compound into meaningful revenue gains. Finally, invest in relationships \u2014 referrals and retention often outperform cold outreach.",
+        "body": "Growing a business takes focus, consistency, and a willingness to adapt. Start by clarifying your core offer, then double down on the channels that already bring results.\n\nReview your customer journey from first touch to repeat purchase. Small improvements at each step compound into meaningful revenue gains. Finally, invest in relationships — referrals and retention often outperform cold outreach.",
         "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
         "author": "Alex Morgan",
         "date": "2026-03-12"
@@ -536,8 +536,8 @@
       {
         "title": "What Clients Are Asking Us Right Now",
         "slug": "what-clients-are-asking-us",
-        "excerpt": "A quick roundup of the most common questions we hear \u2014 and how we answer them.",
-        "body": "Every season brings a new set of priorities. Lately, clients ask about pricing transparency, faster turnaround times, and how to stand out in crowded markets.\n\nOur advice stays grounded in fundamentals: deliver exceptional value, communicate clearly, and measure what matters. When in doubt, talk to your customers \u2014 their feedback is the best roadmap.",
+        "excerpt": "A quick roundup of the most common questions we hear — and how we answer them.",
+        "body": "Every season brings a new set of priorities. Lately, clients ask about pricing transparency, faster turnaround times, and how to stand out in crowded markets.\n\nOur advice stays grounded in fundamentals: deliver exceptional value, communicate clearly, and measure what matters. When in doubt, talk to your customers — their feedback is the best roadmap.",
         "image": "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80",
         "author": "Jordan Lee",
         "date": "2026-02-28"
@@ -546,7 +546,7 @@
         "title": "Behind the Scenes: How We Work",
         "slug": "behind-the-scenes-how-we-work",
         "excerpt": "Take a peek at our process, tools, and the principles that guide every project.",
-        "body": "We believe great outcomes come from clear goals, collaborative planning, and disciplined execution. Every engagement starts with listening \u2014 understanding where you are and where you want to go.\n\nFrom there we build a tailored plan with milestones you can track. Throughout delivery we keep communication open so there are no surprises, only steady progress toward results you can measure.",
+        "body": "We believe great outcomes come from clear goals, collaborative planning, and disciplined execution. Every engagement starts with listening — understanding where you are and where you want to go.\n\nFrom there we build a tailored plan with milestones you can track. Throughout delivery we keep communication open so there are no surprises, only steady progress toward results you can measure.",
         "image": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80",
         "author": "Taylor Brooks",
         "date": "2026-01-15"
@@ -554,17 +554,17 @@
     ],
     "team": [
       {
-        "name": "Dr. Rachel Kim",
+        "name": "Dr. Mekdes Haile",
         "role": "Family Medicine",
         "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&q=80"
       },
       {
-        "name": "Dr. James Okafor",
+        "name": "Dr. Dawit Bekele",
         "role": "Internal Medicine",
         "image": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&q=80"
       },
       {
-        "name": "Dr. Maria Santos",
+        "name": "Dr. Hiwot Alemu",
         "role": "Pediatrics",
         "image": "https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=400&q=80"
       }
@@ -578,10 +578,10 @@
     "seoDescription": "",
     "seoKeywords": "",
     "seoSiteUrl": "",
-    "email": "care@harmonyclinic.com",
-    "phone": "(555) 111-2233",
-    "address": "200 Health Park Drive, Austin, TX",
-    "hours": "Mon\u2013Fri 8am\u20136pm, Sat 9am\u20131pm",
+    "email": "care@harmonyclinic.et",
+    "phone": "+251 11 552 7700",
+    "address": "Kazanchis, Addis Ababa",
+    "hours": "Mon–Fri 8am–6pm, Sat 9am–1pm",
     "instagram": "",
     "website": "",
     "linkedin": "",

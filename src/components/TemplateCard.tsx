@@ -3,7 +3,6 @@ import { useAuth } from '../auth/AuthContext'
 import { isImportedTemplate, removeImportedManifest } from '../catalog/catalog'
 import { getTemplateThumbnail } from '../catalog/thumbnails'
 import { categories } from '../data/categories'
-import { getLayoutVariants } from '../data/layoutVariants'
 import type { TemplateMeta } from '../types'
 
 interface Props {
@@ -18,7 +17,6 @@ export function TemplateCard({ template }: Props) {
       : `/editor/${template.id}`
     : `/login?return=${encodeURIComponent(`/editor/${template.id}`)}`
   const categoryLabel = categories.find((c) => c.id === template.category)?.label ?? template.category
-  const layoutCount = getLayoutVariants(template.id).length
   const imported = isImportedTemplate(template.id)
   const thumbnail = getTemplateThumbnail(template.id)
 
@@ -38,9 +36,6 @@ export function TemplateCard({ template }: Props) {
         <div className="absolute left-3 top-3 z-10 flex flex-wrap gap-1.5">
           <span className="inline-block rounded-full bg-black/45 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur-sm">
             {categoryLabel}
-          </span>
-          <span className="inline-block rounded-full bg-white/20 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur-sm">
-            {layoutCount} styles
           </span>
           {template.premium && (
             <span className="inline-block rounded-full bg-amber-400/90 px-2.5 py-1 text-[11px] font-bold text-amber-950 backdrop-blur-sm">

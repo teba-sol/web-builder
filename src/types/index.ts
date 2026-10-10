@@ -204,6 +204,12 @@ export interface SiteContent {
   bookingSectionTitle: string
   bookingSectionSubtitle: string
   roomTypes: RoomTypeItem[]
+  starRating: string
+  city: string
+  country: string
+  checkInTime: string
+  checkOutTime: string
+  propertyAmenities: string
   ctaBannerTitle: string
   ctaBannerText: string
   ctaText: string

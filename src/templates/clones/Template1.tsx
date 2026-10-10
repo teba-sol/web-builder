@@ -32,7 +32,7 @@ export function Template1({ c, basePath }: { c: SiteContent; basePath: string })
     lastName: '',
     phone: '',
     email: '',
-    serviceType: 'Refund Advance ($1,500 - $7,500)',
+    serviceType: 'Refund Advance (82,500 ETB - 412,500 ETB)',
     smsConsent: true
   });
 
@@ -61,7 +61,7 @@ export function Template1({ c, basePath }: { c: SiteContent; basePath: string })
         lastName: '',
         phone: '',
         email: '',
-        serviceType: 'Refund Advance ($1,500 - $7,500)',
+        serviceType: 'Refund Advance (82,500 ETB - 412,500 ETB)',
         smsConsent: true
       });
     }, 2500);
@@ -106,7 +106,7 @@ export function Template1({ c, basePath }: { c: SiteContent; basePath: string })
           <div className="clg:col-span-7 space-y-8">
             
             <div className="inline-flex max-w-full flex-wrap items-center gap-2 px-4 py-1.5 rounded-full text-white text-xs font-bold uppercase tracking-wider border border-rose-200/60 shadow-sm" style={{ backgroundColor: 'var(--clone-highlight)' }}>
-              <Award className="w-4 h-4 shrink-0 text-white" /> Authorized IRS e-File Provider
+              <Award className="w-4 h-4 shrink-0 text-white" /> Authorized Ministry of Revenue e-File Provider
             </div>
 
             <h1 className="text-4xl csm:text-5xl clg:text-6xl font-black text-slate-900 leading-[1.15] tracking-tight">
@@ -190,7 +190,7 @@ export function Template1({ c, basePath }: { c: SiteContent; basePath: string })
                   <input
                     type="tel"
                     required
-                    placeholder="(555) 000-0000"
+                    placeholder="+251 911 000 000"
                     value={bookingForm.phone}
                     onChange={(e) => setBookingForm({ ...bookingForm, phone: e.target.value })}
                     className="w-full bg-slate-50 border border-slate-300 rounded-xl py-2.5 px-3.5 text-sm text-slate-900 focus:outline-none focus:border-rose-500"
@@ -300,11 +300,11 @@ export function Template1({ c, basePath }: { c: SiteContent; basePath: string })
               </div>
               <div className="flex items-start gap-3 text-sm text-slate-700">
                 <CheckCircle2 className="w-5 h-5 text-rose-600 flex-shrink-0 mt-0.5" />
-                <span><strong>Fast Same-Day Advance:</strong> Get approved for up to $7,500 within hours of filing.</span>
+                <span><strong>Fast Same-Day Advance:</strong> Get approved for up to 412,500 ETB within hours of filing.</span>
               </div>
               <div className="flex items-start gap-3 text-sm text-slate-700">
                 <CheckCircle2 className="w-5 h-5 text-rose-600 flex-shrink-0 mt-0.5" />
-                <span><strong>$50 Referral Rewards:</strong> Earn unlimited cash rewards for every friend you refer.</span>
+                <span><strong>2,750 ETB Referral Rewards:</strong> Earn unlimited cash rewards for every friend you refer.</span>
               </div>
             </div>
 
@@ -369,7 +369,7 @@ export function Template1({ c, basePath }: { c: SiteContent; basePath: string })
           <div className="text-xs font-bold text-rose-600 uppercase tracking-widest">Financial Transparency</div>
           <h2 className="text-3xl font-extrabold text-slate-900">What Is A Tax Preparation Refund Advance?</h2>
           <p className="text-slate-700 text-sm leading-relaxed">
-            A refund advance is a short-term loan issued prior to the IRS disbursing your official tax refund check or direct deposit. Instead of waiting 3 to 4 weeks for federal processing, approved clients receive their funds in as little as 24 hours.
+            A refund advance is a short-term loan issued prior to the Ministry of Revenue disbursing your official tax refund check or direct deposit. Instead of waiting 3 to 4 weeks for federal processing, approved clients receive their funds in as little as 24 hours.
           </p>
           <div className="grid csm:grid-cols-2 gap-4 text-xs text-slate-600 pt-2">
             <div className="p-4 bg-slate-50 rounded-xl border border-slate-300">
@@ -378,7 +378,7 @@ export function Template1({ c, basePath }: { c: SiteContent; basePath: string })
             </div>
             <div className="p-4 bg-slate-50 rounded-xl border border-slate-300">
               <strong className="text-slate-900 block mb-1 text-sm">✓ Automatic Repayment</strong>
-              Once the IRS releases your tax refund, the loan balance is automatically settled with zero stress.
+              Once the Ministry of Revenue releases your tax refund, the loan balance is automatically settled with zero stress.
             </div>
           </div>
         </div>
@@ -544,7 +544,7 @@ export function Template1({ c, basePath }: { c: SiteContent; basePath: string })
                     <input
                       type="tel"
                       required
-                      placeholder="(555) 000-0000"
+                      placeholder="+251 911 000 000"
                       value={contactForm.phone}
                       onChange={(e) => setContactForm({ ...contactForm, phone: e.target.value })}
                       className="w-full bg-slate-100 border border-slate-300 rounded-xl py-3 px-4 text-sm text-slate-900 focus:outline-none focus:border-rose-500"
@@ -627,7 +627,7 @@ export function Template1({ c, basePath }: { c: SiteContent; basePath: string })
           <div>
             <h4 className="text-white font-bold mb-3 uppercase tracking-wider">Legal Disclaimer</h4>
             <p className="text-[11px] text-slate-500 leading-relaxed">
-              Refund advances are short-term loans provided by partner financial institutions upon IRS return filing acceptance. Terms and conditions apply.
+              Refund advances are short-term loans provided by partner financial institutions upon Ministry of Revenue return filing acceptance. Terms and conditions apply.
             </p>
           </div>
 
@@ -687,7 +687,7 @@ export function Template1({ c, basePath }: { c: SiteContent; basePath: string })
                 <input
                   type="tel"
                   required
-                  placeholder="(555) 000-0000"
+                  placeholder="+251 911 000 000"
                   value={bookingForm.phone}
                   onChange={(e) => setBookingForm({ ...bookingForm, phone: e.target.value })}
                   className="w-full bg-slate-50 border border-slate-300 rounded-xl py-2.5 px-3.5 text-xs text-slate-900 focus:outline-none focus:border-rose-500"
@@ -701,10 +701,10 @@ export function Template1({ c, basePath }: { c: SiteContent; basePath: string })
                   onChange={(e) => setBookingForm({ ...bookingForm, serviceType: e.target.value })}
                   className="w-full bg-slate-50 border border-slate-300 rounded-xl py-2.5 px-3.5 text-xs text-slate-900 focus:outline-none focus:border-rose-500"
                 >
-                  <option value="Refund Advance ($1,500 - $7,500)">Refund Advance ($1,500 - $7,500)</option>
+                  <option value="Refund Advance (82,500 ETB - 412,500 ETB)">Refund Advance (82,500 ETB - 412,500 ETB)</option>
                   <option value="Individual Income Tax Preparation">Individual Income Tax Preparation</option>
                   <option value="Business Tax Filing & Audit Defense">Business Tax Filing & Audit Defense</option>
-                  <option value="Referral Program Registration">Referral Program Registration ($50 Bonus)</option>
+                  <option value="Referral Program Registration">Referral Program Registration (2,750 ETB Bonus)</option>
                 </select>
               </div>
 

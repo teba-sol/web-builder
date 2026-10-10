@@ -8,8 +8,12 @@ class PublicAsset
 {
     public static function url(?string $path): ?string
     {
-        if (empty($path)) {
+        if ($path === null || $path === '') {
             return null;
+        }
+
+        if (str_starts_with($path, 'data:')) {
+            return $path;
         }
 
         if (preg_match('#^https?://#i', $path)) {

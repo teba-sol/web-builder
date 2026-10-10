@@ -91,7 +91,7 @@ export function TemplateMorph() {
                   className="pointer-events-none absolute left-6 top-16 font-display text-5xl text-white opacity-0 md:text-7xl"
                   style={{ transform: 'translateY(24px)' }}
                 >
-                  Maison
+                  Kategna
                 </p>
                 {next && (
                   <div data-content className="pointer-events-none absolute inset-8 overflow-hidden opacity-0">

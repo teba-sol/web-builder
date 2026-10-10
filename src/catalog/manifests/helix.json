@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "id": "helix",
-  "name": "Tax Fighter",
-  "description": "Burgundy-and-black tax storefront \u2014 tax prep, refund advances, referrals, and locations.",
+  "name": "Addis Tax Desk",
+  "description": "Burgundy-and-black tax storefront — tax prep, refund advances, referrals, and locations.",
   "category": "finance",
   "previewGradient": "from-black via-[#800020] to-red-800",
   "accentColor": "#800020",
@@ -151,8 +151,8 @@
     "exploreLinkLabel": "Go"
   },
   "showcase": {
-    "sectionTitle": "Atlanta Locations We Serve",
-    "sectionSubtitle": "Walk in with your documents \u2014 or book the office closest to you",
+    "sectionTitle": "Addis Ababa Locations We Serve",
+    "sectionSubtitle": "Walk in with your documents — or book the office closest to you",
     "navLabel": "Locations",
     "itemLabel": "Location",
     "showPrice": false,
@@ -162,15 +162,15 @@
   },
   "defaultShowcase": [
     {
-      "title": "Downtown Atlanta",
-      "description": "Premier tax prep and refund advances near Centennial Olympic Park, Underground Atlanta, and Fairlie-Poplar.",
+      "title": "Bole",
+      "description": "Premier tax prep and refund advances near Meskel Square, Piazza, and Arat Kilo.",
       "image": "https://images.unsplash.com/photo-1575917649705-5b59aaa12e6b?w=600&q=80",
       "price": "",
       "tag": "Downtown",
       "link": "contact"
     },
     {
-      "title": "Midtown Atlanta",
+      "title": "Kazanchis",
       "description": "Fast filing for Midtown apartments, Georgia Tech, and the Woodruff Arts Center corridor.",
       "image": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&q=80",
       "price": "",
@@ -178,32 +178,32 @@
       "link": "contact"
     },
     {
-      "title": "Buckhead",
-      "description": "Individual and business returns for Buckhead Village, Hanover, and Northside clients.",
+      "title": "Old Airport",
+      "description": "Individual and business returns for Old Airport Village, Hanover, and Northside clients.",
       "image": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&q=80",
       "price": "",
-      "tag": "Buckhead",
+      "tag": "Old Airport",
       "link": "contact"
     },
     {
-      "title": "Collier Heights",
+      "title": "Jemo",
       "description": "Neighborhood tax prep, holiday advances, and referral bonuses on the west side.",
       "image": "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80",
       "price": "",
-      "tag": "West Atlanta",
+      "tag": "CMC",
       "link": "contact"
     },
     {
-      "title": "West Midtown",
-      "description": "Convenient for Star Metals, North and Line, and Novel West Midtown \u2014 bring W-2s and walk out funded.",
+      "title": "CMC",
+      "description": "Convenient for Bole, Kazanchis, and CMC — bring employment income statements and walk out funded.",
       "image": "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=600&q=80",
       "price": "",
-      "tag": "West Midtown",
+      "tag": "CMC",
       "link": "contact"
     },
     {
-      "title": "Suite Y \u00b7 30318",
-      "description": "Main office. Monday\u2013Friday 10:00 AM\u20136:00 PM. Call or text (678) 679-1040 before you come in.",
+      "title": "Bole Road",
+      "description": "Main office. Monday–Friday 10:00 AM–6:00 PM. Call or text +251 11 661 1040 before you come in.",
       "image": "https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80",
       "price": "",
       "tag": "HQ",
@@ -215,22 +215,22 @@
     {
       "key": "phone",
       "label": "Call / Text",
-      "placeholder": "(678) 679-1040"
+      "placeholder": "+251 11 661 1040"
     },
     {
       "key": "email",
       "label": "Email",
-      "placeholder": "hello@taxfightersatlanta.com"
+      "placeholder": "hello@addistax.et"
     },
     {
       "key": "address",
       "label": "Office Address",
-      "placeholder": "Suite Y, Atlanta GA, 30318"
+      "placeholder": "Bole Road, Addis Ababa"
     },
     {
       "key": "hours",
       "label": "Office Hours",
-      "placeholder": "Mon\u2013Fri 10:00 AM\u20136:00 PM"
+      "placeholder": "Mon–Fri 10:00 AM–6:00 PM"
     },
     {
       "key": "instagram",
@@ -240,7 +240,7 @@
     {
       "key": "whatsapp",
       "label": "SMS Help Line",
-      "placeholder": "Text HELP to (678) 679-1040"
+      "placeholder": "Text HELP to +251 11 661 1040"
     }
   ],
   "servicesLabel": "Tax Services",
@@ -260,9 +260,9 @@
     "grayscaleImage": false
   },
   "defaults": {
-    "businessName": "The Tax Fighters",
-    "tagline": "Best Tax preparation & Refund Advances in Atlanta",
-    "heroSubtext": "The Tax Fighters offers expert tax preparation & Refund advances, including Holiday and Shield Advances, Referrals, and Tax planning. Our seasoned tax consultants minimize tax liabilities and maximize savings.",
+    "businessName": "Addis Tax Desk",
+    "tagline": "Tax preparation in Addis Ababa",
+    "heroSubtext": "Addis Tax Desk offers expert tax preparation & Refund advances, including Holiday and Shield Advances, Referrals, and Tax planning. Our seasoned tax consultants minimize tax liabilities and maximize savings.",
     "heroImage": "https://taxfightersatlanta.com/assets/hero-BVT3_udm.jpg",
     "logo": "https://i.ibb.co/nVCY17t/logo-removebg.png",
     "logoShowName": false,
@@ -271,10 +271,10 @@
     "brandAccent": "#E63946",
     "fontHeading": "montserrat",
     "fontBody": "open-sans",
-    "aboutTitle": "Best Tax preparation & Refund Advances in Atlanta",
-    "about": "The Tax Fighters offers expert tax preparation & Refund advances, including Holiday and Shield Advances, Referrals, and Tax planning. Our seasoned tax consultants minimize tax liabilities and maximize savings. Specializing in business tax preparation and compliance.\n\nWith 20+ years of experience, we provide consultations and audit support, prioritizing integrity, accuracy, and client satisfaction. Trust us for diligent and professional handling of your tax matters.",
+    "aboutTitle": "Tax preparation for Addis families and businesses",
+    "about": "Addis Tax Desk offers expert tax preparation & Refund advances, including Holiday and Shield Advances, Referrals, and Tax planning. Our seasoned tax consultants minimize tax liabilities and maximize savings. Specializing in business tax preparation and compliance.\n\nWith 20+ years of experience, we provide consultations and audit support, prioritizing integrity, accuracy, and client satisfaction. Trust us for diligent and professional handling of your tax matters.",
     "aboutImage": "https://i.ibb.co/tPk2V2Lj/627bef65-3274-4bb1-a1aa-2747f6a7d767.jpg",
-    "missionStatement": "We provide the fastest route to tax preparation and a refund advance \u2014 integrity, accuracy, and the fastest service in Atlanta.",
+    "missionStatement": "We provide the fastest route to tax preparation and a refund advance — integrity, accuracy, and the fastest service in Addis Ababa.",
     "pageVisibility": {
       "about": true,
       "services": true,
@@ -304,7 +304,7 @@
         "label": "Happy Clients"
       },
       {
-        "value": "$10M+",
+        "value": "550M ETB+",
         "label": "Advances Issued"
       }
     ],
@@ -328,7 +328,7 @@
     "steps": [
       {
         "title": "Step 1",
-        "description": "Bring in all your necessary documents: ID, SSN, Children birth certificate and their SSN, W-2/Pay Stubs."
+        "description": "Bring in all your necessary documents: ID, TIN, Children birth certificate and their TIN, employment income statement/Pay Stubs."
       },
       {
         "title": "Step 2",
@@ -340,22 +340,22 @@
       },
       {
         "title": "Repayment of the Advances",
-        "description": "The process of repaying the advance usually occurs when the IRS issues the final tax refund. This repayment is often automated, with the tax preparation service deducting the advance amount along with any associated fees directly from the taxpayer's refund."
+        "description": "The process of repaying the advance usually occurs when the Ministry of Revenue issues the final tax refund. This repayment is often automated, with the tax preparation service deducting the advance amount along with any associated fees directly from the taxpayer's refund."
       }
     ],
-    "showcaseSectionTitle": "Atlanta Locations We Serve",
-    "showcaseSectionSubtitle": "Walk in with your documents \u2014 or book the office closest to you",
+    "showcaseSectionTitle": "Addis Ababa Locations We Serve",
+    "showcaseSectionSubtitle": "Walk in with your documents — or book the office closest to you",
     "showcaseItems": [
       {
-        "title": "Downtown Atlanta",
-        "description": "Premier tax prep and refund advances near Centennial Olympic Park, Underground Atlanta, and Fairlie-Poplar.",
+        "title": "Bole",
+        "description": "Premier tax prep and refund advances near Meskel Square, Piazza, and Arat Kilo.",
         "image": "https://images.unsplash.com/photo-1575917649705-5b59aaa12e6b?w=600&q=80",
         "price": "",
         "tag": "Downtown",
         "link": "contact"
       },
       {
-        "title": "Midtown Atlanta",
+        "title": "Kazanchis",
         "description": "Fast filing for Midtown apartments, Georgia Tech, and the Woodruff Arts Center corridor.",
         "image": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&q=80",
         "price": "",
@@ -363,32 +363,32 @@
         "link": "contact"
       },
       {
-        "title": "Buckhead",
-        "description": "Individual and business returns for Buckhead Village, Hanover, and Northside clients.",
+        "title": "Old Airport",
+        "description": "Individual and business returns for Old Airport Village, Hanover, and Northside clients.",
         "image": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&q=80",
         "price": "",
-        "tag": "Buckhead",
+        "tag": "Old Airport",
         "link": "contact"
       },
       {
-        "title": "Collier Heights",
+        "title": "Jemo",
         "description": "Neighborhood tax prep, holiday advances, and referral bonuses on the west side.",
         "image": "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80",
         "price": "",
-        "tag": "West Atlanta",
+        "tag": "CMC",
         "link": "contact"
       },
       {
-        "title": "West Midtown",
-        "description": "Convenient for Star Metals, North and Line, and Novel West Midtown \u2014 bring W-2s and walk out funded.",
+        "title": "CMC",
+        "description": "Convenient for Bole, Kazanchis, and CMC — bring employment income statements and walk out funded.",
         "image": "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=600&q=80",
         "price": "",
-        "tag": "West Midtown",
+        "tag": "CMC",
         "link": "contact"
       },
       {
-        "title": "Suite Y \u00b7 30318",
-        "description": "Main office. Monday\u2013Friday 10:00 AM\u20136:00 PM. Call or text (678) 679-1040 before you come in.",
+        "title": "Bole Road",
+        "description": "Main office. Monday–Friday 10:00 AM–6:00 PM. Call or text +251 11 661 1040 before you come in.",
         "image": "https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80",
         "price": "",
         "tag": "HQ",
@@ -404,21 +404,21 @@
       "https://i.ibb.co/wrRtmHZG/professional-woman-business-accountant.jpg",
       "https://i.ibb.co/TDTyyKbv/step1.png"
     ],
-    "testimonialsSectionTitle": "The Tax Fighters \u2014 reviews",
+    "testimonialsSectionTitle": "Addis Tax Desk — reviews",
     "testimonials": [
       {
         "quote": "Great tax preparers. Dedicated to customer service and maximizing your return.",
-        "author": "Hosea Harris",
+        "author": "Selam Tadesse",
         "role": "Google review"
       },
       {
         "quote": "Very professional with exceptional customer service. Highly recommend.",
-        "author": "Terri Jackson",
+        "author": "Yonas Gebre",
         "role": "Google review"
       },
       {
-        "quote": "I needed the money before the IRS paid. They had my Holiday Advance the same day I walked in with my W-2s.",
-        "author": "Atlanta client",
+        "quote": "I needed the money before the Ministry of Revenue paid. They had my Holiday Advance the same day I walked in with my employment income statements.",
+        "author": "Meron Assefa",
         "role": "Refund advance"
       }
     ],
@@ -426,19 +426,19 @@
     "faqs": [
       {
         "question": "What is a tax refund advance?",
-        "answer": "A refund advance lets eligible taxpayers receive a portion of their refund before the IRS finishes processing. Tax Fighters offers Holiday Advances (no fee) and Shield Advances ($500\u2013$7,500). You can always refuse an advance and wait for the full IRS refund."
+        "answer": "A refund advance lets eligible taxpayers receive a portion of their refund before the Ministry of Revenue finishes processing. Addis Tax Desk offers Holiday Advances (no fee) and Shield Advances (27,500 ETB–412,500 ETB). You can always refuse an advance and wait for the full Ministry of Revenue refund."
       },
       {
         "question": "How quickly can I receive a tax refund advance?",
-        "answer": "Depending on the product and your file, you may receive funds in about 30 minutes or within 24\u201348 hours after we complete your return and the bank approves the advance."
+        "answer": "Depending on the product and your file, you may receive funds in about 30 minutes or within 24–48 hours after we complete your return and the bank approves the advance."
       },
       {
         "question": "What happens if my tax refund is less than the advance amount?",
-        "answer": "Advances are sized from the completed return. The advance and any bank fees are deducted from the IRS refund when it posts. We review the numbers with you before you accept funds."
+        "answer": "Advances are sized from the completed return. The advance and any bank fees are deducted from the Ministry of Revenue refund when it posts. We review the numbers with you before you accept funds."
       },
       {
         "question": "What is the cost associated with a tax refund advance?",
-        "answer": "The Tax Fighters does not charge fees on Holiday Advances. Shield Advances may include bank fees that depend on the amount. Fees are disclosed in full before we process, and they come out of the final refund \u2014 not a separate payment."
+        "answer": "Addis Tax Desk does not charge fees on Holiday Advances. Shield Advances may include bank fees that depend on the amount. Fees are disclosed in full before we process, and they come out of the final refund — not a separate payment."
       },
       {
         "question": "Can I refuse an advance if I am not interested?",
@@ -446,40 +446,40 @@
       },
       {
         "question": "What should I bring?",
-        "answer": "Photo ID, SSN, W-2s or pay stubs, children\u2019s birth certificates and SSNs, and proof each dependent lived with you for at least six months. We may request more documents to finish an accurate return."
+        "answer": "Photo ID, TIN, employment income statements or pay stubs, children’s birth certificates and TINs, and proof each dependent lived with you for at least six months. We may request more documents to finish an accurate return."
       }
     ],
     "teamSectionTitle": "Meet your team",
     "blogSectionTitle": "Tax preparation & refund advances",
     "blogSectionSubtitle": "Guides on personal taxes, business filings, advances, and how to pick a tax professional",
     "newsSectionTitle": "Office updates",
-    "newsSectionSubtitle": "Holiday Advance windows, hours, and Atlanta location news",
+    "newsSectionSubtitle": "Holiday Advance windows, hours, and Addis Ababa location news",
     "newsPosts": [
       {
-        "title": "Holiday Advances are open \u2014 no fee, up to $500",
+        "title": "Holiday Advances are open — no fee, up to 27,500 ETB",
         "slug": "holiday-advances-open",
-        "excerpt": "Eligible clients can take a no-fee Holiday Advance through April 15. Bring your documents and pre-qualify today.",
-        "body": "Holiday Advances start in the season and run through April 15. There is no Tax Fighters fee on this product. Eligibility depends on income, filing status, and a complete document set.\n\nIf you need a larger amount, ask about Shield Advances from $500 to $7,500. We will show bank fees before anything is processed.",
+        "excerpt": "Eligible clients can take a no-fee Holiday Advance through the filing deadline. Bring your documents and pre-qualify today.",
+        "body": "Holiday Advances start in the season and run through the filing deadline. There is no Addis Tax Desk fee on this product. Eligibility depends on income, filing status, and a complete document set.\n\nIf you need a larger amount, ask about Shield Advances from 27,500 ETB to 412,500 ETB. We will show bank fees before anything is processed.",
         "image": "https://images.unsplash.com/photo-1482517967863-00e15c9b44be?w=800&q=80",
-        "author": "The Tax Fighters Team",
+        "author": "Addis Tax Desk Team",
         "date": "2026-01-06"
       },
       {
         "title": "Extended weekday hours through filing deadline",
         "slug": "tax-season-hours",
-        "excerpt": "Monday\u2013Friday 10:00 AM\u20136:00 PM at Suite Y, Atlanta 30318. Saturday and Sunday closed \u2014 text us to hold a weekday slot.",
-        "body": "Walk-ins are welcome during posted hours. If you want a guaranteed time, call or text (678) 679-1040. Bring ID, SSNs, W-2s, and dependent documents so we can start the same day.",
+        "excerpt": "Monday–Friday 10:00 AM–6:00 PM at Suite Y, Addis Ababa 30318. Saturday and Sunday closed — text us to hold a weekday slot.",
+        "body": "Walk-ins are welcome during posted hours. If you want a guaranteed time, call or text +251 11 661 1040. Bring ID, TINs, employment income statements, and dependent documents so we can start the same day.",
         "image": "https://images.unsplash.com/photo-1434626881859-194d67b2b86f?w=800&q=80",
         "author": "Front Desk",
         "date": "2026-02-01"
       },
       {
-        "title": "Refer a friend. Earn $50.",
+        "title": "Refer a friend. Earn 2,750 ETB.",
         "slug": "referral-bonus-50",
         "excerpt": "When someone you send files with us, you earn a referral bonus. Ask your preparer how to track it.",
-        "body": "Our referral program pays existing clients when family and friends complete a return with The Tax Fighters. There is no extra paperwork for the person you send \u2014 they just mention your name at intake.\n\nBonuses are issued after the referred return is filed. Ask the front desk for this season\u2019s amount and payout timing.",
+        "body": "Our referral program pays existing clients when family and friends complete a return with Addis Tax Desk. There is no extra paperwork for the person you send — they just mention your name at intake.\n\nBonuses are issued after the referred return is filed. Ask the front desk for this season’s amount and payout timing.",
         "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80",
-        "author": "The Tax Fighters Team",
+        "author": "Addis Tax Desk Team",
         "date": "2026-01-15"
       }
     ],
@@ -487,20 +487,20 @@
     "pricing": [
       {
         "title": "Holiday Advance",
-        "description": "No Tax Fighters fee. Up to $500 for eligible clients through April 15.",
+        "description": "No office fee. Up to 27,500 ETB for eligible clients through the filing deadline.",
         "price": "No fee",
         "tag": "Seasonal",
         "featured": false
       },
       {
         "title": "Shield Advance",
-        "description": "$500 to $7,500 based on your completed return. Bank fees disclosed before processing.",
-        "price": "$500\u2013$7,500",
+        "description": "27,500 ETB to 412500B ETBased on your completed return. Bank fees disclosed before processing.",
+        "price": "27,500 ETB–412,500 ETB",
         "tag": "Most requested",
         "featured": true
       },
       {
-        "title": "Wait for the IRS",
+        "title": "Wait for the Ministry of Revenue",
         "description": "Decline every advance. We still prepare the return and you keep the full refund when it posts.",
         "price": "Your choice",
         "tag": "No advance",
@@ -516,8 +516,8 @@
       {
         "title": "A guide for income tax preparation & advances",
         "slug": "income-tax-preparation-advances",
-        "excerpt": "What Holiday and Shield Advances are, what to bring, and how repayment works when the IRS pays.",
-        "body": "Tax refund advances are short-term funds against a completed return. Holiday Advances carry no Tax Fighters fee. Shield Advances range from $500 to $7,500 and may include bank fees.\n\nBring ID, SSNs, W-2s or pay stubs, and dependent documents. After we file, approved clients can take an advance. The IRS refund later repays the advance and any disclosed fees automatically.\n\nYou can always say no and wait for the full refund.",
+        "excerpt": "What Holiday and Shield Advances are, what to bring, and how repayment works when the Ministry of Revenue pays.",
+        "body": "Tax refund advances are short-term funds against a completed return. Holiday Advances carry no Addis Tax Desk fee. Shield Advances range from 27,500 ETB to 412,500 ETB and may include bank fees.\n\nBring ID, TINs, employment income statements or pay stubs, and dependent documents. After we file, approved clients can take an advance. The Ministry of Revenue refund later repays the advance and any disclosed fees automatically.\n\nYou can always say no and wait for the full refund.",
         "image": "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=800&q=80",
         "author": "E. Bel",
         "date": "2026-02-12"
@@ -525,17 +525,17 @@
       {
         "title": "Information about referral program and bonuses",
         "slug": "referral-program-and-bonuses",
-        "excerpt": "How existing clients earn when family and friends file with The Tax Fighters.",
-        "body": "Tell your people to mention your name at intake. After their return is filed, you receive the posted referral bonus. There is no charge to the person you send.\n\nAsk your preparer for this season\u2019s amount. Bonuses are one of the ways we thank clients who keep the waiting room full.",
+        "excerpt": "How existing clients earn when family and friends file with Addis Tax Desk.",
+        "body": "Tell your people to mention your name at intake. After their return is filed, you receive the posted referral bonus. There is no charge to the person you send.\n\nAsk your preparer for this season’s amount. Bonuses are one of the ways we thank clients who keep the waiting room full.",
         "image": "https://images.unsplash.com/photo-1556745753-b2904692b3cd?w=800&q=80",
-        "author": "The Tax Fighters Team",
+        "author": "Addis Tax Desk Team",
         "date": "2026-01-22"
       },
       {
         "title": "How to find the right business tax preparation & audit support",
         "slug": "business-tax-and-audit-support",
-        "excerpt": "Schedule C and 1120 filings, plus a safety net if the IRS writes. Existing clients are not charged for audit support.",
-        "body": "Gather income statements, expenses, and receipts. Use the right form \u2014 Schedule C for sole proprietors, 1120 for corporations \u2014 and bring it to the preparer.\n\nWe file for the business and stay on the file if an audit starts. Existing Tax Fighters clients are not charged for audit support. That is the safety net.",
+        "excerpt": "Schedule C and 1120 filings, plus a safety net if the Ministry of Revenue writes. Existing clients are not charged for audit support.",
+        "body": "Gather income statements, expenses, and receipts. Use the right form — Schedule C for sole proprietors, 1120 for corporations — and bring it to the preparer.\n\nWe file for the business and stay on the file if an audit starts. Existing Addis Tax Desk clients are not charged for audit support. That is the safety net.",
         "image": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&q=80",
         "author": "E. Bel",
         "date": "2026-03-03"
@@ -543,39 +543,39 @@
     ],
     "team": [
       {
-        "name": "Hosea Harris",
+        "name": "Mekdes Haile",
         "role": "Tax Preparer",
         "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80"
       },
       {
-        "name": "Terri Jackson",
+        "name": "Dawit Bekele",
         "role": "Client Services",
         "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
       },
       {
-        "name": "E. Bel",
-        "role": "Tax Professional \u00b7 12+ years",
+        "name": "Hiwot Alemu",
+        "role": "Tax Professional · 12+ years",
         "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80"
       }
     ],
     "ctaBannerTitle": "Ready to get your refund advance?",
-    "ctaBannerText": "Join thousands of clients who trust The Tax Fighters for expert tax prep and refund advances. Pre-qualify today.",
+    "ctaBannerText": "Join thousands of clients who trust Addis Tax Desk for expert tax prep and refund advances. Pre-qualify today.",
     "ctaText": "Book now",
     "ctaLink": "contact",
     "seoEnabled": true,
-    "seoTitle": "Best Tax Preparation & Refund Advances | The Tax Fighters",
-    "seoDescription": "Atlanta tax preparation experts. Get up to $7,500 instant refund advances and no-fee Holiday Advances up to $500. Call (678) 679-1040.",
-    "seoKeywords": "tax preparation Atlanta, refund advance Atlanta, holiday advance, IRS tax help Atlanta, business tax preparation, audit support Atlanta",
+    "seoTitle": "Best Tax Preparation & Refund Advances | Addis Tax Desk",
+    "seoDescription": "Addis Ababa tax preparation experts. Get up to 412,500 ETB instant refund advances and no-fee Holiday Advances up to 27,500 ETB. Call +251 11 661 1040.",
+    "seoKeywords": "tax preparation Addis Ababa, refund advance Addis Ababa, holiday advance, Ministry of Revenue tax help Addis Ababa, business tax preparation, audit support Addis Ababa",
     "seoSiteUrl": "",
-    "email": "hello@taxfightersatlanta.com",
-    "phone": "(678) 679-1040",
-    "address": "Suite Y, Atlanta GA, 30318",
-    "mapUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3318.3589265873676!2d-84.38971!3d33.76159!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88f5086f7c8e0001%3A0x1234567890!2s1130%20Chattahoochee%20Ave%20NW%20Suite%20Y%2C%20Atlanta%2C%20GA%2030318!5e0!3m2!1sen!2sus",
-    "hours": "Monday\u2013Friday 10:00 AM\u20136:00 PM \u00b7 Sat & Sun closed",
+    "email": "hello@addistax.et",
+    "phone": "+251 11 661 1040",
+    "address": "Bole Road, Addis Ababa",
+    "mapUrl": "https://maps.google.com/maps?q=Bole%20Road%20Addis%20Ababa&z=15&output=embed",
+    "hours": "Monday–Friday 10:00 AM–6:00 PM · Sat & Sun closed",
     "instagram": "https://instagram.com/taxfightersatl",
     "website": "https://taxfightersatlanta.com",
     "linkedin": "",
-    "whatsapp": "Text HELP to (678) 679-1040",
+    "whatsapp": "Text HELP to +251 11 661 1040",
     "supportEmail": "",
     "reservationEmail": "",
     "licenseNumber": "",

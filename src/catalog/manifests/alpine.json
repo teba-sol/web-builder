@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "id": "alpine",
-  "name": "Summit Peak Lodge",
-  "description": "Award-style alpine lodge \u2014 ice blues, timber warmth, and apr\u00e8s-ski luxury with full booking.",
+  "name": "Simien Mountain Lodge",
+  "description": "Highland lodge near Debark with heated rooms, escarpment views, and online booking.",
   "category": "hospitality",
   "previewGradient": "from-slate-900 via-sky-900 to-stone-400",
   "accentColor": "#38bdf8",
@@ -34,7 +34,6 @@
     "about-teaser",
     "faq",
     "contact",
-    "explore",
     "footer"
   ],
   "sectionOrder": [
@@ -144,7 +143,7 @@
   },
   "showcase": {
     "sectionTitle": "Peak Experiences",
-    "sectionSubtitle": "Ski days, spa nights, and rooms that face the summit",
+    "sectionSubtitle": "Trek days, spa nights, and rooms that face the summit",
     "navLabel": "Experiences",
     "itemLabel": "Experience",
     "showPrice": true,
@@ -154,10 +153,10 @@
   },
   "defaultShowcase": [
     {
-      "title": "First Tracks Package",
-      "description": "Two nights, ski storage, and guided first-track morning.",
+      "title": "Dawn Trek Package",
+      "description": "Two nights, trek storage, and guided dawn trek morning.",
       "image": "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600&q=80",
-      "price": "CHF 680",
+      "price": "37,400 ETB",
       "tag": "Winter",
       "link": "contact"
     },
@@ -165,20 +164,20 @@
       "title": "Spa Circuit",
       "description": "Sauna, cold plunge, and 50-minute massage.",
       "image": "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600&q=80",
-      "price": "CHF 180",
+      "price": "9,900 ETB",
       "tag": "Wellness",
       "link": "contact"
     },
     {
-      "title": "Fondue Night",
+      "title": "Coffee by the fire",
       "description": "Private timber dining for two with valley wines.",
       "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80",
-      "price": "CHF 120",
+      "price": "6,600 ETB",
       "tag": "Dining",
       "link": "contact"
     },
     {
-      "title": "Heli Transfer",
+      "title": "Scenic transfer",
       "description": "Private helicopter transfer to the high peaks.",
       "image": "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&q=80",
       "price": "On request",
@@ -189,15 +188,15 @@
       "title": "Chalet Weekend",
       "description": "Three nights in a chalet suite with fireplace.",
       "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600&q=80",
-      "price": "CHF 1,800",
+      "price": "99,000 ETB",
       "tag": "Suite",
       "link": "contact"
     },
     {
       "title": "Guided Tour",
-      "description": "Full-day ski tour with certified mountain guide.",
+      "description": "Full-day highland trek with certified mountain guide.",
       "image": "https://images.unsplash.com/photo-1551632811-561732d1e306?w=600&q=80",
-      "price": "CHF 350",
+      "price": "19,250 ETB",
       "tag": "Adventure",
       "link": "contact"
     }
@@ -207,27 +206,27 @@
     {
       "key": "reservationEmail",
       "label": "Reservations",
-      "placeholder": "stay@summitpeak.ch"
+      "placeholder": "book@simienlodge.et"
     },
     {
       "key": "phone",
       "label": "Concierge",
-      "placeholder": "+41 27 555 0100"
+      "placeholder": "+251 58 111 2040"
     },
     {
       "key": "address",
       "label": "Lodge Address",
-      "placeholder": "Zermatt, Switzerland"
+      "placeholder": "Debark, Simien Mountains"
     },
     {
       "key": "hours",
       "label": "Front Desk",
-      "placeholder": "7am\u201311pm"
+      "placeholder": "7am–11pm"
     },
     {
       "key": "email",
       "label": "Email",
-      "placeholder": "hello@summitpeak.ch"
+      "placeholder": "book@simienlodge.et"
     }
   ],
   "servicesLabel": "Mountain Services",
@@ -247,14 +246,14 @@
     "grayscaleImage": false
   },
   "defaults": {
-    "businessName": "Summit Peak Lodge",
-    "tagline": "Above the treeline, still at home",
-    "heroSubtext": "A design-forward alpine lodge in Zermatt \u2014 timber, stone, and ice-blue light with ski-in comfort and full online booking.",
+    "businessName": "Simien Mountain Lodge",
+    "tagline": "Above Debark, on the escarpment",
+    "heroSubtext": "Timber rooms, heated floors, and a fire after a day on the Simien escarpment.",
     "heroImage": "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1200&q=80",
-    "aboutTitle": "The Lodge",
-    "about": "Summit Peak sits where the forest ends and the peaks begin. We pair Swiss craftsmanship with quiet luxury \u2014 heated boot rooms, spa saunas, and rooms that face the Matterhorn.",
+    "aboutTitle": "The lodge",
+    "about": "Simien Mountain Lodge sits above Debark, where the highland air is cold after sunset. Rooms are lined in timber, floors are heated, and the terrace looks across the escarpment.",
     "aboutImage": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&q=80",
-    "missionStatement": "Mountain hospitality that feels both wild and refined.",
+    "missionStatement": "A warm room after a cold day in the Simien Mountains.",
     "pageVisibility": {
       "about": true,
       "services": true,
@@ -284,20 +283,20 @@
         "label": "Elevation"
       },
       {
-        "value": "4.9\u2605",
+        "value": "4.9★",
         "label": "Guest Rating"
       },
       {
-        "value": "Ski-in",
+        "value": "Trailhead",
         "label": "Access"
       }
     ],
     "servicesSectionTitle": "Mountain Services",
-    "servicesSectionSubtitle": "Everything for ski days and slow evenings",
+    "servicesSectionSubtitle": "Everything for trek days and slow evenings",
     "services": [
       {
-        "title": "Ski Concierge",
-        "description": "Boot fitting, equipment, and first-track guidance from our mountain team."
+        "title": "Trek desk",
+        "description": "Boot fitting, equipment, and dawn trek guidance from our mountain team."
       },
       {
         "title": "Alpine Spa",
@@ -308,7 +307,7 @@
         "description": "Timber dining room with local cheeses and valley wines."
       },
       {
-        "title": "Heli Transfer",
+        "title": "Scenic transfer",
         "description": "Private transfers arranged to and from the high peaks."
       }
     ],
@@ -332,13 +331,13 @@
       }
     ],
     "showcaseSectionTitle": "Peak Experiences",
-    "showcaseSectionSubtitle": "Ski days, spa nights, and rooms that face the summit",
+    "showcaseSectionSubtitle": "Trek days, spa nights, and rooms that face the summit",
     "showcaseItems": [
       {
-        "title": "First Tracks Package",
-        "description": "Two nights, ski storage, and guided first-track morning.",
+        "title": "Dawn Trek Package",
+        "description": "Two nights, trek storage, and guided dawn trek morning.",
         "image": "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600&q=80",
-        "price": "CHF 680",
+        "price": "37,400 ETB",
         "tag": "Winter",
         "link": "contact"
       },
@@ -346,20 +345,20 @@
         "title": "Spa Circuit",
         "description": "Sauna, cold plunge, and 50-minute massage.",
         "image": "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600&q=80",
-        "price": "CHF 180",
+        "price": "9,900 ETB",
         "tag": "Wellness",
         "link": "contact"
       },
       {
-        "title": "Fondue Night",
+        "title": "Coffee by the fire",
         "description": "Private timber dining for two with valley wines.",
         "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80",
-        "price": "CHF 120",
+        "price": "6,600 ETB",
         "tag": "Dining",
         "link": "contact"
       },
       {
-        "title": "Heli Transfer",
+        "title": "Scenic transfer",
         "description": "Private helicopter transfer to the high peaks.",
         "image": "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&q=80",
         "price": "On request",
@@ -370,15 +369,15 @@
         "title": "Chalet Weekend",
         "description": "Three nights in a chalet suite with fireplace.",
         "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600&q=80",
-        "price": "CHF 1,800",
+        "price": "99,000 ETB",
         "tag": "Suite",
         "link": "contact"
       },
       {
         "title": "Guided Tour",
-        "description": "Full-day ski tour with certified mountain guide.",
+        "description": "Full-day trek tour with certified mountain guide.",
         "image": "https://images.unsplash.com/photo-1551632811-561732d1e306?w=600&q=80",
-        "price": "CHF 350",
+        "price": "19,250 ETB",
         "tag": "Adventure",
         "link": "contact"
       }
@@ -393,17 +392,17 @@
     "testimonials": [
       {
         "quote": "Outstanding service and incredible results. Highly recommended!",
-        "author": "Sarah Johnson",
+        "author": "Mekdes Haile",
         "role": "CEO, TechStart"
       },
       {
         "quote": "They transformed our business. Professional, creative, and reliable.",
-        "author": "Michael Chen",
+        "author": "Dawit Bekele",
         "role": "Founder, Bloom Co"
       },
       {
         "quote": "The best decision we made this year. Exceeded every expectation.",
-        "author": "Emily Rodriguez",
+        "author": "Hiwot Alemu",
         "role": "Director, Apex Group"
       }
     ],
@@ -419,7 +418,7 @@
       },
       {
         "question": "How long does a typical project take?",
-        "answer": "Timelines vary by scope, but most projects are completed within 2\u20138 weeks."
+        "answer": "Timelines vary by scope, but most projects are completed within 2–8 weeks."
       },
       {
         "question": "Do you offer ongoing support?",
@@ -436,16 +435,16 @@
         "title": "We Are Expanding to Serve You Better",
         "slug": "expanding-to-serve-you-better",
         "excerpt": "New locations, extended hours, and more ways to connect with our team.",
-        "body": "We are thrilled to announce expanded service hours and a new consultation space designed around your comfort and convenience.\n\nThis investment reflects our commitment to accessibility and excellence. Thank you for being part of our journey \u2014 we cannot wait to welcome you.",
+        "body": "We are thrilled to announce expanded service hours and a new consultation space designed around your comfort and convenience.\n\nThis investment reflects our commitment to accessibility and excellence. Thank you for being part of our journey — we cannot wait to welcome you.",
         "image": "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80",
-        "author": "Press Team",
+        "author": "Selam Tadesse",
         "date": "2026-04-01"
       },
       {
         "title": "Award Recognizes Our Commitment to Quality",
         "slug": "award-quality-commitment",
         "excerpt": "Industry leaders honored our team for outstanding client satisfaction.",
-        "body": "Receiving this recognition is a testament to the people behind our work \u2014 dedicated professionals who show up every day with care and craft.\n\nWe share this award with every client who trusted us with their goals. Your feedback shapes how we grow and improve.",
+        "body": "Receiving this recognition is a testament to the people behind our work — dedicated professionals who show up every day with care and craft.\n\nWe share this award with every client who trusted us with their goals. Your feedback shapes how we grow and improve.",
         "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80",
         "author": "Communications",
         "date": "2026-03-18"
@@ -465,14 +464,14 @@
       {
         "title": "Starter",
         "description": "Essential features for individuals and small teams getting started.",
-        "price": "$29/mo",
+        "price": "1,600 ETB/mo",
         "tag": "Most popular",
         "featured": false
       },
       {
         "title": "Professional",
         "description": "Advanced tools, priority support, and integrations for growing businesses.",
-        "price": "$79/mo",
+        "price": "4,350 ETB/mo",
         "tag": "Best value",
         "featured": true
       },
@@ -485,43 +484,43 @@
       }
     ],
     "roomsSectionTitle": "Rooms & Chalets",
-    "roomsSectionSubtitle": "Timber rooms, summit views, and fireplace suites",
+    "roomsSectionSubtitle": "Highland rooms and a chalet suite, priced per night in birr.",
     "bookingSectionTitle": "Book Your Mountain Stay",
-    "bookingSectionSubtitle": "Search availability across alpine rooms and chalet suites",
+    "bookingSectionSubtitle": "Search your trek dates, then reserve a specific room.",
     "roomTypes": [
       {
-        "name": "Alpine Room",
+        "name": "Highland Room",
         "slug": "alpine-room",
         "parentSlug": "",
-        "description": "Timber-lined rooms with mountain views, heated floors, and a deep soaking tub for apr\u00e8s-ski recovery.",
-        "shortDescription": "Mountain view \u00b7 Heated floors \u00b7 30 m\u00b2",
-        "basePrice": "310",
-        "currency": "CHF",
+        "description": "Timber-lined room with a mountain view, heated floors, and a deep tub for the evening after the escarpment.",
+        "shortDescription": "Escarpment view · Heated floors · 30 m²",
+        "basePrice": "9800",
+        "currency": "ETB",
         "maxAdults": "2",
         "maxChildren": "1",
         "maxOccupancy": "3",
         "bedConfiguration": "1 King",
         "sizeSqm": "30",
-        "amenities": "Wi-Fi, Heated floors, Soaking tub, Fireplace nook, Ski storage",
+        "amenities": "Wi-Fi, Heated floors, Soaking tub, Fireplace nook",
         "image": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=900&q=80",
         "unitCount": "8",
         "unitPrefix": "ALP-",
         "isActive": true
       },
       {
-        "name": "Alpine Room \u00b7 Summit View",
+        "name": "Highland Room · Summit View",
         "slug": "alpine-summit-view",
         "parentSlug": "alpine-room",
-        "description": "Corner alpine rooms with floor-to-ceiling glass framing the peak and a private sauna.",
-        "shortDescription": "Peak view \u00b7 Private sauna \u00b7 36 m\u00b2",
-        "basePrice": "420",
-        "currency": "CHF",
+        "description": "A corner room with glass toward the peaks and a private sauna for two.",
+        "shortDescription": "Peak view · Private sauna · 36 m²",
+        "basePrice": "12500",
+        "currency": "ETB",
         "maxAdults": "2",
         "maxChildren": "1",
         "maxOccupancy": "3",
         "bedConfiguration": "1 King",
         "sizeSqm": "36",
-        "amenities": "Wi-Fi, Private sauna, Heated floors, Mini bar, Robes",
+        "amenities": "Wi-Fi, Private sauna, Heated floors, Mini bar",
         "image": "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=900&q=80",
         "unitCount": "4",
         "unitPrefix": "SUM-",
@@ -531,17 +530,17 @@
         "name": "Chalet Suite",
         "slug": "chalet-suite",
         "parentSlug": "",
-        "description": "Two-level suite with living room fireplace, boot room, and balcony over the valley.",
-        "shortDescription": "Fireplace \u00b7 Balcony \u00b7 68 m\u00b2",
-        "basePrice": "680",
-        "currency": "CHF",
+        "description": "Two levels with a fireplace, a boot room, and a balcony over the valley above Debark.",
+        "shortDescription": "Fireplace · Balcony · 68 m²",
+        "basePrice": "18600",
+        "currency": "ETB",
         "maxAdults": "4",
         "maxChildren": "2",
         "maxOccupancy": "5",
         "bedConfiguration": "1 King + sofa bed",
         "sizeSqm": "68",
-        "amenities": "Wi-Fi, Fireplace, Kitchenette, Boot room, Balcony, Ski valet",
-        "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=900&q=80",
+        "amenities": "Wi-Fi, Fireplace, Kitchenette, Boot room, Balcony",
+        "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=900&q=80",
         "unitCount": "3",
         "unitPrefix": "CHA-",
         "isActive": true
@@ -552,49 +551,49 @@
         "title": "5 Strategies to Grow Your Business This Year",
         "slug": "5-strategies-to-grow-your-business",
         "excerpt": "Practical steps you can take today to build momentum and reach more customers.",
-        "body": "Growing a business takes focus, consistency, and a willingness to adapt. Start by clarifying your core offer, then double down on the channels that already bring results.\n\nReview your customer journey from first touch to repeat purchase. Small improvements at each step compound into meaningful revenue gains. Finally, invest in relationships \u2014 referrals and retention often outperform cold outreach.",
+        "body": "Growing a business takes focus, consistency, and a willingness to adapt. Start by clarifying your core offer, then double down on the channels that already bring results.\n\nReview your customer journey from first touch to repeat purchase. Small improvements at each step compound into meaningful revenue gains. Finally, invest in relationships — referrals and retention often outperform cold outreach.",
         "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
-        "author": "Alex Morgan",
+        "author": "Yonas Gebre",
         "date": "2026-03-12"
       },
       {
-        "title": "What Clients Are Asking Us Right Now",
-        "slug": "what-clients-are-asking-us",
-        "excerpt": "A quick roundup of the most common questions we hear \u2014 and how we answer them.",
-        "body": "Every season brings a new set of priorities. Lately, clients ask about pricing transparency, faster turnaround times, and how to stand out in crowded markets.\n\nOur advice stays grounded in fundamentals: deliver exceptional value, communicate clearly, and measure what matters. When in doubt, talk to your customers \u2014 their feedback is the best roadmap.",
+        "title": "What Clients Are Atrekng Us Right Now",
+        "slug": "what-clients-are-atrekng-us",
+        "excerpt": "A quick roundup of the most common questions we hear — and how we answer them.",
+        "body": "Every season brings a new set of priorities. Lately, clients ask about pricing transparency, faster turnaround times, and how to stand out in crowded markets.\n\nOur advice stays grounded in fundamentals: deliver exceptional value, communicate clearly, and measure what matters. When in doubt, talk to your customers — their feedback is the best roadmap.",
         "image": "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80",
-        "author": "Jordan Lee",
+        "author": "Meron Assefa",
         "date": "2026-02-28"
       },
       {
         "title": "Behind the Scenes: How We Work",
         "slug": "behind-the-scenes-how-we-work",
         "excerpt": "Take a peek at our process, tools, and the principles that guide every project.",
-        "body": "We believe great outcomes come from clear goals, collaborative planning, and disciplined execution. Every engagement starts with listening \u2014 understanding where you are and where you want to go.\n\nFrom there we build a tailored plan with milestones you can track. Throughout delivery we keep communication open so there are no surprises, only steady progress toward results you can measure.",
+        "body": "We believe great outcomes come from clear goals, collaborative planning, and disciplined execution. Every engagement starts with listening — understanding where you are and where you want to go.\n\nFrom there we build a tailored plan with milestones you can track. Throughout delivery we keep communication open so there are no surprises, only steady progress toward results you can measure.",
         "image": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80",
-        "author": "Taylor Brooks",
+        "author": "Kalkidan Tesfaye",
         "date": "2026-01-15"
       }
     ],
     "team": [
       {
-        "name": "Alex Morgan",
+        "name": "Abel Desta",
         "role": "Founder & CEO",
         "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80"
       },
       {
-        "name": "Jordan Lee",
+        "name": "Mekdes Haile",
         "role": "Creative Director",
         "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
       },
       {
-        "name": "Taylor Brooks",
+        "name": "Dawit Bekele",
         "role": "Operations Lead",
         "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80"
       }
     ],
     "ctaBannerTitle": "Reserve your peak stay",
-    "ctaBannerText": "Book direct for complimentary spa access and heated ski storage.",
+    "ctaBannerText": "Book direct for complimentary spa access and heated trek storage.",
     "ctaText": "Check Availability",
     "ctaLink": "book",
     "seoEnabled": false,
@@ -602,21 +601,27 @@
     "seoDescription": "",
     "seoKeywords": "",
     "seoSiteUrl": "",
-    "email": "hello@summitpeak.ch",
-    "phone": "+41 27 555 0100",
-    "address": "Zermatt, Switzerland",
-    "hours": "Front desk 7am\u201311pm",
+    "email": "stay@simienlodge.et",
+    "phone": "+251 58 111 2040",
+    "address": "Debark, Simien Mountains",
+    "hours": "Front desk 7:00–21:00",
     "instagram": "",
     "website": "",
     "linkedin": "",
     "whatsapp": "",
     "supportEmail": "",
-    "reservationEmail": "stay@summitpeak.ch",
+    "reservationEmail": "book@simienlodge.et",
     "licenseNumber": "",
     "bookingUrl": "",
     "contactSectionTitle": "Get in Touch",
     "contactFormTitle": "Send Us a Message",
     "contactFormUrl": "",
-    "contactFormButtonText": "Open Contact Form"
+    "contactFormButtonText": "Open Contact Form",
+    "city": "Debark",
+    "country": "Ethiopia",
+    "starRating": "4",
+    "checkInTime": "14:00",
+    "checkOutTime": "11:00",
+    "propertyAmenities": "Wi-Fi, Fireplace, Restaurant, Parking, Generator backup"
   }
 }

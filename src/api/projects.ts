@@ -40,6 +40,13 @@ export function recordExportEvent(id: string) {
   return apiFetch<void>(`/api/v1/projects/${id}/export-event`, { method: 'POST' })
 }
 
+export function issueCrsCredentials(id: string) {
+  return apiFetch<{ hotelId: string; apiKey: string; prefix: string; apiBaseUrl: string }>(
+    `/api/v1/projects/${id}/crs-credentials`,
+    { method: 'POST' },
+  )
+}
+
 export function getExportEntitlement(id: string) {
   return apiFetch<ProjectResponse>(`/api/v1/projects/${id}/export-entitlement`)
 }

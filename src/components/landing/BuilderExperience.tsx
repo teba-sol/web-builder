@@ -59,7 +59,7 @@ export function BuilderExperience() {
           <div data-piece="canvas" className="relative">
             {site && <BrowserFrame src={site.src} alt={site.label} />}
             <p data-live="heading" className="pointer-events-none absolute left-8 top-16 font-display text-4xl text-white opacity-0">
-              Maison
+              Kategna
             </p>
           </div>
           <div className="hidden flex-col gap-4 md:flex">
