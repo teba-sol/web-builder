@@ -88,7 +88,14 @@ Then visit:
 Website images live in storage/ — run Storage Link from Site Doctor (included in Run All).
 
 See backend/README.md for full deployment instructions.
-
+${usesBuildauraCrs(templateId) ? `
+HOTEL / GUEST HOUSE
+Reservations run on the Laravel site, not the static frontend folder.
+Copy backend/.env.example to backend/.env. When you download from Buildaura,
+BUILDAURA_API_KEY is a working key. Downloading again replaces that key.
+Guest name, email, and phone stay in this website's database.
+Buildaura only updates the room status.
+` : ''}
 Built with WebBuilder
 `,
   )

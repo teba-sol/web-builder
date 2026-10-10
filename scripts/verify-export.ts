@@ -8,6 +8,7 @@ import { buildSiteDocument, parseSiteDocument, stringifySiteDocument } from '../
 import { templateDefaults } from '../src/data/defaults.ts'
 import { generateBackend } from '../src/export/backend/generateBackend.ts'
 import { hasBookingFeature } from '../src/export/backend/generateBooking.ts'
+import { usesBuildauraCrs } from '../src/export/backend/generateCrsBooking.ts'
 import { buildAllSitePages } from '../src/export/buildSitePages.ts'
 import { clonePaletteCss, resolveClonePalette } from '../src/templates/cloneTheme.ts'
 
@@ -260,8 +261,18 @@ assert(cpaCss.includes('--clone-surface: #F6F3EA') || cpaCss.toLowerCase().inclu
 const cpaAltCss = clonePaletteCss('cpa', cpaAlt)
 assert(cpaAltCss.includes('#0f766e') || cpaAltCss.includes('#0F766E'), 'alternate scheme css emits new accent')
 
-const hotelBackend = generateBackend('hotel', templateDefaults.hotel, hotel.defaultColorSchemeId, hotel.defaultLayoutVariantId, [])
-assert(hotelBackend['app/Models/RoomType.php']?.includes('class RoomType'), 'hotel Laravel export should include RoomType')
+const hotelBackend = generateBackend('hotel', templateDefaults.hotel, hotel.defaultColorSchemeId, hotel.defaultLayoutVariantId, [], {
+  apiBaseUrl: 'http://localhost:8080',
+  hotelId: '11111111-1111-1111-1111-111111111111',
+  apiKey: 'crs_abc',
+})
+assert(!hotelBackend['app/Models/RoomType.php'], 'hotel Laravel export should manage rooms through Buildaura')
+assert(hotelBackend['.env.example']?.includes('BUILDAURA_API_KEY="crs_abc"'), 'hotel .env.example should contain the working key')
+assert(hotelBackend['.env.example']?.includes('BUILDAURA_HOTEL_ID="11111111-1111-1111-1111-111111111111"'), 'hotel .env.example should contain the hotel id')
 assert(Object.keys(hotelBackend).some((path) => path.includes('BookingController')), 'hotel Laravel export should include booking')
+assert(hotelBackend['app/Filament/Pages/ApiKey.php']?.includes('class ApiKey'), 'hotel admin should request a new API key')
+const alpineBackend = generateBackend('alpine', templateDefaults.alpine, requireManifest('alpine').defaultColorSchemeId, requireManifest('alpine').defaultLayoutVariantId, [])
+assert(alpineBackend['app/Models/RoomType.php']?.includes('class RoomType'), 'alpine stays on the local booking stack')
+assert(!alpineBackend['.env.example']?.includes('BUILDAURA_API_KEY'), 'alpine must not receive a Buildaura key')
 
 console.log(`ok: ${manifests.length} templates, preview defaults + static ZIP + Laravel ZIP`)

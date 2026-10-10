@@ -47,6 +47,7 @@ export function EditorPage() {
       navigate('/')
       return
     }
+    rememberProjectId(searchParams.get('project'))
     const appearance = appearanceFromSearchParams(searchParams)
     const queryKey = `${id}?${searchParams.toString()}`
     if (appearance) {

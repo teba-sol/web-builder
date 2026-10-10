@@ -14,6 +14,13 @@ import {
   generateBookingFiles,
   hasBookingFeature,
 } from './generateBooking'
+import {
+  crsEnvExample,
+  crsRouteLines,
+  generateCrsBookingFiles,
+  usesBuildauraCrs,
+  type CrsExportCredentials,
+} from './generateCrsBooking'
 import { generateFilamentFiles } from './generateFilament'
 import { generateSetupFiles, generateSetupToken } from './generateSetup'
 import { FONT_OPTIONS } from '../../data/brand'
@@ -581,7 +588,7 @@ class DatabaseSeeder extends Seeder
         $this->seedList(BlogPost::class, json_decode('${jsonForPhp(listData.blog_posts)}', true));
         $this->seedList(NewsPost::class, json_decode('${jsonForPhp(listData.news_posts)}', true));
         $this->seedList(Faq::class, json_decode('${jsonForPhp(listData.faqs)}', true));
-${hasBookingFeature(payload.content) ? "\n        $this->call(HospitalitySeeder::class);\n" : ''}
+${hasBookingFeature(payload.content) && !usesBuildauraCrs(payload.templateId) ? "\n        $this->call(HospitalitySeeder::class);\n" : ''}
     }
 
     private function seedList(string $model, array $items): void
@@ -595,7 +602,11 @@ ${hasBookingFeature(payload.content) ? "\n        $this->call(HospitalitySeeder:
 `
 }
 
-function generateSkeleton(payload: SiteExportPayload, setupToken: string): BackendFileMap {
+function generateSkeleton(
+  payload: SiteExportPayload,
+  setupToken: string,
+  credentials?: CrsExportCredentials,
+): BackendFileMap {
   const slug = (payload.content.businessName || 'my-website')
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
@@ -737,7 +748,7 @@ Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
 Route::get('/news', [NewsController::class, 'index'])->name('news.index');
 Route::get('/news/{slug}', [NewsController::class, 'show'])->name('news.show');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
-${hasBookingFeature(payload.content) ? bookingRouteLines() : ''}
+${usesBuildauraCrs(payload.templateId) ? crsRouteLines() : hasBookingFeature(payload.content) ? bookingRouteLines() : ''}
 Route::get('/doctor', [DoctorController::class, 'index'])->name('doctor.index');
 Route::post('/doctor/run', [DoctorController::class, 'run'])->name('doctor.run');
 `,
@@ -1029,6 +1040,21 @@ class SiteController extends Controller
             'roomTypes' => $roomTypes,` : ''}
         ]);
     }
+${usesBuildauraCrs(payload.templateId) ? `
+    private function crsRoomTypes(): array
+    {
+        try {
+            $inventory = app(\\App\\Services\\BuildauraClient::class)->inventory();
+            $types = array_values(array_filter(
+                $inventory['roomTypes'] ?? [],
+                fn ($type) => ($type['isActive'] ?? true) && empty($type['parentId'])
+            ));
+            return array_slice($types, 0, 3);
+        } catch (\\Throwable $e) {
+            return [];
+        }
+    }
+` : ''}
 }
 `,
 
@@ -1549,7 +1575,24 @@ ${Object.entries(payload.content.sectionVisibility)
 - Contact Messages (form submissions)
 - Testimonials (always available)
 - Blog Posts (always available)
-${hasBookingFeature(payload.content) ? `
+${usesBuildauraCrs(payload.templateId) ? `
+## Hotel rooms (Buildaura)
+
+This hotel or guest house keeps guest details on this website and updates room status in Buildaura.
+
+- Copy \`.env.example\` to \`.env\`. \`BUILDAURA_API_KEY\` is a working site key when you downloaded the site from Buildaura.
+- Downloading the website again replaces the previous site key. Use the new key.
+- Guest name, email, and phone are stored only in this site's database.
+- Buildaura receives the room, the dates, and the confirmation code. It does not receive the guest.
+- Reservations run on this Laravel site (\`php artisan serve\` or your host). The static \`frontend/\` folder does not take reservations.
+- In **Admin → Property**, create room types and rooms, review guest reservations, or request a new API key.
+
+Public pages:
+- \`/rooms\`
+- \`/rooms/{slug}\`
+- \`/book\` — name and phone are required, email is optional
+- \`/book/confirm/{code}\`
+` : hasBookingFeature(payload.content) ? `
 ## Hospitality booking
 
 This site includes hospitality booking backed by **BuildAura CRS**:
@@ -1621,7 +1664,7 @@ export function generateBackend(
   }
 
   Object.assign(files, generateFilamentFiles(content.sectionVisibility, content.pageVisibility))
-  Object.assign(files, generateBookingFiles(payload))
+  Object.assign(files, usesBuildauraCrs(templateId) ? generateCrsBookingFiles(payload) : generateBookingFiles(payload))
 
   if (content.seoEnabled) {
     files['public/robots.txt'] = buildRobotsTxt(content.seoSiteUrl)
