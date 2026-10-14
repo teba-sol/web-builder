@@ -12,6 +12,7 @@ import {
 } from '../../data/hospitality'
 import type { SiteExportPayload } from './exportPayload'
 import { resolveAssetPath } from './exportPayload'
+import { roomCalendarFiles } from './generateRoomCalendar'
 
 export function hasBookingFeature(content: SiteContent): boolean {
   return Boolean(content.pageVisibility?.rooms && content.roomTypes?.some((r) => r.name))
@@ -985,17 +986,50 @@ class ReservationResource extends Resource
     public static function table(Tables\\Table $table): Tables\\Table
     {
         return $table->columns([
-            Tables\\Columns\\TextColumn::make('confirmation_code')->searchable(),
-            Tables\\Columns\\TextColumn::make('guest_name')->searchable(),
-            Tables\\Columns\\TextColumn::make('room_type_name')->label('Room type'),
-            Tables\\Columns\\TextColumn::make('room_unit_code')->label('Room'),
-            Tables\\Columns\\TextColumn::make('check_in')->date(),
-            Tables\\Columns\\TextColumn::make('check_out')->date(),
-            Tables\\Columns\\TextColumn::make('status')->badge(),
-            Tables\\Columns\\TextColumn::make('total_price')->money(fn ($record) => $record->currency),
+            Tables\\Columns\\TextColumn::make('confirmation_code')->searchable()->sortable(),
+            Tables\\Columns\\TextColumn::make('guest_name')->searchable()->sortable(),
+            Tables\\Columns\\TextColumn::make('guest_email')->searchable()->sortable()->toggleable(),
+            Tables\\Columns\\TextColumn::make('guest_phone')->searchable()->sortable()->toggleable(),
+            Tables\\Columns\\TextColumn::make('room_type_name')->label('Room type')->searchable()->sortable(),
+            Tables\\Columns\\TextColumn::make('room_unit_code')->label('Room')->searchable()->sortable(),
+            Tables\\Columns\\TextColumn::make('check_in')->date()->sortable(),
+            Tables\\Columns\\TextColumn::make('check_out')->date()->sortable(),
+            Tables\\Columns\\TextColumn::make('status')->badge()->searchable()->sortable(),
+            Tables\\Columns\\TextColumn::make('total_price')->money(fn ($record) => $record->currency)->sortable(),
+        ])->filters([
+            Tables\\Filters\\SelectFilter::make('status')->options([
+                'pending' => 'Pending',
+                'confirmed' => 'Confirmed',
+                'checked_in' => 'Checked in',
+                'checked_out' => 'Checked out',
+                'cancelled' => 'Cancelled',
+                'no_show' => 'No show',
+            ]),
+            Tables\\Filters\\SelectFilter::make('room_type_name')
+                ->label('Room type')
+                ->searchable()
+                ->options(fn () => Reservation::query()->whereNotNull('room_type_name')->where('room_type_name', '!=', '')->distinct()->orderBy('room_type_name')->pluck('room_type_name', 'room_type_name')->all()),
+            Tables\\Filters\\SelectFilter::make('room_unit_code')
+                ->label('Room')
+                ->searchable()
+                ->options(fn () => Reservation::query()->whereNotNull('room_unit_code')->where('room_unit_code', '!=', '')->distinct()->orderBy('room_unit_code')->pluck('room_unit_code', 'room_unit_code')->all()),
+            Tables\\Filters\\Filter::make('stay')
+                ->label('Stay dates')
+                ->form([
+                    Forms\\Components\\DatePicker::make('from')->label('Check-in from'),
+                    Forms\\Components\\DatePicker::make('until')->label('Check-out until'),
+                ])
+                ->query(function ($query, array $data) {
+                    return $query
+                        ->when($data['from'] ?? null, fn ($query, $date) => $query->whereDate('check_in', '>=', $date))
+                        ->when($data['until'] ?? null, fn ($query, $date) => $query->whereDate('check_out', '<=', $date));
+                }),
         ])->actions([
             Tables\\Actions\\EditAction::make(),
-        ])->defaultSort('created_at', 'desc');
+        ])->defaultSort('created_at', 'desc')
+            ->persistSearchInSession()
+            ->persistFiltersInSession()
+            ->persistSortInSession();
     }
 
     public static function getPages(): array
@@ -1393,6 +1427,9 @@ trait LoadsCrsInventory
     public function mount(): void
     {
         $this->reload();
+        if (method_exists($this, 'mountPageForm')) {
+            $this->mountPageForm();
+        }
     }
 
     public function hydrate(): void
@@ -1603,6 +1640,42 @@ class ManageRoomTypes extends Page
 
     public ?string $editingTypeId = null;
 
+    public ?array $filters = [
+        'search' => '',
+        'parent' => '',
+        'active' => '',
+        'sort' => 'sortOrder',
+    ];
+
+    protected function getForms(): array
+    {
+        return [];
+    }
+
+    public function clearTypeFilters(): void
+    {
+        $this->filters = [
+            'search' => '',
+            'parent' => '',
+            'active' => '',
+            'sort' => 'sortOrder',
+        ];
+    }
+
+    public function typeFiltersActive(): bool
+    {
+        return $this->filterText('search') !== ''
+            || $this->filterText('parent') !== ''
+            || $this->filterText('active') !== '';
+    }
+
+    private function filterText(string $key): string
+    {
+        $value = $this->filters[$key] ?? null;
+
+        return is_scalar($value) ? trim((string) $value) : '';
+    }
+
     public function getSubheading(): ?string
     {
         return 'Room types and photos are saved in BuildAura. This website does not store them.';
@@ -1629,6 +1702,10 @@ class ManageRoomTypes extends Page
     {
         return Action::make('editType')
             ->label('Edit')
+            ->button()
+            ->outlined()
+            ->size('sm')
+            ->color('gray')
             ->slideOver()
             ->modalHeading('Edit room type')
             ->modalSubmitActionLabel('Save to BuildAura')
@@ -1655,6 +1732,9 @@ class ManageRoomTypes extends Page
     {
         return Action::make('deleteType')
             ->label('Delete')
+            ->button()
+            ->outlined()
+            ->size('sm')
             ->color('danger')
             ->requiresConfirmation()
             ->modalHeading('Delete room type')
@@ -1787,6 +1867,78 @@ class ManageRoomTypes extends Page
         }
         return $options;
     }
+
+    public function filterParentOptions(): array
+    {
+        $options = [];
+        foreach ($this->inventory['roomTypes'] ?? [] as $type) {
+            $id = (string) ($type['id'] ?? '');
+            if ($id === '') {
+                continue;
+            }
+            $options[$id] = (string) ($type['name'] ?? $id);
+        }
+
+        return $options;
+    }
+
+    public function visibleTypes(): array
+    {
+        $needle = mb_strtolower($this->filterText('search'));
+        $parentFilter = $this->filterText('parent');
+        $activeFilter = $this->filterText('active');
+        $types = [];
+        foreach ($this->inventory['roomTypes'] ?? [] as $type) {
+            if (! is_array($type)) {
+                continue;
+            }
+            if ($parentFilter !== '') {
+                $id = (string) ($type['id'] ?? '');
+                $parent = (string) ($type['parentId'] ?? '');
+                if ($id !== $parentFilter && $parent !== $parentFilter) {
+                    continue;
+                }
+            }
+            $active = (bool) ($type['isActive'] ?? true);
+            if ($activeFilter === '1' && ! $active) {
+                continue;
+            }
+            if ($activeFilter === '0' && $active) {
+                continue;
+            }
+            if ($needle !== '') {
+                $haystack = mb_strtolower(trim(implode(' ', [
+                    (string) ($type['name'] ?? ''),
+                    (string) ($type['slug'] ?? ''),
+                    (string) ($type['shortDescription'] ?? ''),
+                    (string) ($type['description'] ?? ''),
+                ])));
+                if (! str_contains($haystack, $needle)) {
+                    continue;
+                }
+            }
+            $types[] = $type;
+        }
+        $sort = $this->filterText('sort');
+        if ($sort === '') {
+            $sort = 'sortOrder';
+        }
+        usort($types, function (array $a, array $b) use ($sort): int {
+            $name = strcasecmp((string) ($a['name'] ?? ''), (string) ($b['name'] ?? ''));
+            $price = ((float) ($a['basePrice'] ?? 0)) <=> ((float) ($b['basePrice'] ?? 0));
+            $order = ((int) ($a['sortOrder'] ?? 0)) <=> ((int) ($b['sortOrder'] ?? 0));
+
+            return match ($sort) {
+                'name' => $name,
+                'name_desc' => -$name,
+                'price' => $price !== 0 ? $price : $name,
+                'price_desc' => ($price !== 0 ? -$price : $name),
+                default => $order !== 0 ? $order : $name,
+            };
+        });
+
+        return $types;
+    }
 }
 `
 
@@ -1821,6 +1973,42 @@ class ManageRooms extends Page
         return 'rooms';
     }
 
+    public ?array $filters = [
+        'search' => '',
+        'roomType' => '',
+        'status' => '',
+        'sort' => 'code',
+    ];
+
+    protected function getForms(): array
+    {
+        return [];
+    }
+
+    public function clearUnitFilters(): void
+    {
+        $this->filters = [
+            'search' => '',
+            'roomType' => '',
+            'status' => '',
+            'sort' => 'code',
+        ];
+    }
+
+    public function unitFiltersActive(): bool
+    {
+        return $this->filterText('search') !== ''
+            || $this->filterText('roomType') !== ''
+            || $this->filterText('status') !== '';
+    }
+
+    private function filterText(string $key): string
+    {
+        $value = $this->filters[$key] ?? null;
+
+        return is_scalar($value) ? trim((string) $value) : '';
+    }
+
     public function getSubheading(): ?string
     {
         return 'Rooms are saved in BuildAura. This website does not store them.';
@@ -1844,6 +2032,10 @@ class ManageRooms extends Page
     {
         return Action::make('editUnit')
             ->label('Edit')
+            ->button()
+            ->outlined()
+            ->size('sm')
+            ->color('gray')
             ->slideOver()
             ->modalHeading('Edit room')
             ->modalSubmitActionLabel('Save to BuildAura')
@@ -1867,6 +2059,9 @@ class ManageRooms extends Page
     {
         return Action::make('deleteUnit')
             ->label('Delete')
+            ->button()
+            ->outlined()
+            ->size('sm')
             ->color('danger')
             ->requiresConfirmation()
             ->modalHeading('Delete room')
@@ -1930,12 +2125,72 @@ class ManageRooms extends Page
             'sortOrder' => $unit['sortOrder'] ?? 0,
         ];
     }
+
+    public function visibleUnits(): array
+    {
+        $names = [];
+        foreach ($this->inventory['roomTypes'] ?? [] as $type) {
+            if (is_array($type) && ! empty($type['id'])) {
+                $names[(string) $type['id']] = (string) ($type['name'] ?? '');
+            }
+        }
+        $needle = mb_strtolower($this->filterText('search'));
+        $typeFilter = $this->filterText('roomType');
+        $statusFilter = $this->filterText('status');
+        $units = [];
+        foreach ($this->inventory['units'] ?? [] as $unit) {
+            if (! is_array($unit)) {
+                continue;
+            }
+            if ($typeFilter !== '' && (string) ($unit['roomTypeId'] ?? '') !== $typeFilter) {
+                continue;
+            }
+            if ($statusFilter !== '' && (string) ($unit['status'] ?? '') !== $statusFilter) {
+                continue;
+            }
+            if ($needle !== '') {
+                $haystack = mb_strtolower(trim(implode(' ', [
+                    (string) ($unit['code'] ?? ''),
+                    (string) ($unit['name'] ?? ''),
+                    (string) ($unit['floor'] ?? ''),
+                    (string) ($unit['notes'] ?? ''),
+                ])));
+                if (! str_contains($haystack, $needle)) {
+                    continue;
+                }
+            }
+            $units[] = $unit;
+        }
+        $sort = $this->filterText('sort');
+        if ($sort === '') {
+            $sort = 'code';
+        }
+        usort($units, function (array $a, array $b) use ($sort, $names): int {
+            $code = strcasecmp((string) ($a['code'] ?? ''), (string) ($b['code'] ?? ''));
+            $name = strcasecmp((string) ($a['name'] ?? ''), (string) ($b['name'] ?? ''));
+            $floor = strcasecmp((string) ($a['floor'] ?? ''), (string) ($b['floor'] ?? ''));
+            $status = strcasecmp((string) ($a['status'] ?? ''), (string) ($b['status'] ?? ''));
+            $type = strcasecmp($names[(string) ($a['roomTypeId'] ?? '')] ?? '', $names[(string) ($b['roomTypeId'] ?? '')] ?? '');
+
+            return match ($sort) {
+                'code_desc' => -$code,
+                'name' => $name !== 0 ? $name : $code,
+                'floor' => $floor !== 0 ? $floor : $code,
+                'status' => $status !== 0 ? $status : $code,
+                'type' => $type !== 0 ? $type : $code,
+                default => $code,
+            };
+        });
+
+        return $units;
+    }
 }
 `
 
   files['resources/views/filament/pages/manage-room-types.blade.php'] = `@php
-    $types = $this->inventory['roomTypes'] ?? [];
+    $types = $this->visibleTypes();
     $units = $this->inventory['units'] ?? [];
+    $typeFiltersOn = $this->typeFiltersActive();
 @endphp
 <x-filament-panels::page>
     @if($this->crsError)
@@ -1944,6 +2199,47 @@ class ManageRooms extends Page
             <div style="margin-top:6px;color:#6b7280;">Room types are stored in BuildAura. This page calls that API with this site's key.</div>
         </div>
     @endif
+
+    <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;align-items:end;margin-bottom:24px;">
+        <x-filament-forms::field-wrapper label="Search">
+            <x-filament::input.wrapper>
+                <x-filament::input type="search" placeholder="Name, slug, description" wire:model.live.debounce.300ms="filters.search" />
+            </x-filament::input.wrapper>
+        </x-filament-forms::field-wrapper>
+        <x-filament-forms::field-wrapper label="Parent type">
+            <x-filament::input.wrapper>
+                <x-filament::input.select wire:model.live="filters.parent">
+                    <option value="">All types</option>
+                    @foreach($this->filterParentOptions() as $id => $name)
+                        <option value="{{ $id }}">{{ $name }}</option>
+                    @endforeach
+                </x-filament::input.select>
+            </x-filament::input.wrapper>
+        </x-filament-forms::field-wrapper>
+        <x-filament-forms::field-wrapper label="Active">
+            <x-filament::input.wrapper>
+                <x-filament::input.select wire:model.live="filters.active">
+                    <option value="">Any</option>
+                    <option value="1">Active</option>
+                    <option value="0">Inactive</option>
+                </x-filament::input.select>
+            </x-filament::input.wrapper>
+        </x-filament-forms::field-wrapper>
+        <x-filament-forms::field-wrapper label="Sort">
+            <x-filament::input.wrapper>
+                <x-filament::input.select wire:model.live="filters.sort">
+                    <option value="sortOrder">Sort order</option>
+                    <option value="name">Name</option>
+                    <option value="name_desc">Name (Z–A)</option>
+                    <option value="price">Price</option>
+                    <option value="price_desc">Price (high)</option>
+                </x-filament::input.select>
+            </x-filament::input.wrapper>
+        </x-filament-forms::field-wrapper>
+        <div>
+            <x-filament::button color="gray" size="sm" type="button" style="width:100%" wire:click="clearTypeFilters">Clear</x-filament::button>
+        </div>
+    </div>
 
     <x-filament::section>
         <div style="overflow-x:auto;">
@@ -1999,14 +2295,14 @@ class ManageRooms extends Page
                             </td>
                             <td style="padding:10px;vertical-align:middle;white-space:nowrap;text-align:right;">
                                 <div style="display:flex;gap:8px;justify-content:flex-end;">
-                                    <x-filament::button size="sm" color="gray" outlined wire:click="mountAction('editType', @js(['typeId' => $type['id']]))">Edit</x-filament::button>
-                                    <x-filament::button size="sm" color="danger" outlined wire:click="mountAction('deleteType', @js(['typeId' => $type['id']]))">Delete</x-filament::button>
+                                    {{ ($this->editTypeAction)(['typeId' => $type['id']]) }}
+                                    {{ ($this->deleteTypeAction)(['typeId' => $type['id']]) }}
                                 </div>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" style="padding:16px 10px;color:#6b7280;font-size:14px;">No room types yet. Add one to create it in BuildAura.</td>
+                            <td colspan="5" style="padding:16px 10px;color:#6b7280;font-size:14px;">@if($typeFiltersOn)No room types match these filters.@else No room types yet. Add one to create it in BuildAura.@endif</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -2018,15 +2314,29 @@ class ManageRooms extends Page
 
   files['resources/views/filament/pages/manage-rooms.blade.php'] = `@php
     $types = $this->inventory['roomTypes'] ?? [];
-    $units = $this->inventory['units'] ?? [];
+    $units = $this->visibleUnits();
     $occupancy = $this->inventory['occupancy'] ?? [];
     $typeNames = [];
     foreach ($types as $type) {
         $typeNames[$type['id']] = $type['name'] ?? '';
     }
+    $allUnits = $this->inventory['units'] ?? [];
     $unitCodes = [];
-    foreach ($units as $unit) {
+    foreach ($allUnits as $unit) {
         $unitCodes[$unit['id']] = $unit['code'] ?? '';
+    }
+    $visibleIds = [];
+    foreach ($units as $unit) {
+        $visibleIds[(string) ($unit['id'] ?? '')] = true;
+    }
+    $unitFiltersOn = $this->unitFiltersActive();
+    $holds = [];
+    foreach ($occupancy as $block) {
+        $unitId = (string) ($block['roomUnitId'] ?? '');
+        if ($unitFiltersOn && empty($visibleIds[$unitId])) {
+            continue;
+        }
+        $holds[] = $block;
     }
 @endphp
 <x-filament-panels::page>
@@ -2036,6 +2346,51 @@ class ManageRooms extends Page
             <div style="margin-top:6px;color:#6b7280;">Rooms are stored in BuildAura. This page calls that API with this site's key.</div>
         </div>
     @endif
+
+    <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;align-items:end;margin-bottom:24px;">
+        <x-filament-forms::field-wrapper label="Search">
+            <x-filament::input.wrapper>
+                <x-filament::input type="search" placeholder="Code, name, floor, notes" wire:model.live.debounce.300ms="filters.search" />
+            </x-filament::input.wrapper>
+        </x-filament-forms::field-wrapper>
+        <x-filament-forms::field-wrapper label="Room type">
+            <x-filament::input.wrapper>
+                <x-filament::input.select wire:model.live="filters.roomType">
+                    <option value="">All room types</option>
+                    @foreach($types as $type)
+                        @if(! empty($type['id']))
+                            <option value="{{ $type['id'] }}">{{ $type['name'] ?? '' }}</option>
+                        @endif
+                    @endforeach
+                </x-filament::input.select>
+            </x-filament::input.wrapper>
+        </x-filament-forms::field-wrapper>
+        <x-filament-forms::field-wrapper label="Status">
+            <x-filament::input.wrapper>
+                <x-filament::input.select wire:model.live="filters.status">
+                    <option value="">Any status</option>
+                    @foreach(['AVAILABLE' => 'Available', 'RESERVED' => 'Reserved', 'OCCUPIED' => 'Occupied', 'MAINTENANCE' => 'Maintenance', 'OUT_OF_SERVICE' => 'Out of service'] as $value => $label)
+                        <option value="{{ $value }}">{{ $label }}</option>
+                    @endforeach
+                </x-filament::input.select>
+            </x-filament::input.wrapper>
+        </x-filament-forms::field-wrapper>
+        <x-filament-forms::field-wrapper label="Sort">
+            <x-filament::input.wrapper>
+                <x-filament::input.select wire:model.live="filters.sort">
+                    <option value="code">Room number</option>
+                    <option value="code_desc">Room number (Z–A)</option>
+                    <option value="name">Name</option>
+                    <option value="floor">Floor</option>
+                    <option value="status">Status</option>
+                    <option value="type">Room type</option>
+                </x-filament::input.select>
+            </x-filament::input.wrapper>
+        </x-filament-forms::field-wrapper>
+        <div>
+            <x-filament::button color="gray" size="sm" type="button" style="width:100%" wire:click="clearUnitFilters">Clear</x-filament::button>
+        </div>
+    </div>
 
     <x-filament::section>
         <div style="overflow-x:auto;">
@@ -2064,15 +2419,16 @@ class ManageRooms extends Page
                             <td style="padding:10px;vertical-align:middle;white-space:nowrap;">{{ $unit['floor'] ?? '' }}</td>
                             <td style="padding:10px;vertical-align:middle;white-space:nowrap;">{{ str_replace('_', ' ', (string) ($unit['status'] ?? '')) }}</td>
                             <td style="padding:10px;vertical-align:middle;white-space:nowrap;text-align:right;">
-                                <div style="display:flex;gap:8px;justify-content:flex-end;">
-                                    <x-filament::button size="sm" color="gray" outlined wire:click="mountAction('editUnit', @js(['unitId' => $unit['id']]))">Edit</x-filament::button>
-                                    <x-filament::button size="sm" color="danger" outlined wire:click="mountAction('deleteUnit', @js(['unitId' => $unit['id']]))">Delete</x-filament::button>
+                                <div style="display:flex;gap:8px;justify-content:flex-end;align-items:center;">
+                                    <x-filament::button tag="a" size="sm" color="gray" outlined :href="\\App\\Filament\\Pages\\RoomCalendar::getUrl(['unitId' => $unit['id']])">Calendar</x-filament::button>
+                                    {{ ($this->editUnitAction)(['unitId' => $unit['id']]) }}
+                                    {{ ($this->deleteUnitAction)(['unitId' => $unit['id']]) }}
                                 </div>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" style="padding:16px 10px;color:#6b7280;font-size:14px;">No rooms yet. Add a room type with a room count, or add a room here.</td>
+                            <td colspan="6" style="padding:16px 10px;color:#6b7280;font-size:14px;">@if($unitFiltersOn)No rooms match these filters.@else No rooms yet. Add a room type with a room count, or add a room here.@endif</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -2095,7 +2451,7 @@ class ManageRooms extends Page
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse($occupancy as $block)
+                    @forelse($holds as $block)
                         <tr style="border-top:1px solid #e5e7eb;">
                             <td style="padding:8px 10px;white-space:nowrap;">{{ $unitCodes[$block['roomUnitId'] ?? ''] ?? '' }}</td>
                             <td style="padding:8px 10px;white-space:nowrap;">{{ $block['checkIn'] ?? '' }} → {{ $block['checkOut'] ?? '' }}</td>
@@ -2104,7 +2460,7 @@ class ManageRooms extends Page
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" style="padding:12px 10px;color:#6b7280;font-size:14px;">No date holds.</td>
+                            <td colspan="4" style="padding:12px 10px;color:#6b7280;font-size:14px;">@if($unitFiltersOn)No date holds for these rooms.@else No date holds.@endif</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -2198,6 +2554,8 @@ class HospitalitySeeder extends Seeder
 upload_max_filesize = 8M
 post_max_size = 8M
 `
+
+  Object.assign(files, roomCalendarFiles('CrsClient', 'ManageRooms'))
 
   return files
 }
