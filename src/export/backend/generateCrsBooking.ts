@@ -4,6 +4,7 @@
  * Buildaura only receives the room, the dates, and the confirmation code.
  */
 import type { SiteExportPayload } from './exportPayload'
+import { roomCalendarFiles } from './generateRoomCalendar'
 
 export interface CrsExportCredentials {
   apiBaseUrl: string
@@ -39,11 +40,13 @@ Route::get('/rooms/{slug}', [BookingController::class, 'showRoom'])->name('rooms
 Route::get('/book', [BookingController::class, 'bookForm'])->name('book');
 Route::post('/book', [BookingController::class, 'store'])->name('book.store');
 Route::get('/book/confirm/{code}', [BookingController::class, 'confirm'])->name('booking.confirm');
+Route::redirect('/login', '/admin/login')->name('login');
 Route::middleware('auth')->prefix('property')->name('property.')->group(function () {
     Route::post('/room-types', [PropertyController::class, 'storeType'])->name('types.store');
     Route::post('/room-types/{typeId}', [PropertyController::class, 'updateType'])->name('types.update');
     Route::post('/room-types/{typeId}/delete', [PropertyController::class, 'deleteType'])->name('types.delete');
     Route::post('/rooms', [PropertyController::class, 'storeUnit'])->name('units.store');
+    Route::post('/rooms/{unitId}', [PropertyController::class, 'updateUnit'])->name('units.update');
     Route::post('/rooms/{unitId}/delete', [PropertyController::class, 'deleteUnit'])->name('units.delete');
     Route::post('/reservations/cancel', [PropertyController::class, 'cancelReservation'])->name('reservations.cancel');
     Route::post('/api-key', [PropertyController::class, 'rotateKey'])->name('api-key.rotate');
@@ -60,9 +63,9 @@ export function generateCrsBookingFiles(payload: SiteExportPayload): Record<stri
 
 return [
     'buildaura' => [
-        'url' => rtrim((string) env('BUILDAURA_API_URL', 'http://localhost:8080'), '/'),
-        'hotel_id' => env('BUILDAURA_HOTEL_ID'),
-        'key' => env('BUILDAURA_API_KEY'),
+        'url' => rtrim((string) env('BUILDAURA_API_URL', env('CRS_API_URL', 'http://localhost:8080')), '/'),
+        'hotel_id' => env('BUILDAURA_HOTEL_ID', env('CRS_HOTEL_ID')),
+        'key' => env('BUILDAURA_API_KEY', env('CRS_API_KEY')),
     ],
 ];
 `
@@ -109,6 +112,11 @@ class BuildauraClient
     public function createUnit(array $payload): array
     {
         return $this->send('POST', $this->path('/units'), $payload);
+    }
+
+    public function updateUnit(string $unitId, array $payload): array
+    {
+        return $this->send('PATCH', $this->path('/units/'.$unitId), $payload);
     }
 
     public function deleteUnit(string $unitId): array
@@ -594,6 +602,28 @@ class PropertyController extends Controller
         }, 'Room saved in Buildaura.');
     }
 
+    public function updateUnit(Request $request, string $unitId): RedirectResponse
+    {
+        $data = $request->validate([
+            'room_type_id' => 'required|uuid',
+            'code' => 'required|string|max:40',
+            'floor' => 'nullable|string|max:40',
+            'name' => 'nullable|string|max:255',
+            'status' => 'required|string|in:AVAILABLE,RESERVED,OCCUPIED,MAINTENANCE,OUT_OF_SERVICE',
+        ]);
+
+        return $this->attempt(function () use ($data, $request, $unitId) {
+            $this->crs->updateUnit($unitId, [
+                'roomTypeId' => $data['room_type_id'],
+                'code' => $data['code'],
+                'floor' => $data['floor'] ?? '',
+                'name' => $data['name'] ?? '',
+                'status' => $data['status'],
+                'isActive' => $request->boolean('is_active'),
+            ]);
+        }, 'Room updated in Buildaura.');
+    }
+
     public function deleteUnit(string $unitId): RedirectResponse
     {
         return $this->attempt(fn () => $this->crs->deleteUnit($unitId), 'Room removed from Buildaura.');
@@ -844,7 +874,8 @@ class PropertyController extends Controller
 @endsection
 `
 
-  const flash = `@if(session('property_error'))<p style="margin-bottom:12px;padding:12px;border:1px solid #fecaca;background:#fef2f2;color:#991b1b">{{ session('property_error') }}</p>@endif
+  const flash = `@if($errors->any())<div style="margin-bottom:12px;padding:12px;border:1px solid #fecaca;background:#fef2f2;color:#991b1b">@foreach($errors->all() as $error)<p>{{ $error }}</p>@endforeach</div>@endif
+@if(session('property_error'))<p style="margin-bottom:12px;padding:12px;border:1px solid #fecaca;background:#fef2f2;color:#991b1b">{{ session('property_error') }}</p>@endif
 @if(session('property_message'))<p style="margin-bottom:12px;padding:12px;border:1px solid #bbf7d0;background:#f0fdf4;color:#166534">{{ session('property_message') }}</p>@endif`
 
   files['app/Filament/Pages/RoomTypes.php'] = `<?php
@@ -863,15 +894,142 @@ class RoomTypes extends Page
     protected static ?string $title = 'Room types';
     protected static string $view = 'filament.pages.room-types';
 
+    public ?array $filters = [
+        'search' => '',
+        'parent' => '',
+        'active' => '',
+        'sort' => 'sortOrder',
+    ];
+
+    protected array $inventoryCache = [];
+
+    protected ?string $inventoryError = null;
+
+    protected function getForms(): array
+    {
+        return [];
+    }
+
+    public function clearTypeFilters(): void
+    {
+        $this->filters = [
+            'search' => '',
+            'parent' => '',
+            'active' => '',
+            'sort' => 'sortOrder',
+        ];
+    }
+
+    public function typeFiltersActive(): bool
+    {
+        return $this->filterText('search') !== ''
+            || $this->filterText('parent') !== ''
+            || $this->filterText('active') !== '';
+    }
+
     public function getViewData(): array
     {
-        try {
-            $inventory = app(BuildauraClient::class)->inventory();
+        $inventory = $this->inventory();
 
-            return ['types' => $inventory['roomTypes'] ?? [], 'error' => null];
-        } catch (RuntimeException $e) {
-            return ['types' => [], 'error' => $e->getMessage()];
+        return [
+            'types' => $this->visibleTypes($inventory['roomTypes'] ?? []),
+            'error' => $this->inventoryError,
+        ];
+    }
+
+    public function filterParentOptions(): array
+    {
+        $options = [];
+        foreach ($this->inventory()['roomTypes'] ?? [] as $type) {
+            if (! is_array($type) || empty($type['id'])) {
+                continue;
+            }
+            $options[(string) $type['id']] = (string) ($type['name'] ?? $type['id']);
         }
+
+        return $options;
+    }
+
+    private function inventory(): array
+    {
+        if ($this->inventoryCache !== []) {
+            return $this->inventoryCache;
+        }
+        try {
+            $loaded = app(BuildauraClient::class)->inventory();
+            $this->inventoryCache = is_array($loaded) && $loaded !== [] ? $loaded : ['roomTypes' => []];
+            $this->inventoryError = null;
+        } catch (RuntimeException $e) {
+            $this->inventoryCache = ['roomTypes' => []];
+            $this->inventoryError = $e->getMessage();
+        }
+
+        return $this->inventoryCache;
+    }
+
+    private function filterText(string $key): string
+    {
+        $value = $this->filters[$key] ?? null;
+
+        return is_scalar($value) ? trim((string) $value) : '';
+    }
+
+    private function visibleTypes(array $all): array
+    {
+        $needle = mb_strtolower($this->filterText('search'));
+        $parentFilter = $this->filterText('parent');
+        $activeFilter = $this->filterText('active');
+        $types = [];
+        foreach ($all as $type) {
+            if (! is_array($type)) {
+                continue;
+            }
+            if ($parentFilter !== '') {
+                $id = (string) ($type['id'] ?? '');
+                $parent = (string) ($type['parentId'] ?? '');
+                if ($id !== $parentFilter && $parent !== $parentFilter) {
+                    continue;
+                }
+            }
+            $active = (bool) ($type['isActive'] ?? true);
+            if ($activeFilter === '1' && ! $active) {
+                continue;
+            }
+            if ($activeFilter === '0' && $active) {
+                continue;
+            }
+            if ($needle !== '') {
+                $haystack = mb_strtolower(trim(implode(' ', [
+                    (string) ($type['name'] ?? ''),
+                    (string) ($type['slug'] ?? ''),
+                    (string) ($type['shortDescription'] ?? ''),
+                    (string) ($type['description'] ?? ''),
+                ])));
+                if (! str_contains($haystack, $needle)) {
+                    continue;
+                }
+            }
+            $types[] = $type;
+        }
+        $sort = $this->filterText('sort');
+        if ($sort === '') {
+            $sort = 'sortOrder';
+        }
+        usort($types, function (array $a, array $b) use ($sort): int {
+            $name = strcasecmp((string) ($a['name'] ?? ''), (string) ($b['name'] ?? ''));
+            $price = ((float) ($a['basePrice'] ?? 0)) <=> ((float) ($b['basePrice'] ?? 0));
+            $order = ((int) ($a['sortOrder'] ?? 0)) <=> ((int) ($b['sortOrder'] ?? 0));
+
+            return match ($sort) {
+                'name' => $name,
+                'name_desc' => -$name,
+                'price' => $price !== 0 ? $price : $name,
+                'price_desc' => ($price !== 0 ? -$price : $name),
+                default => $order !== 0 ? $order : $name,
+            };
+        });
+
+        return $types;
     }
 }
 `
@@ -879,6 +1037,46 @@ class RoomTypes extends Page
   files['resources/views/filament/pages/room-types.blade.php'] = `<x-filament-panels::page>
 ${flash}
 @if($error)<p style="margin-bottom:12px;color:#92400e">{{ $error }}</p>@endif
+<div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;align-items:end;margin-bottom:24px;">
+  <x-filament-forms::field-wrapper label="Search">
+    <x-filament::input.wrapper>
+      <x-filament::input type="search" placeholder="Name, slug, description" wire:model.live.debounce.300ms="filters.search" />
+    </x-filament::input.wrapper>
+  </x-filament-forms::field-wrapper>
+  <x-filament-forms::field-wrapper label="Parent type">
+    <x-filament::input.wrapper>
+      <x-filament::input.select wire:model.live="filters.parent">
+        <option value="">All types</option>
+        @foreach($this->filterParentOptions() as $id => $name)
+          <option value="{{ $id }}">{{ $name }}</option>
+        @endforeach
+      </x-filament::input.select>
+    </x-filament::input.wrapper>
+  </x-filament-forms::field-wrapper>
+  <x-filament-forms::field-wrapper label="Active">
+    <x-filament::input.wrapper>
+      <x-filament::input.select wire:model.live="filters.active">
+        <option value="">Any</option>
+        <option value="1">Active</option>
+        <option value="0">Inactive</option>
+      </x-filament::input.select>
+    </x-filament::input.wrapper>
+  </x-filament-forms::field-wrapper>
+  <x-filament-forms::field-wrapper label="Sort">
+    <x-filament::input.wrapper>
+      <x-filament::input.select wire:model.live="filters.sort">
+        <option value="sortOrder">Sort order</option>
+        <option value="name">Name</option>
+        <option value="name_desc">Name (Z–A)</option>
+        <option value="price">Price</option>
+        <option value="price_desc">Price (high)</option>
+      </x-filament::input.select>
+    </x-filament::input.wrapper>
+  </x-filament-forms::field-wrapper>
+  <div>
+    <x-filament::button color="gray" size="sm" type="button" style="width:100%" wire:click="clearTypeFilters">Clear</x-filament::button>
+  </div>
+</div>
 <form method="POST" action="{{ route('property.types.store') }}" wire:ignore style="display:grid;gap:8px;margin-bottom:24px;padding:16px;border:1px solid #e5e7eb;border-radius:12px">
   @csrf
   <strong>New room type</strong>
@@ -887,7 +1085,7 @@ ${flash}
   <input name="base_price" type="number" min="0" step="0.01" placeholder="Price per night" style="padding:8px;border:1px solid #d1d5db;border-radius:8px" />
   <input name="unit_prefix" placeholder="Room code prefix, for example DLX-" style="padding:8px;border:1px solid #d1d5db;border-radius:8px" />
   <input name="unit_count" type="number" min="0" max="50" value="1" style="padding:8px;border:1px solid #d1d5db;border-radius:8px" />
-  <button type="submit" style="padding:8px 12px;border-radius:8px;background:#111827;color:#fff">Create room type</button>
+  <button type="button" onclick="this.form.submit()" style="padding:8px 12px;border-radius:8px;background:#111827;color:#fff">Create room type</button>
 </form>
 @foreach($types as $type)
 <form method="POST" action="{{ route('property.types.update', $type['id']) }}" wire:ignore style="display:grid;gap:8px;margin-bottom:16px;padding:16px;border:1px solid #e5e7eb;border-radius:12px">
@@ -905,13 +1103,16 @@ ${flash}
   <input name="description" value="{{ $type['description'] ?? '' }}" style="padding:8px;border:1px solid #d1d5db;border-radius:8px" />
   <input name="base_price" type="number" min="0" step="0.01" value="{{ $type['basePrice'] ?? 0 }}" style="padding:8px;border:1px solid #d1d5db;border-radius:8px" />
   <label><input type="hidden" name="is_active" value="0" /><input type="checkbox" name="is_active" value="1" @checked($type['isActive'] ?? true) /> Active</label>
-  <button type="submit" style="padding:8px 12px;border-radius:8px;background:#111827;color:#fff">Save</button>
+  <button type="button" onclick="this.form.submit()" style="padding:8px 12px;border-radius:8px;background:#111827;color:#fff">Save</button>
 </form>
 <form method="POST" action="{{ route('property.types.delete', $type['id']) }}" wire:ignore style="margin:-8px 0 20px">
   @csrf
-  <button type="submit" style="color:#b91c1c">Delete {{ $type['name'] }}</button>
+  <button type="button" onclick="if (confirm('Remove this room type from Buildaura?')) this.form.submit()" style="color:#b91c1c">Delete {{ $type['name'] }}</button>
 </form>
 @endforeach
+@if(count($types) === 0)
+<p style="color:#6b7280;">@if($this->typeFiltersActive())No room types match these filters.@else No room types yet.@endif</p>
+@endif
 </x-filament-panels::page>
 `
 
@@ -931,19 +1132,145 @@ class Rooms extends Page
     protected static ?string $title = 'Rooms';
     protected static string $view = 'filament.pages.rooms';
 
+    public ?array $filters = [
+        'search' => '',
+        'roomType' => '',
+        'status' => '',
+        'sort' => 'code',
+    ];
+
+    protected array $inventoryCache = [];
+
+    protected ?string $inventoryError = null;
+
+    protected function getForms(): array
+    {
+        return [];
+    }
+
+    public function clearUnitFilters(): void
+    {
+        $this->filters = [
+            'search' => '',
+            'roomType' => '',
+            'status' => '',
+            'sort' => 'code',
+        ];
+    }
+
+    public function unitFiltersActive(): bool
+    {
+        return $this->filterText('search') !== ''
+            || $this->filterText('roomType') !== ''
+            || $this->filterText('status') !== '';
+    }
+
     public function getViewData(): array
     {
-        try {
-            $inventory = app(BuildauraClient::class)->inventory();
+        $inventory = $this->inventory();
+        $types = $inventory['roomTypes'] ?? [];
 
-            return [
-                'types' => $inventory['roomTypes'] ?? [],
-                'units' => $inventory['units'] ?? [],
-                'error' => null,
-            ];
-        } catch (RuntimeException $e) {
-            return ['types' => [], 'units' => [], 'error' => $e->getMessage()];
+        return [
+            'types' => $types,
+            'units' => $this->visibleUnits($inventory['units'] ?? [], $types),
+            'error' => $this->inventoryError,
+        ];
+    }
+
+    public function roomTypeOptions(): array
+    {
+        $options = [];
+        foreach ($this->inventory()['roomTypes'] ?? [] as $type) {
+            if (! is_array($type) || empty($type['id'])) {
+                continue;
+            }
+            $options[(string) $type['id']] = (string) ($type['name'] ?? $type['id']);
         }
+
+        return $options;
+    }
+
+    private function inventory(): array
+    {
+        if ($this->inventoryCache !== []) {
+            return $this->inventoryCache;
+        }
+        try {
+            $loaded = app(BuildauraClient::class)->inventory();
+            $this->inventoryCache = is_array($loaded) && $loaded !== [] ? $loaded : ['roomTypes' => [], 'units' => []];
+            $this->inventoryError = null;
+        } catch (RuntimeException $e) {
+            $this->inventoryCache = ['roomTypes' => [], 'units' => []];
+            $this->inventoryError = $e->getMessage();
+        }
+
+        return $this->inventoryCache;
+    }
+
+    private function filterText(string $key): string
+    {
+        $value = $this->filters[$key] ?? null;
+
+        return is_scalar($value) ? trim((string) $value) : '';
+    }
+
+    private function visibleUnits(array $units, array $types): array
+    {
+        $names = [];
+        foreach ($types as $type) {
+            if (is_array($type) && ! empty($type['id'])) {
+                $names[(string) $type['id']] = (string) ($type['name'] ?? '');
+            }
+        }
+        $needle = mb_strtolower($this->filterText('search'));
+        $typeFilter = $this->filterText('roomType');
+        $statusFilter = $this->filterText('status');
+        $visible = [];
+        foreach ($units as $unit) {
+            if (! is_array($unit)) {
+                continue;
+            }
+            if ($typeFilter !== '' && (string) ($unit['roomTypeId'] ?? '') !== $typeFilter) {
+                continue;
+            }
+            if ($statusFilter !== '' && (string) ($unit['status'] ?? '') !== $statusFilter) {
+                continue;
+            }
+            if ($needle !== '') {
+                $haystack = mb_strtolower(trim(implode(' ', [
+                    (string) ($unit['code'] ?? ''),
+                    (string) ($unit['name'] ?? ''),
+                    (string) ($unit['floor'] ?? ''),
+                    (string) ($unit['notes'] ?? ''),
+                ])));
+                if (! str_contains($haystack, $needle)) {
+                    continue;
+                }
+            }
+            $visible[] = $unit;
+        }
+        $sort = $this->filterText('sort');
+        if ($sort === '') {
+            $sort = 'code';
+        }
+        usort($visible, function (array $a, array $b) use ($sort, $names): int {
+            $code = strcasecmp((string) ($a['code'] ?? ''), (string) ($b['code'] ?? ''));
+            $name = strcasecmp((string) ($a['name'] ?? ''), (string) ($b['name'] ?? ''));
+            $floor = strcasecmp((string) ($a['floor'] ?? ''), (string) ($b['floor'] ?? ''));
+            $status = strcasecmp((string) ($a['status'] ?? ''), (string) ($b['status'] ?? ''));
+            $type = strcasecmp($names[(string) ($a['roomTypeId'] ?? '')] ?? '', $names[(string) ($b['roomTypeId'] ?? '')] ?? '');
+
+            return match ($sort) {
+                'code_desc' => -$code,
+                'name' => $name !== 0 ? $name : $code,
+                'floor' => $floor !== 0 ? $floor : $code,
+                'status' => $status !== 0 ? $status : $code,
+                'type' => $type !== 0 ? $type : $code,
+                default => $code,
+            };
+        });
+
+        return $visible;
     }
 }
 `
@@ -951,6 +1278,50 @@ class Rooms extends Page
   files['resources/views/filament/pages/rooms.blade.php'] = `<x-filament-panels::page>
 ${flash}
 @if($error)<p style="margin-bottom:12px;color:#92400e">{{ $error }}</p>@endif
+<div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;align-items:end;margin-bottom:24px;">
+  <x-filament-forms::field-wrapper label="Search">
+    <x-filament::input.wrapper>
+      <x-filament::input type="search" placeholder="Code, name, floor, notes" wire:model.live.debounce.300ms="filters.search" />
+    </x-filament::input.wrapper>
+  </x-filament-forms::field-wrapper>
+  <x-filament-forms::field-wrapper label="Room type">
+    <x-filament::input.wrapper>
+      <x-filament::input.select wire:model.live="filters.roomType">
+        <option value="">All room types</option>
+        @foreach($types as $type)
+          @if(! empty($type['id']))
+            <option value="{{ $type['id'] }}">{{ $type['name'] ?? '' }}</option>
+          @endif
+        @endforeach
+      </x-filament::input.select>
+    </x-filament::input.wrapper>
+  </x-filament-forms::field-wrapper>
+  <x-filament-forms::field-wrapper label="Status">
+    <x-filament::input.wrapper>
+      <x-filament::input.select wire:model.live="filters.status">
+        <option value="">Any status</option>
+        @foreach(['AVAILABLE' => 'Available', 'RESERVED' => 'Reserved', 'OCCUPIED' => 'Occupied', 'MAINTENANCE' => 'Maintenance', 'OUT_OF_SERVICE' => 'Out of service'] as $value => $label)
+          <option value="{{ $value }}">{{ $label }}</option>
+        @endforeach
+      </x-filament::input.select>
+    </x-filament::input.wrapper>
+  </x-filament-forms::field-wrapper>
+  <x-filament-forms::field-wrapper label="Sort">
+    <x-filament::input.wrapper>
+      <x-filament::input.select wire:model.live="filters.sort">
+        <option value="code">Room number</option>
+        <option value="code_desc">Room number (Z–A)</option>
+        <option value="name">Name</option>
+        <option value="floor">Floor</option>
+        <option value="status">Status</option>
+        <option value="type">Room type</option>
+      </x-filament::input.select>
+    </x-filament::input.wrapper>
+  </x-filament-forms::field-wrapper>
+  <div>
+    <x-filament::button color="gray" size="sm" type="button" style="width:100%" wire:click="clearUnitFilters">Clear</x-filament::button>
+  </div>
+</div>
 <form method="POST" action="{{ route('property.units.store') }}" wire:ignore style="display:grid;gap:8px;margin-bottom:24px;padding:16px;border:1px solid #e5e7eb;border-radius:12px">
   @csrf
   <strong>New room</strong>
@@ -961,25 +1332,39 @@ ${flash}
   </select>
   <input name="code" required placeholder="Room code, for example 204" style="padding:8px;border:1px solid #d1d5db;border-radius:8px" />
   <input name="floor" placeholder="Floor" style="padding:8px;border:1px solid #d1d5db;border-radius:8px" />
-  <button type="submit" style="padding:8px 12px;border-radius:8px;background:#111827;color:#fff">Create room</button>
+  <button type="button" onclick="this.form.submit()" style="padding:8px 12px;border-radius:8px;background:#111827;color:#fff">Create room</button>
 </form>
-<table style="width:100%;border-collapse:collapse">
-  <thead><tr><th align="left">Code</th><th align="left">Status</th><th></th></tr></thead>
-  <tbody>
-  @foreach($units as $unit)
-  <tr>
-    <td style="padding:8px 0">{{ $unit['code'] }}</td>
-    <td>{{ $unit['status'] }}</td>
-    <td>
-      <form method="POST" action="{{ route('property.units.delete', $unit['id']) }}" wire:ignore>
-        @csrf
-        <button type="submit" style="color:#b91c1c">Delete</button>
-      </form>
-    </td>
-  </tr>
-  @endforeach
-  </tbody>
-</table>
+@foreach($units as $unit)
+<form method="POST" action="{{ route('property.units.update', $unit['id']) }}" wire:ignore style="display:grid;gap:8px;margin-bottom:12px;padding:16px;border:1px solid #e5e7eb;border-radius:12px">
+  @csrf
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+    <strong>{{ $unit['code'] }}</strong>
+    <x-filament::button tag="a" size="sm" color="gray" outlined :href="\\App\\Filament\\Pages\\RoomCalendar::getUrl(['unitId' => $unit['id']])">Calendar</x-filament::button>
+  </div>
+  <select name="room_type_id" required style="padding:8px;border:1px solid #d1d5db;border-radius:8px">
+    @foreach($types as $type)
+    <option value="{{ $type['id'] }}" @selected(($unit['roomTypeId'] ?? '') === $type['id'])>{{ $type['name'] }}</option>
+    @endforeach
+  </select>
+  <input name="code" required value="{{ $unit['code'] ?? '' }}" placeholder="Room code" style="padding:8px;border:1px solid #d1d5db;border-radius:8px" />
+  <input name="name" value="{{ $unit['name'] ?? '' }}" placeholder="Name" style="padding:8px;border:1px solid #d1d5db;border-radius:8px" />
+  <input name="floor" value="{{ $unit['floor'] ?? '' }}" placeholder="Floor" style="padding:8px;border:1px solid #d1d5db;border-radius:8px" />
+  <select name="status" required style="padding:8px;border:1px solid #d1d5db;border-radius:8px">
+    @foreach(['AVAILABLE', 'RESERVED', 'OCCUPIED', 'MAINTENANCE', 'OUT_OF_SERVICE'] as $status)
+    <option value="{{ $status }}" @selected(($unit['status'] ?? 'AVAILABLE') === $status)>{{ $status }}</option>
+    @endforeach
+  </select>
+  <label><input type="hidden" name="is_active" value="0" /><input type="checkbox" name="is_active" value="1" @checked($unit['isActive'] ?? true) /> Active</label>
+  <button type="button" onclick="this.form.submit()" style="padding:8px 12px;border-radius:8px;background:#111827;color:#fff">Save</button>
+</form>
+<form method="POST" action="{{ route('property.units.delete', $unit['id']) }}" wire:ignore style="margin:-4px 0 20px">
+  @csrf
+  <button type="button" onclick="if (confirm('Remove this room from Buildaura?')) this.form.submit()" style="color:#b91c1c">Delete {{ $unit['code'] }}</button>
+</form>
+@endforeach
+@if(count($units) === 0)
+<p style="color:#6b7280;">@if($this->unitFiltersActive())No rooms match these filters.@else No rooms yet.@endif</p>
+@endif
 </x-filament-panels::page>
 `
 
@@ -998,11 +1383,96 @@ class GuestReservations extends Page
     protected static ?string $title = 'Guest reservations';
     protected static string $view = 'filament.pages.guest-reservations';
 
+    public ?array $filters = [
+        'search' => '',
+        'status' => '',
+        'roomType' => '',
+        'sort' => 'newest',
+    ];
+
+    protected function getForms(): array
+    {
+        return [];
+    }
+
+    public function clearGuestFilters(): void
+    {
+        $this->filters = [
+            'search' => '',
+            'status' => '',
+            'roomType' => '',
+            'sort' => 'newest',
+        ];
+    }
+
+    public function guestStatusOptions(): array
+    {
+        return GuestReservation::query()
+            ->whereNotNull('status')
+            ->where('status', '!=', '')
+            ->distinct()
+            ->orderBy('status')
+            ->pluck('status', 'status')
+            ->all();
+    }
+
+    public function guestRoomTypeOptions(): array
+    {
+        return GuestReservation::query()
+            ->whereNotNull('room_type_name')
+            ->where('room_type_name', '!=', '')
+            ->distinct()
+            ->orderBy('room_type_name')
+            ->pluck('room_type_name', 'room_type_name')
+            ->all();
+    }
+
+    public function guestFiltersActive(): bool
+    {
+        return $this->filterText('search') !== ''
+            || $this->filterText('status') !== ''
+            || $this->filterText('roomType') !== '';
+    }
+
     public function getViewData(): array
     {
+        $query = GuestReservation::query();
+        $search = $this->filterText('search');
+        if ($search !== '') {
+            $like = '%'.addcslashes($search, '%_\\\\').'%';
+            $query->where(function ($inner) use ($like) {
+                $inner->where('confirmation_code', 'like', $like)
+                    ->orWhere('guest_name', 'like', $like)
+                    ->orWhere('guest_phone', 'like', $like)
+                    ->orWhere('room_code', 'like', $like);
+            });
+        }
+        $status = $this->filterText('status');
+        if ($status !== '') {
+            $query->where('status', $status);
+        }
+        $roomType = $this->filterText('roomType');
+        if ($roomType !== '') {
+            $query->where('room_type_name', $roomType);
+        }
+        match ($this->filterText('sort') ?: 'newest') {
+            'oldest' => $query->orderBy('id'),
+            'guest' => $query->orderBy('guest_name')->orderByDesc('id'),
+            'check_in' => $query->orderBy('check_in')->orderByDesc('id'),
+            'status' => $query->orderBy('status')->orderByDesc('id'),
+            default => $query->orderByDesc('id'),
+        };
+
         return [
-            'reservations' => GuestReservation::query()->orderByDesc('id')->limit(100)->get(),
+            'reservations' => $query->limit(200)->get(),
         ];
+    }
+
+    private function filterText(string $key): string
+    {
+        $value = $this->filters[$key] ?? null;
+
+        return is_scalar($value) ? trim((string) $value) : '';
     }
 }
 `
@@ -1010,6 +1480,50 @@ class GuestReservations extends Page
   files['resources/views/filament/pages/guest-reservations.blade.php'] = `<x-filament-panels::page>
 ${flash}
 <p style="margin-bottom:12px">Guest name, email, and phone are stored on this website only.</p>
+<div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;align-items:end;margin-bottom:24px;">
+  <x-filament-forms::field-wrapper label="Search">
+    <x-filament::input.wrapper>
+      <x-filament::input type="search" placeholder="Code, guest, phone, room" wire:model.live.debounce.300ms="filters.search" />
+    </x-filament::input.wrapper>
+  </x-filament-forms::field-wrapper>
+  <x-filament-forms::field-wrapper label="Status">
+    <x-filament::input.wrapper>
+      <x-filament::input.select wire:model.live="filters.status">
+        <option value="">Any status</option>
+        @foreach($this->guestStatusOptions() as $value => $label)
+          <option value="{{ $value }}">{{ $label }}</option>
+        @endforeach
+      </x-filament::input.select>
+    </x-filament::input.wrapper>
+  </x-filament-forms::field-wrapper>
+  <x-filament-forms::field-wrapper label="Room type">
+    <x-filament::input.wrapper>
+      <x-filament::input.select wire:model.live="filters.roomType">
+        <option value="">All room types</option>
+        @foreach($this->guestRoomTypeOptions() as $value => $label)
+          <option value="{{ $value }}">{{ $label }}</option>
+        @endforeach
+      </x-filament::input.select>
+    </x-filament::input.wrapper>
+  </x-filament-forms::field-wrapper>
+  <x-filament-forms::field-wrapper label="Sort">
+    <x-filament::input.wrapper>
+      <x-filament::input.select wire:model.live="filters.sort">
+        <option value="newest">Newest</option>
+        <option value="oldest">Oldest</option>
+        <option value="guest">Guest name</option>
+        <option value="check_in">Check-in</option>
+        <option value="status">Status</option>
+      </x-filament::input.select>
+    </x-filament::input.wrapper>
+  </x-filament-forms::field-wrapper>
+  <div>
+    <x-filament::button color="gray" size="sm" type="button" style="width:100%" wire:click="clearGuestFilters">Clear</x-filament::button>
+  </div>
+</div>
+@if($reservations->isEmpty())
+<p style="color:#6b7280;margin-bottom:12px;">@if($this->guestFiltersActive())No reservations match these filters.@else No reservations yet.@endif</p>
+@endif
 <table style="width:100%;border-collapse:collapse">
   <thead><tr><th align="left">Code</th><th align="left">Guest</th><th align="left">Phone</th><th align="left">Room</th><th align="left">Dates</th><th align="left">Status</th><th></th></tr></thead>
   <tbody>
@@ -1026,7 +1540,7 @@ ${flash}
       <form method="POST" action="{{ route('property.reservations.cancel') }}" wire:ignore>
         @csrf
         <input type="hidden" name="confirmation_code" value="{{ $row->confirmation_code }}" />
-        <button type="submit">Cancel</button>
+        <button type="button" onclick="if (confirm('Cancel this reservation?')) this.form.submit()">Cancel</button>
       </form>
       @endif
     </td>
@@ -1078,6 +1592,8 @@ ${flash}
 </form>
 </x-filament-panels::page>
 `
+
+  Object.assign(files, roomCalendarFiles('BuildauraClient', 'Rooms'))
 
   return files
 }

@@ -2,6 +2,7 @@ import JSZip from 'jszip'
 import { buildSiteDocument, stringifySiteDocument } from '../siteDocument/io'
 import type { SiteContent, TemplateId } from '../types'
 import { generateBackend, mapAssetsForBackend } from './backend/generateBackend'
+import { usesBuildauraCrs } from './backend/generateCrsBooking'
 import type { CrsExportSecrets } from './backend/exportPayload'
 import { buildAllSitePages } from './buildSitePages'
 

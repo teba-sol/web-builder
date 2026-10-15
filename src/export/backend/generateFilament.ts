@@ -173,23 +173,64 @@ function filamentField(field: ResourceDef['fields'][number]): string {
   return `${component}->label('${phpStr(field.label)}')`
 }
 
+const SELECT_FILTER_FIELDS = new Set(['tag', 'role', 'author'])
+
 function filamentTableColumn(field: ResourceDef['fields'][number]): string {
+  const label = `->label('${phpStr(field.label)}')`
   if (field.type === 'image') {
-    return `Tables\\Columns\\ImageColumn::make('${field.name}')->disk('public')`
+    return `Tables\\Columns\\ImageColumn::make('${field.name}')${label}->disk('public')`
+  }
+  if (field.type === 'boolean') {
+    return `Tables\\Columns\\IconColumn::make('${field.name}')${label}->boolean()->sortable()`
   }
   if (field.type === 'textarea') {
-    return `Tables\\Columns\\TextColumn::make('${field.name}')->limit(50)`
+    const hidden = field.name === 'body' ? '->toggleable(isToggledHiddenByDefault: true)' : ''
+    return `Tables\\Columns\\TextColumn::make('${field.name}')${label}->searchable()->limit(60)->wrap()${hidden}`
   }
-  return `Tables\\Columns\\TextColumn::make('${field.name}')`
+  if (field.type === 'date') {
+    return `Tables\\Columns\\TextColumn::make('${field.name}')${label}->dateTime()->sortable()`
+  }
+  if (field.type === 'number') {
+    return `Tables\\Columns\\TextColumn::make('${field.name}')${label}->sortable()`
+  }
+  return `Tables\\Columns\\TextColumn::make('${field.name}')${label}->searchable()->sortable()`
+}
+
+function filamentFilters(def: ResourceDef): string {
+  const filters: string[] = []
+  for (const field of def.fields) {
+    if (field.type === 'boolean') {
+      filters.push(`Tables\\Filters\\TernaryFilter::make('${field.name}')->label('${phpStr(field.label)}')`)
+    }
+    if (SELECT_FILTER_FIELDS.has(field.name)) {
+      filters.push(
+        `Tables\\Filters\\SelectFilter::make('${field.name}')->label('${phpStr(field.label)}')->searchable()->options(fn () => ${def.model}::query()->whereNotNull('${field.name}')->where('${field.name}', '!=', '')->distinct()->orderBy('${field.name}')->pluck('${field.name}', '${field.name}')->all())`,
+      )
+    }
+  }
+  if (def.fields.some((field) => field.name === 'published_at')) {
+    filters.push(`Tables\\Filters\\Filter::make('published_between')
+                    ->label('Publish date')
+                    ->form([
+                        Forms\\Components\\DatePicker::make('from')->label('From'),
+                        Forms\\Components\\DatePicker::make('until')->label('Until'),
+                    ])
+                    ->query(function ($query, array $data) {
+                        return $query
+                            ->when($data['from'] ?? null, fn ($query, $date) => $query->whereDate('published_at', '>=', $date))
+                            ->when($data['until'] ?? null, fn ($query, $date) => $query->whereDate('published_at', '<=', $date));
+                    })`)
+  }
+  return filters.join(",\n                ")
 }
 
 function generateResource(def: ResourceDef): string {
   const formFields = def.fields.map(filamentField).join(",\n                ")
-  const tableCols = def.fields
-    .filter((f) => f.name !== 'sort_order' || def.fields.length <= 3)
-    .slice(0, 4)
-    .map(filamentTableColumn)
-    .join(",\n                ")
+  const tableCols = def.fields.map(filamentTableColumn).join(",\n                ")
+  const filters = filamentFilters(def)
+  const filterChain = filters
+    ? `->filters([\n                ${filters},\n            ])\n            `
+    : ''
 
   return `<?php
 
@@ -226,7 +267,10 @@ class ${def.name}Resource extends Resource
             ->columns([
                 ${tableCols},
             ])
-            ->defaultSort('sort_order')
+            ${filterChain}->defaultSort('sort_order')
+            ->persistSearchInSession()
+            ->persistFiltersInSession()
+            ->persistSortInSession()
             ->actions([
                 Tables\\Actions\\EditAction::make(),
                 Tables\\Actions\\DeleteAction::make(),
@@ -397,9 +441,15 @@ class SiteSettingResource extends Resource
     {
         return $table
             ->columns([
-                Tables\\Columns\\TextColumn::make('business_name'),
-                Tables\\Columns\\TextColumn::make('updated_at')->dateTime(),
+                Tables\\Columns\\TextColumn::make('business_name')->searchable()->sortable(),
+                Tables\\Columns\\TextColumn::make('email')->searchable()->sortable(),
+                Tables\\Columns\\TextColumn::make('phone')->searchable()->sortable(),
+                Tables\\Columns\\TextColumn::make('updated_at')->dateTime()->sortable(),
             ])
+            ->defaultSort('updated_at', 'desc')
+            ->persistSearchInSession()
+            ->persistFiltersInSession()
+            ->persistSortInSession()
             ->actions([Tables\\Actions\\EditAction::make()]);
     }
 
@@ -447,14 +497,34 @@ class ContactMessageResource extends Resource
     {
         return $table
             ->columns([
-                Tables\\Columns\\TextColumn::make('name')->searchable(),
-                Tables\\Columns\\TextColumn::make('email'),
-                Tables\\Columns\\TextColumn::make('phone'),
-                Tables\\Columns\\TextColumn::make('service_type')->label('Service'),
-                Tables\\Columns\\TextColumn::make('message')->limit(40),
+                Tables\\Columns\\TextColumn::make('name')->searchable()->sortable(),
+                Tables\\Columns\\TextColumn::make('email')->searchable()->sortable(),
+                Tables\\Columns\\TextColumn::make('phone')->searchable()->sortable(),
+                Tables\\Columns\\TextColumn::make('service_type')->label('Service')->searchable()->sortable(),
+                Tables\\Columns\\TextColumn::make('message')->searchable()->limit(40)->wrap()->toggleable(isToggledHiddenByDefault: true),
                 Tables\\Columns\\TextColumn::make('created_at')->dateTime()->sortable(),
             ])
+            ->filters([
+                Tables\\Filters\\SelectFilter::make('service_type')
+                    ->label('Service')
+                    ->searchable()
+                    ->options(fn () => ContactMessage::query()->whereNotNull('service_type')->where('service_type', '!=', '')->distinct()->orderBy('service_type')->pluck('service_type', 'service_type')->all()),
+                Tables\\Filters\\Filter::make('received_between')
+                    ->label('Received')
+                    ->form([
+                        Forms\\Components\\DatePicker::make('from')->label('From'),
+                        Forms\\Components\\DatePicker::make('until')->label('Until'),
+                    ])
+                    ->query(function ($query, array $data) {
+                        return $query
+                            ->when($data['from'] ?? null, fn ($query, $date) => $query->whereDate('created_at', '>=', $date))
+                            ->when($data['until'] ?? null, fn ($query, $date) => $query->whereDate('created_at', '<=', $date));
+                    }),
+            ])
             ->defaultSort('created_at', 'desc')
+            ->persistSearchInSession()
+            ->persistFiltersInSession()
+            ->persistSortInSession()
             ->actions([
                 Tables\\Actions\\ViewAction::make(),
                 Tables\\Actions\\DeleteAction::make(),

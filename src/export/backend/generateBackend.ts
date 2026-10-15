@@ -674,6 +674,7 @@ ADMIN_EMAIL=${adminEmailLocal(payload.content.businessName)}
 ADMIN_PASSWORD=password
 
 ${crsEnvBlock(payload.crs)}
+${usesBuildauraCrs(payload.templateId) ? crsEnvExample(payload.crs) : ''}
 `,
 
     'artisan': `#!/usr/bin/env php
@@ -806,7 +807,8 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
-            ->colors(['primary' => Color::Indigo])
+            ->darkMode(false)
+            ->colors(['primary' => Color::Zinc])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\\\Filament\\\\Resources')
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\\\Filament\\\\Widgets')
             ->pages([Pages\\Dashboard::class]);
@@ -1018,7 +1020,7 @@ class SiteController extends Controller
 {
     public function index(): View
     {
-        ${hasBookingFeature(payload.content) ? `$roomTypes = [];
+        ${usesBuildauraCrs(payload.templateId) ? `return view('site.index', [` : hasBookingFeature(payload.content) ? `$roomTypes = [];
         try {
             $crs = app(\\App\\Services\\CrsClient::class);
             if ($crs->configured()) {
@@ -1036,7 +1038,8 @@ class SiteController extends Controller
             'blogPosts' => BlogPost::where('is_published', true)->orderByDesc('published_at')->orderBy('sort_order')->get(),
             'newsPosts' => NewsPost::where('is_published', true)->orderByDesc('published_at')->orderBy('sort_order')->get(),
             'testimonials' => Testimonial::orderBy('sort_order')->get(),
-            'faqs' => Faq::orderBy('sort_order')->get(),${hasBookingFeature(payload.content) ? `
+            'faqs' => Faq::orderBy('sort_order')->get(),${usesBuildauraCrs(payload.templateId) ? `
+            'crsRoomTypes' => $this->crsRoomTypes(),` : hasBookingFeature(payload.content) ? `
             'roomTypes' => $roomTypes,` : ''}
         ]);
     }
