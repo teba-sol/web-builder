@@ -37,7 +37,7 @@ import {
   RoomsPage,
 } from './booking/BookingPages'
 import { type TemplateTheme } from './themes'
-import { topLevelRoomTypes } from '../data/bookingPreview'
+import { catalogueRoomTypes } from '../data/bookingPreview'
 import { formatMoney, parseRoomPrice } from '../data/hospitality'
 import { TaxFightersHome } from './TaxFightersHome'
 import { AureumHome } from './AureumHome'
@@ -275,7 +275,7 @@ function RoomsTeaser({
   basePath: string
   accent: string
 }) {
-  const rooms = topLevelRoomTypes(c.roomTypes).slice(0, 3)
+  const rooms = catalogueRoomTypes(c.roomTypes)
   if (!rooms.length) return null
   return (
     <section className={`${t.sectionAlt || t.section} py-20`}>
@@ -290,25 +290,35 @@ function RoomsTeaser({
           </Link>
         </div>
         <div className="grid gap-6 cmd:grid-cols-3">
-          {rooms.map((room) => (
-            <Link
-              key={room.slug}
-              to={sitePath(basePath, `rooms/${room.slug}`)}
-              className="block overflow-hidden rounded-xl border bg-white hover:shadow-lg"
-            >
-              {room.image ? (
-                <img src={room.image} alt="" className="aspect-[4/3] w-full object-cover" />
-              ) : null}
-              <div className="p-5">
-                <h3 className="font-semibold">{room.name}</h3>
-                <p className="mt-1 line-clamp-2 text-sm opacity-70">{room.shortDescription}</p>
-                <p data-part="price" className="mt-3 font-bold" style={{ color: accent }}>
-                  {formatMoney(parseRoomPrice(room.basePrice), room.currency)}{' '}
-                  <span className="text-sm font-normal opacity-60">/ night</span>
-                </p>
-              </div>
-            </Link>
-          ))}
+          {rooms.map((room) => {
+            const parentName = room.parentSlug
+              ? c.roomTypes.find((item) => item.slug === room.parentSlug)?.name
+              : ''
+            return (
+              <Link
+                key={room.slug}
+                to={sitePath(basePath, `rooms/${room.slug}`)}
+                className="block overflow-hidden rounded-xl border bg-white hover:shadow-lg"
+              >
+                {room.image ? (
+                  <img src={room.image} alt="" className="aspect-[4/3] w-full object-cover" />
+                ) : (
+                  <div className="aspect-[4/3] w-full bg-slate-100" />
+                )}
+                <div className="p-5">
+                  {parentName ? (
+                    <p className="text-xs uppercase tracking-widest text-slate-400">{parentName}</p>
+                  ) : null}
+                  <h3 className="font-semibold">{room.name}</h3>
+                  <p className="mt-1 line-clamp-2 text-sm opacity-70">{room.shortDescription}</p>
+                  <p data-part="price" className="mt-3 font-bold" style={{ color: accent }}>
+                    {formatMoney(parseRoomPrice(room.basePrice), room.currency)}{' '}
+                    <span className="text-sm font-normal opacity-60">/ night</span>
+                  </p>
+                </div>
+              </Link>
+            )
+          })}
         </div>
       </div>
     </section>

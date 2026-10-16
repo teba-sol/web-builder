@@ -12,10 +12,255 @@ import {
 } from '../../data/hospitality'
 import type { SiteExportPayload } from './exportPayload'
 import { resolveAssetPath } from './exportPayload'
+import { stayPoliciesAdminFiles } from './generateFilament'
 import { roomCalendarFiles } from './generateRoomCalendar'
 
 export function hasBookingFeature(content: SiteContent): boolean {
   return Boolean(content.pageVisibility?.rooms && content.roomTypes?.some((r) => r.name))
+}
+
+export function stayRequestPhp(): string {
+  return `<?php
+
+namespace App\\Support;
+
+use Carbon\\Carbon;
+use Illuminate\\Http\\Request;
+
+class StayRequest
+{
+    public static function from(Request $request): array
+    {
+        $submitted = $request->filled('check_in');
+        $today = Carbon::today();
+        if ($submitted) {
+            $checkIn = trim((string) $request->input('check_in', ''));
+            $checkOut = trim((string) $request->input('check_out', ''));
+        } else {
+            $checkIn = $today->copy()->addDay()->toDateString();
+            $checkOut = $today->copy()->addDays(3)->toDateString();
+        }
+
+        $errors = [];
+        $checkInDate = self::parseDate($checkIn);
+        $checkOutDate = self::parseDate($checkOut);
+        if ($submitted) {
+            if ($checkInDate === null) {
+                $errors[] = 'Enter a valid check-in date.';
+            } elseif ($checkInDate->lt($today)) {
+                $errors[] = 'Check-in cannot be before today.';
+            }
+            if ($checkOutDate === null) {
+                $errors[] = 'Enter a valid check-out date.';
+            } else {
+                if ($checkOutDate->lt($today)) {
+                    $errors[] = 'Check-out cannot be before today.';
+                }
+                if ($checkInDate !== null && ! $checkOutDate->gt($checkInDate)) {
+                    $errors[] = 'Check-out must be after check-in.';
+                }
+            }
+        }
+
+        $adults = (int) $request->input('adults', 2);
+        if ($submitted && ($adults < 1 || $adults > 20)) {
+            $errors[] = 'Adults must be between 1 and 20.';
+        }
+        if (! $submitted && $adults < 1) {
+            $adults = 2;
+        }
+
+        $children = (int) $request->input('children', 0);
+        if ($submitted && ($children < 0 || $children > 10)) {
+            $errors[] = 'Children must be between 0 and 10.';
+        }
+        $ageCount = ($children >= 0 && $children <= 10) ? $children : 0;
+        $childAges = self::agesFor($request, $ageCount);
+        if ($submitted && $ageCount > 0) {
+            $missing = false;
+            $tooOld = false;
+            $invalid = false;
+            foreach ($childAges as $age) {
+                if ($age === '') {
+                    $missing = true;
+                    continue;
+                }
+                if (! preg_match('/^\\d+$/', $age)) {
+                    $invalid = true;
+                    continue;
+                }
+                if ((int) $age > 17) {
+                    $tooOld = true;
+                }
+            }
+            if ($missing) {
+                $errors[] = 'Enter the age of each child.';
+            }
+            if ($tooOld) {
+                $errors[] = 'A child must be 17 or younger. Guests 18 and older count as adults.';
+            }
+            if ($invalid) {
+                $errors[] = 'Enter each child age as a whole number from 0 to 17.';
+            }
+        }
+
+        return [
+            'checkIn' => $checkIn,
+            'checkOut' => $checkOut,
+            'adults' => $adults,
+            'children' => $children,
+            'childAges' => $childAges,
+            'searched' => $submitted && $errors === [],
+            'errors' => $errors,
+            'minDate' => $today->toDateString(),
+        ];
+    }
+
+    /** @return list<string> */
+    private static function agesFor(Request $request, int $children): array
+    {
+        $raw = $request->input('child_ages', []);
+        if (is_string($raw)) {
+            $raw = $raw === '' ? [] : array_map('trim', explode(',', $raw));
+        }
+        if (! is_array($raw)) {
+            $raw = [];
+        }
+        $raw = array_values($raw);
+        $ages = [];
+        for ($index = 0; $index < $children; $index++) {
+            $ages[] = array_key_exists($index, $raw) ? trim((string) $raw[$index]) : '';
+        }
+
+        return $ages;
+    }
+
+    private static function parseDate(string $value): ?Carbon
+    {
+        if (! preg_match('/^\\d{4}-\\d{2}-\\d{2}$/', $value)) {
+            return null;
+        }
+        $date = Carbon::createFromFormat('!Y-m-d', $value);
+        if (! $date || $date->format('Y-m-d') !== $value) {
+            return null;
+        }
+
+        return $date->startOfDay();
+    }
+}
+`
+}
+
+export function staySearchPartial(accent: string): string {
+  return `<form method="GET" action="{{ $searchAction }}" data-stay-search data-today="{{ $minDate ?? now()->toDateString() }}" class="grid gap-4 rounded-2xl border bg-white p-5 shadow-sm md:grid-cols-2 lg:grid-cols-6 lg:items-end">
+  <label class="block text-sm"><span class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">Check-in</span><input type="date" name="check_in" value="{{ $checkIn }}" min="{{ $minDate ?? now()->toDateString() }}" required class="w-full rounded-lg border border-slate-300 px-3 py-2.5" /></label>
+  <label class="block text-sm"><span class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">Check-out</span><input type="date" name="check_out" value="{{ $checkOut }}" min="{{ $minDate ?? now()->toDateString() }}" required class="w-full rounded-lg border border-slate-300 px-3 py-2.5" /></label>
+  <label class="block text-sm"><span class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">Adults</span><input type="number" name="adults" min="1" max="20" value="{{ $adults }}" required class="w-full rounded-lg border border-slate-300 px-3 py-2.5" /></label>
+  <label class="block text-sm"><span class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">Children</span><input type="number" name="children" min="0" max="10" value="{{ $children }}" required class="w-full rounded-lg border border-slate-300 px-3 py-2.5" /></label>
+  @if(!empty($roomTypes))
+  <label class="block text-sm"><span class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">Room type</span><select name="room_type_id" class="w-full rounded-lg border border-slate-300 px-3 py-2.5"><option value="">Any</option>@foreach($roomTypes as $type)<option value="{{ $type['id'] }}" @selected(($roomTypeId ?? '') === ($type['id'] ?? ''))>{{ $type['name'] }}</option>@endforeach</select></label>
+  @endif
+  <button type="submit" class="rounded-lg px-5 py-3 font-semibold text-white" style="background-color:${accent}">{{ $submitLabel ?? 'Search availability' }}</button>
+  <p class="text-xs text-slate-500 lg:col-span-6">Children are 17 or younger. Guests 18 and older count as adults.</p>
+  <div data-child-ages class="grid gap-3 sm:grid-cols-2 lg:col-span-6 lg:grid-cols-4">
+    @foreach(($childAges ?? []) as $index => $age)
+    <label class="block text-sm"><span class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">Child {{ $index + 1 }} age</span><input type="number" name="child_ages[]" min="0" max="17" @if($age !== '') required @endif value="{{ $age }}" class="w-full rounded-lg border border-slate-300 px-3 py-2.5" /></label>
+    @endforeach
+  </div>
+  <script type="application/json" data-child-ages-seed>@json($childAges ?? [])</script>
+</form>
+<script>
+(function () {
+  var form = document.currentScript && document.currentScript.previousElementSibling;
+  if (!form || form.dataset.stayReady !== undefined && form.dataset.stayReady !== '') return;
+  if (!form || !form.getAttribute('data-stay-search')) return;
+  form.dataset.stayReady = '1';
+  var today = form.getAttribute('data-today') || '';
+  var checkIn = form.querySelector('[name="check_in"]');
+  var checkOut = form.querySelector('[name="check_out"]');
+  var childrenInput = form.querySelector('[name="children"]');
+  var box = form.querySelector('[data-child-ages]');
+  var seedNode = form.querySelector('[data-child-ages-seed]');
+  var seed = [];
+  try { seed = JSON.parse(seedNode && seedNode.textContent ? seedNode.textContent : '[]'); } catch (e) { seed = []; }
+  if (!Array.isArray(seed)) seed = [];
+  function addDays(iso, days) {
+    var parts = String(iso || '').split('-');
+    if (parts.length !== 3) return iso;
+    var date = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+    date.setDate(date.getDate() + days);
+    var month = String(date.getMonth() + 1).padStart(2, '0');
+    var day = String(date.getDate()).padStart(2, '0');
+    return date.getFullYear() + '-' + month + '-' + day;
+  }
+  function syncCheckoutMin() {
+    if (!checkIn || !checkOut) return;
+    var base = checkIn.value && today && checkIn.value >= today ? checkIn.value : today;
+    var minOut = addDays(base || checkIn.value, 1);
+    if (minOut) checkOut.min = minOut;
+  }
+  function syncAges() {
+    if (!childrenInput || !box) return;
+    var count = parseInt(childrenInput.value || '0', 10);
+    if (isNaN(count) || count < 0) count = 0;
+    if (count > 10) count = 10;
+    var current = [];
+    box.querySelectorAll('input').forEach(function (input) { current.push(input.value); });
+    if (!current.length) current = seed.slice();
+    box.innerHTML = '';
+    for (var i = 0; i < count; i++) {
+      var label = document.createElement('label');
+      label.className = 'block text-sm';
+      var span = document.createElement('span');
+      span.className = 'mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500';
+      span.textContent = 'Child ' + (i + 1) + ' age';
+      var input = document.createElement('input');
+      input.type = 'number';
+      input.name = 'child_ages[]';
+      input.min = '0';
+      input.max = '17';
+      input.required = true;
+      input.value = current[i] != null ? String(current[i]) : '';
+      input.className = 'w-full rounded-lg border border-slate-300 px-3 py-2.5';
+      label.appendChild(span);
+      label.appendChild(input);
+      box.appendChild(label);
+    }
+  }
+  if (checkIn) checkIn.addEventListener('change', syncCheckoutMin);
+  if (childrenInput) {
+    childrenInput.addEventListener('input', function () { seed = []; syncAges(); });
+  }
+  syncCheckoutMin();
+  syncAges();
+  form.addEventListener('submit', function (event) {
+    if (checkIn && today && checkIn.value < today) {
+      event.preventDefault();
+      window.alert('Check-in cannot be before today.');
+      return;
+    }
+    if (checkIn && checkOut && (!checkOut.value || checkOut.value <= checkIn.value)) {
+      event.preventDefault();
+      window.alert('Check-out must be after check-in.');
+      return;
+    }
+    var ages = box ? box.querySelectorAll('input') : [];
+    for (var i = 0; i < ages.length; i++) {
+      var value = ages[i].value;
+      if (value === '') {
+        event.preventDefault();
+        window.alert('Enter the age of each child.');
+        return;
+      }
+      if (Number(value) > 17) {
+        event.preventDefault();
+        window.alert('A child must be 17 or younger. Guests 18 and older count as adults.');
+        return;
+      }
+    }
+  });
+})();
+</script>`
 }
 
 function jsonForPhp(obj: unknown): string {
@@ -52,6 +297,10 @@ export function generateBookingFiles(payload: SiteExportPayload): Record<string,
   const seed = seedRoomPayload(payload.content, payload.assetMap)
   const accent = payload.accent
   const files: Record<string, string> = {}
+  files['resources/views/partials/stay-policies.blade.php'] = stayPoliciesPartial()
+  files['resources/views/partials/stay-search.blade.php'] = staySearchPartial(accent)
+  files['app/Support/StayRequest.php'] = stayRequestPhp()
+  Object.assign(files, stayPoliciesAdminFiles(true))
 
   files['config/crs.php'] = `<?php
 
@@ -243,6 +492,25 @@ class CrsInventory
         return array_values(array_filter($mapped, fn ($type) => empty($type->parent_id)));
     }
 
+    /** Active types in inventory order, including subtypes and orphaned subtypes. */
+    public static function catalogue(array $inventory): array
+    {
+        $mapped = array_map([self::class, 'type'], $inventory['roomTypes'] ?? []);
+        $byId = [];
+        foreach ($mapped as $type) {
+            if (! empty($type->id)) {
+                $byId[$type->id] = $type;
+            }
+        }
+        foreach ($mapped as $type) {
+            if ($type->parent_id && isset($byId[$type->parent_id])) {
+                $type->parent = $byId[$type->parent_id];
+            }
+        }
+
+        return array_values(array_filter($mapped, fn ($type) => $type->is_active));
+    }
+
     public static function allTypes(array $inventory): array
     {
         return array_map([self::class, 'type'], $inventory['roomTypes'] ?? []);
@@ -325,6 +593,7 @@ return new class extends Migration
             $table->date('check_out');
             $table->unsignedTinyInteger('adults')->default(1);
             $table->unsignedTinyInteger('children')->default(0);
+            $table->json('child_ages')->nullable();
             $table->string('guest_name');
             $table->string('guest_email');
             $table->string('guest_phone')->nullable();
@@ -371,7 +640,7 @@ class Reservation extends Model
 
     protected $fillable = [
         'confirmation_code', 'crs_room_type_id', 'crs_room_unit_id', 'crs_occupancy_id',
-        'room_type_name', 'room_unit_code', 'check_in', 'check_out', 'adults', 'children',
+        'room_type_name', 'room_unit_code', 'check_in', 'check_out', 'adults', 'children', 'child_ages',
         'guest_name', 'guest_email', 'guest_phone', 'status', 'nightly_rate', 'total_price',
         'currency', 'special_requests', 'admin_notes', 'source', 'payment_status',
         'payment_method', 'payment_holder', 'payment_last4', 'paid_at',
@@ -382,6 +651,7 @@ class Reservation extends Model
         return [
             'check_in' => 'date',
             'check_out' => 'date',
+            'child_ages' => 'array',
             'paid_at' => 'datetime',
             'nightly_rate' => 'decimal:2',
             'total_price' => 'decimal:2',
@@ -451,7 +721,8 @@ class AvailabilityService
         ]);
         $nights = max(1, Carbon::parse($checkIn)->diffInDays(Carbon::parse($checkOut)));
         $nightly = (float) ($match['nightlyRate'] ?? $type->base_price);
-        $digits = preg_replace('/\\D/', '', (string) ($data['card_number'] ?? ''));
+        $arrival = ($data['payment_method'] ?? '') === 'arrival';
+        $digits = $arrival ? '' : preg_replace('/\\D/', '', (string) ($data['card_number'] ?? ''));
         return Reservation::create([
             'confirmation_code' => $code,
             'crs_room_type_id' => $type->id,
@@ -463,6 +734,7 @@ class AvailabilityService
             'check_out' => $checkOut,
             'adults' => (int) $data['adults'],
             'children' => (int) ($data['children'] ?? 0),
+            'child_ages' => array_values(array_map('intval', $data['child_ages'] ?? [])),
             'guest_name' => $data['guest_name'],
             'guest_email' => $data['guest_email'],
             'guest_phone' => $data['guest_phone'] ?? null,
@@ -472,11 +744,11 @@ class AvailabilityService
             'currency' => $type->currency,
             'special_requests' => $data['special_requests'] ?? null,
             'source' => $data['source'] ?? 'website',
-            'payment_status' => 'paid',
-            'payment_method' => 'fake_card',
-            'payment_holder' => $data['card_holder'] ?? $data['guest_name'],
-            'payment_last4' => $digits !== '' ? substr($digits, -4) : null,
-            'paid_at' => now(),
+            'payment_status' => $arrival ? 'unpaid' : 'paid',
+            'payment_method' => $arrival ? 'pay_on_arrival' : 'fake_card',
+            'payment_holder' => $arrival ? null : ($data['card_holder'] ?? $data['guest_name']),
+            'payment_last4' => (! $arrival && $digits !== '') ? substr($digits, -4) : null,
+            'paid_at' => $arrival ? null : now(),
         ]);
     }
 }
@@ -491,6 +763,7 @@ use App\\Models\\SiteSetting;
 use App\\Services\\AvailabilityService;
 use App\\Services\\CrsClient;
 use App\\Support\\CrsInventory;
+use App\\Support\\StayRequest;
 use Illuminate\\Http\\RedirectResponse;
 use Illuminate\\Http\\Request;
 use Illuminate\\View\\View;
@@ -509,14 +782,14 @@ class BookingController extends Controller
                 $cards[] = ['type' => $offer['type'], 'offer' => $offer, 'children' => collect()];
             }
         } else {
-            foreach (CrsInventory::types($inventory) as $type) {
-                $cards[] = ['type' => $type, 'offer' => null, 'children' => $type->children];
+            foreach (CrsInventory::catalogue($inventory) as $type) {
+                $cards[] = ['type' => $type, 'offer' => null, 'children' => collect()];
             }
         }
-        return view('site.rooms', array_merge([
+        return $this->stayView('site.rooms', $stay, [
             'settings' => SiteSetting::current(),
             'cards' => $cards,
-        ], $stay));
+        ]);
     }
 
     public function showRoom(Request $request, string $slug): View
@@ -534,11 +807,11 @@ class BookingController extends Controller
                 }
             }
         }
-        return view('site.room-detail', array_merge([
+        return $this->stayView('site.room-detail', $stay, [
             'settings' => SiteSetting::current(),
             'roomType' => $type,
             'offer' => $offer,
-        ], $stay));
+        ]);
     }
 
     public function bookForm(Request $request): View|RedirectResponse
@@ -546,13 +819,8 @@ class BookingController extends Controller
         $stay = $this->stayQuery($request);
         $roomTypeId = (string) $request->query('room_type_id', '');
         $unitId = (string) $request->query('room_unit_id', '');
-        $back = array_filter([
-            'check_in' => $request->query('check_in'),
-            'check_out' => $request->query('check_out'),
-            'adults' => $request->query('adults'),
-            'children' => $request->query('children'),
-        ], fn ($value) => $value !== null && $value !== '');
-        if (! $stay['searched'] || $roomTypeId === '' || $stay['checkIn'] >= $stay['checkOut']) {
+        $back = $this->stayBack($request, $stay);
+        if (! $stay['searched'] || $roomTypeId === '') {
             return redirect()->route('rooms.index', $back);
         }
         $type = null;
@@ -587,23 +855,47 @@ class BookingController extends Controller
             return redirect()->route('rooms.show', array_merge(['slug' => $type->slug], $back))
                 ->withErrors(['booking' => 'That room was just taken. Choose another.']);
         }
-        return view('site.book', array_merge([
+        return $this->stayView('site.book', $stay, [
             'settings' => SiteSetting::current(),
             'roomType' => $type,
             'unit' => $unit,
             'offer' => $offer,
-        ], $stay));
+        ]);
     }
 
     private function stayQuery(Request $request): array
     {
-        return [
-            'checkIn' => (string) $request->query('check_in', now()->addDay()->toDateString()),
-            'checkOut' => (string) $request->query('check_out', now()->addDays(3)->toDateString()),
-            'adults' => max(1, (int) $request->query('adults', 2)),
-            'children' => max(0, (int) $request->query('children', 0)),
-            'searched' => $request->filled('check_in'),
+        return StayRequest::from($request);
+    }
+
+    private function stayView(string $name, array $stay, array $data): View
+    {
+        $messages = $stay['errors'];
+        unset($stay['errors']);
+        $view = view($name, array_merge($data, $stay));
+        if ($messages !== []) {
+            $view->withErrors($messages);
+        }
+
+        return $view;
+    }
+
+    private function stayBack(Request $request, array $stay): array
+    {
+        if (! $request->filled('check_in')) {
+            return [];
+        }
+        $back = [
+            'check_in' => $stay['checkIn'],
+            'check_out' => $stay['checkOut'],
+            'adults' => $stay['adults'],
+            'children' => $stay['children'],
         ];
+        if ((int) $stay['children'] > 0) {
+            $back['child_ages'] = $stay['childAges'];
+        }
+
+        return $back;
     }
 
     private function offers(array $stay, ?string $roomTypeId): array
@@ -638,26 +930,50 @@ class BookingController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        $validated = $request->validate([
+        $stay = StayRequest::from($request);
+        if ($stay['errors'] !== []) {
+            return back()->withInput()->withErrors($stay['errors']);
+        }
+        $payOnArrival = (bool) SiteSetting::current()->pay_on_arrival;
+        $rules = [
             'room_type_id' => 'required|string',
             'room_unit_id' => 'nullable|string',
             'check_in' => 'required|date|after_or_equal:today',
             'check_out' => 'required|date|after:check_in',
             'adults' => 'required|integer|min:1|max:20',
-            'children' => 'nullable|integer|min:0|max:20',
+            'children' => 'nullable|integer|min:0|max:10',
             'guest_name' => 'required|string|max:255',
             'guest_email' => 'required|email|max:255',
             'guest_phone' => 'nullable|string|max:50',
             'special_requests' => 'nullable|string|max:2000',
-            'card_holder' => 'required|string|max:255',
-            'card_number' => 'required|string|min:12|max:24',
-            'card_expiry' => 'required|string|max:7',
-            'card_cvc' => 'required|string|min:3|max:4',
-        ]);
+        ];
+        if ($payOnArrival) {
+            $rules['payment_method'] = 'required|in:card,arrival';
+        } else {
+            $rules['card_holder'] = 'required|string|max:255';
+            $rules['card_number'] = 'required|string|min:12|max:24';
+            $rules['card_expiry'] = 'required|string|max:7';
+            $rules['card_cvc'] = 'required|string|min:3|max:4';
+        }
+        $validated = $request->validate($rules);
+        $arrival = $payOnArrival && ($validated['payment_method'] ?? '') === 'arrival';
+        if ($payOnArrival && ! $arrival) {
+            $validated = array_merge($validated, $request->validate([
+                'card_holder' => 'required|string|max:255',
+                'card_number' => 'required|string|min:12|max:24',
+                'card_expiry' => 'required|string|max:7',
+                'card_cvc' => 'required|string|min:3|max:4',
+            ]));
+        }
+        $validated['payment_method'] = $arrival ? 'arrival' : 'card';
         try {
             $reservation = $this->availability->book([
                 ...$validated,
-                'children' => (int) ($validated['children'] ?? 0),
+                'check_in' => $stay['checkIn'],
+                'check_out' => $stay['checkOut'],
+                'adults' => $stay['adults'],
+                'children' => $stay['children'],
+                'child_ages' => array_map('intval', $stay['childAges']),
                 'source' => 'website',
             ]);
         } catch (\\RuntimeException $e) {
@@ -677,27 +993,24 @@ class BookingController extends Controller
 }
 `
 
-  files['resources/views/partials/stay-search.blade.php'] = `<form method="GET" action="{{ $searchAction }}" class="grid gap-4 rounded-2xl border bg-white p-5 shadow-sm md:grid-cols-5 md:items-end">
-  <label class="block text-sm"><span class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">Check-in</span><input type="date" name="check_in" value="{{ $checkIn }}" required class="w-full rounded-lg border border-slate-300 px-3 py-2.5" /></label>
-  <label class="block text-sm"><span class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">Check-out</span><input type="date" name="check_out" value="{{ $checkOut }}" required class="w-full rounded-lg border border-slate-300 px-3 py-2.5" /></label>
-  <label class="block text-sm"><span class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">Adults</span><input type="number" name="adults" min="1" max="20" value="{{ $adults }}" class="w-full rounded-lg border border-slate-300 px-3 py-2.5" /></label>
-  <label class="block text-sm"><span class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">Children</span><input type="number" name="children" min="0" max="20" value="{{ $children }}" class="w-full rounded-lg border border-slate-300 px-3 py-2.5" /></label>
-  <button type="submit" class="rounded-lg px-5 py-3 font-semibold text-white" style="background-color:${accent}">{{ $submitLabel ?? 'Search availability' }}</button>
-</form>`
+
 
   files['resources/views/site/rooms.blade.php'] = `@extends('layouts.site')
 @section('title', ($settings->rooms_section_title ?? 'Rooms') . ' — ' . $settings->business_name)
 @section('content')
 @php
-  $stayQuery = $searched ? ['check_in' => $checkIn, 'check_out' => $checkOut, 'adults' => $adults, 'children' => $children] : [];
+  $stayQuery = $searched ? ['check_in' => $checkIn, 'check_out' => $checkOut, 'adults' => $adults, 'children' => $children, 'child_ages' => $childAges] : [];
 @endphp
 <section class="bg-slate-50 py-12">
   <div class="mx-auto max-w-6xl px-6">
-    <div class="mb-8 max-w-3xl">
-      <h1 class="text-4xl font-bold">{{ $settings->rooms_section_title ?? 'Rooms & Suites' }}</h1>
-      <p class="mt-3 text-lg text-slate-600">{{ $settings->rooms_section_subtitle ?? 'Choose dates and guests, then open a room to see what is free.' }}</p>
+    <div class="mb-8">
+      <div class="max-w-3xl">
+        <h1 class="text-4xl font-bold">{{ $settings->rooms_section_title ?? 'Rooms & Suites' }}</h1>
+        <p class="mt-3 text-lg text-slate-600">{{ $settings->rooms_section_subtitle ?? 'Choose dates and guests, then open a room to see what is free.' }}</p>
+      </div>
+      @include('partials.stay-policies')
     </div>
-    @include('partials.stay-search', ['searchAction' => route('rooms.index'), 'checkIn' => $checkIn, 'checkOut' => $checkOut, 'adults' => $adults, 'children' => $children, 'submitLabel' => 'Search'])
+    @include('partials.stay-search', ['searchAction' => route('rooms.index'), 'checkIn' => $checkIn, 'checkOut' => $checkOut, 'adults' => $adults, 'children' => $children, 'childAges' => $childAges, 'minDate' => $minDate, 'submitLabel' => 'Search'])
     @if($errors->any())
     <div class="mt-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-red-800">@foreach($errors->all() as $error)<p>{{ $error }}</p>@endforeach</div>
     @endif
@@ -714,12 +1027,15 @@ class BookingController extends Controller
           <a href="{{ route('rooms.show', array_merge(['slug' => $type->slug], $stayQuery)) }}" class="block min-h-56">
             <img src="{{ \\App\\Support\\PublicAsset::url($type->image) }}" alt="{{ $type->name }}" class="h-full w-full object-cover md:min-h-full" />
           </a>
+          @else
+          <div class="min-h-56 bg-slate-100"></div>
           @endif
           <div class="flex flex-col p-6">
             <div class="flex flex-wrap items-start justify-between gap-4">
               <div>
                 <h2 class="text-2xl font-semibold"><a href="{{ route('rooms.show', array_merge(['slug' => $type->slug], $stayQuery)) }}" class="hover:underline">{{ $type->name }}</a></h2>
                 @if($type->short_description)<p class="mt-1 text-sm text-slate-500">{{ $type->short_description }}</p>@endif
+                @if($type->parent)<p class="mt-1 text-xs uppercase tracking-widest text-slate-400">{{ $type->parent->name }}</p>@endif
               </div>
               <div class="text-right">
                 @if($offer)
@@ -739,13 +1055,7 @@ class BookingController extends Controller
               @if($type->size_sqm)<span class="rounded-full bg-slate-100 px-3 py-1">{{ $type->size_sqm }} m²</span>@endif
               @foreach(array_slice($amenities, 0, 6) as $amenity)<span class="rounded-full bg-slate-100 px-3 py-1">{{ $amenity }}</span>@endforeach
             </div>
-            @if(!$searched && $card['children']->isNotEmpty())
-            <ul class="mt-4 space-y-1 border-t pt-4 text-sm">
-              @foreach($card['children'] as $child)
-              <li class="flex justify-between gap-3"><a href="{{ route('rooms.show', $child->slug) }}" class="font-medium hover:underline">{{ $child->name }}</a><span class="text-slate-500">from {{ number_format($child->base_price, 0) }} {{ $child->currency }}</span></li>
-              @endforeach
-            </ul>
-            @endif
+            <div class="mt-4">@include('partials.stay-policies', ['compact' => true])</div>
             <div class="mt-5 flex flex-wrap items-center justify-between gap-3">
               @if($offer)
               <p class="text-sm font-medium text-emerald-700">{{ $offer['available'] }} room{{ $offer['available'] === 1 ? '' : 's' }} available</p>
@@ -771,7 +1081,7 @@ class BookingController extends Controller
 @section('content')
 @php
   $amenities = is_array($roomType->amenities) ? $roomType->amenities : array_filter(array_map('trim', explode(',', (string) $roomType->amenities)));
-  $stayQuery = $searched ? ['check_in' => $checkIn, 'check_out' => $checkOut, 'adults' => $adults, 'children' => $children] : [];
+  $stayQuery = $searched ? ['check_in' => $checkIn, 'check_out' => $checkOut, 'adults' => $adults, 'children' => $children, 'child_ages' => $childAges] : [];
 @endphp
 <section class="bg-slate-50 py-12">
   <div class="mx-auto max-w-6xl px-6">
@@ -780,6 +1090,8 @@ class BookingController extends Controller
       <div>
         @if($roomType->image)
         <img src="{{ \\App\\Support\\PublicAsset::url($roomType->image) }}" alt="{{ $roomType->name }}" class="aspect-[4/3] w-full rounded-2xl object-cover shadow-lg" />
+        @else
+        <div class="aspect-[4/3] w-full rounded-2xl bg-slate-100"></div>
         @endif
       </div>
       <div>
@@ -800,12 +1112,13 @@ class BookingController extends Controller
           <ul class="mt-3 flex flex-wrap gap-2">@foreach($amenities as $amenity)<li class="rounded-full border bg-white px-3 py-1 text-sm">{{ $amenity }}</li>@endforeach</ul>
         </div>
         @endif
+        @include('partials.stay-policies')
       </div>
     </div>
     <div class="mt-10">
       <h2 class="text-2xl font-semibold">Check this room</h2>
       <p class="mt-1 mb-4 text-slate-600">Enter your dates and guests. Free rooms for this type are listed below.</p>
-      @include('partials.stay-search', ['searchAction' => route('rooms.show', $roomType->slug), 'checkIn' => $checkIn, 'checkOut' => $checkOut, 'adults' => $adults, 'children' => $children, 'submitLabel' => 'Show available rooms'])
+      @include('partials.stay-search', ['searchAction' => route('rooms.show', $roomType->slug), 'checkIn' => $checkIn, 'checkOut' => $checkOut, 'adults' => $adults, 'children' => $children, 'childAges' => $childAges, 'minDate' => $minDate, 'submitLabel' => 'Show available rooms'])
     </div>
     @if($errors->any())
     <div class="mt-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-red-800">@foreach($errors->all() as $error)<p>{{ $error }}</p>@endforeach</div>
@@ -845,9 +1158,10 @@ class BookingController extends Controller
 @section('content')
 <section class="bg-slate-50 py-12">
   <div class="mx-auto max-w-5xl px-6">
-    <a href="{{ route('rooms.show', ['slug' => $roomType->slug, 'check_in' => $checkIn, 'check_out' => $checkOut, 'adults' => $adults, 'children' => $children]) }}" class="text-sm text-slate-500 hover:underline">← Back to {{ $roomType->name }}</a>
+    <a href="{{ route('rooms.show', array_merge(['slug' => $roomType->slug, 'check_in' => $checkIn, 'check_out' => $checkOut, 'adults' => $adults, 'children' => $children], $children > 0 ? ['child_ages' => $childAges] : [])) }}" class="text-sm text-slate-500 hover:underline">← Back to {{ $roomType->name }}</a>
     <h1 class="mt-4 text-3xl font-bold">Checkout</h1>
     <p class="mt-2 text-slate-600">This stay is held for you on this page. Guest and card details stay on this website.</p>
+    @include('partials.stay-policies')
     @if($errors->any())
     <div class="mt-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-red-800">@foreach($errors->all() as $error)<p>{{ $error }}</p>@endforeach</div>
     @endif
@@ -860,12 +1174,55 @@ class BookingController extends Controller
         <input type="hidden" name="check_out" value="{{ $checkOut }}" />
         <input type="hidden" name="adults" value="{{ $adults }}" />
         <input type="hidden" name="children" value="{{ $children }}" />
+        @foreach($childAges as $age)
+        <input type="hidden" name="child_ages[]" value="{{ $age }}" />
+        @endforeach
         <h2 class="text-lg font-semibold">Guest</h2>
         <label class="block text-sm"><span class="mb-1 block text-slate-500">Full name</span><input name="guest_name" required value="{{ old('guest_name') }}" class="w-full rounded-lg border px-3 py-2.5" /></label>
         <label class="block text-sm"><span class="mb-1 block text-slate-500">Email</span><input type="email" name="guest_email" required value="{{ old('guest_email') }}" class="w-full rounded-lg border px-3 py-2.5" /></label>
         <label class="block text-sm"><span class="mb-1 block text-slate-500">Phone</span><input name="guest_phone" value="{{ old('guest_phone') }}" class="w-full rounded-lg border px-3 py-2.5" /></label>
         <label class="block text-sm"><span class="mb-1 block text-slate-500">Special requests</span><textarea name="special_requests" rows="3" class="w-full rounded-lg border px-3 py-2.5">{{ old('special_requests') }}</textarea></label>
         <h2 class="pt-2 text-lg font-semibold">Payment</h2>
+        @if($settings->pay_on_arrival)
+        <fieldset class="space-y-2">
+          <legend class="text-sm font-medium text-slate-700">How will you pay?</legend>
+          <label class="flex items-center gap-2 text-sm"><input type="radio" name="payment_method" value="card" @checked(old('payment_method', 'card') !== 'arrival') /> Pay now by card</label>
+          <label class="flex items-center gap-2 text-sm"><input type="radio" name="payment_method" value="arrival" @checked(old('payment_method') === 'arrival') /> Pay on arrival</label>
+        </fieldset>
+        <div data-card-fields class="space-y-4" @if(old('payment_method') === 'arrival') hidden @endif>
+          <p class="text-xs text-slate-500">Card details are stored on this website only. They are not sent to BuildAura.</p>
+          <label class="block text-sm"><span class="mb-1 block text-slate-500">Name on card</span><input name="card_holder" value="{{ old('card_holder') }}" class="w-full rounded-lg border px-3 py-2.5" /></label>
+          <label class="block text-sm"><span class="mb-1 block text-slate-500">Card number</span><input name="card_number" inputmode="numeric" autocomplete="cc-number" value="{{ old('card_number') }}" class="w-full rounded-lg border px-3 py-2.5" /></label>
+          <div class="grid grid-cols-2 gap-3">
+            <label class="block text-sm"><span class="mb-1 block text-slate-500">Expiry</span><input name="card_expiry" placeholder="MM/YY" value="{{ old('card_expiry') }}" class="w-full rounded-lg border px-3 py-2.5" /></label>
+            <label class="block text-sm"><span class="mb-1 block text-slate-500">CVC</span><input name="card_cvc" value="{{ old('card_cvc') }}" class="w-full rounded-lg border px-3 py-2.5" /></label>
+          </div>
+        </div>
+        <button type="submit" class="w-full rounded-lg px-4 py-3 font-semibold text-white" style="background-color:${accent}">
+          <span data-pay-label-card @if(old('payment_method') === 'arrival') hidden @endif>Confirm and pay {{ number_format($offer['total'], 0) }} {{ $roomType->currency }}</span>
+          <span data-pay-label-arrival @if(old('payment_method') !== 'arrival') hidden @endif>Confirm reservation — pay on arrival</span>
+        </button>
+        <script>
+          (function () {
+            var form = document.currentScript.closest('form');
+            if (!form) return;
+            var fields = form.querySelector('[data-card-fields]');
+            var cardLabel = form.querySelector('[data-pay-label-card]');
+            var arrivalLabel = form.querySelector('[data-pay-label-arrival]');
+            function sync() {
+              var selected = form.querySelector('input[name="payment_method"]:checked');
+              var arrival = selected && selected.value === 'arrival';
+              if (fields) fields.hidden = arrival;
+              if (cardLabel) cardLabel.hidden = arrival;
+              if (arrivalLabel) arrivalLabel.hidden = !arrival;
+            }
+            form.querySelectorAll('input[name="payment_method"]').forEach(function (radio) {
+              radio.addEventListener('change', sync);
+            });
+            sync();
+          })();
+        </script>
+        @else
         <p class="text-xs text-slate-500">Card details are stored on this website only. They are not sent to BuildAura.</p>
         <label class="block text-sm"><span class="mb-1 block text-slate-500">Name on card</span><input name="card_holder" required value="{{ old('card_holder') }}" class="w-full rounded-lg border px-3 py-2.5" /></label>
         <label class="block text-sm"><span class="mb-1 block text-slate-500">Card number</span><input name="card_number" required inputmode="numeric" autocomplete="cc-number" value="{{ old('card_number') }}" class="w-full rounded-lg border px-3 py-2.5" /></label>
@@ -874,15 +1231,17 @@ class BookingController extends Controller
           <label class="block text-sm"><span class="mb-1 block text-slate-500">CVC</span><input name="card_cvc" required value="{{ old('card_cvc') }}" class="w-full rounded-lg border px-3 py-2.5" /></label>
         </div>
         <button type="submit" class="w-full rounded-lg px-4 py-3 font-semibold text-white" style="background-color:${accent}">Confirm and pay {{ number_format($offer['total'], 0) }} {{ $roomType->currency }}</button>
+        @endif
       </form>
       <aside class="rounded-2xl border bg-white p-6">
-        @if($roomType->image)<img src="{{ \\App\\Support\\PublicAsset::url($roomType->image) }}" alt="" class="mb-4 aspect-[16/10] w-full rounded-xl object-cover" />@endif
+        @if($roomType->image)<img src="{{ \\App\\Support\\PublicAsset::url($roomType->image) }}" alt="" class="mb-4 aspect-[16/10] w-full rounded-xl object-cover" />@else<div class="mb-4 aspect-[16/10] w-full rounded-xl bg-slate-100"></div>@endif
         <h2 class="text-xl font-semibold">{{ $roomType->name }}</h2>
         <p class="mt-1 text-sm text-slate-500">Room {{ $unit['code'] ?? '' }}</p>
+        @include('partials.stay-policies', ['compact' => true])
         <dl class="mt-5 space-y-3 text-sm">
           <div class="flex justify-between gap-4"><dt class="text-slate-500">Check-in</dt><dd>{{ \\Carbon\\Carbon::parse($checkIn)->format('M j, Y') }}</dd></div>
           <div class="flex justify-between gap-4"><dt class="text-slate-500">Check-out</dt><dd>{{ \\Carbon\\Carbon::parse($checkOut)->format('M j, Y') }}</dd></div>
-          <div class="flex justify-between gap-4"><dt class="text-slate-500">Guests</dt><dd>{{ $adults }} adults · {{ $children }} children</dd></div>
+          <div class="flex justify-between gap-4"><dt class="text-slate-500">Guests</dt><dd>{{ $adults }} adults · {{ $children }} children{{ $children > 0 ? ' ('.collect($childAges)->map(fn ($age) => $age.'y')->implode(', ').')' : '' }}</dd></div>
           <div class="flex justify-between gap-4"><dt class="text-slate-500">Nights</dt><dd>{{ $offer['nights'] }} × {{ number_format($offer['nightly'], 0) }}</dd></div>
           <div class="flex justify-between gap-4 border-t pt-3 text-base"><dt class="font-semibold">Total</dt><dd class="font-bold" style="color:${accent}">{{ number_format($offer['total'], 0) }} {{ $roomType->currency }}</dd></div>
         </dl>
@@ -905,10 +1264,16 @@ class BookingController extends Controller
       <div class="flex justify-between gap-4"><span class="text-slate-500">Room</span><span class="font-medium">{{ $reservation->room_type_name }}</span></div>
       @if($reservation->room_unit_code)<div class="flex justify-between gap-4"><span class="text-slate-500">Unit</span><span>{{ $reservation->room_unit_code }}</span></div>@endif
       <div class="flex justify-between gap-4"><span class="text-slate-500">Stay</span><span>{{ $reservation->check_in->format('M j, Y') }} – {{ $reservation->check_out->format('M j, Y') }}</span></div>
+      <div class="flex justify-between gap-4"><span class="text-slate-500">Guests</span><span>{{ $reservation->adults }} adults{{ $reservation->children ? ' · '.$reservation->children.' children'.((is_array($reservation->child_ages) && count($reservation->child_ages)) ? ' ('.collect($reservation->child_ages)->map(fn ($age) => $age.'y')->implode(', ').')' : '') : '' }}</span></div>
       <div class="flex justify-between gap-4"><span class="text-slate-500">Guest</span><span>{{ $reservation->guest_name }}</span></div>
+      @if($reservation->payment_method === 'pay_on_arrival')
+      <div class="flex justify-between gap-4"><span class="text-slate-500">Payment</span><span>Pay on arrival</span></div>
+      @else
       <div class="flex justify-between gap-4"><span class="text-slate-500">Card</span><span>···· {{ $reservation->payment_last4 }}</span></div>
+      @endif
       <div class="flex justify-between gap-4 border-t pt-3"><span class="text-slate-500">Total</span><span class="font-bold" style="color:${accent}">{{ number_format($reservation->total_price, 0) }} {{ $reservation->currency }}</span></div>
     </div>
+    @include('partials.stay-policies')
     <a href="{{ route('home') }}" class="mt-8 inline-block text-sm font-semibold" style="color:${accent}">Back to the hotel</a>
   </div>
 </section>
@@ -958,10 +1323,22 @@ class ReservationResource extends Resource
                 ->options(fn (Forms\\Get $get) => static::unitOptions($get('crs_room_type_id')))
                 ->searchable()
                 ->required(),
-            Forms\\Components\\DatePicker::make('check_in')->required(),
-            Forms\\Components\\DatePicker::make('check_out')->required(),
-            Forms\\Components\\TextInput::make('adults')->numeric()->default(1)->minValue(1)->required(),
-            Forms\\Components\\TextInput::make('children')->numeric()->default(0)->minValue(0)->required(),
+            Forms\\Components\\DatePicker::make('check_in')->required()->minDate(now()->startOfDay()),
+            Forms\\Components\\DatePicker::make('check_out')->required()->minDate(now()->startOfDay()),
+            Forms\\Components\\TextInput::make('adults')->numeric()->default(1)->minValue(1)->maxValue(20)->required(),
+            Forms\\Components\\TextInput::make('children')->numeric()->default(0)->minValue(0)->maxValue(10)->required(),
+            Forms\\Components\\TextInput::make('child_ages')
+                ->label('Child ages')
+                ->helperText('Comma-separated ages from 0 to 17, one for each child. Guests 18 and older count as adults.')
+                ->formatStateUsing(fn ($state) => is_array($state) ? implode(', ', $state) : (string) ($state ?? ''))
+                ->dehydrateStateUsing(function ($state) {
+                    if (is_array($state)) {
+                        return array_values(array_map('intval', $state));
+                    }
+                    $parts = array_values(array_filter(array_map('trim', explode(',', (string) $state)), fn ($age) => $age !== ''));
+
+                    return array_map('intval', $parts);
+                }),
             Forms\\Components\\TextInput::make('nightly_rate')->numeric()->label('Nightly rate'),
             Forms\\Components\\Select::make('status')->options([
                 'pending' => 'Pending',
@@ -1258,6 +1635,7 @@ class ReservationDesk
     private function selection(array $data): array
     {
         $this->assertDates($data);
+        $this->assertChildAges($data);
         $type = $this->requireType((string) ($data['crs_room_type_id'] ?? ''));
         $adults = (int) ($data['adults'] ?? 1);
         $children = (int) ($data['children'] ?? 0);
@@ -1330,6 +1708,7 @@ class ReservationDesk
             'check_out' => $data['check_out'],
             'adults' => (int) ($data['adults'] ?? 1),
             'children' => (int) ($data['children'] ?? 0),
+            'child_ages' => array_values(array_map('intval', is_array($data['child_ages'] ?? null) ? $data['child_ages'] : [])),
             'guest_name' => $data['guest_name'] ?? '',
             'guest_email' => $data['guest_email'] ?? '',
             'guest_phone' => $data['guest_phone'] ?? null,
@@ -1361,13 +1740,45 @@ class ReservationDesk
     {
         $data['check_in'] = Carbon::parse($data['check_in'] ?? null)->toDateString();
         $data['check_out'] = Carbon::parse($data['check_out'] ?? null)->toDateString();
+        $ages = $data['child_ages'] ?? [];
+        if (is_string($ages)) {
+            $ages = array_values(array_filter(array_map('trim', explode(',', $ages)), fn ($age) => $age !== ''));
+        }
+        if (! is_array($ages)) {
+            $ages = [];
+        }
+        $data['child_ages'] = array_values(array_map('intval', $ages));
+        $data['children'] = (int) ($data['children'] ?? 0);
+
         return $data;
     }
 
     private function assertDates(array $data): void
     {
-        if (! Carbon::parse($data['check_out'])->gt(Carbon::parse($data['check_in']))) {
+        $checkIn = Carbon::parse($data['check_in'])->startOfDay();
+        $checkOut = Carbon::parse($data['check_out'])->startOfDay();
+        if ($checkIn->lt(Carbon::today())) {
+            throw new RuntimeException('Check-in cannot be before today.');
+        }
+        if (! $checkOut->gt($checkIn)) {
             throw new RuntimeException('Check-out must be after check-in.');
+        }
+    }
+
+    private function assertChildAges(array $data): void
+    {
+        $children = (int) ($data['children'] ?? 0);
+        $ages = $data['child_ages'] ?? [];
+        if ($children < 0 || $children > 10) {
+            throw new RuntimeException('Children must be between 0 and 10.');
+        }
+        if (! is_array($ages) || count($ages) !== $children) {
+            throw new RuntimeException($children > 0 ? 'Enter the age of each child.' : 'Child ages do not match the number of children.');
+        }
+        foreach ($ages as $age) {
+            if (! is_numeric($age) || (int) $age < 0 || (int) $age > 17) {
+                throw new RuntimeException('A child must be 17 or younger. Guests 18 and older count as adults.');
+            }
         }
     }
 
@@ -2585,5 +2996,39 @@ export function bookingSettingsFields(content: SiteContent): Record<string, unkn
     rooms_section_subtitle: content.roomsSectionSubtitle || '',
     booking_section_title: content.bookingSectionTitle || 'Book Your Stay',
     booking_section_subtitle: content.bookingSectionSubtitle || '',
+    free_cancellation: false,
+    pay_on_arrival: false,
+    free_breakfast: false,
   }
+}
+
+/** Guest-facing stay policies. Renders nothing until the hotel admin turns a policy on. */
+export function stayPoliciesPartial(): string {
+  return `@php
+  $policies = array_values(array_filter([
+      $settings->free_cancellation ? ['label' => 'Free cancellation', 'detail' => 'You can cancel this stay at no charge.'] : null,
+      $settings->pay_on_arrival ? ['label' => 'Payment on arrival', 'detail' => 'You can pay at the property when you arrive.'] : null,
+      $settings->free_breakfast ? ['label' => 'Free breakfast', 'detail' => 'Breakfast is included with your stay.'] : null,
+  ]));
+  $compact = $compact ?? false;
+@endphp
+@if(count($policies))
+  @if($compact)
+  <ul class="flex flex-wrap gap-2" aria-label="Stay policies">
+    @foreach($policies as $policy)
+    <li class="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-900">{{ $policy['label'] }}</li>
+    @endforeach
+  </ul>
+  @else
+  <ul class="mt-6 grid gap-3 sm:grid-cols-3" aria-label="Stay policies">
+    @foreach($policies as $policy)
+    <li class="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-950">
+      <p class="font-semibold">{{ $policy['label'] }}</p>
+      <p class="mt-1 text-emerald-800">{{ $policy['detail'] }}</p>
+    </li>
+    @endforeach
+  </ul>
+  @endif
+@endif
+`
 }

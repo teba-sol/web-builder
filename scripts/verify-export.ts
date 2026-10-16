@@ -38,6 +38,16 @@ for (const manifest of manifests) {
     assets,
   )
   assert(backend['composer.json'], `${manifest.id}: missing composer.json`)
+  const composer = JSON.parse(backend['composer.json'] ?? '{}') as {
+    config?: { policy?: { advisories?: { block?: boolean } } }
+  }
+  assert(composer.config?.policy?.advisories?.block === false, `${manifest.id}: composer must install Laravel 11 when Packagist flags advisories`)
+  assert(backend['.env.example']?.includes('DB_CONNECTION=sqlite'), `${manifest.id}: export uses SQLite`)
+  assert(!backend['.env.example']?.includes('DB_CONNECTION=mysql'), `${manifest.id}: export does not default to MySQL`)
+  assert(backend['config/database.php']?.includes("env('DB_CONNECTION', 'sqlite')"), `${manifest.id}: database config defaults to SQLite`)
+  assert(backend['setup.sh']?.includes('touch database/database.sqlite'), `${manifest.id}: setup creates the SQLite file`)
+  assert(!backend['setup.sh']?.includes('mysql'), `${manifest.id}: setup does not ask for MySQL`)
+  assert(backend['app/Services/DoctorService.php']?.includes('ensureSqliteDatabase'), `${manifest.id}: site doctor creates the SQLite file`)
   assert(backend['app/Providers/Filament/AdminPanelProvider.php'], `${manifest.id}: missing Filament provider`)
   assert(backend['app/Providers/Filament/AdminPanelProvider.php']?.includes('darkMode(false)'), `${manifest.id}: admin panel stays on the white theme`)
   assert(backend['app/Providers/Filament/AdminPanelProvider.php']?.includes('Color::Zinc'), `${manifest.id}: admin panel uses the plain light palette`)
@@ -62,9 +72,13 @@ for (const manifest of manifests) {
     assert(backend['routes/web.php']?.includes("name('login')"), `${manifest.id}: property forms need a login route`)
     const typeAdmin = backend['resources/views/filament/pages/room-types.blade.php'] ?? ''
     const roomAdmin = backend['resources/views/filament/pages/rooms.blade.php'] ?? ''
-    assert(typeAdmin.includes('property.types.update'), `${manifest.id}: room type admin must post edits`)
-    assert(typeAdmin.includes('property.types.delete'), `${manifest.id}: room type admin must post deletes`)
-    assert(typeAdmin.includes('this.form.submit()'), `${manifest.id}: room type admin forms must submit past Livewire`)
+    assert(typeAdmin.includes('editTypeAction'), `${manifest.id}: room type edit must render a Filament action`)
+    assert(typeAdmin.includes('deleteTypeAction'), `${manifest.id}: room type delete must render a Filament action`)
+    assert(typeAdmin.includes('width:72px'), `${manifest.id}: room type table must size the photo itself`)
+    assert(!typeAdmin.includes('<details'), `${manifest.id}: room type edit must not be a dropdown`)
+    assert(!typeAdmin.includes('<summary'), `${manifest.id}: room type edit must not be a dropdown`)
+    assert(!typeAdmin.includes('wire:ignore'), `${manifest.id}: room type filters must not sit inside a save form`)
+    assert(!typeAdmin.includes('wire:click="mountAction'), `${manifest.id}: room type row buttons must not hand-build mountAction`)
     assert(typeAdmin.includes('filters.search'), `${manifest.id}: room types must be searchable`)
     assert(typeAdmin.includes('filters.parent'), `${manifest.id}: room types must filter by parent type`)
     assert(typeAdmin.includes('filters.active'), `${manifest.id}: room types keep an active filter`)
@@ -74,13 +88,22 @@ for (const manifest of manifests) {
     assert(!typeAdmin.includes('All hotels'), `${manifest.id}: room types have no hotel filter`)
     assert(!typeAdmin.includes('typeHotel'), `${manifest.id}: room types have no hotel filter field`)
     const typePage = backend['app/Filament/Pages/RoomTypes.php'] ?? ''
+    assert(typePage.includes("navigationGroup = 'Hospitality'"), `${manifest.id}: room types sit under Hospitality`)
+    assert(!typePage.includes("navigationGroup = 'Property'"), `${manifest.id}: room types do not use a separate Property group`)
     assert(typePage.includes('function filterParentOptions'), `${manifest.id}: room types must filter by parent type`)
     assert(typePage.includes('function visibleTypes'), `${manifest.id}: room types must filter the BuildAura list`)
     assert(!typePage.includes('typeHotel'), `${manifest.id}: room type page must not filter by hotel`)
     assert(!typePage.includes('filterForm'), `${manifest.id}: room type filters stay in the page view`)
-    assert(typeAdmin.indexOf('filters.search') < typeAdmin.indexOf('wire:ignore'), `${manifest.id}: room type filters must stay outside the save forms`)
-    assert(roomAdmin.includes('property.units.update'), `${manifest.id}: room admin must post edits`)
-    assert(roomAdmin.includes('property.units.delete'), `${manifest.id}: room admin must post deletes`)
+    assert(typePage.includes("FileUpload::make('photo')"), `${manifest.id}: room type edit must upload a photo`)
+    assert(typePage.includes('maxSize(5120)'), `${manifest.id}: room photos must allow 5 MB`)
+    assert(typePage.includes('editTypeAction'), `${manifest.id}: room type edit opens in a slide-over`)
+    assert(backend['app/Services/BuildauraClient.php']?.includes('function uploadImage'), `${manifest.id}: room photos must upload to Buildaura`)
+    assert(roomAdmin.includes('editUnitAction'), `${manifest.id}: room edit must render a Filament action`)
+    assert(roomAdmin.includes('deleteUnitAction'), `${manifest.id}: room delete must render a Filament action`)
+    assert(!roomAdmin.includes('<details'), `${manifest.id}: room edit must not be a dropdown`)
+    assert(!roomAdmin.includes('<summary'), `${manifest.id}: room edit must not be a dropdown`)
+    assert(!roomAdmin.includes('wire:ignore'), `${manifest.id}: room filters must not sit inside a save form`)
+    assert(!roomAdmin.includes('wire:click="mountAction'), `${manifest.id}: room row buttons must not hand-build mountAction`)
     assert(roomAdmin.includes('filters.search'), `${manifest.id}: rooms must be searchable`)
     assert(roomAdmin.includes('filters.roomType'), `${manifest.id}: rooms must filter by room type`)
     assert(roomAdmin.includes('filters.status'), `${manifest.id}: rooms must filter by status`)
@@ -88,12 +111,16 @@ for (const manifest of manifests) {
     assert(roomAdmin.includes('clearUnitFilters'), `${manifest.id}: room filters can be cleared`)
     assert(!roomAdmin.includes('filters.active'), `${manifest.id}: rooms have no active filter`)
     assert(roomAdmin.includes('RoomCalendar::getUrl'), `${manifest.id}: each room links to its calendar`)
+    assert(typeAdmin.includes('<table'), `${manifest.id}: room types list in a table`)
+    assert(roomAdmin.includes('<table'), `${manifest.id}: rooms list in a table`)
     const roomsAdmin = backend['app/Filament/Pages/Rooms.php'] ?? ''
     assert(roomsAdmin.includes('function visibleUnits'), `${manifest.id}: rooms must filter the BuildAura list`)
     assert(roomsAdmin.includes('function clearUnitFilters'), `${manifest.id}: rooms must reset filters`)
     assert(!roomsAdmin.includes("filterText('active')"), `${manifest.id}: rooms must not filter by active`)
     assert(!roomsAdmin.includes('filterForm'), `${manifest.id}: room filters stay in the page view`)
-    assert(roomAdmin.indexOf('filters.search') < roomAdmin.indexOf('wire:ignore'), `${manifest.id}: room filters must stay outside the save forms`)
+    assert(roomsAdmin.includes('editUnitAction'), `${manifest.id}: room edit opens in a slide-over`)
+    assert(roomsAdmin.includes("Select::make('roomTypeId')"), `${manifest.id}: room edit picks the room type in the slide-over`)
+    assert(roomsAdmin.includes("'floor'"), `${manifest.id}: rooms admin must edit the floor`)
     const calendar = backend['app/Filament/Pages/RoomCalendar.php'] ?? ''
     const calendarBlade = backend['resources/views/filament/pages/room-calendar.blade.php'] ?? ''
     assert(calendar.includes("rooms/{unitId}/calendar"), `${manifest.id}: room calendar is a detail page`)
@@ -109,6 +136,9 @@ for (const manifest of manifests) {
     assert(calendar.includes('#0284c7'), `${manifest.id}: blocked nights are color coded`)
     assert(calendarBlade.includes("$day['cell']"), `${manifest.id}: calendar days use the color for that night`)
     const guestAdmin = backend['app/Filament/Pages/GuestReservations.php'] ?? ''
+    assert(roomsAdmin.includes("navigationGroup = 'Hospitality'"), `${manifest.id}: rooms sit under Hospitality`)
+    assert(guestAdmin.includes("navigationGroup = 'Hospitality'"), `${manifest.id}: guest reservations sit under Hospitality`)
+    assert((backend['app/Filament/Pages/ApiKey.php'] ?? '').includes("navigationGroup = 'Hospitality'"), `${manifest.id}: the API key page sits under Hospitality`)
     const guestBlade = backend['resources/views/filament/pages/guest-reservations.blade.php'] ?? ''
     assert(guestBlade.includes('filters.search'), `${manifest.id}: guest reservations must be searchable`)
     assert(guestBlade.includes('filters.roomType'), `${manifest.id}: guest reservations must filter by room type`)
@@ -119,7 +149,15 @@ for (const manifest of manifests) {
     assert(guestAdmin.includes('function guestStatusOptions'), `${manifest.id}: guest status filter must load options`)
     assert(!guestAdmin.includes('filterForm'), `${manifest.id}: guest filters stay in the page view`)
     assert(guestBlade.indexOf('filters.search') < guestBlade.indexOf('wire:ignore'), `${manifest.id}: guest filters must stay outside the cancel form`)
+    assert((backend['resources/views/site/index.blade.php'] ?? '').includes("PublicAsset::url($room['image'])"), `${manifest.id}: homepage room cards must show the room photo`)
+    assert((backend['resources/views/site/index.blade.php'] ?? '').includes('bg-slate-100'), `${manifest.id}: homepage room cards keep a photo frame when the image is missing`)
+    assert((backend['resources/views/site/rooms.blade.php'] ?? '').includes("PublicAsset::url($type['image'])"), `${manifest.id}: rooms page must show the room photo`)
+    assert((backend['resources/views/site/rooms.blade.php'] ?? '').includes('bg-slate-100'), `${manifest.id}: rooms page keeps a photo frame when the image is missing`)
+    assert((backend['resources/views/site/room-detail.blade.php'] ?? '').includes("PublicAsset::url($roomType['image'])"), `${manifest.id}: room page must show the room photo`)
+    assert((backend['resources/views/site/book.blade.php'] ?? '').includes("PublicAsset::url($row['type']['image'])"), `${manifest.id}: booking results must show the room photo`)
     assert(backend['app/Http/Controllers/SiteController.php']?.includes("'crsRoomTypes'"), `${manifest.id}: homepage must load Buildaura rooms`)
+    assert(!backend['app/Http/Controllers/SiteController.php']?.includes('array_slice($types, 0, 3)'), `${manifest.id}: homepage lists every active room type`)
+    assert(!backend['app/Http/Controllers/SiteController.php']?.includes("empty($type['parentId'])"), `${manifest.id}: homepage includes room subtypes`)
     assert(!backend['app/Http/Controllers/SiteController.php']?.includes('CrsClient'), `${manifest.id}: homepage must not call the other CRS client`)
     assert(backend['.env']?.includes('BUILDAURA_API_KEY='), `${manifest.id}: .env should carry the Buildaura site key`)
     assert(backend['.env']?.includes('BUILDAURA_HOTEL_ID='), `${manifest.id}: .env should carry the Buildaura hotel id`)
@@ -137,6 +175,15 @@ for (const manifest of manifests) {
     const home = backend['resources/views/site/index.blade.php'] ?? ''
     assert(!home.includes('App\\Models\\RoomType'), `${manifest.id}: home must not query a local RoomType model`)
     assert(home.includes('$roomTypes'), `${manifest.id}: home should list CRS room types`)
+    assert(home.includes('PublicAsset::url($room->image)'), `${manifest.id}: homepage room cards must show the room photo`)
+    assert(home.includes('bg-slate-100'), `${manifest.id}: homepage room cards keep a photo frame when the image is missing`)
+    assert((backend['resources/views/site/rooms.blade.php'] ?? '').includes('PublicAsset::url($type->image)'), `${manifest.id}: rooms page must show the room photo`)
+    assert((backend['resources/views/site/rooms.blade.php'] ?? '').includes('bg-slate-100'), `${manifest.id}: rooms page keeps a photo frame when the image is missing`)
+    assert((backend['resources/views/site/room-detail.blade.php'] ?? '').includes('bg-slate-100'), `${manifest.id}: room page keeps a photo frame when the image is missing`)
+    assert(!home.includes('array_slice($roomTypes'), `${manifest.id}: homepage lists every room type`)
+    assert(backend['app/Support/CrsInventory.php']?.includes('function catalogue'), `${manifest.id}: inventory exposes the full room catalogue`)
+    assert(backend['app/Http/Controllers/BookingController.php']?.includes('CrsInventory::catalogue'), `${manifest.id}: rooms page lists subtypes`)
+    assert(!backend['app/Http/Controllers/BookingController.php']?.includes('CrsInventory::types('), `${manifest.id}: rooms page does not hide subtypes`)
     assert(backend['.env']?.includes('CRS_HOTEL_ID='), `${manifest.id}: .env should carry the hotel id slot`)
     assert(backend['.env.example']?.includes('CRS_API_KEY='), `${manifest.id}: .env.example should carry the site key slot`)
     const roomTypesAdmin = backend['app/Filament/Pages/ManageRoomTypes.php'] ?? ''
@@ -234,6 +281,80 @@ for (const manifest of manifests) {
   const settingsAdmin = backend['app/Filament/Resources/SiteSettingResource.php'] ?? ''
   assert(settingsAdmin.includes("make('business_name')->searchable()->sortable()"), `${manifest.id}: site settings must be searchable`)
   assert(settingsAdmin.includes("make('email')->searchable()->sortable()"), `${manifest.id}: site settings email must be searchable`)
+  const settingsMigration = backend['database/migrations/0001_01_01_000001_create_site_settings_table.php'] ?? ''
+  assert(settingsMigration.includes("'free_cancellation'"), `${manifest.id}: settings store free cancellation`)
+  assert(settingsMigration.includes("'pay_on_arrival'"), `${manifest.id}: settings store payment on arrival`)
+  assert(settingsMigration.includes("'free_breakfast'"), `${manifest.id}: settings store free breakfast`)
+  const settingsModel = backend['app/Models/SiteSetting.php'] ?? ''
+  assert(settingsModel.includes("'free_cancellation' => 'boolean'"), `${manifest.id}: free cancellation is a boolean`)
+  assert(settingsModel.includes("'pay_on_arrival' => 'boolean'"), `${manifest.id}: payment on arrival is a boolean`)
+  assert(settingsModel.includes("'free_breakfast' => 'boolean'"), `${manifest.id}: free breakfast is a boolean`)
+  assert(backend['database/seeders/DatabaseSeeder.php']?.includes('"free_cancellation": false'), `${manifest.id}: stay policies start off`)
+  if (hospitality) {
+    assert(settingsAdmin.includes("Tab::make('Stay policies')"), `${manifest.id}: hotel admin can edit stay policies`)
+    const stayPage = backend['app/Filament/Pages/StayPolicies.php'] ?? ''
+    assert(stayPage.includes("navigationLabel = 'Stay policies'"), `${manifest.id}: stay policies have their own admin page`)
+    assert(stayPage.includes('SiteSetting::current()'), `${manifest.id}: stay policies edit the site settings row`)
+    assert(stayPage.includes("'free_cancellation'"), `${manifest.id}: stay policies page edits free cancellation`)
+    assert(stayPage.includes("'pay_on_arrival'"), `${manifest.id}: stay policies page edits payment on arrival`)
+    assert(stayPage.includes("'free_breakfast'"), `${manifest.id}: stay policies page edits free breakfast`)
+    assert(backend['resources/views/filament/pages/stay-policies.blade.php']?.includes('wire:submit="save"'), `${manifest.id}: stay policies page can be saved`)
+    assert(stayPage.includes("navigationGroup = 'Hospitality'"), `${manifest.id}: stay policies sit under Hospitality`)
+    assert(!stayPage.includes("navigationGroup = 'Property'"), `${manifest.id}: stay policies do not use a separate Property group`)
+    assert(settingsAdmin.includes("make('free_cancellation')"), `${manifest.id}: Filament edits free cancellation`)
+    assert(settingsAdmin.includes("make('pay_on_arrival')"), `${manifest.id}: Filament edits payment on arrival`)
+    assert(settingsAdmin.includes("make('free_breakfast')"), `${manifest.id}: Filament edits free breakfast`)
+    const policies = backend['resources/views/partials/stay-policies.blade.php'] ?? ''
+    assert(policies.includes('Free cancellation'), `${manifest.id}: guests can see free cancellation`)
+    assert(policies.includes('Payment on arrival'), `${manifest.id}: guests can see payment on arrival`)
+    assert(policies.includes('Free breakfast'), `${manifest.id}: guests can see free breakfast`)
+    assert(policies.includes('count($policies)'), `${manifest.id}: hidden policies stay off the page`)
+    for (const view of ['rooms.blade.php', 'room-detail.blade.php', 'book.blade.php', 'booking-confirm.blade.php']) {
+      assert(backend[`resources/views/site/${view}`]?.includes('partials.stay-policies'), `${manifest.id}: ${view} shows stay policies`)
+    }
+    assert(backend['resources/views/site/index.blade.php']?.includes('partials.stay-policies'), `${manifest.id}: home rooms section shows stay policies`)
+    const staySearch = backend['resources/views/partials/stay-search.blade.php'] ?? ''
+    assert(staySearch.includes('data-stay-search'), `${manifest.id}: stay search marks itself for date checks`)
+    assert(staySearch.includes('name="child_ages[]"'), `${manifest.id}: stay search collects each child age`)
+    assert(staySearch.includes('max="17"'), `${manifest.id}: a child age cannot be 18 or older`)
+    assert(staySearch.includes('Check-in cannot be before today.'), `${manifest.id}: stay search rejects a past check-in`)
+    const stayRequest = backend['app/Support/StayRequest.php'] ?? ''
+    assert(stayRequest.includes('Check-in cannot be before today.'), `${manifest.id}: the server rejects a past check-in`)
+    assert(stayRequest.includes('A child must be 17 or younger. Guests 18 and older count as adults.'), `${manifest.id}: the server rejects an adult listed as a child`)
+    assert(stayRequest.includes('Check-out must be after check-in.'), `${manifest.id}: the server rejects a checkout on or before check-in`)
+    assert(backend['resources/views/site/rooms.blade.php']?.includes("['compact' => true]"), `${manifest.id}: room cards show stay policies`)
+    assert(backend['app/Http/Controllers/BookingController.php']?.includes('StayRequest::from'), `${manifest.id}: booking uses the shared stay request`)
+    if (usesBuildauraCrs(manifest.id)) {
+      assert(backend['database/migrations/0001_01_01_2100_create_guest_reservations_table.php']?.includes("json('child_ages')"), `${manifest.id}: guest reservations store child ages`)
+      assert(!backend['app/Services/BuildauraClient.php']?.includes('child_ages'), `${manifest.id}: child ages stay on the website`)
+    } else {
+      assert(backend['database/migrations/0001_01_01_2000_create_reservations_table.php']?.includes("json('child_ages')"), `${manifest.id}: reservations store child ages`)
+      const availability = backend['app/Services/AvailabilityService.php'] ?? ''
+      assert(availability.includes("'child_ages'"), `${manifest.id}: a reservation keeps the child ages`)
+      const occupyAt = availability.indexOf('->occupy([')
+      const createAt = availability.indexOf('Reservation::create')
+      assert(occupyAt >= 0 && createAt > occupyAt && !availability.slice(occupyAt, createAt).includes('child_ages'), `${manifest.id}: child ages are not sent to BuildAura`)
+    }
+    const book = backend['resources/views/site/book.blade.php'] ?? ''
+    if (usesBuildauraCrs(manifest.id)) {
+      assert(!book.includes('name="payment_method"'), `${manifest.id}: hotel reserve form still does not collect a card`)
+      assert(settingsAdmin.includes('pay at the property when they arrive'), `${manifest.id}: hotel payment policy does not invent a card checkout`)
+    } else {
+      assert(book.includes("@if($settings->pay_on_arrival)"), `${manifest.id}: pay on arrival is optional`)
+      assert(book.includes('name="payment_method"'), `${manifest.id}: guests can choose pay on arrival`)
+      assert(book.includes('name="card_number" required'), `${manifest.id}: card checkout stays required when pay on arrival is off`)
+      assert(backend['app/Http/Controllers/BookingController.php']?.includes("$rules['payment_method'] = 'required|in:card,arrival'"), `${manifest.id}: arrival is accepted only when the policy is on`)
+      const availability = backend['app/Services/AvailabilityService.php'] ?? ''
+      assert(availability.includes("'pay_on_arrival'"), `${manifest.id}: arrival reservations are stored unpaid`)
+      assert(availability.includes("'fake_card'"), `${manifest.id}: card reservations still record a card payment`)
+      assert(backend['resources/views/site/booking-confirm.blade.php']?.includes("payment_method === 'pay_on_arrival'"), `${manifest.id}: confirmation names pay on arrival`)
+    }
+  } else {
+    assert(!backend['app/Filament/Pages/StayPolicies.php'], `${manifest.id}: business sites do not get hotel stay policies`)
+    assert(!settingsAdmin.includes("Tab::make('Stay policies')"), `${manifest.id}: business sites do not show hotel stay policies`)
+    assert(!backend['resources/views/partials/stay-policies.blade.php'], `${manifest.id}: business sites do not render stay policies`)
+    assert(!backend['app/Support/StayRequest.php'], `${manifest.id}: business sites do not collect hotel stay dates`)
+  }
   const quotes = backend['app/Filament/Resources/TestimonialResource.php'] ?? ''
   assert(quotes.includes('SelectFilter'), `${manifest.id}: testimonials must filter by author or role`)
   assert(quotes.includes('->searchable()'), `${manifest.id}: testimonials must be searchable`)

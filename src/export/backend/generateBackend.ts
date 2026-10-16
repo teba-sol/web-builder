@@ -24,6 +24,7 @@ import {
 import { generateFilamentFiles } from './generateFilament'
 import { generateSetupFiles, generateSetupToken } from './generateSetup'
 import { FONT_OPTIONS } from '../../data/brand'
+import { isHospitalityTemplate } from '../../data/hospitality'
 import { phpStr } from './phpUtils'
 
 export type BackendFileMap = Record<string, string>
@@ -434,6 +435,7 @@ class SiteSetting extends Model
         'news_section_title', 'news_section_subtitle', 'pricing_section_title',
         'rooms_section_title', 'rooms_section_subtitle',
         'booking_section_title', 'booking_section_subtitle',
+        'free_cancellation', 'pay_on_arrival', 'free_breakfast',
         'steps_section_title', 'showcase_section_title', 'showcase_section_subtitle',
         'gallery_section_title', 'testimonials_section_title',
         'blog_section_title', 'blog_section_subtitle', 'faq_section_title',
@@ -449,6 +451,9 @@ class SiteSetting extends Model
         'page_visibility' => 'array',
         'section_visibility' => 'array',
         'logo_show_name' => 'boolean',
+        'free_cancellation' => 'boolean',
+        'pay_on_arrival' => 'boolean',
+        'free_breakfast' => 'boolean',
         'seo_enabled' => 'boolean',
     ];
 
@@ -640,6 +645,13 @@ function generateSkeleton(
           ],
         },
         minimum_stability: 'stable',
+        config: {
+          policy: {
+            advisories: {
+              block: false,
+            },
+          },
+        },
       },
       null,
       2,
@@ -654,12 +666,12 @@ APP_URL=http://localhost:8000
 LOG_CHANNEL=stack
 LOG_LEVEL=debug
 
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=laravel
-DB_USERNAME=root
-DB_PASSWORD=
+DB_CONNECTION=sqlite
+# DB_HOST=127.0.0.1
+# DB_PORT=3306
+# DB_DATABASE=laravel
+# DB_USERNAME=root
+# DB_PASSWORD=
 
 CACHE_STORE=file
 SESSION_DRIVER=file
@@ -811,7 +823,9 @@ class AdminPanelProvider extends PanelProvider
             ->colors(['primary' => Color::Zinc])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\\\Filament\\\\Resources')
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\\\Filament\\\\Widgets')
-            ->pages([Pages\\Dashboard::class]);
+            ->pages([
+                Pages\\Dashboard::class,${isHospitalityTemplate(payload.templateId) ? "\n                \\App\\Filament\\Pages\\StayPolicies::class," : ''}
+            ]);
 
         $pageDirectory = app_path('Filament/Pages');
         if (is_dir($pageDirectory)) {
@@ -1024,7 +1038,7 @@ class SiteController extends Controller
         try {
             $crs = app(\\App\\Services\\CrsClient::class);
             if ($crs->configured()) {
-                $roomTypes = array_slice(\\App\\Support\\CrsInventory::types($crs->inventory()), 0, 3);
+                $roomTypes = \\App\\Support\\CrsInventory::catalogue($crs->inventory());
             }
         } catch (\\Throwable) {
             $roomTypes = [];
@@ -1048,11 +1062,10 @@ ${usesBuildauraCrs(payload.templateId) ? `
     {
         try {
             $inventory = app(\\App\\Services\\BuildauraClient::class)->inventory();
-            $types = array_values(array_filter(
+            return array_values(array_filter(
                 $inventory['roomTypes'] ?? [],
-                fn ($type) => ($type['isActive'] ?? true) && empty($type['parentId'])
+                fn ($type) => ($type['isActive'] ?? true)
             ));
-            return array_slice($types, 0, 3);
         } catch (\\Throwable $e) {
             return [];
         }
@@ -1145,7 +1158,7 @@ return [
     'config/database.php': `<?php
 
 return [
-    'default' => env('DB_CONNECTION', 'mysql'),
+    'default' => env('DB_CONNECTION', 'sqlite'),
     'connections' => [
         'mysql' => [
             'driver' => 'mysql',
@@ -1164,6 +1177,7 @@ return [
             'driver' => 'sqlite',
             'database' => env('DB_DATABASE', database_path('database.sqlite')),
             'prefix' => '',
+            'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
         ],
     ],
 ];
@@ -1316,6 +1330,9 @@ return new class extends Migration
             $table->string('rooms_section_subtitle')->nullable();
             $table->string('booking_section_title')->nullable();
             $table->string('booking_section_subtitle')->nullable();
+            $table->boolean('free_cancellation')->default(false);
+            $table->boolean('pay_on_arrival')->default(false);
+            $table->boolean('free_breakfast')->default(false);
             $table->string('services_section_title')->nullable();
             $table->string('services_section_subtitle')->nullable();
             $table->string('steps_section_title')->nullable();
@@ -1481,15 +1498,9 @@ echo "==> Setting up environment..."
 if [ ! -f .env ]; then cp .env.example .env; fi
 php artisan key:generate --force
 
-echo "==> Creating required directories..."
+echo "==> Creating the SQLite database..."
 mkdir -p bootstrap/cache storage/framework/{cache/data,sessions,views} database
-
-echo ""
-echo "Make sure MySQL is running and credentials in .env are correct:"
-echo "  DB_HOST, DB_PORT, DB_DATABASE, DB_USERNAME, DB_PASSWORD"
-echo "Create the database if it does not exist, e.g.:"
-echo "  mysql -u root -e \\"CREATE DATABASE IF NOT EXISTS laravel CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;\\""
-echo ""
+touch database/database.sqlite
 
 echo "==> Running migrations & seeding your content..."
 php artisan migrate --seed --force
@@ -1516,22 +1527,17 @@ This folder is a **deploy-ready** Laravel 11 + Filament 3 admin panel, pre-fille
 
 - **Public website** at \`/\` — dynamic Blade template powered by your database
 - **Filament admin** at \`/admin\` — full styled dashboard to manage content
-- **MySQL by default** — configure credentials in \`.env\` before migrate/seed
+- **SQLite database** at \`database/database.sqlite\` — setup creates the file before migrate and seed
 
 ## Quick start — browser setup (no terminal)
 
 1. Upload the \`backend/\` folder to your host
 2. Run \`composer install\` once (or upload vendor folder)
-3. Copy \`.env.example\` to \`.env\` and set MySQL credentials (\`DB_*\`)
-4. Create the MySQL database named in \`DB_DATABASE\`
-5. Visit **\`/doctor?token=YOUR_DOCTOR_TOKEN\`** (token is in \`.env\` as \`DOCTOR_TOKEN\`)
-6. Click **Run All Recommended Steps**
+3. Copy \`.env.example\` to \`.env\`
+4. Visit **\`/doctor?token=YOUR_DOCTOR_TOKEN\`** (token is in \`.env\` as \`DOCTOR_TOKEN\`)
+5. Click **Run All Recommended Steps**
 
 ## Quick start — terminal
-
-1. Ensure MySQL is running and create a database (default name: \`laravel\`)
-2. Edit \`.env\` (created by setup) with your \`DB_*\` credentials if needed
-3. Run:
 
 \`\`\`bash
 cd backend
@@ -1546,9 +1552,9 @@ php artisan serve
 cd backend
 composer install
 cp .env.example .env
-# Edit .env: set DB_HOST, DB_DATABASE, DB_USERNAME, DB_PASSWORD
 php artisan key:generate
-mkdir -p bootstrap/cache storage/framework/{cache/data,sessions,views}
+mkdir -p bootstrap/cache storage/framework/{cache/data,sessions,views} database
+touch database/database.sqlite
 php artisan migrate --seed
 php artisan storage:link
 php artisan filament:assets   # required — publishes Filament CSS/JS
@@ -1588,7 +1594,7 @@ This hotel or guest house keeps guest details on this website and updates room s
 - Guest name, email, and phone are stored only in this site's database.
 - Buildaura receives the room, the dates, and the confirmation code. It does not receive the guest.
 - Reservations run on this Laravel site (\`php artisan serve\` or your host). The static \`frontend/\` folder does not take reservations.
-- In **Admin → Property**, create room types and rooms, review guest reservations, or request a new API key.
+- In **Admin → Hospitality**, create room types and rooms, review guest reservations, or request a new API key.
 
 Public pages:
 - \`/rooms\`
@@ -1613,7 +1619,7 @@ Public pages: \`/rooms\`, \`/rooms/{slug}\`, \`/book\`, \`/book/confirm/{code}\`
 ## Deploying to production
 
 1. Set \`APP_ENV=production\` and \`APP_DEBUG=false\` in \`.env\`
-2. Set production MySQL credentials in \`.env\` (\`DB_HOST\`, \`DB_DATABASE\`, \`DB_USERNAME\`, \`DB_PASSWORD\`)
+2. Keep \`DB_CONNECTION=sqlite\`. The web server user must be able to write \`database/database.sqlite\` and the \`database/\` directory
 3. Run \`php artisan migrate --seed\`
 4. Run \`php artisan storage:link\`
 5. Run \`php artisan filament:assets\`
@@ -1666,7 +1672,10 @@ export function generateBackend(
         : generateMigration(model.table, [...model.fields])
   }
 
-  Object.assign(files, generateFilamentFiles(content.sectionVisibility, content.pageVisibility))
+  Object.assign(files, generateFilamentFiles(content.sectionVisibility, content.pageVisibility, {
+    hospitality: isHospitalityTemplate(templateId),
+    cardCheckout: isHospitalityTemplate(templateId) && !usesBuildauraCrs(templateId),
+  }))
   Object.assign(files, usesBuildauraCrs(templateId) ? generateCrsBookingFiles(payload) : generateBookingFiles(payload))
 
   if (content.seoEnabled) {

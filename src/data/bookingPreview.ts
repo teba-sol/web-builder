@@ -31,6 +31,7 @@ export interface PreviewReservation {
   checkOut: string
   adults: number
   children: number
+  childAges?: number[]
   guestName: string
   guestEmail: string
   guestPhone: string
@@ -172,6 +173,11 @@ export function topLevelRoomTypes(roomTypes: RoomTypeItem[]): RoomTypeItem[] {
   return roomTypes.filter((r) => !r.parentSlug && r.isActive && r.name)
 }
 
+/** Active named types in editor order, including subtypes. */
+export function catalogueRoomTypes(roomTypes: RoomTypeItem[]): RoomTypeItem[] {
+  return roomTypes.filter((room) => room.isActive && room.name)
+}
+
 export function computeStayTotal(roomType: RoomTypeItem, checkIn: string, checkOut: string): {
   nights: number
   nightlyRate: number
@@ -225,6 +231,7 @@ export function createPreviewReservation(input: {
   checkOut: string
   adults: number
   children: number
+  childAges?: number[]
   guestName: string
   guestEmail: string
   guestPhone: string
@@ -240,6 +247,7 @@ export function createPreviewReservation(input: {
     checkOut: input.checkOut,
     adults: input.adults,
     children: input.children,
+    childAges: input.childAges,
     guestName: input.guestName,
     guestEmail: input.guestEmail,
     guestPhone: input.guestPhone,

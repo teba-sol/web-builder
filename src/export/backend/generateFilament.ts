@@ -347,7 +347,128 @@ class Edit${def.name} extends EditRecord
   }
 }
 
-export function generateSiteSettingsResource(): string {
+function stayPoliciesTab(cardCheckout: boolean): string {
+  const payHelp = cardCheckout
+    ? 'When this is on, guests can pay at the property instead of paying by card, and that choice is shown while they reserve.'
+    : 'When this is on, guests see that they can pay at the property when they arrive.'
+
+  return `                Forms\\Components\\Tabs\\Tab::make('Stay policies')->schema([
+                    Forms\\Components\\Toggle::make('free_cancellation')
+                        ->label('Free cancellation')
+                        ->helperText('When this is on, guests see that they can cancel a stay at no charge.')
+                        ->default(false),
+                    Forms\\Components\\Toggle::make('pay_on_arrival')
+                        ->label('Payment on arrival')
+                        ->helperText('${payHelp}')
+                        ->default(false),
+                    Forms\\Components\\Toggle::make('free_breakfast')
+                        ->label('Free breakfast')
+                        ->helperText('When this is on, guests see that breakfast is included with the stay.')
+                        ->default(false),
+                ]),
+`
+}
+
+export function stayPoliciesAdminFiles(cardCheckout: boolean): Record<string, string> {
+  const payHelp = cardCheckout
+    ? 'When this is on, guests can pay at the property instead of paying by card, and that choice is shown while they reserve.'
+    : 'When this is on, guests see that they can pay at the property when they arrive.'
+  const navigationGroup = 'Hospitality'
+
+  return {
+    'app/Filament/Pages/StayPolicies.php': `<?php
+
+namespace App\\Filament\\Pages;
+
+use App\\Models\\SiteSetting;
+use Filament\\Forms\\Components\\Toggle;
+use Filament\\Forms\\Concerns\\InteractsWithForms;
+use Filament\\Forms\\Contracts\\HasForms;
+use Filament\\Forms\\Form;
+use Filament\\Notifications\\Notification;
+use Filament\\Pages\\Page;
+
+class StayPolicies extends Page implements HasForms
+{
+    use InteractsWithForms;
+
+    protected static ?string $navigationIcon = 'heroicon-o-check-badge';
+
+    protected static ?string $navigationGroup = '${navigationGroup}';
+
+    protected static ?string $navigationLabel = 'Stay policies';
+
+    protected static ?string $title = 'Stay policies';
+
+    protected static ?int $navigationSort = -10;
+
+    protected static string $view = 'filament.pages.stay-policies';
+
+    public ?array $data = [];
+
+    public function mount(): void
+    {
+        $settings = SiteSetting::current();
+        $this->form->fill([
+            'free_cancellation' => (bool) $settings->free_cancellation,
+            'pay_on_arrival' => (bool) $settings->pay_on_arrival,
+            'free_breakfast' => (bool) $settings->free_breakfast,
+        ]);
+    }
+
+    public function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Toggle::make('free_cancellation')
+                    ->label('Free cancellation')
+                    ->helperText('When this is on, guests see that they can cancel a stay at no charge.')
+                    ->default(false),
+                Toggle::make('pay_on_arrival')
+                    ->label('Payment on arrival')
+                    ->helperText('${payHelp}')
+                    ->default(false),
+                Toggle::make('free_breakfast')
+                    ->label('Free breakfast')
+                    ->helperText('When this is on, guests see that breakfast is included with the stay.')
+                    ->default(false),
+            ])
+            ->statePath('data');
+    }
+
+    public function save(): void
+    {
+        $state = $this->form->getState();
+        SiteSetting::current()->update([
+            'free_cancellation' => (bool) ($state['free_cancellation'] ?? false),
+            'pay_on_arrival' => (bool) ($state['pay_on_arrival'] ?? false),
+            'free_breakfast' => (bool) ($state['free_breakfast'] ?? false),
+        ]);
+
+        Notification::make()->title('Stay policies saved')->success()->send();
+    }
+
+    public function getSubheading(): ?string
+    {
+        return 'Turn a policy on to show it to guests while they reserve. Off policies stay hidden, and they start off. The same toggles are also under Site Settings.';
+    }
+}
+`,
+    'resources/views/filament/pages/stay-policies.blade.php': `<x-filament-panels::page>
+    <x-filament-panels::form id="form" wire:submit="save">
+        {{ $this->form }}
+        <div style="margin-top:16px;">
+            <x-filament::button type="submit">Save stay policies</x-filament::button>
+        </div>
+    </x-filament-panels::form>
+</x-filament-panels::page>
+`,
+  }
+}
+
+export function generateSiteSettingsResource(options?: { hospitality?: boolean; cardCheckout?: boolean }): string {
+  const stayPolicies = options?.hospitality ? stayPoliciesTab(Boolean(options.cardCheckout)) : ''
+
   return `<?php
 
 namespace App\\Filament\\Resources;
@@ -380,7 +501,7 @@ class SiteSettingResource extends Resource
                     Forms\\Components\\Textarea::make('hero_subtext'),
                     Forms\\Components\\FileUpload::make('hero_image')->image()->disk('public')->directory('uploads'),
                 ]),
-                Forms\\Components\\Tabs\\Tab::make('Brand')->schema([
+${stayPolicies}                Forms\\Components\\Tabs\\Tab::make('Brand')->schema([
                     Forms\\Components\\FileUpload::make('logo')->image()->disk('public')->directory('uploads')->helperText('Shown in the site navigation.'),
                     Forms\\Components\\Toggle::make('logo_show_name')->label('Show business name next to logo')->default(true),
                     Forms\\Components\\ColorPicker::make('brand_primary')->label('Primary')->helperText('Buttons and calls to action.'),
@@ -725,10 +846,15 @@ class ContentOverviewChart extends ChartWidget
 export function generateFilamentFiles(
   sectionVisibility: SectionVisibility,
   pageVisibility: PageVisibility,
+  options?: { hospitality?: boolean; cardCheckout?: boolean },
 ): Record<string, string> {
   const files: Record<string, string> = {}
 
-  files['app/Filament/Resources/SiteSettingResource.php'] = generateSiteSettingsResource()
+  if (options?.hospitality) {
+    Object.assign(files, stayPoliciesAdminFiles(Boolean(options.cardCheckout)))
+  }
+
+  files['app/Filament/Resources/SiteSettingResource.php'] = generateSiteSettingsResource(options)
   files['app/Filament/Resources/ContactMessageResource.php'] = generateContactMessageResource()
 
   files['app/Filament/Resources/SiteSettingResource/Pages/ManageSiteSettings.php'] = `<?php
