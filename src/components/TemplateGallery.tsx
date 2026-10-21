@@ -4,6 +4,7 @@ import { CategoryFilter } from './CategoryFilter'
 import { TemplateCard } from './TemplateCard'
 import { useTemplateCatalog } from '../catalog/useTemplateCatalog'
 import { categories } from '../data/categories'
+import { templatesForPersonalAccount } from '../data/hospitalityAccess'
 import type { TemplateCategory } from '../types'
 
 export function TemplateGallery({
@@ -13,7 +14,7 @@ export function TemplateGallery({
   title?: string
   subtitle?: string
 }) {
-  const templates = useTemplateCatalog()
+  const templates = templatesForPersonalAccount(useTemplateCatalog())
   const [category, setCategory] = useState<TemplateCategory | 'all'>('all')
   const [query, setQuery] = useState('')
 

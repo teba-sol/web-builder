@@ -5,6 +5,7 @@ import { useWebsite } from '../context/WebsiteContext'
 import { TemplateRenderer } from '../templates/TemplateRenderer'
 import { loadSavedSite } from '../utils/storage'
 import { isValidTemplateId } from '../data/templateIds'
+import { useHospitalityTemplateGuard } from '../hooks/useHospitalityTemplateGuard'
 import type { TemplateId } from '../types'
 
 export function PreviewPage() {
@@ -13,15 +14,17 @@ export function PreviewPage() {
   const { content, templateId: selectedId, colorSchemeId, layoutVariantId } = useWebsite()
 
   const id = templateId ?? ''
+  const held = useHospitalityTemplateGuard(id)
   const saved = loadSavedSite()
   const hasContent = isValidTemplateId(id) && (selectedId === id || saved?.templateId === id)
 
   useEffect(() => {
+    if (held) return
     if (!isValidTemplateId(id)) navigate('/')
     else if (!hasContent) navigate(`/editor/${id}`)
-  }, [id, hasContent, navigate])
+  }, [held, id, hasContent, navigate])
 
-  if (!isValidTemplateId(id) || !hasContent) return null
+  if (held || !isValidTemplateId(id) || !hasContent) return null
 
   const activeContent = selectedId === id ? content : saved!.content
   const activeSchemeId = selectedId === id ? colorSchemeId : saved!.colorSchemeId

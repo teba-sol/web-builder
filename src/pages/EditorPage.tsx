@@ -13,6 +13,7 @@ import { TemplateRenderer } from '../templates/TemplateRenderer'
 import { getTemplateDefaults, getTemplateMeta } from '../data/defaults'
 import { appearanceFromSearchParams } from '../data/pickTemplate'
 import { isValidTemplateId } from '../data/templateIds'
+import { useHospitalityTemplateGuard } from '../hooks/useHospitalityTemplateGuard'
 
 export function EditorPage() {
   const { templateId } = useParams<{ templateId: string }>()
@@ -39,11 +40,13 @@ export function EditorPage() {
   const [saving, setSaving] = useState(false)
 
   const id = templateId ?? ''
+  const held = useHospitalityTemplateGuard(id)
   const template = isValidTemplateId(id) ? getTemplateMeta(id) : undefined
   const projectQuery = searchParams.get('project')
   const viewRequested = searchParams.get('mode') === 'view'
 
   useEffect(() => {
+    if (held) return
     if (!isValidTemplateId(id)) {
       navigate('/')
       return
@@ -67,10 +70,10 @@ export function EditorPage() {
     if (!content.businessName?.trim() && sample.businessName?.trim()) {
       selectTemplate(id)
     }
-  }, [id, selectedId, searchParams, content.businessName, selectTemplate, navigate])
+  }, [held, id, selectedId, searchParams, content.businessName, selectTemplate, navigate])
 
   useEffect(() => {
-    if (!isValidTemplateId(id)) return
+    if (held || !isValidTemplateId(id)) return
     const key = `${id}:${projectQuery ?? 'new'}`
     if (bootedKey.current === key) return
     bootedKey.current = key
@@ -96,9 +99,9 @@ export function EditorPage() {
       }
     }
     void run()
-  }, [id, projectQuery, bindProject, navigate, template?.name, user?.role])
+  }, [held, id, projectQuery, bindProject, navigate, template?.name, user?.role])
 
-  if (!template || !isValidTemplateId(id)) return null
+  if (held || !template || !isValidTemplateId(id)) return null
 
   const readOnly = viewRequested || !canEdit
 

@@ -74,7 +74,8 @@ Live render path: `TemplateRenderer` → per-template shells in `src/templates/`
 
 `src/pages/EditorPage.tsx`:
 
-- No `?project=` and the user is a consumer: `POST /api/v1/projects`, then replace the URL with `?project=`.
+- No `?project=` and the user is a consumer: `POST /api/v1/projects`, then replace the URL with `?project=`. Hospitality templates are not offered. `useHospitalityTemplateGuard` sends the browser home.
+- The personal gallery uses `templatesForPersonalAccount`. Salesperson and agency `/new-site` still lists hospitality templates.
 - No `?project=` and the user is a salesperson or agency admin: redirect to `/new-site?template=`.
 - `?mode=view` or `canEdit === false`: read-only. Hide the form.
 - `canExport === false`: show the lock badge and open `PaywallModal` instead of downloading. Salesperson copy is “Contact us — export locked”. Consumer copy is “Unpaid — export locked”.

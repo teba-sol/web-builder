@@ -1,12 +1,16 @@
 import { Link, useParams } from 'react-router-dom'
 import { getTemplateDefaults, getTemplateMeta } from '../data/defaults'
 import { isValidTemplateId } from '../data/templateIds'
+import { useHospitalityTemplateGuard } from '../hooks/useHospitalityTemplateGuard'
 import { TemplateRenderer } from '../templates/TemplateRenderer'
 
 export function TemplateDemoPage() {
   const { templateId } = useParams<{ templateId: string }>()
   const id = templateId ?? ''
+  const held = useHospitalityTemplateGuard(id)
   const template = isValidTemplateId(id) ? getTemplateMeta(id) : undefined
+
+  if (held) return null
 
   if (!isValidTemplateId(id) || !template) {
     return (

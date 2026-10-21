@@ -2,6 +2,7 @@ import { AppHeader } from '../components/AppHeader'
 import { RecentlyUsed } from '../components/RecentlyUsed'
 import { TemplateGallery } from '../components/TemplateGallery'
 import { useTemplateCatalog } from '../catalog/useTemplateCatalog'
+import { templatesForPersonalAccount } from '../data/hospitalityAccess'
 import { useAuth } from '../auth/AuthContext'
 import { AgencyReviewHome } from './AgencyReviewHome'
 import { LandingPage } from './LandingPage'
@@ -9,7 +10,7 @@ import { SalespersonHome } from './SalespersonHome'
 
 export function HomePage() {
   const { user, loading } = useAuth()
-  const templates = useTemplateCatalog()
+  const templates = templatesForPersonalAccount(useTemplateCatalog())
 
   if (!loading && !user) {
     return <LandingPage />
