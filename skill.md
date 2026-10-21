@@ -110,6 +110,7 @@ Role-specific flow stays in the page that already branches:
 
 - Do not add a second editor store.
 - Do not unlock cloud save or export in the client for an unpaid consumer.
+- Do not show hotel or hospitality templates to a consumer. `canUseHospitalityTemplates` is salesperson, agency admin, and platform admin only.
 - Do not put guest or payment fields on a CRS credentials request.
 - Do not put layout choices on `SiteContent`. The site document carries `layoutVariantId`.
 - Public auth, marketing, demo, pick-template, and `/site/:templateId` stay outside `RequireAuth`. Editor and preview stay inside it.

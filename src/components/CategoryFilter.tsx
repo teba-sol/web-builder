@@ -10,7 +10,7 @@ interface Props {
 export function CategoryFilter({ active, onChange, counts }: Props) {
   return (
     <div className="flex flex-wrap gap-2">
-      {categories.map((cat) => (
+      {categories.filter((cat) => cat.id === 'all' || counts[cat.id] > 0).map((cat) => (
         <button
           key={cat.id}
           onClick={() => onChange(cat.id)}

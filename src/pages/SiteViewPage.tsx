@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { getTemplateDefaults } from '../data/defaults'
 import { isValidTemplateId } from '../data/templateIds'
+import { useHospitalityTemplateGuard } from '../hooks/useHospitalityTemplateGuard'
 import { TemplateRenderer } from '../templates/TemplateRenderer'
 import { loadSavedSite } from '../utils/storage'
 
@@ -10,6 +11,7 @@ export function SiteViewPage() {
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
   const id = templateId ?? ''
+  const held = useHospitalityTemplateGuard(id)
   const isDemo = searchParams.get('demo') === 'true'
   const chromeless = searchParams.get('chromeless') === 'true'
 
@@ -24,11 +26,12 @@ export function SiteViewPage() {
     : null
 
   useEffect(() => {
+    if (held) return
     if (!isValidTemplateId(id)) navigate('/')
     else if (!isDemo && !hasUserContent) navigate(`/editor/${id}`)
-  }, [id, isDemo, hasUserContent, navigate])
+  }, [held, id, isDemo, hasUserContent, navigate])
 
-  if (!isValidTemplateId(id) || !content) return null
+  if (held || !isValidTemplateId(id) || !content) return null
 
   const schemeId = isDemo ? undefined : saved?.colorSchemeId
   const layoutVariantId = isDemo ? undefined : saved?.layoutVariantId
