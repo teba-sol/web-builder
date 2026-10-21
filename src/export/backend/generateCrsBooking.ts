@@ -4,6 +4,8 @@
  * Buildaura only receives the room, the dates, and the confirmation code.
  */
 import type { SiteExportPayload } from './exportPayload'
+import { stayPoliciesPartial, stayRequestPhp, staySearchPartial } from './generateBooking'
+import { stayPoliciesAdminFiles } from './generateFilament'
 import { roomCalendarFiles } from './generateRoomCalendar'
 
 export interface CrsExportCredentials {
@@ -58,6 +60,10 @@ export function generateCrsBookingFiles(payload: SiteExportPayload): Record<stri
   if (!usesBuildauraCrs(payload.templateId)) return {}
   const accent = payload.accent
   const files: Record<string, string> = {}
+  files['resources/views/partials/stay-policies.blade.php'] = stayPoliciesPartial()
+  files['resources/views/partials/stay-search.blade.php'] = staySearchPartial(accent)
+  files['app/Support/StayRequest.php'] = stayRequestPhp()
+  Object.assign(files, stayPoliciesAdminFiles(false))
 
   files['config/services.php'] = `<?php
 
@@ -146,6 +152,29 @@ class BuildauraClient
         return $this->send('POST', $this->path('/api-keys'));
     }
 
+    public function uploadImage(string $bytes, string $filename, string $mime): string
+    {
+        $key = (string) config('services.buildaura.key');
+        if ($key === '') {
+            throw new RuntimeException('BUILDAURA_API_KEY is missing. Open the site from Buildaura and download it again, or request a new key in admin.');
+        }
+        $response = Http::timeout(60)
+            ->acceptJson()
+            ->withHeaders(['X-Api-Key' => $key])
+            ->attach('file', $bytes, $filename, ['Content-Type' => $mime])
+            ->post(rtrim((string) config('services.buildaura.url'), '/').$this->path('/images'));
+        if ($response->failed()) {
+            $message = $response->json('message') ?? $response->body();
+            throw new RuntimeException(is_string($message) && $message !== '' ? $message : 'Could not store the room photo.');
+        }
+        $url = $response->json('url');
+        if (! is_string($url) || $url === '') {
+            throw new RuntimeException('Buildaura did not return a photo URL.');
+        }
+
+        return $url;
+    }
+
     private function path(string $suffix): string
     {
         $hotelId = (string) config('services.buildaura.hotel_id');
@@ -212,6 +241,7 @@ return new class extends Migration
             $table->date('check_out');
             $table->unsignedTinyInteger('adults')->default(1);
             $table->unsignedTinyInteger('children')->default(0);
+            $table->json('child_ages')->nullable();
             $table->string('guest_name');
             $table->string('guest_email')->nullable();
             $table->string('guest_phone');
@@ -250,6 +280,7 @@ class GuestReservation extends Model
         'check_out',
         'adults',
         'children',
+        'child_ages',
         'guest_name',
         'guest_email',
         'guest_phone',
@@ -263,6 +294,7 @@ class GuestReservation extends Model
     protected $casts = [
         'check_in' => 'date',
         'check_out' => 'date',
+        'child_ages' => 'array',
         'nightly_rate' => 'decimal:2',
         'total_price' => 'decimal:2',
     ];
@@ -276,6 +308,7 @@ namespace App\\Http\\Controllers;
 use App\\Models\\GuestReservation;
 use App\\Models\\SiteSetting;
 use App\\Services\\BuildauraClient;
+use App\\Support\\StayRequest;
 use Carbon\\Carbon;
 use Illuminate\\Http\\RedirectResponse;
 use Illuminate\\Http\\Request;
@@ -318,25 +351,21 @@ class BookingController extends Controller
 
     public function bookForm(Request $request): View
     {
-        $checkIn = (string) $request->query('check_in', now()->addDay()->toDateString());
-        $checkOut = (string) $request->query('check_out', now()->addDays(3)->toDateString());
-        $adults = max(1, (int) $request->query('adults', 2));
-        $children = max(0, (int) $request->query('children', 0));
+        $stay = StayRequest::from($request);
         $roomTypeId = (string) $request->query('room_type_id', '');
         [$types, $error] = $this->activeTypes();
         $results = [];
-        $searched = $request->has('check_in');
 
-        if ($searched && $checkIn !== '' && $checkOut !== '' && $checkIn < $checkOut && $error === null) {
+        if ($stay['searched'] && $error === null) {
             try {
-                $availability = $this->crs->availability($checkIn, $checkOut, $roomTypeId !== '' ? $roomTypeId : null);
-                $nights = max(1, (int) Carbon::parse($checkIn)->diffInDays(Carbon::parse($checkOut)));
+                $availability = $this->crs->availability($stay['checkIn'], $stay['checkOut'], $roomTypeId !== '' ? $roomTypeId : null);
+                $nights = max(1, (int) Carbon::parse($stay['checkIn'])->diffInDays(Carbon::parse($stay['checkOut'])));
                 foreach ($availability['types'] ?? [] as $row) {
                     $type = $row['roomType'] ?? [];
                     if ($roomTypeId !== '' && ($type['id'] ?? '') !== $roomTypeId) {
                         continue;
                     }
-                    if (! $this->fits($type, $adults, $children)) {
+                    if (! $this->fits($type, $stay['adults'], $stay['children'])) {
                         continue;
                     }
                     if ((int) ($row['availableCount'] ?? 0) < 1 || empty($row['units'])) {
@@ -357,28 +386,34 @@ class BookingController extends Controller
             }
         }
 
-        return view('site.book', [
+        $messages = $stay['errors'];
+        unset($stay['errors']);
+        $view = view('site.book', array_merge($stay, [
             'settings' => SiteSetting::current(),
             'roomTypes' => $types,
             'results' => $results,
-            'checkIn' => $checkIn,
-            'checkOut' => $checkOut,
-            'adults' => $adults,
-            'children' => $children,
             'roomTypeId' => $roomTypeId,
-            'searched' => $searched,
             'apiError' => $error,
-        ]);
+        ]));
+        if ($messages !== []) {
+            $view->withErrors($messages);
+        }
+
+        return $view;
     }
 
     public function store(Request $request): RedirectResponse
     {
+        $stay = StayRequest::from($request);
+        if ($stay['errors'] !== []) {
+            return back()->withInput()->withErrors($stay['errors']);
+        }
         $validated = $request->validate([
             'room_type_id' => 'required|uuid',
             'check_in' => 'required|date|after_or_equal:today',
             'check_out' => 'required|date|after:check_in',
             'adults' => 'required|integer|min:1|max:20',
-            'children' => 'nullable|integer|min:0|max:20',
+            'children' => 'nullable|integer|min:0|max:10',
             'guest_name' => 'required|string|max:255',
             'guest_email' => 'nullable|email|max:255',
             'guest_phone' => 'required|string|max:50',
@@ -411,7 +446,7 @@ class BookingController extends Controller
         $code = strtoupper(Str::random(8));
 
         try {
-            $block = $this->crs->occupy($unit['id'], $validated['check_in'], $validated['check_out'], $code);
+            $block = $this->crs->occupy($unit['id'], $stay['checkIn'], $stay['checkOut'], $code);
         } catch (RuntimeException $e) {
             return back()->withInput()->withErrors(['booking' => $e->getMessage()]);
         }
@@ -427,10 +462,11 @@ class BookingController extends Controller
                 'room_unit_id' => $unit['id'],
                 'room_type_name' => $type['name'] ?? 'Room',
                 'room_code' => $unit['code'] ?? '',
-                'check_in' => $validated['check_in'],
-                'check_out' => $validated['check_out'],
-                'adults' => (int) $validated['adults'],
-                'children' => (int) ($validated['children'] ?? 0),
+                'check_in' => $stay['checkIn'],
+                'check_out' => $stay['checkOut'],
+                'adults' => $stay['adults'],
+                'children' => $stay['children'],
+                'child_ages' => array_map('intval', $stay['childAges']),
                 'guest_name' => $validated['guest_name'],
                 'guest_email' => $validated['guest_email'] ?? null,
                 'guest_phone' => $validated['guest_phone'],
@@ -710,6 +746,7 @@ class PropertyController extends Controller
     <div class="text-center mb-10">
       <h1 class="text-4xl font-bold mb-2">{{ $settings->rooms_section_title ?? 'Rooms' }}</h1>
       <p class="text-slate-600">{{ $settings->rooms_section_subtitle }}</p>
+      @include('partials.stay-policies')
     </div>
     @if($apiError)
     <p class="mb-6 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-amber-900">{{ $apiError }}</p>
@@ -717,10 +754,16 @@ class PropertyController extends Controller
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
       @foreach($roomTypes as $type)
       <article class="rounded-2xl border bg-white overflow-hidden shadow-sm">
+        @if(!empty($type['image']))
+        <a href="{{ route('rooms.show', $type['slug']) }}" class="block"><img src="{{ \\App\\Support\\PublicAsset::url($type['image']) }}" alt="{{ $type['name'] }}" class="aspect-[4/3] w-full object-cover" /></a>
+        @else
+        <div class="aspect-[4/3] w-full bg-slate-100"></div>
+        @endif
         <div class="p-6">
           <h2 class="text-xl font-semibold">{{ $type['name'] }}</h2>
           @if(!empty($type['shortDescription']))<p class="text-sm text-slate-500 mt-1">{{ $type['shortDescription'] }}</p>@endif
           <p class="mt-4 text-lg font-bold" style="color:${accent}">{{ number_format((float) ($type['basePrice'] ?? 0), 0) }} {{ $type['currency'] ?? '' }} <span class="text-sm font-normal text-slate-500">/ night</span></p>
+          <div class="mt-4">@include('partials.stay-policies', ['compact' => true])</div>
           <div class="mt-4 flex gap-4 text-sm font-semibold">
             <a href="{{ route('rooms.show', $type['slug']) }}" style="color:${accent}">View details</a>
             <a href="{{ route('book', ['room_type_id' => $type['id']]) }}" class="text-slate-700">Reserve</a>
@@ -743,10 +786,16 @@ class PropertyController extends Controller
 <section class="py-16">
   <div class="max-w-3xl mx-auto px-6">
     <a href="{{ route('rooms.index') }}" class="text-sm text-slate-500 hover:underline">All rooms</a>
+    @if(!empty($roomType['image']))
+    <img src="{{ \\App\\Support\\PublicAsset::url($roomType['image']) }}" alt="{{ $roomType['name'] }}" class="mt-6 aspect-[4/3] w-full rounded-2xl object-cover shadow-lg" />
+    @else
+    <div class="mt-6 aspect-[4/3] w-full rounded-2xl bg-slate-100"></div>
+    @endif
     <h1 class="text-4xl font-bold mt-4 mb-2">{{ $roomType['name'] }}</h1>
     @if(!empty($roomType['shortDescription']))<p class="text-slate-500 mb-4">{{ $roomType['shortDescription'] }}</p>@endif
     <p class="text-2xl font-bold mb-6" style="color:${accent}">{{ number_format((float) ($roomType['basePrice'] ?? 0), 0) }} {{ $roomType['currency'] ?? '' }} <span class="text-base font-normal text-slate-500">/ night</span></p>
     @if(!empty($roomType['description']))<p class="text-slate-700 leading-relaxed mb-6">{{ $roomType['description'] }}</p>@endif
+    @include('partials.stay-policies')
     <dl class="grid grid-cols-2 gap-4 text-sm mb-8">
       <div><dt class="text-slate-400">Guests</dt><dd>{{ $roomType['maxAdults'] ?? 2 }} adults · {{ $roomType['maxChildren'] ?? 0 }} children</dd></div>
       @if(!empty($roomType['bedConfiguration']))<div><dt class="text-slate-400">Beds</dt><dd>{{ $roomType['bedConfiguration'] }}</dd></div>@endif
@@ -765,40 +814,14 @@ class PropertyController extends Controller
     <div class="text-center mb-10">
       <h1 class="text-4xl font-bold mb-2">{{ $settings->booking_section_title ?? 'Reserve a room' }}</h1>
       <p class="text-slate-600">{{ $settings->booking_section_subtitle ?? 'Choose dates, then leave your name and phone.' }}</p>
+      @include('partials.stay-policies')
     </div>
     @if($apiError)
     <p class="mb-6 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-amber-900">{{ $apiError }}</p>
     @endif
-    <form method="GET" action="{{ route('book') }}" class="bg-white rounded-2xl border p-6 shadow-sm mb-10 grid md:grid-cols-5 gap-4 items-end">
-      <div>
-        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Check-in</label>
-        <input type="date" name="check_in" value="{{ $checkIn }}" required class="w-full rounded-lg border px-3 py-2" />
-      </div>
-      <div>
-        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Check-out</label>
-        <input type="date" name="check_out" value="{{ $checkOut }}" required class="w-full rounded-lg border px-3 py-2" />
-      </div>
-      <div>
-        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Adults</label>
-        <input type="number" name="adults" min="1" max="20" value="{{ $adults }}" class="w-full rounded-lg border px-3 py-2" />
-      </div>
-      <div>
-        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Children</label>
-        <input type="number" name="children" min="0" max="20" value="{{ $children }}" class="w-full rounded-lg border px-3 py-2" />
-      </div>
-      <div>
-        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Room type</label>
-        <select name="room_type_id" class="w-full rounded-lg border px-3 py-2">
-          <option value="">Any</option>
-          @foreach($roomTypes as $type)
-          <option value="{{ $type['id'] }}" @selected($roomTypeId === ($type['id'] ?? ''))>{{ $type['name'] }}</option>
-          @endforeach
-        </select>
-      </div>
-      <div class="md:col-span-5">
-        <button type="submit" class="text-white px-6 py-3 rounded-lg font-semibold" style="background-color:${accent}">Search availability</button>
-      </div>
-    </form>
+    <div class="mb-10">
+      @include('partials.stay-search', ['searchAction' => route('book'), 'checkIn' => $checkIn, 'checkOut' => $checkOut, 'adults' => $adults, 'children' => $children, 'childAges' => $childAges, 'minDate' => $minDate, 'roomTypes' => $roomTypes, 'roomTypeId' => $roomTypeId, 'submitLabel' => 'Search availability'])
+    </div>
     @if($errors->any())
     <div class="mb-6 rounded-xl border border-red-200 bg-red-50 text-red-800 px-4 py-3">
       @foreach($errors->all() as $error)<p>{{ $error }}</p>@endforeach
@@ -809,6 +832,11 @@ class PropertyController extends Controller
       <div class="space-y-6">
         @foreach($results as $row)
         <div class="bg-white rounded-2xl border p-6 flex flex-col md:flex-row gap-6">
+          @if(!empty($row['type']['image']))
+          <img src="{{ \\App\\Support\\PublicAsset::url($row['type']['image']) }}" alt="" class="aspect-[4/3] w-full rounded-xl object-cover md:w-64" />
+          @else
+          <div class="aspect-[4/3] w-full rounded-xl bg-slate-100 md:w-64"></div>
+          @endif
           <div class="flex-1">
             <h2 class="text-xl font-semibold">{{ $row['type']['name'] }}</h2>
             <p class="text-sm text-emerald-700 mt-2 font-medium">{{ $row['available'] }} available</p>
@@ -821,6 +849,9 @@ class PropertyController extends Controller
             <input type="hidden" name="check_out" value="{{ $checkOut }}" />
             <input type="hidden" name="adults" value="{{ $adults }}" />
             <input type="hidden" name="children" value="{{ $children }}" />
+            @foreach($childAges as $age)
+            <input type="hidden" name="child_ages[]" value="{{ $age }}" />
+            @endforeach
             <div>
               <label class="block text-xs font-semibold text-slate-500 mb-1">Full name</label>
               <input name="guest_name" required value="{{ old('guest_name') }}" class="w-full rounded-lg border px-3 py-2 text-sm" />
@@ -837,6 +868,7 @@ class PropertyController extends Controller
               <label class="block text-xs font-semibold text-slate-500 mb-1">Special requests</label>
               <textarea name="special_requests" rows="2" class="w-full rounded-lg border px-3 py-2 text-sm">{{ old('special_requests') }}</textarea>
             </div>
+            @include('partials.stay-policies', ['compact' => true])
             <button type="submit" class="w-full text-white px-4 py-2.5 rounded-lg font-semibold text-sm" style="background-color:${accent}">Reserve</button>
           </form>
         </div>
@@ -863,11 +895,13 @@ class PropertyController extends Controller
       <div class="flex justify-between gap-4"><span class="text-slate-500">Room</span><span>{{ $reservation->room_type_name }} · {{ $reservation->room_code }}</span></div>
       <div class="flex justify-between gap-4"><span class="text-slate-500">Check-in</span><span>{{ $reservation->check_in->format('M j, Y') }}</span></div>
       <div class="flex justify-between gap-4"><span class="text-slate-500">Check-out</span><span>{{ $reservation->check_out->format('M j, Y') }}</span></div>
+      <div class="flex justify-between gap-4"><span class="text-slate-500">Guests</span><span>{{ $reservation->adults }} adults{{ $reservation->children ? ' · '.$reservation->children.' children'.((is_array($reservation->child_ages) && count($reservation->child_ages)) ? ' ('.collect($reservation->child_ages)->map(fn ($age) => $age.'y')->implode(', ').')' : '') : '' }}</span></div>
       <div class="flex justify-between gap-4"><span class="text-slate-500">Guest</span><span>{{ $reservation->guest_name }}</span></div>
       <div class="flex justify-between gap-4"><span class="text-slate-500">Phone</span><span>{{ $reservation->guest_phone }}</span></div>
       @if($reservation->guest_email)<div class="flex justify-between gap-4"><span class="text-slate-500">Email</span><span>{{ $reservation->guest_email }}</span></div>@endif
       <div class="flex justify-between gap-4 border-t pt-3"><span class="text-slate-500">Total</span><span class="font-bold" style="color:${accent}">{{ number_format($reservation->total_price, 0) }} {{ $reservation->currency }}</span></div>
     </div>
+    @include('partials.stay-policies')
     <a href="{{ route('home') }}" class="inline-block mt-8 text-sm font-semibold" style="color:${accent}">Back to home</a>
   </div>
 </section>
@@ -883,13 +917,21 @@ class PropertyController extends Controller
 namespace App\\Filament\\Pages;
 
 use App\\Services\\BuildauraClient;
+use Filament\\Actions\\Action;
+use Filament\\Forms\\Components\\FileUpload;
+use Filament\\Forms\\Components\\Select;
+use Filament\\Forms\\Components\\Textarea;
+use Filament\\Forms\\Components\\TextInput;
+use Filament\\Forms\\Components\\Toggle;
+use Filament\\Notifications\\Notification;
 use Filament\\Pages\\Page;
+use Illuminate\\Support\\Facades\\Storage;
 use RuntimeException;
 
 class RoomTypes extends Page
 {
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'Property';
+    protected static ?string $navigationGroup = 'Hospitality';
     protected static ?string $navigationLabel = 'Room types';
     protected static ?string $title = 'Room types';
     protected static string $view = 'filament.pages.room-types';
@@ -901,13 +943,97 @@ class RoomTypes extends Page
         'sort' => 'sortOrder',
     ];
 
+    public ?string $editingTypeId = null;
+
     protected array $inventoryCache = [];
+
+    /** @var array<string, string> */
+    protected array $images = [];
 
     protected ?string $inventoryError = null;
 
     protected function getForms(): array
     {
         return [];
+    }
+
+    public function getSubheading(): ?string
+    {
+        return 'Room types and photos are saved in Buildaura. This website does not store them.';
+    }
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            Action::make('addType')
+                ->label('Add room type')
+                ->slideOver()
+                ->modalSubmitActionLabel('Save to Buildaura')
+                ->mountUsing(function (): void {
+                    $this->editingTypeId = null;
+                })
+                ->form($this->typeForm(true))
+                ->action(function (array $data): void {
+                    $this->guard(fn () => $this->saveType($data, null));
+                }),
+        ];
+    }
+
+    public function editTypeAction(): Action
+    {
+        return Action::make('editType')
+            ->label('Edit')
+            ->button()
+            ->outlined()
+            ->size('sm')
+            ->color('gray')
+            ->slideOver()
+            ->modalHeading('Edit room type')
+            ->modalSubmitActionLabel('Save to Buildaura')
+            ->mountUsing(function (array $arguments): void {
+                $this->editingTypeId = (string) ($arguments['typeId'] ?? '');
+            })
+            ->fillForm(function (array $arguments): array {
+                $type = $this->findType((string) ($arguments['typeId'] ?? ''));
+
+                return $type ? $this->typeState($type) : [];
+            })
+            ->form($this->typeForm(false))
+            ->action(function (array $arguments, array $data): void {
+                $this->guard(function () use ($arguments, $data) {
+                    $type = $this->findType((string) ($arguments['typeId'] ?? ''));
+                    if (! $type) {
+                        throw new RuntimeException('That room type is no longer in Buildaura.');
+                    }
+                    $this->saveType($data, $type);
+                });
+            });
+    }
+
+    public function deleteTypeAction(): Action
+    {
+        return Action::make('deleteType')
+            ->label('Delete')
+            ->button()
+            ->outlined()
+            ->size('sm')
+            ->color('danger')
+            ->requiresConfirmation()
+            ->modalHeading('Delete room type')
+            ->modalDescription('This removes the room type and its rooms from Buildaura.')
+            ->action(function (array $arguments): void {
+                $this->guard(function () use ($arguments) {
+                    app(BuildauraClient::class)->deleteType((string) ($arguments['typeId'] ?? ''));
+                    $this->inventoryCache = [];
+                    $this->inventory();
+                    Notification::make()->title('Room type deleted from Buildaura')->success()->send();
+                });
+            });
+    }
+
+    public function imageFor(string $typeId): ?string
+    {
+        return $this->images[$typeId] ?? null;
     }
 
     public function clearTypeFilters(): void
@@ -933,6 +1059,7 @@ class RoomTypes extends Page
 
         return [
             'types' => $this->visibleTypes($inventory['roomTypes'] ?? []),
+            'units' => $inventory['units'] ?? [],
             'error' => $this->inventoryError,
         ];
     }
@@ -957,9 +1084,30 @@ class RoomTypes extends Page
         }
         try {
             $loaded = app(BuildauraClient::class)->inventory();
-            $this->inventoryCache = is_array($loaded) && $loaded !== [] ? $loaded : ['roomTypes' => []];
+            $this->images = [];
+            $types = [];
+            foreach (($loaded['roomTypes'] ?? []) as $type) {
+                if (! is_array($type)) {
+                    continue;
+                }
+                $image = $type['image'] ?? null;
+                if (is_string($image) && str_starts_with($image, 'data:')) {
+                    $this->images[(string) ($type['id'] ?? '')] = $image;
+                    $type['image'] = null;
+                    $type['hasInlineImage'] = true;
+                } else {
+                    $type['hasInlineImage'] = false;
+                }
+                $types[] = $type;
+            }
+            if (! is_array($loaded)) {
+                $loaded = [];
+            }
+            $loaded['roomTypes'] = $types;
+            $this->inventoryCache = $loaded;
             $this->inventoryError = null;
         } catch (RuntimeException $e) {
+            $this->images = [];
             $this->inventoryCache = ['roomTypes' => []];
             $this->inventoryError = $e->getMessage();
         }
@@ -1031,12 +1179,230 @@ class RoomTypes extends Page
 
         return $types;
     }
+
+    private function findType(string $id): ?array
+    {
+        foreach ($this->inventory()['roomTypes'] ?? [] as $type) {
+            if ((string) ($type['id'] ?? '') === $id) {
+                return $type;
+            }
+        }
+
+        return null;
+    }
+
+    private function saveType(array $data, ?array $existing): void
+    {
+        $payload = [
+            'name' => trim((string) ($data['name'] ?? '')),
+            'slug' => filled($data['slug'] ?? null) ? trim((string) $data['slug']) : null,
+            'description' => (string) ($data['description'] ?? ''),
+            'shortDescription' => (string) ($data['shortDescription'] ?? ''),
+            'basePrice' => is_numeric($data['basePrice'] ?? null) ? (float) $data['basePrice'] : 0,
+            'currency' => filled($data['currency'] ?? null) ? strtoupper(trim((string) $data['currency'])) : 'ETB',
+            'maxAdults' => (int) ($data['maxAdults'] ?? 2),
+            'maxChildren' => (int) ($data['maxChildren'] ?? 0),
+            'maxOccupancy' => (int) ($data['maxOccupancy'] ?? 2),
+            'bedConfiguration' => (string) ($data['bedConfiguration'] ?? ''),
+            'sizeSqm' => (string) ($data['sizeSqm'] ?? ''),
+            'amenities' => $this->amenities($data['amenities'] ?? ''),
+            'image' => $this->storedImage($data, $existing),
+            'unitPrefix' => filled($data['unitPrefix'] ?? null) ? trim((string) $data['unitPrefix']) : 'RM-',
+            'isActive' => (bool) ($data['isActive'] ?? true),
+            'sortOrder' => (int) ($data['sortOrder'] ?? 0),
+        ];
+        $parentId = trim((string) ($data['parentId'] ?? ''));
+        if ($parentId !== '' && ($existing === null || $parentId !== (string) ($existing['id'] ?? ''))) {
+            $payload['parentId'] = $parentId;
+        }
+        $crs = app(BuildauraClient::class);
+        if ($existing === null) {
+            $payload['unitCount'] = max(0, (int) ($data['unitCount'] ?? 1));
+            $crs->createType($payload);
+            $title = 'Room type created in Buildaura';
+        } else {
+            $crs->updateType((string) $existing['id'], $payload);
+            $title = 'Room type updated in Buildaura';
+        }
+        $this->inventoryCache = [];
+        $this->inventory();
+        Notification::make()->title($title)->success()->send();
+    }
+
+    private function typeForm(bool $creating): array
+    {
+        $fields = [
+            TextInput::make('name')->required()->maxLength(120),
+            TextInput::make('slug')->maxLength(160)->helperText('Leave blank to build it from the name.'),
+            Select::make('parentId')
+                ->label('Parent type')
+                ->options(fn () => $this->parentOptions())
+                ->searchable()
+                ->placeholder($creating ? 'None (top-level)' : 'Keep current parent'),
+            TextInput::make('shortDescription')->label('Short description')->maxLength(240),
+            Textarea::make('description')->rows(3),
+            TextInput::make('basePrice')->label('Nightly price')->numeric()->default(0)->required(),
+            TextInput::make('currency')->default('ETB')->maxLength(3)->required(),
+            TextInput::make('maxAdults')->numeric()->default(2)->required()->minValue(1),
+            TextInput::make('maxChildren')->numeric()->default(0)->required()->minValue(0),
+            TextInput::make('maxOccupancy')->numeric()->default(2)->required()->minValue(1),
+            TextInput::make('bedConfiguration')->label('Beds'),
+            TextInput::make('sizeSqm')->label('Size (m²)'),
+            Textarea::make('amenities')->helperText('Comma-separated. Example: Wi-Fi, Breakfast, City view'),
+            TextInput::make('unitPrefix')->label('Room number prefix')->default('RM-'),
+            Toggle::make('isActive')->label('Active')->default(true),
+            TextInput::make('sortOrder')->numeric()->default(0),
+            FileUpload::make('photo')
+                ->label('Room photo')
+                ->disk('local')
+                ->directory('crs-uploads')
+                ->visibility('private')
+                ->image()
+                ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/gif'])
+                ->maxSize(5120)
+                ->helperText('JPEG, PNG, WebP, or GIF up to 5 MB.'),
+            Toggle::make('clearImage')->label('Remove current photo')->default(false),
+        ];
+        if ($creating) {
+            $fields[] = TextInput::make('unitCount')->label('Rooms to create')->numeric()->default(1)->minValue(0);
+        }
+
+        return $fields;
+    }
+
+    private function typeState(array $type): array
+    {
+        $amenities = $type['amenities'] ?? [];
+
+        return [
+            'name' => $type['name'] ?? '',
+            'slug' => $type['slug'] ?? '',
+            'parentId' => $type['parentId'] ?? null,
+            'shortDescription' => $type['shortDescription'] ?? '',
+            'description' => $type['description'] ?? '',
+            'basePrice' => $type['basePrice'] ?? 0,
+            'currency' => $type['currency'] ?? 'ETB',
+            'maxAdults' => $type['maxAdults'] ?? 2,
+            'maxChildren' => $type['maxChildren'] ?? 0,
+            'maxOccupancy' => $type['maxOccupancy'] ?? 2,
+            'bedConfiguration' => $type['bedConfiguration'] ?? '',
+            'sizeSqm' => $type['sizeSqm'] ?? '',
+            'amenities' => is_array($amenities) ? implode(', ', $amenities) : (string) $amenities,
+            'unitPrefix' => $type['unitPrefix'] ?? 'RM-',
+            'isActive' => (bool) ($type['isActive'] ?? true),
+            'sortOrder' => $type['sortOrder'] ?? 0,
+        ];
+    }
+
+    private function parentOptions(): array
+    {
+        $options = [];
+        foreach ($this->inventory()['roomTypes'] ?? [] as $type) {
+            $id = (string) ($type['id'] ?? '');
+            if ($id === '' || $id === (string) $this->editingTypeId) {
+                continue;
+            }
+            $options[$id] = $type['name'] ?? $id;
+        }
+
+        return $options;
+    }
+
+    private function amenities(mixed $value): array
+    {
+        $parts = array_map('trim', explode(',', (string) $value));
+
+        return array_values(array_filter($parts, fn ($part) => $part !== ''));
+    }
+
+    private function storedImage(array $data, ?array $existing): string
+    {
+        $uploaded = $this->readUpload($data['photo'] ?? null);
+        if ($uploaded !== null) {
+            return $uploaded;
+        }
+        if (! empty($data['clearImage'])) {
+            return '';
+        }
+        if ($existing === null) {
+            return '';
+        }
+        if (! empty($existing['hasInlineImage'])) {
+            $kept = $this->images[(string) ($existing['id'] ?? '')] ?? null;
+            if (! is_string($kept) || $kept === '') {
+                throw new RuntimeException('The current photo could not be loaded. Try again before saving.');
+            }
+
+            return $kept;
+        }
+        $image = $existing['image'] ?? '';
+
+        return is_string($image) ? $image : '';
+    }
+
+    private function readUpload(mixed $upload): ?string
+    {
+        if (is_array($upload)) {
+            $upload = $upload[0] ?? null;
+        }
+        if (! is_string($upload) || $upload === '' || str_contains($upload, '..')) {
+            return null;
+        }
+        if (! str_starts_with($upload, 'crs-uploads/') && ! str_starts_with($upload, 'livewire-tmp/')) {
+            return null;
+        }
+        $disk = Storage::disk('local');
+        if (! $disk->exists($upload)) {
+            return null;
+        }
+        $bytes = $disk->get($upload);
+        $mime = $disk->mimeType($upload) ?: '';
+        if ($mime === 'image/jpg') {
+            $mime = 'image/jpeg';
+        }
+        if (! is_string($bytes) || $bytes === '') {
+            return null;
+        }
+        if (strlen($bytes) > 5 * 1024 * 1024) {
+            throw new RuntimeException('Room photo must be 5 MB or smaller.');
+        }
+        $allowed = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+        if (! in_array($mime, $allowed, true)) {
+            throw new RuntimeException('Upload a JPEG, PNG, WebP, or GIF photo.');
+        }
+        $ext = match ($mime) {
+            'image/png' => 'png',
+            'image/webp' => 'webp',
+            'image/gif' => 'gif',
+            default => 'jpg',
+        };
+        $url = app(BuildauraClient::class)->uploadImage($bytes, 'room-photo.'.$ext, $mime);
+        $disk->delete($upload);
+
+        return $url;
+    }
+
+    private function guard(callable $callback): void
+    {
+        try {
+            $callback();
+        } catch (\\Filament\\Support\\Exceptions\\Halt $halt) {
+            throw $halt;
+        } catch (\\Throwable $e) {
+            Notification::make()->title('Buildaura could not save that change')->body($e->getMessage())->danger()->send();
+            throw new \\Filament\\Support\\Exceptions\\Halt();
+        }
+    }
 }
 `
 
   files['resources/views/filament/pages/room-types.blade.php'] = `<x-filament-panels::page>
-${flash}
-@if($error)<p style="margin-bottom:12px;color:#92400e">{{ $error }}</p>@endif
+@if($error)
+  <div style="margin-bottom:16px;padding:12px 14px;border:1px solid #fecaca;border-radius:8px;color:#991b1b;font-size:14px;">
+    {{ $error }}
+    <div style="margin-top:6px;color:#6b7280;">Room types are stored in Buildaura. This page calls that API with this site's key.</div>
+  </div>
+@endif
 <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;align-items:end;margin-bottom:24px;">
   <x-filament-forms::field-wrapper label="Search">
     <x-filament::input.wrapper>
@@ -1077,42 +1443,74 @@ ${flash}
     <x-filament::button color="gray" size="sm" type="button" style="width:100%" wire:click="clearTypeFilters">Clear</x-filament::button>
   </div>
 </div>
-<form method="POST" action="{{ route('property.types.store') }}" wire:ignore style="display:grid;gap:8px;margin-bottom:24px;padding:16px;border:1px solid #e5e7eb;border-radius:12px">
-  @csrf
-  <strong>New room type</strong>
-  <input name="name" required placeholder="Name" style="padding:8px;border:1px solid #d1d5db;border-radius:8px" />
-  <input name="description" placeholder="Description" style="padding:8px;border:1px solid #d1d5db;border-radius:8px" />
-  <input name="base_price" type="number" min="0" step="0.01" placeholder="Price per night" style="padding:8px;border:1px solid #d1d5db;border-radius:8px" />
-  <input name="unit_prefix" placeholder="Room code prefix, for example DLX-" style="padding:8px;border:1px solid #d1d5db;border-radius:8px" />
-  <input name="unit_count" type="number" min="0" max="50" value="1" style="padding:8px;border:1px solid #d1d5db;border-radius:8px" />
-  <button type="button" onclick="this.form.submit()" style="padding:8px 12px;border-radius:8px;background:#111827;color:#fff">Create room type</button>
-</form>
-@foreach($types as $type)
-<form method="POST" action="{{ route('property.types.update', $type['id']) }}" wire:ignore style="display:grid;gap:8px;margin-bottom:16px;padding:16px;border:1px solid #e5e7eb;border-radius:12px">
-  @csrf
-  <input type="hidden" name="slug" value="{{ $type['slug'] ?? '' }}" />
-  <input type="hidden" name="short_description" value="{{ $type['shortDescription'] ?? '' }}" />
-  <input type="hidden" name="currency" value="{{ $type['currency'] ?? '' }}" />
-  <input type="hidden" name="max_adults" value="{{ $type['maxAdults'] ?? 2 }}" />
-  <input type="hidden" name="max_children" value="{{ $type['maxChildren'] ?? 0 }}" />
-  <input type="hidden" name="max_occupancy" value="{{ $type['maxOccupancy'] ?? 2 }}" />
-  <input type="hidden" name="bed_configuration" value="{{ $type['bedConfiguration'] ?? '' }}" />
-  <input type="hidden" name="size_sqm" value="{{ $type['sizeSqm'] ?? '' }}" />
-  <input type="hidden" name="unit_prefix" value="{{ $type['unitPrefix'] ?? '' }}" />
-  <input name="name" required value="{{ $type['name'] }}" style="padding:8px;border:1px solid #d1d5db;border-radius:8px" />
-  <input name="description" value="{{ $type['description'] ?? '' }}" style="padding:8px;border:1px solid #d1d5db;border-radius:8px" />
-  <input name="base_price" type="number" min="0" step="0.01" value="{{ $type['basePrice'] ?? 0 }}" style="padding:8px;border:1px solid #d1d5db;border-radius:8px" />
-  <label><input type="hidden" name="is_active" value="0" /><input type="checkbox" name="is_active" value="1" @checked($type['isActive'] ?? true) /> Active</label>
-  <button type="button" onclick="this.form.submit()" style="padding:8px 12px;border-radius:8px;background:#111827;color:#fff">Save</button>
-</form>
-<form method="POST" action="{{ route('property.types.delete', $type['id']) }}" wire:ignore style="margin:-8px 0 20px">
-  @csrf
-  <button type="button" onclick="if (confirm('Remove this room type from Buildaura?')) this.form.submit()" style="color:#b91c1c">Delete {{ $type['name'] }}</button>
-</form>
-@endforeach
-@if(count($types) === 0)
-<p style="color:#6b7280;">@if($this->typeFiltersActive())No room types match these filters.@else No room types yet.@endif</p>
-@endif
+<x-filament::section>
+  <div style="overflow-x:auto;">
+    <table style="width:100%;min-width:720px;border-collapse:collapse;">
+      <thead>
+        <tr>
+          <th style="text-align:left;padding:8px 10px;font-size:12px;color:#6b7280;font-weight:600;">Photo</th>
+          <th style="text-align:left;padding:8px 10px;font-size:12px;color:#6b7280;font-weight:600;">Room type</th>
+          <th style="text-align:left;padding:8px 10px;font-size:12px;color:#6b7280;font-weight:600;white-space:nowrap;">Price</th>
+          <th style="text-align:left;padding:8px 10px;font-size:12px;color:#6b7280;font-weight:600;">Occupancy</th>
+          <th style="text-align:right;padding:8px 10px;font-size:12px;color:#6b7280;font-weight:600;">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @forelse($types as $type)
+          @php
+            $preview = $type['image'] ?? null;
+            if (empty($preview) && ! empty($type['hasInlineImage'])) {
+                $preview = $this->imageFor((string) ($type['id'] ?? ''));
+            }
+            $roomCount = 0;
+            foreach ($units as $candidate) {
+                if (($candidate['roomTypeId'] ?? null) === ($type['id'] ?? null)) {
+                    $roomCount++;
+                }
+            }
+            $summary = (string) ($type['shortDescription'] ?? '');
+            if ($summary === '' && ! empty($type['description'])) {
+                $summary = \\Illuminate\\Support\\Str::limit((string) $type['description'], 140);
+            }
+          @endphp
+          <tr wire:key="type-{{ $type['id'] }}" style="border-top:1px solid #e5e7eb;">
+            <td style="padding:10px;vertical-align:middle;width:88px;">
+              @if($preview)
+                <img src="{{ \\App\\Support\\PublicAsset::url($preview) }}" alt="" style="width:72px;height:52px;object-fit:cover;border-radius:6px;display:block;" />
+              @else
+                <div style="width:72px;height:52px;border-radius:6px;background:#f3f4f6;"></div>
+              @endif
+            </td>
+            <td style="padding:10px;vertical-align:middle;white-space:normal;word-break:normal;overflow-wrap:break-word;">
+              <div style="font-weight:600;">{{ $type['name'] ?? '' }}</div>
+              @if($summary !== '')
+                <div style="margin-top:2px;font-size:13px;color:#4b5563;white-space:normal;word-break:normal;overflow-wrap:break-word;">{{ $summary }}</div>
+              @endif
+            </td>
+            <td style="padding:10px;vertical-align:middle;white-space:nowrap;">{{ number_format((float) ($type['basePrice'] ?? 0), 0) }} {{ $type['currency'] ?? 'ETB' }}</td>
+            <td style="padding:10px;vertical-align:middle;white-space:normal;word-break:normal;">
+              {{ (int) ($type['maxAdults'] ?? 2) }} adults · {{ (int) ($type['maxChildren'] ?? 0) }} children
+              · {{ $roomCount }} {{ $roomCount === 1 ? 'room' : 'rooms' }}
+              @if(! empty($type['sizeSqm']))
+                · {{ $type['sizeSqm'] }} m²
+              @endif
+            </td>
+            <td style="padding:10px;vertical-align:middle;white-space:nowrap;text-align:right;">
+              <div style="display:flex;gap:8px;justify-content:flex-end;">
+                {{ ($this->editTypeAction)(['typeId' => $type['id']]) }}
+                {{ ($this->deleteTypeAction)(['typeId' => $type['id']]) }}
+              </div>
+            </td>
+          </tr>
+        @empty
+          <tr>
+            <td colspan="5" style="padding:16px 10px;color:#6b7280;font-size:14px;">@if($this->typeFiltersActive())No room types match these filters.@else No room types yet. Add one to create it in Buildaura.@endif</td>
+          </tr>
+        @endforelse
+      </tbody>
+    </table>
+  </div>
+</x-filament::section>
 </x-filament-panels::page>
 `
 
@@ -1121,13 +1519,19 @@ ${flash}
 namespace App\\Filament\\Pages;
 
 use App\\Services\\BuildauraClient;
+use Filament\\Actions\\Action;
+use Filament\\Forms\\Components\\Select;
+use Filament\\Forms\\Components\\Textarea;
+use Filament\\Forms\\Components\\TextInput;
+use Filament\\Forms\\Components\\Toggle;
+use Filament\\Notifications\\Notification;
 use Filament\\Pages\\Page;
 use RuntimeException;
 
 class Rooms extends Page
 {
     protected static ?string $navigationIcon = 'heroicon-o-key';
-    protected static ?string $navigationGroup = 'Property';
+    protected static ?string $navigationGroup = 'Hospitality';
     protected static ?string $navigationLabel = 'Rooms';
     protected static ?string $title = 'Rooms';
     protected static string $view = 'filament.pages.rooms';
@@ -1272,12 +1676,171 @@ class Rooms extends Page
 
         return $visible;
     }
+
+    public function getSubheading(): ?string
+    {
+        return 'Rooms are saved in Buildaura. This website does not store them.';
+    }
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            Action::make('addUnit')
+                ->label('Add room')
+                ->slideOver()
+                ->modalSubmitActionLabel('Save to Buildaura')
+                ->form($this->unitForm())
+                ->action(function (array $data): void {
+                    $this->guard(fn () => $this->saveUnit($data, null));
+                }),
+        ];
+    }
+
+    public function editUnitAction(): Action
+    {
+        return Action::make('editUnit')
+            ->label('Edit')
+            ->button()
+            ->outlined()
+            ->size('sm')
+            ->color('gray')
+            ->slideOver()
+            ->modalHeading('Edit room')
+            ->modalSubmitActionLabel('Save to Buildaura')
+            ->fillForm(function (array $arguments): array {
+                $unit = $this->findUnit((string) ($arguments['unitId'] ?? ''));
+
+                return $unit ? $this->unitState($unit) : [];
+            })
+            ->form($this->unitForm())
+            ->action(function (array $arguments, array $data): void {
+                $this->guard(function () use ($arguments, $data) {
+                    $unit = $this->findUnit((string) ($arguments['unitId'] ?? ''));
+                    if (! $unit) {
+                        throw new RuntimeException('That room is no longer in Buildaura.');
+                    }
+                    $this->saveUnit($data, $unit);
+                });
+            });
+    }
+
+    public function deleteUnitAction(): Action
+    {
+        return Action::make('deleteUnit')
+            ->label('Delete')
+            ->button()
+            ->outlined()
+            ->size('sm')
+            ->color('danger')
+            ->requiresConfirmation()
+            ->modalHeading('Delete room')
+            ->modalDescription('This removes the room and its date holds from Buildaura. Reservations on this website stay here.')
+            ->action(function (array $arguments): void {
+                $this->guard(function () use ($arguments) {
+                    app(BuildauraClient::class)->deleteUnit((string) ($arguments['unitId'] ?? ''));
+                    $this->inventoryCache = [];
+                    $this->inventory();
+                    Notification::make()->title('Room deleted from Buildaura')->success()->send();
+                });
+            });
+    }
+
+    private function findUnit(string $id): ?array
+    {
+        foreach ($this->inventory()['units'] ?? [] as $unit) {
+            if ((string) ($unit['id'] ?? '') === $id) {
+                return $unit;
+            }
+        }
+
+        return null;
+    }
+
+    private function saveUnit(array $data, ?array $existing): void
+    {
+        $payload = [
+            'roomTypeId' => $data['roomTypeId'] ?? null,
+            'code' => trim((string) ($data['code'] ?? '')),
+            'floor' => (string) ($data['floor'] ?? ''),
+            'name' => (string) ($data['name'] ?? ''),
+            'status' => $data['status'] ?? 'AVAILABLE',
+            'isActive' => (bool) ($data['isActive'] ?? true),
+            'notes' => (string) ($data['notes'] ?? ''),
+            'sortOrder' => (int) ($data['sortOrder'] ?? 0),
+        ];
+        $crs = app(BuildauraClient::class);
+        if ($existing === null) {
+            $crs->createUnit($payload);
+            $title = 'Room created in Buildaura';
+        } else {
+            $crs->updateUnit((string) $existing['id'], $payload);
+            $title = 'Room updated in Buildaura';
+        }
+        $this->inventoryCache = [];
+        $this->inventory();
+        Notification::make()->title($title)->success()->send();
+    }
+
+    private function unitForm(): array
+    {
+        return [
+            Select::make('roomTypeId')->label('Room type')->options(fn () => $this->roomTypeOptions())->searchable()->required(),
+            TextInput::make('code')->label('Room number')->required()->maxLength(40),
+            TextInput::make('name'),
+            TextInput::make('floor'),
+            Select::make('status')->options($this->statusOptions())->default('AVAILABLE')->required(),
+            Toggle::make('isActive')->label('Active')->default(true),
+            Textarea::make('notes'),
+            TextInput::make('sortOrder')->numeric()->default(0),
+        ];
+    }
+
+    private function unitState(array $unit): array
+    {
+        return [
+            'roomTypeId' => $unit['roomTypeId'] ?? null,
+            'code' => $unit['code'] ?? '',
+            'name' => $unit['name'] ?? '',
+            'floor' => $unit['floor'] ?? '',
+            'status' => $unit['status'] ?? 'AVAILABLE',
+            'isActive' => (bool) ($unit['isActive'] ?? true),
+            'notes' => $unit['notes'] ?? '',
+            'sortOrder' => $unit['sortOrder'] ?? 0,
+        ];
+    }
+
+    private function statusOptions(): array
+    {
+        return [
+            'AVAILABLE' => 'Available',
+            'RESERVED' => 'Reserved',
+            'OCCUPIED' => 'Occupied',
+            'MAINTENANCE' => 'Maintenance',
+            'OUT_OF_SERVICE' => 'Out of service',
+        ];
+    }
+
+    private function guard(callable $callback): void
+    {
+        try {
+            $callback();
+        } catch (\\Filament\\Support\\Exceptions\\Halt $halt) {
+            throw $halt;
+        } catch (\\Throwable $e) {
+            Notification::make()->title('Buildaura could not save that change')->body($e->getMessage())->danger()->send();
+            throw new \\Filament\\Support\\Exceptions\\Halt();
+        }
+    }
 }
 `
 
   files['resources/views/filament/pages/rooms.blade.php'] = `<x-filament-panels::page>
-${flash}
-@if($error)<p style="margin-bottom:12px;color:#92400e">{{ $error }}</p>@endif
+@if($error)
+  <div style="margin-bottom:16px;padding:12px 14px;border:1px solid #fecaca;border-radius:8px;color:#991b1b;font-size:14px;">
+    {{ $error }}
+    <div style="margin-top:6px;color:#6b7280;">Rooms are stored in Buildaura. This page calls that API with this site's key.</div>
+  </div>
+@endif
 <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;align-items:end;margin-bottom:24px;">
   <x-filament-forms::field-wrapper label="Search">
     <x-filament::input.wrapper>
@@ -1322,49 +1885,57 @@ ${flash}
     <x-filament::button color="gray" size="sm" type="button" style="width:100%" wire:click="clearUnitFilters">Clear</x-filament::button>
   </div>
 </div>
-<form method="POST" action="{{ route('property.units.store') }}" wire:ignore style="display:grid;gap:8px;margin-bottom:24px;padding:16px;border:1px solid #e5e7eb;border-radius:12px">
-  @csrf
-  <strong>New room</strong>
-  <select name="room_type_id" required style="padding:8px;border:1px solid #d1d5db;border-radius:8px">
-    @foreach($types as $type)
-    <option value="{{ $type['id'] }}">{{ $type['name'] }}</option>
-    @endforeach
-  </select>
-  <input name="code" required placeholder="Room code, for example 204" style="padding:8px;border:1px solid #d1d5db;border-radius:8px" />
-  <input name="floor" placeholder="Floor" style="padding:8px;border:1px solid #d1d5db;border-radius:8px" />
-  <button type="button" onclick="this.form.submit()" style="padding:8px 12px;border-radius:8px;background:#111827;color:#fff">Create room</button>
-</form>
-@foreach($units as $unit)
-<form method="POST" action="{{ route('property.units.update', $unit['id']) }}" wire:ignore style="display:grid;gap:8px;margin-bottom:12px;padding:16px;border:1px solid #e5e7eb;border-radius:12px">
-  @csrf
-  <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
-    <strong>{{ $unit['code'] }}</strong>
-    <x-filament::button tag="a" size="sm" color="gray" outlined :href="\\App\\Filament\\Pages\\RoomCalendar::getUrl(['unitId' => $unit['id']])">Calendar</x-filament::button>
+@php
+  $typeNames = [];
+  foreach ($types as $type) {
+      if (! empty($type['id'])) {
+          $typeNames[$type['id']] = $type['name'] ?? '';
+      }
+  }
+@endphp
+<x-filament::section>
+  <div style="overflow-x:auto;">
+    <table style="width:100%;min-width:720px;border-collapse:collapse;">
+      <thead>
+        <tr>
+          <th style="text-align:left;padding:8px 10px;font-size:12px;color:#6b7280;font-weight:600;">Room number</th>
+          <th style="text-align:left;padding:8px 10px;font-size:12px;color:#6b7280;font-weight:600;">Name</th>
+          <th style="text-align:left;padding:8px 10px;font-size:12px;color:#6b7280;font-weight:600;">Room type</th>
+          <th style="text-align:left;padding:8px 10px;font-size:12px;color:#6b7280;font-weight:600;">Floor</th>
+          <th style="text-align:left;padding:8px 10px;font-size:12px;color:#6b7280;font-weight:600;">Status</th>
+          <th style="text-align:right;padding:8px 10px;font-size:12px;color:#6b7280;font-weight:600;">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @forelse($units as $unit)
+          <tr wire:key="unit-{{ $unit['id'] }}" style="border-top:1px solid #e5e7eb;">
+            <td style="padding:10px;vertical-align:middle;white-space:nowrap;font-weight:600;">{{ $unit['code'] ?? '' }}</td>
+            <td style="padding:10px;vertical-align:middle;white-space:normal;word-break:normal;overflow-wrap:break-word;">
+              {{ $unit['name'] ?? '' }}
+              @if(isset($unit['isActive']) && ! $unit['isActive'])
+                <span style="color:#6b7280;font-size:12px;">Inactive</span>
+              @endif
+            </td>
+            <td style="padding:10px;vertical-align:middle;white-space:normal;word-break:normal;">{{ $typeNames[$unit['roomTypeId'] ?? ''] ?? '' }}</td>
+            <td style="padding:10px;vertical-align:middle;white-space:nowrap;">{{ $unit['floor'] ?? '' }}</td>
+            <td style="padding:10px;vertical-align:middle;white-space:nowrap;">{{ str_replace('_', ' ', (string) ($unit['status'] ?? '')) }}</td>
+            <td style="padding:10px;vertical-align:middle;white-space:nowrap;text-align:right;">
+              <div style="display:flex;gap:8px;justify-content:flex-end;align-items:center;">
+                <x-filament::button tag="a" size="sm" color="gray" outlined :href="\\App\\Filament\\Pages\\RoomCalendar::getUrl(['unitId' => $unit['id']])">Calendar</x-filament::button>
+                {{ ($this->editUnitAction)(['unitId' => $unit['id']]) }}
+                {{ ($this->deleteUnitAction)(['unitId' => $unit['id']]) }}
+              </div>
+            </td>
+          </tr>
+        @empty
+          <tr>
+            <td colspan="6" style="padding:16px 10px;color:#6b7280;">@if($this->unitFiltersActive())No rooms match these filters.@else No rooms yet.@endif</td>
+          </tr>
+        @endforelse
+      </tbody>
+    </table>
   </div>
-  <select name="room_type_id" required style="padding:8px;border:1px solid #d1d5db;border-radius:8px">
-    @foreach($types as $type)
-    <option value="{{ $type['id'] }}" @selected(($unit['roomTypeId'] ?? '') === $type['id'])>{{ $type['name'] }}</option>
-    @endforeach
-  </select>
-  <input name="code" required value="{{ $unit['code'] ?? '' }}" placeholder="Room code" style="padding:8px;border:1px solid #d1d5db;border-radius:8px" />
-  <input name="name" value="{{ $unit['name'] ?? '' }}" placeholder="Name" style="padding:8px;border:1px solid #d1d5db;border-radius:8px" />
-  <input name="floor" value="{{ $unit['floor'] ?? '' }}" placeholder="Floor" style="padding:8px;border:1px solid #d1d5db;border-radius:8px" />
-  <select name="status" required style="padding:8px;border:1px solid #d1d5db;border-radius:8px">
-    @foreach(['AVAILABLE', 'RESERVED', 'OCCUPIED', 'MAINTENANCE', 'OUT_OF_SERVICE'] as $status)
-    <option value="{{ $status }}" @selected(($unit['status'] ?? 'AVAILABLE') === $status)>{{ $status }}</option>
-    @endforeach
-  </select>
-  <label><input type="hidden" name="is_active" value="0" /><input type="checkbox" name="is_active" value="1" @checked($unit['isActive'] ?? true) /> Active</label>
-  <button type="button" onclick="this.form.submit()" style="padding:8px 12px;border-radius:8px;background:#111827;color:#fff">Save</button>
-</form>
-<form method="POST" action="{{ route('property.units.delete', $unit['id']) }}" wire:ignore style="margin:-4px 0 20px">
-  @csrf
-  <button type="button" onclick="if (confirm('Remove this room from Buildaura?')) this.form.submit()" style="color:#b91c1c">Delete {{ $unit['code'] }}</button>
-</form>
-@endforeach
-@if(count($units) === 0)
-<p style="color:#6b7280;">@if($this->unitFiltersActive())No rooms match these filters.@else No rooms yet.@endif</p>
-@endif
+</x-filament::section>
 </x-filament-panels::page>
 `
 
@@ -1378,7 +1949,7 @@ use Filament\\Pages\\Page;
 class GuestReservations extends Page
 {
     protected static ?string $navigationIcon = 'heroicon-o-calendar';
-    protected static ?string $navigationGroup = 'Property';
+    protected static ?string $navigationGroup = 'Hospitality';
     protected static ?string $navigationLabel = 'Guest reservations';
     protected static ?string $title = 'Guest reservations';
     protected static string $view = 'filament.pages.guest-reservations';
@@ -1530,7 +2101,7 @@ ${flash}
   @foreach($reservations as $row)
   <tr>
     <td style="padding:8px 8px 8px 0">{{ $row->confirmation_code }}</td>
-    <td>{{ $row->guest_name }}</td>
+    <td>{{ $row->guest_name }}@if($row->children)<div style="color:#6b7280;font-size:12px">{{ $row->children }} children{{ (is_array($row->child_ages) && count($row->child_ages)) ? ' · '.collect($row->child_ages)->map(fn ($age) => $age.'y')->implode(', ') : '' }}</div>@endif</td>
     <td>{{ $row->guest_phone }}</td>
     <td>{{ $row->room_code }}</td>
     <td>{{ $row->check_in->format('M j') }} – {{ $row->check_out->format('M j, Y') }}</td>
@@ -1560,7 +2131,7 @@ use Filament\\Pages\\Page;
 class ApiKey extends Page
 {
     protected static ?string $navigationIcon = 'heroicon-o-lock-closed';
-    protected static ?string $navigationGroup = 'Property';
+    protected static ?string $navigationGroup = 'Hospitality';
     protected static ?string $navigationLabel = 'API key';
     protected static ?string $title = 'API key';
     protected static string $view = 'filament.pages.api-key';

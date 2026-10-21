@@ -95,6 +95,7 @@ class DoctorService
     private function checkDatabase(): array
     {
         try {
+            $this->ensureSqliteDatabase();
             DB::connection()->getPdo();
             return ['ok' => true, 'label' => 'Database connection', 'detail' => 'Connected'];
         } catch (Throwable $e) {
@@ -105,6 +106,7 @@ class DoctorService
     private function checkMigrations(): array
     {
         try {
+            $this->ensureSqliteDatabase();
             if (! Schema::hasTable('migrations')) {
                 return ['ok' => false, 'label' => 'Database tables', 'detail' => 'Not migrated yet'];
             }
@@ -190,9 +192,33 @@ class DoctorService
         }
     }
 
+    private function ensureSqliteDatabase(): void
+    {
+        if (config('database.default') !== 'sqlite') {
+            return;
+        }
+
+        $configured = (string) config('database.connections.sqlite.database');
+        if ($configured === '' || $configured === ':memory:' || str_contains($configured, 'mode=memory')) {
+            return;
+        }
+
+        $absolute = str_starts_with($configured, DIRECTORY_SEPARATOR)
+            || (strlen($configured) > 2 && ctype_alpha($configured[0]) && $configured[1] === ':');
+        $path = $absolute ? $configured : base_path($configured);
+        $directory = dirname($path);
+        if (! is_dir($directory)) {
+            File::makeDirectory($directory, 0755, true);
+        }
+        if (! is_file($path)) {
+            File::put($path, '');
+        }
+    }
+
     private function runMigrate(bool $seed): array
     {
         try {
+            $this->ensureSqliteDatabase();
             $params = ['--force' => true];
             if ($seed) {
                 $params['--seed'] = true;
