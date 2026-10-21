@@ -1,6 +1,7 @@
 import { getShowcaseConfig } from '../data/sectionConfig'
 import { canLinkToPage, resolveStaticHref, staticSitePath } from '../data/siteNav'
 import type { SiteContent, TemplateId } from '../types'
+import { contactButtonLabel } from '../data/footer'
 import { escapeHtml } from './imageUtils'
 import { isHospitalityTemplate } from '../data/hospitality'
 import { buildContactSectionHtml, buildExploreSectionHtml, buildFaqSectionHtml } from './sectionExport'
@@ -31,7 +32,7 @@ function financeContactForm(ctx: HomeExportContext, inputCls: string, btnStyle: 
     <input name="email" type="email" placeholder="Email" class="${inputCls}" />
     <input name="phone" type="tel" placeholder="Phone" class="${inputCls}" />
     <textarea name="message" rows="4" placeholder="Message" class="${inputCls}"></textarea>
-    <button type="submit" class="rounded-xl px-8 py-3.5 font-bold text-white" style="${btnStyle}">Send inquiry</button>
+    <button type="submit" class="rounded-xl px-8 py-3.5 font-bold text-white" style="${btnStyle}">${escapeHtml(contactButtonLabel(ctx.content.contactFormButtonText))}</button>
   </form>`
 }
 
@@ -233,6 +234,11 @@ export function buildStaticHomePageBody(ctx: HomeExportContext): string {
     parts.push(`<section class="bg-slate-50 py-20"><div class="max-w-6xl mx-auto px-6">${sectionHeader(c.newsSectionTitle, c.newsSectionSubtitle, staticSitePath('news', fromNested), 'Explore all news →', accent)}<div class="grid sm:grid-cols-3 gap-8">${ctx.buildNewsCards(3)}</div></div></section>`)
   }
 
+  const steps = c.steps.filter((s) => s.title)
+  if (sv.steps && steps.length) {
+    parts.push(`<section class="py-20"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold text-center mb-12">${escapeHtml(c.stepsSectionTitle)}</h2><div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">${steps.map((step, i) => `<div><span class="text-2xl font-bold opacity-40">0${i + 1}</span><h3 class="font-semibold mt-2">${escapeHtml(step.title)}</h3><p class="opacity-80 mt-1">${escapeHtml(step.description)}</p></div>`).join('')}</div></div></section>`)
+  }
+
   const testimonials = c.testimonials.filter((t) => t.quote)
   if (sv.testimonials) {
     const cards = testimonials.length
@@ -247,9 +253,26 @@ export function buildStaticHomePageBody(ctx: HomeExportContext): string {
     parts.push(`<section class="bg-slate-50 py-20"><div class="max-w-6xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center"><div><h2 class="text-3xl font-bold mb-6">${escapeHtml(c.aboutTitle)}</h2><p class="text-lg leading-relaxed text-slate-600 mb-6">${escapeHtml(excerpt)}</p>${c.missionStatement ? `<p class="border-l-4 pl-6 italic text-slate-600" style="border-color:${accent}">${escapeHtml(c.missionStatement)}</p>` : ''}<a href="${resolveStaticHref('about', c, fromNested)}" class="inline-block mt-8 text-sm font-semibold" style="color:${accent}">Learn more about us →</a></div>${aboutImg ? `<img src="${aboutImg}" class="rounded-2xl w-full" />` : ''}</div></section>`)
   }
 
+  const plans = c.pricing.filter((p) => p.title)
+  if (sv.pricing && plans.length) {
+    parts.push(`<section class="py-20 bg-slate-50"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold text-center mb-12">${escapeHtml(c.pricingSectionTitle)}</h2><div class="grid md:grid-cols-3 gap-8">${plans.map((plan) => `<div class="rounded-xl border bg-white p-6 ${plan.featured ? 'ring-2' : ''}" style="${plan.featured ? `border-color:${accent}` : ''}">${plan.tag ? `<p class="text-xs font-bold uppercase tracking-wider mb-2" style="color:${accent}">${escapeHtml(plan.tag)}</p>` : ''}<h3 class="font-bold text-lg">${escapeHtml(plan.title)}</h3><p class="text-3xl font-bold my-3" style="color:${accent}">${escapeHtml(plan.price)}</p><p class="opacity-80">${escapeHtml(plan.description)}</p></div>`).join('')}</div></div></section>`)
+  }
+
+  const team = c.team.filter((m) => m.name)
+  if (sv.team && team.length) {
+    parts.push(`<section class="py-20"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold text-center mb-12">${escapeHtml(c.teamSectionTitle)}</h2><div class="grid md:grid-cols-3 gap-8">${team.map((member) => {
+      const img = member.image ? ctx.resolveImage(member.image, `home-team-${member.name}`) : ''
+      return `<div class="text-center">${img ? `<img src="${img}" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover" alt="" />` : ''}<h3 class="font-semibold">${escapeHtml(member.name)}</h3><p class="opacity-70">${escapeHtml(member.role)}</p></div>`
+    }).join('')}</div></div></section>`)
+  }
+
   if (sv.faq) {
     const faqHtml = buildFaqSectionHtml(c, ctx.templateId)
     if (faqHtml) parts.push(faqHtml)
+  }
+
+  if (sv.cta && (c.ctaBannerTitle || c.ctaBannerText || c.ctaText)) {
+    parts.push(`<section class="py-20 text-white" style="background-color:${accent}"><div class="max-w-3xl mx-auto px-6 text-center"><h2 class="text-3xl font-bold mb-4">${escapeHtml(c.ctaBannerTitle)}</h2><p class="mb-8 text-lg opacity-80">${escapeHtml(c.ctaBannerText)}</p><a href="${resolveStaticHref(c.ctaLink || 'contact', c, fromNested)}" class="inline-block bg-white px-8 py-3 rounded-lg font-semibold" style="color:${accent}">${escapeHtml(c.ctaText)}</a></div></section>`)
   }
 
   if (pv.contact && ctx.contactFormHtml) {

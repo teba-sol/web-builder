@@ -2177,7 +2177,9 @@ class ManageRoomTypes extends Page
             'image' => $this->storedImage($data, $existing),
             'unitPrefix' => filled($data['unitPrefix'] ?? null) ? trim((string) $data['unitPrefix']) : 'RM-',
             'isActive' => (bool) ($data['isActive'] ?? true),
-            'sortOrder' => (int) ($data['sortOrder'] ?? 0),
+            'sortOrder' => $existing === null
+                ? ((int) collect($this->inventory['roomTypes'] ?? [])->max('sortOrder')) + 1
+                : (int) ($existing['sortOrder'] ?? 0),
         ];
         $parentId = trim((string) ($data['parentId'] ?? ''));
         if ($parentId !== '' && ($existing === null || $parentId !== (string) ($existing['id'] ?? ''))) {
@@ -2220,13 +2222,13 @@ class ManageRoomTypes extends Page
             Textarea::make('amenities')->helperText('Comma-separated. Example: Wi-Fi, Breakfast, Lake view'),
             TextInput::make('unitPrefix')->label('Room number prefix')->default('RM-'),
             Toggle::make('isActive')->label('Active')->default(true),
-            TextInput::make('sortOrder')->numeric()->default(0),
             FileUpload::make('photo')
                 ->label('Room photo')
                 ->disk('local')
                 ->directory('crs-uploads')
                 ->visibility('private')
                 ->image()
+                ->imageEditor()
                 ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/gif'])
                 ->maxSize(5120)
                 ->helperText('JPEG, PNG, WebP, or GIF up to 5 MB. Stored in BuildAura, then removed from this server.'),
@@ -2262,7 +2264,6 @@ class ManageRoomTypes extends Page
             'amenities' => is_array($amenities) ? implode(', ', $amenities) : (string) $amenities,
             'unitPrefix' => $type['unitPrefix'] ?? 'RM-',
             'isActive' => (bool) ($type['isActive'] ?? true),
-            'sortOrder' => $type['sortOrder'] ?? 0,
         ];
     }
 
@@ -2496,7 +2497,9 @@ class ManageRooms extends Page
             'status' => $data['status'] ?? 'AVAILABLE',
             'isActive' => (bool) ($data['isActive'] ?? true),
             'notes' => (string) ($data['notes'] ?? ''),
-            'sortOrder' => (int) ($data['sortOrder'] ?? 0),
+            'sortOrder' => $existing === null
+                ? ((int) collect($this->inventory['units'] ?? [])->max('sortOrder')) + 1
+                : (int) ($existing['sortOrder'] ?? 0),
         ];
         $crs = app(CrsClient::class);
         if ($existing === null) {
@@ -2519,7 +2522,6 @@ class ManageRooms extends Page
             Select::make('status')->options($this->statusOptions())->default('AVAILABLE')->required(),
             Toggle::make('isActive')->label('Active')->default(true),
             Textarea::make('notes'),
-            TextInput::make('sortOrder')->numeric()->default(0),
         ];
     }
 
@@ -2533,7 +2535,6 @@ class ManageRooms extends Page
             'status' => $unit['status'] ?? 'AVAILABLE',
             'isActive' => (bool) ($unit['isActive'] ?? true),
             'notes' => $unit['notes'] ?? '',
-            'sortOrder' => $unit['sortOrder'] ?? 0,
         ];
     }
 

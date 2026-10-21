@@ -64,7 +64,9 @@ Manifests: `src/catalog/manifests/<id>.json`. Loaded by `import.meta.glob` in `s
 
 `TemplateId` is a string. Do not add a union of ids.
 
-Two features exist: `cms` and `hospitality`. `isHospitalityTemplate` in `src/data/hospitality.ts` means the manifest includes `hospitality`.
+Two features exist: `cms` and `hospitality`. `isHospitalityTemplate` in `src/data/hospitality.ts` means the manifest includes `hospitality`. The hospitality catalog is six templates: `hotel`, `guesthouse`, `alpine`, `coastal`, `jungle`, `ryokan`. The id is the stable code. The display name is an international hotel or guest-house name.
+
+`footerBlurb` and `footerNote` are site content. Preview, static HTML, and the Laravel footer render them, along with hours and contact details. The exported Filament Site Settings form edits the footer, page visibility, section visibility, and the section titles the public site already reads.
 
 Thumbnails: `src/assets/hero-sections/<id>.png`, resolved by `src/catalog/thumbnails.ts`.
 

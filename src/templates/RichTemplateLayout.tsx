@@ -14,6 +14,7 @@ import './templateShells.css'
 import type { SiteContent, TemplateId } from '../types'
 import { ContactSectionView, ExploreSectionView, FaqSectionView } from './sectionLayouts'
 import { brandCss, brandCtaStyle, brandFontHref, resolveBrandAccent } from '../data/brand'
+import { footerBlurb, footerNote } from '../data/footer'
 import { CUSTOM_COLOR_SCHEME_ID } from '../data/pickTemplate'
 import { getTheme } from './getTheme'
 import {
@@ -248,8 +249,6 @@ function heroContentClass(variant: TemplateId, heroLayout: HeroLayout): string {
     case 'hotel':
     case 'alpine':
     case 'ryokan':
-    case 'desert':
-    case 'nordic':
     case 'jungle':
     case 'vineyard':
     case 'arcade':
@@ -331,7 +330,7 @@ function HeroSection({ c, t, variant, heroLayout, basePath }: { c: SiteContent; 
   const hasOverlay = Boolean(heroCfg?.overlay) || heroLayout === 'immersive'
 
   return (
-    <header className={`relative z-0 isolate ${t.hero} ${heroLayout === 'immersive' && !['restaurant', 'realtor', 'photography', 'creative', 'fitness', 'noir', 'coastal', 'hotel', 'alpine', 'ryokan', 'desert', 'nordic', 'jungle', 'vineyard', 'arcade'].includes(variant) ? 'min-h-[85vh] flex flex-col justify-center' : ''}`}>
+    <header className={`relative z-0 isolate ${t.hero} ${heroLayout === 'immersive' && !['restaurant', 'realtor', 'photography', 'creative', 'fitness', 'noir', 'coastal', 'hotel', 'alpine', 'ryokan', 'jungle', 'vineyard', 'arcade'].includes(variant) ? 'min-h-[85vh] flex flex-col justify-center' : ''}`}>
       {hasOverlay && c.heroImage && (
         <>
           <img data-part="image" src={c.heroImage} alt="" className={`absolute inset-0 h-full w-full object-cover ${variant === 'noir' ? 'grayscale contrast-125' : ''}`} />
@@ -573,16 +572,33 @@ function CtaBannerSection({ c, t, basePath }: { c: SiteContent; t: TemplateTheme
 }
 
 function FooterSection({ c, t, navItems, basePath }: { c: SiteContent; t: TemplateTheme; navItems: SiteNavItem[]; basePath: string }) {
+  const blurb = footerBlurb(c)
+  const contact = [c.phone, c.email, c.reservationEmail, c.supportEmail, c.whatsapp, c.address].map((value) => value.trim()).filter(Boolean)
   return (
     <footer className={t.footer}>
-      <div className="mx-auto max-w-6xl px-4 csm:px-6">
-        <div className="mb-4 flex flex-wrap justify-center gap-6 text-sm">
-          {navItems.map((item) => (
-            <Link key={item.page} to={sitePath(basePath, item.segment)} className="hover:underline opacity-70">{item.label}</Link>
-          ))}
+      <div className="mx-auto grid max-w-6xl gap-8 px-4 text-sm csm:px-6 cmd:grid-cols-4">
+        <div>
+          <p className="text-base font-semibold">{c.businessName}</p>
+          {blurb ? <p className="mt-3 leading-relaxed opacity-80">{blurb}</p> : null}
         </div>
-        <p>© {new Date().getFullYear()} {c.businessName}. All rights reserved.</p>
+        <div>
+          <p className="mb-3 text-xs font-semibold uppercase tracking-wider">Pages</p>
+          <div className="flex flex-col gap-2">
+            {navItems.map((item) => (
+              <Link key={item.page} to={sitePath(basePath, item.segment)} className="hover:underline opacity-80">{item.label}</Link>
+            ))}
+          </div>
+        </div>
+        <div>
+          <p className="mb-3 text-xs font-semibold uppercase tracking-wider">Hours</p>
+          <p className="opacity-80">{c.hours}</p>
+        </div>
+        <div>
+          <p className="mb-3 text-xs font-semibold uppercase tracking-wider">Contact</p>
+          <p className="opacity-80">{contact.map((line) => <span key={line} className="block">{line}</span>)}</p>
+        </div>
       </div>
+      <p className="mx-auto mt-8 max-w-6xl px-4 text-center csm:px-6">© {new Date().getFullYear()} {c.businessName}. {footerNote(c)}</p>
     </footer>
   )
 }

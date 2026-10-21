@@ -801,7 +801,7 @@ function ContactPage({ templateId, d }: { templateId: CloneTemplateId; d: CloneH
               color: templateId === 'cpa' ? 'var(--clone-ink)' : '#fff',
             }}
           >
-            {c.contactFormButtonText || 'Send inquiry'}
+            {c.contactFormButtonText || 'Send message'}
           </div>
         </div>
       </div>

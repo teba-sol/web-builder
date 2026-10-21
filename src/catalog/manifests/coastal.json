@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "id": "coastal",
-  "name": "Lake Tana Resort",
-  "description": "Bahir Dar lakeside resort with suites, a garden wing, and online booking.",
+  "name": "Harbor Resort",
+  "description": "Waterfront resort with suites, a garden wing, and online booking.",
   "category": "hospitality",
   "previewGradient": "from-sky-400 via-cyan-600 to-amber-200",
   "accentColor": "#0284c7",
@@ -143,13 +143,13 @@
     "explore": "tiles",
     "contactShell": "coastal-wave",
     "contactForm": "soft-rounded",
-    "exploreTitle": "Shoreline",
+    "exploreTitle": "The resort",
     "exploreSubtitle": "Rooms, experiences, gallery, and local guides",
     "exploreLinkLabel": "Sail to"
   },
   "showcase": {
     "sectionTitle": "Suites & Experiences",
-    "sectionSubtitle": "Wake to Lake Tana — curated stays and unforgettable coastal moments",
+    "sectionSubtitle": "Wake to the lake — curated stays and unforgettable coastal moments",
     "navLabel": "Stay",
     "itemLabel": "Experience",
     "showPrice": true,
@@ -212,17 +212,17 @@
     {
       "key": "reservationEmail",
       "label": "Reservations",
-      "placeholder": "book@laketanaresort.et"
+      "placeholder": "book@harborresort.example"
     },
     {
       "key": "phone",
       "label": "Concierge",
-      "placeholder": "+251 58 220 4455"
+      "placeholder": "+33 4 93 00 4455"
     },
     {
       "key": "address",
       "label": "Property Address",
-      "placeholder": "Lakeshore, Bahir Dar"
+      "placeholder": "9 Quay Street"
     },
     {
       "key": "hours",
@@ -232,7 +232,7 @@
     {
       "key": "email",
       "label": "General Email",
-      "placeholder": "book@laketanaresort.et"
+      "placeholder": "stay@harborresort.example"
     }
   ],
   "servicesLabel": "Experiences",
@@ -252,14 +252,14 @@
     "grayscaleImage": false
   },
   "defaults": {
-    "businessName": "Lake Tana Resort",
-    "tagline": "On the water at Bahir Dar",
-    "heroSubtext": "Lakeside suites, a garden wing, and a jetty for the islands of Lake Tana.",
+    "businessName": "Harbor Resort",
+    "tagline": "On the water, in the harbor",
+    "heroSubtext": "Waterfront suites, a garden wing, and a jetty for the morning boats.",
     "heroImage": "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1200&q=80",
     "aboutTitle": "The resort",
-    "about": "Lake Tana Resort faces the water at Bahir Dar. Mornings start on the jetty, and rooms look either onto the lake or into the garden court.",
+    "about": "Harbor Resort faces the water. Suites open toward the harbor, the garden wing is quieter, and the desk can book a boat before breakfast.",
     "aboutImage": "https://images.unsplash.com/photo-1582719508461-905c994771df?w=800&q=80",
-    "missionStatement": "A Bahir Dar stay with a clear view and a room you can book yourself.",
+    "missionStatement": "A resort stay with the water in front of the room.",
     "pageVisibility": {
       "about": true,
       "services": true,
@@ -337,10 +337,10 @@
       }
     ],
     "showcaseSectionTitle": "Suites & Experiences",
-    "showcaseSectionSubtitle": "Wake to the Lake Tana — curated stays and unforgettable coastal moments",
+    "showcaseSectionSubtitle": "Wake to the lake — curated stays and unforgettable coastal moments",
     "showcaseItems": [
       {
-        "title": "Lake Tana Suite",
+        "title": "the lake Suite",
         "description": "Private terrace, plunge pool, and panoramic sea views — breakfast included.",
         "image": "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600&q=80",
         "price": "23,100 ETB",
@@ -398,17 +398,17 @@
     "testimonials": [
       {
         "quote": "Outstanding service and incredible results. Highly recommended!",
-        "author": "Mekdes Haile",
+        "author": "Elena Ward",
         "role": "CEO, TechStart"
       },
       {
         "quote": "They transformed our business. Professional, creative, and reliable.",
-        "author": "Dawit Bekele",
+        "author": "Noah Bennett",
         "role": "Founder, Bloom Co"
       },
       {
         "quote": "The best decision we made this year. Exceeded every expectation.",
-        "author": "Hiwot Alemu",
+        "author": "Maya Chen",
         "role": "Director, Apex Group"
       }
     ],
@@ -490,15 +490,15 @@
       }
     ],
     "roomsSectionTitle": "Suites & Villas",
-    "roomsSectionSubtitle": "Lake suites and garden rooms, priced per night in birr.",
+    "roomsSectionSubtitle": "Lake suites and garden rooms, priced per night in local currency.",
     "bookingSectionTitle": "Reserve Your Escape",
-    "bookingSectionSubtitle": "Search your Bahir Dar dates and reserve a room.",
+    "bookingSectionSubtitle": "Search your lakeshore dates and reserve a room.",
     "roomTypes": [
       {
         "name": "Lake View Suite",
         "slug": "sea-view-suite",
         "parentSlug": "",
-        "description": "A bright suite with a private terrace and an open view across Lake Tana.",
+        "description": "A bright suite with a private terrace and an open view across the lake.",
         "shortDescription": "Lake view · Terrace · 42 m²",
         "basePrice": "9200",
         "currency": "ETB",
@@ -602,17 +602,17 @@
     ],
     "team": [
       {
-        "name": "Abel Desta",
+        "name": "James Carter",
         "role": "Founder & CEO",
         "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80"
       },
       {
-        "name": "Mekdes Haile",
+        "name": "Elena Ward",
         "role": "Creative Director",
         "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
       },
       {
-        "name": "Dawit Bekele",
+        "name": "Noah Bennett",
         "role": "Operations Lead",
         "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80"
       }
@@ -626,27 +626,29 @@
     "seoDescription": "",
     "seoKeywords": "",
     "seoSiteUrl": "",
-    "email": "stay@laketanaresort.et",
-    "phone": "+251 58 220 4455",
-    "address": "Lakeshore, Bahir Dar",
+    "email": "stay@harborresort.example",
+    "phone": "+33 4 93 00 4455",
+    "address": "9 Quay Street",
     "hours": "Front desk open 24 hours",
     "instagram": "",
     "website": "",
     "linkedin": "",
     "whatsapp": "",
     "supportEmail": "",
-    "reservationEmail": "book@laketanaresort.et",
+    "reservationEmail": "book@harborresort.example",
     "licenseNumber": "",
     "bookingUrl": "",
     "contactSectionTitle": "Get in Touch",
     "contactFormTitle": "Send Us a Message",
     "contactFormUrl": "",
-    "contactFormButtonText": "Open Contact Form",
-    "city": "Bahir Dar",
-    "country": "Ethiopia",
+    "contactFormButtonText": "Send message",
+    "city": "Nice",
+    "country": "France",
     "starRating": "4",
     "checkInTime": "14:00",
     "checkOutTime": "12:00",
-    "propertyAmenities": "Wi-Fi, Lake jetty, Restaurant, Pool, Parking, Generator backup"
+    "propertyAmenities": "Wi-Fi, Lake jetty, Restaurant, Pool, Parking, Generator backup",
+    "footerBlurb": "Suites on the water and a garden wing behind them.",
+    "footerNote": "All rights reserved."
   }
 }

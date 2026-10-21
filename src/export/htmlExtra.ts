@@ -1,3 +1,4 @@
+import { footerBlurb, footerNote } from '../data/footer'
 import type { SiteContent } from '../types'
 import { escapeHtml } from './imageUtils'
 import { tailwindHead, servicesGrid } from './htmlShared'
@@ -27,7 +28,7 @@ export function saasHtml(c: SiteContent, hero: string) {
       ${c.bookingUrl ? `<div><p class="text-indigo-400 text-xs uppercase mb-1">Sign Up</p>${escapeHtml(c.bookingUrl)}</div>` : ''}
     </div>
   </div></section>
-  <footer class="text-center py-8 text-slate-500 text-sm">© ${escapeHtml(c.businessName)}</footer>
+  <footer class="text-center py-8 text-slate-500 text-sm">${footerBlurb(c) ? `<p class="mb-2">${escapeHtml(footerBlurb(c))}</p>` : ''}© ${escapeHtml(c.businessName)}. ${escapeHtml(footerNote(c))}</footer>
 </body></html>`
 }
 

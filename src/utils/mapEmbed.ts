@@ -48,6 +48,11 @@ function convertGoogleMapsToEmbed(input: string): string {
       if (ll) return searchEmbed(ll)
     }
 
+    if (host === 'maps.google.com' || host.startsWith('maps.google.')) {
+      const q = url.searchParams.get('q') || url.searchParams.get('query') || url.searchParams.get('ll') || url.searchParams.get('center')
+      if (q) return searchEmbed(q)
+    }
+
     if (host === 'maps.apple.com') {
       const q = url.searchParams.get('q') || url.searchParams.get('ll') || url.searchParams.get('address')
       if (q) return searchEmbed(q)
@@ -64,19 +69,19 @@ function convertGoogleMapsToEmbed(input: string): string {
 }
 
 export function getMapEmbedUrl(mapUrl: string, address = ''): string {
-  const raw = mapUrl.trim()
+  const raw = (mapUrl ?? '').trim()
   if (raw) {
     const fromIframe = raw.match(/\bsrc=["']([^"']+)["']/i)
     const candidate = (fromIframe?.[1] || raw).trim()
     const converted = convertGoogleMapsToEmbed(candidate)
     if (converted) return converted
   }
-  const fallback = address.trim()
+  const fallback = (address ?? '').trim()
   return fallback ? searchEmbed(fallback) : ''
 }
 
 export function getMapOpenUrl(mapUrl: string, address = ''): string {
-  const raw = mapUrl.trim()
+  const raw = (mapUrl ?? '').trim()
   if (raw) {
     const fromIframe = raw.match(/\bsrc=["']([^"']+)["']/i)
     const candidate = (fromIframe?.[1] || raw).trim()
@@ -88,10 +93,31 @@ export function getMapOpenUrl(mapUrl: string, address = ''): string {
     }
     if (candidate) return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(candidate)}`
   }
-  const fallback = address.trim()
+  const fallback = (address ?? '').trim()
   return fallback ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fallback)}` : ''
 }
 
 export function isShortMapLink(mapUrl: string): boolean {
-  return /maps\.app\.goo\.gl|goo\.gl\/maps|g\.page\//i.test(mapUrl)
+  return /maps\.app\.goo\.gl|goo\.gl\/maps|g\.page\//i.test(mapUrl ?? '')
+}
+
+function escapeMapHtml(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+}
+
+export function mapEmbedHtml(mapUrl: string, address = ''): string {
+  const src = getMapEmbedUrl(mapUrl ?? '', address ?? '')
+  const open = getMapOpenUrl(mapUrl ?? '', address ?? '')
+  if (!src && !open) return ''
+  const frame = src
+    ? `<div class="h-56 overflow-hidden rounded-2xl border"><iframe title="Map" src="${escapeMapHtml(src)}" class="h-full w-full border-0" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>`
+    : ''
+  const link = open
+    ? `<a href="${escapeMapHtml(open)}" class="text-sm font-semibold underline" target="_blank" rel="noreferrer">View on Google Maps</a>`
+    : ''
+  return `<div class="mt-6 space-y-2 col-span-full">${frame}${link}</div>`
 }

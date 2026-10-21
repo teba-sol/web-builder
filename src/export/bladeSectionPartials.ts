@@ -12,7 +12,11 @@ const EXPLORE_LINKS = `@if($settings->page_visibility['about'] ?? false)<a href=
 const CONTACT_INFO = `@if($settings->email)<div><p class="opacity-60 mb-1 text-sm">Email</p><p>{{ $settings->email }}</p></div>@endif
 @if($settings->phone)<div><p class="opacity-60 mb-1 text-sm">Phone</p><p>{{ $settings->phone }}</p></div>@endif
 @if($settings->address)<div><p class="opacity-60 mb-1 text-sm">Address</p><p>{{ $settings->address }}</p></div>@endif
-@if($settings->hours)<div><p class="opacity-60 mb-1 text-sm">Hours</p><p>{{ $settings->hours }}</p></div>@endif`
+@if($settings->hours)<div><p class="opacity-60 mb-1 text-sm">Hours</p><p>{{ $settings->hours }}</p></div>@endif
+@if($settings->reservation_email)<div><p class="opacity-60 mb-1 text-sm">Reservations</p><p>{{ $settings->reservation_email }}</p></div>@endif
+@if($settings->support_email)<div><p class="opacity-60 mb-1 text-sm">Support</p><p>{{ $settings->support_email }}</p></div>@endif
+@if($settings->whatsapp)<div><p class="opacity-60 mb-1 text-sm">WhatsApp</p><p>{{ $settings->whatsapp }}</p></div>@endif
+@include('partials.map')`
 
 function formWrapClass(templateId: SiteExportPayload['templateId']): string {
   const style = getSectionVariants(templateId).contactForm
@@ -92,7 +96,7 @@ export function generateBladeSectionPartials(payload: SiteExportPayload): Record
 <div><label class="block text-sm font-medium mb-1.5">Phone</label><input name="phone" type="tel" class="${inputCls}" /></div>
 @isset($services)<div><label class="block text-sm font-medium mb-1.5">Service</label><select name="service_type" class="${inputCls}"><option value="">How can we help?</option>@foreach($services as $service)<option value="{{ $service->title }}">{{ $service->title }}</option>@endforeach</select></div>@endisset
 <div><label class="block text-sm font-medium mb-1.5">Message</label><textarea name="message" rows="5" class="${inputCls}"></textarea></div>
-<button type="submit" class="w-full text-white px-6 py-3 rounded-lg font-semibold" style="background-color:${accent}">{{ $settings->contact_form_button_text }}</button>
+<button type="submit" class="w-full text-white px-6 py-3 rounded-lg font-semibold" style="background-color:${accent}">{{ $settings->contact_form_button_text ?: 'Send message' }}</button>
 </form></div>`
 
   const contactShells: Record<string, string> = {

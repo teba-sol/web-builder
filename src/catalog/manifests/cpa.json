@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "id": "cpa",
-  "name": "Entoto Tax Studio",
-  "description": "Forest-and-lime next-gen tax filing — simple returns, refund advances, and year-round audit defense.",
+  "name": "Cedar Tax Studio",
+  "description": "Tax studio for straightforward returns, refund advances, and year-round audit defense.",
   "category": "finance",
   "previewGradient": "from-[#16302A] via-[#A8D93F] to-[#F6F3EA]",
   "accentColor": "#A8D93F",
@@ -215,17 +215,17 @@
     {
       "key": "phone",
       "label": "Office Phone",
-      "placeholder": "+251 11 661 8299"
+      "placeholder": "+1 416 555 8299"
     },
     {
       "key": "email",
       "label": "Email",
-      "placeholder": "info@entototax.et"
+      "placeholder": "info@cedartax.example"
     },
     {
       "key": "address",
       "label": "Office Address",
-      "placeholder": "Bole Road, Addis Ababa"
+      "placeholder": "15 Cedar Street"
     },
     {
       "key": "hours",
@@ -260,9 +260,9 @@
     "grayscaleImage": false
   },
   "defaults": {
-    "businessName": "Entoto Tax Studio",
-    "tagline": "Next-gen tax filing made simple",
-    "heroSubtext": "We help individuals and businesses file with confidence, unlock every deduction, and get refund advances up to 412,500 ETB in as little as 24 hours.",
+    "businessName": "Cedar Tax Studio",
+    "tagline": "Tax filing, made straightforward",
+    "heroSubtext": "We help people and businesses file with confidence, claim every deduction that applies, and answer the revenue authority if it writes.",
     "heroImage": "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=1200&q=80",
     "logo": "",
     "logoShowName": true,
@@ -271,10 +271,10 @@
     "brandAccent": "#F6F3EA",
     "fontHeading": "",
     "fontBody": "",
-    "aboutTitle": "Comprehensive tax solutions built around your finances",
-    "about": "Entoto Tax Studio was founded to make professional tax help fast, transparent, and genuinely useful, whether you are filing a simple return or navigating a multi-entity business.",
+    "aboutTitle": "Tax work built around your return",
+    "about": "Cedar Tax Studio prepares returns, explains the fee before you sign, and stays available after the filing date.",
     "aboutImage": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=900&q=80",
-    "missionStatement": "Certified preparers. Transparent pricing. Year-round support.",
+    "missionStatement": "A clear return, and someone to call if the letter arrives.",
     "pageVisibility": {
       "about": true,
       "services": true,
@@ -333,7 +333,7 @@
       },
       {
         "title": "Tax Resolution",
-        "description": "Notices, back taxes, liens, and installment agreements handled with the Ministry of Revenue and state agencies."
+        "description": "Notices, back taxes, liens, and installment agreements handled with the revenue authority and state agencies."
       },
       {
         "title": "Entity Formation",
@@ -421,7 +421,7 @@
     "testimonialsSectionTitle": "Client stories",
     "testimonials": [
       {
-        "quote": "I came in with three years of unfiled returns and a stack of Ministry of Revenue letters. Entoto Tax Studio built a plan, talked to the agency, and I slept through tax season for the first time in years.",
+        "quote": "I came in with three years of unfiled returns and a stack of the revenue authority letters. Cedar Tax Studio built a plan, talked to the agency, and I slept through tax season for the first time in years.",
         "author": "Selam Tadesse",
         "role": "Owner, Gerji Hospitality Group"
       },
@@ -447,8 +447,8 @@
         "answer": "Both. Compliance is the floor. Most clients stay on a year-round advisory cadence with quarterly check-ins so April is a filing event, not a strategy session."
       },
       {
-        "question": "Can you help with Ministry of Revenue notices, back taxes, or liens?",
-        "answer": "Yes. We review the notice, reconstruct filings if needed, and represent you with the Ministry of Revenue or state. Resolution options include installment agreements, penalty relief, and currently-not-collectible status when they apply."
+        "question": "Can you help with the revenue authority notices, back taxes, or liens?",
+        "answer": "Yes. We review the notice, reconstruct filings if needed, and represent you with the revenue authority or state. Resolution options include installment agreements, penalty relief, and currently-not-collectible status when they apply."
       },
       {
         "question": "Do you work with clients outside your city?",
@@ -456,7 +456,7 @@
       },
       {
         "question": "What should I bring to a first consultation?",
-        "answer": "Last year’s return if you have it, a list of income sources, any Ministry of Revenue or state letters, and the questions keeping you up at night. We will tell you what else we need before we propose an engagement."
+        "answer": "Last year’s return if you have it, a list of income sources, any the revenue authority or state letters, and the questions keeping you up at night. We will tell you what else we need before we propose an engagement."
       },
       {
         "question": "How do you charge?",
@@ -473,7 +473,7 @@
         "title": "Extended hours through the filing deadline",
         "slug": "tax-season-extended-hours",
         "excerpt": "Evening and Saturday appointments are open through filing deadline. Book a slot before the calendar fills.",
-        "body": "Tax season is here. In addition to weekday hours, Entoto Tax Studio will be open selected evenings and Saturdays through the filing deadline so you can review documents without missing work.\n\nExisting clients can book through the usual advisor. New clients should request a consultation — we still take a limited number of new individual and business returns each season.",
+        "body": "Tax season is here. In addition to weekday hours, Cedar Tax Studio will be open selected evenings and Saturdays through the filing deadline so you can review documents without missing work.\n\nExisting clients can book through the usual advisor. New clients should request a consultation — we still take a limited number of new individual and business returns each season.",
         "image": "https://images.unsplash.com/photo-1434626881859-194d67b2b86f?w=800&q=80",
         "author": "Front Desk",
         "date": "2026-02-02"
@@ -484,14 +484,14 @@
         "excerpt": "Higher 401(k) and IRA ceilings change the year-end planning conversation. Here is what we are telling clients.",
         "body": "Contribution limits moved again. If you are self-employed or run payroll, the new ceilings affect both this year’s estimates and next year’s withholding.\n\nWe are reviewing every advisory client’s plan in Q1. If you are not yet on a planning cadence, schedule a mid-year review before you lock in profit distributions.",
         "image": "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&q=80",
-        "author": "Mekdes Haile",
+        "author": "Elena Ward",
         "date": "2026-01-20"
       },
       {
-        "title": "Entoto Tax Studio named among the city’s top accounting firms",
+        "title": "Cedar Tax Studio named among the city’s top accounting firms",
         "slug": "readers-choice-accounting-firm",
         "excerpt": "Thank you to the clients who keep sending neighbors, partners, and their own books our way.",
-        "body": "We are honored to be recognized again as a readers’ choice accounting firm. Awards are nice. What matters more is that clients stay, refer, and come back when the Ministry of Revenue writes.\n\nThis year we are investing in secure document collection and additional tax-season staff so the experience stays calm as we grow.",
+        "body": "We are honored to be recognized again as a readers’ choice accounting firm. Awards are nice. What matters more is that clients stay, refer, and come back when the revenue authority writes.\n\nThis year we are investing in secure document collection and additional tax-season staff so the experience stays calm as we grow.",
         "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80",
         "author": "Communications",
         "date": "2026-03-04"
@@ -530,14 +530,14 @@
       {
         "title": "The small-business deduction checklist we actually use",
         "slug": "small-business-deduction-checklist",
-        "excerpt": "Home office, vehicles, retirement, and the expenses owners forget until the Ministry of Revenue has already closed the year.",
+        "excerpt": "Home office, vehicles, retirement, and the expenses owners forget until the revenue authority has already closed the year.",
         "body": "Most overpaid tax bills are not about exotic strategies. They are about incomplete books and decisions made after December 31.\n\nStart with a clean profit-and-loss, then walk vehicle use, home office, retirement contributions, health premiums, and estimated payments. If you take an owner draw instead of a reasonable salary from an S-corp, fix that before you file.\n\nBring this list to your next review. We will tell you what still moves the needle this year and what has to wait until January.",
         "image": "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&q=80",
         "author": "Marcus Adeyemi, CPA",
         "date": "2026-03-10"
       },
       {
-        "title": "You received a Ministry of Revenue letter. Here is the first week.",
+        "title": "You received a the revenue authority letter. Here is the first week.",
         "slug": "irs-letter-first-week",
         "excerpt": "Do not ignore it, and do not call the number on the notice in a panic. A calm sequence works better.",
         "body": "Open the envelope. Note the notice number, the tax year, and the deadline. Then send us the PDF. Most letters are math mismatches, missing forms, or identity checks — not audits.\n\nWe reply on your behalf, request transcripts when needed, and only escalate to representation if the facts require it. Waiting rarely improves the outcome. Guessing on the phone often makes it worse.",
@@ -549,25 +549,25 @@
         "title": "Estimated taxes for freelancers who hate surprises",
         "slug": "estimated-taxes-for-freelancers",
         "excerpt": "A simple quarterly rhythm so April does not wipe out a good year.",
-        "body": "If you receive 1099 income, the Ministry of Revenue expects payments through the year. We set estimates from your current books, not last year’s guess, and we adjust after a strong or slow quarter.\n\nPair estimates with a retirement contribution plan and an entity review. Plenty of freelancers overpay because they never looked at an S-corp or a SEP IRA until the return was already prepared.",
+        "body": "If you receive 1099 income, the revenue authority expects payments through the year. We set estimates from your current books, not last year’s guess, and we adjust after a strong or slow quarter.\n\nPair estimates with a retirement contribution plan and an entity review. Plenty of freelancers overpay because they never looked at an S-corp or a SEP IRA until the return was already prepared.",
         "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
-        "author": "Mekdes Haile",
+        "author": "Elena Ward",
         "date": "2026-01-28"
       }
     ],
     "team": [
       {
-        "name": "Mekdes Haile",
+        "name": "Elena Ward",
         "role": "Managing Partner — Tax Strategy",
         "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
       },
       {
-        "name": "Dawit Bekele",
+        "name": "Noah Bennett",
         "role": "Partner — Business Tax",
         "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80"
       },
       {
-        "name": "Hiwot Alemu",
+        "name": "Maya Chen",
         "role": "Director — Tax Resolution",
         "image": "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80"
       }
@@ -581,9 +581,9 @@
     "seoDescription": "",
     "seoKeywords": "",
     "seoSiteUrl": "",
-    "email": "info@entototax.et",
-    "phone": "+251 11 661 8299",
-    "address": "Bole Road, Addis Ababa",
+    "email": "info@cedartax.example",
+    "phone": "+1 416 555 8299",
+    "address": "15 Cedar Street",
     "mapUrl": "https://www.google.com/maps?q=100+Financial+Way,+New+York,+NY&output=embed",
     "hours": "Mon-Fri: 9AM-7PM | Sat: 10AM-4PM",
     "instagram": "",
@@ -597,6 +597,10 @@
     "contactSectionTitle": "Request a consultation",
     "contactFormTitle": "Tell us about your tax situation",
     "contactFormUrl": "",
-    "contactFormButtonText": "Send Consultation Request"
+    "contactFormButtonText": "Send message",
+    "city": "Toronto",
+    "country": "Canada",
+    "footerBlurb": "Returns, advances, and audit defense.",
+    "footerNote": "All rights reserved."
   }
 }

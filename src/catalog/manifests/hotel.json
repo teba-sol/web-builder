@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "id": "hotel",
-  "name": "Bole Skyline Hotel",
-  "description": "Addis Ababa city hotel with suites, Ethiopian hospitality, and online booking.",
+  "name": "Skyline Hotel",
+  "description": "City hotel with suites, a staffed front desk, and direct online booking.",
   "category": "hospitality",
   "previewGradient": "from-stone-900 via-amber-950 to-stone-700",
   "accentColor": "#b45309",
@@ -138,7 +138,7 @@
     "explore": "tiles",
     "contactShell": "split-dark",
     "contactForm": "soft-rounded",
-    "exploreTitle": "The Hotel",
+    "exploreTitle": "The hotel",
     "exploreSubtitle": "Rooms, dining, spa, and reservations",
     "exploreLinkLabel": "Explore"
   },
@@ -207,17 +207,17 @@
     {
       "key": "reservationEmail",
       "label": "Reservations Email",
-      "placeholder": "reservations@boleskyline.et"
+      "placeholder": "reservations@skylinehotel.example"
     },
     {
       "key": "phone",
       "label": "Front Desk",
-      "placeholder": "+251 11 661 2400"
+      "placeholder": "+65 6800 2400"
     },
     {
       "key": "address",
       "label": "Hotel Address",
-      "placeholder": "Cameroon Street, Bole, Addis Ababa"
+      "placeholder": "18 Harbor Avenue"
     },
     {
       "key": "hours",
@@ -227,7 +227,7 @@
     {
       "key": "email",
       "label": "General Email",
-      "placeholder": "reservations@boleskyline.et"
+      "placeholder": "stay@skylinehotel.example"
     }
   ],
   "servicesLabel": "Hotel Services",
@@ -247,14 +247,14 @@
     "grayscaleImage": false
   },
   "defaults": {
-    "businessName": "Bole Skyline Hotel",
-    "tagline": "Addis, above the city",
-    "heroSubtext": "A landmark hotel on Cameroon Street in Bole — refined suites, Ethiopian dining, and direct booking from search to check-in.",
+    "businessName": "Skyline Hotel",
+    "tagline": "The city, from a higher floor",
+    "heroSubtext": "A landmark hotel with refined suites, a quiet dining room, and booking from search to check-in.",
     "heroImage": "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200&q=80",
-    "aboutTitle": "A Bole landmark",
-    "about": "Bole Skyline Hotel welcomes travelers on the edge of Addis Ababa's business district. From the lobby coffee to rooms looking toward the Entoto ridge, the stay is built for work, family visits, and celebrations.",
+    "aboutTitle": "The hotel",
+    "about": "Skyline Hotel is a full-service city hotel. Suites stay calm, the desk is staffed through the night, and a reservation is confirmed before you arrive.",
     "aboutImage": "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800&q=80",
-    "missionStatement": "A dependable Addis stay — clear rates, warm service, and a room that is actually free when you book it.",
+    "missionStatement": "A well-run hotel stay, booked directly.",
     "pageVisibility": {
       "about": true,
       "services": true,
@@ -393,17 +393,17 @@
     "testimonials": [
       {
         "quote": "Outstanding service and incredible results. Highly recommended!",
-        "author": "Mekdes Haile",
+        "author": "Elena Ward",
         "role": "CEO, TechStart"
       },
       {
         "quote": "They transformed our business. Professional, creative, and reliable.",
-        "author": "Dawit Bekele",
+        "author": "Noah Bennett",
         "role": "Founder, Bloom Co"
       },
       {
         "quote": "The best decision we made this year. Exceeded every expectation.",
-        "author": "Hiwot Alemu",
+        "author": "Maya Chen",
         "role": "Director, Apex Group"
       }
     ],
@@ -485,7 +485,7 @@
       }
     ],
     "roomsSectionTitle": "Rooms & Suites",
-    "roomsSectionSubtitle": "City rooms and suites in Bole, priced per night in birr.",
+    "roomsSectionSubtitle": "City rooms and suites in the district, priced per night in local currency.",
     "bookingSectionTitle": "Book Your Stay",
     "bookingSectionSubtitle": "Search live availability, open a room, then check out on its own page.",
     "roomTypes": [
@@ -493,8 +493,8 @@
         "name": "Deluxe Room",
         "slug": "deluxe-room",
         "parentSlug": "",
-        "description": "A quiet king room with a work desk, rain shower, and a view toward the Bole skyline. Built for business nights and short city stays.",
-        "shortDescription": "King bed · Bole view · 32 m²",
+        "description": "A quiet king room with a work desk, rain shower, and a view toward the district skyline. Built for business nights and short city stays.",
+        "shortDescription": "King bed · the district view · 32 m²",
         "basePrice": "8500",
         "currency": "ETB",
         "maxAdults": "2",
@@ -512,8 +512,8 @@
         "name": "Deluxe High Floor",
         "slug": "deluxe-high-floor",
         "parentSlug": "deluxe-room",
-        "description": "The same deluxe layout on the upper floors, with a longer view toward Entoto and access to the lounge for coffee and evening snacks.",
-        "shortDescription": "Entoto view · Lounge · 32 m²",
+        "description": "The same deluxe layout on the upper floors, with a longer view toward the hill and access to the lounge for coffee and evening snacks.",
+        "shortDescription": "the hill view · Lounge · 32 m²",
         "basePrice": "10500",
         "currency": "ETB",
         "maxAdults": "2",
@@ -531,7 +531,7 @@
         "name": "Executive Suite",
         "slug": "executive-suite",
         "parentSlug": "",
-        "description": "A separate sitting room, dining nook, and a deep bath. A practical choice for longer Addis stays and guests who need space to meet.",
+        "description": "A separate sitting room, dining nook, and a deep bath. A practical choice for longer the city stays and guests who need space to meet.",
         "shortDescription": "Sitting room · 58 m²",
         "basePrice": "18500",
         "currency": "ETB",
@@ -550,7 +550,7 @@
         "name": "Presidential Suite",
         "slug": "presidential-suite",
         "parentSlug": "executive-suite",
-        "description": "Two bedrooms, a dining table for eight, and a terrace over Bole. The hotel's largest residence, reserved for celebrations and delegations.",
+        "description": "Two bedrooms, a dining table for eight, and a terrace over the district. The hotel's largest residence, reserved for celebrations and delegations.",
         "shortDescription": "2 bedrooms · Terrace · 120 m²",
         "basePrice": "42000",
         "currency": "ETB",
@@ -569,7 +569,7 @@
         "name": "Twin Classic",
         "slug": "twin-classic",
         "parentSlug": "",
-        "description": "Two twin beds and a compact layout for colleagues sharing an Addis night. Desk, shower, and a quiet corridor.",
+        "description": "Two twin beds and a compact layout for colleagues sharing an the city night. Desk, shower, and a quiet corridor.",
         "shortDescription": "2 twins · 28 m²",
         "basePrice": "7200",
         "currency": "ETB",
@@ -616,17 +616,17 @@
     ],
     "team": [
       {
-        "name": "Abel Desta",
+        "name": "James Carter",
         "role": "Founder & CEO",
         "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80"
       },
       {
-        "name": "Mekdes Haile",
+        "name": "Elena Ward",
         "role": "Creative Director",
         "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
       },
       {
-        "name": "Dawit Bekele",
+        "name": "Noah Bennett",
         "role": "Operations Lead",
         "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80"
       }
@@ -640,27 +640,29 @@
     "seoDescription": "",
     "seoKeywords": "",
     "seoSiteUrl": "",
-    "email": "stay@boleskyline.et",
-    "phone": "+251 11 661 2400",
-    "address": "Cameroon Street, Bole, Addis Ababa",
+    "email": "stay@skylinehotel.example",
+    "phone": "+65 6800 2400",
+    "address": "18 Harbor Avenue",
     "hours": "Front desk open 24 hours",
     "instagram": "",
     "website": "",
     "linkedin": "",
     "whatsapp": "",
     "supportEmail": "",
-    "reservationEmail": "reservations@boleskyline.et",
+    "reservationEmail": "reservations@skylinehotel.example",
     "licenseNumber": "",
     "bookingUrl": "",
     "contactSectionTitle": "Get in Touch",
     "contactFormTitle": "Send Us a Message",
     "contactFormUrl": "",
-    "contactFormButtonText": "Open Contact Form",
-    "city": "Addis Ababa",
-    "country": "Ethiopia",
+    "contactFormButtonText": "Send message",
+    "city": "Singapore",
+    "country": "Singapore",
     "starRating": "5",
     "checkInTime": "14:00",
     "checkOutTime": "12:00",
-    "propertyAmenities": "Wi-Fi, Restaurant, Parking, Generator backup, Breakfast"
+    "propertyAmenities": "Wi-Fi, Restaurant, Parking, Generator backup, Breakfast",
+    "footerBlurb": "Suites, dining, and a front desk that answers.",
+    "footerNote": "All rights reserved."
   }
 }

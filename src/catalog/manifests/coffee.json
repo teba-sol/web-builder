@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "id": "coffee",
-  "name": "Yirgacheffe House",
-  "description": "Warm artisan café aesthetic — immersive hero, signature menu showcase, and cozy hospitality.",
+  "name": "Origin Coffee House",
+  "description": "Artisan cafe with a roasting story, a short menu, and a room to stay in.",
   "category": "food",
   "previewGradient": "from-amber-950 via-[#3d2314] to-amber-700",
   "accentColor": "#c9a66b",
@@ -171,7 +171,7 @@
   },
   "defaultShowcase": [
     {
-      "title": "Ethiopian Yirgacheffe",
+      "title": "regional the highlands",
       "description": "Bright floral notes with bergamot and honey — pour-over or espresso.",
       "image": "https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=600&q=80",
       "price": "302 ETB",
@@ -224,17 +224,17 @@
     {
       "key": "email",
       "label": "Email",
-      "placeholder": "hello@yirgacheffehouse.et"
+      "placeholder": "hello@origincoffee.example"
     },
     {
       "key": "phone",
       "label": "Phone",
-      "placeholder": "+251 11 111 2040"
+      "placeholder": "+61 3 5550 2040"
     },
     {
       "key": "address",
       "label": "Café Address",
-      "placeholder": "Piazza, Addis Ababa"
+      "placeholder": "6 Roaster Lane"
     },
     {
       "key": "hours",
@@ -269,14 +269,14 @@
     "grayscaleImage": false
   },
   "defaults": {
-    "businessName": "Yirgacheffe House",
-    "tagline": "Coffee from the source",
-    "heroSubtext": "Yirgacheffe, Guji, and Sidama — roasted in Piazza and poured all day.",
+    "businessName": "Origin Coffee House",
+    "tagline": "Coffee, roasted for this room",
+    "heroSubtext": "Single-origin lots, roasted nearby and poured all day.",
     "heroImage": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1200&q=80",
-    "aboutTitle": "Our Roastery Story",
-    "about": "Yirgacheffe House began as a weekend market stall and grew into a neighborhood sanctuary for coffee lovers. We source directly from farmers we know by name, roast in micro-batches on our Probat, and serve each cup with the care it deserves.",
+    "aboutTitle": "The roastery",
+    "about": "Origin Coffee House roasts in small batches and pours them in the room next door. The menu stays short on purpose.",
     "aboutImage": "https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=800&q=80",
-    "missionStatement": "Great coffee is a conversation between soil, craft, and community.",
+    "missionStatement": "A cup you can trace back to the lot.",
     "pageVisibility": {
       "about": true,
       "services": true,
@@ -357,7 +357,7 @@
     "showcaseSectionSubtitle": "Single-origin pours, signature lattes, and seasonal specialties",
     "showcaseItems": [
       {
-        "title": "Ethiopian Yirgacheffe",
+        "title": "regional the highlands",
         "description": "Bright floral notes with bergamot and honey — pour-over or espresso.",
         "image": "https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=600&q=80",
         "price": "302 ETB",
@@ -405,7 +405,7 @@
         "link": "contact"
       }
     ],
-    "gallerySectionTitle": "Inside Yirgacheffe House",
+    "gallerySectionTitle": "Inside Origin Coffee House",
     "galleryImages": [
       "https://images.unsplash.com/photo-1501339847302-ac711a0a6587?w=600&q=80",
       "https://images.unsplash.com/photo-1453614512568-c4024d13c247?w=600&q=80",
@@ -542,17 +542,17 @@
     ],
     "team": [
       {
-        "name": "Mekdes Haile",
+        "name": "Elena Ward",
         "role": "Head Roaster",
         "image": "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80"
       },
       {
-        "name": "Dawit Bekele",
+        "name": "Noah Bennett",
         "role": "Lead Barista",
         "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80"
       },
       {
-        "name": "Hiwot Alemu",
+        "name": "Maya Chen",
         "role": "Pastry Chef",
         "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
       }
@@ -566,9 +566,9 @@
     "seoDescription": "",
     "seoKeywords": "",
     "seoSiteUrl": "",
-    "email": "hello@yirgacheffehouse.et",
-    "phone": "+251 11 111 2040",
-    "address": "Piazza, Addis Ababa",
+    "email": "hello@origincoffee.example",
+    "phone": "+61 3 5550 2040",
+    "address": "6 Roaster Lane",
     "hours": "Mon–Sun 7am–6pm",
     "instagram": "@emberandgrain",
     "website": "",
@@ -581,6 +581,10 @@
     "contactSectionTitle": "Get in Touch",
     "contactFormTitle": "Send Us a Message",
     "contactFormUrl": "",
-    "contactFormButtonText": "Open Contact Form"
+    "contactFormButtonText": "Send message",
+    "city": "Melbourne",
+    "country": "Australia",
+    "footerBlurb": "Small-batch coffee and a room to drink it in.",
+    "footerNote": "All rights reserved."
   }
 }

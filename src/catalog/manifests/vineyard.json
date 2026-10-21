@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "id": "vineyard",
-  "name": "Ziway Rift Estate",
-  "description": "Old-world wine estate — burgundy depths, olive groves, and tasting-room elegance.",
+  "name": "Valley Estate",
+  "description": "Wine estate with tastings, a cellar, and rooms for the weekend.",
   "category": "food",
   "previewGradient": "from-red-950 via-rose-900 to-lime-900",
   "accentColor": "#881337",
@@ -214,17 +214,17 @@
     {
       "key": "email",
       "label": "Tasting Room Email",
-      "placeholder": "tasting@ziwayrift.et"
+      "placeholder": "tasting@valleyestate.example"
     },
     {
       "key": "phone",
       "label": "Phone",
-      "placeholder": "+251 46 441 2200"
+      "placeholder": "+1 707 555 2200"
     },
     {
       "key": "address",
       "label": "Estate Address",
-      "placeholder": "Ziway, Oromia"
+      "placeholder": "1 Estate Road"
     },
     {
       "key": "hours",
@@ -234,7 +234,7 @@
     {
       "key": "reservationEmail",
       "label": "Event Inquiries",
-      "placeholder": "tasting@ziwayrift.et"
+      "placeholder": "events@chateauvine.com"
     }
   ],
   "servicesLabel": "Wine Programs",
@@ -254,14 +254,14 @@
     "grayscaleImage": false
   },
   "defaults": {
-    "businessName": "Ziway Rift Estate",
-    "tagline": "Rift Valley wine, grown in Ziway",
-    "heroSubtext": "A family estate on Lake Ziway — estate-grown wine, acacia shade, and tastings in the cellar.",
+    "businessName": "Valley Estate",
+    "tagline": "Estate wine, grown in the valley",
+    "heroSubtext": "A family estate on the lake. Estate-grown wine, shade trees, and tastings in the cellar.",
     "heroImage": "https://images.unsplash.com/photo-1506377247377-5ecb8f951b1e?w=1200&q=80",
-    "aboutTitle": "The Ziway estate",
-    "about": "Three generations of the Vine family have tended these hills. Our 120 acres produce cabernet, merlot, and rosé of remarkable character — guided by sustainable farming and patience in the cellar.",
+    "aboutTitle": "The estate",
+    "about": "Valley Estate grows, bottles, and pours on one property. Tastings are seated, and the cellar is open by appointment.",
     "aboutImage": "https://images.unsplash.com/photo-1506377585624-bedcbb027afc?w=800&q=80",
-    "missionStatement": "Great wine is grown, not manufactured.",
+    "missionStatement": "Wine from this valley, poured where it was grown.",
     "pageVisibility": {
       "about": true,
       "services": true,
@@ -527,17 +527,17 @@
     ],
     "team": [
       {
-        "name": "Mekdes Haile",
+        "name": "Elena Ward",
         "role": "Founder & Winemaker",
         "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80"
       },
       {
-        "name": "Dawit Bekele",
+        "name": "Noah Bennett",
         "role": "Estate Director",
         "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
       },
       {
-        "name": "Hiwot Alemu",
+        "name": "Maya Chen",
         "role": "Viticulturist",
         "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80"
       }
@@ -551,9 +551,9 @@
     "seoDescription": "",
     "seoKeywords": "",
     "seoSiteUrl": "",
-    "email": "tasting@ziwayrift.et",
-    "phone": "+251 46 441 2200",
-    "address": "Ziway, Oromia",
+    "email": "tasting@valleyestate.example",
+    "phone": "+1 707 555 2200",
+    "address": "1 Estate Road",
     "hours": "Thu–Mon 11am–5pm",
     "instagram": "",
     "website": "",
@@ -566,6 +566,10 @@
     "contactSectionTitle": "Get in Touch",
     "contactFormTitle": "Send Us a Message",
     "contactFormUrl": "",
-    "contactFormButtonText": "Open Contact Form"
+    "contactFormButtonText": "Send message",
+    "city": "Napa",
+    "country": "United States",
+    "footerBlurb": "Tastings, the cellar, and the weekend rooms.",
+    "footerNote": "All rights reserved."
   }
 }

@@ -209,7 +209,7 @@ export function ContentForm() {
               <option value="5">5 stars</option>
             </select>
           </label>
-          <Field label="City" value={content.city ?? ''} onChange={(v) => updateContent({ city: v })} placeholder="Addis Ababa" />
+          <Field label="City" value={content.city ?? ''} onChange={(v) => updateContent({ city: v })} placeholder="City" />
           <Field label="Country" value={content.country ?? ''} onChange={(v) => updateContent({ country: v })} placeholder="Ethiopia" />
           <Field label="Check-in" value={content.checkInTime ?? ''} onChange={(v) => updateContent({ checkInTime: v })} placeholder="15:00" />
           <Field label="Check-out" value={content.checkOutTime ?? ''} onChange={(v) => updateContent({ checkOutTime: v })} placeholder="11:00" />
@@ -387,7 +387,7 @@ export function ContentForm() {
                 }}
               />
               <Field label="URL Slug" value={post.slug} onChange={(v) => updateListItem('blogPosts', i, 'slug', slugify(v))} placeholder="my-post-title" />
-              <Field label="Excerpt" value={post.excerpt} onChange={(v) => updateListItem('blogPosts', i, 'excerpt', v)} multiline rows={2} />
+              <Field label="Summary" value={post.excerpt} onChange={(v) => updateListItem('blogPosts', i, 'excerpt', v)} multiline rows={2} />
               <Field label="Full Content" value={post.body} onChange={(v) => updateListItem('blogPosts', i, 'body', v)} multiline rows={6} />
               <ImagePicker label="Cover Image" value={post.image} onChange={(v) => updateListItem('blogPosts', i, 'image', v)} />
               <Field label="Author" value={post.author} onChange={(v) => updateListItem('blogPosts', i, 'author', v)} />
@@ -419,7 +419,7 @@ export function ContentForm() {
                 }}
               />
               <Field label="URL Slug" value={post.slug} onChange={(v) => updateListItem('newsPosts', i, 'slug', slugify(v))} />
-              <Field label="Excerpt" value={post.excerpt} onChange={(v) => updateListItem('newsPosts', i, 'excerpt', v)} multiline rows={2} />
+              <Field label="Summary" value={post.excerpt} onChange={(v) => updateListItem('newsPosts', i, 'excerpt', v)} multiline rows={2} />
               <Field label="Full Content" value={post.body} onChange={(v) => updateListItem('newsPosts', i, 'body', v)} multiline rows={6} />
               <ImagePicker label="Cover Image" value={post.image} onChange={(v) => updateListItem('newsPosts', i, 'image', v)} />
               <Field label="Author" value={post.author} onChange={(v) => updateListItem('newsPosts', i, 'author', v)} />
@@ -505,6 +505,23 @@ export function ContentForm() {
       </FormSection>
       )}
 
+      <FormSection title="Footer">
+        <Field
+          label="Footer text"
+          value={content.footerBlurb}
+          onChange={(v) => updateContent({ footerBlurb: v })}
+          multiline
+          placeholder="Short note under the business name. Leave blank to use the mission statement."
+        />
+        <Field
+          label="Copyright note"
+          value={content.footerNote}
+          onChange={(v) => updateContent({ footerNote: v })}
+          placeholder="All rights reserved."
+        />
+        <p className="text-xs text-slate-400">The public footer also uses the business name, hours, phone, email, address, and the pages you turn on.</p>
+      </FormSection>
+
       {pageOn('contact') && (
       <FormSection title="Contact Form">
         <Field label="Section Title" value={content.contactSectionTitle} onChange={(v) => updateContent({ contactSectionTitle: v })} />
@@ -515,7 +532,7 @@ export function ContentForm() {
           onChange={(v) => updateContent({ contactFormUrl: v })}
           placeholder="https://docs.google.com/forms/d/e/.../viewform"
         />
-        <Field label="Form Button Text" value={content.contactFormButtonText} onChange={(v) => updateContent({ contactFormButtonText: v })} placeholder="Open Contact Form" />
+        <Field label="Button label" value={content.contactFormButtonText} onChange={(v) => updateContent({ contactFormButtonText: v })} placeholder="Send message" />
         <p className="text-xs text-slate-400">A built-in contact form is always on your site. Optionally paste a Google Form or Typeform link to embed it (use the full docs.google.com/forms URL, not a forms.gle short link).</p>
       </FormSection>
       )}

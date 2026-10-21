@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "id": "salon",
-  "name": "Lideta Salon",
-  "description": "Soft, luxurious spa aesthetic with service menu and online booking for beauty brands.",
+  "name": "Lumen Salon",
+  "description": "Salon and spa layout with a service menu and online booking.",
   "category": "retail",
   "previewGradient": "from-rose-200 to-fuchsia-300",
   "accentColor": "#db2777",
@@ -235,17 +235,17 @@
     {
       "key": "phone",
       "label": "Salon Phone",
-      "placeholder": "+251 11 551 3344"
+      "placeholder": "+39 02 555 3344"
     },
     {
       "key": "email",
       "label": "Email",
-      "placeholder": "hello@lidetasalon.et"
+      "placeholder": "hello@lumensalon.example"
     },
     {
       "key": "address",
       "label": "Salon Address",
-      "placeholder": "Lideta, Addis Ababa"
+      "placeholder": "18 Lumen Street"
     },
     {
       "key": "hours",
@@ -280,14 +280,14 @@
     "grayscaleImage": false
   },
   "defaults": {
-    "businessName": "Lideta Salon",
-    "tagline": "Where beauty meets tranquility",
-    "heroSubtext": "Hair, skin, and a quiet room — stylists in Lideta for cuts, color, and wedding days.",
+    "businessName": "Lumen Salon",
+    "tagline": "Hair and skin, in a quiet room",
+    "heroSubtext": "Cuts, color, and wedding days, with enough time on the book to do the work properly.",
     "heroImage": "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=1200&q=80",
-    "aboutTitle": "Welcome to Lumière",
-    "about": "Lideta Salon opened its doors in 2018 with a simple vision: every guest leaves feeling more confident and more relaxed than when they arrived. Our team of certified stylists, colorists, and licensed estheticians use premium products and the latest techniques.",
+    "aboutTitle": "The salon",
+    "about": "Lumen Salon books by appointment. Stylists keep a full hour, and the room stays quiet on purpose.",
     "aboutImage": "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&q=80",
-    "missionStatement": "We believe self-care isn't vanity — it's wellness.",
+    "missionStatement": "A chair with enough time on it.",
     "pageVisibility": {
       "about": true,
       "services": true,
@@ -553,17 +553,17 @@
     ],
     "team": [
       {
-        "name": "Mekdes Haile",
+        "name": "Elena Ward",
         "role": "Lead Stylist & Colorist",
         "image": "https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?w=400&q=80"
       },
       {
-        "name": "Dawit Bekele",
+        "name": "Noah Bennett",
         "role": "Esthetician",
         "image": "https://images.unsplash.com/photo-1580618672591-eb180b1a973f?w=400&q=80"
       },
       {
-        "name": "Hiwot Alemu",
+        "name": "Maya Chen",
         "role": "Massage Therapist",
         "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80"
       }
@@ -577,9 +577,9 @@
     "seoDescription": "",
     "seoKeywords": "",
     "seoSiteUrl": "",
-    "email": "hello@lidetasalon.et",
-    "phone": "+251 11 551 3344",
-    "address": "Lideta, Addis Ababa",
+    "email": "hello@lumensalon.example",
+    "phone": "+39 02 555 3344",
+    "address": "18 Lumen Street",
     "hours": "Tue–Sat 9am–7pm, Sun 10am–4pm",
     "instagram": "@lumieresalon",
     "website": "",
@@ -592,6 +592,10 @@
     "contactSectionTitle": "Get in Touch",
     "contactFormTitle": "Send Us a Message",
     "contactFormUrl": "",
-    "contactFormButtonText": "Open Contact Form"
+    "contactFormButtonText": "Send message",
+    "city": "Milan",
+    "country": "Italy",
+    "footerBlurb": "Cuts, color, and appointments that start on time.",
+    "footerNote": "All rights reserved."
   }
 }

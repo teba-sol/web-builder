@@ -30,7 +30,7 @@ export function Template6({ c, basePath }: Props) {
   const faqs = c.faqs.filter((f) => f.question)
   const mapsHref = getMapOpenUrl(c.mapUrl, c.address)
   const specialize = services.map((s, i) => ({
-    title: i === 0 ? 'Advances' : i === 1 ? 'Referrals' : 'Business Tax',
+    title: s.title,
     description: s.description,
     image: locations[i]?.image || c.galleryImages[i] || '',
   }))
@@ -226,7 +226,7 @@ export function Template6({ c, basePath }: Props) {
         <section className="relative w-full bg-gradient-to-b from-[var(--clone-accent)] via-[var(--clone-ink)] to-[var(--clone-ink)] px-4 py-20 csm:px-6 clg:px-8">
           <div className="relative z-10 mx-auto max-w-7xl">
             <div className="mb-16 text-center">
-              <h2 className="mb-4 text-4xl font-bold text-white italic cmd:text-5xl clg:text-6xl">Addis Tax Desk Specializes In:</h2>
+              <h2 className="mb-4 text-4xl font-bold text-white italic cmd:text-5xl clg:text-6xl">{c.businessName} Specializes In:</h2>
               <div className="mx-auto h-1 w-24 rounded-full bg-gradient-to-r from-[var(--clone-ink)] to-[var(--clone-accent)]" />
             </div>
             <div className="grid gap-8 cmd:grid-cols-3 clg:gap-12">
@@ -348,25 +348,41 @@ export function Template6({ c, basePath }: Props) {
 
       <footer className="bg-black px-6 py-16 text-white">
         <div className="mx-auto max-w-7xl">
-          <p className="mb-6 text-center text-sm font-semibold tracking-widest uppercase cmd:text-left">Social Media</p>
-          <div className="mb-8 flex justify-center gap-6 cmd:justify-start">
-            <a href="https://web.facebook.com/people/The-Tax-Fighters/61554192368133/" className="p-2" target="_blank" rel="noreferrer">
-              Facebook
-            </a>
-            {c.instagram ? (
-              <a href={c.instagram} className="p-2" target="_blank" rel="noreferrer">
-                Instagram
-              </a>
-            ) : null}
-            {mapsHref ? (
-              <a href={mapsHref} className="p-2" target="_blank" rel="noreferrer">
-                Google
-              </a>
-            ) : null}
-          </div>
+          {(c.instagram || c.linkedin || c.website || mapsHref) ? (
+            <>
+              <p className="mb-6 text-center text-sm font-semibold tracking-widest uppercase cmd:text-left">Social Media</p>
+              <div className="mb-8 flex justify-center gap-6 cmd:justify-start">
+                {c.instagram ? (
+                  <a href={c.instagram} className="p-2" target="_blank" rel="noreferrer">
+                    Instagram
+                  </a>
+                ) : null}
+                {c.linkedin ? (
+                  <a href={c.linkedin} className="p-2" target="_blank" rel="noreferrer">
+                    LinkedIn
+                  </a>
+                ) : null}
+                {c.website ? (
+                  <a href={c.website} className="p-2" target="_blank" rel="noreferrer">
+                    Website
+                  </a>
+                ) : null}
+                {mapsHref ? (
+                  <a href={mapsHref} className="p-2" target="_blank" rel="noreferrer">
+                    Google
+                  </a>
+                ) : null}
+              </div>
+            </>
+          ) : null}
           <div className="flex flex-col items-center justify-between gap-4 border-t border-gray-600 pt-8 cmd:flex-row">
-            {c.logo ? <img src={c.logo} alt="" className="h-16 w-auto" /> : <span className="font-bold">{c.businessName}</span>}
-            <p className="font-semibold">© {new Date().getFullYear()} {c.businessName}. All Rights Reserved.</p>
+            <div>
+              {c.logo ? <img src={c.logo} alt="" className="h-16 w-auto" /> : <span className="font-bold">{c.businessName}</span>}
+              {(c.footerBlurb || c.missionStatement || c.heroSubtext) ? (
+                <p className="mt-3 max-w-md text-sm text-white/70">{c.footerBlurb || c.missionStatement || c.heroSubtext}</p>
+              ) : null}
+            </div>
+            <p className="font-semibold">© {new Date().getFullYear()} {c.businessName}. {c.footerNote || 'All rights reserved.'}</p>
           </div>
         </div>
       </footer>
@@ -418,10 +434,10 @@ export function Template6({ c, basePath }: Props) {
                     </label>
                     <label className="my-4 flex items-start gap-3 text-xs leading-tight text-gray-700">
                       <input type="checkbox" name="smsConsent" className="mt-1 accent-[#E63946]" />
-                      I Consent to Receive SMS Notifications, Alerts & Occasional Marketing Communication from company. Message frequency varies. Message & data rates may apply. Text HELP to {c.phone || '(678) 679-1040'} for assistance. You can reply STOP to unsubscribe at any time.
+                      I Consent to Receive SMS Notifications, Alerts & Occasional Marketing Communication from {c.businessName || 'us'}. Message frequency varies. Message & data rates may apply.{c.phone ? ` Text HELP to ${c.phone} for assistance.` : ''} You can reply STOP to unsubscribe at any time.
                     </label>
                     <button type="submit" className="mt-6 w-full rounded-md bg-green-500 py-3 font-bold text-white hover:bg-green-600">
-                      Submit
+                      {c.contactFormButtonText || 'Send message'}
                     </button>
                     <div className="mt-4 space-x-2 text-center text-xs text-gray-600">
                       <a href="#" className="underline">

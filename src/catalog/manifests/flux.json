@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "id": "flux",
-  "name": "Bole Tax Desk",
-  "description": "Warm cream-and-orange advisory firm invested in long-term wealth, tax planning, and family success.",
+  "name": "Hearth Advisory",
+  "description": "Advisory firm for long-term wealth, tax planning, and family finances.",
   "category": "finance",
   "previewGradient": "from-[#241C15] via-[#FA6B34] to-[#FFF9F4]",
   "accentColor": "#FA6B34",
@@ -152,7 +152,7 @@
   },
   "showcase": {
     "sectionTitle": "We pop up where you live",
-    "sectionSubtitle": "Addis Ababa neighborhoods, same-week funds",
+    "sectionSubtitle": "the city neighborhoods, same-week funds",
     "navLabel": "Locations",
     "itemLabel": "Zone",
     "showPrice": false,
@@ -170,7 +170,7 @@
       "link": "contact"
     },
     {
-      "title": "Old Airport",
+      "title": "the north quarter",
       "description": "Entity returns and Shield advances.",
       "image": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80",
       "price": "",
@@ -207,17 +207,17 @@
     {
       "key": "phone",
       "label": "Text / Call",
-      "placeholder": "+251 11 661 8299"
+      "placeholder": "+1 512 555 8299"
     },
     {
       "key": "email",
       "label": "Email",
-      "placeholder": "hello@boletax.et"
+      "placeholder": "hello@hearthadvisory.example"
     },
     {
       "key": "address",
       "label": "Studio",
-      "placeholder": "Bole Road, Addis Ababa"
+      "placeholder": "9 Hearth Court"
     },
     {
       "key": "hours",
@@ -247,9 +247,9 @@
     "grayscaleImage": false
   },
   "defaults": {
-    "businessName": "Bole Tax Desk",
-    "tagline": "Invested in your long term success.",
-    "heroSubtext": "To assist individuals and help businesses realize their financial ambitions and be successful is our mission.",
+    "businessName": "Hearth Advisory",
+    "tagline": "Invested in the long plan",
+    "heroSubtext": "We help families and businesses turn a financial ambition into a plan they can follow.",
     "heroImage": "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=2000&q=80",
     "logo": "",
     "logoShowName": true,
@@ -258,10 +258,10 @@
     "brandAccent": "#FFF9F4",
     "fontHeading": "space-grotesk",
     "fontBody": "space-grotesk",
-    "aboutTitle": "Your strategic partner for lasting wealth",
-    "about": "Bole Tax Desk helps families and owners plan beyond this tax year — entity choice, estimated taxes, and a written plan that still works in five years.",
+    "aboutTitle": "A partner for the long plan",
+    "about": "Hearth Advisory plans tax, cash, and the decisions that sit between them. The relationship is meant to last longer than one filing season.",
     "aboutImage": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1200&q=80",
-    "missionStatement": "Your success. Your legacy. For posterity.",
+    "missionStatement": "Advice aimed at the decade, not the week.",
     "pageVisibility": {
       "about": true,
       "services": true,
@@ -312,7 +312,7 @@
       },
       {
         "title": "Business + audit armor",
-        "description": "Schedule C, 1120, 1099 stacks. If the Ministry of Revenue writes, existing clients do not get a new invoice."
+        "description": "Schedule C, 1120, 1099 stacks. If the revenue authority writes, existing clients do not get a new invoice."
       }
     ],
     "stepsSectionTitle": "Four moves. Then money.",
@@ -331,11 +331,11 @@
       },
       {
         "title": "Get wired",
-        "description": "Approved files fund in 30 minutes to 48 hours. Ministry of Revenue pays us back. You keep living."
+        "description": "Approved files fund in 30 minutes to 48 hours. the revenue authority pays us back. You keep living."
       }
     ],
     "showcaseSectionTitle": "We pop up where you live",
-    "showcaseSectionSubtitle": "Addis Ababa neighborhoods, same-week funds",
+    "showcaseSectionSubtitle": "the city neighborhoods, same-week funds",
     "showcaseItems": [
       {
         "title": "Midtown",
@@ -346,7 +346,7 @@
         "link": "contact"
       },
       {
-        "title": "Old Airport",
+        "title": "the north quarter",
         "description": "Entity returns and Shield advances.",
         "image": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80",
         "price": "",
@@ -398,7 +398,7 @@
         "role": "Salon owner"
       },
       {
-        "quote": "Texted a photo of the Ministry of Revenue letter. They handled it. I kept working.",
+        "quote": "Texted a photo of the revenue authority letter. They handled it. I kept working.",
         "author": "Meron Assefa",
         "role": "Stylist"
       }
@@ -465,7 +465,7 @@
       },
       {
         "title": "Wait",
-        "description": "We still file. You take the full Ministry of Revenue hit when it lands.",
+        "description": "We still file. You take the full revenue authority hit when it lands.",
         "price": "Your call",
         "tag": "No advance",
         "featured": false
@@ -481,7 +481,7 @@
         "title": "An advance is a loan. We say that out loud.",
         "slug": "an-advance-is-a-loan",
         "excerpt": "Why we refuse to quote a number until the return exists.",
-        "body": "The Ministry of Revenue refund pays the advance back. Fees, if any, come out of that refund. If the year cannot carry the number, we will tell you to take less — or none.",
+        "body": "The the revenue authority refund pays the advance back. Fees, if any, come out of that refund. If the year cannot carry the number, we will tell you to take less — or none.",
         "image": "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&q=80",
         "author": "Flux desk",
         "date": "2026-02-11"
@@ -498,17 +498,17 @@
     ],
     "team": [
       {
-        "name": "Mekdes Haile",
+        "name": "Elena Ward",
         "role": "Desk lead",
         "image": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80"
       },
       {
-        "name": "Dawit Bekele",
+        "name": "Noah Bennett",
         "role": "Advances",
         "image": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80"
       },
       {
-        "name": "Hiwot Alemu",
+        "name": "Maya Chen",
         "role": "Business files",
         "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80"
       }
@@ -519,12 +519,12 @@
     "ctaLink": "contact",
     "seoEnabled": true,
     "seoTitle": "Flux Tax — same-week refund advances",
-    "seoDescription": "Addis Ababa tax prep and refund advances up to 412,500 ETB. Holiday product with zero Flux fee.",
-    "seoKeywords": "refund advance, tax prep Addis Ababa, same week refund, Holiday advance",
+    "seoDescription": "the city tax prep and refund advances up to 412,500 ETB. Holiday product with zero Flux fee.",
+    "seoKeywords": "refund advance, tax prep the city, same week refund, Holiday advance",
     "seoSiteUrl": "",
-    "email": "hello@boletax.et",
-    "phone": "+251 11 661 8299",
-    "address": "Bole Road, Addis Ababa",
+    "email": "hello@hearthadvisory.example",
+    "phone": "+1 512 555 8299",
+    "address": "9 Hearth Court",
     "mapUrl": "",
     "hours": "Mon-Fri: 9AM - 7PM | Sat: 10AM - 4PM",
     "instagram": "https://instagram.com/fluxtax",
@@ -538,6 +538,10 @@
     "contactSectionTitle": "Hit the desk",
     "contactFormTitle": "Tell us the year",
     "contactFormUrl": "",
-    "contactFormButtonText": "Send it"
+    "contactFormButtonText": "Send message",
+    "city": "Austin",
+    "country": "United States",
+    "footerBlurb": "Tax planning and wealth advice for the long plan.",
+    "footerNote": "All rights reserved."
   }
 }

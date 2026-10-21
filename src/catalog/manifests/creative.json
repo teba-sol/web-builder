@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "id": "creative",
-  "name": "Studio Abay",
-  "description": "Bold dark aesthetic with striking typography for design agencies and studios.",
+  "name": "Studio North",
+  "description": "Dark, typographic layout for design studios and brand teams.",
   "category": "creative",
   "previewGradient": "from-violet-600 to-fuchsia-600",
   "accentColor": "#a855f7",
@@ -214,12 +214,12 @@
     {
       "key": "email",
       "label": "Email",
-      "placeholder": "hello@studioabay.et"
+      "placeholder": "hello@studionorth.example"
     },
     {
       "key": "phone",
       "label": "Phone",
-      "placeholder": "+251 11 552 6543"
+      "placeholder": "+49 30 555 6543"
     },
     {
       "key": "instagram",
@@ -249,14 +249,14 @@
     "grayscaleImage": false
   },
   "defaults": {
-    "businessName": "Studio Abay",
-    "tagline": "An Addis studio for brands that need to look sharp",
-    "heroSubtext": "A creative studio obsessed with bold ideas, beautiful craft, and stories that resonate.",
+    "businessName": "Studio North",
+    "tagline": "A studio for brands that need to look sharp",
+    "heroSubtext": "A creative studio focused on bold ideas, careful craft, and stories people remember.",
     "heroImage": "https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=1200&q=80",
-    "aboutTitle": "We Are Studio Abay",
-    "about": "Studio Abay designs brands, sites, and campaigns for companies in Addis Ababa.",
+    "aboutTitle": "The studio",
+    "about": "Studio North designs identity, campaigns, and the sites that carry them. The work is shown, not described to death.",
     "aboutImage": "https://images.unsplash.com/photo-1497215842964-222b430dc094?w=800&q=80",
-    "missionStatement": "We believe great design is invisible — it just feels right.",
+    "missionStatement": "Design that can be shipped.",
     "pageVisibility": {
       "about": true,
       "services": true,
@@ -522,17 +522,17 @@
     ],
     "team": [
       {
-        "name": "Mekdes Haile",
+        "name": "Elena Ward",
         "role": "Founder & CEO",
         "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80"
       },
       {
-        "name": "Dawit Bekele",
+        "name": "Noah Bennett",
         "role": "Creative Director",
         "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
       },
       {
-        "name": "Hiwot Alemu",
+        "name": "Maya Chen",
         "role": "Operations Lead",
         "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80"
       }
@@ -546,9 +546,9 @@
     "seoDescription": "",
     "seoKeywords": "",
     "seoSiteUrl": "",
-    "email": "hello@studioabay.et",
-    "phone": "+251 11 552 6543",
-    "address": "Kazanchis, Addis Ababa",
+    "email": "hello@studionorth.example",
+    "phone": "+49 30 555 6543",
+    "address": "14 North Studio",
     "hours": "",
     "instagram": "@studionova",
     "website": "https://behance.net/studionova",
@@ -561,6 +561,10 @@
     "contactSectionTitle": "Get in Touch",
     "contactFormTitle": "Send Us a Message",
     "contactFormUrl": "",
-    "contactFormButtonText": "Open Contact Form"
+    "contactFormButtonText": "Send message",
+    "city": "Berlin",
+    "country": "Germany",
+    "footerBlurb": "Identity, campaigns, and the site that holds them.",
+    "footerNote": "All rights reserved."
   }
 }

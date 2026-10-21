@@ -50,6 +50,7 @@ export function TemplateCard({ template }: Props) {
         </div>
       </div>
       <div className="flex flex-1 flex-col p-6">
+        <p className="mb-2 font-mono text-[11px] font-semibold uppercase tracking-wider text-slate-400">{template.id}</p>
         <h3 className="mb-2 text-lg font-semibold text-slate-900">{template.name}</h3>
         <p className="flex-1 text-sm leading-relaxed text-slate-500">{template.description}</p>
         <div className="mt-5 flex gap-3">

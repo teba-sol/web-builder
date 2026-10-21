@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "id": "restaurant",
-  "name": "Kategna",
-  "description": "Warm, elegant restaurant layout with reservation-focused contact section.",
+  "name": "Hearth Table",
+  "description": "Restaurant layout with a reservation-first contact section.",
   "category": "food",
   "previewGradient": "from-amber-700 to-red-800",
   "accentColor": "#d97706",
@@ -220,17 +220,17 @@
     {
       "key": "reservationEmail",
       "label": "Reservations Email",
-      "placeholder": "hello@kategna.et"
+      "placeholder": "reservations@hearthtable.example"
     },
     {
       "key": "phone",
       "label": "Phone",
-      "placeholder": "+251 11 661 1515"
+      "placeholder": "+33 4 78 00 1515"
     },
     {
       "key": "address",
       "label": "Address",
-      "placeholder": "Cameroon Street, Bole, Addis Ababa"
+      "placeholder": "5 Hearth Lane"
     },
     {
       "key": "hours",
@@ -255,14 +255,14 @@
     "grayscaleImage": false
   },
   "defaults": {
-    "businessName": "Kategna",
-    "tagline": "Ethiopian food, served on injera",
-    "heroSubtext": "Doro wat, kitfo, tibs, and fasting platters in Bole. Book a table or order for the family.",
+    "businessName": "Hearth Table",
+    "tagline": "A table, a fire, and a short menu",
+    "heroSubtext": "Seasonal plates, cooked to order. Book a table or take the meal home.",
     "heroImage": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200&q=80",
-    "aboutTitle": "A Bole table",
-    "about": "Kategna opened in Bole in 2010. The kitchen cooks doro wat, kitfo, tibs, and fasting platters with injera, butter, and berbere from Merkato. Families use the same tables for holidays and quiet weeknights.",
+    "aboutTitle": "The dining room",
+    "about": "Hearth Table cooks a short menu over fire and serves it in one room. Reservations keep the pace even.",
     "aboutImage": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80",
-    "missionStatement": "Food is love. Every plate we serve carries generations of tradition.",
+    "missionStatement": "A table worth leaving the house for.",
     "pageVisibility": {
       "about": true,
       "services": true,
@@ -301,7 +301,7 @@
       }
     ],
     "servicesSectionTitle": "The Experience",
-    "servicesSectionSubtitle": "More than a meal — a celebration of Ethiopian food",
+    "servicesSectionSubtitle": "More than a meal — a celebration of the house menu",
     "services": [
       {
         "title": "Dine In",
@@ -317,7 +317,7 @@
       },
       {
         "title": "Takeout & Delivery",
-        "description": "Enjoy Kategna at home via our online ordering platform."
+        "description": "Enjoy Hearth Table at home via our online ordering platform."
       }
     ],
     "stepsSectionTitle": "From Our Kitchen to Your Table",
@@ -391,7 +391,7 @@
         "link": "contact"
       }
     ],
-    "gallerySectionTitle": "A Taste of Kategna",
+    "gallerySectionTitle": "A Taste of Hearth Table",
     "galleryImages": [
       "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=600&q=80",
       "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&q=80",
@@ -528,17 +528,17 @@
     ],
     "team": [
       {
-        "name": "Mekdes Haile",
+        "name": "Elena Ward",
         "role": "Executive Chef & Owner",
         "image": "https://images.unsplash.com/photo-1577214491174-0b8e5c4e9d0a?w=400&q=80"
       },
       {
-        "name": "Dawit Bekele",
+        "name": "Noah Bennett",
         "role": "Pastry Chef",
         "image": "https://images.unsplash.com/photo-1595273670150-886489a8b708?w=400&q=80"
       },
       {
-        "name": "Hiwot Alemu",
+        "name": "Maya Chen",
         "role": "Sommelier",
         "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80"
       }
@@ -552,21 +552,25 @@
     "seoDescription": "",
     "seoKeywords": "",
     "seoSiteUrl": "",
-    "email": "hello@kategna.et",
-    "phone": "+251 11 661 1515",
-    "address": "Cameroon Street, Bole, Addis Ababa",
+    "email": "hello@hearthtable.example",
+    "phone": "+33 4 78 00 1515",
+    "address": "5 Hearth Lane",
     "hours": "Tue–Sun 11am–10pm",
     "instagram": "",
     "website": "",
     "linkedin": "",
     "whatsapp": "",
     "supportEmail": "",
-    "reservationEmail": "reservations@bellacucina.com",
+    "reservationEmail": "reservations@hearthtable.example",
     "licenseNumber": "",
     "bookingUrl": "",
     "contactSectionTitle": "Get in Touch",
     "contactFormTitle": "Send Us a Message",
     "contactFormUrl": "",
-    "contactFormButtonText": "Open Contact Form"
+    "contactFormButtonText": "Send message",
+    "city": "Lyon",
+    "country": "France",
+    "footerBlurb": "A short menu and a table you can book.",
+    "footerNote": "All rights reserved."
   }
 }

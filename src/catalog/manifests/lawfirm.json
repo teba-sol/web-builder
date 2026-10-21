@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "id": "lawfirm",
-  "name": "Haile & Bekele",
-  "description": "Authoritative navy-and-gold layout for attorneys, legal practices, and law firms.",
+  "name": "Hale & Mercer",
+  "description": "Authoritative layout for attorneys and law firms.",
   "category": "business",
   "previewGradient": "from-slate-900 to-amber-900",
   "accentColor": "#b45309",
@@ -221,17 +221,17 @@
     {
       "key": "phone",
       "label": "Office Phone",
-      "placeholder": "+251 11 551 8800"
+      "placeholder": "+1 617 555 8800"
     },
     {
       "key": "email",
       "label": "Email",
-      "placeholder": "intake@hailebekele.et"
+      "placeholder": "intake@halemercer.example"
     },
     {
       "key": "address",
       "label": "Office Address",
-      "placeholder": "Mexico Square, Addis Ababa"
+      "placeholder": "1 Mercer Court"
     },
     {
       "key": "hours",
@@ -261,14 +261,14 @@
     "grayscaleImage": false
   },
   "defaults": {
-    "businessName": "Haile & Bekele",
-    "tagline": "Counsel for Addis families and businesses",
-    "heroSubtext": "For over 25 years, Haile & Bekele has protected the rights of individuals and businesses across the state.",
+    "businessName": "Hale & Mercer",
+    "tagline": "Counsel for families and businesses",
+    "heroSubtext": "For more than 25 years, Hale & Mercer has represented people and companies that need the work done carefully.",
     "heroImage": "https://images.unsplash.com/photo-1589829545855-d10d557cf95f?w=1200&q=80",
-    "aboutTitle": "A Legacy of Excellence",
-    "about": "Haile & Bekele advises families and companies in Addis Ababa on business, property, family matters, and disputes. You meet the lawyer who will do the work.",
+    "aboutTitle": "A practice built on the file",
+    "about": "Hale & Mercer advises on the matters it knows, writes in plain language, and tells you when a case should not be brought.",
     "aboutImage": "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80",
-    "missionStatement": "We believe everyone deserves skilled legal representation delivered with integrity, transparency, and respect.",
+    "missionStatement": "Counsel that is specific to the facts.",
     "pageVisibility": {
       "about": true,
       "services": true,
@@ -534,17 +534,17 @@
     ],
     "team": [
       {
-        "name": "Mekdes Haile",
+        "name": "Elena Ward",
         "role": "Managing Partner — Litigation",
         "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80"
       },
       {
-        "name": "Dawit Bekele",
+        "name": "Noah Bennett",
         "role": "Partner — Business Law",
         "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80"
       },
       {
-        "name": "Hiwot Alemu",
+        "name": "Maya Chen",
         "role": "Partner — Family Law",
         "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
       }
@@ -558,9 +558,9 @@
     "seoDescription": "",
     "seoKeywords": "",
     "seoSiteUrl": "",
-    "email": "intake@hailebekele.et",
-    "phone": "+251 11 551 8800",
-    "address": "Mexico Square, Addis Ababa",
+    "email": "intake@halemercer.example",
+    "phone": "+1 617 555 8800",
+    "address": "1 Mercer Court",
     "hours": "Mon–Fri 8:30am–5:30pm",
     "instagram": "",
     "website": "",
@@ -573,6 +573,10 @@
     "contactSectionTitle": "Get in Touch",
     "contactFormTitle": "Send Us a Message",
     "contactFormUrl": "",
-    "contactFormButtonText": "Open Contact Form"
+    "contactFormButtonText": "Send message",
+    "city": "Boston",
+    "country": "United States",
+    "footerBlurb": "Counsel for families and businesses.",
+    "footerNote": "All rights reserved."
   }
 }

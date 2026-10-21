@@ -1,5 +1,6 @@
 import type { BlogPostItem, SiteContent } from '../types'
 import { escapeHtml, resolveImageForExport, type ImageAsset } from './imageUtils'
+import { footerNote } from '../data/footer'
 import { tailwindHead } from './htmlShared'
 
 function formatBlogDate(date: string): string {
@@ -37,7 +38,7 @@ export function generateBlogPostHtml(
   </div>
 </article>
 <footer class="border-t py-8 text-center text-sm text-slate-500">
-  <p>© ${new Date().getFullYear()} ${escapeHtml(content.businessName)}</p>
+  <p>© ${new Date().getFullYear()} ${escapeHtml(content.businessName)}. ${escapeHtml(footerNote(content))}</p>
 </footer>
 </body></html>`
 }

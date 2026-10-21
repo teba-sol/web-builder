@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "id": "jungle",
-  "name": "Gambella Forest Lodge",
-  "description": "Forest lodge in Gambella with elevated cabins and direct booking.",
+  "name": "Canopy Hotel",
+  "description": "Forest hotel with elevated cabins and direct booking.",
   "category": "hospitality",
   "previewGradient": "from-emerald-950 via-lime-800 to-amber-600",
   "accentColor": "#65a30d",
@@ -137,7 +137,7 @@
     "explore": "strips",
     "contactShell": "terra-pill",
     "contactForm": "soft-rounded",
-    "exploreTitle": "The Canopy",
+    "exploreTitle": "The hotel",
     "exploreSubtitle": "Cabins, trails, dining, and book",
     "exploreLinkLabel": "Enter"
   },
@@ -206,17 +206,17 @@
     {
       "key": "reservationEmail",
       "label": "Reservations",
-      "placeholder": "book@gambellalodge.et"
+      "placeholder": "book@canopyhotel.example"
     },
     {
       "key": "phone",
-      "label": "Lodge Phone",
-      "placeholder": "+251 47 551 2200"
+      "label": "Phone",
+      "placeholder": "+62 361 555 2200"
     },
     {
       "key": "address",
-      "label": "Lodge Address",
-      "placeholder": "Gambella"
+      "label": "Address",
+      "placeholder": "2 Canopy Road"
     },
     {
       "key": "hours",
@@ -226,7 +226,7 @@
     {
       "key": "email",
       "label": "Email",
-      "placeholder": "book@gambellalodge.et"
+      "placeholder": "stay@canopyhotel.example"
     }
   ],
   "servicesLabel": "Jungle Experiences",
@@ -246,14 +246,14 @@
     "grayscaleImage": false
   },
   "defaults": {
-    "businessName": "Gambella Forest Lodge",
-    "tagline": "Cabins in the west",
+    "businessName": "Canopy Hotel",
+    "tagline": "Cabins in the trees",
     "heroSubtext": "Elevated timber cabins among the trees, with a river deck and a guide on request.",
     "heroImage": "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=1200&q=80",
-    "aboutTitle": "The lodge",
-    "about": "Gambella Forest Lodge is raised into the trees of western Ethiopia. Cabins have outdoor showers, netting, and a path down to the river.",
+    "aboutTitle": "The hotel",
+    "about": "Canopy Hotel is raised into the trees. Cabins have outdoor showers, netting, and a path down to the river.",
     "aboutImage": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&q=80",
-    "missionStatement": "A forest stay with a real cabin, not a picture of one.",
+    "missionStatement": "A forest hotel with a real path back to the river.",
     "pageVisibility": {
       "about": true,
       "services": true,
@@ -392,17 +392,17 @@
     "testimonials": [
       {
         "quote": "Outstanding service and incredible results. Highly recommended!",
-        "author": "Mekdes Haile",
+        "author": "Elena Ward",
         "role": "CEO, TechStart"
       },
       {
         "quote": "They transformed our business. Professional, creative, and reliable.",
-        "author": "Dawit Bekele",
+        "author": "Noah Bennett",
         "role": "Founder, Bloom Co"
       },
       {
         "quote": "The best decision we made this year. Exceeded every expectation.",
-        "author": "Hiwot Alemu",
+        "author": "Maya Chen",
         "role": "Director, Apex Group"
       }
     ],
@@ -484,7 +484,7 @@
       }
     ],
     "roomsSectionTitle": "Cabins & Villas",
-    "roomsSectionSubtitle": "Forest cabins and a villa, priced per night in birr.",
+    "roomsSectionSubtitle": "Forest cabins and a villa, priced per night in local currency.",
     "bookingSectionTitle": "Book Your Stay",
     "bookingSectionSubtitle": "Search dates before the drive west.",
     "roomTypes": [
@@ -577,17 +577,17 @@
     ],
     "team": [
       {
-        "name": "Abel Desta",
+        "name": "James Carter",
         "role": "Founder & CEO",
         "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80"
       },
       {
-        "name": "Mekdes Haile",
+        "name": "Elena Ward",
         "role": "Creative Director",
         "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
       },
       {
-        "name": "Dawit Bekele",
+        "name": "Noah Bennett",
         "role": "Operations Lead",
         "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80"
       }
@@ -601,27 +601,29 @@
     "seoDescription": "",
     "seoKeywords": "",
     "seoSiteUrl": "",
-    "email": "stay@gambellalodge.et",
-    "phone": "+251 47 551 2200",
-    "address": "Gambella",
+    "email": "stay@canopyhotel.example",
+    "phone": "+62 361 555 2200",
+    "address": "2 Canopy Road",
     "hours": "Front desk 6:00–21:00",
     "instagram": "",
     "website": "",
     "linkedin": "",
     "whatsapp": "",
     "supportEmail": "",
-    "reservationEmail": "book@gambellalodge.et",
+    "reservationEmail": "book@canopyhotel.example",
     "licenseNumber": "",
     "bookingUrl": "",
     "contactSectionTitle": "Get in Touch",
     "contactFormTitle": "Send Us a Message",
     "contactFormUrl": "",
-    "contactFormButtonText": "Open Contact Form",
-    "city": "Gambella",
-    "country": "Ethiopia",
+    "contactFormButtonText": "Send message",
+    "city": "Ubud",
+    "country": "Indonesia",
     "starRating": "3",
     "checkInTime": "14:00",
     "checkOutTime": "11:00",
-    "propertyAmenities": "Wi-Fi, Nature guide, Restaurant, Generator backup"
+    "propertyAmenities": "Wi-Fi, Nature guide, Restaurant, Generator backup",
+    "footerBlurb": "Elevated cabins and a deck over the river.",
+    "footerNote": "All rights reserved."
   }
 }

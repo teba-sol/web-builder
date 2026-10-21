@@ -1,8 +1,9 @@
 import { canLinkToPage, resolveStaticHref } from '../data/siteNav'
 import type { SiteContent } from '../types'
 import { brandCss } from '../data/brand'
+import { footerBlurb, footerNote } from '../data/footer'
 import { escapeHtml } from './imageUtils'
-import { getMapEmbedUrl } from '../utils/mapEmbed'
+import { mapEmbedHtml } from '../utils/mapEmbed'
 import { buildSeoMetaTags, resolveDocumentTitle, type PageSeoInput } from './seoExport'
 import { LAYOUT_SHELL_CSS, rewriteContainerVariantsForExport } from './htmlShared'
 import {
@@ -158,6 +159,28 @@ function img(ctx: CloneExportCtx, url: string, name: string, className: string):
   return src ? `<img src="${escapeHtml(src)}" class="${className}" alt="" />` : ''
 }
 
+function footerPageLinks(ctx: CloneExportCtx): string {
+  const pages: Array<{ key: keyof SiteContent['pageVisibility']; label: string; route: string; staticPage: string }> = [
+    { key: 'about', label: 'About', route: 'about', staticPage: 'about' },
+    { key: 'services', label: 'Services', route: 'services', staticPage: 'services' },
+    { key: 'portfolio', label: 'Portfolio', route: 'portfolio', staticPage: 'portfolio' },
+    { key: 'rooms', label: 'Rooms', route: 'rooms.index', staticPage: 'rooms' },
+    { key: 'blog', label: 'Blog', route: 'blog.index', staticPage: 'blog' },
+    { key: 'news', label: 'News', route: 'news.index', staticPage: 'news' },
+    { key: 'gallery', label: 'Gallery', route: 'gallery', staticPage: 'gallery' },
+    { key: 'contact', label: 'Contact', route: 'contact', staticPage: 'contact' },
+  ]
+  if (ctx.mode === 'blade') {
+    return pages
+      .map((page) => `@if($settings->page_visibility['${page.key}'] ?? false)<li><a href="{{ route('${page.route}') }}">${page.label}</a></li>@endif`)
+      .join('')
+  }
+  return pages
+    .filter((page) => ctx.content.pageVisibility[page.key])
+    .map((page) => `<li><a href="${resolveStaticHref(page.staticPage, ctx.content, ctx.fromNested)}">${escapeHtml(page.label)}</a></li>`)
+    .join('')
+}
+
 function href(ctx: CloneExportCtx, page: string): string {
   if (ctx.mode === 'blade') {
     const map: Record<string, string> = {
@@ -245,6 +268,7 @@ function bookingForm(ctx: CloneExportCtx, theme: CloneTheme, compact = false): s
 }
 
 function contactForm(ctx: CloneExportCtx, theme: CloneTheme): string {
+  const c = ctx.content
   return `<form ${formAttrs(ctx)}>
     ${csrf(ctx)}
     ${successBanner(ctx)}
@@ -255,7 +279,7 @@ function contactForm(ctx: CloneExportCtx, theme: CloneTheme): string {
     <label class="block text-xs font-semibold">Email<input type="email" name="email" class="${theme.input} mt-1" /></label>
     <label class="block text-xs font-semibold">Service<select name="service_type" class="${theme.input} mt-1">${serviceOptions(ctx)}</select></label>
     <label class="block text-xs font-semibold">Message<textarea name="message" rows="4" class="${theme.input} mt-1"></textarea></label>
-    <button type="submit" class="rounded-xl px-8 py-3.5 text-sm font-bold shadow-xl" style="background-color:${theme.accent};color:${theme.accentFg}">Send inquiry</button>
+    <button type="submit" class="rounded-xl px-8 py-3.5 text-sm font-bold shadow-xl" style="background-color:${theme.accent};color:${theme.accentFg}">${txt(ctx, c.contactFormButtonText || 'Send message', "{{ $settings->contact_form_button_text ?: 'Send message' }}")}</button>
   </form>`
 }
 
@@ -328,6 +352,28 @@ function chromeNav(ctx: CloneExportCtx, theme: CloneTheme): string {
   </header></div>`
 }
 
+function footerContactLines(ctx: CloneExportCtx): string {
+  if (ctx.mode === 'blade') {
+    return `@if($settings->phone){{ $settings->phone }}<br/>@endif@if($settings->email){{ $settings->email }}<br/>@endif@if($settings->reservation_email){{ $settings->reservation_email }}<br/>@endif@if($settings->support_email){{ $settings->support_email }}<br/>@endif@if($settings->whatsapp){{ $settings->whatsapp }}<br/>@endif@if($settings->address){{ $settings->address }}@endif`
+  }
+  const c = ctx.content
+  return [c.phone, c.email, c.reservationEmail, c.supportEmail, c.whatsapp, c.address]
+    .map((value) => value.trim())
+    .filter(Boolean)
+    .map((value) => escapeHtml(value))
+    .join('<br/>')
+}
+
+function gateSection(ctx: CloneExportCtx, show: boolean, bladeCondition: string, html: string): string {
+  if (ctx.mode === 'blade') return `@if(${bladeCondition})${html}@endif`
+  return show ? html : ''
+}
+
+function mapBlock(ctx: CloneExportCtx): string {
+  if (ctx.mode === 'blade') return `@include('partials.map')`
+  return mapEmbedHtml(ctx.content.mapUrl, ctx.content.address)
+}
+
 function standardSections(ctx: CloneExportCtx, theme: CloneTheme): string {
   const c = ctx.content
   const pv = c.pageVisibility
@@ -340,104 +386,149 @@ function standardSections(ctx: CloneExportCtx, theme: CloneTheme): string {
   const locations = pv.portfolio ? c.showcaseItems.filter((i) => i.title) : []
   const plans = sv.pricing ? c.pricing.filter((p) => p.title) : []
 
-  const statsHtml = stats.length
-    ? `<section class="py-12 border-y"><div class="max-w-7xl mx-auto px-4 grid md:grid-cols-3 gap-6 text-center">${
-        ctx.mode === 'blade'
-          ? `@foreach($stats->take(4) as $stat)<div class="${theme.card} p-6 rounded-2xl"><div class="text-4xl font-extrabold">{{ $stat->value }}</div><div class="mt-1 text-sm font-semibold" style="color:${theme.accent}">{{ $stat->label }}</div></div>@endforeach`
-          : stats
-              .slice(0, 4)
-              .map((s) => `<div class="${theme.card} p-6 rounded-2xl"><div class="text-4xl font-extrabold">${escapeHtml(s.value)}</div><div class="mt-1 text-sm font-semibold" style="color:${theme.accent}">${escapeHtml(s.label)}</div></div>`)
-              .join('')
-      }</div></section>`
-    : ''
+  const statsHtml = gateSection(
+    ctx,
+    stats.length > 0,
+    "($settings->section_visibility['stats'] ?? false) && $stats->isNotEmpty()",
+    `<section class="py-12 border-y"><div class="max-w-7xl mx-auto px-4 grid md:grid-cols-3 gap-6 text-center">${
+      ctx.mode === 'blade'
+        ? `@foreach($stats->take(4) as $stat)<div class="${theme.card} p-6 rounded-2xl"><div class="text-4xl font-extrabold">{{ $stat->value }}</div><div class="mt-1 text-sm font-semibold" style="color:${theme.accent}">{{ $stat->label }}</div></div>@endforeach`
+        : stats
+            .slice(0, 4)
+            .map((s) => `<div class="${theme.card} p-6 rounded-2xl"><div class="text-4xl font-extrabold">${escapeHtml(s.value)}</div><div class="mt-1 text-sm font-semibold" style="color:${theme.accent}">${escapeHtml(s.label)}</div></div>`)
+            .join('')
+    }</div></section>`,
+  )
 
-  const aboutHtml = pv.about
-    ? `<section id="about" class="py-24 px-4 sm:px-6 lg:px-8"><div class="max-w-7xl mx-auto grid lg:grid-cols-12 gap-12 items-center"><div class="lg:col-span-6">${img(ctx, c.aboutImage, 'about', 'w-full h-[640px] object-cover rounded-3xl shadow-2xl')}</div><div class="lg:col-span-6 space-y-6"><div class="text-xs font-bold uppercase tracking-widest" style="color:${theme.accent}">Who we are</div><h2 class="text-3xl sm:text-4xl font-extrabold">${txt(ctx, c.aboutTitle, '{{ $settings->about_title }}')}</h2><p class="${theme.muted} leading-relaxed">${txt(ctx, c.about, '{{ $settings->about }}')}</p><button type="button" data-open-booking class="px-7 py-3.5 rounded-xl font-bold text-sm shadow-xl" style="background-color:${theme.accent};color:${theme.accentFg}">Schedule appointment</button></div></div></section>`
-    : ''
+  const aboutHtml = gateSection(
+    ctx,
+    pv.about,
+    "$settings->page_visibility['about'] ?? false",
+    `<section id="about" class="py-24 px-4 sm:px-6 lg:px-8"><div class="max-w-7xl mx-auto grid lg:grid-cols-12 gap-12 items-center"><div class="lg:col-span-6">${img(ctx, c.aboutImage, 'about', 'w-full h-[640px] object-cover rounded-3xl shadow-2xl')}</div><div class="lg:col-span-6 space-y-6"><div class="text-xs font-bold uppercase tracking-widest" style="color:${theme.accent}">Who we are</div><h2 class="text-3xl sm:text-4xl font-extrabold">${txt(ctx, c.aboutTitle, '{{ $settings->about_title }}')}</h2><p class="${theme.muted} leading-relaxed">${txt(ctx, c.about, '{{ $settings->about }}')}</p><button type="button" data-open-booking class="px-7 py-3.5 rounded-xl font-bold text-sm shadow-xl" style="background-color:${theme.accent};color:${theme.accentFg}">Schedule appointment</button></div></div></section>`,
+  )
 
-  const servicesHtml = `<section id="services" class="py-24 px-4 sm:px-6 lg:px-8"><div class="max-w-7xl mx-auto space-y-12"><div class="text-center max-w-3xl mx-auto space-y-3"><div class="text-xs font-bold uppercase tracking-widest" style="color:${theme.accent}">Our expertise</div><h2 class="text-3xl sm:text-4xl font-extrabold">${txt(ctx, c.servicesSectionTitle, '{{ $settings->services_section_title }}')}</h2><p class="${theme.muted} text-sm">${txt(ctx, c.servicesSectionSubtitle, '{{ $settings->services_section_subtitle }}')}</p></div><div class="grid md:grid-cols-3 gap-8">${
-    ctx.mode === 'blade'
-      ? `@foreach($services->take(3) as $service)<div class="${theme.card} p-8 rounded-3xl space-y-4"><div class="w-14 h-14 rounded-2xl" style="background-color:${theme.accent}"></div><h3 class="text-xl font-bold">{{ $service->title }}</h3><p class="text-sm ${theme.muted}">{{ $service->description }}</p><button type="button" data-open-booking class="text-xs font-bold" style="color:${theme.accent}">Apply now →</button></div>@endforeach`
-      : services
-          .slice(0, 3)
-          .map((s) => `<div class="${theme.card} p-8 rounded-3xl space-y-4"><div class="w-14 h-14 rounded-2xl" style="background-color:${theme.accent}"></div><h3 class="text-xl font-bold">${escapeHtml(s.title)}</h3><p class="text-sm ${theme.muted}">${escapeHtml(s.description)}</p><button type="button" data-open-booking class="text-xs font-bold" style="color:${theme.accent}">Apply now →</button></div>`)
-          .join('')
-  }</div></div></section>`
+  const servicesHtml = gateSection(
+    ctx,
+    pv.services && services.length > 0,
+    "($settings->page_visibility['services'] ?? false) && $services->isNotEmpty()",
+    `<section id="services" class="py-24 px-4 sm:px-6 lg:px-8"><div class="max-w-7xl mx-auto space-y-12"><div class="text-center max-w-3xl mx-auto space-y-3"><div class="text-xs font-bold uppercase tracking-widest" style="color:${theme.accent}">Our expertise</div><h2 class="text-3xl sm:text-4xl font-extrabold">${txt(ctx, c.servicesSectionTitle, '{{ $settings->services_section_title }}')}</h2><p class="${theme.muted} text-sm">${txt(ctx, c.servicesSectionSubtitle, '{{ $settings->services_section_subtitle }}')}</p></div><div class="grid md:grid-cols-3 gap-8">${
+      ctx.mode === 'blade'
+        ? `@foreach($services->take(3) as $service)<div class="${theme.card} p-8 rounded-3xl space-y-4"><div class="w-14 h-14 rounded-2xl" style="background-color:${theme.accent}"></div><h3 class="text-xl font-bold">{{ $service->title }}</h3><p class="text-sm ${theme.muted}">{{ $service->description }}</p><button type="button" data-open-booking class="text-xs font-bold" style="color:${theme.accent}">Apply now →</button></div>@endforeach`
+        : services
+            .slice(0, 3)
+            .map((s) => `<div class="${theme.card} p-8 rounded-3xl space-y-4"><div class="w-14 h-14 rounded-2xl" style="background-color:${theme.accent}"></div><h3 class="text-xl font-bold">${escapeHtml(s.title)}</h3><p class="text-sm ${theme.muted}">${escapeHtml(s.description)}</p><button type="button" data-open-booking class="text-xs font-bold" style="color:${theme.accent}">Apply now →</button></div>`)
+            .join('')
+    }</div></div></section>`,
+  )
 
-  const stepsHtml = steps.length
-    ? `<section id="process" class="py-24 px-4"><div class="max-w-7xl mx-auto space-y-16"><div class="text-center"><div class="text-xs font-bold uppercase tracking-widest" style="color:${theme.accent}">Process</div><h2 class="text-3xl font-extrabold mt-2">${txt(ctx, c.stepsSectionTitle, '{{ $settings->steps_section_title }}')}</h2></div><div class="grid md:grid-cols-3 gap-8">${
-        ctx.mode === 'blade'
-          ? `@foreach($steps->take(4) as $step)<div class="${theme.card} p-8 rounded-3xl text-center space-y-4"><div class="w-12 h-12 rounded-full mx-auto flex items-center justify-center font-black" style="background-color:${theme.accent};color:${theme.accentFg}">{{ $loop->iteration }}</div><h3 class="text-xl font-bold">{{ $step->title }}</h3><p class="text-xs ${theme.muted}">{{ $step->description }}</p></div>@endforeach`
-          : steps
-              .slice(0, 4)
-              .map((s, i) => `<div class="${theme.card} p-8 rounded-3xl text-center space-y-4"><div class="w-12 h-12 rounded-full mx-auto flex items-center justify-center font-black" style="background-color:${theme.accent};color:${theme.accentFg}">${i + 1}</div><h3 class="text-xl font-bold">${escapeHtml(s.title)}</h3><p class="text-xs ${theme.muted}">${escapeHtml(s.description)}</p></div>`)
-              .join('')
-      }</div></div></section>`
-    : ''
+  const stepsHtml = gateSection(
+    ctx,
+    steps.length > 0,
+    "($settings->section_visibility['steps'] ?? false) && $steps->isNotEmpty()",
+    `<section id="process" class="py-24 px-4"><div class="max-w-7xl mx-auto space-y-16"><div class="text-center"><div class="text-xs font-bold uppercase tracking-widest" style="color:${theme.accent}">Process</div><h2 class="text-3xl font-extrabold mt-2">${txt(ctx, c.stepsSectionTitle, '{{ $settings->steps_section_title }}')}</h2></div><div class="grid md:grid-cols-3 gap-8">${
+      ctx.mode === 'blade'
+        ? `@foreach($steps->take(4) as $step)<div class="${theme.card} p-8 rounded-3xl text-center space-y-4"><div class="w-12 h-12 rounded-full mx-auto flex items-center justify-center font-black" style="background-color:${theme.accent};color:${theme.accentFg}">{{ $loop->iteration }}</div><h3 class="text-xl font-bold">{{ $step->title }}</h3><p class="text-xs ${theme.muted}">{{ $step->description }}</p></div>@endforeach`
+        : steps
+            .slice(0, 4)
+            .map((s, i) => `<div class="${theme.card} p-8 rounded-3xl text-center space-y-4"><div class="w-12 h-12 rounded-full mx-auto flex items-center justify-center font-black" style="background-color:${theme.accent};color:${theme.accentFg}">${i + 1}</div><h3 class="text-xl font-bold">${escapeHtml(s.title)}</h3><p class="text-xs ${theme.muted}">${escapeHtml(s.description)}</p></div>`)
+            .join('')
+    }</div></div></section>`,
+  )
 
-  const reviewsHtml = reviews.length
-    ? `<section id="reviews" class="py-24 px-4"><div class="max-w-7xl mx-auto space-y-12"><h2 class="text-3xl font-extrabold text-center">${txt(ctx, c.testimonialsSectionTitle, '{{ $settings->testimonials_section_title }}')}</h2><div class="grid md:grid-cols-3 gap-8">${
-        ctx.mode === 'blade'
-          ? `@foreach($testimonials->take(3) as $item)<div class="${theme.card} p-6 rounded-2xl space-y-4"><p class="text-xs ${theme.muted}">“{{ $item->quote }}”</p><div class="flex justify-between text-xs font-bold"><span>{{ $item->author }}</span><span class="font-normal">${theme.muted.includes('neutral') ? '' : ''}</span></div></div>@endforeach`
-          : reviews
-              .slice(0, 3)
-              .map((r) => `<div class="${theme.card} p-6 rounded-2xl space-y-4"><p class="text-xs ${theme.muted}">“${escapeHtml(r.quote)}”</p><div class="flex justify-between text-xs font-bold"><span>${escapeHtml(r.author)}</span><span class="font-normal ${theme.muted}">${escapeHtml(r.role)}</span></div></div>`)
-              .join('')
-      }</div></div></section>`
-    : ''
+  const reviewsHtml = gateSection(
+    ctx,
+    reviews.length > 0,
+    "($settings->section_visibility['testimonials'] ?? false) && $testimonials->isNotEmpty()",
+    `<section id="reviews" class="py-24 px-4"><div class="max-w-7xl mx-auto space-y-12"><h2 class="text-3xl font-extrabold text-center">${txt(ctx, c.testimonialsSectionTitle, '{{ $settings->testimonials_section_title }}')}</h2><div class="grid md:grid-cols-3 gap-8">${
+      ctx.mode === 'blade'
+        ? `@foreach($testimonials->take(3) as $item)<div class="${theme.card} p-6 rounded-2xl space-y-4"><p class="text-xs ${theme.muted}">“{{ $item->quote }}”</p><div class="flex justify-between text-xs font-bold"><span>{{ $item->author }}</span><span class="font-normal ${theme.muted}">{{ $item->role }}</span></div></div>@endforeach`
+        : reviews
+            .slice(0, 3)
+            .map((r) => `<div class="${theme.card} p-6 rounded-2xl space-y-4"><p class="text-xs ${theme.muted}">“${escapeHtml(r.quote)}”</p><div class="flex justify-between text-xs font-bold"><span>${escapeHtml(r.author)}</span><span class="font-normal ${theme.muted}">${escapeHtml(r.role)}</span></div></div>`)
+            .join('')
+    }</div></div></section>`,
+  )
 
-  const faqHtml = faqs.length
-    ? `<section id="faq" class="py-24 px-4"><div class="max-w-4xl mx-auto space-y-8"><h2 class="text-3xl font-extrabold text-center">${txt(ctx, c.faqSectionTitle, '{{ $settings->faq_section_title }}')}</h2><div class="space-y-4">${
-        ctx.mode === 'blade'
-          ? `@foreach($faqs as $faq)<details class="${theme.card} rounded-2xl overflow-hidden"><summary class="cursor-pointer p-5 font-bold">{{ $faq->question }}</summary><p class="px-5 pb-5 text-xs ${theme.muted}">{{ $faq->answer }}</p></details>@endforeach`
-          : faqs
-              .map((f) => `<details class="${theme.card} rounded-2xl overflow-hidden"><summary class="cursor-pointer p-5 font-bold">${escapeHtml(f.question)}</summary><p class="px-5 pb-5 text-xs ${theme.muted}">${escapeHtml(f.answer)}</p></details>`)
-              .join('')
-      }</div></div></section>`
-    : ''
+  const faqHtml = gateSection(
+    ctx,
+    faqs.length > 0,
+    "($settings->section_visibility['faq'] ?? false) && $faqs->isNotEmpty()",
+    `<section id="faq" class="py-24 px-4"><div class="max-w-4xl mx-auto space-y-8"><h2 class="text-3xl font-extrabold text-center">${txt(ctx, c.faqSectionTitle, '{{ $settings->faq_section_title }}')}</h2><div class="space-y-4">${
+      ctx.mode === 'blade'
+        ? `@foreach($faqs as $faq)<details class="${theme.card} rounded-2xl overflow-hidden"><summary class="cursor-pointer p-5 font-bold">{{ $faq->question }}</summary><p class="px-5 pb-5 text-xs ${theme.muted}">{{ $faq->answer }}</p></details>@endforeach`
+        : faqs
+            .map((f) => `<details class="${theme.card} rounded-2xl overflow-hidden"><summary class="cursor-pointer p-5 font-bold">${escapeHtml(f.question)}</summary><p class="px-5 pb-5 text-xs ${theme.muted}">${escapeHtml(f.answer)}</p></details>`)
+            .join('')
+    }</div></div></section>`,
+  )
 
   const pricingPlans = plans.length
     ? plans
     : [{ title: 'Custom quote', description: 'Tell us what you need and we will price the work clearly before we start.', price: 'Contact us', tag: '', featured: true }]
-  const pricingHtml = sv.pricing
-    ? `<section id="pricing" class="py-24 px-4"><div class="max-w-7xl mx-auto space-y-12"><div class="text-center"><div class="text-xs font-bold uppercase tracking-widest" style="color:${theme.accent}">Pricing</div><h2 class="text-3xl font-extrabold mt-2">${txt(ctx, c.pricingSectionTitle, '{{ $settings->pricing_section_title }}')}</h2></div><div class="grid md:grid-cols-3 gap-6">${pricingPlans
+  const pricingCards = ctx.mode === 'blade'
+    ? `@forelse(($pricingPlans ?? collect()) as $plan)<div class="${theme.card} p-8 rounded-3xl" @if($plan->featured) style="border-color:${theme.accent};box-shadow:0 0 0 1px ${theme.accent}" @endif><p class="text-xs font-bold uppercase tracking-wider" style="color:${theme.accent}">{{ $plan->tag }}</p><h3 class="text-xl font-bold">{{ $plan->title }}</h3><p class="my-3 text-3xl font-black" style="color:${theme.accent}">{{ $plan->price }}</p><p class="text-sm ${theme.muted}">{{ $plan->description }}</p></div>@empty<div class="${theme.card} p-8 rounded-3xl" style="border-color:${theme.accent};box-shadow:0 0 0 1px ${theme.accent}"><h3 class="text-xl font-bold">Custom quote</h3><p class="my-3 text-3xl font-black" style="color:${theme.accent}">Contact us</p><p class="text-sm ${theme.muted}">Tell us what you need and we will price the work clearly before we start.</p></div>@endforelse`
+    : pricingPlans
         .map((p) => `<div class="${theme.card} p-8 rounded-3xl"${p.featured ? ` style="border-color:${theme.accent};box-shadow:0 0 0 1px ${theme.accent}"` : ''}><p class="text-xs font-bold uppercase tracking-wider" style="color:${theme.accent}">${escapeHtml(p.tag)}</p><h3 class="text-xl font-bold">${escapeHtml(p.title)}</h3><p class="my-3 text-3xl font-black" style="color:${theme.accent}">${escapeHtml(p.price)}</p><p class="text-sm ${theme.muted}">${escapeHtml(p.description)}</p></div>`)
-        .join('')}</div></div></section>`
-    : ''
+        .join('')
+  const pricingHtml = gateSection(
+    ctx,
+    sv.pricing,
+    "$settings->section_visibility['pricing'] ?? false",
+    `<section id="pricing" class="py-24 px-4"><div class="max-w-7xl mx-auto space-y-12"><div class="text-center"><div class="text-xs font-bold uppercase tracking-widest" style="color:${theme.accent}">Pricing</div><h2 class="text-3xl font-extrabold mt-2">${txt(ctx, c.pricingSectionTitle, '{{ $settings->pricing_section_title }}')}</h2></div><div class="grid md:grid-cols-3 gap-6">${pricingCards}</div></div></section>`,
+  )
 
-  const ctaHtml = sv.cta
-    ? `<section id="cta" class="py-20 px-4" style="background-color:var(--clone-ink,#16302A)"><div class="max-w-4xl mx-auto text-center"><h2 class="text-3xl sm:text-4xl font-black text-white">${txt(ctx, c.ctaBannerTitle, '{{ $settings->cta_banner_title }}')}</h2><p class="mt-4 text-lg text-white/75">${txt(ctx, c.ctaBannerText, '{{ $settings->cta_banner_text }}')}</p><button type="button" data-open-booking class="mt-8 inline-flex rounded-xl px-8 py-3.5 text-sm font-bold shadow-xl" style="background-color:${theme.accent};color:${theme.accentFg}">${txt(ctx, c.ctaText, '{{ $settings->cta_text }}')}</button></div></section>`
-    : ''
+  const team = sv.team ? c.team.filter((member) => member.name) : []
+  const teamHtml = gateSection(
+    ctx,
+    team.length > 0,
+    "($settings->section_visibility['team'] ?? false) && ($team ?? collect())->isNotEmpty()",
+    `<section id="team" class="py-24 px-4"><div class="max-w-7xl mx-auto space-y-12"><h2 class="text-3xl font-extrabold text-center">${txt(ctx, c.teamSectionTitle, '{{ $settings->team_section_title }}')}</h2><div class="grid md:grid-cols-3 gap-8">${
+      ctx.mode === 'blade'
+        ? `@foreach($team as $member)<div class="${theme.card} p-6 rounded-3xl text-center">@if($member->image)<img src="{{ \\App\\Support\\PublicAsset::url($member->image) }}" class="w-28 h-28 rounded-full mx-auto mb-4 object-cover" alt="" />@endif<h3 class="text-xl font-bold">{{ $member->name }}</h3><p class="text-sm ${theme.muted}">{{ $member->role }}</p></div>@endforeach`
+        : team
+            .map((member, i) => {
+              const src = member.image && ctx.resolveImage ? ctx.resolveImage(member.image, `team-${i}`) : member.image
+              return `<div class="${theme.card} p-6 rounded-3xl text-center">${src ? `<img src="${escapeHtml(src)}" class="w-28 h-28 rounded-full mx-auto mb-4 object-cover" alt="" />` : ''}<h3 class="text-xl font-bold">${escapeHtml(member.name)}</h3><p class="text-sm ${theme.muted}">${escapeHtml(member.role)}</p></div>`
+            })
+            .join('')
+    }</div></div></section>`,
+  )
 
-  const locHtml = locations.length
-    ? `<section class="py-20 px-4"><h2 class="text-3xl font-extrabold text-center mb-12">${txt(ctx, c.showcaseSectionTitle, '{{ $settings->showcase_section_title }}')}</h2><div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">${
-        ctx.mode === 'blade'
-          ? `@foreach($showcaseItems->take(4) as $item)<a href="${href(ctx, 'portfolio')}" class="block">@if($item->image)<img src="{{ \\App\\Support\\PublicAsset::url($item->image) }}" class="w-full h-40 object-cover rounded-xl mb-3" alt="" />@endif<p class="text-center text-sm font-semibold">{{ $item->title }}</p></a>@endforeach`
-          : locations
-              .slice(0, 4)
-              .map((item, i) => {
-                const src = item.image && ctx.resolveImage ? ctx.resolveImage(item.image, `loc-${i}`) : item.image
-                return `<a href="${href(ctx, 'portfolio')}" class="block">${src ? `<img src="${escapeHtml(src)}" class="w-full h-40 object-cover rounded-xl mb-3" alt="" />` : ''}<p class="text-center text-sm font-semibold">${escapeHtml(item.title)}</p></a>`
-              })
-              .join('')
-      }</div></section>`
-    : ''
+  const ctaHtml = gateSection(
+    ctx,
+    sv.cta,
+    "$settings->section_visibility['cta'] ?? false",
+    `<section id="cta" class="py-20 px-4" style="background-color:var(--clone-ink,#16302A)"><div class="max-w-4xl mx-auto text-center"><h2 class="text-3xl sm:text-4xl font-black text-white">${txt(ctx, c.ctaBannerTitle, '{{ $settings->cta_banner_title }}')}</h2><p class="mt-4 text-lg text-white/75">${txt(ctx, c.ctaBannerText, '{{ $settings->cta_banner_text }}')}</p><button type="button" data-open-booking class="mt-8 inline-flex rounded-xl px-8 py-3.5 text-sm font-bold shadow-xl" style="background-color:${theme.accent};color:${theme.accentFg}">${txt(ctx, c.ctaText, '{{ $settings->cta_text }}')}</button></div></section>`,
+  )
 
-  const mapSrc = getMapEmbedUrl(c.mapUrl, c.address)
-  const mapHtml =
-    ctx.mode === 'blade'
-      ? `@php $mapSrc = $settings->map_url; if ($mapSrc && (str_contains($mapSrc, 'maps/embed') || str_contains($mapSrc, 'output=embed'))) { /* keep */ } elseif ($mapSrc) { $mapSrc = 'https://www.google.com/maps?q='.urlencode($mapSrc).'&output=embed'; } elseif ($settings->address) { $mapSrc = 'https://www.google.com/maps?q='.urlencode($settings->address).'&output=embed'; } else { $mapSrc = ''; } @endphp
-        @if($mapSrc)<div class="overflow-hidden rounded-2xl border h-56"><iframe title="Office location" src="{{ $mapSrc }}" class="w-full h-full border-0" loading="lazy"></iframe></div>@endif`
-      : mapSrc
-        ? `<div class="overflow-hidden rounded-2xl border h-56"><iframe title="Office location" src="${escapeHtml(mapSrc)}" class="w-full h-full border-0" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>`
-        : ''
-  const contactHtml = pv.contact
-    ? `<section id="contact" class="py-24 px-4 sm:px-6 lg:px-8"><div class="max-w-7xl mx-auto space-y-12"><div class="text-center max-w-2xl mx-auto"><div class="text-xs font-bold uppercase tracking-widest" style="color:${theme.accent}">Connect with us</div><h2 class="text-3xl font-extrabold mt-2">${txt(ctx, c.contactSectionTitle, '{{ $settings->contact_section_title }}')}</h2></div><div class="grid lg:grid-cols-12 gap-12"><div class="lg:col-span-5 space-y-6"><div class="${theme.card} p-6 rounded-2xl"><h4 class="font-bold text-sm">Phone</h4><p class="text-xs ${theme.muted} mt-1">${txt(ctx, c.phone, '{{ $settings->phone }}')}</p></div><div class="${theme.card} p-6 rounded-2xl"><h4 class="font-bold text-sm">Email</h4><p class="text-xs ${theme.muted} mt-1">${txt(ctx, c.email, '{{ $settings->email }}')}</p></div><div class="${theme.card} p-6 rounded-2xl"><h4 class="font-bold text-sm">Office</h4><p class="text-xs ${theme.muted} mt-1">${txt(ctx, c.address, '{{ $settings->address }}')}</p></div>${mapHtml}</div><div class="lg:col-span-7 ${theme.card} p-8 rounded-3xl space-y-6"><h3 class="text-xl font-bold">${txt(ctx, c.contactFormTitle, '{{ $settings->contact_form_title }}')}</h3>${contactForm(ctx, theme)}</div></div></div></section>`
-    : ''
+  const locHtml = gateSection(
+    ctx,
+    locations.length > 0,
+    "($settings->page_visibility['portfolio'] ?? false) && $showcaseItems->isNotEmpty()",
+    `<section class="py-20 px-4"><h2 class="text-3xl font-extrabold text-center mb-12">${txt(ctx, c.showcaseSectionTitle, '{{ $settings->showcase_section_title }}')}</h2><div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">${
+      ctx.mode === 'blade'
+        ? `@foreach($showcaseItems->take(4) as $item)<a href="${href(ctx, 'portfolio')}" class="block">@if($item->image)<img src="{{ \\App\\Support\\PublicAsset::url($item->image) }}" class="w-full h-40 object-cover rounded-xl mb-3" alt="" />@endif<p class="text-center text-sm font-semibold">{{ $item->title }}</p></a>@endforeach`
+        : locations
+            .slice(0, 4)
+            .map((item, i) => {
+              const src = item.image && ctx.resolveImage ? ctx.resolveImage(item.image, `loc-${i}`) : item.image
+              return `<a href="${href(ctx, 'portfolio')}" class="block">${src ? `<img src="${escapeHtml(src)}" class="w-full h-40 object-cover rounded-xl mb-3" alt="" />` : ''}<p class="text-center text-sm font-semibold">${escapeHtml(item.title)}</p></a>`
+            })
+            .join('')
+    }</div></section>`,
+  )
 
-  const footer = `<footer class="border-t py-12 px-4 text-xs ${theme.muted}"><div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-8"><div><div class="font-bold text-base mb-3">${txt(ctx, c.businessName, '{{ $settings->business_name }}')}</div><p>${txt(ctx, c.missionStatement || c.heroSubtext, '{{ $settings->mission_statement }}')}</p></div><div><h4 class="font-bold mb-3 uppercase tracking-wider">Pages</h4><ul class="space-y-2"><li><a href="${href(ctx, 'services')}">Services</a></li><li><a href="${href(ctx, 'about')}">About</a></li><li><a href="${href(ctx, 'blog')}">Blog</a></li><li><a href="${href(ctx, 'contact')}">Contact</a></li></ul></div><div><h4 class="font-bold mb-3 uppercase tracking-wider">Hours</h4><p>${txt(ctx, c.hours, '{{ $settings->hours }}')}</p></div><div><h4 class="font-bold mb-3 uppercase tracking-wider">Contact</h4><p>${txt(ctx, c.phone, '{{ $settings->phone }}')}<br/>${txt(ctx, c.email, '{{ $settings->email }}')}</p></div></div><div class="max-w-7xl mx-auto mt-8 pt-8 border-t text-center">© ${new Date().getFullYear()} ${txt(ctx, c.businessName, '{{ $settings->business_name }}')}</div></footer>`
+  const mapHtml = mapBlock(ctx)
+  const contactHtml = gateSection(
+    ctx,
+    pv.contact,
+    "$settings->page_visibility['contact'] ?? false",
+    `<section id="contact" class="py-24 px-4 sm:px-6 lg:px-8"><div class="max-w-7xl mx-auto space-y-12"><div class="text-center max-w-2xl mx-auto"><div class="text-xs font-bold uppercase tracking-widest" style="color:${theme.accent}">Connect with us</div><h2 class="text-3xl font-extrabold mt-2">${txt(ctx, c.contactSectionTitle, '{{ $settings->contact_section_title }}')}</h2></div><div class="grid lg:grid-cols-12 gap-12"><div class="lg:col-span-5 space-y-6"><div class="${theme.card} p-6 rounded-2xl"><h4 class="font-bold text-sm">Phone</h4><p class="text-xs ${theme.muted} mt-1">${txt(ctx, c.phone, '{{ $settings->phone }}')}</p></div><div class="${theme.card} p-6 rounded-2xl"><h4 class="font-bold text-sm">Email</h4><p class="text-xs ${theme.muted} mt-1">${txt(ctx, c.email, '{{ $settings->email }}')}</p></div><div class="${theme.card} p-6 rounded-2xl"><h4 class="font-bold text-sm">Office</h4><p class="text-xs ${theme.muted} mt-1">${txt(ctx, c.address, '{{ $settings->address }}')}</p></div>${mapHtml}</div><div class="lg:col-span-7 ${theme.card} p-8 rounded-3xl space-y-6"><h3 class="text-xl font-bold">${txt(ctx, c.contactFormTitle, '{{ $settings->contact_form_title }}')}</h3>${contactForm(ctx, theme)}</div></div></div></section>`,
+  )
 
-  return `${statsHtml}${aboutHtml}${servicesHtml}${stepsHtml}${pricingHtml}${reviewsHtml}${locHtml}${faqHtml}${ctaHtml}${contactHtml}${footer}`
+  const footer = `<footer class="border-t py-12 px-4 text-xs ${theme.muted}"><div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-8"><div><div class="font-bold text-base mb-3">${txt(ctx, c.businessName, '{{ $settings->business_name }}')}</div><p>${txt(ctx, footerBlurb(c), '{{ filled($settings->footer_blurb) ? $settings->footer_blurb : ($settings->mission_statement ?: $settings->hero_subtext) }}')}</p></div><div><h4 class="font-bold mb-3 uppercase tracking-wider">Pages</h4><ul class="space-y-2">${footerPageLinks(ctx)}</ul></div><div><h4 class="font-bold mb-3 uppercase tracking-wider">Hours</h4><p>${txt(ctx, c.hours, '{{ $settings->hours }}')}</p></div><div><h4 class="font-bold mb-3 uppercase tracking-wider">Contact</h4><p>${footerContactLines(ctx)}</p></div></div><div class="max-w-7xl mx-auto mt-8 pt-8 border-t text-center">© ${new Date().getFullYear()} ${txt(ctx, c.businessName, '{{ $settings->business_name }}')}. ${txt(ctx, footerNote(c), "{{ $settings->footer_note ?: 'All rights reserved.' }}")}</div></footer>`
+
+  return `${statsHtml}${aboutHtml}${servicesHtml}${stepsHtml}${pricingHtml}${teamHtml}${reviewsHtml}${locHtml}${faqHtml}${ctaHtml}${contactHtml}${footer}`
 }
 
 function t1Hero(ctx: CloneExportCtx, theme: CloneTheme): string {
@@ -561,21 +652,19 @@ function helixTaxFightersBody(ctx: CloneExportCtx): string {
   return `<div class="${theme.page}">
   <div class="bg-black px-4 py-3 text-white"><div class="mx-auto flex max-w-7xl items-center justify-between"><a href="mailto:${ctx.mode === 'blade' ? '{{ $settings->email }}' : escapeHtml(c.email)}" class="font-medium hover:underline">Email</a><a href="tel:${ctx.mode === 'blade' ? '{{ $settings->phone }}' : escapeHtml(c.phone)}" class="text-sm font-medium md:text-2xl">${phone}</a></div></div>
   <nav class="sticky top-0 z-50 overflow-visible rounded-b-3xl bg-[var(--clone-accent)] text-white shadow-lg"><div class="mx-auto max-w-7xl px-4"><div class="flex h-20 items-center justify-between"><a href="${href(ctx, 'home')}" class="shrink-0">${logo}</a><div class="hidden md:flex items-center gap-1"><a href="${href(ctx, 'home')}" class="rounded-lg px-4 py-2 font-medium hover:bg-white/10">Home</a><a href="${href(ctx, 'services')}" class="rounded-lg px-4 py-2 font-medium hover:bg-white/10">Services</a><a href="${href(ctx, 'portfolio')}" class="rounded-lg px-4 py-2 font-medium hover:bg-white/10">Locations</a><a href="${href(ctx, 'blog')}" class="rounded-lg px-4 py-2 font-medium hover:bg-white/10">Blog</a><a href="${href(ctx, 'about')}" class="rounded-lg px-4 py-2 font-medium hover:bg-white/10">About</a><a href="${href(ctx, 'contact')}" class="rounded-lg px-4 py-2 font-medium hover:bg-white/10">Contact</a></div><button type="button" data-open-booking class="hidden md:block rounded-lg bg-white px-6 py-2 font-semibold text-[var(--clone-accent)]">Book now</button></div></div></nav>
-  <header class="relative z-0 isolate h-screen min-h-[640px] overflow-hidden">${hero}<div class="absolute inset-0 bg-black/50"></div><div class="relative z-10 mx-auto flex h-full max-w-3xl flex-col items-center justify-center px-6 text-center"><h1 class="mb-6 text-4xl font-bold text-white sm:text-5xl lg:text-6xl">${txt(ctx, c.tagline, '{{ $settings->tagline }}')}</h1><p class="mb-8 text-lg text-gray-200 sm:text-xl">${txt(ctx, c.heroSubtext, '{{ $settings->hero_subtext }}')}</p><a href="${href(ctx, 'about')}" class="rounded-full border-2 border-[var(--clone-accent)] px-8 py-3 text-lg font-semibold text-white">Learn More</a></div>${
-    stats.length
-      ? `<div class="absolute bottom-10 left-0 right-0 z-10 flex flex-wrap justify-center gap-8 sm:gap-16 px-4">${ctx.mode === 'blade' ? `@foreach($stats->take(3) as $stat)<div class="text-center"><div class="text-2xl sm:text-3xl font-bold text-white">{{ $stat->value }}</div><div class="text-sm text-gray-300">{{ $stat->label }}</div></div>@endforeach` : stats.map((s) => `<div class="text-center"><div class="text-2xl sm:text-3xl font-bold text-white">${escapeHtml(s.value)}</div><div class="text-sm text-gray-300">${escapeHtml(s.label)}</div></div>`).join('')}</div>`
-      : ''
-  }</header>
-  ${steps.length ? `<section class="w-full px-6 py-24 text-white bg-[var(--clone-ink)]"><div class="mx-auto max-w-7xl"><div class="mb-20 text-center"><h2 class="mb-4 text-6xl md:text-7xl font-bold">${txt(ctx, c.stepsSectionTitle || 'How It Works', "{{ $settings->steps_section_title }}")}</h2><div class="flex justify-center"><div class="h-1 w-20 bg-white"></div></div></div><div class="grid lg:grid-cols-2 gap-16 items-start"><div class="space-y-12">${ctx.mode === 'blade' ? `@foreach($steps->take(3) as $step)<div class="border-l-4 border-white pl-6"><h3 class="mb-3 text-2xl font-bold">{{ $loop->iteration < 3 ? 'Step '.$loop->iteration : $step->title }}</h3><p class="text-lg text-white/90">{{ $step->description }}</p></div>@endforeach` : steps.slice(0, 3).map((s, i) => `<div class="border-l-4 border-white pl-6"><h3 class="mb-3 text-2xl font-bold">${i < 2 ? `Step ${i + 1}` : escapeHtml(s.title)}</h3><p class="text-lg text-white/90">${escapeHtml(s.description)}</p></div>`).join('')}</div><div class="h-96 overflow-hidden rounded-lg shadow-2xl">${stepImg1}</div></div><div class="mt-20 flex justify-center"><a href="${href(ctx, 'services')}" class="border-2 border-white px-10 py-4 text-lg font-bold uppercase">Learn More</a></div></div></section>` : ''}
-  ${reviews.length ? `<section class="bg-black px-4 py-12"><div class="mx-auto max-w-7xl grid lg:grid-cols-2 gap-16"><div><p class="mb-2 text-5xl font-bold text-white italic">${txt(ctx, c.teamSectionTitle || 'Meet Your Team', "{{ $settings->team_section_title }}")}</p><div class="mb-12 h-1 w-16 bg-red-500"></div><div class="space-y-4">${ctx.mode === 'blade' ? `@foreach($testimonials->take(3) as $item)<div class="rounded-lg bg-white p-4"><h3 class="font-semibold">{{ $item->author }}</h3><p class="text-sm text-gray-700">{{ $item->quote }}</p></div>@endforeach` : reviews.map((r) => `<div class="rounded-lg bg-white p-4"><h3 class="font-semibold">${escapeHtml(r.author)}</h3><p class="text-sm text-gray-700">${escapeHtml(r.quote)}</p></div>`).join('')}</div></div><div>${aboutImg}</div></div></section>` : ''}
-  ${services.length ? `<section class="px-4 py-20 bg-[#f9f9f9]"><div class="mx-auto max-w-7xl"><div class="mb-16 text-center"><h2 class="mb-4 text-4xl sm:text-5xl font-bold">${txt(ctx, c.servicesSectionTitle, '{{ $settings->services_section_title }}')}</h2><p class="text-xl text-gray-600">${txt(ctx, c.servicesSectionSubtitle, '{{ $settings->services_section_subtitle }}')}</p></div><div class="grid md:grid-cols-3 gap-8">${ctx.mode === 'blade' ? `@foreach($services->take(3) as $service)<a href="${href(ctx, 'services')}" class="rounded-xl border bg-white p-8 shadow-lg"><div class="mb-4 h-12 w-12 rounded-lg bg-[var(--clone-accent)]"></div><h3 class="mb-4 text-2xl font-bold">{{ $service->title }}</h3><p class="text-gray-600">{{ $service->description }}</p></a>@endforeach` : services.map((s) => `<a href="${href(ctx, 'services')}" class="rounded-xl border bg-white p-8 shadow-lg"><div class="mb-4 h-12 w-12 rounded-lg bg-[var(--clone-accent)]"></div><h3 class="mb-4 text-2xl font-bold">${escapeHtml(s.title)}</h3><p class="text-gray-600">${escapeHtml(s.description)}</p></a>`).join('')}</div></div></section>` : ''}
+  <header class="relative z-0 isolate h-screen min-h-[640px] overflow-hidden">${hero}<div class="absolute inset-0 bg-black/50"></div><div class="relative z-10 mx-auto flex h-full max-w-3xl flex-col items-center justify-center px-6 text-center"><h1 class="mb-6 text-4xl font-bold text-white sm:text-5xl lg:text-6xl">${txt(ctx, c.tagline, '{{ $settings->tagline }}')}</h1><p class="mb-8 text-lg text-gray-200 sm:text-xl">${txt(ctx, c.heroSubtext, '{{ $settings->hero_subtext }}')}</p><a href="${href(ctx, 'about')}" class="rounded-full border-2 border-[var(--clone-accent)] px-8 py-3 text-lg font-semibold text-white">Learn More</a></div>${gateSection(ctx, c.sectionVisibility.stats && stats.length > 0, "($settings->section_visibility['stats'] ?? false) && $stats->isNotEmpty()", `<div class="absolute bottom-10 left-0 right-0 z-10 flex flex-wrap justify-center gap-8 sm:gap-16 px-4">${ctx.mode === 'blade' ? `@foreach($stats->take(3) as $stat)<div class="text-center"><div class="text-2xl sm:text-3xl font-bold text-white">{{ $stat->value }}</div><div class="text-sm text-gray-300">{{ $stat->label }}</div></div>@endforeach` : stats.map((s) => `<div class="text-center"><div class="text-2xl sm:text-3xl font-bold text-white">${escapeHtml(s.value)}</div><div class="text-sm text-gray-300">${escapeHtml(s.label)}</div></div>`).join('')}</div>`)}</header>
+  ${gateSection(ctx, c.sectionVisibility.steps && steps.length > 0, "($settings->section_visibility['steps'] ?? false) && $steps->isNotEmpty()", `<section class="w-full px-6 py-24 text-white bg-[var(--clone-ink)]"><div class="mx-auto max-w-7xl"><div class="mb-20 text-center"><h2 class="mb-4 text-6xl md:text-7xl font-bold">${txt(ctx, c.stepsSectionTitle || 'How It Works', "{{ $settings->steps_section_title }}")}</h2><div class="flex justify-center"><div class="h-1 w-20 bg-white"></div></div></div><div class="grid lg:grid-cols-2 gap-16 items-start"><div class="space-y-12">${ctx.mode === 'blade' ? `@foreach($steps->take(3) as $step)<div class="border-l-4 border-white pl-6"><h3 class="mb-3 text-2xl font-bold">{{ $loop->iteration < 3 ? 'Step '.$loop->iteration : $step->title }}</h3><p class="text-lg text-white/90">{{ $step->description }}</p></div>@endforeach` : steps.slice(0, 3).map((s, i) => `<div class="border-l-4 border-white pl-6"><h3 class="mb-3 text-2xl font-bold">${i < 2 ? `Step ${i + 1}` : escapeHtml(s.title)}</h3><p class="text-lg text-white/90">${escapeHtml(s.description)}</p></div>`).join('')}</div><div class="h-96 overflow-hidden rounded-lg shadow-2xl">${stepImg1}</div></div><div class="mt-20 flex justify-center"><a href="${href(ctx, 'services')}" class="border-2 border-white px-10 py-4 text-lg font-bold uppercase">Learn More</a></div></div></section>`)}
+  ${gateSection(ctx, c.sectionVisibility.testimonials && reviews.length > 0, "($settings->section_visibility['testimonials'] ?? false) && $testimonials->isNotEmpty()", `<section class="bg-black px-4 py-12"><div class="mx-auto max-w-7xl grid lg:grid-cols-2 gap-16"><div><p class="mb-2 text-5xl font-bold text-white italic">${txt(ctx, c.teamSectionTitle || 'Meet Your Team', "{{ $settings->team_section_title }}")}</p><div class="mb-12 h-1 w-16 bg-red-500"></div><div class="space-y-4">${ctx.mode === 'blade' ? `@foreach($testimonials->take(3) as $item)<div class="rounded-lg bg-white p-4"><h3 class="font-semibold">{{ $item->author }}</h3><p class="text-sm text-gray-700">{{ $item->quote }}</p></div>@endforeach` : reviews.map((r) => `<div class="rounded-lg bg-white p-4"><h3 class="font-semibold">${escapeHtml(r.author)}</h3><p class="text-sm text-gray-700">${escapeHtml(r.quote)}</p></div>`).join('')}</div></div><div>${aboutImg}</div></div></section>`)}
+  ${gateSection(ctx, c.pageVisibility.services && services.length > 0, "($settings->page_visibility['services'] ?? false) && $services->isNotEmpty()", `<section class="px-4 py-20 bg-[#f9f9f9]"><div class="mx-auto max-w-7xl"><div class="mb-16 text-center"><h2 class="mb-4 text-4xl sm:text-5xl font-bold">${txt(ctx, c.servicesSectionTitle, '{{ $settings->services_section_title }}')}</h2><p class="text-xl text-gray-600">${txt(ctx, c.servicesSectionSubtitle, '{{ $settings->services_section_subtitle }}')}</p></div><div class="grid md:grid-cols-3 gap-8">${ctx.mode === 'blade' ? `@foreach($services->take(3) as $service)<a href="${href(ctx, 'services')}" class="rounded-xl border bg-white p-8 shadow-lg"><div class="mb-4 h-12 w-12 rounded-lg bg-[var(--clone-accent)]"></div><h3 class="mb-4 text-2xl font-bold">{{ $service->title }}</h3><p class="text-gray-600">{{ $service->description }}</p></a>@endforeach` : services.map((s) => `<a href="${href(ctx, 'services')}" class="rounded-xl border bg-white p-8 shadow-lg"><div class="mb-4 h-12 w-12 rounded-lg bg-[var(--clone-accent)]"></div><h3 class="mb-4 text-2xl font-bold">${escapeHtml(s.title)}</h3><p class="text-gray-600">${escapeHtml(s.description)}</p></a>`).join('')}</div></div></section>`)}
   <section class="bg-white"><div class="mx-auto max-w-7xl px-6 py-16 lg:py-24 grid lg:grid-cols-2 gap-12 items-center"><div><p class="text-4xl lg:text-5xl font-bold text-[var(--clone-accent)]">${txt(ctx, c.aboutTitle, '{{ $settings->about_title }}')}</p><p class="mt-6 text-lg text-[var(--clone-accent)]">${txt(ctx, c.about, '{{ $settings->about }}')}</p><button type="button" data-open-booking class="mt-8 rounded-lg bg-[var(--clone-accent)] px-8 py-3 font-semibold text-white">Book Now<br><span class="text-sm font-medium">Receive 20% Off</span></button></div>${aboutImg}</div></section>
-  <section class="bg-gradient-to-b from-[var(--clone-accent)] via-[var(--clone-ink)] to-[var(--clone-ink)] px-4 py-20"><h2 class="mb-16 text-center text-4xl md:text-6xl font-bold italic text-white">Addis Tax Desk Specializes In:</h2><div class="mx-auto max-w-7xl grid md:grid-cols-3 gap-8">${ctx.mode === 'blade' ? `@foreach($services->take(3) as $service)<div class="text-center text-white"><h3 class="text-xl font-semibold">{{ $service->title }}</h3><p class="mt-2 text-sm text-white/80">{{ $service->description }}</p></div>@endforeach` : services.map((s) => `<div class="text-center text-white"><h3 class="text-xl font-semibold">${escapeHtml(s.title)}</h3><p class="mt-2 text-sm text-white/80">${escapeHtml(s.description)}</p></div>`).join('')}</div></section>
-  ${locations.length ? `<section class="bg-white px-4 py-20"><h2 class="mb-12 text-center text-4xl font-bold">${txt(ctx, c.showcaseSectionTitle, '{{ $settings->showcase_section_title }}')}</h2><div class="mx-auto max-w-7xl grid grid-cols-2 md:grid-cols-5 gap-6">${ctx.mode === 'blade' ? `@foreach($showcaseItems->take(5) as $item)<a href="${href(ctx, 'portfolio')}" class="block">@if($item->image)<img src="{{ \\App\\Support\\PublicAsset::url($item->image) }}" class="mb-3 h-40 w-full rounded-xl object-cover" alt="" />@endif<p class="text-center text-sm font-semibold">{{ $item->title }}</p></a>@endforeach` : locations.map((item, i) => { const src = item.image && ctx.resolveImage ? ctx.resolveImage(item.image, `loc-${i}`) : item.image; return `<a href="${href(ctx, 'portfolio')}" class="block">${src ? `<img src="${escapeHtml(src)}" class="mb-3 h-40 w-full rounded-xl object-cover" alt="" />` : ''}<p class="text-center text-sm font-semibold">${escapeHtml(item.title)}</p></a>` }).join('')}</div></section>` : ''}
-  ${faqs.length ? `<section class="bg-[#f9f9f9] px-4 py-20"><div class="mx-auto max-w-4xl"><h2 class="mb-16 text-center text-4xl font-bold">${txt(ctx, c.faqSectionTitle, '{{ $settings->faq_section_title }}')}</h2>${ctx.mode === 'blade' ? `@foreach($faqs as $faq)<details class="mb-3 overflow-hidden rounded-lg border bg-white"><summary class="cursor-pointer px-6 py-4 text-lg font-semibold">{{ $faq->question }}</summary><p class="border-t px-6 py-4 text-gray-700">{{ $faq->answer }}</p></details>@endforeach` : faqs.map((f) => `<details class="mb-3 overflow-hidden rounded-lg border bg-white"><summary class="cursor-pointer px-6 py-4 text-lg font-semibold">${escapeHtml(f.question)}</summary><p class="border-t px-6 py-4 text-gray-700">${escapeHtml(f.answer)}</p></details>`).join('')}</div></section>` : ''}
-  <section class="bg-[var(--clone-accent)] px-4 py-20 text-center text-white"><h2 class="mb-6 text-4xl sm:text-5xl font-bold">${txt(ctx, c.ctaBannerTitle, '{{ $settings->cta_banner_title }}')}</h2><p class="mb-8 text-xl">${txt(ctx, c.ctaBannerText, '{{ $settings->cta_banner_text }}')}</p><button type="button" data-open-booking class="rounded-lg bg-white px-10 py-4 text-lg font-semibold text-[var(--clone-accent)]">Contact Us</button></section>
-  <section class="bg-white px-6 py-20"><div class="mx-auto max-w-6xl"><h2 class="mb-10 text-3xl font-bold">${txt(ctx, c.contactSectionTitle, '{{ $settings->contact_section_title }}')}</h2><div class="grid lg:grid-cols-2 gap-12"><div class="grid sm:grid-cols-2 gap-6 text-sm"><div><p class="mb-1 text-xs font-bold uppercase text-[var(--clone-accent)]">Call / Text</p><p class="text-lg font-semibold">${phone}</p></div><div><p class="mb-1 text-xs font-bold uppercase text-[var(--clone-accent)]">Email</p><p>${email}</p></div></div>${contactForm(ctx, theme)}</div></div></section>
-  <footer class="bg-black px-6 py-16 text-white"><div class="mx-auto max-w-7xl flex flex-col md:flex-row items-center justify-between gap-4"><div>${logo}</div><p class="font-semibold">© ${new Date().getFullYear()} ${name}. All Rights Reserved.</p></div></footer>
+  <section class="bg-gradient-to-b from-[var(--clone-accent)] via-[var(--clone-ink)] to-[var(--clone-ink)] px-4 py-20"><h2 class="mb-16 text-center text-4xl md:text-6xl font-bold italic text-white">${txt(ctx, c.businessName, '{{ $settings->business_name }}')} Specializes In:</h2><div class="mx-auto max-w-7xl grid md:grid-cols-3 gap-8">${ctx.mode === 'blade' ? `@foreach($services->take(3) as $service)<div class="text-center text-white"><h3 class="text-xl font-semibold">{{ $service->title }}</h3><p class="mt-2 text-sm text-white/80">{{ $service->description }}</p></div>@endforeach` : services.map((s) => `<div class="text-center text-white"><h3 class="text-xl font-semibold">${escapeHtml(s.title)}</h3><p class="mt-2 text-sm text-white/80">${escapeHtml(s.description)}</p></div>`).join('')}</div></section>
+  ${gateSection(ctx, c.pageVisibility.portfolio && locations.length > 0, "($settings->page_visibility['portfolio'] ?? false) && $showcaseItems->isNotEmpty()", `<section class="bg-white px-4 py-20"><h2 class="mb-12 text-center text-4xl font-bold">${txt(ctx, c.showcaseSectionTitle, '{{ $settings->showcase_section_title }}')}</h2><div class="mx-auto max-w-7xl grid grid-cols-2 md:grid-cols-5 gap-6">${ctx.mode === 'blade' ? `@foreach($showcaseItems->take(5) as $item)<a href="${href(ctx, 'portfolio')}" class="block">@if($item->image)<img src="{{ \\App\\Support\\PublicAsset::url($item->image) }}" class="mb-3 h-40 w-full rounded-xl object-cover" alt="" />@endif<p class="text-center text-sm font-semibold">{{ $item->title }}</p></a>@endforeach` : locations.map((item, i) => { const src = item.image && ctx.resolveImage ? ctx.resolveImage(item.image, `loc-${i}`) : item.image; return `<a href="${href(ctx, 'portfolio')}" class="block">${src ? `<img src="${escapeHtml(src)}" class="mb-3 h-40 w-full rounded-xl object-cover" alt="" />` : ''}<p class="text-center text-sm font-semibold">${escapeHtml(item.title)}</p></a>` }).join('')}</div></section>`)}
+  ${gateSection(ctx, c.sectionVisibility.pricing, "$settings->section_visibility['pricing'] ?? false", `<section id="pricing" class="px-4 py-24"><div class="mx-auto max-w-7xl space-y-12"><div class="mx-auto max-w-2xl text-center"><div class="text-xs font-bold uppercase tracking-[0.2em]" style="color:var(--clone-accent)">Pricing</div><h2 class="mt-3 text-3xl font-black sm:text-4xl">${txt(ctx, c.pricingSectionTitle || 'Pricing plans', '{{ $settings->pricing_section_title }}')}</h2></div><div class="grid gap-6 md:grid-cols-3">${ctx.mode === 'blade' ? `@forelse(($pricingPlans ?? collect()) as $plan)<div class="rounded-3xl border bg-[var(--clone-surface)] p-8" @if($plan->featured) style="border-color:var(--clone-accent);box-shadow:0 0 0 1px var(--clone-accent)" @endif>@if($plan->tag)<p class="mb-2 text-xs font-bold uppercase tracking-wider" style="color:var(--clone-accent)">{{ $plan->tag }}</p>@endif<h3 class="text-xl font-bold">{{ $plan->title }}</h3><p class="my-3 text-3xl font-black" style="color:var(--clone-accent)">{{ $plan->price }}</p><p class="text-sm leading-relaxed opacity-70">{{ $plan->description }}</p></div>@empty<div class="rounded-3xl border bg-[var(--clone-surface)] p-8" style="border-color:var(--clone-accent);box-shadow:0 0 0 1px var(--clone-accent)"><h3 class="text-xl font-bold">Custom quote</h3><p class="my-3 text-3xl font-black" style="color:var(--clone-accent)">Contact us</p><p class="text-sm leading-relaxed opacity-70">Tell us what you need and we will price the work clearly before we start.</p></div>@endforelse` : ((c.pricing.filter((plan) => plan.title).length ? c.pricing.filter((plan) => plan.title) : [{ title: 'Custom quote', description: 'Tell us what you need and we will price the work clearly before we start.', price: 'Contact us', tag: '', featured: true }]).map((plan) => `<div class="rounded-3xl border bg-[var(--clone-surface)] p-8"${plan.featured ? ' style="border-color:var(--clone-accent);box-shadow:0 0 0 1px var(--clone-accent)"' : ''}>${plan.tag ? `<p class="mb-2 text-xs font-bold uppercase tracking-wider" style="color:var(--clone-accent)">${escapeHtml(plan.tag)}</p>` : ''}<h3 class="text-xl font-bold">${escapeHtml(plan.title)}</h3><p class="my-3 text-3xl font-black" style="color:var(--clone-accent)">${escapeHtml(plan.price)}</p><p class="text-sm leading-relaxed opacity-70">${escapeHtml(plan.description)}</p></div>`).join(''))}</div></div></section>`)}
+  ${gateSection(ctx, c.sectionVisibility.team && c.team.some((member) => member.name), "($settings->section_visibility['team'] ?? false) && ($team ?? collect())->isNotEmpty()", `<section class="bg-black px-4 py-24 text-white"><div class="mx-auto max-w-7xl"><h2 class="mb-16 text-center text-5xl font-bold">${txt(ctx, c.teamSectionTitle, '{{ $settings->team_section_title }}')}</h2><div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">${ctx.mode === 'blade' ? `@foreach($team as $member)<div class="relative min-h-[320px] overflow-hidden">@if($member->image)<img src="{{ \\App\\Support\\PublicAsset::url($member->image) }}" class="absolute inset-0 h-full w-full object-cover" alt="" />@else<div class="absolute inset-0" style="background-color:var(--clone-accent)"></div>@endif<div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div><div class="absolute inset-x-0 bottom-0 p-5"><h3 class="text-xl font-bold">{{ $member->name }}</h3><p class="mt-1 text-sm text-white/70">{{ $member->role }}</p></div></div>@endforeach` : c.team.filter((member) => member.name).map((member, i) => { const src = member.image && ctx.resolveImage ? ctx.resolveImage(member.image, `helix-team-${i}`) : member.image; return `<div class="relative min-h-[320px] overflow-hidden">${src ? `<img src="${escapeHtml(src)}" class="absolute inset-0 h-full w-full object-cover" alt="" />` : `<div class="absolute inset-0" style="background-color:var(--clone-accent)"></div>`}<div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div><div class="absolute inset-x-0 bottom-0 p-5"><h3 class="text-xl font-bold">${escapeHtml(member.name)}</h3><p class="mt-1 text-sm text-white/70">${escapeHtml(member.role)}</p></div></div>` }).join('')}</div></div></section>`)}
+  ${gateSection(ctx, c.sectionVisibility.faq && faqs.length > 0, "($settings->section_visibility['faq'] ?? false) && $faqs->isNotEmpty()", `<section class="bg-[#f9f9f9] px-4 py-20"><div class="mx-auto max-w-4xl"><h2 class="mb-16 text-center text-4xl font-bold">${txt(ctx, c.faqSectionTitle, '{{ $settings->faq_section_title }}')}</h2>${ctx.mode === 'blade' ? `@foreach($faqs as $faq)<details class="mb-3 overflow-hidden rounded-lg border bg-white"><summary class="cursor-pointer px-6 py-4 text-lg font-semibold">{{ $faq->question }}</summary><p class="border-t px-6 py-4 text-gray-700">{{ $faq->answer }}</p></details>@endforeach` : faqs.map((f) => `<details class="mb-3 overflow-hidden rounded-lg border bg-white"><summary class="cursor-pointer px-6 py-4 text-lg font-semibold">${escapeHtml(f.question)}</summary><p class="border-t px-6 py-4 text-gray-700">${escapeHtml(f.answer)}</p></details>`).join('')}</div></section>`)}
+  ${gateSection(ctx, c.sectionVisibility.cta, "$settings->section_visibility['cta'] ?? false", `<section class="bg-[var(--clone-accent)] px-4 py-20 text-center text-white"><h2 class="mb-6 text-4xl sm:text-5xl font-bold">${txt(ctx, c.ctaBannerTitle, '{{ $settings->cta_banner_title }}')}</h2><p class="mb-8 text-xl">${txt(ctx, c.ctaBannerText, '{{ $settings->cta_banner_text }}')}</p><button type="button" data-open-booking class="rounded-lg bg-white px-10 py-4 text-lg font-semibold text-[var(--clone-accent)]">Contact Us</button></section>`)}
+  <section class="bg-white px-6 py-20"><div class="mx-auto max-w-6xl"><h2 class="mb-10 text-3xl font-bold">${txt(ctx, c.contactSectionTitle, '{{ $settings->contact_section_title }}')}</h2><div class="grid lg:grid-cols-2 gap-12"><div class="space-y-6"><div class="grid sm:grid-cols-2 gap-6 text-sm"><div><p class="mb-1 text-xs font-bold uppercase text-[var(--clone-accent)]">Call / Text</p><p class="text-lg font-semibold">${phone}</p></div><div><p class="mb-1 text-xs font-bold uppercase text-[var(--clone-accent)]">Email</p><p>${email}</p></div></div>${mapBlock(ctx)}</div>${contactForm(ctx, theme)}</div></div></section>
+  <footer class="bg-black px-6 py-16 text-white"><div class="mx-auto max-w-7xl flex flex-col md:flex-row items-center justify-between gap-4"><div>${logo}<p class="mt-3 max-w-md text-sm text-white/70">${txt(ctx, footerBlurb(c), '{{ filled($settings->footer_blurb) ? $settings->footer_blurb : ($settings->mission_statement ?: $settings->hero_subtext) }}')}</p></div><p class="font-semibold">© ${new Date().getFullYear()} ${name}. ${txt(ctx, footerNote(c), "{{ $settings->footer_note ?: 'All rights reserved.' }}")}</p></div></footer>
   ${prequalify}
 </div>
 ${cloneInteractiveScript()}`

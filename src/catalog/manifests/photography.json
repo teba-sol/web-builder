@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "id": "photography",
-  "name": "Lens Addis",
-  "description": "Minimal fullscreen gallery style for photographers and visual artists.",
+  "name": "Lens Studio",
+  "description": "Fullscreen gallery for photographers and visual artists.",
   "category": "creative",
   "previewGradient": "from-neutral-800 to-neutral-950",
   "accentColor": "#fafafa",
@@ -219,12 +219,12 @@
     {
       "key": "email",
       "label": "Email",
-      "placeholder": "book@lensaddis.et"
+      "placeholder": "book@lensstudio.example"
     },
     {
       "key": "phone",
       "label": "Phone",
-      "placeholder": "+251 11 111 7788"
+      "placeholder": "+45 32 55 77 88"
     },
     {
       "key": "instagram",
@@ -234,7 +234,7 @@
     {
       "key": "address",
       "label": "Studio Location",
-      "placeholder": "Piazza, Addis Ababa"
+      "placeholder": "11 Lens Yard"
     },
     {
       "key": "bookingUrl",
@@ -259,14 +259,14 @@
     "grayscaleImage": false
   },
   "defaults": {
-    "businessName": "Lens Addis",
-    "tagline": "Photographs for weddings, families, and brands in Addis",
-    "heroSubtext": "Award-winning photography for weddings, portraits, and commercial brands.",
+    "businessName": "Lens Studio",
+    "tagline": "Photographs for weddings, families, and brands",
+    "heroSubtext": "Photography for weddings, portraits, and commercial work, edited and delivered in full.",
     "heroImage": "https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=1200&q=80",
-    "aboutTitle": "The Artist Behind the Lens",
-    "about": "Lens Addis photographs weddings, portraits, and commercial work across the city.",
+    "aboutTitle": "The studio",
+    "about": "Lens Studio photographs the day, edits it tightly, and delivers a gallery you can share.",
     "aboutImage": "https://images.unsplash.com/photo-1554048612-b6a482b22f42?w=800&q=80",
-    "missionStatement": "Every moment deserves to be remembered beautifully.",
+    "missionStatement": "Pictures that hold up after the day is over.",
     "pageVisibility": {
       "about": true,
       "services": true,
@@ -532,17 +532,17 @@
     ],
     "team": [
       {
-        "name": "Mekdes Haile",
+        "name": "Elena Ward",
         "role": "Founder & CEO",
         "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80"
       },
       {
-        "name": "Dawit Bekele",
+        "name": "Noah Bennett",
         "role": "Creative Director",
         "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
       },
       {
-        "name": "Hiwot Alemu",
+        "name": "Maya Chen",
         "role": "Operations Lead",
         "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80"
       }
@@ -556,9 +556,9 @@
     "seoDescription": "",
     "seoKeywords": "",
     "seoSiteUrl": "",
-    "email": "book@lensaddis.et",
-    "phone": "+251 11 111 7788",
-    "address": "Piazza, Addis Ababa",
+    "email": "book@lensstudio.example",
+    "phone": "+45 32 55 77 88",
+    "address": "11 Lens Yard",
     "hours": "",
     "instagram": "@lensandlight",
     "website": "",
@@ -571,6 +571,10 @@
     "contactSectionTitle": "Get in Touch",
     "contactFormTitle": "Send Us a Message",
     "contactFormUrl": "",
-    "contactFormButtonText": "Open Contact Form"
+    "contactFormButtonText": "Send message",
+    "city": "Copenhagen",
+    "country": "Denmark",
+    "footerBlurb": "Weddings, portraits, and commercial sets.",
+    "footerNote": "All rights reserved."
   }
 }

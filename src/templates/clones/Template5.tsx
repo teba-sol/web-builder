@@ -234,7 +234,7 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
               <span className="italic" style={{ color: C.primary }}>Built Around</span> You
             </h2>
             <p className="text-sm leading-relaxed" style={{ color: C.textMuted }}>
-              At Abay Audit, we simplify complex tax situations with smart technology, expert support, and a commitment to excellence. We're here to protect your finances year-round.
+              At {c.businessName}, we simplify complex tax situations with smart technology, expert support, and a commitment to excellence. We're here to protect your finances year-round.
             </p>
 
             <div className="space-y-2.5 pt-1">
@@ -325,7 +325,7 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
 
           {/* Right: Why Choose Us */}
           <div className="bg-white rounded-2xl border p-8 clg:p-10 space-y-6" style={{ borderColor: C.border }}>
-            <h3 className="text-2xl font-black" style={{ color: C.text }}>Why Choose Abay Audit?</h3>
+            <h3 className="text-2xl font-black" style={{ color: C.text }}>Why Choose {c.businessName}?</h3>
             <div className="space-y-4">
               {[
                 { icon: <Award className="w-5 h-5" />, label: 'Industry Expertise' },
@@ -489,19 +489,20 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
               </div>
             </div>
 
-            {/* Quick contact CTA */}
+            {c.phone ? (
             <div className="rounded-2xl border p-6 flex items-center gap-4" style={{ borderColor: C.border, backgroundColor: C.white }}>
               <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ backgroundColor: C.accentSoft }}>
                 <Phone className="w-6 h-6" style={{ color: C.primary }} />
               </div>
               <div className="flex-1">
                 <div className="text-sm font-bold" style={{ color: C.text }}>Need immediate help?</div>
-                <div className="text-xs" style={{ color: C.textMuted }}>Call us at <strong>{c.phone || '+251 11 551 8299'}</strong></div>
+                <div className="text-xs" style={{ color: C.textMuted }}>Call us at <strong>{c.phone}</strong></div>
               </div>
-              <a href={`tel:${(c.phone || '+251115518299').replace(/\s/g, '')}`} className="px-4 py-2 rounded-lg font-bold text-xs text-white" style={{ backgroundColor: C.accent }}>
+              <a href={`tel:${c.phone.replace(/\s/g, '')}`} className="px-4 py-2 rounded-lg font-bold text-xs text-white" style={{ backgroundColor: C.accent }}>
                 Call Now
               </a>
             </div>
+            ) : null}
           </div>
         </div>
       </section>
@@ -642,7 +643,7 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
                   </div>
                   <div>
                     <label className="block text-xs font-semibold mb-1" style={{ color: C.textMuted }}>Your Phone *</label>
-                    <input type="tel" required placeholder="+251 911 000 000" value={contactForm.phone} onChange={(e) => setContactForm({ ...contactForm, phone: e.target.value })}
+                    <input type="tel" required placeholder="Phone number" value={contactForm.phone} onChange={(e) => setContactForm({ ...contactForm, phone: e.target.value })}
                       className="w-full border rounded-lg py-3 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-200 transition" style={{ backgroundColor: C.surface, borderColor: C.border, color: C.text }} />
                   </div>
                 </div>
@@ -657,7 +658,7 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
                     className="w-full border rounded-lg py-3 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-200 transition" style={{ backgroundColor: C.surface, borderColor: C.border, color: C.text }} />
                 </div>
                 <button type="submit" className="px-6 py-3 rounded-lg font-bold text-sm shadow-md text-white transition hover:brightness-110" style={{ backgroundColor: C.primary }}>
-                  <Send className="w-4 h-4 inline mr-2" /> Send Inquiry
+                  <Send className="w-4 h-4 inline mr-2" /> {c.contactFormButtonText || 'Send message'}
                 </button>
               </form>
               {contactSubmitted && (
@@ -703,10 +704,10 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
               <div className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ backgroundColor: C.accent }}>
                 <Shield className="w-5 h-5 text-white" />
               </div>
-              <span className="text-white font-black text-base">Abay Audit</span>
+              <span className="text-white font-black text-base">{c.businessName}</span>
             </div>
             <p className="text-xs leading-relaxed">
-              Empowering individuals and businesses with intelligent tax solutions that deliver results.
+              {c.footerBlurb || c.missionStatement || c.heroSubtext}
             </p>
           </div>
 
@@ -731,7 +732,7 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
         </div>
 
         <div className="max-w-7xl mx-auto pt-6 text-center" style={{ color: '#5B7D9C' }}>
-          © {new Date().getFullYear()} Abay Audit LLC. All rights reserved.
+          © {new Date().getFullYear()} {c.businessName}. {c.footerNote || 'All rights reserved.'}
         </div>
       </footer>
 
@@ -759,7 +760,7 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
               {[
                 { label: 'First Name *', ph: 'Jane', key: 'firstName' as const },
                 { label: 'Last Name *', ph: 'Doe', key: 'lastName' as const },
-                { label: 'Phone Number *', ph: '+251 911 000 000', key: 'phone' as const },
+                { label: 'Phone Number *', ph: 'Phone number', key: 'phone' as const },
               ].map((f) => (
                 <div key={f.key}>
                   <label className="block text-xs font-semibold mb-1" style={{ color: C.textMuted }}>{f.label}</label>

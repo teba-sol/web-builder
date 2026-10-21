@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "id": "guesthouse",
-  "name": "Kazanchis Garden House",
-  "description": "Addis Ababa guest house with garden rooms, breakfast, and direct reservations.",
+  "name": "Garden Guest House",
+  "description": "Guest house with garden rooms, breakfast, and direct reservations.",
   "category": "hospitality",
   "previewGradient": "from-stone-200 via-amber-100 to-emerald-200",
   "accentColor": "#78716c",
@@ -137,7 +137,7 @@
     "explore": "compass",
     "contactShell": "coffee-warm",
     "contactForm": "soft-rounded",
-    "exploreTitle": "The House",
+    "exploreTitle": "The guest house",
     "exploreSubtitle": "Rooms, garden, stories, and stay with us",
     "exploreLinkLabel": "Visit"
   },
@@ -206,17 +206,17 @@
     {
       "key": "reservationEmail",
       "label": "Bookings Email",
-      "placeholder": "book@kazanchisgarden.et"
+      "placeholder": "book@gardenguesthouse.example"
     },
     {
       "key": "phone",
       "label": "Host Phone",
-      "placeholder": "+251 11 552 1180"
+      "placeholder": "+351 21 000 1180"
     },
     {
       "key": "address",
       "label": "Property Address",
-      "placeholder": "Kazanchis, Addis Ababa"
+      "placeholder": "12 Garden Lane"
     },
     {
       "key": "hours",
@@ -226,7 +226,7 @@
     {
       "key": "email",
       "label": "Email",
-      "placeholder": "book@kazanchisgarden.et"
+      "placeholder": "stay@gardenguesthouse.example"
     }
   ],
   "servicesLabel": "Guest Services",
@@ -246,14 +246,14 @@
     "grayscaleImage": false
   },
   "defaults": {
-    "businessName": "Kazanchis Garden House",
+    "businessName": "Garden Guest House",
     "tagline": "A quiet house in the city",
-    "heroSubtext": "Garden rooms, a family cottage, and breakfast in Kazanchis — book the room that is actually free.",
+    "heroSubtext": "Garden rooms, a family cottage, and breakfast in the courtyard. Book the room that is actually free.",
     "heroImage": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1200&q=80",
-    "aboutTitle": "The house",
-    "about": "Kazanchis Garden House is a small Addis guest house with a courtyard, handwoven bedding, and coffee in the morning. It is built for families, long stays, and guests who want a street address rather than a tower.",
+    "aboutTitle": "The guest house",
+    "about": "Garden Guest House is a small stay with a courtyard, a family cottage, and breakfast served at one table. Rooms are held only when the dates are free.",
     "aboutImage": "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800&q=80",
-    "missionStatement": "A house you can book directly, with rooms that match what you see.",
+    "missionStatement": "A guest house that feels looked after.",
     "pageVisibility": {
       "about": true,
       "services": true,
@@ -392,17 +392,17 @@
     "testimonials": [
       {
         "quote": "Outstanding service and incredible results. Highly recommended!",
-        "author": "Mekdes Haile",
+        "author": "Elena Ward",
         "role": "CEO, TechStart"
       },
       {
         "quote": "They transformed our business. Professional, creative, and reliable.",
-        "author": "Dawit Bekele",
+        "author": "Noah Bennett",
         "role": "Founder, Bloom Co"
       },
       {
         "quote": "The best decision we made this year. Exceeded every expectation.",
-        "author": "Hiwot Alemu",
+        "author": "Maya Chen",
         "role": "Director, Apex Group"
       }
     ],
@@ -484,7 +484,7 @@
       }
     ],
     "roomsSectionTitle": "Rooms & Cottages",
-    "roomsSectionSubtitle": "Garden rooms and a family cottage, priced per night in birr.",
+    "roomsSectionSubtitle": "Garden rooms and a family cottage, priced per night in local currency.",
     "bookingSectionTitle": "Book Your Stay",
     "bookingSectionSubtitle": "Search dates, open a room, then finish on the checkout page.",
     "roomTypes": [
@@ -530,7 +530,7 @@
         "name": "Family Cottage",
         "slug": "family-cottage",
         "parentSlug": "garden-room",
-        "description": "A small cottage with two bedrooms, a kitchenette, and a fenced patch of garden. Made for families staying more than a night in Addis.",
+        "description": "A small cottage with two bedrooms, a kitchenette, and a fenced patch of garden. Made for families staying more than a night in the city.",
         "shortDescription": "2 bedrooms · Kitchenette · 45 m²",
         "basePrice": "7200",
         "currency": "ETB",
@@ -577,17 +577,17 @@
     ],
     "team": [
       {
-        "name": "Abel Desta",
+        "name": "James Carter",
         "role": "Founder & CEO",
         "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80"
       },
       {
-        "name": "Mekdes Haile",
+        "name": "Elena Ward",
         "role": "Creative Director",
         "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
       },
       {
-        "name": "Dawit Bekele",
+        "name": "Noah Bennett",
         "role": "Operations Lead",
         "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80"
       }
@@ -601,27 +601,29 @@
     "seoDescription": "",
     "seoKeywords": "",
     "seoSiteUrl": "",
-    "email": "stay@kazanchisgarden.et",
-    "phone": "+251 11 552 1180",
-    "address": "Kazanchis, Addis Ababa",
+    "email": "stay@gardenguesthouse.example",
+    "phone": "+351 21 000 1180",
+    "address": "12 Garden Lane",
     "hours": "Front desk 6:00–22:00",
     "instagram": "",
     "website": "",
     "linkedin": "",
     "whatsapp": "",
     "supportEmail": "",
-    "reservationEmail": "book@kazanchisgarden.et",
+    "reservationEmail": "book@gardenguesthouse.example",
     "licenseNumber": "",
     "bookingUrl": "",
     "contactSectionTitle": "Get in Touch",
     "contactFormTitle": "Send Us a Message",
     "contactFormUrl": "",
-    "contactFormButtonText": "Open Contact Form",
-    "city": "Addis Ababa",
-    "country": "Ethiopia",
+    "contactFormButtonText": "Send message",
+    "city": "Lisbon",
+    "country": "Portugal",
     "starRating": "3",
     "checkInTime": "14:00",
     "checkOutTime": "11:00",
-    "propertyAmenities": "Wi-Fi, Breakfast, Garden, Parking, Generator backup"
+    "propertyAmenities": "Wi-Fi, Breakfast, Garden, Parking, Generator backup",
+    "footerBlurb": "Garden rooms, breakfast, and a host on the property.",
+    "footerNote": "All rights reserved."
   }
 }

@@ -10,6 +10,7 @@ import { buildStaticHomePageBody } from './homePageExport'
 import { buildCloneChromeNav, buildCloneHomeDocument, cloneInteractiveScript, isCloneTemplate, type CloneExportCtx } from './cloneHomeExport'
 import { clonePaletteCss, resolveClonePalette } from '../templates/cloneTheme'
 import { buildExportNavHtml } from './navExport'
+import { staticFooterHtml } from './footerHtml'
 import { escapeHtml, resolveImageForExport, type ImageAsset } from './imageUtils'
 import { rewriteContainerVariantsForExport, tailwindHead } from './htmlShared'
 import { buildRobotsTxt, buildSitemapXml, collectSitemapPaths, type PageSeoInput } from './seoExport'
@@ -20,7 +21,7 @@ function formatPostDate(date: string): string {
   if (!date) return ''
   const parsed = new Date(date)
   if (Number.isNaN(parsed.getTime())) return date
-  return parsed.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+  return parsed.toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' })
 }
 
 function postSlug(post: { title: string; slug?: string }): string {
@@ -50,7 +51,7 @@ function buildFooter(ctx: SiteHtmlContext): string {
     const href = item.page === 'home' ? staticSitePath('home', fromNested) : staticSitePath(item.page, fromNested)
     return `<a href="${href}" class="hover:underline opacity-70">${escapeHtml(item.label)}</a>`
   }).join('')
-  return `<footer class="border-t py-8 text-center text-sm text-slate-500"><div class="mb-4 flex flex-wrap justify-center gap-6">${links}</div>© ${new Date().getFullYear()} ${escapeHtml(content.businessName)}</footer>`
+  return staticFooterHtml(content, links)
 }
 
 

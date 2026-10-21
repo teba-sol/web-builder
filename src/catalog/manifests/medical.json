@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "medical",
   "name": "Harmony Clinic",
-  "description": "Clean, trustworthy healthcare design with appointment booking emphasis.",
+  "description": "Healthcare layout with a clear path to book an appointment.",
   "category": "health",
   "previewGradient": "from-teal-600 to-emerald-800",
   "accentColor": "#0d9488",
@@ -241,17 +241,17 @@
     {
       "key": "phone",
       "label": "Appointments Phone",
-      "placeholder": "+251 11 552 7700"
+      "placeholder": "+353 1 555 7700"
     },
     {
       "key": "email",
       "label": "Email",
-      "placeholder": "care@harmonyclinic.et"
+      "placeholder": "care@harmonyclinic.example"
     },
     {
       "key": "address",
       "label": "Clinic Address",
-      "placeholder": "Kazanchis, Addis Ababa"
+      "placeholder": "8 Clinic Green"
     },
     {
       "key": "hours",
@@ -282,13 +282,13 @@
   },
   "defaults": {
     "businessName": "Harmony Clinic",
-    "tagline": "Compassionate care for your whole family",
-    "heroSubtext": "Board-certified physicians providing comprehensive primary and preventive care.",
+    "tagline": "Care for the whole family",
+    "heroSubtext": "Physicians providing primary and preventive care, with same-week appointments when the book allows.",
     "heroImage": "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=1200&q=80",
-    "aboutTitle": "Patient-Centered Care",
-    "about": "Harmony Clinic sees families in Kazanchis for checkups, children, and long-term care. The same clinicians follow you from visit to visit.",
+    "aboutTitle": "Care organized around the patient",
+    "about": "Harmony Clinic is a primary-care practice. Records stay in one chart, and the next visit is booked before you leave.",
     "aboutImage": "https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?w=800&q=80",
-    "missionStatement": "Healthcare should be personal, accessible, and focused on prevention — not just treatment.",
+    "missionStatement": "A clinic that returns the call.",
     "pageVisibility": {
       "about": true,
       "services": true,
@@ -554,17 +554,17 @@
     ],
     "team": [
       {
-        "name": "Dr. Mekdes Haile",
+        "name": "Dr. Elena Ward",
         "role": "Family Medicine",
         "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&q=80"
       },
       {
-        "name": "Dr. Dawit Bekele",
+        "name": "Dr. Noah Bennett",
         "role": "Internal Medicine",
         "image": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&q=80"
       },
       {
-        "name": "Dr. Hiwot Alemu",
+        "name": "Dr. Maya Chen",
         "role": "Pediatrics",
         "image": "https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=400&q=80"
       }
@@ -578,9 +578,9 @@
     "seoDescription": "",
     "seoKeywords": "",
     "seoSiteUrl": "",
-    "email": "care@harmonyclinic.et",
-    "phone": "+251 11 552 7700",
-    "address": "Kazanchis, Addis Ababa",
+    "email": "care@harmonyclinic.example",
+    "phone": "+353 1 555 7700",
+    "address": "8 Clinic Green",
     "hours": "Mon–Fri 8am–6pm, Sat 9am–1pm",
     "instagram": "",
     "website": "",
@@ -593,6 +593,10 @@
     "contactSectionTitle": "Get in Touch",
     "contactFormTitle": "Send Us a Message",
     "contactFormUrl": "",
-    "contactFormButtonText": "Open Contact Form"
+    "contactFormButtonText": "Send message",
+    "city": "Dublin",
+    "country": "Ireland",
+    "footerBlurb": "Primary care, with a chart and a next appointment.",
+    "footerNote": "All rights reserved."
   }
 }

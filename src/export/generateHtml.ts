@@ -8,6 +8,7 @@ import { type SectionId } from '../templates/themes'
 import { canEmbedForm, EMBED_FORM_HEIGHT, getEmbedFormUrl } from '../utils/formEmbed'
 import { buildStaticHeroHtml } from './heroExport'
 import { escapeHtml, resolveImageForExport, type ImageAsset } from './imageUtils'
+import { staticFooterHtml } from './footerHtml'
 import { tailwindHead } from './htmlShared'
 
 function formatBlogDate(date: string): string {
@@ -55,7 +56,7 @@ function buildContactFormHtml(content: SiteContent, accent: string): string {
         <label class="block text-sm font-medium text-slate-700 mb-1.5">Message</label>
         <textarea name="message" required rows="5" class="${inputCls}" placeholder="How can we help you?"></textarea>
       </div>
-      <button type="submit" class="w-full text-white px-6 py-3 rounded-lg font-semibold" style="background-color:${accent}">${escapeHtml(content.contactFormButtonText || 'Send Message')}</button>
+      <button type="submit" class="w-full text-white px-6 py-3 rounded-lg font-semibold" style="background-color:${accent}">${escapeHtml(content.contactFormButtonText || 'Send message')}</button>
     </form>
     ${formUrl ? `<p class="mt-4 text-center text-sm text-slate-500">Or <a href="${escapeHtml(formUrl)}" target="_blank" rel="noopener noreferrer" class="text-indigo-600 underline font-medium">open the full form directly</a></p>` : ''}
   </div>`
@@ -207,7 +208,7 @@ export function generateHtml(
     faq: faqs.length ? `<section id="faq" class="py-20"><div class="max-w-3xl mx-auto px-6"><h2 class="text-3xl font-bold text-center mb-12">${escapeHtml(content.faqSectionTitle)}</h2>${faqHtml}</div></section>` : '',
     cta: `<section class="text-white py-20 text-center" style="background-color:${accentDark}"><div class="max-w-3xl mx-auto px-6"><h2 class="text-3xl font-bold mb-4">${escapeHtml(content.ctaBannerTitle)}</h2><p class="mb-8 text-lg opacity-80">${escapeHtml(content.ctaBannerText)}</p><a href="${escapeHtml(ctaHref)}" class="inline-block bg-white px-8 py-3 rounded-lg font-semibold" style="color:${accentDark}">${escapeHtml(content.ctaText)}</a></div></section>`,
     contact: contactSectionHtml,
-    footer: `<footer class="border-t py-8 text-center text-sm text-slate-500"><div class="mb-4 flex flex-wrap justify-center gap-6">${navLinks.join('')}</div>© ${new Date().getFullYear()} ${escapeHtml(content.businessName)}</footer>`,
+    footer: staticFooterHtml(content, navLinks.join('')),
   }
 
   const body = layout.sectionOrder

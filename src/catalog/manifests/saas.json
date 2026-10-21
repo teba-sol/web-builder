@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "saas",
   "name": "Flowstack",
-  "description": "Modern product landing page with gradient hero for startups and software companies.",
+  "description": "Product landing page for software teams and startups.",
   "category": "tech",
   "previewGradient": "from-indigo-600 to-cyan-500",
   "accentColor": "#6366f1",
@@ -220,12 +220,12 @@
     {
       "key": "email",
       "label": "Sales Email",
-      "placeholder": "sales@flowstack.et"
+      "placeholder": "sales@flowstack.example"
     },
     {
       "key": "supportEmail",
       "label": "Support Email",
-      "placeholder": "help@yourapp.com"
+      "placeholder": "help@flowstack.io"
     },
     {
       "key": "linkedin",
@@ -256,13 +256,13 @@
   },
   "defaults": {
     "businessName": "Flowstack",
-    "tagline": "Ship faster with the all-in-one project platform",
-    "heroSubtext": "Software for Ethiopian teams — priced in birr, supported from Addis Ababa.",
+    "tagline": "Ship faster with one project platform",
+    "heroSubtext": "Software for teams that need the work, the plan, and the status in one place.",
     "heroImage": "https://images.unsplash.com/photo-1551434678-e076c223a692?w=1200&q=80",
-    "aboutTitle": "Built for Modern Teams",
-    "about": "Flowstack replaces scattered tools with one unified workspace. From sprint planning to deployment tracking, everything your team needs lives in one beautifully designed platform.",
+    "aboutTitle": "Built for product teams",
+    "about": "Flowstack keeps projects, docs, and status together so a team can ship without a second tool for the basics.",
     "aboutImage": "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800&q=80",
-    "missionStatement": "We exist to eliminate friction so teams can focus on what matters — building great products.",
+    "missionStatement": "The work, visible to the people doing it.",
     "pageVisibility": {
       "about": true,
       "services": true,
@@ -528,17 +528,17 @@
     ],
     "team": [
       {
-        "name": "Mekdes Haile",
+        "name": "Elena Ward",
         "role": "Founder & CEO",
         "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80"
       },
       {
-        "name": "Dawit Bekele",
+        "name": "Noah Bennett",
         "role": "Creative Director",
         "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
       },
       {
-        "name": "Hiwot Alemu",
+        "name": "Maya Chen",
         "role": "Operations Lead",
         "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80"
       }
@@ -552,9 +552,9 @@
     "seoDescription": "",
     "seoKeywords": "",
     "seoSiteUrl": "",
-    "email": "sales@flowstack.et",
-    "phone": "+251 11 661 8080",
-    "address": "Bole, Addis Ababa",
+    "email": "sales@flowstack.example",
+    "phone": "+1 415 555 8080",
+    "address": "400 Stack Street",
     "hours": "",
     "instagram": "",
     "website": "",
@@ -567,6 +567,10 @@
     "contactSectionTitle": "Get in Touch",
     "contactFormTitle": "Send Us a Message",
     "contactFormUrl": "",
-    "contactFormButtonText": "Open Contact Form"
+    "contactFormButtonText": "Send message",
+    "city": "San Francisco",
+    "country": "United States",
+    "footerBlurb": "Projects, docs, and status for product teams.",
+    "footerNote": "All rights reserved."
   }
 }

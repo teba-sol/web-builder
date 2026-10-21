@@ -1,3 +1,4 @@
+import { contactButtonLabel } from '../data/footer'
 import { clampVisibilityToProfile } from '../data/editorProfile'
 import { defaultPageVisibility } from '../data/pageConfig'
 import { mergeRichContent } from '../data/richDefaults'
@@ -54,7 +55,9 @@ export function migrateContent(raw: Partial<SiteContent>, templateId?: TemplateI
     contactSectionTitle: raw.contactSectionTitle || merged.contactSectionTitle,
     contactFormTitle: raw.contactFormTitle || merged.contactFormTitle,
     contactFormUrl: raw.contactFormUrl ?? merged.contactFormUrl,
-    contactFormButtonText: raw.contactFormButtonText || merged.contactFormButtonText,
+    contactFormButtonText: contactButtonLabel(raw.contactFormButtonText || merged.contactFormButtonText),
+    footerBlurb: raw.footerBlurb ?? merged.footerBlurb ?? '',
+    footerNote: raw.footerNote || merged.footerNote || 'All rights reserved.',
     mapUrl: raw.mapUrl ?? merged.mapUrl ?? '',
     pageVisibility: migratePageVisibility(raw, legacyVisibility),
     sectionVisibility: migrateSectionVisibility({
