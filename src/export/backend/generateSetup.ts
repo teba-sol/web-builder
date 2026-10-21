@@ -31,6 +31,262 @@ class PublicAsset
 }
 `,
 
+    'app/Support/SiteLinks.php': `<?php
+
+namespace App\\Support;
+
+use Illuminate\\Support\\Facades\\Route;
+
+class SiteLinks
+{
+    public static function href(?string $target): string
+    {
+        $target = trim((string) $target);
+        if ($target === '') {
+            return route('contact');
+        }
+
+        if (
+            str_starts_with($target, 'http://')
+            || str_starts_with($target, 'https://')
+            || str_starts_with($target, '//')
+            || str_starts_with($target, '/')
+            || str_starts_with($target, '#')
+            || str_starts_with($target, 'mailto:')
+            || str_starts_with($target, 'tel:')
+        ) {
+            return $target;
+        }
+
+        if (preg_match('#^(blog|news)/([A-Za-z0-9\\-]+)$#', $target, $post) === 1) {
+            $name = $post[1] === 'blog' ? 'blog.show' : 'news.show';
+            if (Route::has($name)) {
+                return route($name, ['slug' => $post[2]]);
+            }
+        }
+
+        if (preg_match('#^rooms/([A-Za-z0-9\\-]+)$#', $target, $room) === 1 && Route::has('rooms.show')) {
+            return route('rooms.show', ['slug' => $room[1]]);
+        }
+
+        $routes = [
+            'home' => 'home',
+            'about' => 'about',
+            'services' => 'services',
+            'contact' => 'contact',
+            'portfolio' => 'portfolio',
+            'gallery' => 'gallery',
+            'blog' => 'blog.index',
+            'news' => 'news.index',
+            'rooms' => 'rooms.index',
+            'book' => 'book',
+        ];
+        $name = $routes[$target] ?? null;
+        if ($name && Route::has($name)) {
+            return route($name);
+        }
+
+        return route('contact');
+    }
+}
+`,
+
+    'app/Support/AdminImage.php': `<?php
+
+namespace App\\Support;
+
+use Filament\\Forms\\Components\\BaseFileUpload;
+use Filament\\Forms\\Components\\FileUpload;
+
+class AdminImage
+{
+    public static function upload(string $name): FileUpload
+    {
+        return FileUpload::make($name)
+            ->image()
+            ->imageEditor()
+            ->disk('public')
+            ->directory('uploads')
+            ->visibility('public')
+            ->fetchFileInformation(false)
+            ->getUploadedFileUsing(function (BaseFileUpload $component, string $file, string|array|null $storedFileNames): ?array {
+                if ($component->getName() === '') {
+                    return null;
+                }
+                $url = PublicAsset::url($file);
+                if ($url === null || $url === '') {
+                    return null;
+                }
+
+                $stored = is_array($storedFileNames) ? ($storedFileNames[$file] ?? null) : $storedFileNames;
+                $path = parse_url($file, PHP_URL_PATH);
+                $base = basename(is_string($path) && $path !== '' ? $path : $file);
+
+                return [
+                    'name' => (is_string($stored) && $stored !== '') ? $stored : $base,
+                    'size' => 0,
+                    'type' => null,
+                    'url' => $url,
+                ];
+            });
+    }
+}
+`,
+
+    'app/Support/MapEmbed.php': `<?php
+
+namespace App\\Support;
+
+class MapEmbed
+{
+    public static function src(?string $mapUrl, ?string $address = null): string
+    {
+        $raw = trim((string) $mapUrl);
+        if ($raw !== '') {
+            $candidate = $raw;
+            if (preg_match('/\\bsrc=["\\']([^"\\']+)["\\']/i', $raw, $match) === 1) {
+                $candidate = trim($match[1]);
+            }
+            $converted = self::convert($candidate);
+            if ($converted !== '') {
+                return $converted;
+            }
+        }
+
+        $fallback = trim((string) $address);
+
+        return $fallback !== '' ? self::search($fallback) : '';
+    }
+
+    public static function open(?string $mapUrl, ?string $address = null): string
+    {
+        $raw = trim((string) $mapUrl);
+        if ($raw !== '') {
+            $candidate = $raw;
+            if (preg_match('/\\bsrc=["\\']([^"\\']+)["\\']/i', $raw, $match) === 1) {
+                $candidate = trim($match[1]);
+            }
+            if (preg_match('#^https?://#i', $candidate) === 1) {
+                if (preg_match('#/maps/embed#i', $candidate) === 1) {
+                    $opened = str_replace('/maps/embed', '/maps', $candidate);
+
+                    return preg_replace('/[?&]output=embed/', '', $opened) ?? $opened;
+                }
+
+                return $candidate;
+            }
+            if ($candidate !== '') {
+                return 'https://www.google.com/maps/search/?api=1&query='.rawurlencode($candidate);
+            }
+        }
+
+        $fallback = trim((string) $address);
+
+        return $fallback !== '' ? 'https://www.google.com/maps/search/?api=1&query='.rawurlencode($fallback) : '';
+    }
+
+    private static function search(string $query): string
+    {
+        return 'https://www.google.com/maps?q='.rawurlencode($query).'&output=embed';
+    }
+
+    private static function convert(string $input): string
+    {
+        $trimmed = trim($input);
+        if ($trimmed === '') {
+            return '';
+        }
+
+        if (preg_match('#google\\.[^/\\s]+/maps/embed#i', $trimmed) === 1 || preg_match('#/maps/embed\\?#i', $trimmed) === 1) {
+            return $trimmed;
+        }
+
+        if (preg_match('#[?&]output=embed\\b#i', $trimmed) === 1 && preg_match('#google\\.[^/\\s]+/maps#i', $trimmed) === 1) {
+            return $trimmed;
+        }
+
+        if (
+            preg_match('/@(-?\\d+\\.\\d+),(-?\\d+\\.\\d+)(?:,(\\d+(?:\\.\\d+)?)z?)?/', $trimmed, $at) === 1
+            && preg_match('#google\\.[^/\\s]+/maps#i', $trimmed) === 1
+        ) {
+            $zoom = isset($at[3]) && $at[3] !== '' ? (string) (int) round((float) $at[3]) : '16';
+
+            return 'https://www.google.com/maps?q='.$at[1].','.$at[2].'&z='.$zoom.'&output=embed';
+        }
+
+        if (preg_match('#/maps/place/([^/@?#]+)#i', $trimmed, $place) === 1) {
+            return self::search(urldecode(str_replace('+', ' ', $place[1])));
+        }
+
+        $looksLikeUrl = preg_match('#^https?://#i', $trimmed) === 1
+            || (preg_match('#^[A-Za-z0-9.-]+\\.[A-Za-z]{2,}#', $trimmed) === 1 && ! str_contains($trimmed, ' '));
+
+        if ($looksLikeUrl) {
+            $withScheme = preg_match('#^https?://#i', $trimmed) === 1 ? $trimmed : 'https://'.$trimmed;
+            $parts = parse_url($withScheme);
+            if (is_array($parts) && isset($parts['host'])) {
+                $host = strtolower((string) preg_replace('/^www\\./', '', $parts['host']));
+                if ($host === 'maps.app.goo.gl' || $host === 'goo.gl' || $host === 'g.page') {
+                    return '';
+                }
+
+                $path = $parts['path'] ?? '';
+                $query = [];
+                if (isset($parts['query'])) {
+                    parse_str($parts['query'], $query);
+                }
+
+                $q = self::queryValue($query, ['q', 'query', 'daddr']);
+                $ll = self::queryValue($query, ['ll', 'center']);
+
+                if (str_contains($host, 'google.') && str_contains($path, '/maps')) {
+                    if ($q !== '') {
+                        return self::search($q);
+                    }
+                    if ($ll !== '') {
+                        return self::search($ll);
+                    }
+                }
+
+                if ($host === 'maps.google.com' || str_starts_with($host, 'maps.google.')) {
+                    $pin = $q !== '' ? $q : $ll;
+                    if ($pin !== '') {
+                        return self::search($pin);
+                    }
+                }
+
+                if ($host === 'maps.apple.com') {
+                    $apple = self::queryValue($query, ['q', 'll', 'address']);
+                    if ($apple !== '') {
+                        return self::search($apple);
+                    }
+                }
+            }
+
+            return '';
+        }
+
+        if (! str_contains($trimmed, '<iframe')) {
+            return self::search($trimmed);
+        }
+
+        return '';
+    }
+
+    private static function queryValue(array $query, array $keys): string
+    {
+        foreach ($keys as $key) {
+            $value = $query[$key] ?? null;
+            if (is_string($value) && $value !== '') {
+                return $value;
+            }
+        }
+
+        return '';
+    }
+}
+`,
+
     'app/Services/DoctorService.php': `<?php
 
 namespace App\\Services;

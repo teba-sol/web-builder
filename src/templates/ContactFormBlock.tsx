@@ -104,7 +104,7 @@ function NativeContactForm({ c, t, formStyle }: { c: SiteContent; t: TemplateThe
         <label htmlFor="contact-message" className={`mb-1.5 block ${cls.label}`}>Message</label>
         <textarea id="contact-message" name="message" required rows={5} className={cls.input} placeholder="How can we help you?" />
       </div>
-      <button type="submit" className={`w-full ${t.navCta}`}>{c.contactFormButtonText || 'Send Message'}</button>
+      <button type="submit" className={`w-full ${t.navCta}`}>{c.contactFormButtonText || 'Send message'}</button>
       {!c.contactFormUrl.trim() && !mailTarget && (
         <p className={`text-xs ${t.cardText}`}>Add an email or form link in the editor to receive submissions.</p>
       )}

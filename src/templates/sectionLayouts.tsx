@@ -5,6 +5,7 @@ import { getSectionVariants } from '../data/sectionVariants'
 import { getSiteNavItems, resolveSiteHref, sitePath } from '../data/siteNav'
 import type { ContactFieldKey, SiteContent, TemplateId } from '../types'
 import type { ContactLayout } from '../data/layoutVariants'
+import { getMapEmbedUrl, getMapOpenUrl } from '../utils/mapEmbed'
 import { ContactFormBlock } from './ContactFormBlock'
 import type { TemplateTheme } from './themes'
 
@@ -370,6 +371,26 @@ function ContactDetails({ c, t, meta, className = '' }: {
   )
 }
 
+function ContactMap({ c }: { c: SiteContent }) {
+  const src = getMapEmbedUrl(c.mapUrl, c.address)
+  const open = getMapOpenUrl(c.mapUrl, c.address)
+  if (!src && !open) return null
+  return (
+    <div className="mt-6 space-y-2">
+      {src ? (
+        <div className="h-56 overflow-hidden rounded-2xl border">
+          <iframe title="Map" src={src} className="h-full w-full border-0" loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
+        </div>
+      ) : null}
+      {open ? (
+        <a href={open} className="text-sm font-semibold underline" target="_blank" rel="noreferrer">
+          View on Google Maps
+        </a>
+      ) : null}
+    </div>
+  )
+}
+
 function ContactFormWrap({ c, t, variant, layout }: { c: SiteContent; t: TemplateTheme; variant: TemplateId; layout: ContactLayout }) {
   const formStyle = getSectionVariants(variant).contactForm
   return <ContactFormBlock c={c} t={t} layout={layout} formStyle={formStyle} />
@@ -384,7 +405,12 @@ export function ContactSectionView({
   const title = c.contactSectionTitle || 'Get in Touch'
   const ctaHref = resolveSiteHref(basePath, c.ctaLink || 'contact', c)
   const form = <ContactFormWrap c={c} t={t} variant={variant} layout={layout} />
-  const info = <ContactDetails c={c} t={t} meta={meta} />
+  const info = (
+    <div>
+      <ContactDetails c={c} t={t} meta={meta} />
+      <ContactMap c={c} />
+    </div>
+  )
   const cta = <Link to={ctaHref} className={t.navCta}>{c.ctaText}</Link>
 
   const shells: Record<string, ReactNode> = {

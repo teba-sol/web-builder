@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "id": "aureum",
-  "name": "Bole Ledger Studio",
-  "description": "Purple bookkeeping and fractional-CFO studio — dashboards, cost strategy, and books that stay current.",
+  "name": "Ledger Studio",
+  "description": "Bookkeeping and fractional-CFO studio with dashboards, cost strategy, and books that stay current.",
   "category": "finance",
   "previewGradient": "from-[#976DE8] via-[#6035EE] to-[#FBD043]",
   "accentColor": "#9333ea",
@@ -152,7 +152,7 @@
   },
   "showcase": {
     "sectionTitle": "Studios we serve",
-    "sectionSubtitle": "The same care in every Addis Ababa neighborhood",
+    "sectionSubtitle": "The same care in every the city neighborhood",
     "navLabel": "Locations",
     "itemLabel": "Studio",
     "showPrice": false,
@@ -170,11 +170,11 @@
       "link": "contact"
     },
     {
-      "title": "Old Airport",
-      "description": "Individual and entity returns for Old Airport Village and Northside clients.",
+      "title": "the north quarter",
+      "description": "Individual and entity returns for the north quarter Village and Northside clients.",
       "image": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80",
       "price": "",
-      "tag": "Old Airport",
+      "tag": "the north quarter",
       "link": "contact"
     },
     {
@@ -215,17 +215,17 @@
     {
       "key": "phone",
       "label": "Studio phone",
-      "placeholder": "+251 11 661 5829"
+      "placeholder": "+44 20 7946 5829"
     },
     {
       "key": "email",
       "label": "Email",
-      "placeholder": "hello@boleledger.et"
+      "placeholder": "hello@ledgerstudio.example"
     },
     {
       "key": "address",
       "label": "Studio address",
-      "placeholder": "Bole Road, Addis Ababa"
+      "placeholder": "40 Market Street"
     },
     {
       "key": "hours",
@@ -250,9 +250,9 @@
     "grayscaleImage": false
   },
   "defaults": {
-    "businessName": "Bole Ledger Studio",
-    "tagline": "If you're buried in bookkeeping, who's leading the company?",
-    "heroSubtext": "We handle your books, but that is just the start. Get intelligent dashboards plus strategic guidance from former CFOs and operators.",
+    "businessName": "Ledger Studio",
+    "tagline": "If the books are behind, who is leading the company?",
+    "heroSubtext": "We keep the books current, then add dashboards and guidance from operators who have run a finance desk.",
     "heroImage": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1200&q=80",
     "logo": "",
     "logoShowName": true,
@@ -261,10 +261,10 @@
     "brandAccent": "#FBD043",
     "fontHeading": "fraunces",
     "fontBody": "source-sans",
-    "aboutTitle": "Your strategic partner for digital finance",
-    "about": "Bole Ledger Studio was founded to bridge the gap between clean books and the decisions owners actually need to make. Former CFOs sit beside operators, not just tax season.",
+    "aboutTitle": "A partner for the numbers",
+    "about": "Ledger Studio closes the books, explains the numbers, and stays on the account after tax season.",
     "aboutImage": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1200&q=80",
-    "missionStatement": "Books first. Strategy always. One desk for dashboards and decisions.",
+    "missionStatement": "Books that are current, and advice that is specific.",
     "pageVisibility": {
       "about": true,
       "services": true,
@@ -311,7 +311,7 @@
       },
       {
         "title": "Business tax & audit care",
-        "description": "Schedule C and 1120 work, plus representation if the Ministry of Revenue writes. Existing clients are not billed for audit support."
+        "description": "Schedule C and 1120 work, plus representation if the revenue authority writes. Existing clients are not billed for audit support."
       }
     ],
     "stepsSectionTitle": "How an engagement feels",
@@ -326,7 +326,7 @@
       },
       {
         "title": "Choose the advance",
-        "description": "If an advance fits, we walk the fees and the timeline. You can always wait for the Ministry of Revenue."
+        "description": "If an advance fits, we walk the fees and the timeline. You can always wait for the revenue authority."
       },
       {
         "title": "File, then stay in touch",
@@ -334,7 +334,7 @@
       }
     ],
     "showcaseSectionTitle": "Studios we serve",
-    "showcaseSectionSubtitle": "The same care in every Addis Ababa neighborhood",
+    "showcaseSectionSubtitle": "The same care in every the city neighborhood",
     "showcaseItems": [
       {
         "title": "Midtown",
@@ -345,11 +345,11 @@
         "link": "contact"
       },
       {
-        "title": "Old Airport",
-        "description": "Individual and entity returns for Old Airport Village and Northside clients.",
+        "title": "the north quarter",
+        "description": "Individual and entity returns for the north quarter Village and Northside clients.",
         "image": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80",
         "price": "",
-        "tag": "Old Airport",
+        "tag": "the north quarter",
         "link": "contact"
       },
       {
@@ -414,7 +414,7 @@
     "faqs": [
       {
         "question": "Do I have to take an advance?",
-        "answer": "No. Many clients file and wait for the Ministry of Revenue. We only size an advance after the return is complete, and you can decline it."
+        "answer": "No. Many clients file and wait for the revenue authority. We only size an advance after the return is complete, and you can decline it."
       },
       {
         "question": "How fast can funds arrive?",
@@ -426,7 +426,7 @@
       },
       {
         "question": "Do you handle business returns?",
-        "answer": "Yes. Sole proprietors and corporations, plus audit support. Existing clients are not charged if the Ministry of Revenue writes."
+        "answer": "Yes. Sole proprietors and corporations, plus audit support. Existing clients are not charged if the revenue authority writes."
       }
     ],
     "teamSectionTitle": "Advisors",
@@ -447,7 +447,7 @@
       {
         "title": "Saturday sittings through filing week",
         "slug": "saturday-sittings",
-        "excerpt": "A limited Saturday book is open. Midtown and Old Airport only.",
+        "excerpt": "A limited Saturday book is open. Midtown and the north quarter only.",
         "body": "Weekday hours stay 10–6. Saturdays are reserved for complete files. Bring the checklist and we will not ask you to come back.",
         "image": "https://images.unsplash.com/photo-1434626881859-194d67b2b86f?w=800&q=80",
         "author": "Front desk",
@@ -471,7 +471,7 @@
         "featured": true
       },
       {
-        "title": "Wait for the Ministry of Revenue",
+        "title": "Wait for the revenue authority",
         "description": "We still prepare the return. You keep the full refund when it posts.",
         "price": "Your choice",
         "tag": "No advance",
@@ -488,7 +488,7 @@
         "title": "An advance is not the refund",
         "slug": "an-advance-is-not-the-refund",
         "excerpt": "Why we size funds after the return, and why taking less is sometimes the better year.",
-        "body": "An advance is a short loan against a finished return. It is repaid when the Ministry of Revenue pays. Fees, if any, come out of that refund.\n\nWe do not quote a number until the file is done. That is how you avoid taking more than the year can carry.",
+        "body": "An advance is a short loan against a finished return. It is repaid when the revenue authority pays. Fees, if any, come out of that refund.\n\nWe do not quote a number until the file is done. That is how you avoid taking more than the year can carry.",
         "image": "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=800&q=80",
         "author": "Elena Voss",
         "date": "2026-02-10"
@@ -505,17 +505,17 @@
     ],
     "team": [
       {
-        "name": "Mekdes Haile",
+        "name": "Elena Ward",
         "role": "Principal advisor",
         "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
       },
       {
-        "name": "Dawit Bekele",
+        "name": "Noah Bennett",
         "role": "Business returns",
         "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80"
       },
       {
-        "name": "Hiwot Alemu",
+        "name": "Maya Chen",
         "role": "Client studio",
         "image": "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80"
       }
@@ -526,12 +526,12 @@
     "ctaLink": "contact",
     "seoEnabled": true,
     "seoTitle": "Aureum Tax — Tax prep and refund advances",
-    "seoDescription": "A calm Addis Ababa tax studio for preparation, Holiday and Shield advances, and business filings.",
-    "seoKeywords": "tax preparation, refund advance, Addis Ababa tax studio, Holiday advance",
+    "seoDescription": "A calm the city tax studio for preparation, Holiday and Shield advances, and business filings.",
+    "seoKeywords": "tax preparation, refund advance, the city tax studio, Holiday advance",
     "seoSiteUrl": "",
-    "email": "hello@boleledger.et",
-    "phone": "+251 11 661 5829",
-    "address": "Bole Road, Addis Ababa",
+    "email": "hello@ledgerstudio.example",
+    "phone": "+44 20 7946 5829",
+    "address": "40 Market Street",
     "mapUrl": "",
     "hours": "Mon-Fri: 9AM - 7PM",
     "instagram": "",
@@ -545,6 +545,10 @@
     "contactSectionTitle": "Reserve a sitting",
     "contactFormTitle": "Tell us about the year",
     "contactFormUrl": "",
-    "contactFormButtonText": "Send"
+    "contactFormButtonText": "Send message",
+    "city": "London",
+    "country": "United Kingdom",
+    "footerBlurb": "Bookkeeping, dashboards, and a finance partner on call.",
+    "footerNote": "All rights reserved."
   }
 }

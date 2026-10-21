@@ -179,8 +179,6 @@ export const NAV_SHELL_IDS = [
   'guesthouse',
   'alpine',
   'ryokan',
-  'desert',
-  'nordic',
   'jungle',
 ] as const
 

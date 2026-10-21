@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "id": "fitness",
-  "name": "Bole Fit House",
-  "description": "High-energy fitness brand with bold colors and class booking integration.",
+  "name": "Pulse House",
+  "description": "High-energy gym with classes and a clear way to book.",
   "category": "health",
   "previewGradient": "from-orange-600 to-red-700",
   "accentColor": "#ea580c",
@@ -227,12 +227,12 @@
     {
       "key": "phone",
       "label": "Phone",
-      "placeholder": "+251 11 661 9876"
+      "placeholder": "+1 323 555 9876"
     },
     {
       "key": "address",
       "label": "Gym Address",
-      "placeholder": "Cameroon Street, Bole, Addis Ababa"
+      "placeholder": "30 Pulse Street"
     },
     {
       "key": "hours",
@@ -267,14 +267,14 @@
     "grayscaleImage": false
   },
   "defaults": {
-    "businessName": "Bole Fit House",
-    "tagline": "Train in Bole",
-    "heroSubtext": "Strength, classes, and early mornings at a gym on Cameroon Street.",
+    "businessName": "Pulse House",
+    "tagline": "Train with a plan",
+    "heroSubtext": "Strength, classes, and early mornings at a gym that knows your name.",
     "heroImage": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1200&q=80",
-    "aboutTitle": "More Than a Gym",
-    "about": "FitLife isn't just about lifting weights — it's a lifestyle. Our 30,000 sq ft facility features premium equipment, recovery zones, a juice bar, and a community of members who motivate each other every single day.",
+    "aboutTitle": "More than a room of weights",
+    "about": "Pulse House runs coached hours, open gym, and classes on one timetable. You can see what is on before you leave the house.",
     "aboutImage": "https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=800&q=80",
-    "missionStatement": "We believe everyone deserves to feel strong, confident, and alive.",
+    "missionStatement": "Training that fits a real week.",
     "pageVisibility": {
       "about": true,
       "services": true,
@@ -540,17 +540,17 @@
     ],
     "team": [
       {
-        "name": "Mekdes Haile",
+        "name": "Elena Ward",
         "role": "Founder & CEO",
         "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80"
       },
       {
-        "name": "Dawit Bekele",
+        "name": "Noah Bennett",
         "role": "Creative Director",
         "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
       },
       {
-        "name": "Hiwot Alemu",
+        "name": "Maya Chen",
         "role": "Operations Lead",
         "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80"
       }
@@ -564,9 +564,9 @@
     "seoDescription": "",
     "seoKeywords": "",
     "seoSiteUrl": "",
-    "email": "hello@bolefit.et",
-    "phone": "+251 11 661 9876",
-    "address": "Cameroon Street, Bole, Addis Ababa",
+    "email": "hello@pulsehouse.example",
+    "phone": "+1 323 555 9876",
+    "address": "30 Pulse Street",
     "hours": "Mon–Sun 5am–11pm",
     "instagram": "@fitlifegym",
     "website": "",
@@ -579,6 +579,10 @@
     "contactSectionTitle": "Get in Touch",
     "contactFormTitle": "Send Us a Message",
     "contactFormUrl": "",
-    "contactFormButtonText": "Open Contact Form"
+    "contactFormButtonText": "Send message",
+    "city": "Los Angeles",
+    "country": "United States",
+    "footerBlurb": "Classes, coaching, and open gym.",
+    "footerNote": "All rights reserved."
   }
 }

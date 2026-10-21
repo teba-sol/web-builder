@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "id": "noir",
-  "name": "Saba Atelier",
-  "description": "Editorial black-and-gold luxury — runway typography, dramatic contrast, haute couture energy.",
+  "name": "Noir Atelier",
+  "description": "Black-and-gold editorial layout for fashion houses and limited collections.",
   "category": "retail",
   "previewGradient": "from-zinc-950 via-neutral-900 to-amber-950",
   "accentColor": "#d4af37",
@@ -216,22 +216,22 @@
     {
       "key": "email",
       "label": "Atelier Email",
-      "placeholder": "hello@sabaatelier.et"
+      "placeholder": "hello@noiratelier.example"
     },
     {
       "key": "phone",
       "label": "Concierge",
-      "placeholder": "+251 11 661 9090"
+      "placeholder": "+39 02 555 9090"
     },
     {
       "key": "address",
       "label": "Showroom",
-      "placeholder": "Bole, Addis Ababa"
+      "placeholder": "9 Noir Passage"
     },
     {
       "key": "instagram",
       "label": "Instagram",
-      "placeholder": "@sabaatelier"
+      "placeholder": "@noiratelier"
     },
     {
       "key": "website",
@@ -256,14 +256,14 @@
     "grayscaleImage": true
   },
   "defaults": {
-    "businessName": "Saba Atelier",
-    "tagline": "Elegance in shadow",
-    "heroSubtext": "An Addis atelier where silhouette meets silence — limited collections cut and finished in Bole.",
+    "businessName": "Noir Atelier",
+    "tagline": "A collection cut in small numbers",
+    "heroSubtext": "An atelier where silhouette is the point. Limited pieces, cut and finished in the studio.",
     "heroImage": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=80",
-    "aboutTitle": "The Atelier",
-    "about": "Saba Atelier cuts numbered pieces in Bole from cotton, silk, and leather finished in Addis. Each piece is made in a small run.",
+    "aboutTitle": "The atelier",
+    "about": "Noir Atelier shows one collection at a time. Fittings are by appointment, and the rail does not pretend to be a department store.",
     "aboutImage": "https://images.unsplash.com/photo-1483985988350-763728e3685b?w=800&q=80",
-    "missionStatement": "We do not follow trends. We compose them.",
+    "missionStatement": "Clothes with a point of view.",
     "pageVisibility": {
       "about": true,
       "services": true,
@@ -289,7 +289,7 @@
         "label": "Pieces Per Season"
       },
       {
-        "value": "Addis Ababa",
+        "value": "the city",
         "label": "Atelier Since 2012"
       },
       {
@@ -529,17 +529,17 @@
     ],
     "team": [
       {
-        "name": "Mekdes Haile",
+        "name": "Elena Ward",
         "role": "Creative Director",
         "image": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80"
       },
       {
-        "name": "Dawit Bekele",
+        "name": "Noah Bennett",
         "role": "Head Tailor",
         "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80"
       },
       {
-        "name": "Hiwot Alemu",
+        "name": "Maya Chen",
         "role": "Client Relations",
         "image": "https://images.unsplash.com/photo-1580618672591-eb180b1a973f?w=400&q=80"
       }
@@ -553,11 +553,11 @@
     "seoDescription": "",
     "seoKeywords": "",
     "seoSiteUrl": "",
-    "email": "hello@sabaatelier.et",
-    "phone": "+251 11 661 9090",
-    "address": "Bole, Addis Ababa",
+    "email": "hello@noiratelier.example",
+    "phone": "+39 02 555 9090",
+    "address": "9 Noir Passage",
     "hours": "",
-    "instagram": "@sabaatelier",
+    "instagram": "@noiratelier",
     "website": "https://lookbook.noirstudio.com",
     "linkedin": "",
     "whatsapp": "",
@@ -568,6 +568,10 @@
     "contactSectionTitle": "Get in Touch",
     "contactFormTitle": "Send Us a Message",
     "contactFormUrl": "",
-    "contactFormButtonText": "Open Contact Form"
+    "contactFormButtonText": "Send message",
+    "city": "Milan",
+    "country": "Italy",
+    "footerBlurb": "Limited collections, shown by appointment.",
+    "footerNote": "All rights reserved."
   }
 }

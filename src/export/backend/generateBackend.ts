@@ -44,6 +44,7 @@ const LIST_MODELS = [
   { name: 'BlogPost', table: 'blog_posts', fields: ['title', 'slug', 'excerpt', 'body', 'image', 'author', 'is_published', 'published_at'] },
   { name: 'NewsPost', table: 'news_posts', fields: ['title', 'slug', 'excerpt', 'body', 'image', 'author', 'is_published', 'published_at'] },
   { name: 'Faq', table: 'faqs', fields: ['question', 'answer'] },
+  { name: 'PricingPlan', table: 'pricing_plans', fields: ['title', 'price', 'tag', 'description', 'featured'] },
 ] as const
 
 function generatePostModel(className: string): string {
@@ -85,7 +86,7 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->text('excerpt')->nullable();
             $table->text('body')->nullable();
-            $table->string('image')->nullable();
+            $table->text('image')->nullable();
             $table->string('author')->nullable();
             $table->boolean('is_published')->default(true);
             $table->timestamp('published_at')->nullable();
@@ -104,6 +105,9 @@ return new class extends Migration
 
 function generateModel(name: string, fillable: string[]): string {
   const fields = fillable.map((f) => `'${f}'`).join(', ')
+  const casts = fillable.includes('featured')
+    ? `\n    protected $casts = [\n        'featured' => 'boolean',\n    ];\n`
+    : ''
   return `<?php
 
 namespace App\\Models;
@@ -112,7 +116,7 @@ use Illuminate\\Database\\Eloquent\\Model;
 
 class ${name} extends Model
 {
-    protected $fillable = [${fields}, 'sort_order'];
+    protected $fillable = [${fields}, 'sort_order'];${casts}
 }
 `
 }
@@ -123,7 +127,13 @@ function generateMigration(table: string, columns: string[]): string {
       if (c === 'description' || c === 'quote' || c === 'answer' || c === 'message') {
         return `$table->text('${c}');`
       }
-      if (c === 'image' || c === 'path' || c === 'link') {
+      if (c === 'featured') {
+        return `$table->boolean('${c}')->default(false);`
+      }
+      if (c === 'image' || c === 'path') {
+        return `$table->text('${c}')->nullable();`
+      }
+      if (c === 'link' || c === 'tag') {
         return `$table->string('${c}')->nullable();`
       }
       return `$table->string('${c}');`
@@ -185,6 +195,8 @@ function buildSettingsRecord(payload: SiteExportPayload): Record<string, unknown
     about: c.about,
     about_image: mapImage(c.aboutImage, 'about'),
     mission_statement: c.missionStatement,
+    footer_blurb: c.footerBlurb,
+    footer_note: c.footerNote,
     page_visibility: c.pageVisibility,
     section_visibility: c.sectionVisibility,
     news_section_title: c.newsSectionTitle,
@@ -207,6 +219,10 @@ function buildSettingsRecord(payload: SiteExportPayload): Record<string, unknown
     cta_text: c.ctaText,
     cta_link: c.ctaLink,
     email: c.email,
+    reservation_email: c.reservationEmail,
+    support_email: c.supportEmail,
+    whatsapp: c.whatsapp,
+    booking_url: c.bookingUrl,
     phone: c.phone,
     address: c.address,
     map_url: c.mapUrl,
@@ -430,7 +446,7 @@ class SiteSetting extends Model
         'business_name', 'tagline', 'hero_subtext', 'hero_image',
         'logo', 'logo_show_name', 'brand_primary', 'brand_secondary', 'brand_accent',
         'font_heading', 'font_body',
-        'about_title', 'about', 'about_image', 'mission_statement',
+        'about_title', 'about', 'about_image', 'mission_statement', 'footer_blurb', 'footer_note',
         'page_visibility', 'section_visibility', 'services_section_title', 'services_section_subtitle',
         'news_section_title', 'news_section_subtitle', 'pricing_section_title',
         'rooms_section_title', 'rooms_section_subtitle',
@@ -440,7 +456,7 @@ class SiteSetting extends Model
         'gallery_section_title', 'testimonials_section_title',
         'blog_section_title', 'blog_section_subtitle', 'faq_section_title',
         'team_section_title', 'cta_banner_title', 'cta_banner_text',
-        'cta_text', 'cta_link', 'email', 'phone', 'address', 'map_url', 'hours',
+        'cta_text', 'cta_link', 'email', 'reservation_email', 'support_email', 'whatsapp', 'booking_url', 'phone', 'address', 'map_url', 'hours',
         'license_number', 'instagram', 'linkedin', 'website',
         'contact_section_title', 'contact_form_title', 'contact_form_button_text',
         'template_id', 'color_scheme_id', 'layout_variant_id',
@@ -546,6 +562,15 @@ function generateSeeder(payload: SiteExportPayload): string {
         published_at: post.date || null,
       })),
     faqs: c.faqs.filter((f) => f.question),
+    pricing_plans: c.pricing
+      .filter((plan) => plan.title)
+      .map((plan) => ({
+        title: plan.title,
+        price: plan.price || '',
+        tag: plan.tag || null,
+        description: plan.description || '',
+        featured: Boolean(plan.featured),
+      })),
   }
 
   return `<?php
@@ -554,6 +579,7 @@ namespace Database\\Seeders;
 
 use App\\Models\\BlogPost;
 use App\\Models\\NewsPost;
+use App\\Models\\PricingPlan;
 use App\\Models\\ContactMessage;
 use App\\Models\\Faq;
 use App\\Models\\GalleryImage;
@@ -593,6 +619,7 @@ class DatabaseSeeder extends Seeder
         $this->seedList(BlogPost::class, json_decode('${jsonForPhp(listData.blog_posts)}', true));
         $this->seedList(NewsPost::class, json_decode('${jsonForPhp(listData.news_posts)}', true));
         $this->seedList(Faq::class, json_decode('${jsonForPhp(listData.faqs)}', true));
+        $this->seedList(PricingPlan::class, json_decode('${jsonForPhp(listData.pricing_plans)}', true));
 ${hasBookingFeature(payload.content) && !usesBuildauraCrs(payload.templateId) ? "\n        $this->call(HospitalitySeeder::class);\n" : ''}
     }
 
@@ -821,6 +848,11 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->darkMode(false)
             ->colors(['primary' => Color::Zinc])
+            ->navigationGroups([
+                'Website',
+                'Content',
+                'Inbox',${isHospitalityTemplate(payload.templateId) ? "\n                'Hospitality'," : ''}
+            ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\\\Filament\\\\Resources')
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\\\Filament\\\\Widgets')
             ->pages([
@@ -913,7 +945,7 @@ class NewsController extends Controller
     {
         return view('site.news', [
             'settings' => SiteSetting::current(),
-            'newsPosts' => NewsPost::where('is_published', true)->orderByDesc('published_at')->orderBy('sort_order')->get(),
+            'newsPosts' => NewsPost::where('is_published', true)->orderBy('sort_order')->orderByDesc('published_at')->get(),
         ]);
     }
 
@@ -942,7 +974,7 @@ class BlogController extends Controller
     {
         return view('site.blog', [
             'settings' => SiteSetting::current(),
-            'blogPosts' => BlogPost::where('is_published', true)->orderByDesc('published_at')->orderBy('sort_order')->get(),
+            'blogPosts' => BlogPost::where('is_published', true)->orderBy('sort_order')->orderByDesc('published_at')->get(),
         ]);
     }
 
@@ -962,6 +994,7 @@ namespace App\\Http\\Controllers;
 
 use App\\Models\\Faq;
 use App\\Models\\GalleryImage;
+use App\\Models\\PricingPlan;
 use App\\Models\\Service;
 use App\\Models\\ShowcaseItem;
 use App\\Models\\SiteSetting;
@@ -985,6 +1018,7 @@ class PageController extends Controller
             'settings' => SiteSetting::current(),
             'services' => Service::orderBy('sort_order')->get(),
             'steps' => Step::orderBy('sort_order')->get(),
+            'pricingPlans' => PricingPlan::orderBy('sort_order')->get(),
         ]);
     }
 
@@ -1022,11 +1056,13 @@ namespace App\\Http\\Controllers;
 use App\\Models\\BlogPost;
 use App\\Models\\Faq;
 use App\\Models\\NewsPost;
+use App\\Models\\PricingPlan;
 use App\\Models\\Service;
 use App\\Models\\ShowcaseItem;
 use App\\Models\\SiteSetting;
 use App\\Models\\Stat;
 use App\\Models\\Step;
+use App\\Models\\TeamMember;
 use App\\Models\\Testimonial;
 use Illuminate\\View\\View;
 
@@ -1049,10 +1085,12 @@ class SiteController extends Controller
             'services' => Service::orderBy('sort_order')->get(),
             'steps' => Step::orderBy('sort_order')->get(),
             'showcaseItems' => ShowcaseItem::orderBy('sort_order')->get(),
-            'blogPosts' => BlogPost::where('is_published', true)->orderByDesc('published_at')->orderBy('sort_order')->get(),
-            'newsPosts' => NewsPost::where('is_published', true)->orderByDesc('published_at')->orderBy('sort_order')->get(),
+            'blogPosts' => BlogPost::where('is_published', true)->orderBy('sort_order')->orderByDesc('published_at')->get(),
+            'newsPosts' => NewsPost::where('is_published', true)->orderBy('sort_order')->orderByDesc('published_at')->get(),
             'testimonials' => Testimonial::orderBy('sort_order')->get(),
-            'faqs' => Faq::orderBy('sort_order')->get(),${usesBuildauraCrs(payload.templateId) ? `
+            'faqs' => Faq::orderBy('sort_order')->get(),
+            'team' => TeamMember::orderBy('sort_order')->get(),
+            'pricingPlans' => PricingPlan::orderBy('sort_order')->get(),${usesBuildauraCrs(payload.templateId) ? `
             'crsRoomTypes' => $this->crsRoomTypes(),` : hasBookingFeature(payload.content) ? `
             'roomTypes' => $roomTypes,` : ''}
         ]);
@@ -1309,8 +1347,8 @@ return new class extends Migration
             $table->string('business_name');
             $table->string('tagline')->nullable();
             $table->text('hero_subtext')->nullable();
-            $table->string('hero_image')->nullable();
-            $table->string('logo')->nullable();
+            $table->text('hero_image')->nullable();
+            $table->text('logo')->nullable();
             $table->boolean('logo_show_name')->default(true);
             $table->string('brand_primary')->nullable();
             $table->string('brand_secondary')->nullable();
@@ -1319,8 +1357,10 @@ return new class extends Migration
             $table->string('font_body')->nullable();
             $table->string('about_title')->nullable();
             $table->text('about')->nullable();
-            $table->string('about_image')->nullable();
+            $table->text('about_image')->nullable();
             $table->text('mission_statement')->nullable();
+            $table->text('footer_blurb')->nullable();
+            $table->string('footer_note')->nullable();
             $table->json('page_visibility')->nullable();
             $table->json('section_visibility')->nullable();
             $table->string('news_section_title')->nullable();
@@ -1349,6 +1389,10 @@ return new class extends Migration
             $table->string('cta_text')->nullable();
             $table->string('cta_link')->nullable();
             $table->string('email')->nullable();
+            $table->string('reservation_email')->nullable();
+            $table->string('support_email')->nullable();
+            $table->string('whatsapp')->nullable();
+            $table->string('booking_url')->nullable();
             $table->string('phone')->nullable();
             $table->string('address')->nullable();
             $table->text('map_url')->nullable();

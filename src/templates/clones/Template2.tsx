@@ -222,7 +222,7 @@ export function Template2({ c, basePath }: { c: SiteContent; basePath: string })
             </h2>
 
             <p className="text-slate-700 text-sm csm:text-base leading-relaxed">
-              Kreative.Studio was founded on a simple principle: bridging the gap between aesthetic beauty and functional digital experiences to help brands stand out.
+              {c.businessName} was founded on a simple principle: bridging the gap between aesthetic beauty and functional digital experiences to help brands stand out.
             </p>
 
             <div className="space-y-3 pt-2">
@@ -533,7 +533,7 @@ export function Template2({ c, basePath }: { c: SiteContent; basePath: string })
                     <input
                       type="tel"
                       required
-                      placeholder="+251 911 000 000"
+                      placeholder="Phone number"
                       value={contactForm.phone}
                       onChange={(e) => setContactForm({ ...contactForm, phone: e.target.value })}
                       className="w-full bg-slate-100 border border-slate-300 rounded-xl py-3 px-4 text-sm text-slate-900 focus:outline-none focus:border-purple-500"
@@ -568,7 +568,7 @@ export function Template2({ c, basePath }: { c: SiteContent; basePath: string })
                   className="px-8 py-3.5 rounded-xl text-white font-bold text-sm shadow-xl flex items-center gap-2"
                   style={{ backgroundColor: 'var(--clone-accent)' }}
                 >
-                  <Send className="w-4 h-4 text-pink-400" /> Send Inquiry
+                  <Send className="w-4 h-4 text-pink-400" /> {c.contactFormButtonText || 'Send message'}
                 </button>
               </form>
 
@@ -590,44 +590,38 @@ export function Template2({ c, basePath }: { c: SiteContent; basePath: string })
           
           <div className="space-y-3">
             <div className="flex items-center gap-2 text-white font-bold text-base">
-              <Shield className="w-5 h-5 text-purple-500" /> KREATIVE STUDIO
+              <Shield className="w-5 h-5 text-purple-500" /> {c.businessName}
             </div>
             <p className="text-slate-600 text-xs leading-relaxed">
-              A full-service digital product agency specializing in brand identity, user experience, and scalable web applications.
+              {c.footerBlurb || c.missionStatement || c.heroSubtext}
             </p>
           </div>
 
           <div>
             <h4 className="text-white font-bold mb-3 uppercase tracking-wider">Services</h4>
             <ul className="space-y-2">
-              <li><Link to={d.hrefs.services} className="hover:text-purple-600">Individual Tax Prep</Link></li>
-              <li><Link to={d.hrefs.services} className="hover:text-purple-600">Refund Advance Loans</Link></li>
-              <li><Link to={d.hrefs.services} className="hover:text-purple-600">2,750 ETB Referral Bonus</Link></li>
-              <li><Link to={d.hrefs.services} className="hover:text-purple-600">Business Tax & Ministry of Revenue Audit</Link></li>
+              {c.services.filter((service) => service.title).map((service) => (
+                <li key={service.title}><Link to={d.hrefs.services} className="hover:text-purple-600">{service.title}</Link></li>
+              ))}
             </ul>
           </div>
 
           <div>
             <h4 className="text-white font-bold mb-3 uppercase tracking-wider">Office Hours</h4>
-            <ul className="space-y-2">
-              <li>Monday - Friday: 9:00 AM - 7:00 PM</li>
-              <li>Saturday: 10:00 AM - 4:00 PM</li>
-              <li>Sunday: Closed</li>
-              <li className="text-pink-400 font-semibold pt-1">24/7 Online Application Active</li>
-            </ul>
+            <p>{c.hours}</p>
           </div>
 
           <div>
-            <h4 className="text-white font-bold mb-3 uppercase tracking-wider">Legal Disclaimer</h4>
+            <h4 className="text-white font-bold mb-3 uppercase tracking-wider">Contact</h4>
             <p className="text-[11px] text-slate-500 leading-relaxed">
-              Refund advances are short-term loans provided by partner financial institutions upon Ministry of Revenue return filing acceptance. Terms and conditions apply.
+              {c.phone}<br />{c.email}<br />{c.address}
             </p>
           </div>
 
         </div>
 
         <div className="max-w-7xl mx-auto mt-8 pt-8 border-t border-slate-900 text-center text-slate-500">
-          © {new Date().getFullYear()} Kreative.Studio LLC. All rights reserved. Placeholder Template 1 UI.
+          © {new Date().getFullYear()} {c.businessName}. {c.footerNote || 'All rights reserved.'}
         </div>
       </footer>
 
@@ -680,7 +674,7 @@ export function Template2({ c, basePath }: { c: SiteContent; basePath: string })
                 <input
                   type="tel"
                   required
-                  placeholder="+251 911 000 000"
+                  placeholder="Phone number"
                   value={bookingForm.phone}
                   onChange={(e) => setBookingForm({ ...bookingForm, phone: e.target.value })}
                   className="w-full bg-slate-50 border border-slate-300 rounded-xl py-2.5 px-3.5 text-xs text-slate-900 focus:outline-none focus:border-purple-500"

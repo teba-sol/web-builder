@@ -34,8 +34,6 @@ const OVERLAY_IDS = new Set([
   'guesthouse',
   'alpine',
   'ryokan',
-  'desert',
-  'nordic',
   'jungle',
   'taxfighters',
 ])
@@ -61,10 +59,6 @@ function overlayGradient(id: string): string {
       return 'bg-gradient-to-t from-slate-950 via-slate-900/50 to-transparent'
     case 'ryokan':
       return 'bg-gradient-to-t from-stone-950 via-stone-900/60 to-transparent'
-    case 'desert':
-      return 'bg-gradient-to-t from-amber-950/95 via-orange-900/40 to-transparent'
-    case 'nordic':
-      return 'bg-gradient-to-t from-teal-950/90 via-slate-900/40 to-transparent'
     case 'jungle':
       return 'bg-gradient-to-t from-emerald-950 via-lime-950/50 to-transparent'
     case 'taxfighters':

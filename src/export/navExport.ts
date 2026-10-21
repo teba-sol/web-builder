@@ -118,10 +118,6 @@ export function buildExportNavHtml(
 
     ryokan: `<nav class="sticky top-0 z-50 bg-[#f3efe6]/95 backdrop-blur border-b border-stone-300 px-6 py-4"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4"><a href="${homeHref}" class="font-serif text-xl tracking-wide text-stone-900">${brand}</a><div class="hidden lg:flex gap-8 text-sm">${allLinks}</div>${ctaBtn}</div></nav>`,
 
-    desert: `<nav class="sticky top-0 z-50 bg-[#1c1410]/95 text-amber-50 backdrop-blur border-b border-amber-700/40 px-6 py-4"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4"><a href="${homeHref}" class="text-lg font-light tracking-wide">${brand}</a><div class="hidden lg:flex gap-7 text-sm font-medium">${allLinks}</div>${ctaBtn}</div></nav>`,
-
-    nordic: `<nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-200/80 px-6 py-4"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4"><a href="${homeHref}" class="text-lg font-light tracking-wide text-slate-800">${brand}</a><div class="hidden lg:flex gap-7 text-sm font-medium">${allLinks}</div>${ctaBtn}</div></nav>`,
-
     jungle: `<nav class="sticky top-0 z-50 bg-[#0a120c]/90 backdrop-blur border-b border-lime-700/30 text-lime-50 px-6 py-4"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4"><a href="${homeHref}" class="text-lg font-medium tracking-wide">${brand}</a><div class="hidden lg:flex gap-7 text-sm font-medium">${allLinks}</div>${ctaBtn}</div></nav>`,
 
     vineyard: `<nav class="sticky top-0 z-50 bg-rose-50/95 backdrop-blur px-6 py-5"><div class="max-w-6xl mx-auto flex items-center justify-between border-b border-rose-900/20 pb-4"><a href="${homeHref}" class="font-serif text-2xl font-semibold text-rose-950">${brand}</a><div class="hidden lg:flex items-center gap-8 text-sm">${allLinks}${ctaBtn}</div></div></nav>`,

@@ -9,7 +9,7 @@ export function formatPostDate(date: string): string {
   if (!date) return ''
   const parsed = new Date(date)
   if (Number.isNaN(parsed.getTime())) return date
-  return parsed.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+  return parsed.toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' })
 }
 
 export function postSlug(title: string, slug?: string): string {

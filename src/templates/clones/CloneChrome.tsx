@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom'
 import { ArrowRight, Calendar, ChevronDown, Clock, Mail, Menu, Phone, Shield, X } from 'lucide-react'
 import type { CSSProperties } from 'react'
 import type { CloneTemplateId } from '../cloneTheme'
-import { getMapEmbedUrl } from '../../utils/mapEmbed'
+import { getMapEmbedUrl, getMapOpenUrl } from '../../utils/mapEmbed'
+import { footerBlurb, footerNote } from '../../data/footer'
 import type { CloneHomeData } from './cloneHomeData'
 
 interface ChromeProps {
@@ -320,7 +321,7 @@ export function CloneFooter({ templateId, d }: ChromeProps) {
       <div className="mx-auto grid max-w-7xl gap-8 cmd:grid-cols-4">
         <div className="space-y-3">
           <div className={`text-base font-bold ${dark ? 'text-white' : ''}`}>{c.businessName}</div>
-          <p className="leading-relaxed opacity-70">{c.missionStatement || c.heroSubtext}</p>
+          <p className="leading-relaxed opacity-70">{footerBlurb(c)}</p>
         </div>
         <div>
           <h4 className={`mb-3 font-bold uppercase tracking-wider ${dark ? 'text-white' : ''}`}>Pages</h4>
@@ -352,7 +353,7 @@ export function CloneFooter({ templateId, d }: ChromeProps) {
         </div>
       </div>
       <div className="mx-auto mt-8 max-w-7xl border-t pt-6 text-center opacity-50">
-        © {new Date().getFullYear()} {c.businessName}. All rights reserved.
+        © {new Date().getFullYear()} {c.businessName}. {footerNote(c)}
       </div>
     </footer>
   )
@@ -675,17 +676,27 @@ export function CloneMap({
   title?: string
 }) {
   const src = getMapEmbedUrl(d.c.mapUrl, d.c.address)
-  if (!src) return null
+  const open = getMapOpenUrl(d.c.mapUrl, d.c.address)
+  if (!src && !open) return null
   return (
-    <div className={className}>
-      <iframe
-        title={title}
-        src={src}
-        className="h-full w-full border-0"
-        loading="lazy"
-        referrerPolicy="no-referrer-when-downgrade"
-        allowFullScreen
-      />
+    <div className="space-y-2">
+      {src ? (
+        <div className={className}>
+          <iframe
+            title={title}
+            src={src}
+            className="h-full w-full border-0"
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            allowFullScreen
+          />
+        </div>
+      ) : null}
+      {open ? (
+        <a href={open} className="text-sm font-semibold underline" target="_blank" rel="noreferrer">
+          View on Google Maps
+        </a>
+      ) : null}
     </div>
   )
 }

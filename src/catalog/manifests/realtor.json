@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "id": "realtor",
-  "name": "Addis Homes",
-  "description": "Premium real estate template with gold accents and listing-focused layout.",
+  "name": "Harbor Homes",
+  "description": "Real estate layout for listings, agents, and property brands.",
   "category": "realestate",
   "previewGradient": "from-stone-700 to-amber-900",
   "accentColor": "#b45309",
@@ -174,7 +174,7 @@
   },
   "defaultShowcase": [
     {
-      "title": "Garden Villa — Old Airport",
+      "title": "Garden Villa — the north quarter",
       "description": "5 bed, 6 bath contemporary estate with infinity pool and private beach access.",
       "image": "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=600&q=80",
       "price": "45,000,000 ETB",
@@ -182,7 +182,7 @@
       "link": "contact"
     },
     {
-      "title": "Penthouse — Bole",
+      "title": "Penthouse — the district",
       "description": "3 bed penthouse with 360° views, private elevator, and rooftop terrace.",
       "image": "https://images.unsplash.com/photo-1600607687939-ce8ab6f122ef?w=600&q=80",
       "price": "15,000,000 ETB",
@@ -190,7 +190,7 @@
       "link": "contact"
     },
     {
-      "title": "Heritage Home — Piazza",
+      "title": "Heritage Home — the old quarter",
       "description": "Mediterranean revival on 1.2 acres with guest house and tropical gardens.",
       "image": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80",
       "price": "24,500,000 ETB",
@@ -198,7 +198,7 @@
       "link": "contact"
     },
     {
-      "title": "Lake Apartment — Bahir Dar",
+      "title": "Lake Apartment — the lakeshore",
       "description": "2 bed modern condo steps from the sand, resort-style amenities.",
       "image": "https://images.unsplash.com/photo-1600566753190-17f0baa2a6a3?w=600&q=80",
       "price": "8,500,000 ETB",
@@ -206,7 +206,7 @@
       "link": "contact"
     },
     {
-      "title": "Summit Home — Entoto",
+      "title": "Summit Home — the hill",
       "description": "4 bed lakefront home on championship course with dock and pool.",
       "image": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&q=80",
       "price": "12,000,000 ETB",
@@ -214,7 +214,7 @@
       "link": "contact"
     },
     {
-      "title": "Loft — Kazanchis",
+      "title": "Loft — the garden district",
       "description": "Converted warehouse loft with 14ft ceilings and artist studio space.",
       "image": "https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=600&q=80",
       "price": "8,500,000 ETB",
@@ -227,12 +227,12 @@
     {
       "key": "phone",
       "label": "Phone",
-      "placeholder": "+251 11 661 2200"
+      "placeholder": "+1 604 555 2200"
     },
     {
       "key": "email",
       "label": "Email",
-      "placeholder": "agent@addishomes.et"
+      "placeholder": "agent@harborhomes.example"
     },
     {
       "key": "licenseNumber",
@@ -242,7 +242,7 @@
     {
       "key": "address",
       "label": "Office Address",
-      "placeholder": "Bole, Addis Ababa"
+      "placeholder": "60 Harbor Homes"
     },
     {
       "key": "website",
@@ -267,14 +267,14 @@
     "grayscaleImage": false
   },
   "defaults": {
-    "businessName": "Addis Homes",
-    "tagline": "Addis homes, clearly priced",
-    "heroSubtext": "Houses and apartments in Bole, Old Airport, CMC, and Kazanchis, shown in person and priced in birr.",
+    "businessName": "Harbor Homes",
+    "tagline": "Homes, priced in the open",
+    "heroSubtext": "Houses and apartments across the harbor neighborhoods, shown in person and priced on the page.",
     "heroImage": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80",
-    "aboutTitle": "A Legacy of Excellence",
-    "about": "Addis Homes has spent 15 years selling houses and apartments in Bole, Old Airport, CMC, and Kazanchis. An agent walks the property with you and stays through the title transfer.",
+    "aboutTitle": "A brokerage that shows the price",
+    "about": "Harbor Homes lists homes with the price, the floor plan, and a time to walk through. Agents answer from one office.",
     "aboutImage": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80",
-    "missionStatement": "Every client deserves a home that matches their vision of the extraordinary.",
+    "missionStatement": "Listings you can understand before the showing.",
     "pageVisibility": {
       "about": true,
       "services": true,
@@ -355,7 +355,7 @@
     "showcaseSectionSubtitle": "Exclusive properties available now",
     "showcaseItems": [
       {
-        "title": "Garden Villa — Old Airport",
+        "title": "Garden Villa — the north quarter",
         "description": "5 bed, 6 bath contemporary estate with infinity pool and private beach access.",
         "image": "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=600&q=80",
         "price": "45,000,000 ETB",
@@ -363,7 +363,7 @@
         "link": "contact"
       },
       {
-        "title": "Penthouse — Bole",
+        "title": "Penthouse — the district",
         "description": "3 bed penthouse with 360° views, private elevator, and rooftop terrace.",
         "image": "https://images.unsplash.com/photo-1600607687939-ce8ab6f122ef?w=600&q=80",
         "price": "15,000,000 ETB",
@@ -371,7 +371,7 @@
         "link": "contact"
       },
       {
-        "title": "Heritage Home — Piazza",
+        "title": "Heritage Home — the old quarter",
         "description": "Mediterranean revival on 1.2 acres with guest house and tropical gardens.",
         "image": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80",
         "price": "24,500,000 ETB",
@@ -379,7 +379,7 @@
         "link": "contact"
       },
       {
-        "title": "Lake Apartment — Bahir Dar",
+        "title": "Lake Apartment — the lakeshore",
         "description": "2 bed modern condo steps from the sand, resort-style amenities.",
         "image": "https://images.unsplash.com/photo-1600566753190-17f0baa2a6a3?w=600&q=80",
         "price": "8,500,000 ETB",
@@ -387,7 +387,7 @@
         "link": "contact"
       },
       {
-        "title": "Summit Home — Entoto",
+        "title": "Summit Home — the hill",
         "description": "4 bed lakefront home on championship course with dock and pool.",
         "image": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&q=80",
         "price": "12,000,000 ETB",
@@ -395,7 +395,7 @@
         "link": "contact"
       },
       {
-        "title": "Loft — Kazanchis",
+        "title": "Loft — the garden district",
         "description": "Converted warehouse loft with 14ft ceilings and artist studio space.",
         "image": "https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=600&q=80",
         "price": "8,500,000 ETB",
@@ -540,17 +540,17 @@
     ],
     "team": [
       {
-        "name": "Mekdes Haile",
+        "name": "Elena Ward",
         "role": "Founder & CEO",
         "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80"
       },
       {
-        "name": "Dawit Bekele",
+        "name": "Noah Bennett",
         "role": "Creative Director",
         "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
       },
       {
-        "name": "Hiwot Alemu",
+        "name": "Maya Chen",
         "role": "Operations Lead",
         "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80"
       }
@@ -564,9 +564,9 @@
     "seoDescription": "",
     "seoKeywords": "",
     "seoSiteUrl": "",
-    "email": "agent@addishomes.et",
-    "phone": "+251 11 661 2200",
-    "address": "Bole, Addis Ababa",
+    "email": "agent@harborhomes.example",
+    "phone": "+1 604 555 2200",
+    "address": "60 Harbor Homes",
     "hours": "",
     "instagram": "",
     "website": "https://listings.sterlingproperties.com",
@@ -579,6 +579,10 @@
     "contactSectionTitle": "Get in Touch",
     "contactFormTitle": "Send Us a Message",
     "contactFormUrl": "",
-    "contactFormButtonText": "Open Contact Form"
+    "contactFormButtonText": "Send message",
+    "city": "Vancouver",
+    "country": "Canada",
+    "footerBlurb": "Listings, showings, and a price on the page.",
+    "footerNote": "All rights reserved."
   }
 }

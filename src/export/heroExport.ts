@@ -123,7 +123,7 @@ function heroTextBlock(input: HeroExportInput, mode: 'html' | 'blade'): string {
   const ctaHref =
     mode === 'html'
       ? escapeHtml(input.ctaHref)
-      : "{{ str_starts_with($settings->cta_link ?? '', 'http') ? $settings->cta_link : route(($settings->cta_link ?? 'contact') === 'contact' ? 'contact' : 'home') }}"
+      : '{{ \\App\\Support\\SiteLinks::href($settings->cta_link) }}'
 
   return `${heroBadgeHtml(input.templateId, input.businessName, mode)}
       <h1 class="mb-6 ${t.heroTitle}">${tagline}</h1>
@@ -138,7 +138,7 @@ function heroCopy(input: HeroExportInput, mode: 'html' | 'blade') {
     subtext: mode === 'html' ? escapeHtml(input.heroSubtext) : '{{ $settings->hero_subtext }}',
     name: mode === 'html' ? escapeHtml(input.businessName) : '{{ $settings->business_name }}',
     ctaText: mode === 'html' ? escapeHtml(input.ctaText) : '{{ $settings->cta_text }}',
-    ctaHref: mode === 'html' ? escapeHtml(input.ctaHref) : "{{ route('contact') }}",
+    ctaHref: mode === 'html' ? escapeHtml(input.ctaHref) : '{{ \\App\\Support\\SiteLinks::href($settings->cta_link) }}',
   }
 }
 

@@ -172,6 +172,8 @@ export interface SiteContent {
   about: string
   aboutImage: string
   missionStatement: string
+  footerBlurb: string
+  footerNote: string
   pageVisibility: PageVisibility
   sectionVisibility: SectionVisibility
   stats: StatItem[]

@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "id": "boutique",
-  "name": "Sheba Atelier",
-  "description": "Soft, elegant retail design with serif typography for fashion and lifestyle brands.",
+  "name": "Maison Atelier",
+  "description": "Elegant retail design for fashion and lifestyle brands.",
   "category": "retail",
   "previewGradient": "from-rose-300 to-stone-400",
   "accentColor": "#be185d",
@@ -189,7 +189,7 @@
     },
     {
       "title": "Gold Hoop Earrings",
-      "description": "14k recycled gold, hand-crafted by Ethiopian artisans.",
+      "description": "14k recycled gold, hand-crafted by regional artisans.",
       "image": "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&q=80",
       "price": "9,080 ETB",
       "tag": "Jewelry",
@@ -225,17 +225,17 @@
     {
       "key": "email",
       "label": "Email",
-      "placeholder": "hello@shebaatelier.et"
+      "placeholder": "hello@maisonatelier.example"
     },
     {
       "key": "phone",
       "label": "Phone",
-      "placeholder": "+251 11 661 3300"
+      "placeholder": "+33 1 42 00 3300"
     },
     {
       "key": "address",
       "label": "Store Address",
-      "placeholder": "Bole Atlas, Addis Ababa"
+      "placeholder": "22 Atelier Street"
     },
     {
       "key": "hours",
@@ -265,14 +265,14 @@
     "grayscaleImage": false
   },
   "defaults": {
-    "businessName": "Sheba Atelier",
-    "tagline": "Curated fashion for the modern woman",
-    "heroSubtext": "Handpicked pieces from emerging designers and timeless classics, chosen for quality and sustainability.",
+    "businessName": "Maison Atelier",
+    "tagline": "Clothes chosen for how they are made",
+    "heroSubtext": "Pieces from independent makers and a few classics, selected for cloth and cut.",
     "heroImage": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&q=80",
-    "aboutTitle": "Our Philosophy",
-    "about": "Sheba Atelier works with independent makers in Addis Ababa, Dire Dawa, and Bahir Dar. The clothes are slow, wearable, and finished for the city.",
+    "aboutTitle": "The shop",
+    "about": "Maison Atelier edits a small collection each season. What is on the rail is what is in stock.",
     "aboutImage": "https://images.unsplash.com/photo-1483985988350-763728e3685b?w=800&q=80",
-    "missionStatement": "Style with substance — fashion that respects people and planet.",
+    "missionStatement": "A shop with a point of view and a fitting room that tells the truth.",
     "pageVisibility": {
       "about": true,
       "services": true,
@@ -370,7 +370,7 @@
       },
       {
         "title": "Gold Hoop Earrings",
-        "description": "14k recycled gold, hand-crafted by Ethiopian artisans.",
+        "description": "14k recycled gold, hand-crafted by regional artisans.",
         "image": "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&q=80",
         "price": "9,080 ETB",
         "tag": "Jewelry",
@@ -538,17 +538,17 @@
     ],
     "team": [
       {
-        "name": "Mekdes Haile",
+        "name": "Elena Ward",
         "role": "Founder & CEO",
         "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80"
       },
       {
-        "name": "Dawit Bekele",
+        "name": "Noah Bennett",
         "role": "Creative Director",
         "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
       },
       {
-        "name": "Hiwot Alemu",
+        "name": "Maya Chen",
         "role": "Operations Lead",
         "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80"
       }
@@ -562,11 +562,11 @@
     "seoDescription": "",
     "seoKeywords": "",
     "seoSiteUrl": "",
-    "email": "hello@shebaatelier.et",
-    "phone": "+251 11 661 3300",
-    "address": "Bole Atlas, Addis Ababa",
+    "email": "hello@maisonatelier.example",
+    "phone": "+33 1 42 00 3300",
+    "address": "22 Atelier Street",
     "hours": "Mon–Sat 10am–8pm, Sun 12pm–6pm",
-    "instagram": "@shebaatelier",
+    "instagram": "@maisonatelier",
     "website": "",
     "linkedin": "",
     "whatsapp": "",
@@ -577,6 +577,10 @@
     "contactSectionTitle": "Get in Touch",
     "contactFormTitle": "Send Us a Message",
     "contactFormUrl": "",
-    "contactFormButtonText": "Open Contact Form"
+    "contactFormButtonText": "Send message",
+    "city": "Paris",
+    "country": "France",
+    "footerBlurb": "A small collection, edited each season.",
+    "footerNote": "All rights reserved."
   }
 }

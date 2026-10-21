@@ -8,20 +8,20 @@ export interface ShowcaseSite {
 }
 
 const picks: Array<Omit<ShowcaseSite, 'src'>> = [
-  { id: 'restaurant', label: 'Kategna', category: 'Restaurant' },
-  { id: 'creative', label: 'Studio Abay', category: 'Agency' },
-  { id: 'photography', label: 'Lens Addis', category: 'Portfolio' },
-  { id: 'realtor', label: 'Addis Homes', category: 'Real Estate' },
-  { id: 'boutique', label: 'Sheba Atelier', category: 'Fashion' },
+  { id: 'restaurant', label: 'Hearth Table', category: 'Restaurant' },
+  { id: 'creative', label: 'Studio North', category: 'Agency' },
+  { id: 'photography', label: 'Lens Studio', category: 'Portfolio' },
+  { id: 'realtor', label: 'Harbor Homes', category: 'Real Estate' },
+  { id: 'boutique', label: 'Maison Atelier', category: 'Fashion' },
   { id: 'medical', label: 'Harmony Clinic', category: 'Healthcare' },
-  { id: 'lawfirm', label: 'Haile & Bekele', category: 'Consulting' },
-  { id: 'business', label: 'Abay Consulting', category: 'Local Business' },
-  { id: 'coffee', label: 'Yirgacheffe House', category: 'Cafe' },
-  { id: 'hotel', label: 'Bole Skyline Hotel', category: 'Hospitality' },
-  { id: 'axiom', label: 'Abay Audit', category: 'Architecture' },
-  { id: 'fitness', label: 'Bole Fit House', category: 'Wellness' },
-  { id: 'salon', label: 'Lideta Salon', category: 'Beauty' },
-  { id: 'noir', label: 'Saba Atelier', category: 'Editorial' },
+  { id: 'lawfirm', label: 'Hale & Mercer', category: 'Consulting' },
+  { id: 'business', label: 'Meridian Consulting', category: 'Local Business' },
+  { id: 'coffee', label: 'Origin Coffee House', category: 'Cafe' },
+  { id: 'hotel', label: 'Skyline Hotel', category: 'Hospitality' },
+  { id: 'axiom', label: 'Northline Audit', category: 'Architecture' },
+  { id: 'fitness', label: 'Pulse House', category: 'Wellness' },
+  { id: 'salon', label: 'Lumen Salon', category: 'Beauty' },
+  { id: 'noir', label: 'Noir Atelier', category: 'Editorial' },
 ]
 
 export function showcaseSites(): ShowcaseSite[] {

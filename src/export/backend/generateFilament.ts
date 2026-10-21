@@ -100,7 +100,7 @@ const RESOURCE_DEFS: ResourceDef[] = [
     fields: [
       { name: 'title', type: 'text', label: 'Title' },
       { name: 'slug', type: 'text', label: 'URL Slug' },
-      { name: 'excerpt', type: 'textarea', label: 'Excerpt' },
+      { name: 'excerpt', type: 'textarea', label: 'Summary' },
       { name: 'body', type: 'textarea', label: 'Content' },
       { name: 'image', type: 'image', label: 'Cover Image' },
       { name: 'author', type: 'text', label: 'Author' },
@@ -117,7 +117,7 @@ const RESOURCE_DEFS: ResourceDef[] = [
     fields: [
       { name: 'title', type: 'text', label: 'Title' },
       { name: 'slug', type: 'text', label: 'URL Slug' },
-      { name: 'excerpt', type: 'textarea', label: 'Excerpt' },
+      { name: 'excerpt', type: 'textarea', label: 'Summary' },
       { name: 'body', type: 'textarea', label: 'Content' },
       { name: 'image', type: 'image', label: 'Cover Image' },
       { name: 'author', type: 'text', label: 'Author' },
@@ -137,27 +137,26 @@ const RESOURCE_DEFS: ResourceDef[] = [
       { name: 'sort_order', type: 'number', label: 'Sort Order' },
     ],
   },
+  {
+    name: 'PricingPlan',
+    model: 'PricingPlan',
+    icon: 'heroicon-o-currency-dollar',
+    label: 'Pricing Plans',
+    fields: [
+      { name: 'title', type: 'text', label: 'Title' },
+      { name: 'price', type: 'text', label: 'Price' },
+      { name: 'tag', type: 'text', label: 'Tag' },
+      { name: 'description', type: 'textarea', label: 'Description' },
+      { name: 'featured', type: 'boolean', label: 'Featured' },
+      { name: 'sort_order', type: 'number', label: 'Sort Order' },
+    ],
+  },
 ]
-
-const PAGE_VISIBILITY_MAP: Record<string, keyof PageVisibility> = {
-  Service: 'services',
-  ShowcaseItem: 'portfolio',
-  GalleryImage: 'gallery',
-  BlogPost: 'blog',
-  NewsPost: 'news',
-}
-
-const SECTION_VISIBILITY_MAP: Record<string, keyof SectionVisibility> = {
-  Stat: 'stats',
-  Step: 'steps',
-  TeamMember: 'team',
-  Faq: 'faq',
-}
 
 function filamentField(field: ResourceDef['fields'][number]): string {
   const col = `Forms\\Components\\TextInput::make('${field.name}')`
   const area = `Forms\\Components\\Textarea::make('${field.name}')`
-  const img = `Forms\\Components\\FileUpload::make('${field.name}')->image()->disk('public')->directory('uploads')`
+  const img = `\\App\\Support\\AdminImage::upload('${field.name}')`
   const num = `Forms\\Components\\TextInput::make('${field.name}')->numeric()`
   const toggle = `Forms\\Components\\Toggle::make('${field.name}')`
   const date = `Forms\\Components\\DateTimePicker::make('${field.name}')`
@@ -178,7 +177,7 @@ const SELECT_FILTER_FIELDS = new Set(['tag', 'role', 'author'])
 function filamentTableColumn(field: ResourceDef['fields'][number]): string {
   const label = `->label('${phpStr(field.label)}')`
   if (field.type === 'image') {
-    return `Tables\\Columns\\ImageColumn::make('${field.name}')${label}->disk('public')`
+    return `Tables\\Columns\\ImageColumn::make('${field.name}')${label}->disk('public')->checkFileExistence(false)`
   }
   if (field.type === 'boolean') {
     return `Tables\\Columns\\IconColumn::make('${field.name}')${label}->boolean()->sortable()`
@@ -188,7 +187,7 @@ function filamentTableColumn(field: ResourceDef['fields'][number]): string {
     return `Tables\\Columns\\TextColumn::make('${field.name}')${label}->searchable()->limit(60)->wrap()${hidden}`
   }
   if (field.type === 'date') {
-    return `Tables\\Columns\\TextColumn::make('${field.name}')${label}->dateTime()->sortable()`
+    return `Tables\\Columns\\TextColumn::make('${field.name}')${label}->dateTime('F j, Y g:i A')->sortable()`
   }
   if (field.type === 'number') {
     return `Tables\\Columns\\TextColumn::make('${field.name}')${label}->sortable()`
@@ -224,9 +223,22 @@ function filamentFilters(def: ResourceDef): string {
   return filters.join(",\n                ")
 }
 
+function postTableColumns(): string {
+  return [
+    `Tables\\Columns\\ImageColumn::make('image')->label('Cover')->disk('public')->checkFileExistence(false)->height(40)->width(56)->grow(false)->verticallyAlignStart()`,
+    `Tables\\Columns\\TextColumn::make('title')->label('Title')->searchable()->wrap()->lineClamp(2)->width('12rem')->grow(false)->extraCellAttributes(['style' => 'max-width:12rem'])->tooltip(fn ($state): ?string => filled($state) ? (string) $state : null)->verticallyAlignStart()`,
+    `Tables\\Columns\\TextColumn::make('excerpt')->label('Summary')->searchable()->wrap()->lineClamp(2)->grow()->extraCellAttributes(['style' => 'min-width:12rem'])->tooltip(fn ($state): ?string => filled($state) ? (string) $state : null)->verticallyAlignStart()`,
+    `Tables\\Columns\\ToggleColumn::make('is_published')->label('Published')->grow(false)->verticallyAlignStart()`,
+    `Tables\\Columns\\TextColumn::make('published_at')->label('Date')->date('M j, Y')->description(fn ($record): ?string => $record->published_at?->format('g:i A'))->sortable()->grow(false)->width('8rem')->extraCellAttributes(['style' => 'width:8rem;max-width:8rem'])->verticallyAlignStart()`,
+    `Tables\\Columns\\TextColumn::make('author')->label('Author')->searchable()->toggleable()->wrap()->lineClamp(1)->grow(false)->width('8rem')->extraCellAttributes(['style' => 'max-width:8rem'])->verticallyAlignStart()`,
+  ].join(",\n                ")
+}
+
 function generateResource(def: ResourceDef): string {
-  const formFields = def.fields.map(filamentField).join(",\n                ")
-  const tableCols = def.fields.map(filamentTableColumn).join(",\n                ")
+  const formFields = def.fields.filter((field) => field.name !== 'sort_order').map(filamentField).join(",\n                ")
+  const tableCols = def.name === 'BlogPost' || def.name === 'NewsPost'
+    ? postTableColumns()
+    : def.fields.filter((field) => field.name !== 'sort_order').map(filamentTableColumn).join(",\n                ")
   const filters = filamentFilters(def)
   const filterChain = filters
     ? `->filters([\n                ${filters},\n            ])\n            `
@@ -252,6 +264,10 @@ class ${def.name}Resource extends Resource
 
     protected static ?string $navigationLabel = '${phpStr(def.label)}';
 
+    protected static ?string $navigationGroup = 'Content';
+
+    protected static ?int $navigationSort = ${RESOURCE_DEFS.findIndex((item) => item.name === def.name) + 1};
+
     public static function form(Form $form): Form
     {
         return $form->schema([
@@ -267,7 +283,9 @@ class ${def.name}Resource extends Resource
             ->columns([
                 ${tableCols},
             ])
-            ${filterChain}->defaultSort('sort_order')
+            ${filterChain}->reorderable('sort_order')
+            ->defaultSort('sort_order')
+            ->paginated(false)
             ->persistSearchInSession()
             ->persistFiltersInSession()
             ->persistSortInSession()
@@ -324,6 +342,14 @@ use Filament\\Resources\\Pages\\CreateRecord;
 class Create${def.name} extends CreateRecord
 {
     protected static string $resource = ${def.name}Resource::class;
+
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        $model = static::getModel();
+        $data['sort_order'] = ($model::max('sort_order') ?? -1) + 1;
+
+        return $data;
+    }
 }
 `,
     [`app/Filament/Resources/${def.name}Resource/Pages/Edit${def.name}.php`]: `<?php
@@ -345,28 +371,6 @@ class Edit${def.name} extends EditRecord
 }
 `,
   }
-}
-
-function stayPoliciesTab(cardCheckout: boolean): string {
-  const payHelp = cardCheckout
-    ? 'When this is on, guests can pay at the property instead of paying by card, and that choice is shown while they reserve.'
-    : 'When this is on, guests see that they can pay at the property when they arrive.'
-
-  return `                Forms\\Components\\Tabs\\Tab::make('Stay policies')->schema([
-                    Forms\\Components\\Toggle::make('free_cancellation')
-                        ->label('Free cancellation')
-                        ->helperText('When this is on, guests see that they can cancel a stay at no charge.')
-                        ->default(false),
-                    Forms\\Components\\Toggle::make('pay_on_arrival')
-                        ->label('Payment on arrival')
-                        ->helperText('${payHelp}')
-                        ->default(false),
-                    Forms\\Components\\Toggle::make('free_breakfast')
-                        ->label('Free breakfast')
-                        ->helperText('When this is on, guests see that breakfast is included with the stay.')
-                        ->default(false),
-                ]),
-`
 }
 
 export function stayPoliciesAdminFiles(cardCheckout: boolean): Record<string, string> {
@@ -450,7 +454,7 @@ class StayPolicies extends Page implements HasForms
 
     public function getSubheading(): ?string
     {
-        return 'Turn a policy on to show it to guests while they reserve. Off policies stay hidden, and they start off. The same toggles are also under Site Settings.';
+        return 'Turn a policy on to show it to guests while they reserve. Off policies stay hidden, and they start off.';
     }
 }
 `,
@@ -466,120 +470,236 @@ class StayPolicies extends Page implements HasForms
   }
 }
 
-export function generateSiteSettingsResource(options?: { hospitality?: boolean; cardCheckout?: boolean }): string {
-  const stayPolicies = options?.hospitality ? stayPoliciesTab(Boolean(options.cardCheckout)) : ''
-
+function settingsPage(def: {
+  className: string
+  label: string
+  icon: string
+  sort: number
+  schema: string
+  fill: string
+  persist: string
+}): string {
   return `<?php
 
-namespace App\\Filament\\Resources;
+namespace App\\Filament\\Pages;
 
-use App\\Filament\\Resources\\SiteSettingResource\\Pages;
 use App\\Models\\SiteSetting;
 use Filament\\Forms;
+use Filament\\Forms\\Concerns\\InteractsWithForms;
+use Filament\\Forms\\Contracts\\HasForms;
 use Filament\\Forms\\Form;
-use Filament\\Resources\\Resource;
-use Filament\\Tables;
-use Filament\\Tables\\Table;
+use Filament\\Notifications\\Notification;
+use Filament\\Pages\\Page;
 
-class SiteSettingResource extends Resource
+class ${def.className} extends Page implements HasForms
 {
-    protected static ?string $model = SiteSetting::class;
+    use InteractsWithForms;
 
-    protected static ?string $navigationIcon = 'heroicon-o-cog-6-tooth';
+    protected static ?string $navigationIcon = '${def.icon}';
 
-    protected static ?string $navigationLabel = 'Site Settings';
+    protected static ?string $navigationGroup = 'Website';
 
-    protected static ?string $modelLabel = 'Site Settings';
+    protected static ?string $navigationLabel = '${phpStr(def.label)}';
 
-    public static function form(Form $form): Form
+    protected static ?string $title = '${phpStr(def.label)}';
+
+    protected static ?int $navigationSort = ${def.sort};
+
+    protected static string $view = 'filament.pages.settings-form';
+
+    public ?array $data = [];
+
+    public function mount(): void
     {
-        return $form->schema([
-            Forms\\Components\\Tabs::make('Settings')->tabs([
-                Forms\\Components\\Tabs\\Tab::make('General')->schema([
-                    Forms\\Components\\TextInput::make('business_name')->required(),
-                    Forms\\Components\\TextInput::make('tagline'),
-                    Forms\\Components\\Textarea::make('hero_subtext'),
-                    Forms\\Components\\FileUpload::make('hero_image')->image()->disk('public')->directory('uploads'),
-                ]),
-${stayPolicies}                Forms\\Components\\Tabs\\Tab::make('Brand')->schema([
-                    Forms\\Components\\FileUpload::make('logo')->image()->disk('public')->directory('uploads')->helperText('Shown in the site navigation.'),
-                    Forms\\Components\\Toggle::make('logo_show_name')->label('Show business name next to logo')->default(true),
-                    Forms\\Components\\ColorPicker::make('brand_primary')->label('Primary')->helperText('Buttons and calls to action.'),
-                    Forms\\Components\\ColorPicker::make('brand_secondary')->label('Secondary'),
-                    Forms\\Components\\ColorPicker::make('brand_accent')->label('Accent')->helperText('Links, prices, and highlights.'),
-                    Forms\\Components\\Select::make('font_heading')->label('Heading font')->options(\\App\\Support\\Brand::selectOptions())->native(false),
-                    Forms\\Components\\Select::make('font_body')->label('Body font')->options(\\App\\Support\\Brand::selectOptions())->native(false),
-                ]),
-                Forms\\Components\\Tabs\\Tab::make('About')->schema([
-                    Forms\\Components\\TextInput::make('about_title'),
-                    Forms\\Components\\Textarea::make('about'),
-                    Forms\\Components\\Textarea::make('mission_statement'),
-                    Forms\\Components\\FileUpload::make('about_image')->image()->disk('public')->directory('uploads'),
-                ]),
-                Forms\\Components\\Tabs\\Tab::make('Sections')->schema([
-                    Forms\\Components\\TextInput::make('services_section_title'),
-                    Forms\\Components\\TextInput::make('services_section_subtitle'),
-                    Forms\\Components\\TextInput::make('steps_section_title'),
-                    Forms\\Components\\TextInput::make('showcase_section_title'),
-                    Forms\\Components\\TextInput::make('showcase_section_subtitle'),
-                    Forms\\Components\\TextInput::make('gallery_section_title'),
-                    Forms\\Components\\TextInput::make('testimonials_section_title'),
-                    Forms\\Components\\TextInput::make('blog_section_title'),
-                    Forms\\Components\\TextInput::make('blog_section_subtitle'),
-                    Forms\\Components\\TextInput::make('team_section_title'),
-                    Forms\\Components\\TextInput::make('faq_section_title'),
-                ]),
-                Forms\\Components\\Tabs\\Tab::make('SEO')->schema([
-                    Forms\\Components\\Toggle::make('seo_enabled')->label('Optimize SEO'),
-                    Forms\\Components\\TextInput::make('seo_title')->label('Meta Title'),
-                    Forms\\Components\\Textarea::make('seo_description')->label('Meta Description')->rows(3),
-                    Forms\\Components\\Textarea::make('seo_keywords')->label('Keywords')->rows(2),
-                    Forms\\Components\\TextInput::make('seo_site_url')->label('Live Site URL')->url(),
-                ]),
-                Forms\\Components\\Tabs\\Tab::make('CTA & Contact')->schema([
-                    Forms\\Components\\TextInput::make('cta_text'),
-                    Forms\\Components\\TextInput::make('cta_link'),
-                    Forms\\Components\\TextInput::make('cta_banner_title'),
-                    Forms\\Components\\Textarea::make('cta_banner_text'),
-                    Forms\\Components\\TextInput::make('contact_section_title'),
-                    Forms\\Components\\TextInput::make('contact_form_title'),
-                    Forms\\Components\\TextInput::make('contact_form_button_text'),
-                    Forms\\Components\\TextInput::make('email')->email(),
-                    Forms\\Components\\TextInput::make('phone'),
-                    Forms\\Components\\TextInput::make('address'),
-                    Forms\\Components\\TextInput::make('map_url')->label('Google Maps link')->helperText('Paste a Google Maps URL or embed code. If empty, the map uses the office address.'),
-                    Forms\\Components\\TextInput::make('hours'),
-                    Forms\\Components\\TextInput::make('license_number')->label('License / credentials'),
-                    Forms\\Components\\TextInput::make('instagram')->label('Instagram')->url(),
-                    Forms\\Components\\TextInput::make('linkedin')->label('LinkedIn')->url(),
-                    Forms\\Components\\TextInput::make('website')->label('Website')->url(),
-                ]),
-            ]),
+        $settings = SiteSetting::current();
+        $this->form->fill([
+            ${def.fill}
         ]);
     }
 
-    public static function table(Table $table): Table
+    public function form(Form $form): Form
     {
-        return $table
-            ->columns([
-                Tables\\Columns\\TextColumn::make('business_name')->searchable()->sortable(),
-                Tables\\Columns\\TextColumn::make('email')->searchable()->sortable(),
-                Tables\\Columns\\TextColumn::make('phone')->searchable()->sortable(),
-                Tables\\Columns\\TextColumn::make('updated_at')->dateTime()->sortable(),
+        return $form
+            ->schema([
+                ${def.schema}
             ])
-            ->defaultSort('updated_at', 'desc')
-            ->persistSearchInSession()
-            ->persistFiltersInSession()
-            ->persistSortInSession()
-            ->actions([Tables\\Actions\\EditAction::make()]);
+            ->statePath('data');
     }
 
-    public static function getPages(): array
+    public function save(): void
     {
-        return ['index' => Pages\\ManageSiteSettings::route('/')];
+        $state = $this->form->getState();
+        SiteSetting::current()->update([
+            ${def.persist}
+        ]);
+
+        Notification::make()->title('${phpStr(def.label)} saved')->success()->send();
     }
 }
 `
+}
+
+function settingsFields(fields: Array<{ name: string; line: string }>): { schema: string; fill: string; persist: string } {
+  return {
+    schema: fields.map((field) => field.line).join(",\n                "),
+    fill: fields.map((field) => `'${field.name}' => $settings->${field.name}`).join(",\n            "),
+    persist: fields.map((field) => `'${field.name}' => $state['${field.name}'] ?? null`).join(",\n            "),
+  }
+}
+
+function websiteSettingsPages(): Record<string, string> {
+  const general = settingsFields([
+    { name: 'business_name', line: `Forms\\Components\\TextInput::make('business_name')->required()` },
+    { name: 'tagline', line: `Forms\\Components\\TextInput::make('tagline')` },
+    { name: 'hero_subtext', line: `Forms\\Components\\Textarea::make('hero_subtext')` },
+    { name: 'hero_image', line: `\\App\\Support\\AdminImage::upload('hero_image')` },
+  ])
+  general.persist = general.persist.replace(`'business_name' => $state['business_name'] ?? null`, `'business_name' => $state['business_name'] ?? ''`)
+
+  const brand = settingsFields([
+    { name: 'logo', line: `\\App\\Support\\AdminImage::upload('logo')->helperText('Shown in the site navigation.')` },
+    { name: 'logo_show_name', line: `Forms\\Components\\Toggle::make('logo_show_name')->label('Show business name next to logo')->default(true)` },
+    { name: 'brand_primary', line: `Forms\\Components\\ColorPicker::make('brand_primary')->label('Primary')->helperText('Buttons and calls to action.')` },
+    { name: 'brand_secondary', line: `Forms\\Components\\ColorPicker::make('brand_secondary')->label('Secondary')` },
+    { name: 'brand_accent', line: `Forms\\Components\\ColorPicker::make('brand_accent')->label('Accent')->helperText('Links, prices, and highlights.')` },
+    { name: 'font_heading', line: `Forms\\Components\\Select::make('font_heading')->label('Heading font')->options(\\App\\Support\\Brand::selectOptions())->native(false)` },
+    { name: 'font_body', line: `Forms\\Components\\Select::make('font_body')->label('Body font')->options(\\App\\Support\\Brand::selectOptions())->native(false)` },
+  ])
+  brand.persist = brand.persist.replace(
+    `'logo_show_name' => $state['logo_show_name'] ?? null`,
+    `'logo_show_name' => (bool) ($state['logo_show_name'] ?? false)`,
+  )
+
+  const about = settingsFields([
+    { name: 'about_title', line: `Forms\\Components\\TextInput::make('about_title')` },
+    { name: 'about', line: `Forms\\Components\\Textarea::make('about')` },
+    { name: 'mission_statement', line: `Forms\\Components\\Textarea::make('mission_statement')` },
+    { name: 'about_image', line: `\\App\\Support\\AdminImage::upload('about_image')` },
+  ])
+
+  const pageToggles = [
+    ['about', 'About'],
+    ['services', 'Services'],
+    ['portfolio', 'Portfolio'],
+    ['rooms', 'Rooms'],
+    ['blog', 'Blog'],
+    ['news', 'News'],
+    ['gallery', 'Gallery'],
+    ['contact', 'Contact'],
+  ]
+  const sectionToggles = [
+    ['stats', 'Stats section'],
+    ['steps', 'Process section'],
+    ['team', 'Team section'],
+    ['testimonials', 'Testimonials section'],
+    ['faq', 'FAQ section'],
+    ['pricing', 'Pricing section'],
+    ['cta', 'Call to action'],
+  ]
+  const visibilitySchema = [
+    ...pageToggles.map(([key, label]) => `Forms\\Components\\Toggle::make('page_visibility.${key}')->label('${label}')`),
+    ...sectionToggles.map(([key, label]) => `Forms\\Components\\Toggle::make('section_visibility.${key}')->label('${label}')`),
+  ].join(",\n                ")
+
+  const sectionTitleNames = [
+    'services_section_title',
+    'services_section_subtitle',
+    'steps_section_title',
+    'showcase_section_title',
+    'showcase_section_subtitle',
+    'gallery_section_title',
+    'testimonials_section_title',
+    'blog_section_title',
+    'blog_section_subtitle',
+    'news_section_title',
+    'news_section_subtitle',
+    'pricing_section_title',
+    'rooms_section_title',
+    'rooms_section_subtitle',
+    'booking_section_title',
+    'booking_section_subtitle',
+    'team_section_title',
+    'faq_section_title',
+  ]
+  const sections = settingsFields(sectionTitleNames.map((name) => ({
+    name,
+    line: `Forms\\Components\\TextInput::make('${name}')`,
+  })))
+
+  const footer = settingsFields([
+    { name: 'footer_blurb', line: `Forms\\Components\\Textarea::make('footer_blurb')->label('Footer text')->rows(3)->helperText('Shown under the business name. If empty, the public site uses the mission statement.')` },
+    { name: 'footer_note', line: `Forms\\Components\\TextInput::make('footer_note')->label('Copyright note')->helperText('Appears after the year and business name. Hours, phone, email, and address come from Contact.')` },
+  ])
+
+  const seo = settingsFields([
+    { name: 'seo_enabled', line: `Forms\\Components\\Toggle::make('seo_enabled')->label('Optimize SEO')` },
+    { name: 'seo_title', line: `Forms\\Components\\TextInput::make('seo_title')->label('Meta Title')` },
+    { name: 'seo_description', line: `Forms\\Components\\Textarea::make('seo_description')->label('Meta Description')->rows(3)` },
+    { name: 'seo_keywords', line: `Forms\\Components\\Textarea::make('seo_keywords')->label('Keywords')->rows(2)` },
+    { name: 'seo_site_url', line: `Forms\\Components\\TextInput::make('seo_site_url')->label('Live Site URL')->url()` },
+  ])
+  seo.persist = seo.persist.replace(
+    `'seo_enabled' => $state['seo_enabled'] ?? null`,
+    `'seo_enabled' => (bool) ($state['seo_enabled'] ?? false)`,
+  )
+
+  const contact = settingsFields([
+    { name: 'cta_text', line: `Forms\\Components\\TextInput::make('cta_text')` },
+    { name: 'cta_link', line: `Forms\\Components\\TextInput::make('cta_link')` },
+    { name: 'cta_banner_title', line: `Forms\\Components\\TextInput::make('cta_banner_title')` },
+    { name: 'cta_banner_text', line: `Forms\\Components\\Textarea::make('cta_banner_text')` },
+    { name: 'contact_section_title', line: `Forms\\Components\\TextInput::make('contact_section_title')` },
+    { name: 'contact_form_title', line: `Forms\\Components\\TextInput::make('contact_form_title')` },
+    { name: 'contact_form_button_text', line: `Forms\\Components\\TextInput::make('contact_form_button_text')->label('Contact button label')->default('Send message')` },
+    { name: 'email', line: `Forms\\Components\\TextInput::make('email')->email()` },
+    { name: 'reservation_email', line: `Forms\\Components\\TextInput::make('reservation_email')->label('Reservations email')->email()` },
+    { name: 'support_email', line: `Forms\\Components\\TextInput::make('support_email')->label('Support email')->email()` },
+    { name: 'phone', line: `Forms\\Components\\TextInput::make('phone')` },
+    { name: 'whatsapp', line: `Forms\\Components\\TextInput::make('whatsapp')->label('WhatsApp')` },
+    { name: 'booking_url', line: `Forms\\Components\\TextInput::make('booking_url')->label('Booking or signup link')->url()` },
+    { name: 'address', line: `Forms\\Components\\TextInput::make('address')` },
+    { name: 'map_url', line: `Forms\\Components\\TextInput::make('map_url')->label('Google Maps link')->helperText('Paste a Google Maps URL or embed code. If empty, the map uses the office address.')` },
+    { name: 'hours', line: `Forms\\Components\\TextInput::make('hours')` },
+    { name: 'license_number', line: `Forms\\Components\\TextInput::make('license_number')->label('License / credentials')` },
+    { name: 'instagram', line: `Forms\\Components\\TextInput::make('instagram')->label('Instagram')->url()` },
+    { name: 'linkedin', line: `Forms\\Components\\TextInput::make('linkedin')->label('LinkedIn')->url()` },
+    { name: 'website', line: `Forms\\Components\\TextInput::make('website')->label('Website')->url()` },
+  ])
+
+  const pages = [
+    { className: 'GeneralSettings', label: 'General', icon: 'heroicon-o-building-office-2', sort: 1, ...general },
+    { className: 'BrandSettings', label: 'Brand', icon: 'heroicon-o-swatch', sort: 2, ...brand },
+    { className: 'AboutSettings', label: 'About', icon: 'heroicon-o-information-circle', sort: 3, ...about },
+    {
+      className: 'VisibilitySettings',
+      label: 'Visibility',
+      icon: 'heroicon-o-eye',
+      sort: 4,
+      schema: visibilitySchema,
+      fill: `'page_visibility' => $settings->page_visibility ?? [],\n            'section_visibility' => $settings->section_visibility ?? []`,
+      persist: `'page_visibility' => $state['page_visibility'] ?? [],\n            'section_visibility' => $state['section_visibility'] ?? []`,
+    },
+    { className: 'SectionTitleSettings', label: 'Section titles', icon: 'heroicon-o-bars-3-bottom-left', sort: 5, ...sections },
+    { className: 'FooterSettings', label: 'Footer', icon: 'heroicon-o-bars-3', sort: 6, ...footer },
+    { className: 'SeoSettings', label: 'SEO', icon: 'heroicon-o-magnifying-glass', sort: 7, ...seo },
+    { className: 'ContactSettings', label: 'Contact', icon: 'heroicon-o-phone', sort: 8, ...contact },
+  ]
+
+  const files: Record<string, string> = {
+    'resources/views/filament/pages/settings-form.blade.php': `<x-filament-panels::page>
+    <x-filament-panels::form id="form" wire:submit="save">
+        {{ $this->form }}
+        <div style="margin-top:16px;">
+            <x-filament::button type="submit">Save</x-filament::button>
+        </div>
+    </x-filament-panels::form>
+</x-filament-panels::page>
+`,
+  }
+  for (const page of pages) {
+    files[`app/Filament/Pages/${page.className}.php`] = settingsPage(page)
+  }
+  return files
 }
 
 export function generateContactMessageResource(): string {
@@ -602,6 +722,10 @@ class ContactMessageResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-inbox';
 
     protected static ?string $navigationLabel = 'Contact Messages';
+
+    protected static ?string $navigationGroup = 'Inbox';
+
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {
@@ -685,6 +809,7 @@ const DASHBOARD_STATS: DashboardStatDef[] = [
   { model: 'Testimonial', label: 'Testimonials', icon: 'heroicon-m-chat-bubble-left-right', color: 'success', description: 'Client reviews', countExpr: 'Testimonial::count()', always: true },
   { model: 'TeamMember', label: 'Team Members', icon: 'heroicon-m-user-group', color: 'info', description: 'Team profiles', countExpr: 'TeamMember::count()', sectionKey: 'team' },
   { model: 'Faq', label: 'FAQs', icon: 'heroicon-m-question-mark-circle', color: 'gray', description: 'Help articles', countExpr: 'Faq::count()', sectionKey: 'faq' },
+  { model: 'PricingPlan', label: 'Pricing Plans', icon: 'heroicon-m-currency-dollar', color: 'warning', description: 'Pricing plans', countExpr: 'PricingPlan::count()', sectionKey: 'pricing' },
 ]
 
 function isDashboardStatEnabled(
@@ -854,28 +979,8 @@ export function generateFilamentFiles(
     Object.assign(files, stayPoliciesAdminFiles(Boolean(options.cardCheckout)))
   }
 
-  files['app/Filament/Resources/SiteSettingResource.php'] = generateSiteSettingsResource(options)
+  Object.assign(files, websiteSettingsPages())
   files['app/Filament/Resources/ContactMessageResource.php'] = generateContactMessageResource()
-
-  files['app/Filament/Resources/SiteSettingResource/Pages/ManageSiteSettings.php'] = `<?php
-
-namespace App\\Filament\\Resources\\SiteSettingResource\\Pages;
-
-use App\\Filament\\Resources\\SiteSettingResource;
-use App\\Models\\SiteSetting;
-use Filament\\Resources\\Pages\\EditRecord;
-
-class ManageSiteSettings extends EditRecord
-{
-    protected static string $resource = SiteSettingResource::class;
-
-    public function mount(int|string $record = null): void
-    {
-        $this->record = SiteSetting::current();
-        parent::mount($this->record->getKey());
-    }
-}
-`
 
   files['app/Filament/Resources/ContactMessageResource/Pages/ListContactMessages.php'] = `<?php
 
@@ -910,16 +1015,8 @@ class ViewContactMessage extends ViewRecord
 `
 
   for (const def of RESOURCE_DEFS) {
-    const pageKey = PAGE_VISIBILITY_MAP[def.name]
-    const sectionKey = SECTION_VISIBILITY_MAP[def.name]
-    const include =
-      def.name === 'Testimonial'
-      || (pageKey && pageVisibility[pageKey])
-      || (sectionKey && sectionVisibility[sectionKey])
-    if (include) {
-      files[`app/Filament/Resources/${def.name}Resource.php`] = generateResource(def)
-      Object.assign(files, generateResourcePages(def))
-    }
+    files[`app/Filament/Resources/${def.name}Resource.php`] = generateResource(def)
+    Object.assign(files, generateResourcePages(def))
   }
 
   files['app/Filament/Widgets/SiteStatsOverview.php'] = generateSiteStatsOverview(sectionVisibility, pageVisibility)

@@ -24,6 +24,8 @@ export const baseRichContent: SiteContent = {
   about: '',
   aboutImage: '',
   missionStatement: '',
+  footerBlurb: '',
+  footerNote: 'All rights reserved.',
   pageVisibility: { ...defaultPageVisibility },
   sectionVisibility: { ...defaultSectionVisibility },
   stats: [

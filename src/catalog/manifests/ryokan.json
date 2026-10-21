@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "id": "ryokan",
-  "name": "Lalibela Heritage Lodge",
-  "description": "Stone-and-timber lodge in Lalibela with courtyard rooms and direct booking.",
+  "name": "Courtyard Hotel",
+  "description": "Courtyard hotel with quiet rooms, an evening bath, and direct booking.",
   "category": "hospitality",
   "previewGradient": "from-stone-950 via-red-950 to-stone-200",
   "accentColor": "#b91c1c",
@@ -137,13 +137,13 @@
     "explore": "magazine",
     "contactShell": "noir-gold",
     "contactForm": "elegant-serif",
-    "exploreTitle": "Lalibela Heritage Lodge",
+    "exploreTitle": "The hotel",
     "exploreSubtitle": "Rooms, hot springs, and the rock churches",
     "exploreLinkLabel": "Enter"
   },
   "showcase": {
     "sectionTitle": "Seasonal Moments",
-    "sectionSubtitle": "Ethiopian dinner, hot spring, and garden rituals for a quiet stay",
+    "sectionSubtitle": "a seasonal dinner, hot spring, and garden rituals for a quiet stay",
     "navLabel": "Moments",
     "itemLabel": "Moment",
     "showPrice": true,
@@ -153,7 +153,7 @@
   },
   "defaultShowcase": [
     {
-      "title": "Ethiopian Dinner",
+      "title": "regional Dinner",
       "description": "Seasonal multi-course meal in a private dining room.",
       "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80",
       "price": "6,600 ETB",
@@ -206,17 +206,17 @@
     {
       "key": "reservationEmail",
       "label": "Reservations",
-      "placeholder": "book@lalibelalodge.et"
+      "placeholder": "book@courtyardhotel.example"
     },
     {
       "key": "phone",
       "label": "Front Desk",
-      "placeholder": "+251 33 336 0100"
+      "placeholder": "+81 75 555 0100"
     },
     {
       "key": "address",
       "label": "Address",
-      "placeholder": "Lalibela, North Wollo"
+      "placeholder": "7 Courtyard Lane"
     },
     {
       "key": "hours",
@@ -226,7 +226,7 @@
     {
       "key": "email",
       "label": "Email",
-      "placeholder": "book@lalibelalodge.et"
+      "placeholder": "stay@courtyardhotel.example"
     }
   ],
   "servicesLabel": "Hospitality",
@@ -246,14 +246,14 @@
     "grayscaleImage": false
   },
   "defaults": {
-    "businessName": "Lalibela Heritage Lodge",
-    "tagline": "Quiet rooms above the stone churches",
-    "heroSubtext": "A timber-and-stone lodge in Lalibela, with courtyard rooms and a hot spring for the evening.",
+    "businessName": "Courtyard Hotel",
+    "tagline": "Quiet rooms around the courtyard",
+    "heroSubtext": "A timber-and-stone hotel with courtyard rooms and a hot spring for the evening.",
     "heroImage": "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=1200&q=80",
-    "aboutTitle": "The lodge",
-    "about": "Lalibela Heritage Lodge keeps the town's pace. Guests leave their shoes at the step, eat injera by the courtyard fire, and sleep in rooms that face the stone churches' ridge.",
+    "aboutTitle": "The hotel",
+    "about": "Courtyard Hotel keeps a slow pace. Guests leave their shoes at the step, eat by the courtyard fire, and sleep in rooms that face the garden.",
     "aboutImage": "https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=800&q=80",
-    "missionStatement": "A calm Lalibela stay, booked directly, with the room you chose.",
+    "missionStatement": "A courtyard hotel with an evening bath and a quiet room.",
     "pageVisibility": {
       "about": true,
       "services": true,
@@ -287,7 +287,7 @@
         "label": "Hot Springs"
       },
       {
-        "value": "Ethiopian dinner",
+        "value": "a seasonal dinner",
         "label": "Dinner"
       }
     ],
@@ -295,7 +295,7 @@
     "servicesSectionSubtitle": "The rituals of a considered stay",
     "services": [
       {
-        "title": "Ethiopian Dining",
+        "title": "regional Dining",
         "description": "Seasonal multi-course meals prepared by our head chef."
       },
       {
@@ -331,10 +331,10 @@
       }
     ],
     "showcaseSectionTitle": "Seasonal Moments",
-    "showcaseSectionSubtitle": "Ethiopian dinner, hot spring, and garden rituals for a quiet stay",
+    "showcaseSectionSubtitle": "a seasonal dinner, hot spring, and garden rituals for a quiet stay",
     "showcaseItems": [
       {
-        "title": "Ethiopian Dinner",
+        "title": "regional Dinner",
         "description": "Seasonal multi-course meal in a private dining room.",
         "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80",
         "price": "6,600 ETB",
@@ -392,17 +392,17 @@
     "testimonials": [
       {
         "quote": "Outstanding service and incredible results. Highly recommended!",
-        "author": "Mekdes Haile",
+        "author": "Elena Ward",
         "role": "CEO, TechStart"
       },
       {
         "quote": "They transformed our business. Professional, creative, and reliable.",
-        "author": "Dawit Bekele",
+        "author": "Noah Bennett",
         "role": "Founder, Bloom Co"
       },
       {
         "quote": "The best decision we made this year. Exceeded every expectation.",
-        "author": "Hiwot Alemu",
+        "author": "Maya Chen",
         "role": "Director, Apex Group"
       }
     ],
@@ -484,7 +484,7 @@
       }
     ],
     "roomsSectionTitle": "Rooms",
-    "roomsSectionSubtitle": "Courtyard rooms and a main-house suite, priced per night in birr.",
+    "roomsSectionSubtitle": "Courtyard rooms and a main-house suite, priced per night in local currency.",
     "bookingSectionTitle": "Reserve Your Stay",
     "bookingSectionSubtitle": "Search your pilgrimage dates and reserve the room that is free.",
     "roomTypes": [
@@ -492,7 +492,7 @@
         "name": "Courtyard Room",
         "slug": "washitsu",
         "parentSlug": "",
-        "description": "A quiet room with woven floor mats, cotton bedding, and a view of the lodge garden. Dinner in the courtyard is optional.",
+        "description": "A quiet room with woven floor mats, cotton bedding, and a view of the hotel garden. Dinner in the courtyard is optional.",
         "shortDescription": "Garden view · 22 m²",
         "basePrice": "6200",
         "currency": "ETB",
@@ -577,17 +577,17 @@
     ],
     "team": [
       {
-        "name": "Abel Desta",
+        "name": "James Carter",
         "role": "Founder & CEO",
         "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80"
       },
       {
-        "name": "Mekdes Haile",
+        "name": "Elena Ward",
         "role": "Creative Director",
         "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
       },
       {
-        "name": "Dawit Bekele",
+        "name": "Noah Bennett",
         "role": "Operations Lead",
         "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80"
       }
@@ -601,27 +601,29 @@
     "seoDescription": "",
     "seoKeywords": "",
     "seoSiteUrl": "",
-    "email": "stay@lalibelalodge.et",
-    "phone": "+251 33 336 0100",
-    "address": "Lalibela, North Wollo",
+    "email": "stay@courtyardhotel.example",
+    "phone": "+81 75 555 0100",
+    "address": "7 Courtyard Lane",
     "hours": "Front desk 6:30–22:00",
     "instagram": "",
     "website": "",
     "linkedin": "",
     "whatsapp": "",
     "supportEmail": "",
-    "reservationEmail": "book@lalibelalodge.et",
+    "reservationEmail": "book@courtyardhotel.example",
     "licenseNumber": "",
     "bookingUrl": "",
     "contactSectionTitle": "Get in Touch",
     "contactFormTitle": "Send Us a Message",
     "contactFormUrl": "",
-    "contactFormButtonText": "Open Contact Form",
-    "city": "Lalibela",
-    "country": "Ethiopia",
+    "contactFormButtonText": "Send message",
+    "city": "Kyoto",
+    "country": "Japan",
     "starRating": "4",
     "checkInTime": "14:00",
     "checkOutTime": "11:00",
-    "propertyAmenities": "Wi-Fi, Courtyard, Hot spring, Restaurant, Generator backup"
+    "propertyAmenities": "Wi-Fi, Courtyard, Hot spring, Restaurant, Generator backup",
+    "footerBlurb": "Courtyard rooms and an evening bath.",
+    "footerNote": "All rights reserved."
   }
 }

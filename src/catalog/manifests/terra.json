@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "id": "terra",
-  "name": "Entoto Clay",
-  "description": "Earthy organic warmth — terracotta, sage, and handcrafted textures for artisan brands.",
+  "name": "Clay Studio",
+  "description": "Earthy studio shop for ceramics, cloth, and objects meant to be used.",
   "category": "creative",
   "previewGradient": "from-amber-800 via-orange-900 to-emerald-900",
   "accentColor": "#c2410c",
@@ -221,17 +221,17 @@
     {
       "key": "email",
       "label": "Email",
-      "placeholder": "hello@entotoclay.et"
+      "placeholder": "hello@claystudio.example"
     },
     {
       "key": "phone",
       "label": "Phone",
-      "placeholder": "+251 11 123 4455"
+      "placeholder": "+1 503 555 4455"
     },
     {
       "key": "address",
       "label": "Studio & Shop",
-      "placeholder": "Entoto, Addis Ababa"
+      "placeholder": "3 Kiln Yard"
     },
     {
       "key": "hours",
@@ -261,14 +261,14 @@
     "grayscaleImage": false
   },
   "defaults": {
-    "businessName": "Entoto Clay",
-    "tagline": "Crafted by hand, rooted in earth",
-    "heroSubtext": "An Addis studio and shop for slow-made goods — ceramics, woven cloth, and objects that age well.",
+    "businessName": "Clay Studio",
+    "tagline": "Made by hand, meant to be used",
+    "heroSubtext": "A studio and shop for slow-made goods: ceramics, woven cloth, and objects that age well.",
     "heroImage": "https://images.unsplash.com/photo-1565193567171-5de8b5d0c3b3?w=1200&q=80",
-    "aboutTitle": "Our Story",
-    "about": "Entoto Clay began at a farmer's market table with a wheel, a kiln, and a belief that everyday objects deserve beauty. Today our collective of twelve makers ships worldwide — always small batch, always honest materials.",
+    "aboutTitle": "The studio",
+    "about": "Clay Studio makes and sells from the same room. Pieces are thrown, fired, and priced in the shop.",
     "aboutImage": "https://images.unsplash.com/photo-1452860606248-bfe878b077f5?w=800&q=80",
-    "missionStatement": "Slow craft for a fast world.",
+    "missionStatement": "Objects with a maker's name on them.",
     "pageVisibility": {
       "about": true,
       "services": true,
@@ -534,17 +534,17 @@
     ],
     "team": [
       {
-        "name": "Mekdes Haile",
+        "name": "Elena Ward",
         "role": "Founder & Potter",
         "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
       },
       {
-        "name": "Dawit Bekele",
+        "name": "Noah Bennett",
         "role": "Textile Artist",
         "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80"
       },
       {
-        "name": "Hiwot Alemu",
+        "name": "Maya Chen",
         "role": "Shop Curator",
         "image": "https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?w=400&q=80"
       }
@@ -558,9 +558,9 @@
     "seoDescription": "",
     "seoKeywords": "",
     "seoSiteUrl": "",
-    "email": "hello@entotoclay.et",
-    "phone": "+251 11 123 4455",
-    "address": "Entoto, Addis Ababa",
+    "email": "hello@claystudio.example",
+    "phone": "+1 503 555 4455",
+    "address": "3 Kiln Yard",
     "hours": "Wed–Sun 10am–6pm",
     "instagram": "@terratide",
     "website": "",
@@ -573,6 +573,10 @@
     "contactSectionTitle": "Get in Touch",
     "contactFormTitle": "Send Us a Message",
     "contactFormUrl": "",
-    "contactFormButtonText": "Open Contact Form"
+    "contactFormButtonText": "Send message",
+    "city": "Portland",
+    "country": "United States",
+    "footerBlurb": "Ceramics and cloth from the studio next door.",
+    "footerNote": "All rights reserved."
   }
 }

@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "id": "axiom",
-  "name": "Abay Audit",
-  "description": "Blue professional tax recovery and protection — filing, refund advances, and Ministry of Revenue representation.",
+  "name": "Northline Audit",
+  "description": "Tax recovery and protection: filing, refund advances, and representation.",
   "category": "finance",
   "previewGradient": "from-[#061F3A] via-[#0B4F8A] to-[#2196F3]",
   "accentColor": "#0B4F8A",
@@ -199,17 +199,17 @@
     {
       "key": "phone",
       "label": "Intake",
-      "placeholder": "+251 11 551 8299"
+      "placeholder": "+1 212 555 8299"
     },
     {
       "key": "email",
       "label": "Email",
-      "placeholder": "hello@abayaudit.et"
+      "placeholder": "hello@northlineaudit.example"
     },
     {
       "key": "address",
       "label": "Office",
-      "placeholder": "Mexico Square, Addis Ababa"
+      "placeholder": "500 Northline"
     },
     {
       "key": "hours",
@@ -239,9 +239,9 @@
     "grayscaleImage": false
   },
   "defaults": {
-    "businessName": "Abay Audit",
-    "tagline": "Delivering savings, protecting your future.",
-    "heroSubtext": "End-to-end tax solutions that drive efficiency, maximize refunds, and provide year-round financial protection.",
+    "businessName": "Northline Audit",
+    "tagline": "Savings you can document, protection you can call",
+    "heroSubtext": "Tax work that keeps filings current, pursues refunds that are owed, and stays on the file all year.",
     "heroImage": "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1800&q=80",
     "logo": "",
     "logoShowName": true,
@@ -250,10 +250,10 @@
     "brandAccent": "#2196F3",
     "fontHeading": "playfair",
     "fontBody": "source-sans",
-    "aboutTitle": "Tax solutions built around you",
-    "about": "At Abay Audit, we simplify complex tax situations with smart technology, expert support, and a commitment to excellence. We are here to protect your finances year-round.",
+    "aboutTitle": "Tax work built around the file",
+    "about": "Northline Audit files, reviews, and represents. The plan is written down before the return goes in.",
     "aboutImage": "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=900&q=80",
-    "missionStatement": "Smart tax filing. Stronger finances. National coverage.",
+    "missionStatement": "A tax file with someone responsible for it.",
     "pageVisibility": {
       "about": true,
       "services": true,
@@ -292,7 +292,7 @@
       }
     ],
     "servicesSectionTitle": "Comprehensive tax services tailored to you",
-    "servicesSectionSubtitle": "Refund advances, business prep, Ministry of Revenue defense, and referral bonuses — one desk.",
+    "servicesSectionSubtitle": "Refund advances, business prep, the revenue authority defense, and referral bonuses — one desk.",
     "services": [
       {
         "title": "Income tax examinations",
@@ -454,17 +454,17 @@
     ],
     "team": [
       {
-        "name": "Mekdes Haile",
+        "name": "Elena Ward",
         "role": "Managing counsel",
         "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
       },
       {
-        "name": "Dawit Bekele",
+        "name": "Noah Bennett",
         "role": "Examinations",
         "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80"
       },
       {
-        "name": "Hiwot Alemu",
+        "name": "Maya Chen",
         "role": "Appeals",
         "image": "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80"
       }
@@ -474,13 +474,13 @@
     "ctaText": "Get a free quote",
     "ctaLink": "contact",
     "seoEnabled": true,
-    "seoTitle": "Abay Audit — Ministry of Revenue exam and tax controversy",
-    "seoDescription": "Tax controversy counsel for Ministry of Revenue examinations, appeals, penalties, and collections.",
-    "seoKeywords": "Ministry of Revenue audit, tax controversy, tax examination, penalty abatement, tax appeals",
+    "seoTitle": "Northline Audit — the revenue authority exam and tax controversy",
+    "seoDescription": "Tax controversy counsel for the revenue authority examinations, appeals, penalties, and collections.",
+    "seoKeywords": "the revenue authority audit, tax controversy, tax examination, penalty abatement, tax appeals",
     "seoSiteUrl": "",
-    "email": "hello@abayaudit.et",
-    "phone": "+251 11 551 8299",
-    "address": "Mexico Square, Addis Ababa",
+    "email": "hello@northlineaudit.example",
+    "phone": "+1 212 555 8299",
+    "address": "500 Northline",
     "mapUrl": "https://www.google.com/maps?q=85+Commerce+Street&output=embed",
     "hours": "Mon-Fri: 9AM - 6PM",
     "instagram": "",
@@ -494,6 +494,10 @@
     "contactSectionTitle": "Confidential intake",
     "contactFormTitle": "Describe the notice",
     "contactFormUrl": "",
-    "contactFormButtonText": "Send the file"
+    "contactFormButtonText": "Send message",
+    "city": "New York",
+    "country": "United States",
+    "footerBlurb": "Filing, recovery, and year-round representation.",
+    "footerNote": "All rights reserved."
   }
 }

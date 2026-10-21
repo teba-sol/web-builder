@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "id": "helix",
-  "name": "Addis Tax Desk",
-  "description": "Burgundy-and-black tax storefront — tax prep, refund advances, referrals, and locations.",
+  "name": "Civic Tax Desk",
+  "description": "Tax storefront for preparation, refund advances, referrals, and local offices.",
   "category": "finance",
   "previewGradient": "from-black via-[#800020] to-red-800",
   "accentColor": "#800020",
@@ -151,7 +151,7 @@
     "exploreLinkLabel": "Go"
   },
   "showcase": {
-    "sectionTitle": "Addis Ababa Locations We Serve",
+    "sectionTitle": "the city Locations We Serve",
     "sectionSubtitle": "Walk in with your documents — or book the office closest to you",
     "navLabel": "Locations",
     "itemLabel": "Location",
@@ -162,15 +162,15 @@
   },
   "defaultShowcase": [
     {
-      "title": "Bole",
-      "description": "Premier tax prep and refund advances near Meskel Square, Piazza, and Arat Kilo.",
+      "title": "the district",
+      "description": "Premier tax prep and refund advances near Meskel Square, the old quarter, and Arat Kilo.",
       "image": "https://images.unsplash.com/photo-1575917649705-5b59aaa12e6b?w=600&q=80",
       "price": "",
       "tag": "Downtown",
       "link": "contact"
     },
     {
-      "title": "Kazanchis",
+      "title": "the garden district",
       "description": "Fast filing for Midtown apartments, Georgia Tech, and the Woodruff Arts Center corridor.",
       "image": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&q=80",
       "price": "",
@@ -178,11 +178,11 @@
       "link": "contact"
     },
     {
-      "title": "Old Airport",
-      "description": "Individual and business returns for Old Airport Village, Hanover, and Northside clients.",
+      "title": "the north quarter",
+      "description": "Individual and business returns for the north quarter Village, Hanover, and Northside clients.",
       "image": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&q=80",
       "price": "",
-      "tag": "Old Airport",
+      "tag": "the north quarter",
       "link": "contact"
     },
     {
@@ -195,15 +195,15 @@
     },
     {
       "title": "CMC",
-      "description": "Convenient for Bole, Kazanchis, and CMC — bring employment income statements and walk out funded.",
+      "description": "Convenient for the district, the garden district, and CMC — bring employment income statements and walk out funded.",
       "image": "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=600&q=80",
       "price": "",
       "tag": "CMC",
       "link": "contact"
     },
     {
-      "title": "Bole Road",
-      "description": "Main office. Monday–Friday 10:00 AM–6:00 PM. Call or text +251 11 661 1040 before you come in.",
+      "title": "Market Street",
+      "description": "Main office. Monday–Friday 10:00 AM–6:00 PM. Call or text +1 312 555 1040before you come in.",
       "image": "https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80",
       "price": "",
       "tag": "HQ",
@@ -215,17 +215,17 @@
     {
       "key": "phone",
       "label": "Call / Text",
-      "placeholder": "+251 11 661 1040"
+      "placeholder": "+1 312 555 1040"
     },
     {
       "key": "email",
       "label": "Email",
-      "placeholder": "hello@addistax.et"
+      "placeholder": "hello@civictax.example"
     },
     {
       "key": "address",
       "label": "Office Address",
-      "placeholder": "Bole Road, Addis Ababa"
+      "placeholder": "90 Civic Avenue"
     },
     {
       "key": "hours",
@@ -240,7 +240,7 @@
     {
       "key": "whatsapp",
       "label": "SMS Help Line",
-      "placeholder": "Text HELP to +251 11 661 1040"
+      "placeholder": "Text HELP to +1 312 555 1040"
     }
   ],
   "servicesLabel": "Tax Services",
@@ -260,9 +260,9 @@
     "grayscaleImage": false
   },
   "defaults": {
-    "businessName": "Addis Tax Desk",
-    "tagline": "Tax preparation in Addis Ababa",
-    "heroSubtext": "Addis Tax Desk offers expert tax preparation & Refund advances, including Holiday and Shield Advances, Referrals, and Tax planning. Our seasoned tax consultants minimize tax liabilities and maximize savings.",
+    "businessName": "Civic Tax Desk",
+    "tagline": "Tax preparation, explained before you file",
+    "heroSubtext": "Civic Tax Desk prepares returns and refund advances, including holiday and shield advances, referrals, and planning. Consultants work to keep the bill accurate.",
     "heroImage": "https://taxfightersatlanta.com/assets/hero-BVT3_udm.jpg",
     "logo": "https://i.ibb.co/nVCY17t/logo-removebg.png",
     "logoShowName": false,
@@ -271,10 +271,10 @@
     "brandAccent": "#E63946",
     "fontHeading": "montserrat",
     "fontBody": "open-sans",
-    "aboutTitle": "Tax preparation for Addis families and businesses",
-    "about": "Addis Tax Desk offers expert tax preparation & Refund advances, including Holiday and Shield Advances, Referrals, and Tax planning. Our seasoned tax consultants minimize tax liabilities and maximize savings. Specializing in business tax preparation and compliance.\n\nWith 20+ years of experience, we provide consultations and audit support, prioritizing integrity, accuracy, and client satisfaction. Trust us for diligent and professional handling of your tax matters.",
+    "aboutTitle": "Tax preparation for families and businesses",
+    "about": "Civic Tax Desk is a storefront tax office. You can see the fee, the advance, and the person who will sign the return.",
     "aboutImage": "https://i.ibb.co/tPk2V2Lj/627bef65-3274-4bb1-a1aa-2747f6a7d767.jpg",
-    "missionStatement": "We provide the fastest route to tax preparation and a refund advance — integrity, accuracy, and the fastest service in Addis Ababa.",
+    "missionStatement": "A tax desk you can walk into.",
     "pageVisibility": {
       "about": true,
       "services": true,
@@ -340,22 +340,22 @@
       },
       {
         "title": "Repayment of the Advances",
-        "description": "The process of repaying the advance usually occurs when the Ministry of Revenue issues the final tax refund. This repayment is often automated, with the tax preparation service deducting the advance amount along with any associated fees directly from the taxpayer's refund."
+        "description": "The process of repaying the advance usually occurs when the revenue authority issues the final tax refund. This repayment is often automated, with the tax preparation service deducting the advance amount along with any associated fees directly from the taxpayer's refund."
       }
     ],
-    "showcaseSectionTitle": "Addis Ababa Locations We Serve",
+    "showcaseSectionTitle": "the city Locations We Serve",
     "showcaseSectionSubtitle": "Walk in with your documents — or book the office closest to you",
     "showcaseItems": [
       {
-        "title": "Bole",
-        "description": "Premier tax prep and refund advances near Meskel Square, Piazza, and Arat Kilo.",
+        "title": "the district",
+        "description": "Premier tax prep and refund advances near Meskel Square, the old quarter, and Arat Kilo.",
         "image": "https://images.unsplash.com/photo-1575917649705-5b59aaa12e6b?w=600&q=80",
         "price": "",
         "tag": "Downtown",
         "link": "contact"
       },
       {
-        "title": "Kazanchis",
+        "title": "the garden district",
         "description": "Fast filing for Midtown apartments, Georgia Tech, and the Woodruff Arts Center corridor.",
         "image": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&q=80",
         "price": "",
@@ -363,11 +363,11 @@
         "link": "contact"
       },
       {
-        "title": "Old Airport",
-        "description": "Individual and business returns for Old Airport Village, Hanover, and Northside clients.",
+        "title": "the north quarter",
+        "description": "Individual and business returns for the north quarter Village, Hanover, and Northside clients.",
         "image": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&q=80",
         "price": "",
-        "tag": "Old Airport",
+        "tag": "the north quarter",
         "link": "contact"
       },
       {
@@ -380,15 +380,15 @@
       },
       {
         "title": "CMC",
-        "description": "Convenient for Bole, Kazanchis, and CMC — bring employment income statements and walk out funded.",
+        "description": "Convenient for the district, the garden district, and CMC — bring employment income statements and walk out funded.",
         "image": "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=600&q=80",
         "price": "",
         "tag": "CMC",
         "link": "contact"
       },
       {
-        "title": "Bole Road",
-        "description": "Main office. Monday–Friday 10:00 AM–6:00 PM. Call or text +251 11 661 1040 before you come in.",
+        "title": "Market Street",
+        "description": "Main office. Monday–Friday 10:00 AM–6:00 PM. Call or text +1 312 555 1040before you come in.",
         "image": "https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80",
         "price": "",
         "tag": "HQ",
@@ -404,7 +404,7 @@
       "https://i.ibb.co/wrRtmHZG/professional-woman-business-accountant.jpg",
       "https://i.ibb.co/TDTyyKbv/step1.png"
     ],
-    "testimonialsSectionTitle": "Addis Tax Desk — reviews",
+    "testimonialsSectionTitle": "Civic Tax Desk — reviews",
     "testimonials": [
       {
         "quote": "Great tax preparers. Dedicated to customer service and maximizing your return.",
@@ -417,7 +417,7 @@
         "role": "Google review"
       },
       {
-        "quote": "I needed the money before the Ministry of Revenue paid. They had my Holiday Advance the same day I walked in with my employment income statements.",
+        "quote": "I needed the money before the revenue authority paid. They had my Holiday Advance the same day I walked in with my employment income statements.",
         "author": "Meron Assefa",
         "role": "Refund advance"
       }
@@ -426,7 +426,7 @@
     "faqs": [
       {
         "question": "What is a tax refund advance?",
-        "answer": "A refund advance lets eligible taxpayers receive a portion of their refund before the Ministry of Revenue finishes processing. Addis Tax Desk offers Holiday Advances (no fee) and Shield Advances (27,500 ETB–412,500 ETB). You can always refuse an advance and wait for the full Ministry of Revenue refund."
+        "answer": "A refund advance lets eligible taxpayers receive a portion of their refund before the revenue authority finishes processing. Civic Tax Desk offers Holiday Advances (no fee) and Shield Advances (27,500 ETB–412,500 ETB). You can always refuse an advance and wait for the full revenue authority refund."
       },
       {
         "question": "How quickly can I receive a tax refund advance?",
@@ -434,11 +434,11 @@
       },
       {
         "question": "What happens if my tax refund is less than the advance amount?",
-        "answer": "Advances are sized from the completed return. The advance and any bank fees are deducted from the Ministry of Revenue refund when it posts. We review the numbers with you before you accept funds."
+        "answer": "Advances are sized from the completed return. The advance and any bank fees are deducted from the revenue authority refund when it posts. We review the numbers with you before you accept funds."
       },
       {
         "question": "What is the cost associated with a tax refund advance?",
-        "answer": "Addis Tax Desk does not charge fees on Holiday Advances. Shield Advances may include bank fees that depend on the amount. Fees are disclosed in full before we process, and they come out of the final refund — not a separate payment."
+        "answer": "Civic Tax Desk does not charge fees on Holiday Advances. Shield Advances may include bank fees that depend on the amount. Fees are disclosed in full before we process, and they come out of the final refund — not a separate payment."
       },
       {
         "question": "Can I refuse an advance if I am not interested?",
@@ -453,22 +453,22 @@
     "blogSectionTitle": "Tax preparation & refund advances",
     "blogSectionSubtitle": "Guides on personal taxes, business filings, advances, and how to pick a tax professional",
     "newsSectionTitle": "Office updates",
-    "newsSectionSubtitle": "Holiday Advance windows, hours, and Addis Ababa location news",
+    "newsSectionSubtitle": "Holiday Advance windows, hours, and the city location news",
     "newsPosts": [
       {
         "title": "Holiday Advances are open — no fee, up to 27,500 ETB",
         "slug": "holiday-advances-open",
         "excerpt": "Eligible clients can take a no-fee Holiday Advance through the filing deadline. Bring your documents and pre-qualify today.",
-        "body": "Holiday Advances start in the season and run through the filing deadline. There is no Addis Tax Desk fee on this product. Eligibility depends on income, filing status, and a complete document set.\n\nIf you need a larger amount, ask about Shield Advances from 27,500 ETB to 412,500 ETB. We will show bank fees before anything is processed.",
+        "body": "Holiday Advances start in the season and run through the filing deadline. There is no Civic Tax Desk fee on this product. Eligibility depends on income, filing status, and a complete document set.\n\nIf you need a larger amount, ask about Shield Advances from 27,500 ETB to 412,500 ETB. We will show bank fees before anything is processed.",
         "image": "https://images.unsplash.com/photo-1482517967863-00e15c9b44be?w=800&q=80",
-        "author": "Addis Tax Desk Team",
+        "author": "Civic Tax Desk Team",
         "date": "2026-01-06"
       },
       {
         "title": "Extended weekday hours through filing deadline",
         "slug": "tax-season-hours",
-        "excerpt": "Monday–Friday 10:00 AM–6:00 PM at Suite Y, Addis Ababa 30318. Saturday and Sunday closed — text us to hold a weekday slot.",
-        "body": "Walk-ins are welcome during posted hours. If you want a guaranteed time, call or text +251 11 661 1040. Bring ID, TINs, employment income statements, and dependent documents so we can start the same day.",
+        "excerpt": "Monday–Friday 10:00 AM–6:00 PM at Suite Y, the city 30318. Saturday and Sunday closed — text us to hold a weekday slot.",
+        "body": "Walk-ins are welcome during posted hours. If you want a guaranteed time, call or text +1 312 555 1040. Bring ID, TINs, employment income statements, and dependent documents so we can start the same day.",
         "image": "https://images.unsplash.com/photo-1434626881859-194d67b2b86f?w=800&q=80",
         "author": "Front Desk",
         "date": "2026-02-01"
@@ -477,9 +477,9 @@
         "title": "Refer a friend. Earn 2,750 ETB.",
         "slug": "referral-bonus-50",
         "excerpt": "When someone you send files with us, you earn a referral bonus. Ask your preparer how to track it.",
-        "body": "Our referral program pays existing clients when family and friends complete a return with Addis Tax Desk. There is no extra paperwork for the person you send — they just mention your name at intake.\n\nBonuses are issued after the referred return is filed. Ask the front desk for this season’s amount and payout timing.",
+        "body": "Our referral program pays existing clients when family and friends complete a return with Civic Tax Desk. There is no extra paperwork for the person you send — they just mention your name at intake.\n\nBonuses are issued after the referred return is filed. Ask the front desk for this season’s amount and payout timing.",
         "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80",
-        "author": "Addis Tax Desk Team",
+        "author": "Civic Tax Desk Team",
         "date": "2026-01-15"
       }
     ],
@@ -500,7 +500,7 @@
         "featured": true
       },
       {
-        "title": "Wait for the Ministry of Revenue",
+        "title": "Wait for the revenue authority",
         "description": "Decline every advance. We still prepare the return and you keep the full refund when it posts.",
         "price": "Your choice",
         "tag": "No advance",
@@ -516,8 +516,8 @@
       {
         "title": "A guide for income tax preparation & advances",
         "slug": "income-tax-preparation-advances",
-        "excerpt": "What Holiday and Shield Advances are, what to bring, and how repayment works when the Ministry of Revenue pays.",
-        "body": "Tax refund advances are short-term funds against a completed return. Holiday Advances carry no Addis Tax Desk fee. Shield Advances range from 27,500 ETB to 412,500 ETB and may include bank fees.\n\nBring ID, TINs, employment income statements or pay stubs, and dependent documents. After we file, approved clients can take an advance. The Ministry of Revenue refund later repays the advance and any disclosed fees automatically.\n\nYou can always say no and wait for the full refund.",
+        "excerpt": "What Holiday and Shield Advances are, what to bring, and how repayment works when the revenue authority pays.",
+        "body": "Tax refund advances are short-term funds against a completed return. Holiday Advances carry no Civic Tax Desk fee. Shield Advances range from 27,500 ETB to 412,500 ETB and may include bank fees.\n\nBring ID, TINs, employment income statements or pay stubs, and dependent documents. After we file, approved clients can take an advance. The the revenue authority refund later repays the advance and any disclosed fees automatically.\n\nYou can always say no and wait for the full refund.",
         "image": "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=800&q=80",
         "author": "E. Bel",
         "date": "2026-02-12"
@@ -525,17 +525,17 @@
       {
         "title": "Information about referral program and bonuses",
         "slug": "referral-program-and-bonuses",
-        "excerpt": "How existing clients earn when family and friends file with Addis Tax Desk.",
+        "excerpt": "How existing clients earn when family and friends file with Civic Tax Desk.",
         "body": "Tell your people to mention your name at intake. After their return is filed, you receive the posted referral bonus. There is no charge to the person you send.\n\nAsk your preparer for this season’s amount. Bonuses are one of the ways we thank clients who keep the waiting room full.",
         "image": "https://images.unsplash.com/photo-1556745753-b2904692b3cd?w=800&q=80",
-        "author": "Addis Tax Desk Team",
+        "author": "Civic Tax Desk Team",
         "date": "2026-01-22"
       },
       {
         "title": "How to find the right business tax preparation & audit support",
         "slug": "business-tax-and-audit-support",
-        "excerpt": "Schedule C and 1120 filings, plus a safety net if the Ministry of Revenue writes. Existing clients are not charged for audit support.",
-        "body": "Gather income statements, expenses, and receipts. Use the right form — Schedule C for sole proprietors, 1120 for corporations — and bring it to the preparer.\n\nWe file for the business and stay on the file if an audit starts. Existing Addis Tax Desk clients are not charged for audit support. That is the safety net.",
+        "excerpt": "Schedule C and 1120 filings, plus a safety net if the revenue authority writes. Existing clients are not charged for audit support.",
+        "body": "Gather income statements, expenses, and receipts. Use the right form — Schedule C for sole proprietors, 1120 for corporations — and bring it to the preparer.\n\nWe file for the business and stay on the file if an audit starts. Existing Civic Tax Desk clients are not charged for audit support. That is the safety net.",
         "image": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&q=80",
         "author": "E. Bel",
         "date": "2026-03-03"
@@ -543,39 +543,39 @@
     ],
     "team": [
       {
-        "name": "Mekdes Haile",
+        "name": "Elena Ward",
         "role": "Tax Preparer",
         "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80"
       },
       {
-        "name": "Dawit Bekele",
+        "name": "Noah Bennett",
         "role": "Client Services",
         "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
       },
       {
-        "name": "Hiwot Alemu",
+        "name": "Maya Chen",
         "role": "Tax Professional · 12+ years",
         "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80"
       }
     ],
     "ctaBannerTitle": "Ready to get your refund advance?",
-    "ctaBannerText": "Join thousands of clients who trust Addis Tax Desk for expert tax prep and refund advances. Pre-qualify today.",
+    "ctaBannerText": "Join thousands of clients who trust Civic Tax Desk for expert tax prep and refund advances. Pre-qualify today.",
     "ctaText": "Book now",
     "ctaLink": "contact",
     "seoEnabled": true,
-    "seoTitle": "Best Tax Preparation & Refund Advances | Addis Tax Desk",
-    "seoDescription": "Addis Ababa tax preparation experts. Get up to 412,500 ETB instant refund advances and no-fee Holiday Advances up to 27,500 ETB. Call +251 11 661 1040.",
-    "seoKeywords": "tax preparation Addis Ababa, refund advance Addis Ababa, holiday advance, Ministry of Revenue tax help Addis Ababa, business tax preparation, audit support Addis Ababa",
+    "seoTitle": "Best Tax Preparation & Refund Advances | Civic Tax Desk",
+    "seoDescription": "Tax preparation experts. Get up to 412,500 ETB instant refund advances and no-fee Holiday Advances up to 27,500 ETB. Call +1 312 555 1040.",
+    "seoKeywords": "tax preparation the city, refund advance the city, holiday advance, the revenue authority tax help the city, business tax preparation, audit support the city",
     "seoSiteUrl": "",
-    "email": "hello@addistax.et",
-    "phone": "+251 11 661 1040",
-    "address": "Bole Road, Addis Ababa",
-    "mapUrl": "https://maps.google.com/maps?q=Bole%20Road%20Addis%20Ababa&z=15&output=embed",
+    "email": "hello@civictax.example",
+    "phone": "+1 312 555 1040",
+    "address": "90 Civic Avenue",
+    "mapUrl": "https://maps.google.com/maps?q=the district%20Road%20the city%20Ababa&z=15&output=embed",
     "hours": "Monday–Friday 10:00 AM–6:00 PM · Sat & Sun closed",
     "instagram": "https://instagram.com/taxfightersatl",
     "website": "https://taxfightersatlanta.com",
     "linkedin": "",
-    "whatsapp": "Text HELP to +251 11 661 1040",
+    "whatsapp": "Text HELP to +1 312 555 1040",
     "supportEmail": "",
     "reservationEmail": "",
     "licenseNumber": "",
@@ -583,6 +583,10 @@
     "contactSectionTitle": "Leave your info for a quick response",
     "contactFormTitle": "Pre-qualify today",
     "contactFormUrl": "",
-    "contactFormButtonText": "Submit"
+    "contactFormButtonText": "Send message",
+    "city": "Chicago",
+    "country": "United States",
+    "footerBlurb": "Tax preparation, advances, and a desk that picks up.",
+    "footerNote": "All rights reserved."
   }
 }

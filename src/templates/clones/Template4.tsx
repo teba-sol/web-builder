@@ -136,15 +136,17 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
                 </span>
               </button>
 
-              <a href={`tel:${(c.phone || '+251116618299').replace(/\s/g, '')}`} className="flex items-center gap-3 group">
+              {c.phone ? (
+              <a href={`tel:${c.phone.replace(/\s/g, '')}`} className="flex items-center gap-3 group">
                 <span className="w-11 h-11 rounded-full flex items-center justify-center border border-white/20 group-hover:border-[var(--clone-accent)] transition" style={{ backgroundColor: 'var(--clone-ink)' }}>
                   <Phone className="w-4 h-4" style={{ color: 'var(--clone-accent)' }} />
                 </span>
                 <span className="text-xs">
                   <div className="text-[#8FA396] font-medium">Call Us Now</div>
-                  <div className="font-bold text-white">{c.phone || '+251 11 661 8299'}</div>
+                  <div className="font-bold text-white">{c.phone}</div>
                 </span>
               </a>
+              ) : null}
             </div>
           </div>
 
@@ -317,7 +319,7 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
             </h2>
 
             <p className="text-[#4A554D] text-sm csm:text-base leading-relaxed">
-              Entoto Tax Studio was founded to make professional tax help fast, transparent, and genuinely useful, whether you're filing a simple return or navigating a multi-entity business.
+              {c.businessName} was founded to make professional tax help fast, transparent, and genuinely useful, whether you're filing a simple return or navigating a multi-entity business.
             </p>
 
             <div className="space-y-3 pt-2">
@@ -454,7 +456,7 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
               <div key={idx} className={`rounded-2xl overflow-hidden group ${idx === 0 ? 'row-span-2 h-full' : 'h-48 cmd:h-56'}`}>
                 <img
                   src={src}
-                  alt="Inside the Entoto Tax Studio office"
+                  alt=""
                   className="w-full h-full object-cover grayscale-[15%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500"
                 />
               </div>
@@ -654,7 +656,7 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
                     <input
                       type="tel"
                       required
-                      placeholder="+251 911 000 000"
+                      placeholder="Phone number"
                       value={contactForm.phone}
                       onChange={(e) => setContactForm({ ...contactForm, phone: e.target.value })}
                       className="w-full bg-[var(--clone-surface)] border border-[#E4E0D4] rounded-xl py-3 px-4 text-sm text-[var(--clone-ink)] focus:outline-none focus:border-[var(--clone-highlight)] focus:ring-2 focus:ring-[var(--clone-accent)]/30 transition"
@@ -689,7 +691,7 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
                   className="pl-6 pr-2 py-2.5 rounded-full font-bold text-sm shadow-lg hover:brightness-105 transition flex items-center gap-3"
                   style={{ backgroundColor: 'var(--clone-ink)', color: 'white' }}
                 >
-                  Send Inquiry
+                  {c.contactFormButtonText || 'Send message'}
                   <span className="w-9 h-9 rounded-full flex items-center justify-center" style={{ backgroundColor: 'var(--clone-accent)' }}>
                     <Send className="w-4 h-4" style={{ color: 'var(--clone-ink)' }} />
                   </span>
@@ -717,10 +719,10 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
               <div className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'var(--clone-accent)' }}>
                 <Shield className="w-5 h-5" style={{ color: 'var(--clone-ink)' }} />
               </div>
-              <span className="text-white font-black text-base">Entoto Tax Studio</span>
+              <span className="text-white font-black text-base">{c.businessName}</span>
             </div>
             <p className="text-[#7E9084] text-xs leading-relaxed">
-              A full-service tax and accounting firm helping individuals and businesses file with confidence, all year round.
+              {c.footerBlurb || c.missionStatement || c.heroSubtext}
             </p>
             <div className="flex items-center gap-3 pt-1 text-xs font-bold text-white">
               <a href="#" className="w-8 h-8 rounded-full flex items-center justify-center bg-white/5 hover:bg-[var(--clone-accent)] hover:text-[var(--clone-ink)] transition">FB</a>
@@ -733,34 +735,28 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
           <div>
             <h4 className="text-white font-bold mb-4 uppercase tracking-wider text-[11px]">Services</h4>
             <ul className="space-y-2.5">
-              <li><Link to={d.hrefs.services} className="hover:text-[var(--clone-accent)] transition-colors">Individual Tax Prep</Link></li>
-              <li><Link to={d.hrefs.services} className="hover:text-[var(--clone-accent)] transition-colors">Refund Advance Loans</Link></li>
-              <li><Link to={d.hrefs.services} className="hover:text-[var(--clone-accent)] transition-colors">2,750 ETB Referral Bonus</Link></li>
-              <li><Link to={d.hrefs.services} className="hover:text-[var(--clone-accent)] transition-colors">Business Tax & Ministry of Revenue Audit</Link></li>
+              {c.services.filter((service) => service.title).map((service) => (
+                <li key={service.title}><Link to={d.hrefs.services} className="hover:text-[var(--clone-accent)] transition-colors">{service.title}</Link></li>
+              ))}
             </ul>
           </div>
 
           <div>
             <h4 className="text-white font-bold mb-4 uppercase tracking-wider text-[11px]">Office Hours</h4>
-            <ul className="space-y-2.5">
-              <li>Monday - Friday: 9:00 AM - 7:00 PM</li>
-              <li>Saturday: 10:00 AM - 4:00 PM</li>
-              <li>Sunday: Closed</li>
-              <li className="font-semibold pt-1" style={{ color: 'var(--clone-accent)' }}>24/7 Online Application Active</li>
-            </ul>
+            <p>{c.hours}</p>
           </div>
 
           <div>
-            <h4 className="text-white font-bold mb-4 uppercase tracking-wider text-[11px]">Legal Disclaimer</h4>
+            <h4 className="text-white font-bold mb-4 uppercase tracking-wider text-[11px]">Contact</h4>
             <p className="text-[11px] text-[#7E9084] leading-relaxed">
-              Refund advances are short-term loans provided by partner financial institutions upon Ministry of Revenue return filing acceptance. Terms and conditions apply.
+              {c.phone}<br />{c.email}<br />{c.address}
             </p>
           </div>
 
         </div>
 
         <div className="max-w-7xl mx-auto pt-6 text-center text-[#7E9084]">
-          © {new Date().getFullYear()} Entoto Tax Studio LLC. All rights reserved.
+          © {new Date().getFullYear()} {c.businessName}. {c.footerNote || 'All rights reserved.'}
         </div>
       </footer>
 
@@ -816,7 +812,7 @@ export function Template4({ c, basePath }: { c: SiteContent; basePath: string })
                 <input
                   type="tel"
                   required
-                  placeholder="+251 911 000 000"
+                  placeholder="Phone number"
                   value={bookingForm.phone}
                   onChange={(e) => setBookingForm({ ...bookingForm, phone: e.target.value })}
                   className="w-full bg-white border border-[#E4E0D4] rounded-xl py-2.5 px-3.5 text-xs text-[var(--clone-ink)] focus:outline-none focus:border-[var(--clone-highlight)] focus:ring-2 focus:ring-[var(--clone-accent)]/30 transition"

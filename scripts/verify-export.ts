@@ -10,14 +10,15 @@ import { generateBackend } from '../src/export/backend/generateBackend.ts'
 import { hasBookingFeature } from '../src/export/backend/generateBooking.ts'
 import { usesBuildauraCrs } from '../src/export/backend/generateCrsBooking.ts'
 import { buildAllSitePages } from '../src/export/buildSitePages.ts'
-import { clonePaletteCss, resolveClonePalette } from '../src/templates/cloneTheme.ts'
+import { clonePaletteCss, isCloneTemplate, resolveClonePalette } from '../src/templates/cloneTheme.ts'
 
 function assert(condition: unknown, message: string): void {
   if (!condition) throw new Error(message)
 }
 
 const manifests = listManifests()
-assert(manifests.length === 30, `expected 30 templates, got ${manifests.length}`)
+assert(manifests.length === 28, `expected 28 templates, got ${manifests.length}`)
+assert(!manifests.some((manifest) => manifest.id === 'desert' || manifest.id === 'nordic'), 'removed lodge templates must stay out of the catalog')
 
 for (const manifest of manifests) {
   const defaults = templateDefaults[manifest.id]
@@ -95,6 +96,9 @@ for (const manifest of manifests) {
     assert(!typePage.includes('typeHotel'), `${manifest.id}: room type page must not filter by hotel`)
     assert(!typePage.includes('filterForm'), `${manifest.id}: room type filters stay in the page view`)
     assert(typePage.includes("FileUpload::make('photo')"), `${manifest.id}: room type edit must upload a photo`)
+    assert(typePage.includes('imageEditor()'), `${manifest.id}: room photos use the image editor`)
+    assert(!typePage.includes("TextInput::make('sortOrder')"), `${manifest.id}: room type form hides the sort number`)
+    assert(typePage.includes("collect($this->inventory()['roomTypes']"), `${manifest.id}: new room types append to the sort order`)
     assert(typePage.includes('maxSize(5120)'), `${manifest.id}: room photos must allow 5 MB`)
     assert(typePage.includes('editTypeAction'), `${manifest.id}: room type edit opens in a slide-over`)
     assert(backend['app/Services/BuildauraClient.php']?.includes('function uploadImage'), `${manifest.id}: room photos must upload to Buildaura`)
@@ -121,6 +125,8 @@ for (const manifest of manifests) {
     assert(roomsAdmin.includes('editUnitAction'), `${manifest.id}: room edit opens in a slide-over`)
     assert(roomsAdmin.includes("Select::make('roomTypeId')"), `${manifest.id}: room edit picks the room type in the slide-over`)
     assert(roomsAdmin.includes("'floor'"), `${manifest.id}: rooms admin must edit the floor`)
+    assert(!roomsAdmin.includes("TextInput::make('sortOrder')"), `${manifest.id}: room form hides the sort number`)
+    assert(roomsAdmin.includes("collect($this->inventory()['units']"), `${manifest.id}: new rooms append to the sort order`)
     const calendar = backend['app/Filament/Pages/RoomCalendar.php'] ?? ''
     const calendarBlade = backend['resources/views/filament/pages/room-calendar.blade.php'] ?? ''
     assert(calendar.includes("rooms/{unitId}/calendar"), `${manifest.id}: room calendar is a detail page`)
@@ -195,6 +201,9 @@ for (const manifest of manifests) {
     assert(roomTypesAdmin.includes('updateRoomType'), `${manifest.id}: room types admin must update types through CRS`)
     assert(roomTypesAdmin.includes('deleteRoomType'), `${manifest.id}: room types admin must delete types through CRS`)
     assert(roomTypesAdmin.includes('maxSize(5120)'), `${manifest.id}: room photos must allow 5 MB`)
+    assert(roomTypesAdmin.includes('imageEditor()'), `${manifest.id}: room photos use the image editor`)
+    assert(!roomTypesAdmin.includes("TextInput::make('sortOrder')"), `${manifest.id}: room type form hides the sort number`)
+    assert(roomTypesAdmin.includes("collect($this->inventory['roomTypes']"), `${manifest.id}: new room types append to the sort order`)
     assert(roomTypesAdmin.includes('parentId'), `${manifest.id}: room types admin must offer a parent type`)
     assert(!roomTypesAdmin.includes('imageUrl'), `${manifest.id}: room type form must not ask for an image URL`)
     assert(!roomTypesAdmin.includes('RoomType::'), `${manifest.id}: room types admin must not use a local room model`)
@@ -203,6 +212,8 @@ for (const manifest of manifests) {
     assert(roomsPage.includes('updateUnit'), `${manifest.id}: rooms admin must update rooms through CRS`)
     assert(roomsPage.includes('deleteUnit'), `${manifest.id}: rooms admin must delete rooms through CRS`)
     assert(roomsPage.includes("'floor'"), `${manifest.id}: rooms admin must edit the floor`)
+    assert(!roomsPage.includes("TextInput::make('sortOrder')"), `${manifest.id}: room form hides the sort number`)
+    assert(roomsPage.includes("collect($this->inventory['units']"), `${manifest.id}: new rooms append to the sort order`)
     assert(!roomsPage.includes('RoomType::'), `${manifest.id}: rooms admin must not use a local room model`)
     assert(typeBlade.includes('width:72px'), `${manifest.id}: room type table must size the photo itself`)
     assert(typeBlade.includes('editTypeAction'), `${manifest.id}: room type edit must render a Filament action`)
@@ -278,9 +289,63 @@ for (const manifest of manifests) {
   assert(contactAdmin.includes('->sortable()'), `${manifest.id}: contact messages must be sortable`)
   assert(contactAdmin.includes('SelectFilter'), `${manifest.id}: contact messages must filter by service`)
   assert(contactAdmin.includes('persistSearchInSession()'), `${manifest.id}: contact search must persist`)
-  const settingsAdmin = backend['app/Filament/Resources/SiteSettingResource.php'] ?? ''
-  assert(settingsAdmin.includes("make('business_name')->searchable()->sortable()"), `${manifest.id}: site settings must be searchable`)
-  assert(settingsAdmin.includes("make('email')->searchable()->sortable()"), `${manifest.id}: site settings email must be searchable`)
+  const pricingAdmin = backend['app/Filament/Resources/PricingPlanResource.php'] ?? ''
+  assert(pricingAdmin.includes("Toggle::make('featured')"), `${manifest.id}: pricing plans can be marked featured`)
+  assert(pricingAdmin.includes('->searchable()'), `${manifest.id}: pricing plans must be searchable`)
+  assert(backend['app/Models/PricingPlan.php']?.includes("'featured' => 'boolean'"), `${manifest.id}: featured pricing is stored as a boolean`)
+  assert(backend['database/migrations/0001_01_01_1000_create_pricing_plans_table.php']?.includes("boolean('featured')"), `${manifest.id}: pricing plans store a featured flag`)
+  assert(backend['database/seeders/DatabaseSeeder.php']?.includes('use App\\Models\\PricingPlan;'), `${manifest.id}: seeder imports pricing plans`)
+  assert(backend['database/seeders/DatabaseSeeder.php']?.includes('PricingPlan::class'), `${manifest.id}: seeder writes pricing plans`)
+  const servicesView = backend['resources/views/site/services.blade.php'] ?? ''
+  assert(servicesView.includes('$pricingPlans'), `${manifest.id}: services page renders pricing plans`)
+  assert(!servicesView.includes('Ask us for a quote'), `${manifest.id}: services page does not freeze a quote placeholder`)
+  assert(backend['app/Http/Controllers/PageController.php']?.includes('PricingPlan::orderBy'), `${manifest.id}: services page loads pricing plans`)
+  assert(backend['app/Http/Controllers/SiteController.php']?.includes("'pricingPlans'"), `${manifest.id}: home loads pricing plans`)
+  const homeBlade = backend['resources/views/site/index.blade.php'] ?? ''
+  assert(homeBlade.includes('$pricingPlans'), `${manifest.id}: home renders pricing plans`)
+  assert(homeBlade.includes("section_visibility['pricing']"), `${manifest.id}: home pricing follows the visibility toggle`)
+  assert(backend['app/Filament/Resources/BlogPostResource.php'], `${manifest.id}: blog stays editable after export`)
+  assert(backend['app/Filament/Resources/TeamMemberResource.php'], `${manifest.id}: team stays editable after export`)
+  assert(backend['app/Filament/Resources/FaqResource.php'], `${manifest.id}: FAQs stay editable after export`)
+  assert(backend['app/Support/SiteLinks.php']?.includes('Route::has'), `${manifest.id}: button links resolve without a missing route`)
+  for (const resource of ['Stat', 'Service', 'Step', 'ShowcaseItem', 'GalleryImage', 'TeamMember', 'Testimonial', 'BlogPost', 'NewsPost', 'Faq', 'PricingPlan']) {
+    const resourceAdmin = backend[`app/Filament/Resources/${resource}Resource.php`] ?? ''
+    assert(resourceAdmin.includes("navigationGroup = 'Content'"), `${manifest.id}: ${resource} sits under Content`)
+    assert(resourceAdmin.includes("->reorderable('sort_order')"), `${manifest.id}: ${resource} order is drag and drop`)
+    assert(!resourceAdmin.includes("label('Sort Order')"), `${manifest.id}: ${resource} sort number stays off the form`)
+  }
+  assert(contactAdmin.includes("navigationGroup = 'Inbox'"), `${manifest.id}: contact messages sit under Inbox`)
+  assert(!backend['app/Filament/Resources/SiteSettingResource.php'], `${manifest.id}: site settings are separate pages`)
+  assert(!backend['app/Filament/Resources/SiteSettingResource/Pages/ManageSiteSettings.php'], `${manifest.id}: site settings are separate pages`)
+  const generalSettings = backend['app/Filament/Pages/GeneralSettings.php'] ?? ''
+  const brandSettings = backend['app/Filament/Pages/BrandSettings.php'] ?? ''
+  const aboutSettings = backend['app/Filament/Pages/AboutSettings.php'] ?? ''
+  const footerSettings = backend['app/Filament/Pages/FooterSettings.php'] ?? ''
+  const contactSettings = backend['app/Filament/Pages/ContactSettings.php'] ?? ''
+  const visibilitySettings = backend['app/Filament/Pages/VisibilitySettings.php'] ?? ''
+  const sectionTitleSettings = backend['app/Filament/Pages/SectionTitleSettings.php'] ?? ''
+  const seoSettings = backend['app/Filament/Pages/SeoSettings.php'] ?? ''
+  const settingsPages = [generalSettings, brandSettings, aboutSettings, footerSettings, contactSettings, visibilitySettings, sectionTitleSettings, seoSettings].join('\n')
+  assert(generalSettings.includes("make('business_name')->required()"), `${manifest.id}: general settings require the business name`)
+  assert(generalSettings.includes("'business_name' => $state['business_name'] ?? ''"), `${manifest.id}: general settings save the business name`)
+  assert(!generalSettings.includes("'logo'"), `${manifest.id}: general settings do not rewrite the logo`)
+  assert(generalSettings.includes("navigationGroup = 'Website'"), `${manifest.id}: general settings sit under Website`)
+  assert(contactSettings.includes("make('email')"), `${manifest.id}: contact settings edit the email`)
+  assert(contactSettings.includes("make('map_url')"), `${manifest.id}: contact settings edit the map link`)
+  assert(visibilitySettings.includes("make('page_visibility.about')"), `${manifest.id}: visibility settings edit page toggles`)
+  assert(visibilitySettings.includes("make('section_visibility.pricing')"), `${manifest.id}: visibility settings edit section toggles`)
+  assert(visibilitySettings.includes("'page_visibility' => $state['page_visibility'] ?? []"), `${manifest.id}: visibility settings save page toggles`)
+  assert(sectionTitleSettings.includes("make('services_section_title')"), `${manifest.id}: section titles stay editable`)
+  assert(footerSettings.includes("make('footer_blurb')"), `${manifest.id}: footer text stays editable`)
+  assert(brandSettings.includes("'logo_show_name' => (bool) ($state['logo_show_name'] ?? false)"), `${manifest.id}: brand settings save the logo name toggle`)
+  assert(!brandSettings.includes('hero_image'), `${manifest.id}: brand settings do not rewrite the hero image`)
+  assert(seoSettings.includes("'seo_enabled' => (bool) ($state['seo_enabled'] ?? false)"), `${manifest.id}: seo settings save the optimize toggle`)
+  assert(backend['resources/views/filament/pages/settings-form.blade.php']?.includes('wire:submit="save"'), `${manifest.id}: settings pages can be saved`)
+  const adminPanel = backend['app/Providers/Filament/AdminPanelProvider.php'] ?? ''
+  assert(adminPanel.includes('->navigationGroups(['), `${manifest.id}: admin navigation is grouped`)
+  assert(adminPanel.includes("'Website'"), `${manifest.id}: website settings are grouped`)
+  assert(adminPanel.includes("'Content'"), `${manifest.id}: content resources are grouped`)
+  assert(adminPanel.includes("'Inbox'"), `${manifest.id}: inbox is grouped`)
   const settingsMigration = backend['database/migrations/0001_01_01_000001_create_site_settings_table.php'] ?? ''
   assert(settingsMigration.includes("'free_cancellation'"), `${manifest.id}: settings store free cancellation`)
   assert(settingsMigration.includes("'pay_on_arrival'"), `${manifest.id}: settings store payment on arrival`)
@@ -291,7 +356,11 @@ for (const manifest of manifests) {
   assert(settingsModel.includes("'free_breakfast' => 'boolean'"), `${manifest.id}: free breakfast is a boolean`)
   assert(backend['database/seeders/DatabaseSeeder.php']?.includes('"free_cancellation": false'), `${manifest.id}: stay policies start off`)
   if (hospitality) {
-    assert(settingsAdmin.includes("Tab::make('Stay policies')"), `${manifest.id}: hotel admin can edit stay policies`)
+    assert(adminPanel.includes("'Hospitality'"), `${manifest.id}: hospitality navigation is grouped`)
+    assert(!settingsPages.includes("Tab::make('Stay policies')"), `${manifest.id}: stay policies stay off site settings`)
+    assert(!settingsPages.includes("make('free_cancellation')"), `${manifest.id}: stay policies stay off site settings`)
+    assert(!settingsPages.includes("make('pay_on_arrival')"), `${manifest.id}: payment on arrival stays off site settings`)
+    assert(!settingsPages.includes("make('free_breakfast')"), `${manifest.id}: free breakfast stays off site settings`)
     const stayPage = backend['app/Filament/Pages/StayPolicies.php'] ?? ''
     assert(stayPage.includes("navigationLabel = 'Stay policies'"), `${manifest.id}: stay policies have their own admin page`)
     assert(stayPage.includes('SiteSetting::current()'), `${manifest.id}: stay policies edit the site settings row`)
@@ -301,9 +370,6 @@ for (const manifest of manifests) {
     assert(backend['resources/views/filament/pages/stay-policies.blade.php']?.includes('wire:submit="save"'), `${manifest.id}: stay policies page can be saved`)
     assert(stayPage.includes("navigationGroup = 'Hospitality'"), `${manifest.id}: stay policies sit under Hospitality`)
     assert(!stayPage.includes("navigationGroup = 'Property'"), `${manifest.id}: stay policies do not use a separate Property group`)
-    assert(settingsAdmin.includes("make('free_cancellation')"), `${manifest.id}: Filament edits free cancellation`)
-    assert(settingsAdmin.includes("make('pay_on_arrival')"), `${manifest.id}: Filament edits payment on arrival`)
-    assert(settingsAdmin.includes("make('free_breakfast')"), `${manifest.id}: Filament edits free breakfast`)
     const policies = backend['resources/views/partials/stay-policies.blade.php'] ?? ''
     assert(policies.includes('Free cancellation'), `${manifest.id}: guests can see free cancellation`)
     assert(policies.includes('Payment on arrival'), `${manifest.id}: guests can see payment on arrival`)
@@ -338,7 +404,7 @@ for (const manifest of manifests) {
     const book = backend['resources/views/site/book.blade.php'] ?? ''
     if (usesBuildauraCrs(manifest.id)) {
       assert(!book.includes('name="payment_method"'), `${manifest.id}: hotel reserve form still does not collect a card`)
-      assert(settingsAdmin.includes('pay at the property when they arrive'), `${manifest.id}: hotel payment policy does not invent a card checkout`)
+      assert(stayPage.includes('pay at the property when they arrive'), `${manifest.id}: hotel payment policy does not invent a card checkout`)
     } else {
       assert(book.includes("@if($settings->pay_on_arrival)"), `${manifest.id}: pay on arrival is optional`)
       assert(book.includes('name="payment_method"'), `${manifest.id}: guests can choose pay on arrival`)
@@ -350,8 +416,9 @@ for (const manifest of manifests) {
       assert(backend['resources/views/site/booking-confirm.blade.php']?.includes("payment_method === 'pay_on_arrival'"), `${manifest.id}: confirmation names pay on arrival`)
     }
   } else {
+    assert(!adminPanel.includes("'Hospitality'"), `${manifest.id}: business navigation has no hospitality group`)
     assert(!backend['app/Filament/Pages/StayPolicies.php'], `${manifest.id}: business sites do not get hotel stay policies`)
-    assert(!settingsAdmin.includes("Tab::make('Stay policies')"), `${manifest.id}: business sites do not show hotel stay policies`)
+    assert(!settingsPages.includes("Tab::make('Stay policies')"), `${manifest.id}: business sites do not show hotel stay policies`)
     assert(!backend['resources/views/partials/stay-policies.blade.php'], `${manifest.id}: business sites do not render stay policies`)
     assert(!backend['app/Support/StayRequest.php'], `${manifest.id}: business sites do not collect hotel stay dates`)
   }
@@ -369,7 +436,38 @@ for (const manifest of manifests) {
   if (blogAdmin) {
     assert(blogAdmin.includes('TernaryFilter'), `${manifest.id}: blog posts must filter published state`)
     assert(blogAdmin.includes('published_between'), `${manifest.id}: blog posts must filter by publish date`)
-    assert(blogAdmin.includes('isToggledHiddenByDefault: true'), `${manifest.id}: long blog content stays hidden until asked for`)
+    assert(blogAdmin.includes('ToggleColumn'), `${manifest.id}: blog published state is a list toggle`)
+    assert(blogAdmin.includes("->label('Summary')"), `${manifest.id}: blog summary is labeled Summary`)
+    assert(blogAdmin.includes("->reorderable('sort_order')"), `${manifest.id}: blog order is drag and drop`)
+    assert(blogAdmin.includes('AdminImage::upload'), `${manifest.id}: blog images use the shared uploader`)
+    assert(blogAdmin.includes("->format('g:i A')"), `${manifest.id}: blog dates include the time`)
+    assert(blogAdmin.includes('->lineClamp(2)'), `${manifest.id}: blog title and summary stay on two lines`)
+    assert(blogAdmin.includes("width('12rem')"), `${manifest.id}: blog titles stay in a narrow column`)
+    assert(blogAdmin.includes('min-width:12rem'), `${manifest.id}: blog summaries keep a readable width`)
+    assert(blogAdmin.indexOf("ImageColumn::make('image')") < blogAdmin.indexOf("TextColumn::make('title')"), `${manifest.id}: blog cover comes before the title`)
+    assert(!blogAdmin.includes("label('Sort Order')"), `${manifest.id}: blog sort number stays off the form`)
+    assert(!blogAdmin.includes("label('Excerpt')"), `${manifest.id}: blog no longer says Excerpt`)
+    assert(!blogAdmin.includes("TextColumn::make('slug')"), `${manifest.id}: blog list hides the url slug`)
+    assert(blogAdmin.includes("TextInput::make('slug')"), `${manifest.id}: blog form still edits the url slug`)
+  }
+  const newsAdmin = backend['app/Filament/Resources/NewsPostResource.php'] ?? ''
+  assert(newsAdmin.includes('ToggleColumn'), `${manifest.id}: news published state is a list toggle`)
+  assert(newsAdmin.includes("->label('Summary')"), `${manifest.id}: news summary is labeled Summary`)
+  assert(newsAdmin.includes('->lineClamp(2)'), `${manifest.id}: news title and summary stay on two lines`)
+  assert(newsAdmin.includes("->format('g:i A')"), `${manifest.id}: news dates include the time`)
+  assert(!newsAdmin.includes("label('Sort Order')"), `${manifest.id}: news sort number stays off the form`)
+  assert(generalSettings.includes("AdminImage::upload('hero_image')"), `${manifest.id}: hero image keeps its stored file`)
+  assert(brandSettings.includes("AdminImage::upload('logo')"), `${manifest.id}: logo keeps its stored file`)
+  assert(aboutSettings.includes("AdminImage::upload('about_image')"), `${manifest.id}: about image keeps its stored file`)
+  assert(backend['app/Support/AdminImage.php']?.includes('imageEditor()'), `${manifest.id}: admin images open the editor`)
+  assert(backend['app/Support/AdminImage.php']?.includes('fetchFileInformation(false)'), `${manifest.id}: stored image urls are not dropped on save`)
+  assert(settingsMigration.includes("text('hero_image')"), `${manifest.id}: hero image stores a long url`)
+  assert(backend['resources/views/partials/map.blade.php']?.includes('MapEmbed::src'), `${manifest.id}: map partial builds an embed`)
+  assert(backend['resources/views/site/contact.blade.php']?.includes("@include('partials.map')"), `${manifest.id}: contact page shows the map`)
+  assert(!backend['resources/views/site/contact.blade.php']?.includes('urlencode($mapSrc)'), `${manifest.id}: contact map does not wrap the raw url`)
+  assert((backend['resources/views/partials/home-contact.blade.php'] ?? '').includes("@include('partials.map')"), `${manifest.id}: home contact shows the map`)
+  if (isCloneTemplate(manifest.id)) {
+    assert(homeBlade.includes("@include('partials.map')"), `${manifest.id}: home page shows the map`)
   }
 }
 
@@ -433,7 +531,10 @@ assert(brandedPages.pages['index.html']?.includes('data-site-brand'), 'static ex
 const brandedBackend = generateBackend('hotel', branded, 'gold', 'luxury', [])
 assert(brandedBackend['app/Support/Brand.php']?.includes('playfair'), 'Laravel Brand helper includes fonts')
 assert(brandedBackend['database/migrations/0001_01_01_000001_create_site_settings_table.php']?.includes("'logo'"), 'settings migration has logo')
-assert(brandedBackend['app/Filament/Resources/SiteSettingResource.php']?.includes("Tab::make('Brand')"), 'Filament has Brand tab')
+assert(brandedBackend['app/Filament/Pages/BrandSettings.php']?.includes("navigationLabel = 'Brand'"), 'Filament has a Brand page')
+assert(brandedBackend['app/Filament/Pages/FooterSettings.php']?.includes("navigationLabel = 'Footer'"), 'Filament has a Footer page')
+assert(brandedBackend['resources/views/partials/footer.blade.php']?.includes('footer_blurb'), 'Blade footer reads footer text')
+assert(brandedBackend['database/migrations/0001_01_01_000001_create_site_settings_table.php']?.includes('footer_note'), 'settings migration stores the copyright note')
 assert(brandedBackend['resources/views/layouts/site.blade.php']?.includes('data-site-brand'), 'Blade layout uses brand root')
 assert(brandedBackend['resources/views/partials/nav.blade.php']?.includes('$settings->logo'), 'Blade nav renders logo')
 
@@ -462,28 +563,29 @@ assert(templateDefaults.cpa?.licenseNumber, 'cpa should seed a license number')
 const taxfighters = requireManifest('taxfighters')
 assert(taxfighters.category === 'finance', 'taxfighters should be in the finance category')
 assert(taxfighters.navShell === 'taxfighters', 'taxfighters nav shell should stay taxfighters')
-assert(templateDefaults.taxfighters?.businessName === 'Bole Revenue Desk', 'taxfighters should seed Bole Revenue Desk')
-assert(templateDefaults.taxfighters?.phone === '+251 11 661 8299', 'taxfighters should seed the Addis storefront phone')
+assert(templateDefaults.taxfighters?.businessName === 'Revenue Desk', 'taxfighters should seed Revenue Desk')
+assert(templateDefaults.taxfighters?.phone === '+1 404 555 8299', 'taxfighters should seed the storefront phone')
+assert(templateDefaults.taxfighters?.contactFormButtonText === 'Send message', 'contact button should read Send message')
 
 const aureum = requireManifest('aureum')
 assert(aureum.category === 'finance', 'aureum should be in the finance category')
 assert(aureum.navShell === 'aureum', 'aureum nav shell should stay aureum')
-assert(templateDefaults.aureum?.businessName === 'Bole Ledger Studio', 'aureum should seed Bole Ledger Studio')
+assert(templateDefaults.aureum?.businessName === 'Ledger Studio', 'aureum should seed Ledger Studio')
 
 const flux = requireManifest('flux')
 assert(flux.category === 'finance', 'flux should be in the finance category')
 assert(flux.navShell === 'flux', 'flux nav shell should stay flux')
-assert(templateDefaults.flux?.businessName === 'Bole Tax Desk', 'flux should seed Bole Tax Desk')
+assert(templateDefaults.flux?.businessName === 'Hearth Advisory', 'flux should seed Hearth Advisory')
 
 const axiom = requireManifest('axiom')
 assert(axiom.category === 'finance', 'axiom should be in the finance category')
 assert(axiom.navShell === 'axiom', 'axiom nav shell should stay axiom')
-assert(templateDefaults.axiom?.businessName === 'Abay Audit', 'axiom should seed Abay Audit')
+assert(templateDefaults.axiom?.businessName === 'Northline Audit', 'axiom should seed Northline Audit')
 
 const helix = requireManifest('helix')
 assert(helix.category === 'finance', 'helix should be the sixth tax template')
 assert(helix.navShell === 'helix', 'helix nav shell should stay helix')
-assert(templateDefaults.helix?.businessName === 'Addis Tax Desk', 'helix should seed Addis Tax Desk')
+assert(templateDefaults.helix?.businessName === 'Civic Tax Desk', 'helix should seed Civic Tax Desk')
 
 const financeIds = ['cpa', 'taxfighters', 'aureum', 'flux', 'axiom', 'helix'] as const
 for (const id of financeIds) {
@@ -504,7 +606,7 @@ for (const id of financeIds) {
   assert(backend['database/seeders/DatabaseSeeder.php']?.includes(defaults.businessName), `${id}: seeder missing business name`)
   assert(backend['app/Filament/Resources/ServiceResource.php'], `${id}: missing Service Filament resource`)
   assert(backend['app/Filament/Resources/FaqResource.php'], `${id}: missing FAQ Filament resource`)
-  assert(backend['app/Filament/Resources/SiteSettingResource.php']?.includes('license_number'), `${id}: Filament should edit license`)
+  assert(backend['app/Filament/Pages/ContactSettings.php']?.includes('license_number'), `${id}: Filament should edit license`)
   assert(backend['routes/web.php']?.includes("route('contact')") || backend['routes/web.php']?.includes('contact'), `${id}: missing contact route`)
   assert(!backend['app/Models/RoomType.php'], `${id}: finance export must not include booking models`)
   assert(pages['index.html']?.includes('js-clone-form'), `${id}: static home must include working clone forms`)
@@ -527,9 +629,9 @@ assert(cpaNative.ink.toLowerCase() === '#16302a', 'cpa first scheme ink is fores
 assert(cpaNative.accent.toLowerCase() === '#a8d93f', 'cpa first scheme accent is lime')
 assert(cpaNative.surface.toLowerCase() === '#f6f3ea', 'cpa first scheme surface is cream')
 const cpaAlt = resolveClonePalette('cpa', { ...templateDefaults.cpa, brandPrimary: '#ff0000', brandSecondary: '#00ff00', brandAccent: '#0000ff' }, 'forest-trust')
-assert(cpaAlt.ink.toLowerCase() === '#0b1f3a', 'cpa scheme change applies ink even if brand is set')
-assert(cpaAlt.accent.toLowerCase() === '#0f766e', 'cpa scheme change applies accent even if brand is set')
-assert(cpaAlt.surface.toLowerCase() === '#f7f4ee', 'cpa navy scheme uses its light surface')
+assert(cpaAlt.ink.toLowerCase() === '#00ff00', 'custom brand color overrides the scheme ink')
+assert(cpaAlt.accent.toLowerCase() === '#ff0000', 'custom brand color overrides the scheme accent')
+assert(cpaAlt.surface.toLowerCase() === '#f7d6ce', 'custom brand color tints the surface')
 const fluxNative = resolveClonePalette('flux', templateDefaults.flux, requireManifest('flux').defaultColorSchemeId)
 assert(fluxNative.surface.toLowerCase() === '#fff9f4', 'flux first scheme keeps warm peach surface')
 assert(fluxNative.accent.toLowerCase() === '#fa6b34', 'flux first scheme keeps ember accent')
@@ -538,7 +640,7 @@ assert(helixNative.accent.toLowerCase() === '#800020', 'helix first scheme keeps
 const cpaCss = clonePaletteCss('cpa', cpaNative)
 assert(cpaCss.includes('--clone-surface: #F6F3EA') || cpaCss.toLowerCase().includes('--clone-surface: #f6f3ea'), 'cpa palette css emits cream surface')
 const cpaAltCss = clonePaletteCss('cpa', cpaAlt)
-assert(cpaAltCss.includes('#0f766e') || cpaAltCss.includes('#0F766E'), 'alternate scheme css emits new accent')
+assert(cpaAltCss.toLowerCase().includes('#ff0000'), 'custom brand color is emitted in the palette css')
 
 const hotelBackend = generateBackend('hotel', templateDefaults.hotel, hotel.defaultColorSchemeId, hotel.defaultLayoutVariantId, [], {
   apiBaseUrl: 'http://localhost:8080',
@@ -551,7 +653,8 @@ assert(hotelBackend['.env.example']?.includes('BUILDAURA_HOTEL_ID="11111111-1111
 assert(Object.keys(hotelBackend).some((path) => path.includes('BookingController')), 'hotel Laravel export should include booking')
 assert(hotelBackend['app/Filament/Pages/ApiKey.php']?.includes('class ApiKey'), 'hotel admin should request a new API key')
 const alpineBackend = generateBackend('alpine', templateDefaults.alpine, requireManifest('alpine').defaultColorSchemeId, requireManifest('alpine').defaultLayoutVariantId, [])
-assert(alpineBackend['app/Models/RoomType.php']?.includes('class RoomType'), 'alpine stays on the local booking stack')
+assert(!alpineBackend['app/Models/RoomType.php'], 'alpine inventory stays on the CRS client')
+assert(alpineBackend['app/Services/CrsClient.php'], 'alpine keeps the site CRS client')
 assert(!alpineBackend['.env.example']?.includes('BUILDAURA_API_KEY'), 'alpine must not receive a Buildaura key')
 
 console.log(`ok: ${manifests.length} templates, preview defaults + static ZIP + Laravel ZIP`)

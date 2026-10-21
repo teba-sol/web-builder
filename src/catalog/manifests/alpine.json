@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "id": "alpine",
-  "name": "Simien Mountain Lodge",
-  "description": "Highland lodge near Debark with heated rooms, escarpment views, and online booking.",
+  "name": "Highland Hotel",
+  "description": "Mountain hotel with heated rooms, wide views, and online booking.",
   "category": "hospitality",
   "previewGradient": "from-slate-900 via-sky-900 to-stone-400",
   "accentColor": "#38bdf8",
@@ -116,8 +116,8 @@
       }
     },
     {
-      "id": "ember-lodge",
-      "name": "Ember Lodge",
+      "id": "ember-hotel",
+      "name": "Ember Hotel",
       "swatches": [
         "#1c1917",
         "#f59e0b",
@@ -137,7 +137,7 @@
     "explore": "tiles",
     "contactShell": "split-dark",
     "contactForm": "bold-outline",
-    "exploreTitle": "The Lodge",
+    "exploreTitle": "The hotel",
     "exploreSubtitle": "Rooms, spa, dining, and book your peak stay",
     "exploreLinkLabel": "Explore"
   },
@@ -206,17 +206,17 @@
     {
       "key": "reservationEmail",
       "label": "Reservations",
-      "placeholder": "book@simienlodge.et"
+      "placeholder": "book@highlandhotel.example"
     },
     {
       "key": "phone",
       "label": "Concierge",
-      "placeholder": "+251 58 111 2040"
+      "placeholder": "+41 33 555 2040"
     },
     {
       "key": "address",
-      "label": "Lodge Address",
-      "placeholder": "Debark, Simien Mountains"
+      "label": "Address",
+      "placeholder": "4 Ridge Road"
     },
     {
       "key": "hours",
@@ -226,7 +226,7 @@
     {
       "key": "email",
       "label": "Email",
-      "placeholder": "book@simienlodge.et"
+      "placeholder": "stay@highlandhotel.example"
     }
   ],
   "servicesLabel": "Mountain Services",
@@ -246,14 +246,14 @@
     "grayscaleImage": false
   },
   "defaults": {
-    "businessName": "Simien Mountain Lodge",
-    "tagline": "Above Debark, on the escarpment",
-    "heroSubtext": "Timber rooms, heated floors, and a fire after a day on the Simien escarpment.",
+    "businessName": "Highland Hotel",
+    "tagline": "Above the valley, on the ridge",
+    "heroSubtext": "Timber rooms, heated floors, and a fire after a day on the trails.",
     "heroImage": "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1200&q=80",
-    "aboutTitle": "The lodge",
-    "about": "Simien Mountain Lodge sits above Debark, where the highland air is cold after sunset. Rooms are lined in timber, floors are heated, and the terrace looks across the escarpment.",
+    "aboutTitle": "The hotel",
+    "about": "Highland Hotel sits above the valley, where the air is cold after sunset. Rooms are lined in timber, floors are heated, and the terrace looks across the peaks.",
     "aboutImage": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&q=80",
-    "missionStatement": "A warm room after a cold day in the Simien Mountains.",
+    "missionStatement": "A warm room after a cold day in the mountains.",
     "pageVisibility": {
       "about": true,
       "services": true,
@@ -392,17 +392,17 @@
     "testimonials": [
       {
         "quote": "Outstanding service and incredible results. Highly recommended!",
-        "author": "Mekdes Haile",
+        "author": "Elena Ward",
         "role": "CEO, TechStart"
       },
       {
         "quote": "They transformed our business. Professional, creative, and reliable.",
-        "author": "Dawit Bekele",
+        "author": "Noah Bennett",
         "role": "Founder, Bloom Co"
       },
       {
         "quote": "The best decision we made this year. Exceeded every expectation.",
-        "author": "Hiwot Alemu",
+        "author": "Maya Chen",
         "role": "Director, Apex Group"
       }
     ],
@@ -484,7 +484,7 @@
       }
     ],
     "roomsSectionTitle": "Rooms & Chalets",
-    "roomsSectionSubtitle": "Highland rooms and a chalet suite, priced per night in birr.",
+    "roomsSectionSubtitle": "Highland rooms and a chalet suite, priced per night in local currency.",
     "bookingSectionTitle": "Book Your Mountain Stay",
     "bookingSectionSubtitle": "Search your trek dates, then reserve a specific room.",
     "roomTypes": [
@@ -530,7 +530,7 @@
         "name": "Chalet Suite",
         "slug": "chalet-suite",
         "parentSlug": "",
-        "description": "Two levels with a fireplace, a boot room, and a balcony over the valley above Debark.",
+        "description": "Two levels with a fireplace, a boot room, and a balcony over the valley above the trailhead.",
         "shortDescription": "Fireplace · Balcony · 68 m²",
         "basePrice": "18600",
         "currency": "ETB",
@@ -577,17 +577,17 @@
     ],
     "team": [
       {
-        "name": "Abel Desta",
+        "name": "James Carter",
         "role": "Founder & CEO",
         "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80"
       },
       {
-        "name": "Mekdes Haile",
+        "name": "Elena Ward",
         "role": "Creative Director",
         "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
       },
       {
-        "name": "Dawit Bekele",
+        "name": "Noah Bennett",
         "role": "Operations Lead",
         "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80"
       }
@@ -601,27 +601,29 @@
     "seoDescription": "",
     "seoKeywords": "",
     "seoSiteUrl": "",
-    "email": "stay@simienlodge.et",
-    "phone": "+251 58 111 2040",
-    "address": "Debark, Simien Mountains",
+    "email": "stay@highlandhotel.example",
+    "phone": "+41 33 555 2040",
+    "address": "4 Ridge Road",
     "hours": "Front desk 7:00–21:00",
     "instagram": "",
     "website": "",
     "linkedin": "",
     "whatsapp": "",
     "supportEmail": "",
-    "reservationEmail": "book@simienlodge.et",
+    "reservationEmail": "book@highlandhotel.example",
     "licenseNumber": "",
     "bookingUrl": "",
     "contactSectionTitle": "Get in Touch",
     "contactFormTitle": "Send Us a Message",
     "contactFormUrl": "",
-    "contactFormButtonText": "Open Contact Form",
-    "city": "Debark",
-    "country": "Ethiopia",
+    "contactFormButtonText": "Send message",
+    "city": "Interlaken",
+    "country": "Switzerland",
     "starRating": "4",
     "checkInTime": "14:00",
     "checkOutTime": "11:00",
-    "propertyAmenities": "Wi-Fi, Fireplace, Restaurant, Parking, Generator backup"
+    "propertyAmenities": "Wi-Fi, Fireplace, Restaurant, Parking, Generator backup",
+    "footerBlurb": "Heated rooms and a terrace over the valley.",
+    "footerNote": "All rights reserved."
   }
 }

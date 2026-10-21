@@ -190,7 +190,7 @@ export function Template1({ c, basePath }: { c: SiteContent; basePath: string })
                   <input
                     type="tel"
                     required
-                    placeholder="+251 911 000 000"
+                    placeholder="Phone number"
                     value={bookingForm.phone}
                     onChange={(e) => setBookingForm({ ...bookingForm, phone: e.target.value })}
                     className="w-full bg-slate-50 border border-slate-300 rounded-xl py-2.5 px-3.5 text-sm text-slate-900 focus:outline-none focus:border-rose-500"
@@ -544,7 +544,7 @@ export function Template1({ c, basePath }: { c: SiteContent; basePath: string })
                     <input
                       type="tel"
                       required
-                      placeholder="+251 911 000 000"
+                      placeholder="Phone number"
                       value={contactForm.phone}
                       onChange={(e) => setContactForm({ ...contactForm, phone: e.target.value })}
                       className="w-full bg-slate-100 border border-slate-300 rounded-xl py-3 px-4 text-sm text-slate-900 focus:outline-none focus:border-rose-500"
@@ -579,7 +579,7 @@ export function Template1({ c, basePath }: { c: SiteContent; basePath: string })
                   className="px-8 py-3.5 rounded-xl text-white font-bold text-sm shadow-xl flex items-center gap-2"
                   style={{ backgroundColor: 'var(--clone-accent)' }}
                 >
-                  <Send className="w-4 h-4 text-amber-300" /> Send Inquiry
+                  <Send className="w-4 h-4 text-amber-300" /> {c.contactFormButtonText || 'Send message'}
                 </button>
               </form>
 
@@ -604,7 +604,7 @@ export function Template1({ c, basePath }: { c: SiteContent; basePath: string })
               <Shield className="w-5 h-5 text-rose-500" /> {c.businessName}
             </div>
             <p className="text-slate-600 text-xs leading-relaxed">
-              {c.missionStatement || c.heroSubtext}
+              {c.footerBlurb || c.missionStatement || c.heroSubtext}
             </p>
           </div>
 
@@ -625,16 +625,16 @@ export function Template1({ c, basePath }: { c: SiteContent; basePath: string })
           </div>
 
           <div>
-            <h4 className="text-white font-bold mb-3 uppercase tracking-wider">Legal Disclaimer</h4>
+            <h4 className="font-bold mb-3 uppercase tracking-wider text-slate-900">Contact</h4>
             <p className="text-[11px] text-slate-500 leading-relaxed">
-              Refund advances are short-term loans provided by partner financial institutions upon Ministry of Revenue return filing acceptance. Terms and conditions apply.
+              {c.phone}<br />{c.email}<br />{c.address}
             </p>
           </div>
 
         </div>
 
         <div className="max-w-7xl mx-auto mt-8 pt-8 border-t border-slate-900 text-center text-slate-500">
-          © {new Date().getFullYear()} {c.businessName}. All rights reserved.
+          © {new Date().getFullYear()} {c.businessName}. {c.footerNote || 'All rights reserved.'}
         </div>
       </footer>
 
@@ -687,7 +687,7 @@ export function Template1({ c, basePath }: { c: SiteContent; basePath: string })
                 <input
                   type="tel"
                   required
-                  placeholder="+251 911 000 000"
+                  placeholder="Phone number"
                   value={bookingForm.phone}
                   onChange={(e) => setBookingForm({ ...bookingForm, phone: e.target.value })}
                   className="w-full bg-slate-50 border border-slate-300 rounded-xl py-2.5 px-3.5 text-xs text-slate-900 focus:outline-none focus:border-rose-500"
