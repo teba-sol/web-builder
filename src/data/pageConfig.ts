@@ -52,7 +52,7 @@ export function getPageNavLabel(templateId: TemplateId, key: keyof PageVisibilit
   switch (key) {
     case 'services': return cfg.navLabel === 'Menu' ? 'Menu' : 'Services'
     case 'portfolio': return cfg.navLabel
-    case 'rooms': return 'Rooms'
+    case 'rooms': return 'Book'
     default: return pageMetas.find((p) => p.key === key)?.label ?? key
   }
 }
@@ -84,10 +84,9 @@ export function getSiteNavItems(templateId: TemplateId, content: SiteContent): S
   for (const meta of pageMetas) {
     if (!pv[meta.key]) continue
     if (!pageHasContent(meta.key, content) && meta.key !== 'contact') continue
-    // Prefer Book CTA over listing "Rooms" label when hospitality booking is on
     const label =
       meta.key === 'rooms'
-        ? 'Rooms'
+        ? 'Book'
         : getPageNavLabel(templateId, meta.key)
     items.push({
       page: meta.segment as SitePageId,

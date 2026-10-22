@@ -541,9 +541,15 @@ export function ContactSectionView({
     'terra-pill': (
       <section id="contact" className={t.section}>
         <div className="mx-auto max-w-5xl px-6">
-          <div className="rounded-3xl border border-orange-200 bg-orange-50/80 p-8 cmd:p-12">
-            <h2 className={`mb-8 text-2xl font-bold text-orange-950 ${t.sectionTitle}`}>{title}</h2>
-            <div className="grid gap-10 clg:grid-cols-2">{info}{form}</div>
+          <div className="rounded-3xl border border-orange-200 bg-orange-50/80 p-8 text-slate-900 cmd:p-12">
+            <h2 className="mb-8 text-2xl font-bold text-orange-950">{title}</h2>
+            <div className="grid gap-10 clg:grid-cols-2">
+              <div>
+                <ContactDetails c={c} t={{ ...t, contactLabel: 'text-xs font-semibold uppercase tracking-wider text-orange-950' }} meta={meta} />
+                <ContactMap c={c} />
+              </div>
+              {form}
+            </div>
           </div>
         </div>
       </section>

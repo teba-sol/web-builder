@@ -20,6 +20,8 @@ import { BrandIdentityForm } from './BrandIdentityForm'
 import { CUSTOM_COLOR_SCHEME_ID } from '../data/pickTemplate'
 import { FontPicker } from './style/FontPicker'
 import { PalettePicker } from './style/PalettePicker'
+import { HOTEL_AMENITIES, ROOM_TYPE_AMENITIES } from '../data/amenityCatalog'
+import { parseAmenities, stayCurrency } from '../data/hospitality'
 import { ImagePicker } from './ImagePicker'
 import { PageVisibilityPicker } from './PageVisibilityPicker'
 import { SectionVisibilityPicker } from './SectionVisibilityPicker'
@@ -213,11 +215,11 @@ export function ContentForm() {
           <Field label="Country" value={content.country ?? ''} onChange={(v) => updateContent({ country: v })} placeholder="Ethiopia" />
           <Field label="Check-in" value={content.checkInTime ?? ''} onChange={(v) => updateContent({ checkInTime: v })} placeholder="15:00" />
           <Field label="Check-out" value={content.checkOutTime ?? ''} onChange={(v) => updateContent({ checkOutTime: v })} placeholder="11:00" />
-          <Field
-            label="Property amenities"
+          <AmenityTicks
+            label="Hotel amenities"
+            catalog={HOTEL_AMENITIES}
             value={content.propertyAmenities ?? ''}
             onChange={(v) => updateContent({ propertyAmenities: v })}
-            placeholder="Pool, Spa, Parking"
           />
         </FormSection>
       )}
@@ -225,7 +227,7 @@ export function ContentForm() {
       {pageOn('rooms') && (
         <FormSection title="Rooms & Booking" {...listControls('roomTypes', 'Add Room Type')}>
           <p className="mb-3 text-xs text-slate-500">
-            Define room types and optional subtypes (set Parent slug). Unit count is sent to the BuildAura hotel warehouse on export. Guests can only book available units.
+            The URL is saved from the name. Unit count is sent to the BuildAura hotel warehouse on export. Guests can only book available rooms.
           </p>
           <Field label="Rooms Section Title" value={content.roomsSectionTitle} onChange={(v) => updateContent({ roomsSectionTitle: v })} />
           <Field label="Rooms Section Subtitle" value={content.roomsSectionSubtitle} onChange={(v) => updateContent({ roomsSectionSubtitle: v })} />
@@ -242,34 +244,103 @@ export function ContentForm() {
                 label="Name"
                 value={room.name}
                 onChange={(v) => {
-                  const nextSlug = !room.slug || room.slug === slugify(room.name) ? slugify(v) : room.slug
                   const rooms = [...content.roomTypes]
-                  rooms[i] = { ...rooms[i], name: v, slug: nextSlug }
+                  rooms[i] = { ...rooms[i], name: v, slug: slugify(v) }
                   updateContent({ roomTypes: rooms })
                 }}
               />
-              <Field label="URL Slug" value={room.slug} onChange={(v) => updateListItem('roomTypes', i, 'slug', slugify(v))} placeholder="deluxe-suite" />
-              <Field
-                label="Parent slug (subtype of…)"
-                value={room.parentSlug}
-                onChange={(v) => updateListItem('roomTypes', i, 'parentSlug', slugify(v))}
-                placeholder="leave empty for top-level type"
-              />
-              <Field label="Short description" value={room.shortDescription} onChange={(v) => updateListItem('roomTypes', i, 'shortDescription', v)} />
-              <Field label="Full description" value={room.description} onChange={(v) => updateListItem('roomTypes', i, 'description', v)} multiline rows={3} />
+              <Field label="Description" value={room.description} onChange={(v) => updateListItem('roomTypes', i, 'description', v)} multiline rows={3} />
               <div className="grid grid-cols-2 gap-3">
-                <Field label="Nightly price" value={room.basePrice} onChange={(v) => updateListItem('roomTypes', i, 'basePrice', v)} placeholder="250" />
-                <Field label="Currency" value={room.currency} onChange={(v) => updateListItem('roomTypes', i, 'currency', v)} placeholder="ETB" />
+                <Field label="Price" value={room.basePrice} onChange={(v) => updateListItem('roomTypes', i, 'basePrice', v)} placeholder="250" />
+                <Field label="Discount %" value={room.discountPercent} onChange={(v) => updateListItem('roomTypes', i, 'discountPercent', v)} placeholder="0" />
+                <label className="block">
+                  <span className="mb-1.5 block text-sm font-medium text-slate-700">Currency</span>
+                  <select
+                    value={stayCurrency(room.currency)}
+                    onChange={(e) => updateListItem('roomTypes', i, 'currency', e.target.value)}
+                    className="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 focus:border-navy focus:outline-none focus:ring-2 focus:ring-navy/20"
+                  >
+                    <option value="ETB">ETB</option>
+                    <option value="USD">USD</option>
+                  </select>
+                </label>
                 <Field label="Max adults" value={room.maxAdults} onChange={(v) => updateListItem('roomTypes', i, 'maxAdults', v)} />
                 <Field label="Max children" value={room.maxChildren} onChange={(v) => updateListItem('roomTypes', i, 'maxChildren', v)} />
-                <Field label="Max occupancy" value={room.maxOccupancy} onChange={(v) => updateListItem('roomTypes', i, 'maxOccupancy', v)} />
                 <Field label="Size (m²)" value={room.sizeSqm} onChange={(v) => updateListItem('roomTypes', i, 'sizeSqm', v)} />
                 <Field label="Beds" value={room.bedConfiguration} onChange={(v) => updateListItem('roomTypes', i, 'bedConfiguration', v)} placeholder="1 King" />
                 <Field label="Unit count" value={room.unitCount} onChange={(v) => updateListItem('roomTypes', i, 'unitCount', v)} placeholder="4" />
                 <Field label="Unit code prefix" value={room.unitPrefix} onChange={(v) => updateListItem('roomTypes', i, 'unitPrefix', v)} placeholder="DLX-" />
               </div>
-              <Field label="Amenities (comma-separated)" value={room.amenities} onChange={(v) => updateListItem('roomTypes', i, 'amenities', v)} placeholder="Wi-Fi, Mini bar, Safe" />
-              <ImagePicker label="Image" value={room.image} onChange={(v) => updateListItem('roomTypes', i, 'image', v)} />
+              <label className="mt-2 flex items-center gap-2 text-sm">
+                <input
+                  type="checkbox"
+                  checked={room.freeCancellation}
+                  onChange={(e) => {
+                    const rooms = [...content.roomTypes]
+                    rooms[i] = { ...rooms[i], freeCancellation: e.target.checked }
+                    updateContent({ roomTypes: rooms })
+                  }}
+                  className="h-4 w-4 rounded border-slate-300 text-accent"
+                />
+                Free cancellation
+              </label>
+              <label className="mt-2 flex items-center gap-2 text-sm">
+                <input
+                  type="checkbox"
+                  checked={room.freeBreakfast}
+                  onChange={(e) => {
+                    const rooms = [...content.roomTypes]
+                    rooms[i] = { ...rooms[i], freeBreakfast: e.target.checked }
+                    updateContent({ roomTypes: rooms })
+                  }}
+                  className="h-4 w-4 rounded border-slate-300 text-accent"
+                />
+                Breakfast included
+              </label>
+              <AmenityTicks
+                label="Room amenities"
+                catalog={ROOM_TYPE_AMENITIES}
+                value={room.amenities}
+                onChange={(v) => updateListItem('roomTypes', i, 'amenities', v)}
+              />
+              {(room.photos ?? []).map((photo, photoIndex) => (
+                <div key={photoIndex} className="space-y-2">
+                  <ImagePicker
+                    label={`Photo ${photoIndex + 1}`}
+                    value={photo}
+                    onChange={(v) => {
+                      const rooms = [...content.roomTypes]
+                      const photos = [...(rooms[i].photos ?? [])]
+                      photos[photoIndex] = v
+                      rooms[i] = { ...rooms[i], photos }
+                      updateContent({ roomTypes: rooms })
+                    }}
+                  />
+                  <button
+                    type="button"
+                    className="text-xs font-medium text-slate-500 hover:text-slate-800"
+                    onClick={() => {
+                      const rooms = [...content.roomTypes]
+                      const photos = (rooms[i].photos ?? []).filter((_, index) => index !== photoIndex)
+                      rooms[i] = { ...rooms[i], photos }
+                      updateContent({ roomTypes: rooms })
+                    }}
+                  >
+                    Remove photo
+                  </button>
+                </div>
+              ))}
+              <button
+                type="button"
+                className="text-sm font-medium text-slate-700"
+                onClick={() => {
+                  const rooms = [...content.roomTypes]
+                  rooms[i] = { ...rooms[i], photos: [...(rooms[i].photos ?? []), ''] }
+                  updateContent({ roomTypes: rooms })
+                }}
+              >
+                Add photo
+              </button>
               <label className="mt-2 flex items-center gap-2 text-sm">
                 <input
                   type="checkbox"
@@ -380,13 +451,11 @@ export function ContentForm() {
                 label="Title"
                 value={post.title}
                 onChange={(v) => {
-                  const nextSlug = !post.slug || post.slug === slugify(post.title) ? slugify(v) : post.slug
                   const posts = [...content.blogPosts]
-                  posts[i] = { ...posts[i], title: v, slug: nextSlug }
+                  posts[i] = { ...posts[i], title: v, slug: slugify(v) }
                   updateContent({ blogPosts: posts })
                 }}
               />
-              <Field label="URL Slug" value={post.slug} onChange={(v) => updateListItem('blogPosts', i, 'slug', slugify(v))} placeholder="my-post-title" />
               <Field label="Summary" value={post.excerpt} onChange={(v) => updateListItem('blogPosts', i, 'excerpt', v)} multiline rows={2} />
               <Field label="Full Content" value={post.body} onChange={(v) => updateListItem('blogPosts', i, 'body', v)} multiline rows={6} />
               <ImagePicker label="Cover Image" value={post.image} onChange={(v) => updateListItem('blogPosts', i, 'image', v)} />
@@ -412,13 +481,11 @@ export function ContentForm() {
                 label="Title"
                 value={post.title}
                 onChange={(v) => {
-                  const nextSlug = !post.slug || post.slug === slugify(post.title) ? slugify(v) : post.slug
                   const posts = [...content.newsPosts]
-                  posts[i] = { ...posts[i], title: v, slug: nextSlug }
+                  posts[i] = { ...posts[i], title: v, slug: slugify(v) }
                   updateContent({ newsPosts: posts })
                 }}
               />
-              <Field label="URL Slug" value={post.slug} onChange={(v) => updateListItem('newsPosts', i, 'slug', slugify(v))} />
               <Field label="Summary" value={post.excerpt} onChange={(v) => updateListItem('newsPosts', i, 'excerpt', v)} multiline rows={2} />
               <Field label="Full Content" value={post.body} onChange={(v) => updateListItem('newsPosts', i, 'body', v)} multiline rows={6} />
               <ImagePicker label="Cover Image" value={post.image} onChange={(v) => updateListItem('newsPosts', i, 'image', v)} />
@@ -612,6 +679,43 @@ function ItemCard({
       </div>
       <div className="space-y-3">{children}</div>
     </div>
+  )
+}
+
+function AmenityTicks({
+  label,
+  catalog,
+  value,
+  onChange,
+}: {
+  label: string
+  catalog: readonly string[]
+  value: string
+  onChange: (next: string) => void
+}) {
+  const selected = new Set(parseAmenities(value).filter((name) => catalog.includes(name)))
+  return (
+    <fieldset>
+      <legend className="mb-2 text-sm font-medium text-slate-700">{label}</legend>
+      <div className="grid grid-cols-2 gap-2">
+        {catalog.map((name) => (
+          <label key={name} className="flex items-center gap-2 text-sm text-slate-700">
+            <input
+              type="checkbox"
+              checked={selected.has(name)}
+              onChange={(event) => {
+                const next = new Set(selected)
+                if (event.target.checked) next.add(name)
+                else next.delete(name)
+                onChange(catalog.filter((item) => next.has(item)).join(', '))
+              }}
+              className="h-4 w-4 rounded border-slate-300 text-accent"
+            />
+            {name}
+          </label>
+        ))}
+      </div>
+    </fieldset>
   )
 }
 

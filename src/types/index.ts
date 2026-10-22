@@ -58,33 +58,31 @@ export interface PageVisibility {
 }
 
 /**
- * Standard hospitality room catalogue entry.
- * Use parentSlug to model sub-types (e.g. Deluxe → Ocean View Deluxe).
- * unitCount seeds physical inventory rooms in the exported admin/backend.
+ * Hospitality room catalogue entry.
+ * slug is generated from the name. unitCount seeds physical rooms on export.
  */
 export interface RoomTypeItem {
   name: string
   slug: string
-  /** Empty = top-level type; set to another type's slug for a subtype */
-  parentSlug: string
   description: string
-  shortDescription: string
-  /** Nightly rate as number string, e.g. "250" */
+  /** Price as a number string, e.g. "250". The discount is a percent off this price. */
   basePrice: string
+  discountPercent: string
   currency: string
   maxAdults: string
   maxChildren: string
-  maxOccupancy: string
   bedConfiguration: string
   sizeSqm: string
-  /** Comma-separated amenities */
+  /** Comma-separated catalog amenity names */
   amenities: string
-  image: string
+  photos: string[]
   /** How many bookable room units to create for this type */
   unitCount: string
   /** Prefix for unit codes, e.g. "DLX-" → DLX-101 */
   unitPrefix: string
   isActive: boolean
+  freeCancellation: boolean
+  freeBreakfast: boolean
 }
 
 export interface ServiceItem {

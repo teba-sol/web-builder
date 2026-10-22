@@ -1,5 +1,6 @@
 import { requireManifest } from '../catalog/catalog'
 import type { HeroLayout } from '../data/layoutVariants'
+import { isHospitalityTemplate } from '../data/hospitality'
 import type { TemplateId } from '../types'
 import { escapeHtml } from './imageUtils'
 
@@ -228,7 +229,7 @@ function buildAxiomHero(input: HeroExportInput, mode: 'html' | 'blade'): string 
       <a href="${h.ctaHref}" class="inline-block mt-8 rounded-lg px-7 py-3.5 text-sm font-bold text-white" style="background-color:#2196F3">${h.ctaText}</a>
     </div>
   </div>
-  <div class="relative z-20 max-w-7xl mx-auto px-4 -mt-16"><div class="grid grid-cols-2 md:grid-cols-4 gap-4 bg-white rounded-2xl p-6 shadow-2xl">${stats}</div></div>
+  <div class="relative z-20 max-w-7xl mx-auto px-4 -mt-16"><div class="grid grid-cols-2 md:grid-cols-4 gap-4 bg-white text-slate-900 rounded-2xl p-6 shadow-2xl">${stats}</div></div>
 </header>`
 }
 
@@ -295,14 +296,29 @@ function buildHeroHtml(input: HeroExportInput, mode: 'html' | 'blade'): string {
     return `<header class="${headerClasses(templateId, heroLayout)}">
   ${imageTag}
   <div class="${wrapperClass}">
-    ${inner}
+    ${inner}${hospitalitySearch(templateId, mode)}
   </div>
 </header>`
   }
 
   return `<header class="${headerClasses(templateId, heroLayout)}">
   <div class="${wrapperClass}">
-    ${inner}
+    ${inner}${hospitalitySearch(templateId, mode)}
   </div>
 </header>`
+}
+
+function hospitalitySearch(templateId: TemplateId, mode: 'html' | 'blade'): string {
+  if (!isHospitalityTemplate(templateId)) return ''
+  if (mode === 'blade') {
+    return `\n    @include('partials.hero-stay-search')`
+  }
+  return `
+    <form action="rooms/index.html" method="get" class="mt-8 grid w-full gap-3 rounded-2xl bg-white/95 p-4 text-left text-slate-900 shadow-xl md:grid-cols-5 md:items-end">
+      <label class="block text-sm"><span class="mb-1 block text-xs font-semibold uppercase tracking-wider text-slate-500">Check-in</span><input type="date" name="check_in" required class="w-full rounded-lg border px-3 py-2.5" /></label>
+      <label class="block text-sm"><span class="mb-1 block text-xs font-semibold uppercase tracking-wider text-slate-500">Check-out</span><input type="date" name="check_out" required class="w-full rounded-lg border px-3 py-2.5" /></label>
+      <label class="block text-sm"><span class="mb-1 block text-xs font-semibold uppercase tracking-wider text-slate-500">Adults</span><input type="number" name="adults" min="1" value="2" required class="w-full rounded-lg border px-3 py-2.5" /></label>
+      <label class="block text-sm"><span class="mb-1 block text-xs font-semibold uppercase tracking-wider text-slate-500">Children</span><input type="number" name="children" min="0" value="0" required class="w-full rounded-lg border px-3 py-2.5" /></label>
+      <button type="submit" class="rounded-lg bg-slate-900 px-5 py-3 font-semibold text-white">Search</button>
+    </form>`
 }

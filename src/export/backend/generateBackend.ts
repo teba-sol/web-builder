@@ -451,7 +451,7 @@ class SiteSetting extends Model
         'news_section_title', 'news_section_subtitle', 'pricing_section_title',
         'rooms_section_title', 'rooms_section_subtitle',
         'booking_section_title', 'booking_section_subtitle',
-        'free_cancellation', 'pay_on_arrival', 'free_breakfast',
+        'pay_on_arrival', 'usdt_etb_rate', 'breakfast_price', 'cancellation_fee', 'house_rules',
         'steps_section_title', 'showcase_section_title', 'showcase_section_subtitle',
         'gallery_section_title', 'testimonials_section_title',
         'blog_section_title', 'blog_section_subtitle', 'faq_section_title',
@@ -467,9 +467,10 @@ class SiteSetting extends Model
         'page_visibility' => 'array',
         'section_visibility' => 'array',
         'logo_show_name' => 'boolean',
-        'free_cancellation' => 'boolean',
         'pay_on_arrival' => 'boolean',
-        'free_breakfast' => 'boolean',
+        'usdt_etb_rate' => 'decimal:4',
+        'breakfast_price' => 'decimal:2',
+        'cancellation_fee' => 'decimal:2',
         'seo_enabled' => 'boolean',
     ];
 
@@ -1370,9 +1371,11 @@ return new class extends Migration
             $table->string('rooms_section_subtitle')->nullable();
             $table->string('booking_section_title')->nullable();
             $table->string('booking_section_subtitle')->nullable();
-            $table->boolean('free_cancellation')->default(false);
             $table->boolean('pay_on_arrival')->default(false);
-            $table->boolean('free_breakfast')->default(false);
+            $table->decimal('usdt_etb_rate', 12, 4)->default(0);
+            $table->decimal('breakfast_price', 12, 2)->default(0);
+            $table->decimal('cancellation_fee', 12, 2)->default(0);
+            $table->string('house_rules')->nullable();
             $table->string('services_section_title')->nullable();
             $table->string('services_section_subtitle')->nullable();
             $table->string('steps_section_title')->nullable();

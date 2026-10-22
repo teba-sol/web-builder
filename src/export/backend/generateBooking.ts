@@ -9,11 +9,20 @@ import {
   parseAmenities,
   parseRoomInt,
   parseRoomPrice,
+  stayCurrency,
 } from '../../data/hospitality'
+import { accentInk } from '../../utils/accentInk'
 import type { SiteExportPayload } from './exportPayload'
 import { resolveAssetPath } from './exportPayload'
 import { stayPoliciesAdminFiles } from './generateFilament'
 import { roomCalendarFiles } from './generateRoomCalendar'
+import {
+  heroStaySearchPartial,
+  localBookBlade,
+  localConfirmBlade,
+  localRoomDetailBlade,
+  localRoomsBlade,
+} from './hospitalityPublic'
 
 export function hasBookingFeature(content: SiteContent): boolean {
   return Boolean(content.pageVisibility?.rooms && content.roomTypes?.some((r) => r.name))
@@ -152,15 +161,12 @@ class StayRequest
 }
 
 export function staySearchPartial(accent: string): string {
-  return `<form method="GET" action="{{ $searchAction }}" data-stay-search data-today="{{ $minDate ?? now()->toDateString() }}" class="grid gap-4 rounded-2xl border bg-white p-5 shadow-sm md:grid-cols-2 lg:grid-cols-6 lg:items-end">
+  return `<form method="GET" action="{{ $searchAction }}" data-stay-search data-today="{{ $minDate ?? now()->toDateString() }}" class="{{ $searchClass ?? 'grid gap-4 rounded-2xl border bg-white p-5 text-slate-900 shadow-sm md:grid-cols-2 lg:grid-cols-6 lg:items-end' }}">
   <label class="block text-sm"><span class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">Check-in</span><input type="date" name="check_in" value="{{ $checkIn }}" min="{{ $minDate ?? now()->toDateString() }}" required class="w-full rounded-lg border border-slate-300 px-3 py-2.5" /></label>
   <label class="block text-sm"><span class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">Check-out</span><input type="date" name="check_out" value="{{ $checkOut }}" min="{{ $minDate ?? now()->toDateString() }}" required class="w-full rounded-lg border border-slate-300 px-3 py-2.5" /></label>
   <label class="block text-sm"><span class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">Adults</span><input type="number" name="adults" min="1" max="20" value="{{ $adults }}" required class="w-full rounded-lg border border-slate-300 px-3 py-2.5" /></label>
   <label class="block text-sm"><span class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">Children</span><input type="number" name="children" min="0" max="10" value="{{ $children }}" required class="w-full rounded-lg border border-slate-300 px-3 py-2.5" /></label>
-  @if(!empty($roomTypes))
-  <label class="block text-sm"><span class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">Room type</span><select name="room_type_id" class="w-full rounded-lg border border-slate-300 px-3 py-2.5"><option value="">Any</option>@foreach($roomTypes as $type)<option value="{{ $type['id'] }}" @selected(($roomTypeId ?? '') === ($type['id'] ?? ''))>{{ $type['name'] }}</option>@endforeach</select></label>
-  @endif
-  <button type="submit" class="rounded-lg px-5 py-3 font-semibold text-white" style="background-color:${accent}">{{ $submitLabel ?? 'Search availability' }}</button>
+  <button type="submit" class="rounded-lg px-5 py-3 font-semibold ${accentInk(accent)}" style="background-color:${accent}">{{ $submitLabel ?? 'Search' }}</button>
   <p class="text-xs text-slate-500 lg:col-span-6">Children are 17 or younger. Guests 18 and older count as adults.</p>
   <div data-child-ages class="grid gap-3 sm:grid-cols-2 lg:col-span-6 lg:grid-cols-4">
     @foreach(($childAges ?? []) as $index => $age)
@@ -271,19 +277,18 @@ function seedRoomPayload(content: SiteContent, assetMap: Record<string, string>)
   const types = content.roomTypes.filter((r) => r.name)
   return types.map((rt, i) => ({
     name: rt.name,
-    slug: rt.slug || rt.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
-    parent_slug: rt.parentSlug || null,
     description: rt.description,
-    short_description: rt.shortDescription,
     base_price: parseRoomPrice(rt.basePrice),
-    currency: rt.currency || 'ETB',
+    discount_percent: Math.min(100, Math.max(0, parseRoomPrice(rt.discountPercent || '0'))),
+    currency: stayCurrency(rt.currency),
     max_adults: parseRoomInt(rt.maxAdults, 2),
     max_children: parseRoomInt(rt.maxChildren, 0),
-    max_occupancy: parseRoomInt(rt.maxOccupancy, 2),
     bed_configuration: rt.bedConfiguration,
     size_sqm: rt.sizeSqm,
     amenities: parseAmenities(rt.amenities),
-    image: resolveAssetPath(rt.image, `room-${i + 1}`, assetMap),
+    photos: (rt.photos || []).map((photo, photoIndex) => resolveAssetPath(photo, `room-${i + 1}-${photoIndex + 1}`, assetMap)).filter((photo) => photo !== ''),
+    free_cancellation: rt.freeCancellation === true,
+    free_breakfast: rt.freeBreakfast === true,
     unit_count: Math.max(1, parseRoomInt(rt.unitCount, 1)),
     unit_prefix: rt.unitPrefix || 'RM-',
     is_active: rt.isActive !== false,
@@ -299,6 +304,7 @@ export function generateBookingFiles(payload: SiteExportPayload): Record<string,
   const files: Record<string, string> = {}
   files['resources/views/partials/stay-policies.blade.php'] = stayPoliciesPartial()
   files['resources/views/partials/stay-search.blade.php'] = staySearchPartial(accent)
+  Object.assign(files, roomPriceFiles())
   files['app/Support/StayRequest.php'] = stayRequestPhp()
   Object.assign(files, stayPoliciesAdminFiles(true))
 
@@ -381,6 +387,37 @@ class CrsClient
             }
             throw new RuntimeException('Could not reach BuildAura CRS: ' . $e->getMessage(), 0, $e);
         }
+    }
+
+    public function amenityCatalog(string $scope): array
+    {
+        if (! $this->configured()) {
+            return [];
+        }
+        try {
+            $response = Http::timeout(20)
+                ->acceptJson()
+                ->withHeaders(['X-Api-Key' => config('crs.key')])
+                ->get(rtrim((string) config('crs.url'), '/').'/api/v1/crs/amenities', ['scope' => $scope]);
+            if ($response->failed()) {
+                return [];
+            }
+            $json = $response->json();
+
+            return is_array($json) && array_is_list($json) ? $json : [];
+        } catch (\\Throwable) {
+            return [];
+        }
+    }
+
+    public function hotel(): array
+    {
+        return $this->get('');
+    }
+
+    public function updateHotel(array $payload): array
+    {
+        return $this->request('patch', '', $payload);
     }
 
     public function createUnit(array $payload): array
@@ -477,38 +514,13 @@ class CrsInventory
 {
     public static function types(array $inventory): array
     {
-        $raw = $inventory['roomTypes'] ?? [];
-        $mapped = array_map([self::class, 'type'], $raw);
-        $byId = [];
-        foreach ($mapped as $type) {
-            $byId[$type->id] = $type;
-        }
-        foreach ($mapped as $type) {
-            if ($type->parent_id && isset($byId[$type->parent_id])) {
-                $byId[$type->parent_id]->children->push($type);
-                $type->parent = $byId[$type->parent_id];
-            }
-        }
-        return array_values(array_filter($mapped, fn ($type) => empty($type->parent_id)));
+        return self::allTypes($inventory);
     }
 
-    /** Active types in inventory order, including subtypes and orphaned subtypes. */
+    /** Active types in inventory order. */
     public static function catalogue(array $inventory): array
     {
-        $mapped = array_map([self::class, 'type'], $inventory['roomTypes'] ?? []);
-        $byId = [];
-        foreach ($mapped as $type) {
-            if (! empty($type->id)) {
-                $byId[$type->id] = $type;
-            }
-        }
-        foreach ($mapped as $type) {
-            if ($type->parent_id && isset($byId[$type->parent_id])) {
-                $type->parent = $byId[$type->parent_id];
-            }
-        }
-
-        return array_values(array_filter($mapped, fn ($type) => $type->is_active));
+        return array_values(array_filter(self::allTypes($inventory), fn ($type) => $type->is_active));
     }
 
     public static function allTypes(array $inventory): array
@@ -518,25 +530,36 @@ class CrsInventory
 
     public static function type(array $row): object
     {
+        $photos = [];
+        foreach (is_array($row['photos'] ?? null) ? $row['photos'] : [] as $photo) {
+            if (is_string($photo) && $photo !== '') {
+                $photos[] = $photo;
+            }
+        }
+        $base = (float) ($row['basePrice'] ?? 0);
+        $percent = (float) ($row['discountPercent'] ?? 0);
+        $cover = $photos[0] ?? null;
+
         return (object) [
             'id' => $row['id'],
-            'parent_id' => $row['parentId'] ?? null,
             'name' => $row['name'],
             'slug' => $row['slug'],
             'description' => $row['description'] ?? '',
-            'short_description' => $row['shortDescription'] ?? '',
-            'base_price' => (float) ($row['basePrice'] ?? 0),
+            'base_price' => $base,
+            'discount_percent' => $percent,
+            'selling_price' => RoomPrice::selling($base, $percent),
             'currency' => $row['currency'] ?? 'ETB',
             'max_adults' => (int) ($row['maxAdults'] ?? 2),
             'max_children' => (int) ($row['maxChildren'] ?? 0),
-            'max_occupancy' => (int) ($row['maxOccupancy'] ?? 2),
             'bed_configuration' => $row['bedConfiguration'] ?? '',
             'size_sqm' => $row['sizeSqm'] ?? '',
             'amenities' => $row['amenities'] ?? [],
-            'image' => $row['image'] ?? null,
+            'photos' => $photos,
+            'cover' => $cover,
+            'image' => $cover,
+            'free_cancellation' => (bool) ($row['freeCancellation'] ?? false),
+            'free_breakfast' => (bool) ($row['freeBreakfast'] ?? false),
             'is_active' => (bool) ($row['isActive'] ?? true),
-            'children' => collect(),
-            'parent' => null,
         ];
     }
 
@@ -544,29 +567,18 @@ class CrsInventory
     {
         foreach (self::allTypes($inventory) as $type) {
             if ($type->id === $idOrSlug || $type->slug === $idOrSlug) {
-                $parents = self::types($inventory);
-                foreach ($parents as $parent) {
-                    if ($parent->id === $type->id) {
-                        return $parent;
-                    }
-                    foreach ($parent->children as $child) {
-                        if ($child->id === $type->id) {
-                            $child->parent = $parent;
-                            return $child;
-                        }
-                    }
-                }
                 return $type;
             }
         }
+
         return null;
     }
 
     public static function acceptsGuests(object $type, int $adults, int $children): bool
     {
-        return $adults <= $type->max_adults
-            && $children <= $type->max_children
-            && ($adults + $children) <= $type->max_occupancy;
+        return $adults >= 1
+            && $adults <= $type->max_adults
+            && $children <= $type->max_children;
     }
 }
 `
@@ -584,6 +596,7 @@ return new class extends Migration
         Schema::create('reservations', function (Blueprint $table) {
             $table->id();
             $table->string('confirmation_code')->unique();
+            $table->string('group_code')->nullable()->index();
             $table->uuid('crs_room_type_id');
             $table->uuid('crs_room_unit_id')->nullable();
             $table->uuid('crs_occupancy_id')->nullable();
@@ -600,6 +613,10 @@ return new class extends Migration
             $table->string('status')->default('confirmed');
             $table->decimal('nightly_rate', 12, 2)->default(0);
             $table->decimal('total_price', 12, 2)->default(0);
+            $table->boolean('breakfast_selected')->default(false);
+            $table->decimal('breakfast_total', 12, 2)->default(0);
+            $table->boolean('free_cancellation')->default(false);
+            $table->decimal('cancellation_fee', 12, 2)->default(0);
             $table->string('currency', 3)->default('ETB');
             $table->text('special_requests')->nullable();
             $table->text('admin_notes')->nullable();
@@ -639,9 +656,10 @@ class Reservation extends Model
     public const STATUS_NO_SHOW = 'no_show';
 
     protected $fillable = [
-        'confirmation_code', 'crs_room_type_id', 'crs_room_unit_id', 'crs_occupancy_id',
+        'confirmation_code', 'group_code', 'crs_room_type_id', 'crs_room_unit_id', 'crs_occupancy_id',
         'room_type_name', 'room_unit_code', 'check_in', 'check_out', 'adults', 'children', 'child_ages',
         'guest_name', 'guest_email', 'guest_phone', 'status', 'nightly_rate', 'total_price',
+        'breakfast_selected', 'breakfast_total', 'free_cancellation', 'cancellation_fee',
         'currency', 'special_requests', 'admin_notes', 'source', 'payment_status',
         'payment_method', 'payment_holder', 'payment_last4', 'paid_at',
     ];
@@ -655,6 +673,10 @@ class Reservation extends Model
             'paid_at' => 'datetime',
             'nightly_rate' => 'decimal:2',
             'total_price' => 'decimal:2',
+            'breakfast_selected' => 'boolean',
+            'breakfast_total' => 'decimal:2',
+            'free_cancellation' => 'boolean',
+            'cancellation_fee' => 'decimal:2',
         ];
     }
 
@@ -673,7 +695,9 @@ class Reservation extends Model
 namespace App\\Services;
 
 use App\\Models\\Reservation;
+use App\\Models\\SiteSetting;
 use App\\Support\\CrsInventory;
+use App\\Support\\RoomPrice;
 use Carbon\\Carbon;
 use RuntimeException;
 
@@ -711,7 +735,10 @@ class AvailabilityService
                 ? 'That room is no longer available for the selected dates.'
                 : 'No rooms available for the selected dates.');
         }
-        $code = Reservation::generateConfirmationCode();
+        $code = trim((string) ($data['confirmation_code'] ?? ''));
+        if ($code === '') {
+            $code = Reservation::generateConfirmationCode();
+        }
         $occupancy = $this->crs->occupy([
             'roomUnitId' => $unit['id'],
             'checkIn' => $checkIn,
@@ -720,11 +747,29 @@ class AvailabilityService
             'externalRef' => $code,
         ]);
         $nights = max(1, Carbon::parse($checkIn)->diffInDays(Carbon::parse($checkOut)));
-        $nightly = (float) ($match['nightlyRate'] ?? $type->base_price);
-        $arrival = ($data['payment_method'] ?? '') === 'arrival';
-        $digits = $arrival ? '' : preg_replace('/\\D/', '', (string) ($data['card_number'] ?? ''));
+        $listNightly = (float) ($match['nightlyRate'] ?? $type->base_price);
+        $nightly = RoomPrice::selling($listNightly, (float) $type->discount_percent);
+        $charge = RoomPrice::breakfastCharge(
+            (bool) $type->free_breakfast,
+            (bool) ($data['add_breakfast'] ?? false),
+            (float) SiteSetting::current()->breakfast_price,
+            $nights
+        );
+        $method = (string) ($data['payment_method'] ?? 'sandbox');
+        if ($method === 'arrival') {
+            $stored = 'pay_on_arrival';
+        } elseif ($method === 'card') {
+            $stored = 'fake_card';
+        } elseif ($method === 'chapa') {
+            $stored = 'chapa';
+        } else {
+            $stored = 'sandbox';
+        }
+        $paid = $stored === 'fake_card' || $stored === 'sandbox';
+        $digits = $stored === 'fake_card' ? preg_replace('/\\D/', '', (string) ($data['card_number'] ?? '')) : '';
         return Reservation::create([
             'confirmation_code' => $code,
+            'group_code' => $data['group_code'] ?? null,
             'crs_room_type_id' => $type->id,
             'crs_room_unit_id' => $unit['id'],
             'crs_occupancy_id' => $occupancy['id'] ?? null,
@@ -740,15 +785,19 @@ class AvailabilityService
             'guest_phone' => $data['guest_phone'] ?? null,
             'status' => Reservation::STATUS_CONFIRMED,
             'nightly_rate' => $nightly,
-            'total_price' => round($nightly * $nights, 2),
+            'total_price' => round($nightly * $nights + $charge['total'], 2),
+            'breakfast_selected' => $charge['selected'],
+            'breakfast_total' => $charge['total'],
+            'free_cancellation' => (bool) $type->free_cancellation,
+            'cancellation_fee' => (bool) $type->free_cancellation ? 0 : (float) SiteSetting::current()->cancellation_fee,
             'currency' => $type->currency,
             'special_requests' => $data['special_requests'] ?? null,
             'source' => $data['source'] ?? 'website',
-            'payment_status' => $arrival ? 'unpaid' : 'paid',
-            'payment_method' => $arrival ? 'pay_on_arrival' : 'fake_card',
-            'payment_holder' => $arrival ? null : ($data['card_holder'] ?? $data['guest_name']),
-            'payment_last4' => (! $arrival && $digits !== '') ? substr($digits, -4) : null,
-            'paid_at' => $arrival ? null : now(),
+            'payment_status' => $paid ? 'paid' : 'unpaid',
+            'payment_method' => $stored,
+            'payment_holder' => $stored === 'fake_card' ? ($data['card_holder'] ?? $data['guest_name']) : null,
+            'payment_last4' => ($stored === 'fake_card' && $digits !== '') ? substr($digits, -4) : null,
+            'paid_at' => $paid ? now() : null,
         ]);
     }
 }
@@ -763,6 +812,7 @@ use App\\Models\\SiteSetting;
 use App\\Services\\AvailabilityService;
 use App\\Services\\CrsClient;
 use App\\Support\\CrsInventory;
+use App\\Support\\RoomPrice;
 use App\\Support\\StayRequest;
 use Illuminate\\Http\\RedirectResponse;
 use Illuminate\\Http\\Request;
@@ -776,15 +826,15 @@ class BookingController extends Controller
     {
         $stay = $this->stayQuery($request);
         $inventory = $this->crs->inventory();
-        $cards = [];
+        $offers = [];
         if ($stay['searched']) {
             foreach ($this->offers($stay, null) as $offer) {
-                $cards[] = ['type' => $offer['type'], 'offer' => $offer, 'children' => collect()];
+                $offers[$offer['type']->id] = $offer;
             }
-        } else {
-            foreach (CrsInventory::catalogue($inventory) as $type) {
-                $cards[] = ['type' => $type, 'offer' => null, 'children' => collect()];
-            }
+        }
+        $cards = [];
+        foreach (CrsInventory::catalogue($inventory) as $type) {
+            $cards[] = ['type' => $type, 'offer' => $offers[$type->id] ?? null, 'children' => collect()];
         }
         return $this->stayView('site.rooms', $stay, [
             'settings' => SiteSetting::current(),
@@ -818,9 +868,12 @@ class BookingController extends Controller
     {
         $stay = $this->stayQuery($request);
         $roomTypeId = (string) $request->query('room_type_id', '');
-        $unitId = (string) $request->query('room_unit_id', '');
+        $wanted = array_values(array_filter((array) $request->query('room_unit_ids', []), fn ($id) => is_string($id) && $id !== ''));
+        if ($wanted === [] && $request->filled('room_unit_id')) {
+            $wanted = [(string) $request->query('room_unit_id')];
+        }
         $back = $this->stayBack($request, $stay);
-        if (! $stay['searched'] || $roomTypeId === '') {
+        if (! $stay['searched'] || $roomTypeId === '' || $wanted === []) {
             return redirect()->route('rooms.index', $back);
         }
         $type = null;
@@ -844,21 +897,20 @@ class BookingController extends Controller
             return redirect()->route('rooms.show', array_merge(['slug' => $type->slug], $back))
                 ->withErrors(['booking' => 'That room is not available for those dates.']);
         }
-        $unit = null;
+        $units = [];
         foreach ($offer['units'] as $candidate) {
-            if ($unitId === '' || ($candidate['id'] ?? null) === $unitId) {
-                $unit = $candidate;
-                break;
+            if (in_array($candidate['id'] ?? '', $wanted, true)) {
+                $units[] = $candidate;
             }
         }
-        if (! $unit) {
+        if (count($units) !== count($wanted)) {
             return redirect()->route('rooms.show', array_merge(['slug' => $type->slug], $back))
                 ->withErrors(['booking' => 'That room was just taken. Choose another.']);
         }
         return $this->stayView('site.book', $stay, [
             'settings' => SiteSetting::current(),
             'roomType' => $type,
-            'unit' => $unit,
+            'units' => $units,
             'offer' => $offer,
         ]);
     }
@@ -915,11 +967,13 @@ class BookingController extends Controller
             if ($count < 1) {
                 continue;
             }
-            $nightly = (float) ($row['nightlyRate'] ?? $type->base_price);
+            $listNightly = (float) ($row['nightlyRate'] ?? $type->base_price);
+            $nightly = RoomPrice::selling($listNightly, (float) $type->discount_percent);
             $results[] = [
                 'type' => $type,
                 'available' => $count,
                 'units' => array_values($row['units'] ?? []),
+                'listNightly' => $listNightly,
                 'nightly' => $nightly,
                 'total' => round($nightly * $nights, 2),
                 'nights' => $nights,
@@ -937,7 +991,8 @@ class BookingController extends Controller
         $payOnArrival = (bool) SiteSetting::current()->pay_on_arrival;
         $rules = [
             'room_type_id' => 'required|string',
-            'room_unit_id' => 'nullable|string',
+            'room_unit_ids' => 'required|array|min:1',
+            'room_unit_ids.*' => 'string',
             'check_in' => 'required|date|after_or_equal:today',
             'check_out' => 'required|date|after:check_in',
             'adults' => 'required|integer|min:1|max:20',
@@ -946,18 +1001,12 @@ class BookingController extends Controller
             'guest_email' => 'required|email|max:255',
             'guest_phone' => 'nullable|string|max:50',
             'special_requests' => 'nullable|string|max:2000',
+            'add_breakfast' => 'nullable|boolean',
         ];
-        if ($payOnArrival) {
-            $rules['payment_method'] = 'required|in:card,arrival';
-        } else {
-            $rules['card_holder'] = 'required|string|max:255';
-            $rules['card_number'] = 'required|string|min:12|max:24';
-            $rules['card_expiry'] = 'required|string|max:7';
-            $rules['card_cvc'] = 'required|string|min:3|max:4';
-        }
+        $methods = $payOnArrival ? 'chapa,sandbox,card,arrival' : 'chapa,sandbox,card';
+        $rules['payment_method'] = 'required|in:'.$methods;
         $validated = $request->validate($rules);
-        $arrival = $payOnArrival && ($validated['payment_method'] ?? '') === 'arrival';
-        if ($payOnArrival && ! $arrival) {
+        if (($validated['payment_method'] ?? '') === 'card') {
             $validated = array_merge($validated, $request->validate([
                 'card_holder' => 'required|string|max:255',
                 'card_number' => 'required|string|min:12|max:24',
@@ -965,29 +1014,51 @@ class BookingController extends Controller
                 'card_cvc' => 'required|string|min:3|max:4',
             ]));
         }
-        $validated['payment_method'] = $arrival ? 'arrival' : 'card';
+        $validated['add_breakfast'] = $request->boolean('add_breakfast');
+        $ids = array_values(array_filter((array) ($validated['room_unit_ids'] ?? [])));
+        $code = Reservation::generateConfirmationCode();
+        $made = [];
         try {
-            $reservation = $this->availability->book([
-                ...$validated,
-                'check_in' => $stay['checkIn'],
-                'check_out' => $stay['checkOut'],
-                'adults' => $stay['adults'],
-                'children' => $stay['children'],
-                'child_ages' => array_map('intval', $stay['childAges']),
-                'source' => 'website',
-            ]);
-        } catch (\\RuntimeException $e) {
+            foreach ($ids as $index => $id) {
+                $made[] = $this->availability->book([
+                    ...$validated,
+                    'room_unit_id' => $id,
+                    'confirmation_code' => $index === 0 ? $code : $code.'-'.($index + 1),
+                    'group_code' => $code,
+                    'check_in' => $stay['checkIn'],
+                    'check_out' => $stay['checkOut'],
+                    'adults' => $stay['adults'],
+                    'children' => $stay['children'],
+                    'child_ages' => array_map('intval', $stay['childAges']),
+                    'source' => 'website',
+                ]);
+            }
+        } catch (\\Throwable $e) {
+            foreach ($made as $row) {
+                if ($row->crs_occupancy_id) {
+                    try {
+                        $this->crs->release((string) $row->crs_occupancy_id);
+                    } catch (\\Throwable $ignored) {
+                    }
+                }
+                $row->delete();
+            }
             return back()->withInput()->withErrors(['booking' => $e->getMessage()]);
         }
-        return redirect()->route('booking.confirm', $reservation->confirmation_code);
+        return redirect()->route('booking.confirm', $code);
     }
 
     public function confirm(string $code): View
     {
-        $reservation = Reservation::query()->where('confirmation_code', $code)->firstOrFail();
+        $reservations = Reservation::query()->where('group_code', $code)->orderBy('id')->get();
+        if ($reservations->isEmpty()) {
+            $reservations = Reservation::query()->where('confirmation_code', $code)->orderBy('id')->get();
+        }
+        abort_if($reservations->isEmpty(), 404);
         return view('site.booking-confirm', [
             'settings' => SiteSetting::current(),
-            'reservation' => $reservation,
+            'reservations' => $reservations,
+            'reservation' => $reservations->first(),
         ]);
     }
 }
@@ -995,290 +1066,11 @@ class BookingController extends Controller
 
 
 
-  files['resources/views/site/rooms.blade.php'] = `@extends('layouts.site')
-@section('title', ($settings->rooms_section_title ?? 'Rooms') . ' — ' . $settings->business_name)
-@section('content')
-@php
-  $stayQuery = $searched ? ['check_in' => $checkIn, 'check_out' => $checkOut, 'adults' => $adults, 'children' => $children, 'child_ages' => $childAges] : [];
-@endphp
-<section class="bg-slate-50 py-12">
-  <div class="mx-auto max-w-6xl px-6">
-    <div class="mb-8">
-      <div class="max-w-3xl">
-        <h1 class="text-4xl font-bold">{{ $settings->rooms_section_title ?? 'Rooms & Suites' }}</h1>
-        <p class="mt-3 text-lg text-slate-600">{{ $settings->rooms_section_subtitle ?? 'Choose dates and guests, then open a room to see what is free.' }}</p>
-      </div>
-      @include('partials.stay-policies')
-    </div>
-    @include('partials.stay-search', ['searchAction' => route('rooms.index'), 'checkIn' => $checkIn, 'checkOut' => $checkOut, 'adults' => $adults, 'children' => $children, 'childAges' => $childAges, 'minDate' => $minDate, 'submitLabel' => 'Search'])
-    @if($errors->any())
-    <div class="mt-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-red-800">@foreach($errors->all() as $error)<p>{{ $error }}</p>@endforeach</div>
-    @endif
-    <div class="mt-8 space-y-6">
-      @forelse($cards as $card)
-      @php
-        $type = $card['type'];
-        $offer = $card['offer'];
-        $amenities = is_array($type->amenities) ? $type->amenities : array_filter(array_map('trim', explode(',', (string) $type->amenities)));
-      @endphp
-      <article class="overflow-hidden rounded-2xl border bg-white shadow-sm">
-        <div class="grid md:grid-cols-[320px_1fr]">
-          @if($type->image)
-          <a href="{{ route('rooms.show', array_merge(['slug' => $type->slug], $stayQuery)) }}" class="block min-h-56">
-            <img src="{{ \\App\\Support\\PublicAsset::url($type->image) }}" alt="{{ $type->name }}" class="h-full w-full object-cover md:min-h-full" />
-          </a>
-          @else
-          <div class="min-h-56 bg-slate-100"></div>
-          @endif
-          <div class="flex flex-col p-6">
-            <div class="flex flex-wrap items-start justify-between gap-4">
-              <div>
-                <h2 class="text-2xl font-semibold"><a href="{{ route('rooms.show', array_merge(['slug' => $type->slug], $stayQuery)) }}" class="hover:underline">{{ $type->name }}</a></h2>
-                @if($type->short_description)<p class="mt-1 text-sm text-slate-500">{{ $type->short_description }}</p>@endif
-                @if($type->parent)<p class="mt-1 text-xs uppercase tracking-widest text-slate-400">{{ $type->parent->name }}</p>@endif
-              </div>
-              <div class="text-right">
-                @if($offer)
-                <p class="text-xl font-bold" style="color:${accent}">{{ number_format($offer['total'], 0) }} {{ $type->currency }}</p>
-                <p class="text-xs text-slate-500">{{ $offer['nights'] }} night{{ $offer['nights'] === 1 ? '' : 's' }} · {{ number_format($offer['nightly'], 0) }} / night</p>
-                @else
-                <p class="text-xl font-bold" style="color:${accent}">{{ number_format($type->base_price, 0) }} {{ $type->currency }}</p>
-                <p class="text-xs text-slate-500">per night</p>
-                @endif
-              </div>
-            </div>
-            @if($type->description)<p class="mt-4 leading-relaxed text-slate-600">{{ $type->description }}</p>@endif
-            <div class="mt-4 flex flex-wrap gap-2 text-xs text-slate-700">
-              <span class="rounded-full bg-slate-100 px-3 py-1">Up to {{ $type->max_adults }} adults</span>
-              <span class="rounded-full bg-slate-100 px-3 py-1">{{ $type->max_children }} children</span>
-              @if($type->bed_configuration)<span class="rounded-full bg-slate-100 px-3 py-1">{{ $type->bed_configuration }}</span>@endif
-              @if($type->size_sqm)<span class="rounded-full bg-slate-100 px-3 py-1">{{ $type->size_sqm }} m²</span>@endif
-              @foreach(array_slice($amenities, 0, 6) as $amenity)<span class="rounded-full bg-slate-100 px-3 py-1">{{ $amenity }}</span>@endforeach
-            </div>
-            <div class="mt-4">@include('partials.stay-policies', ['compact' => true])</div>
-            <div class="mt-5 flex flex-wrap items-center justify-between gap-3">
-              @if($offer)
-              <p class="text-sm font-medium text-emerald-700">{{ $offer['available'] }} room{{ $offer['available'] === 1 ? '' : 's' }} available</p>
-              @else
-              <p class="text-sm text-slate-500">Search dates to see which rooms are free.</p>
-              @endif
-              <a href="{{ route('rooms.show', array_merge(['slug' => $type->slug], $stayQuery)) }}" class="rounded-lg px-5 py-2.5 text-sm font-semibold text-white" style="background-color:${accent}">View room</a>
-            </div>
-          </div>
-        </div>
-      </article>
-      @empty
-      <p class="rounded-2xl border bg-white p-10 text-center text-slate-600">{{ $searched ? 'No rooms are free for those dates and guests. Try different dates or fewer people.' : 'Rooms appear here once this site can reach BuildAura.' }}</p>
-      @endforelse
-    </div>
-  </div>
-</section>
-@endsection
-`
-
-  files['resources/views/site/room-detail.blade.php'] = `@extends('layouts.site')
-@section('title', $roomType->name . ' — ' . $settings->business_name)
-@section('content')
-@php
-  $amenities = is_array($roomType->amenities) ? $roomType->amenities : array_filter(array_map('trim', explode(',', (string) $roomType->amenities)));
-  $stayQuery = $searched ? ['check_in' => $checkIn, 'check_out' => $checkOut, 'adults' => $adults, 'children' => $children, 'child_ages' => $childAges] : [];
-@endphp
-<section class="bg-slate-50 py-12">
-  <div class="mx-auto max-w-6xl px-6">
-    <a href="{{ route('rooms.index', $stayQuery) }}" class="text-sm text-slate-500 hover:underline">← All rooms</a>
-    <div class="mt-6 grid items-start gap-10 lg:grid-cols-2">
-      <div>
-        @if($roomType->image)
-        <img src="{{ \\App\\Support\\PublicAsset::url($roomType->image) }}" alt="{{ $roomType->name }}" class="aspect-[4/3] w-full rounded-2xl object-cover shadow-lg" />
-        @else
-        <div class="aspect-[4/3] w-full rounded-2xl bg-slate-100"></div>
-        @endif
-      </div>
-      <div>
-        @if($roomType->parent)<p class="mb-2 text-xs uppercase tracking-widest text-slate-400">{{ $roomType->parent->name }}</p>@endif
-        <h1 class="text-4xl font-bold">{{ $roomType->name }}</h1>
-        @if($roomType->short_description)<p class="mt-2 text-slate-500">{{ $roomType->short_description }}</p>@endif
-        <p class="mt-4 text-2xl font-bold" style="color:${accent}">{{ number_format(is_array($offer) ? ($offer['nightly'] ?? $roomType->base_price) : $roomType->base_price, 0) }} {{ $roomType->currency }} <span class="text-base font-normal text-slate-500">/ night</span></p>
-        @if($roomType->description)<p class="mt-5 leading-relaxed text-slate-700">{{ $roomType->description }}</p>@endif
-        <dl class="mt-6 grid grid-cols-2 gap-4 text-sm">
-          <div><dt class="text-slate-400">Sleeps</dt><dd class="font-medium">{{ $roomType->max_adults }} adults · {{ $roomType->max_children }} children</dd></div>
-          <div><dt class="text-slate-400">Maximum</dt><dd class="font-medium">{{ $roomType->max_occupancy }} guests</dd></div>
-          @if($roomType->bed_configuration)<div><dt class="text-slate-400">Beds</dt><dd class="font-medium">{{ $roomType->bed_configuration }}</dd></div>@endif
-          @if($roomType->size_sqm)<div><dt class="text-slate-400">Size</dt><dd class="font-medium">{{ $roomType->size_sqm }} m²</dd></div>@endif
-        </dl>
-        @if(count($amenities))
-        <div class="mt-6">
-          <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-400">In the room</h2>
-          <ul class="mt-3 flex flex-wrap gap-2">@foreach($amenities as $amenity)<li class="rounded-full border bg-white px-3 py-1 text-sm">{{ $amenity }}</li>@endforeach</ul>
-        </div>
-        @endif
-        @include('partials.stay-policies')
-      </div>
-    </div>
-    <div class="mt-10">
-      <h2 class="text-2xl font-semibold">Check this room</h2>
-      <p class="mt-1 mb-4 text-slate-600">Enter your dates and guests. Free rooms for this type are listed below.</p>
-      @include('partials.stay-search', ['searchAction' => route('rooms.show', $roomType->slug), 'checkIn' => $checkIn, 'checkOut' => $checkOut, 'adults' => $adults, 'children' => $children, 'childAges' => $childAges, 'minDate' => $minDate, 'submitLabel' => 'Show available rooms'])
-    </div>
-    @if($errors->any())
-    <div class="mt-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-red-800">@foreach($errors->all() as $error)<p>{{ $error }}</p>@endforeach</div>
-    @endif
-    <div class="mt-8">
-      @if($searched)
-        @if($offer)
-        <div class="mb-4 flex flex-wrap items-end justify-between gap-3">
-          <h2 class="text-2xl font-semibold">Available rooms</h2>
-          <p class="text-sm text-slate-600">{{ $offer['available'] }} free · {{ number_format($offer['total'], 0) }} {{ $roomType->currency }} for {{ $offer['nights'] }} night{{ $offer['nights'] === 1 ? '' : 's' }}</p>
-        </div>
-        <ul class="space-y-3">
-          @foreach($offer['units'] as $unit)
-          <li class="flex flex-wrap items-center justify-between gap-4 rounded-2xl border bg-white p-5">
-            <div>
-              <p class="text-lg font-semibold">Room {{ $unit['code'] ?? '' }}</p>
-              <p class="text-sm text-slate-500">@if(!empty($unit['name'])){{ $unit['name'] }}@endif @if(!empty($unit['floor'])) · Floor {{ $unit['floor'] }}@endif</p>
-            </div>
-            <a href="{{ route('book', array_merge($stayQuery, ['room_type_id' => $roomType->id, 'room_unit_id' => $unit['id'] ?? ''])) }}" class="rounded-lg px-5 py-2.5 text-sm font-semibold text-white" style="background-color:${accent}">Reserve this room</a>
-          </li>
-          @endforeach
-        </ul>
-        @else
-        <p class="rounded-2xl border bg-white p-8 text-slate-600">No rooms of this type are free for those dates and guests.</p>
-        @endif
-      @else
-      <p class="rounded-2xl border bg-white p-8 text-slate-600">Search above to see the rooms that are free, then continue to checkout.</p>
-      @endif
-    </div>
-  </div>
-</section>
-@endsection
-`
-
-  files['resources/views/site/book.blade.php'] = `@extends('layouts.site')
-@section('title', 'Checkout — ' . $settings->business_name)
-@section('content')
-<section class="bg-slate-50 py-12">
-  <div class="mx-auto max-w-5xl px-6">
-    <a href="{{ route('rooms.show', array_merge(['slug' => $roomType->slug, 'check_in' => $checkIn, 'check_out' => $checkOut, 'adults' => $adults, 'children' => $children], $children > 0 ? ['child_ages' => $childAges] : [])) }}" class="text-sm text-slate-500 hover:underline">← Back to {{ $roomType->name }}</a>
-    <h1 class="mt-4 text-3xl font-bold">Checkout</h1>
-    <p class="mt-2 text-slate-600">This stay is held for you on this page. Guest and card details stay on this website.</p>
-    @include('partials.stay-policies')
-    @if($errors->any())
-    <div class="mt-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-red-800">@foreach($errors->all() as $error)<p>{{ $error }}</p>@endforeach</div>
-    @endif
-    <div class="mt-8 grid items-start gap-8 lg:grid-cols-[1fr_320px]">
-      <form method="POST" action="{{ route('book.store') }}" class="space-y-4 rounded-2xl border bg-white p-6">
-        @csrf
-        <input type="hidden" name="room_type_id" value="{{ $roomType->id }}" />
-        <input type="hidden" name="room_unit_id" value="{{ $unit['id'] ?? '' }}" />
-        <input type="hidden" name="check_in" value="{{ $checkIn }}" />
-        <input type="hidden" name="check_out" value="{{ $checkOut }}" />
-        <input type="hidden" name="adults" value="{{ $adults }}" />
-        <input type="hidden" name="children" value="{{ $children }}" />
-        @foreach($childAges as $age)
-        <input type="hidden" name="child_ages[]" value="{{ $age }}" />
-        @endforeach
-        <h2 class="text-lg font-semibold">Guest</h2>
-        <label class="block text-sm"><span class="mb-1 block text-slate-500">Full name</span><input name="guest_name" required value="{{ old('guest_name') }}" class="w-full rounded-lg border px-3 py-2.5" /></label>
-        <label class="block text-sm"><span class="mb-1 block text-slate-500">Email</span><input type="email" name="guest_email" required value="{{ old('guest_email') }}" class="w-full rounded-lg border px-3 py-2.5" /></label>
-        <label class="block text-sm"><span class="mb-1 block text-slate-500">Phone</span><input name="guest_phone" value="{{ old('guest_phone') }}" class="w-full rounded-lg border px-3 py-2.5" /></label>
-        <label class="block text-sm"><span class="mb-1 block text-slate-500">Special requests</span><textarea name="special_requests" rows="3" class="w-full rounded-lg border px-3 py-2.5">{{ old('special_requests') }}</textarea></label>
-        <h2 class="pt-2 text-lg font-semibold">Payment</h2>
-        @if($settings->pay_on_arrival)
-        <fieldset class="space-y-2">
-          <legend class="text-sm font-medium text-slate-700">How will you pay?</legend>
-          <label class="flex items-center gap-2 text-sm"><input type="radio" name="payment_method" value="card" @checked(old('payment_method', 'card') !== 'arrival') /> Pay now by card</label>
-          <label class="flex items-center gap-2 text-sm"><input type="radio" name="payment_method" value="arrival" @checked(old('payment_method') === 'arrival') /> Pay on arrival</label>
-        </fieldset>
-        <div data-card-fields class="space-y-4" @if(old('payment_method') === 'arrival') hidden @endif>
-          <p class="text-xs text-slate-500">Card details are stored on this website only. They are not sent to BuildAura.</p>
-          <label class="block text-sm"><span class="mb-1 block text-slate-500">Name on card</span><input name="card_holder" value="{{ old('card_holder') }}" class="w-full rounded-lg border px-3 py-2.5" /></label>
-          <label class="block text-sm"><span class="mb-1 block text-slate-500">Card number</span><input name="card_number" inputmode="numeric" autocomplete="cc-number" value="{{ old('card_number') }}" class="w-full rounded-lg border px-3 py-2.5" /></label>
-          <div class="grid grid-cols-2 gap-3">
-            <label class="block text-sm"><span class="mb-1 block text-slate-500">Expiry</span><input name="card_expiry" placeholder="MM/YY" value="{{ old('card_expiry') }}" class="w-full rounded-lg border px-3 py-2.5" /></label>
-            <label class="block text-sm"><span class="mb-1 block text-slate-500">CVC</span><input name="card_cvc" value="{{ old('card_cvc') }}" class="w-full rounded-lg border px-3 py-2.5" /></label>
-          </div>
-        </div>
-        <button type="submit" class="w-full rounded-lg px-4 py-3 font-semibold text-white" style="background-color:${accent}">
-          <span data-pay-label-card @if(old('payment_method') === 'arrival') hidden @endif>Confirm and pay {{ number_format($offer['total'], 0) }} {{ $roomType->currency }}</span>
-          <span data-pay-label-arrival @if(old('payment_method') !== 'arrival') hidden @endif>Confirm reservation — pay on arrival</span>
-        </button>
-        <script>
-          (function () {
-            var form = document.currentScript.closest('form');
-            if (!form) return;
-            var fields = form.querySelector('[data-card-fields]');
-            var cardLabel = form.querySelector('[data-pay-label-card]');
-            var arrivalLabel = form.querySelector('[data-pay-label-arrival]');
-            function sync() {
-              var selected = form.querySelector('input[name="payment_method"]:checked');
-              var arrival = selected && selected.value === 'arrival';
-              if (fields) fields.hidden = arrival;
-              if (cardLabel) cardLabel.hidden = arrival;
-              if (arrivalLabel) arrivalLabel.hidden = !arrival;
-            }
-            form.querySelectorAll('input[name="payment_method"]').forEach(function (radio) {
-              radio.addEventListener('change', sync);
-            });
-            sync();
-          })();
-        </script>
-        @else
-        <p class="text-xs text-slate-500">Card details are stored on this website only. They are not sent to BuildAura.</p>
-        <label class="block text-sm"><span class="mb-1 block text-slate-500">Name on card</span><input name="card_holder" required value="{{ old('card_holder') }}" class="w-full rounded-lg border px-3 py-2.5" /></label>
-        <label class="block text-sm"><span class="mb-1 block text-slate-500">Card number</span><input name="card_number" required inputmode="numeric" autocomplete="cc-number" value="{{ old('card_number') }}" class="w-full rounded-lg border px-3 py-2.5" /></label>
-        <div class="grid grid-cols-2 gap-3">
-          <label class="block text-sm"><span class="mb-1 block text-slate-500">Expiry</span><input name="card_expiry" required placeholder="MM/YY" value="{{ old('card_expiry') }}" class="w-full rounded-lg border px-3 py-2.5" /></label>
-          <label class="block text-sm"><span class="mb-1 block text-slate-500">CVC</span><input name="card_cvc" required value="{{ old('card_cvc') }}" class="w-full rounded-lg border px-3 py-2.5" /></label>
-        </div>
-        <button type="submit" class="w-full rounded-lg px-4 py-3 font-semibold text-white" style="background-color:${accent}">Confirm and pay {{ number_format($offer['total'], 0) }} {{ $roomType->currency }}</button>
-        @endif
-      </form>
-      <aside class="rounded-2xl border bg-white p-6">
-        @if($roomType->image)<img src="{{ \\App\\Support\\PublicAsset::url($roomType->image) }}" alt="" class="mb-4 aspect-[16/10] w-full rounded-xl object-cover" />@else<div class="mb-4 aspect-[16/10] w-full rounded-xl bg-slate-100"></div>@endif
-        <h2 class="text-xl font-semibold">{{ $roomType->name }}</h2>
-        <p class="mt-1 text-sm text-slate-500">Room {{ $unit['code'] ?? '' }}</p>
-        @include('partials.stay-policies', ['compact' => true])
-        <dl class="mt-5 space-y-3 text-sm">
-          <div class="flex justify-between gap-4"><dt class="text-slate-500">Check-in</dt><dd>{{ \\Carbon\\Carbon::parse($checkIn)->format('M j, Y') }}</dd></div>
-          <div class="flex justify-between gap-4"><dt class="text-slate-500">Check-out</dt><dd>{{ \\Carbon\\Carbon::parse($checkOut)->format('M j, Y') }}</dd></div>
-          <div class="flex justify-between gap-4"><dt class="text-slate-500">Guests</dt><dd>{{ $adults }} adults · {{ $children }} children{{ $children > 0 ? ' ('.collect($childAges)->map(fn ($age) => $age.'y')->implode(', ').')' : '' }}</dd></div>
-          <div class="flex justify-between gap-4"><dt class="text-slate-500">Nights</dt><dd>{{ $offer['nights'] }} × {{ number_format($offer['nightly'], 0) }}</dd></div>
-          <div class="flex justify-between gap-4 border-t pt-3 text-base"><dt class="font-semibold">Total</dt><dd class="font-bold" style="color:${accent}">{{ number_format($offer['total'], 0) }} {{ $roomType->currency }}</dd></div>
-        </dl>
-      </aside>
-    </div>
-  </div>
-</section>
-@endsection
-`
-
-  files['resources/views/site/booking-confirm.blade.php'] = `@extends('layouts.site')
-@section('title', 'Booking confirmed — ' . $settings->business_name)
-@section('content')
-<section class="py-20">
-  <div class="mx-auto max-w-xl px-6 text-center">
-    <h1 class="text-3xl font-bold">You're booked</h1>
-    <p class="mt-2 text-slate-600">Your stay is confirmed. Guest and payment details were saved on this website only.</p>
-    <div class="mt-8 space-y-3 rounded-2xl border bg-slate-50 p-6 text-left">
-      <div class="flex justify-between gap-4"><span class="text-slate-500">Confirmation</span><span class="font-mono font-bold">{{ $reservation->confirmation_code }}</span></div>
-      <div class="flex justify-between gap-4"><span class="text-slate-500">Room</span><span class="font-medium">{{ $reservation->room_type_name }}</span></div>
-      @if($reservation->room_unit_code)<div class="flex justify-between gap-4"><span class="text-slate-500">Unit</span><span>{{ $reservation->room_unit_code }}</span></div>@endif
-      <div class="flex justify-between gap-4"><span class="text-slate-500">Stay</span><span>{{ $reservation->check_in->format('M j, Y') }} – {{ $reservation->check_out->format('M j, Y') }}</span></div>
-      <div class="flex justify-between gap-4"><span class="text-slate-500">Guests</span><span>{{ $reservation->adults }} adults{{ $reservation->children ? ' · '.$reservation->children.' children'.((is_array($reservation->child_ages) && count($reservation->child_ages)) ? ' ('.collect($reservation->child_ages)->map(fn ($age) => $age.'y')->implode(', ').')' : '') : '' }}</span></div>
-      <div class="flex justify-between gap-4"><span class="text-slate-500">Guest</span><span>{{ $reservation->guest_name }}</span></div>
-      @if($reservation->payment_method === 'pay_on_arrival')
-      <div class="flex justify-between gap-4"><span class="text-slate-500">Payment</span><span>Pay on arrival</span></div>
-      @else
-      <div class="flex justify-between gap-4"><span class="text-slate-500">Card</span><span>···· {{ $reservation->payment_last4 }}</span></div>
-      @endif
-      <div class="flex justify-between gap-4 border-t pt-3"><span class="text-slate-500">Total</span><span class="font-bold" style="color:${accent}">{{ number_format($reservation->total_price, 0) }} {{ $reservation->currency }}</span></div>
-    </div>
-    @include('partials.stay-policies')
-    <a href="{{ route('home') }}" class="mt-8 inline-block text-sm font-semibold" style="color:${accent}">Back to the hotel</a>
-  </div>
-</section>
-@endsection
-`
+  files['resources/views/partials/hero-stay-search.blade.php'] = heroStaySearchPartial(payload.templateId)
+  files['resources/views/site/rooms.blade.php'] = localRoomsBlade(accent, payload.templateId)
+  files['resources/views/site/room-detail.blade.php'] = localRoomDetailBlade(accent, payload.templateId)
+  files['resources/views/site/book.blade.php'] = localBookBlade(accent, payload.templateId)
+  files['resources/views/site/booking-confirm.blade.php'] = localConfirmBlade(accent, payload.templateId)
 
   files['app/Filament/Resources/ReservationResource.php'] = `<?php
 
@@ -1315,7 +1107,10 @@ class ReservationResource extends Resource
                     $set('crs_room_unit_id', null);
                     $type = static::findType($state);
                     if ($type) {
-                        $set('nightly_rate', $type['basePrice'] ?? 0);
+                        $set('nightly_rate', \\App\\Support\\RoomPrice::selling((float) ($type['basePrice'] ?? 0), (float) ($type['discountPercent'] ?? 0)));
+                        if (! empty($type['freeBreakfast'])) {
+                            $set('breakfast_selected', true);
+                        }
                     }
                 }),
             Forms\\Components\\Select::make('crs_room_unit_id')
@@ -1339,7 +1134,25 @@ class ReservationResource extends Resource
 
                     return array_map('intval', $parts);
                 }),
-            Forms\\Components\\TextInput::make('nightly_rate')->numeric()->label('Nightly rate'),
+            Forms\\Components\\TextInput::make('nightly_rate')->numeric()->label('Price')->live(onBlur: true)->helperText(function (Forms\\Get $get) {
+                $rate = (float) \\App\\Models\\SiteSetting::current()->usdt_etb_rate;
+                $rawId = $get('crs_room_type_id');
+                $type = static::findType(is_string($rawId) ? $rawId : null);
+                $currency = (string) ($type['currency'] ?? 'ETB');
+                $amount = is_numeric($get('nightly_rate')) ? (float) $get('nightly_rate') : 0.0;
+                $other = \\App\\Support\\RoomPrice::other($amount, $currency, $rate);
+                if ($rate <= 0) {
+                    return 'Set the USD to ETB rate on Hotel Policy to show the other currency.';
+                }
+                if ($other === null) {
+                    return '1 USD = '.$rate.' ETB.';
+                }
+
+                return 'About '.$other.' · 1 USD = '.$rate.' ETB.';
+            }),
+            Forms\\Components\\Toggle::make('breakfast_selected')
+                ->label('Add breakfast')
+                ->helperText('Included at no charge when the room type has breakfast. Otherwise the hotel breakfast price is added for each night.'),
             Forms\\Components\\Select::make('status')->options([
                 'pending' => 'Pending',
                 'confirmed' => 'Confirmed',
@@ -1374,7 +1187,7 @@ class ReservationResource extends Resource
             Tables\\Columns\\TextColumn::make('status')->badge()->searchable()->sortable(),
             Tables\\Columns\\TextColumn::make('total_price')->money(fn ($record) => $record->currency)->sortable(),
         ])->filters([
-            Tables\\Filters\\SelectFilter::make('status')->options([
+            Tables\\Filters\\SelectFilter::make('status')->label('Status')->placeholder('All statuses')->options([
                 'pending' => 'Pending',
                 'confirmed' => 'Confirmed',
                 'checked_in' => 'Checked in',
@@ -1384,10 +1197,12 @@ class ReservationResource extends Resource
             ]),
             Tables\\Filters\\SelectFilter::make('room_type_name')
                 ->label('Room type')
+                ->placeholder('All room types')
                 ->searchable()
                 ->options(fn () => Reservation::query()->whereNotNull('room_type_name')->where('room_type_name', '!=', '')->distinct()->orderBy('room_type_name')->pluck('room_type_name', 'room_type_name')->all()),
             Tables\\Filters\\SelectFilter::make('room_unit_code')
                 ->label('Room')
+                ->placeholder('All rooms')
                 ->searchable()
                 ->options(fn () => Reservation::query()->whereNotNull('room_unit_code')->where('room_unit_code', '!=', '')->distinct()->orderBy('room_unit_code')->pluck('room_unit_code', 'room_unit_code')->all()),
             Tables\\Filters\\Filter::make('stay')
@@ -1448,11 +1263,7 @@ class ReservationResource extends Resource
             if (($unit['roomTypeId'] ?? null) !== $typeId || empty($unit['id'])) {
                 continue;
             }
-            $label = $unit['code'] ?? $unit['id'];
-            if (! empty($unit['name'])) {
-                $label .= ' — ' . $unit['name'];
-            }
-            $options[$unit['id']] = $label;
+            $options[$unit['id']] = $unit['code'] ?? $unit['id'];
         }
         return $options;
     }
@@ -1552,6 +1363,8 @@ class EditReservation extends EditRecord
 namespace App\\Services;
 
 use App\\Models\\Reservation;
+use App\\Models\\SiteSetting;
+use App\\Support\\RoomPrice;
 use Carbon\\Carbon;
 use Illuminate\\Database\\Eloquent\\Model;
 use RuntimeException;
@@ -1645,9 +1458,8 @@ class ReservationDesk
         if (
             $adults > (int) ($type['maxAdults'] ?? 2)
             || $children > (int) ($type['maxChildren'] ?? 0)
-            || ($adults + $children) > (int) ($type['maxOccupancy'] ?? 2)
         ) {
-            throw new RuntimeException('Guest count exceeds the maximum occupancy for this room type.');
+            throw new RuntimeException('Guest count exceeds the maximum for this room type.');
         }
         $unit = $this->requireUnit((string) ($data['crs_room_unit_id'] ?? ''), (string) $type['id']);
         return [$type, $unit];
@@ -1692,12 +1504,24 @@ class ReservationDesk
         $nights = max(1, (int) Carbon::parse($data['check_in'])->diffInDays(Carbon::parse($data['check_out'])));
         $nightly = $data['nightly_rate'] ?? null;
         if ($nightly === null || $nightly === '') {
-            $nightly = $existing ? (float) $existing->nightly_rate : (float) ($type['basePrice'] ?? 0);
+            $nightly = $existing
+                ? (float) $existing->nightly_rate
+                : RoomPrice::selling((float) ($type['basePrice'] ?? 0), (float) ($type['discountPercent'] ?? 0));
         }
         $typeChanged = $existing && (string) $existing->crs_room_type_id !== (string) $type['id'];
         $currency = (! $existing || $typeChanged)
             ? (string) ($type['currency'] ?? 'ETB')
             : (string) ($existing->currency ?: ($type['currency'] ?? 'ETB'));
+        $freeBreakfast = (bool) ($type['freeBreakfast'] ?? false);
+        $wantsBreakfast = $freeBreakfast || (bool) ($data['breakfast_selected'] ?? false);
+        $charge = RoomPrice::breakfastCharge(
+            $freeBreakfast,
+            $wantsBreakfast,
+            (float) SiteSetting::current()->breakfast_price,
+            $nights
+        );
+        $breakfastSelected = $charge['selected'];
+        $breakfastTotal = $charge['total'];
         $attributes = [
             'crs_room_type_id' => $type['id'],
             'crs_room_unit_id' => $unit['id'],
@@ -1714,7 +1538,11 @@ class ReservationDesk
             'guest_phone' => $data['guest_phone'] ?? null,
             'status' => $status,
             'nightly_rate' => $nightly,
-            'total_price' => round((float) $nightly * $nights, 2),
+            'breakfast_selected' => $breakfastSelected,
+            'breakfast_total' => $breakfastTotal,
+            'free_cancellation' => (bool) ($type['freeCancellation'] ?? false),
+            'cancellation_fee' => ! empty($type['freeCancellation']) ? 0 : (float) SiteSetting::current()->cancellation_fee,
+            'total_price' => round((float) $nightly * $nights + $breakfastTotal, 2),
             'currency' => $currency,
             'special_requests' => $data['special_requests'] ?? null,
             'admin_notes' => $data['admin_notes'] ?? null,
@@ -1832,7 +1660,7 @@ trait LoadsCrsInventory
 
     public ?string $crsError = null;
 
-    /** @var array<string, string> data-URL photos, kept off the Livewire snapshot */
+    /** @var array<string, list<string>> data-URL photos, kept off the Livewire snapshot */
     protected array $images = [];
 
     public function mount(): void
@@ -1848,9 +1676,10 @@ trait LoadsCrsInventory
         $this->reload();
     }
 
-    public function imageFor(string $typeId): ?string
+    /** @return list<string> */
+    public function imageFor(string $typeId): array
     {
-        return $this->images[$typeId] ?? null;
+        return $this->images[$typeId] ?? [];
     }
 
     protected function finish(string $title): void
@@ -1876,33 +1705,40 @@ trait LoadsCrsInventory
         }
     }
 
-    protected function storedImage(array $data, ?array $existing): string
+    protected function storedPhotos(array $data, ?array $existing): array
     {
-        $uploaded = $this->readUpload($data['photo'] ?? null);
-        if ($uploaded !== null) {
-            return $uploaded;
-        }
-        if (! empty($data['clearImage'])) {
-            return '';
-        }
-        if ($existing === null) {
-            return '';
-        }
-        if (! empty($existing['hasInlineImage'])) {
-            $kept = $this->images[(string) ($existing['id'] ?? '')] ?? null;
-            if (! is_string($kept) || $kept === '') {
-                throw new RuntimeException('The current photo could not be loaded from BuildAura. Try again before saving.');
+        $photos = [];
+        $existingPhotos = is_array($existing['photos'] ?? null) ? $existing['photos'] : [];
+        foreach (is_array($data['keptPhotos'] ?? null) ? $data['keptPhotos'] : [] as $photo) {
+            if (is_string($photo) && $photo !== '' && in_array($photo, $existingPhotos, true)) {
+                $photos[] = $photo;
             }
-            return $kept;
         }
-        $image = $existing['image'] ?? '';
-        return is_string($image) ? $image : '';
+        if (! empty($existing['hasInlinePhotos'])) {
+            foreach ($this->images[(string) ($existing['id'] ?? '')] ?? [] as $inline) {
+                if (is_string($inline) && $inline !== '') {
+                    $photos[] = $inline;
+                }
+            }
+        }
+        $uploads = $data['newPhotos'] ?? [];
+        if (! is_array($uploads)) {
+            $uploads = [$uploads];
+        }
+        foreach ($uploads as $upload) {
+            $url = $this->readUpload($upload);
+            if (is_string($url) && $url !== '') {
+                $photos[] = $url;
+            }
+        }
+
+        return array_values($photos);
     }
 
     protected function readUpload(mixed $upload): ?string
     {
         if (is_array($upload)) {
-            $upload = $upload[0] ?? null;
+            return null;
         }
         if (! is_string($upload) || $upload === '' || str_contains($upload, '..')) {
             return null;
@@ -1940,10 +1776,55 @@ trait LoadsCrsInventory
         return $url;
     }
 
-    protected function amenities(mixed $value): array
+    protected function amenityOptions(): array
     {
-        $parts = array_map('trim', explode(',', (string) $value));
-        return array_values(array_filter($parts, fn ($part) => $part !== ''));
+        $options = [];
+        foreach (app(CrsClient::class)->amenityCatalog('ROOM_TYPE') as $item) {
+            $name = is_array($item) ? (string) ($item['name'] ?? '') : '';
+            $key = trim(strtolower((string) preg_replace('/[^a-z0-9]+/i', '_', $name)), '_');
+            if ($key === '') {
+                continue;
+            }
+            $base = $key;
+            $n = 2;
+            while (isset($options[$key])) {
+                $key = $base.'_'.$n;
+                $n++;
+            }
+            $options[$key] = $name;
+        }
+
+        return $options;
+    }
+
+    protected function amenities(array $data): array
+    {
+        $allowed = $this->amenityOptions();
+        if ($allowed === []) {
+            throw new RuntimeException('Amenities could not be loaded.');
+        }
+        $flags = is_array($data['amenityFlags'] ?? null) ? $data['amenityFlags'] : [];
+        $names = [];
+        foreach ($allowed as $key => $name) {
+            if (! empty($flags[$key])) {
+                $names[] = $name;
+            }
+        }
+
+        return $names;
+    }
+
+    protected function discountPercent(mixed $value): float
+    {
+        if (! is_numeric($value)) {
+            throw new RuntimeException('Discount must be between 0 and 100');
+        }
+        $percent = (float) $value;
+        if ($percent < 0 || $percent > 100) {
+            throw new RuntimeException('Discount must be between 0 and 100');
+        }
+
+        return $percent;
     }
 
     protected function typeOptions(): array
@@ -1961,10 +1842,8 @@ trait LoadsCrsInventory
     {
         return [
             'AVAILABLE' => 'Available',
-            'RESERVED' => 'Reserved',
-            'OCCUPIED' => 'Occupied',
-            'MAINTENANCE' => 'Maintenance',
-            'OUT_OF_SERVICE' => 'Out of service',
+            'BOOKED' => 'Booked',
+            'INACTIVE' => 'Inactive',
         ];
     }
 
@@ -1995,14 +1874,29 @@ trait LoadsCrsInventory
             $this->images = [];
             $types = [];
             foreach ($raw['roomTypes'] ?? [] as $type) {
-                $image = $type['image'] ?? null;
-                if (is_string($image) && str_starts_with($image, 'data:')) {
-                    $this->images[(string) $type['id']] = $image;
-                    $type['image'] = null;
-                    $type['hasInlineImage'] = true;
-                } else {
-                    $type['hasInlineImage'] = false;
+                if (! is_array($type)) {
+                    continue;
                 }
+                $photos = is_array($type['photos'] ?? null) ? $type['photos'] : [];
+                $publicPhotos = [];
+                $inline = [];
+                foreach ($photos as $photo) {
+                    if (! is_string($photo) || $photo === '') {
+                        continue;
+                    }
+                    if (str_starts_with($photo, 'data:')) {
+                        $inline[] = $photo;
+                    } else {
+                        $publicPhotos[] = $photo;
+                    }
+                }
+                if ($inline !== []) {
+                    $this->images[(string) ($type['id'] ?? '')] = $inline;
+                    $type['hasInlinePhotos'] = true;
+                } else {
+                    $type['hasInlinePhotos'] = false;
+                }
+                $type['photos'] = $publicPhotos;
                 $types[] = $type;
             }
             $raw['roomTypes'] = $types;
@@ -2022,9 +1916,16 @@ trait LoadsCrsInventory
 namespace App\\Filament\\Pages;
 
 use App\\Filament\\Concerns\\LoadsCrsInventory;
+use App\\Models\\SiteSetting;
 use App\\Services\\CrsClient;
+use App\\Support\\RoomPrice;
 use Filament\\Actions\\Action;
+use Filament\\Forms\\Components\\Checkbox;
+use Filament\\Forms\\Components\\CheckboxList;
+use Filament\\Forms\\Components\\Fieldset;
 use Filament\\Forms\\Components\\FileUpload;
+use Filament\\Forms\\Components\\Placeholder;
+use Filament\\Forms\\Get;
 use Filament\\Forms\\Components\\Select;
 use Filament\\Forms\\Components\\Textarea;
 use Filament\\Forms\\Components\\TextInput;
@@ -2053,7 +1954,6 @@ class ManageRoomTypes extends Page
 
     public ?array $filters = [
         'search' => '',
-        'parent' => '',
         'active' => '',
         'sort' => 'sortOrder',
     ];
@@ -2067,7 +1967,6 @@ class ManageRoomTypes extends Page
     {
         $this->filters = [
             'search' => '',
-            'parent' => '',
             'active' => '',
             'sort' => 'sortOrder',
         ];
@@ -2076,7 +1975,6 @@ class ManageRoomTypes extends Page
     public function typeFiltersActive(): bool
     {
         return $this->filterText('search') !== ''
-            || $this->filterText('parent') !== ''
             || $this->filterText('active') !== '';
     }
 
@@ -2163,28 +2061,24 @@ class ManageRoomTypes extends Page
     {
         $payload = [
             'name' => trim((string) ($data['name'] ?? '')),
-            'slug' => filled($data['slug'] ?? null) ? trim((string) $data['slug']) : null,
             'description' => (string) ($data['description'] ?? ''),
-            'shortDescription' => (string) ($data['shortDescription'] ?? ''),
             'basePrice' => is_numeric($data['basePrice'] ?? null) ? (float) $data['basePrice'] : 0,
-            'currency' => filled($data['currency'] ?? null) ? strtoupper(trim((string) $data['currency'])) : 'ETB',
+            'discountPercent' => $this->discountPercent($data['discountPercent'] ?? 0),
+            'currency' => RoomPrice::currency((string) ($data['currency'] ?? '')),
             'maxAdults' => (int) ($data['maxAdults'] ?? 2),
             'maxChildren' => (int) ($data['maxChildren'] ?? 0),
-            'maxOccupancy' => (int) ($data['maxOccupancy'] ?? 2),
             'bedConfiguration' => (string) ($data['bedConfiguration'] ?? ''),
             'sizeSqm' => (string) ($data['sizeSqm'] ?? ''),
-            'amenities' => $this->amenities($data['amenities'] ?? ''),
-            'image' => $this->storedImage($data, $existing),
+            'amenities' => $this->amenities($data),
+            'photos' => $this->storedPhotos($data, $existing),
+            'freeCancellation' => (bool) ($data['freeCancellation'] ?? false),
+            'freeBreakfast' => (bool) ($data['freeBreakfast'] ?? false),
             'unitPrefix' => filled($data['unitPrefix'] ?? null) ? trim((string) $data['unitPrefix']) : 'RM-',
             'isActive' => (bool) ($data['isActive'] ?? true),
             'sortOrder' => $existing === null
                 ? ((int) collect($this->inventory['roomTypes'] ?? [])->max('sortOrder')) + 1
                 : (int) ($existing['sortOrder'] ?? 0),
         ];
-        $parentId = trim((string) ($data['parentId'] ?? ''));
-        if ($parentId !== '' && ($existing === null || $parentId !== (string) ($existing['id'] ?? ''))) {
-            $payload['parentId'] = $parentId;
-        }
         $crs = app(CrsClient::class);
         if ($existing === null) {
             $payload['unitCount'] = max(0, (int) ($data['unitCount'] ?? 1));
@@ -2197,33 +2091,76 @@ class ManageRoomTypes extends Page
         $this->finish($title);
     }
 
+    private function priceHint(Get $get): string
+    {
+        $rate = (float) SiteSetting::current()->usdt_etb_rate;
+        $amount = is_numeric($get('basePrice')) ? (float) $get('basePrice') : 0.0;
+        $currency = strtoupper(trim((string) ($get('currency') ?: 'ETB')));
+        $other = RoomPrice::other($amount, $currency, $rate);
+        if ($rate <= 0) {
+            return 'Set the USD to ETB rate on Hotel Policy to show the other currency.';
+        }
+        if ($other === null) {
+            return '1 USD = '.$rate.' ETB.';
+        }
+
+        return 'About '.$other.' · 1 USD = '.$rate.' ETB.';
+    }
+
+    private function amenityFields(): array
+    {
+        $options = $this->amenityOptions();
+        if ($options === []) {
+            return [
+                Placeholder::make('amenitiesUnavailable')
+                    ->label('Room amenities')
+                    ->content('Amenities could not be loaded.'),
+            ];
+        }
+        $boxes = [];
+        foreach ($options as $key => $name) {
+            $boxes[] = Checkbox::make('amenityFlags.'.$key)->label($name);
+        }
+
+        return [
+            Fieldset::make('Room amenities')
+                ->schema($boxes)
+                ->columns(2),
+        ];
+    }
+
     private function typeForm(bool $creating): array
     {
         $fields = [
             TextInput::make('name')->required()->maxLength(120),
-            TextInput::make('slug')->maxLength(160)->helperText('Leave blank to build it from the name.'),
-            Select::make('parentId')
-                ->label('Parent type')
-                ->options(fn () => $this->parentOptions())
-                ->searchable()
-                ->placeholder($creating ? 'None (top-level)' : 'Keep current parent')
-                ->helperText($creating
-                    ? 'Optional. Leave blank for a top-level type.'
-                    : 'Leave blank to keep the current parent. A parent cannot be cleared from here.'),
-            TextInput::make('shortDescription')->label('Short description')->maxLength(240),
-            Textarea::make('description')->rows(3),
-            TextInput::make('basePrice')->label('Nightly price')->numeric()->default(0)->required(),
-            TextInput::make('currency')->default('ETB')->maxLength(3)->required(),
-            TextInput::make('maxAdults')->numeric()->default(2)->required()->minValue(1),
-            TextInput::make('maxChildren')->numeric()->default(0)->required()->minValue(0),
-            TextInput::make('maxOccupancy')->numeric()->default(2)->required()->minValue(1),
+            Textarea::make('description')->rows(3)->helperText('Optional.'),
+            TextInput::make('basePrice')->label('Price')->numeric()->default(0)->required()->live(onBlur: true)->helperText(fn (Get $get) => $this->priceHint($get)),
+            TextInput::make('discountPercent')->label('Discount %')->numeric()->default(0)->required()->minValue(0)->maxValue(100)->helperText('0 means no discount. 10 means 10% off the price.'),
+            Select::make('currency')->options(['ETB' => 'ETB', 'USD' => 'USD'])->default('ETB')->required()->live(),
+            TextInput::make('maxAdults')->label('Max adults')->numeric()->default(2)->required()->minValue(1),
+            TextInput::make('maxChildren')->label('Max children')->numeric()->default(0)->required()->minValue(0),
             TextInput::make('bedConfiguration')->label('Beds'),
             TextInput::make('sizeSqm')->label('Size (m²)'),
-            Textarea::make('amenities')->helperText('Comma-separated. Example: Wi-Fi, Breakfast, Lake view'),
+            ...$this->amenityFields(),
+            Toggle::make('freeCancellation')->label('Free cancellation')->default(false),
+            Toggle::make('freeBreakfast')->label('Breakfast included')->default(false),
             TextInput::make('unitPrefix')->label('Room number prefix')->default('RM-'),
             Toggle::make('isActive')->label('Active')->default(true),
-            FileUpload::make('photo')
-                ->label('Room photo')
+            CheckboxList::make('keptPhotos')->label('Current photos')->options(function () {
+                $type = $this->editingTypeId ? $this->findType((string) $this->editingTypeId) : null;
+                $photos = is_array($type['photos'] ?? null) ? $type['photos'] : [];
+                $options = [];
+                foreach ($photos as $index => $photo) {
+                    if (is_string($photo) && $photo !== '') {
+                        $options[$photo] = 'Photo '.($index + 1);
+                    }
+                }
+
+                return $options;
+            }),
+            FileUpload::make('newPhotos')
+                ->label('Add photos')
+                ->multiple()
                 ->disk('local')
                 ->directory('crs-uploads')
                 ->visibility('private')
@@ -2231,8 +2168,7 @@ class ManageRoomTypes extends Page
                 ->imageEditor()
                 ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/gif'])
                 ->maxSize(5120)
-                ->helperText('JPEG, PNG, WebP, or GIF up to 5 MB. Stored in BuildAura, then removed from this server.'),
-            Toggle::make('clearImage')->label('Remove current photo')->default(false)->helperText('Ignored when you upload a replacement.'),
+                ->helperText('JPEG, PNG, WebP, or GIF up to 5 MB each.'),
         ];
         if ($creating) {
             $fields[] = TextInput::make('unitCount')
@@ -2247,69 +2183,46 @@ class ManageRoomTypes extends Page
 
     private function typeState(array $type): array
     {
-        $amenities = $type['amenities'] ?? [];
+        $amenities = is_array($type['amenities'] ?? null) ? $type['amenities'] : [];
+        $photos = is_array($type['photos'] ?? null) ? $type['photos'] : [];
+        $stored = [];
+        foreach ($amenities as $name) {
+            if (is_string($name) && $name !== '') {
+                $stored[$name] = true;
+            }
+        }
+        $flags = [];
+        foreach ($this->amenityOptions() as $key => $name) {
+            $flags[$key] = isset($stored[$name]);
+        }
+
         return [
             'name' => $type['name'] ?? '',
-            'slug' => $type['slug'] ?? '',
-            'parentId' => $type['parentId'] ?? null,
-            'shortDescription' => $type['shortDescription'] ?? '',
             'description' => $type['description'] ?? '',
             'basePrice' => $type['basePrice'] ?? 0,
-            'currency' => $type['currency'] ?? 'ETB',
+            'discountPercent' => $type['discountPercent'] ?? 0,
+            'currency' => RoomPrice::currency((string) ($type['currency'] ?? '')),
             'maxAdults' => $type['maxAdults'] ?? 2,
             'maxChildren' => $type['maxChildren'] ?? 0,
-            'maxOccupancy' => $type['maxOccupancy'] ?? 2,
             'bedConfiguration' => $type['bedConfiguration'] ?? '',
             'sizeSqm' => $type['sizeSqm'] ?? '',
-            'amenities' => is_array($amenities) ? implode(', ', $amenities) : (string) $amenities,
+            'amenityFlags' => $flags,
+            'keptPhotos' => array_values(array_filter($photos, fn ($photo) => is_string($photo) && $photo !== '')),
+            'freeCancellation' => (bool) ($type['freeCancellation'] ?? false),
+            'freeBreakfast' => (bool) ($type['freeBreakfast'] ?? false),
             'unitPrefix' => $type['unitPrefix'] ?? 'RM-',
             'isActive' => (bool) ($type['isActive'] ?? true),
         ];
     }
 
-    private function parentOptions(): array
-    {
-        $options = [];
-        foreach ($this->inventory['roomTypes'] ?? [] as $type) {
-            $id = (string) ($type['id'] ?? '');
-            if ($id === '' || $id === (string) $this->editingTypeId) {
-                continue;
-            }
-            $options[$id] = $type['name'] ?? $id;
-        }
-        return $options;
-    }
-
-    public function filterParentOptions(): array
-    {
-        $options = [];
-        foreach ($this->inventory['roomTypes'] ?? [] as $type) {
-            $id = (string) ($type['id'] ?? '');
-            if ($id === '') {
-                continue;
-            }
-            $options[$id] = (string) ($type['name'] ?? $id);
-        }
-
-        return $options;
-    }
-
     public function visibleTypes(): array
     {
         $needle = mb_strtolower($this->filterText('search'));
-        $parentFilter = $this->filterText('parent');
         $activeFilter = $this->filterText('active');
         $types = [];
         foreach ($this->inventory['roomTypes'] ?? [] as $type) {
             if (! is_array($type)) {
                 continue;
-            }
-            if ($parentFilter !== '') {
-                $id = (string) ($type['id'] ?? '');
-                $parent = (string) ($type['parentId'] ?? '');
-                if ($id !== $parentFilter && $parent !== $parentFilter) {
-                    continue;
-                }
             }
             $active = (bool) ($type['isActive'] ?? true);
             if ($activeFilter === '1' && ! $active) {
@@ -2322,7 +2235,6 @@ class ManageRoomTypes extends Page
                 $haystack = mb_strtolower(trim(implode(' ', [
                     (string) ($type['name'] ?? ''),
                     (string) ($type['slug'] ?? ''),
-                    (string) ($type['shortDescription'] ?? ''),
                     (string) ($type['description'] ?? ''),
                 ])));
                 if (! str_contains($haystack, $needle)) {
@@ -2492,10 +2404,8 @@ class ManageRooms extends Page
         $payload = [
             'roomTypeId' => $data['roomTypeId'] ?? null,
             'code' => trim((string) ($data['code'] ?? '')),
-            'floor' => (string) ($data['floor'] ?? ''),
-            'name' => (string) ($data['name'] ?? ''),
+            'smokingAllowed' => (bool) ($data['smokingAllowed'] ?? false),
             'status' => $data['status'] ?? 'AVAILABLE',
-            'isActive' => (bool) ($data['isActive'] ?? true),
             'notes' => (string) ($data['notes'] ?? ''),
             'sortOrder' => $existing === null
                 ? ((int) collect($this->inventory['units'] ?? [])->max('sortOrder')) + 1
@@ -2517,10 +2427,8 @@ class ManageRooms extends Page
         return [
             Select::make('roomTypeId')->label('Room type')->options(fn () => $this->typeOptions())->searchable()->required(),
             TextInput::make('code')->label('Room number')->required()->maxLength(40),
-            TextInput::make('name'),
-            TextInput::make('floor'),
+            Toggle::make('smokingAllowed')->label('Smoking allowed')->default(false),
             Select::make('status')->options($this->statusOptions())->default('AVAILABLE')->required(),
-            Toggle::make('isActive')->label('Active')->default(true),
             Textarea::make('notes'),
         ];
     }
@@ -2530,10 +2438,8 @@ class ManageRooms extends Page
         return [
             'roomTypeId' => $unit['roomTypeId'] ?? null,
             'code' => $unit['code'] ?? '',
-            'name' => $unit['name'] ?? '',
-            'floor' => $unit['floor'] ?? '',
+            'smokingAllowed' => (bool) ($unit['smokingAllowed'] ?? false),
             'status' => $unit['status'] ?? 'AVAILABLE',
-            'isActive' => (bool) ($unit['isActive'] ?? true),
             'notes' => $unit['notes'] ?? '',
         ];
     }
@@ -2563,8 +2469,6 @@ class ManageRooms extends Page
             if ($needle !== '') {
                 $haystack = mb_strtolower(trim(implode(' ', [
                     (string) ($unit['code'] ?? ''),
-                    (string) ($unit['name'] ?? ''),
-                    (string) ($unit['floor'] ?? ''),
                     (string) ($unit['notes'] ?? ''),
                 ])));
                 if (! str_contains($haystack, $needle)) {
@@ -2579,15 +2483,11 @@ class ManageRooms extends Page
         }
         usort($units, function (array $a, array $b) use ($sort, $names): int {
             $code = strcasecmp((string) ($a['code'] ?? ''), (string) ($b['code'] ?? ''));
-            $name = strcasecmp((string) ($a['name'] ?? ''), (string) ($b['name'] ?? ''));
-            $floor = strcasecmp((string) ($a['floor'] ?? ''), (string) ($b['floor'] ?? ''));
             $status = strcasecmp((string) ($a['status'] ?? ''), (string) ($b['status'] ?? ''));
             $type = strcasecmp($names[(string) ($a['roomTypeId'] ?? '')] ?? '', $names[(string) ($b['roomTypeId'] ?? '')] ?? '');
 
             return match ($sort) {
                 'code_desc' => -$code,
-                'name' => $name !== 0 ? $name : $code,
-                'floor' => $floor !== 0 ? $floor : $code,
                 'status' => $status !== 0 ? $status : $code,
                 'type' => $type !== 0 ? $type : $code,
                 default => $code,
@@ -2612,26 +2512,16 @@ class ManageRooms extends Page
         </div>
     @endif
 
-    <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;align-items:end;margin-bottom:24px;">
+    <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;align-items:end;margin-bottom:24px;">
         <x-filament-forms::field-wrapper label="Search">
             <x-filament::input.wrapper>
-                <x-filament::input type="search" placeholder="Name, slug, description" wire:model.live.debounce.300ms="filters.search" />
-            </x-filament::input.wrapper>
-        </x-filament-forms::field-wrapper>
-        <x-filament-forms::field-wrapper label="Parent type">
-            <x-filament::input.wrapper>
-                <x-filament::input.select wire:model.live="filters.parent">
-                    <option value="">All types</option>
-                    @foreach($this->filterParentOptions() as $id => $name)
-                        <option value="{{ $id }}">{{ $name }}</option>
-                    @endforeach
-                </x-filament::input.select>
+                <x-filament::input type="search" placeholder="Name, description" wire:model.live.debounce.300ms="filters.search" />
             </x-filament::input.wrapper>
         </x-filament-forms::field-wrapper>
         <x-filament-forms::field-wrapper label="Active">
             <x-filament::input.wrapper>
                 <x-filament::input.select wire:model.live="filters.active">
-                    <option value="">Any</option>
+                    <option value="">All</option>
                     <option value="1">Active</option>
                     <option value="0">Inactive</option>
                 </x-filament::input.select>
@@ -2659,18 +2549,20 @@ class ManageRooms extends Page
                 <thead>
                     <tr>
                         <th style="text-align:left;padding:8px 10px;font-size:12px;color:#6b7280;font-weight:600;">Photo</th>
-                        <th style="text-align:left;padding:8px 10px;font-size:12px;color:#6b7280;font-weight:600;">Room type</th>
+                        <th style="text-align:left;padding:8px 10px;font-size:12px;color:#6b7280;font-weight:600;">Type</th>
+                        <th style="text-align:left;padding:8px 10px;font-size:12px;color:#6b7280;font-weight:600;">Size</th>
                         <th style="text-align:left;padding:8px 10px;font-size:12px;color:#6b7280;font-weight:600;white-space:nowrap;">Price</th>
-                        <th style="text-align:left;padding:8px 10px;font-size:12px;color:#6b7280;font-weight:600;">Occupancy</th>
+                        <th style="text-align:left;padding:8px 10px;font-size:12px;color:#6b7280;font-weight:600;">Rooms</th>
                         <th style="text-align:right;padding:8px 10px;font-size:12px;color:#6b7280;font-weight:600;">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($types as $type)
                         @php
-                            $preview = $type['image'] ?? null;
-                            if (empty($preview) && ! empty($type['hasInlineImage'])) {
-                                $preview = $this->imageFor((string) ($type['id'] ?? ''));
+                            $preview = $type['photos'][0] ?? '';
+                            if ($preview === '' && ! empty($type['hasInlinePhotos'])) {
+                                $inline = $this->imageFor((string) ($type['id'] ?? ''));
+                                $preview = $inline[0] ?? '';
                             }
                             $roomCount = 0;
                             foreach ($units as $candidate) {
@@ -2678,10 +2570,10 @@ class ManageRooms extends Page
                                     $roomCount++;
                                 }
                             }
-                            $summary = (string) ($type['shortDescription'] ?? '');
-                            if ($summary === '' && ! empty($type['description'])) {
-                                $summary = \\Illuminate\\Support\\Str::limit((string) $type['description'], 140);
-                            }
+                            $base = (float) ($type['basePrice'] ?? 0);
+                            $percent = (float) ($type['discountPercent'] ?? 0);
+                            $selling = \\App\\Support\\RoomPrice::selling($base, $percent);
+                            $currency = $type['currency'] ?? 'ETB';
                         @endphp
                         <tr wire:key="type-{{ $type['id'] }}" style="border-top:1px solid #e5e7eb;">
                             <td style="padding:10px;vertical-align:middle;width:88px;">
@@ -2693,18 +2585,19 @@ class ManageRooms extends Page
                             </td>
                             <td style="padding:10px;vertical-align:middle;white-space:normal;word-break:normal;overflow-wrap:break-word;">
                                 <div style="font-weight:600;">{{ $type['name'] ?? '' }}</div>
-                                @if($summary !== '')
-                                    <div style="margin-top:2px;font-size:13px;color:#4b5563;white-space:normal;word-break:normal;overflow-wrap:break-word;">{{ $summary }}</div>
+                                <div style="margin-top:2px;font-size:13px;color:#4b5563;">{{ (int) ($type['maxAdults'] ?? 2) }}Ad {{ (int) ($type['maxChildren'] ?? 0) }}Ch</div>
+                            </td>
+                            <td style="padding:10px;vertical-align:middle;white-space:nowrap;">{{ ! empty($type['sizeSqm']) ? $type['sizeSqm'].' m²' : '—' }}</td>
+                            <td style="padding:10px;vertical-align:middle;white-space:nowrap;">
+                                @if($percent > 0)
+                                    <span style="text-decoration:line-through;color:#6b7280;">{{ number_format($base, 0) }} {{ $currency }}</span>
+                                    <span style="margin-left:6px;font-weight:600;">{{ number_format($selling, 0) }} {{ $currency }}</span>
+                                    <span style="margin-left:6px;color:#be123c;font-size:12px;font-weight:700;">{{ rtrim(rtrim(number_format($percent, 2), '0'), '.') }}% off</span>
+                                @else
+                                    {{ number_format($base, 0) }} {{ $currency }}
                                 @endif
                             </td>
-                            <td style="padding:10px;vertical-align:middle;white-space:nowrap;">{{ number_format((float) ($type['basePrice'] ?? 0), 0) }} {{ $type['currency'] ?? 'ETB' }}</td>
-                            <td style="padding:10px;vertical-align:middle;white-space:normal;word-break:normal;">
-                                {{ (int) ($type['maxAdults'] ?? 2) }} adults · {{ (int) ($type['maxChildren'] ?? 0) }} children
-                                · {{ $roomCount }} {{ $roomCount === 1 ? 'room' : 'rooms' }}
-                                @if(! empty($type['sizeSqm']))
-                                    · {{ $type['sizeSqm'] }} m²
-                                @endif
-                            </td>
+                            <td style="padding:10px;vertical-align:middle;white-space:nowrap;">{{ $roomCount }}</td>
                             <td style="padding:10px;vertical-align:middle;white-space:nowrap;text-align:right;">
                                 <div style="display:flex;gap:8px;justify-content:flex-end;">
                                     {{ ($this->editTypeAction)(['typeId' => $type['id']]) }}
@@ -2714,7 +2607,7 @@ class ManageRooms extends Page
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" style="padding:16px 10px;color:#6b7280;font-size:14px;">@if($typeFiltersOn)No room types match these filters.@else No room types yet. Add one to create it in BuildAura.@endif</td>
+                            <td colspan="6" style="padding:16px 10px;color:#6b7280;font-size:14px;">@if($typeFiltersOn)No room types match these filters.@else No room types yet. Add one to create it in BuildAura.@endif</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -2762,7 +2655,7 @@ class ManageRooms extends Page
     <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;align-items:end;margin-bottom:24px;">
         <x-filament-forms::field-wrapper label="Search">
             <x-filament::input.wrapper>
-                <x-filament::input type="search" placeholder="Code, name, floor, notes" wire:model.live.debounce.300ms="filters.search" />
+                <x-filament::input type="search" placeholder="Code, notes" wire:model.live.debounce.300ms="filters.search" />
             </x-filament::input.wrapper>
         </x-filament-forms::field-wrapper>
         <x-filament-forms::field-wrapper label="Room type">
@@ -2780,8 +2673,8 @@ class ManageRooms extends Page
         <x-filament-forms::field-wrapper label="Status">
             <x-filament::input.wrapper>
                 <x-filament::input.select wire:model.live="filters.status">
-                    <option value="">Any status</option>
-                    @foreach(['AVAILABLE' => 'Available', 'RESERVED' => 'Reserved', 'OCCUPIED' => 'Occupied', 'MAINTENANCE' => 'Maintenance', 'OUT_OF_SERVICE' => 'Out of service'] as $value => $label)
+                    <option value="">All statuses</option>
+                    @foreach(['AVAILABLE' => 'Available', 'BOOKED' => 'Booked', 'INACTIVE' => 'Inactive'] as $value => $label)
                         <option value="{{ $value }}">{{ $label }}</option>
                     @endforeach
                 </x-filament::input.select>
@@ -2792,8 +2685,6 @@ class ManageRooms extends Page
                 <x-filament::input.select wire:model.live="filters.sort">
                     <option value="code">Room number</option>
                     <option value="code_desc">Room number (Z–A)</option>
-                    <option value="name">Name</option>
-                    <option value="floor">Floor</option>
                     <option value="status">Status</option>
                     <option value="type">Room type</option>
                 </x-filament::input.select>
@@ -2809,10 +2700,9 @@ class ManageRooms extends Page
             <table style="width:100%;min-width:720px;border-collapse:collapse;">
                 <thead>
                     <tr>
-                        <th style="text-align:left;padding:8px 10px;font-size:12px;color:#6b7280;font-weight:600;">Room number</th>
-                        <th style="text-align:left;padding:8px 10px;font-size:12px;color:#6b7280;font-weight:600;">Name</th>
-                        <th style="text-align:left;padding:8px 10px;font-size:12px;color:#6b7280;font-weight:600;">Room type</th>
-                        <th style="text-align:left;padding:8px 10px;font-size:12px;color:#6b7280;font-weight:600;">Floor</th>
+                        <th style="text-align:left;padding:8px 10px;font-size:12px;color:#6b7280;font-weight:600;">Number</th>
+                        <th style="text-align:left;padding:8px 10px;font-size:12px;color:#6b7280;font-weight:600;">Type</th>
+                        <th style="text-align:left;padding:8px 10px;font-size:12px;color:#6b7280;font-weight:600;">Smoking</th>
                         <th style="text-align:left;padding:8px 10px;font-size:12px;color:#6b7280;font-weight:600;">Status</th>
                         <th style="text-align:right;padding:8px 10px;font-size:12px;color:#6b7280;font-weight:600;">Actions</th>
                     </tr>
@@ -2821,15 +2711,15 @@ class ManageRooms extends Page
                     @forelse($units as $unit)
                         <tr wire:key="unit-{{ $unit['id'] }}" style="border-top:1px solid #e5e7eb;">
                             <td style="padding:10px;vertical-align:middle;white-space:nowrap;font-weight:600;">{{ $unit['code'] ?? '' }}</td>
-                            <td style="padding:10px;vertical-align:middle;white-space:normal;word-break:normal;overflow-wrap:break-word;">
-                                {{ $unit['name'] ?? '' }}
-                                @if(isset($unit['isActive']) && ! $unit['isActive'])
-                                    <span style="color:#6b7280;font-size:12px;">Inactive</span>
-                                @endif
-                            </td>
                             <td style="padding:10px;vertical-align:middle;white-space:normal;word-break:normal;">{{ $typeNames[$unit['roomTypeId'] ?? ''] ?? '' }}</td>
-                            <td style="padding:10px;vertical-align:middle;white-space:nowrap;">{{ $unit['floor'] ?? '' }}</td>
-                            <td style="padding:10px;vertical-align:middle;white-space:nowrap;">{{ str_replace('_', ' ', (string) ($unit['status'] ?? '')) }}</td>
+                            <td style="padding:10px;vertical-align:middle;white-space:nowrap;">{{ ! empty($unit['smokingAllowed']) ? 'Allowed' : 'No' }}</td>
+                            <td style="padding:10px;vertical-align:middle;white-space:nowrap;">@php
+                                $statusLabel = match (strtoupper((string) ($unit['status'] ?? 'AVAILABLE'))) {
+                                    'BOOKED' => 'Booked',
+                                    'INACTIVE' => 'Inactive',
+                                    default => 'Available',
+                                };
+                            @endphp{{ $statusLabel }}</td>
                             <td style="padding:10px;vertical-align:middle;white-space:nowrap;text-align:right;">
                                 <div style="display:flex;gap:8px;justify-content:flex-end;align-items:center;">
                                     <x-filament::button tag="a" size="sm" color="gray" outlined :href="\\App\\Filament\\Pages\\RoomCalendar::getUrl(['unitId' => $unit['id']])">Calendar</x-filament::button>
@@ -2840,7 +2730,7 @@ class ManageRooms extends Page
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" style="padding:16px 10px;color:#6b7280;font-size:14px;">@if($unitFiltersOn)No rooms match these filters.@else No rooms yet. Add a room type with a room count, or add a room here.@endif</td>
+                            <td colspan="5" style="padding:16px 10px;color:#6b7280;font-size:14px;">@if($unitFiltersOn)No rooms match these filters.@else No rooms yet. Add a room type with a room count, or add a room here.@endif</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -2850,7 +2740,7 @@ class ManageRooms extends Page
 
     <div style="height:16px;"></div>
 
-    <x-filament::section heading="Date holds">
+    <x-filament::section heading="Booked dates">
         <p style="margin:0 0 12px;font-size:14px;color:#6b7280;">Dates only. Guest names are under Reservations.</p>
         <div style="overflow-x:auto;">
             <table style="width:100%;min-width:520px;border-collapse:collapse;">
@@ -2858,7 +2748,7 @@ class ManageRooms extends Page
                     <tr>
                         <th style="text-align:left;padding:8px 10px;font-size:12px;color:#6b7280;font-weight:600;">Room</th>
                         <th style="text-align:left;padding:8px 10px;font-size:12px;color:#6b7280;font-weight:600;">Dates</th>
-                        <th style="text-align:left;padding:8px 10px;font-size:12px;color:#6b7280;font-weight:600;">Kind</th>
+                        <th style="text-align:left;padding:8px 10px;font-size:12px;color:#6b7280;font-weight:600;">Status</th>
                         <th style="text-align:left;padding:8px 10px;font-size:12px;color:#6b7280;font-weight:600;">Ref</th>
                     </tr>
                 </thead>
@@ -2867,12 +2757,12 @@ class ManageRooms extends Page
                         <tr style="border-top:1px solid #e5e7eb;">
                             <td style="padding:8px 10px;white-space:nowrap;">{{ $unitCodes[$block['roomUnitId'] ?? ''] ?? '' }}</td>
                             <td style="padding:8px 10px;white-space:nowrap;">{{ $block['checkIn'] ?? '' }} → {{ $block['checkOut'] ?? '' }}</td>
-                            <td style="padding:8px 10px;white-space:nowrap;">{{ $block['kind'] ?? '' }}</td>
+                            <td style="padding:8px 10px;white-space:nowrap;">Booked</td>
                             <td style="padding:8px 10px;">{{ $block['externalRef'] ?? '' }}</td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" style="padding:12px 10px;color:#6b7280;font-size:14px;">@if($unitFiltersOn)No date holds for these rooms.@else No date holds.@endif</td>
+                            <td colspan="4" style="padding:12px 10px;color:#6b7280;font-size:14px;">@if($unitFiltersOn)No booked dates for these rooms.@else No booked dates.@endif</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -2935,28 +2825,26 @@ class HospitalitySeeder extends Seeder
             return;
         }
         $seed = json_decode('${jsonForPhp(seed)}', true);
-        $ids = [];
         foreach ($seed as $row) {
-            $created = $crs->createRoomType([
+            $crs->createRoomType([
                 'name' => $row['name'],
-                'slug' => $row['slug'],
                 'description' => $row['description'],
-                'shortDescription' => $row['short_description'],
                 'basePrice' => $row['base_price'],
+                'discountPercent' => $row['discount_percent'],
                 'currency' => $row['currency'],
                 'maxAdults' => $row['max_adults'],
                 'maxChildren' => $row['max_children'],
-                'maxOccupancy' => $row['max_occupancy'],
                 'bedConfiguration' => $row['bed_configuration'],
                 'sizeSqm' => $row['size_sqm'],
                 'amenities' => $row['amenities'],
-                'image' => $row['image'],
+                'photos' => $row['photos'],
+                'freeCancellation' => $row['free_cancellation'],
+                'freeBreakfast' => $row['free_breakfast'],
                 'unitPrefix' => $row['unit_prefix'],
                 'unitCount' => $row['unit_count'],
                 'isActive' => $row['is_active'],
                 'sortOrder' => $row['sort_order'],
             ]);
-            $ids[$row['slug']] = $created['id'] ?? null;
         }
     }
 }
@@ -2984,11 +2872,11 @@ Route::get('/book/confirm/{code}', [BookingController::class, 'confirm'])->name(
 }
 
 export function bookingNavLinksBlade(): string {
-  return `@if($settings->page_visibility['rooms'] ?? false)<a href="{{ route('rooms.index') }}" class="hover:underline opacity-80">Rooms</a>@endif`
+  return `@if($settings->page_visibility['rooms'] ?? false)<a href="{{ route('rooms.index') }}" class="hover:underline opacity-80">Book</a>@endif`
 }
 
 export function bookingFooterLinksBlade(): string {
-  return `@if($settings->page_visibility['rooms'] ?? false)<a href="{{ route('rooms.index') }}" class="hover:underline opacity-70">Rooms</a>@endif`
+  return `@if($settings->page_visibility['rooms'] ?? false)<a href="{{ route('rooms.index') }}" class="hover:underline opacity-70">Book</a>@endif`
 }
 
 export function bookingSettingsFields(content: SiteContent): Record<string, unknown> {
@@ -2997,34 +2885,230 @@ export function bookingSettingsFields(content: SiteContent): Record<string, unkn
     rooms_section_subtitle: content.roomsSectionSubtitle || '',
     booking_section_title: content.bookingSectionTitle || 'Book Your Stay',
     booking_section_subtitle: content.bookingSectionSubtitle || '',
-    free_cancellation: false,
     pay_on_arrival: false,
-    free_breakfast: false,
+    usdt_etb_rate: 0,
+    breakfast_price: 0,
+    cancellation_fee: 0,
+    house_rules: null,
   }
 }
 
-/** Guest-facing stay policies. Renders nothing until the hotel admin turns a policy on. */
+export function roomPriceFiles(): Record<string, string> {
+  return {
+    'app/Support/RoomPrice.php': `<?php
+
+namespace App\\Support;
+
+class RoomPrice
+{
+    public static function selling(float $base, float $percent): float
+    {
+        $bounded = max(0, min(100, $percent));
+
+        return round($base * (100 - $bounded) / 100, 2);
+    }
+
+    public static function currency(string $currency): string
+    {
+        $code = strtoupper((string) preg_replace('/[^A-Za-z]/', '', $currency));
+        if (in_array($code, ['USD', 'USDT', 'US'], true)) {
+            return 'USD';
+        }
+
+        return 'ETB';
+    }
+
+    public static function other(float $amount, string $currency, float $rate): ?string
+    {
+        if ($rate <= 0 || $amount <= 0) {
+            return null;
+        }
+        if (self::currency($currency) === 'USD') {
+            return number_format($amount * $rate, 2).' ETB';
+        }
+
+        return number_format($amount / $rate, 2).' USD';
+    }
+
+    /** @return array{selected: bool, total: float} */
+    public static function breakfastCharge(bool $freeBreakfast, bool $selected, float $pricePerNight, int $nights): array
+    {
+        if ($freeBreakfast) {
+            return ['selected' => true, 'total' => 0.0];
+        }
+        if (! $selected || $pricePerNight <= 0) {
+            return ['selected' => false, 'total' => 0.0];
+        }
+
+        return ['selected' => true, 'total' => round($pricePerNight * max(1, $nights), 2)];
+    }
+
+    public static function cancellationNote(bool $free, float $fee, string $currency): string
+    {
+        if ($free) {
+            return 'Free cancellation.';
+        }
+        if ($fee > 0) {
+            $amount = number_format($fee, 0);
+            $code = trim($currency);
+
+            return $code === '' ? 'Cancellation fee '.$amount.'.' : 'Cancellation fee '.$amount.' '.$code.'.';
+        }
+
+        return 'This rate is non-refundable.';
+    }
+}
+`,
+    'resources/views/partials/room-price.blade.php': `@php
+  $base = (float) ($priceBase ?? 0);
+  $percent = max(0, min(100, (float) ($pricePercent ?? 0)));
+  $currency = \\App\\Support\\RoomPrice::currency((string) ($priceCurrency ?? ''));
+  $accent = $priceAccent ?? 'inherit';
+  $suffix = (string) ($priceSuffix ?? '');
+  $selling = \\App\\Support\\RoomPrice::selling($base, $percent);
+  $rate = (float) ($settings->usdt_etb_rate ?? 0);
+  $other = \\App\\Support\\RoomPrice::other($selling, $currency, $rate);
+  $otherBase = $percent > 0 ? \\App\\Support\\RoomPrice::other($base, $currency, $rate) : null;
+  $percentLabel = rtrim(rtrim(number_format($percent, 2), '0'), '.');
+  $align = ($priceAlign ?? '') === 'end' ? 'text-right' : '';
+@endphp
+<div class="mt-1 {{ $align }}">
+  @if($percent > 0)
+    <p class="text-sm text-slate-500 line-through">{{ number_format($base, 0) }} {{ $currency }}@if($otherBase) · {{ $otherBase }}@endif</p>
+    <p class="text-lg font-bold" style="color:{{ $accent }}">{{ number_format($selling, 0) }} {{ $currency }}@if($suffix !== '')<span class="text-sm font-normal text-slate-500"> {{ $suffix }}</span>@endif</p>
+    <p class="mt-1 text-sm font-semibold text-rose-700">{{ $percentLabel }}% off</p>
+  @else
+    <p class="text-lg font-bold" style="color:{{ $accent }}">{{ number_format($selling, 0) }} {{ $currency }}@if($suffix !== '')<span class="text-sm font-normal text-slate-500"> {{ $suffix }}</span>@endif</p>
+  @endif
+  @if($other)
+    <p class="mt-1 text-sm font-medium text-slate-700">{{ $other }}@if($suffix !== '') {{ $suffix }}@endif</p>
+  @elseif(!empty($priceRateHint))
+    <p class="mt-1 text-xs text-slate-500">Set the USD to ETB rate on Hotel Policy to show this price in ETB and USD.</p>
+  @endif
+</div>
+`,
+    'resources/views/partials/stay-addons.blade.php': `@php
+  $freeBreakfast = (bool) ($freeBreakfast ?? false);
+  $freeCancellation = (bool) ($freeCancellation ?? false);
+  $perNight = (float) ($breakfastPerNight ?? 0);
+  $cancellationFee = (float) ($cancellationFee ?? 0);
+  $nights = max(1, (int) ($nights ?? 1));
+  $roomCount = max(1, (int) ($roomCount ?? 1));
+  $roomEach = (float) ($roomEach ?? 0);
+  $currency = \\App\\Support\\RoomPrice::currency((string) ($currency ?? ''));
+  $rate = (float) ($settings->usdt_etb_rate ?? 0);
+  $picking = ! empty($countSelectedRooms);
+  $checked = $freeBreakfast || (bool) old('add_breakfast', request()->boolean('add_breakfast'));
+  $breakfastEach = (! $freeBreakfast && $perNight > 0) ? round($perNight * $nights, 2) : 0;
+  $initialRooms = $picking ? 0 : $roomCount;
+  $initialBreakfast = ($checked && $breakfastEach > 0) ? round($breakfastEach * $initialRooms, 2) : 0;
+  $initialRoom = round($roomEach * $initialRooms, 2);
+  $otherNight = \\App\\Support\\RoomPrice::other($perNight, $currency, $rate);
+  $foreign = \\App\\Support\\RoomPrice::currency($currency) === 'USD' ? '1' : '0';
+  $otherCode = $foreign === '1' ? 'ETB' : 'USD';
+@endphp
+@if($showCancellation ?? true)
+<p class="text-sm {{ $freeCancellation ? 'text-emerald-700' : 'text-slate-600' }}">{{ \\App\\Support\\RoomPrice::cancellationNote($freeCancellation, $cancellationFee, $currency) }}</p>
+@endif
+@if($freeBreakfast)
+  <p class="text-sm font-medium text-emerald-700">Breakfast included</p>
+  <input type="hidden" name="add_breakfast" value="1" />
+@elseif($perNight > 0)
+  <label class="flex items-start gap-2 text-sm text-slate-900">
+    <input type="checkbox" name="add_breakfast" value="1" data-add-breakfast @checked($checked) />
+    <span>
+      <span class="font-semibold">Add breakfast</span>
+      <span class="mt-0.5 block text-slate-600">{{ number_format($perNight, 0) }} {{ $currency }} / night per room{{ $otherNight ? ' · '.$otherNight.' / night' : '' }}</span>
+    </span>
+  </label>
+@else
+  <p class="text-sm text-slate-500">Breakfast is not included.</p>
+@endif
+<p class="text-sm" data-price-breakdown data-room-each="{{ $roomEach }}" data-breakfast-each="{{ $breakfastEach }}" data-room-count="{{ $roomCount }}" data-rate="{{ $rate }}" data-foreign="{{ $foreign }}" data-other-code="{{ $otherCode }}" @if($freeBreakfast) data-breakfast-included="1" @endif @if($picking) data-count-selected="1" @endif>
+  Room <span data-room-amount>{{ number_format($initialRoom, 0) }}</span> {{ $currency }}
+  <span data-breakfast-line @if(! $checked || $breakfastEach <= 0) hidden @endif> · Breakfast <span data-breakfast-amount>{{ number_format($initialBreakfast, 0) }}</span> {{ $currency }}</span>
+  · <strong>Total <span data-stay-total>{{ number_format($initialRoom + $initialBreakfast, 0) }}</span> {{ $currency }}</strong>
+  <span class="mt-1 block text-xs text-slate-500" data-other-total></span>
+</p>
+<script>
+(function () {
+  var node = document.currentScript;
+  var form = node && node.closest ? node.closest('form') : null;
+  if (!form || form.dataset.breakfastReady) return;
+  form.dataset.breakfastReady = '1';
+  var box = form.querySelector('[data-add-breakfast]');
+  var breakdown = form.querySelector('[data-price-breakdown]');
+  if (!breakdown) return;
+  var picks = form.querySelectorAll('input[type="checkbox"][name="room_unit_ids[]"]');
+  var eachRoom = parseFloat(breakdown.getAttribute('data-room-each') || '0');
+  var eachBreakfast = parseFloat(breakdown.getAttribute('data-breakfast-each') || '0');
+  var included = breakdown.getAttribute('data-breakfast-included') === '1';
+  var rate = parseFloat(breakdown.getAttribute('data-rate') || '0');
+  var foreign = breakdown.getAttribute('data-foreign') === '1';
+  var otherCode = breakdown.getAttribute('data-other-code') || '';
+  var root = form.parentElement || form;
+  function money(value) {
+    return Math.round(value).toLocaleString();
+  }
+  function rooms() {
+    if (breakdown.getAttribute('data-count-selected') === '1') {
+      var count = 0;
+      picks.forEach(function (el) { if (el.checked) count += 1; });
+      return count;
+    }
+    return parseInt(breakdown.getAttribute('data-room-count') || '1', 10) || 1;
+  }
+  function otherText(amount) {
+    if (!(rate > 0) || !(amount > 0) || !otherCode) return '';
+    var value = foreign ? amount * rate : amount / rate;
+    return '≈ ' + Math.round(value).toLocaleString() + ' ' + otherCode;
+  }
+  function sync() {
+    var on = included || !!(box && box.checked);
+    var count = rooms();
+    var room = eachRoom * count;
+    var breakfast = on ? eachBreakfast * count : 0;
+    root.querySelectorAll('[data-breakfast-line]').forEach(function (line) { line.hidden = !on || breakfast <= 0; });
+    root.querySelectorAll('[data-room-amount]').forEach(function (el) { el.textContent = money(room); });
+    root.querySelectorAll('[data-breakfast-amount]').forEach(function (el) { el.textContent = money(breakfast); });
+    root.querySelectorAll('[data-stay-total]').forEach(function (el) { el.textContent = money(room + breakfast); });
+    root.querySelectorAll('[data-other-total]').forEach(function (el) { el.textContent = otherText(room + breakfast); });
+  }
+  if (box) box.addEventListener('change', sync);
+  picks.forEach(function (el) { el.addEventListener('change', sync); });
+  sync();
+})();
+</script>
+`,
+  }
+}
+
+/** Guest-facing hotel policy. Renders nothing until the hotel admin turns a policy on. */
 export function stayPoliciesPartial(): string {
   return `@php
+  $houseRules = $settings->house_rules ?? null;
+  $breakfastPrice = (float) ($settings->breakfast_price ?? 0);
+  $cancellationFee = (float) ($settings->cancellation_fee ?? 0);
   $policies = array_values(array_filter([
-      $settings->free_cancellation ? ['label' => 'Free cancellation', 'detail' => 'You can cancel this stay at no charge.'] : null,
       $settings->pay_on_arrival ? ['label' => 'Payment on arrival', 'detail' => 'You can pay at the property when you arrive.'] : null,
-      $settings->free_breakfast ? ['label' => 'Free breakfast', 'detail' => 'Breakfast is included with your stay.'] : null,
+      $houseRules ? ['label' => 'House rules', 'detail' => 'Read the house rules before you arrive.', 'href' => \\App\\Support\\PublicAsset::url($houseRules)] : null,
+      $breakfastPrice > 0 ? ['label' => 'Breakfast', 'detail' => 'Breakfast can be added for '.number_format($breakfastPrice, 0).' per night on room types that do not include it.'] : null,
+      $cancellationFee > 0 ? ['label' => 'Cancellation fee', 'detail' => 'A fee of '.number_format($cancellationFee, 0).' applies when cancelling a room that does not include free cancellation.'] : null,
   ]));
   $compact = $compact ?? false;
 @endphp
 @if(count($policies))
   @if($compact)
-  <ul class="flex flex-wrap gap-2" aria-label="Stay policies">
+  <ul class="flex flex-wrap gap-2" aria-label="Hotel policy">
     @foreach($policies as $policy)
-    <li class="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-900">{{ $policy['label'] }}</li>
+    <li class="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-900">@if(!empty($policy['href']))<a href="{{ $policy['href'] }}" class="underline" target="_blank" rel="noreferrer">{{ $policy['label'] }}</a>@else{{ $policy['label'] }}@endif</li>
     @endforeach
   </ul>
   @else
-  <ul class="mt-6 grid gap-3 sm:grid-cols-3" aria-label="Stay policies">
+  <ul class="mt-6 grid gap-3 sm:grid-cols-3" aria-label="Hotel policy">
     @foreach($policies as $policy)
     <li class="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-950">
-      <p class="font-semibold">{{ $policy['label'] }}</p>
+      <p class="font-semibold">@if(!empty($policy['href']))<a href="{{ $policy['href'] }}" class="underline" target="_blank" rel="noreferrer">{{ $policy['label'] }}</a>@else{{ $policy['label'] }}@endif</p>
       <p class="mt-1 text-emerald-800">{{ $policy['detail'] }}</p>
     </li>
     @endforeach
