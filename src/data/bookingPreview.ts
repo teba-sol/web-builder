@@ -1,8 +1,10 @@
 import {
+  discountPercentOf,
   formatMoney,
   parseAmenities,
   parseRoomInt,
   parseRoomPrice,
+  sellingAmount,
   stayNights,
 } from './hospitality'
 import type { RoomTypeItem } from '../types'
@@ -15,11 +17,14 @@ export type PreviewReservationStatus =
   | 'cancelled'
   | 'no_show'
 
+export type PreviewPaymentMethod = 'chapa' | 'sandbox' | 'card'
+
 export interface PreviewRoomUnit {
   id: string
   roomTypeSlug: string
   code: string
-  status: 'available' | 'maintenance' | 'out_of_service'
+  status: 'available' | 'booked' | 'inactive'
+  smokingAllowed: boolean
 }
 
 export interface PreviewReservation {
@@ -27,6 +32,8 @@ export interface PreviewReservation {
   confirmationCode: string
   roomTypeSlug: string
   roomUnitId: string | null
+  roomUnitIds?: string[]
+  roomUnitCodes?: string[]
   checkIn: string
   checkOut: string
   adults: number
@@ -36,10 +43,13 @@ export interface PreviewReservation {
   guestEmail: string
   guestPhone: string
   specialRequests: string
+  paymentMethod?: PreviewPaymentMethod
+  paymentLast4?: string
   status: PreviewReservationStatus
   nightlyRate: number
   totalPrice: number
   currency: string
+  breakfastSelected?: boolean
   createdAt: string
 }
 
@@ -74,6 +84,7 @@ export function buildPreviewUnits(roomTypes: RoomTypeItem[]): PreviewRoomUnit[] 
         roomTypeSlug: rt.slug,
         code: `${prefix}${100 + i}`,
         status: 'available',
+        smokingAllowed: i % 2 === 0,
       })
     }
   }
@@ -82,6 +93,11 @@ export function buildPreviewUnits(roomTypes: RoomTypeItem[]): PreviewRoomUnit[] 
 
 function datesOverlap(aIn: string, aOut: string, bIn: string, bOut: string): boolean {
   return aIn < bOut && aOut > bIn
+}
+
+export function reservationUnitIds(reservation: PreviewReservation): string[] {
+  if (reservation.roomUnitIds && reservation.roomUnitIds.length) return reservation.roomUnitIds
+  return reservation.roomUnitId ? [reservation.roomUnitId] : []
 }
 
 export function isUnitAvailable(
@@ -93,19 +109,15 @@ export function isUnitAvailable(
 ): boolean {
   return !reservations.some(
     (r) =>
-      r.roomUnitId === unitId &&
+      reservationUnitIds(r).includes(unitId) &&
       r.id !== ignoreReservationId &&
       BLOCKING.includes(r.status) &&
       datesOverlap(checkIn, checkOut, r.checkIn, r.checkOut),
   )
 }
 
-/** Leaf types bookable directly; parent types also count subtype inventory. */
-export function getBookableTypeSlugs(roomTypes: RoomTypeItem[], selectedSlug: string): string[] {
-  const children = roomTypes
-    .filter((r) => r.parentSlug === selectedSlug && r.isActive)
-    .map((r) => r.slug)
-  return [selectedSlug, ...children]
+export function getBookableTypeSlugs(_roomTypes: RoomTypeItem[], selectedSlug: string): string[] {
+  return [selectedSlug]
 }
 
 export function countAvailableUnits(
@@ -165,12 +177,12 @@ export function roomTypeBySlug(roomTypes: RoomTypeItem[], slug: string): RoomTyp
   return roomTypes.find((r) => r.slug === slug)
 }
 
-export function subtypesOf(roomTypes: RoomTypeItem[], parentSlug: string): RoomTypeItem[] {
-  return roomTypes.filter((r) => r.parentSlug === parentSlug && r.isActive && r.name)
+export function subtypesOf(_roomTypes: RoomTypeItem[], _parentSlug: string): RoomTypeItem[] {
+  return []
 }
 
 export function topLevelRoomTypes(roomTypes: RoomTypeItem[]): RoomTypeItem[] {
-  return roomTypes.filter((r) => !r.parentSlug && r.isActive && r.name)
+  return roomTypes.filter((r) => r.isActive && r.name)
 }
 
 /** Active named types in editor order, including subtypes. */
@@ -186,7 +198,7 @@ export function computeStayTotal(roomType: RoomTypeItem, checkIn: string, checkO
   label: string
 } {
   const nights = stayNights(checkIn, checkOut)
-  const nightlyRate = parseRoomPrice(roomType.basePrice)
+  const nightlyRate = sellingAmount(parseRoomPrice(roomType.basePrice), discountPercentOf(roomType))
   const total = nights * nightlyRate
   const currency = roomType.currency || 'ETB'
   return {
@@ -203,11 +215,10 @@ export function computeStayTotal(roomType: RoomTypeItem, checkIn: string, checkO
 export function guestCapacityOk(roomType: RoomTypeItem, adults: number, children: number): boolean {
   const maxA = parseRoomInt(roomType.maxAdults, 99)
   const maxC = parseRoomInt(roomType.maxChildren, 99)
-  const maxO = parseRoomInt(roomType.maxOccupancy, maxA + maxC)
   if (adults < 1) return false
   if (adults > maxA) return false
   if (children > maxC) return false
-  return adults + children <= maxO
+  return true
 }
 
 export function amenitiesList(roomType: RoomTypeItem): string[] {
@@ -226,7 +237,7 @@ export function makeConfirmationCode(): string {
 export function createPreviewReservation(input: {
   siteKey: string
   roomType: RoomTypeItem
-  unit: PreviewRoomUnit
+  units: PreviewRoomUnit[]
   checkIn: string
   checkOut: string
   adults: number
@@ -236,13 +247,19 @@ export function createPreviewReservation(input: {
   guestEmail: string
   guestPhone: string
   specialRequests: string
+  paymentMethod: PreviewPaymentMethod
+  paymentLast4?: string
+  breakfastSelected?: boolean
 }): PreviewReservation {
   const pricing = computeStayTotal(input.roomType, input.checkIn, input.checkOut)
+  const count = Math.max(1, input.units.length)
   const reservation: PreviewReservation = {
     id: `prv-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
     confirmationCode: makeConfirmationCode(),
     roomTypeSlug: input.roomType.slug,
-    roomUnitId: input.unit.id,
+    roomUnitId: input.units[0]?.id ?? null,
+    roomUnitIds: input.units.map((unit) => unit.id),
+    roomUnitCodes: input.units.map((unit) => unit.code),
     checkIn: input.checkIn,
     checkOut: input.checkOut,
     adults: input.adults,
@@ -252,10 +269,13 @@ export function createPreviewReservation(input: {
     guestEmail: input.guestEmail,
     guestPhone: input.guestPhone,
     specialRequests: input.specialRequests,
+    paymentMethod: input.paymentMethod,
+    paymentLast4: input.paymentLast4,
     status: 'confirmed',
     nightlyRate: pricing.nightlyRate,
-    totalPrice: pricing.total,
+    totalPrice: Math.round(pricing.total * count * 100) / 100,
     currency: pricing.currency,
+    breakfastSelected: input.roomType.freeBreakfast || Boolean(input.breakfastSelected),
     createdAt: new Date().toISOString(),
   }
   const all = loadPreviewReservations(input.siteKey)

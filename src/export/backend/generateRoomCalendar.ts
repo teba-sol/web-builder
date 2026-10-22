@@ -60,7 +60,7 @@ class RoomCalendar extends Page
 
     public function getSubheading(): ?string
     {
-        return 'Reserved nights and open nights. The checkout day is free.';
+        return 'Available, booked, and inactive nights. The checkout morning is available.';
     }
 
     protected function getHeaderActions(): array
@@ -90,24 +90,44 @@ class RoomCalendar extends Page
             }
         }
 
+        $unitStatus = is_array($unit) ? strtoupper((string) ($unit['status'] ?? 'AVAILABLE')) : 'AVAILABLE';
+        $inactiveRoom = $unitStatus === 'INACTIVE';
         $days = [];
         $cursor = $monthStart->copy()->startOfWeek(Carbon::MONDAY);
         $gridEnd = $monthEnd->copy()->endOfWeek(Carbon::SUNDAY);
         while ($cursor->lte($gridEnd)) {
             $date = $cursor->toDateString();
-            $cover = $this->coveringBlock($blocks, $date);
-            $kind = is_array($cover) ? (string) ($cover['kind'] ?? '') : '';
-            $meta = $kind !== '' ? $this->kindMeta($kind) : null;
+            $inMonth = $cursor->month === $monthStart->month;
+            $cover = $inactiveRoom ? null : $this->coveringBlock($blocks, $date);
+            if (! $inMonth) {
+                $kind = '';
+                $kindLabel = '';
+                $dot = '';
+                $cell = 'background:#f8fafc;border-color:transparent;color:#cbd5e1;';
+            } elseif ($inactiveRoom) {
+                $kind = 'INACTIVE';
+                $kindLabel = 'Inactive';
+                $dot = '#6b7280';
+                $cell = 'background:#f3f4f6;border-color:#6b7280;color:#4b5563;';
+            } elseif (is_array($cover)) {
+                $kind = 'BOOKED';
+                $kindLabel = 'Booked';
+                $dot = '#ffffff';
+                $cell = 'background:#7c3aed;border-color:#5b21b6;color:#ffffff;';
+            } else {
+                $kind = 'AVAILABLE';
+                $kindLabel = 'Available';
+                $dot = '#34d399';
+                $cell = 'background:#ecfdf5;border-color:#34d399;color:#065f46;';
+            }
             $days[] = [
                 'label' => $cursor->format('j'),
-                'inMonth' => $cursor->month === $monthStart->month,
+                'inMonth' => $inMonth,
                 'isToday' => $date === now()->toDateString(),
                 'kind' => $kind,
-                'kindLabel' => $meta['label'] ?? '',
-                'dot' => $meta['dot'] ?? '',
-                'cell' => $meta['cell'] ?? ($cursor->month === $monthStart->month
-                    ? 'background:#ecfdf5;border-color:#34d399;color:#065f46;'
-                    : 'background:#f8fafc;border-color:transparent;color:#cbd5e1;'),
+                'kindLabel' => $kindLabel,
+                'dot' => $dot,
+                'cell' => $cell,
                 'ref' => is_array($cover) ? (string) ($cover['externalRef'] ?? '') : '',
             ];
             $cursor->addDay();
@@ -116,12 +136,14 @@ class RoomCalendar extends Page
         $busy = 0;
         $walk = $monthStart->copy();
         while ($walk->lte($monthEnd)) {
-            if ($this->coveringBlock($blocks, $walk->toDateString()) !== null) {
+            if (! $inactiveRoom && $this->coveringBlock($blocks, $walk->toDateString()) !== null) {
                 $busy++;
             }
             $walk->addDay();
         }
         $daysInMonth = $monthStart->daysInMonth;
+        $inactiveNights = $inactiveRoom ? $daysInMonth : 0;
+        $availableNights = $inactiveRoom ? 0 : max(0, $daysInMonth - $busy);
 
         $bars = [];
         $rows = [];
@@ -185,15 +207,15 @@ class RoomCalendar extends Page
             'days' => $days,
             'daysInMonth' => $daysInMonth,
             'busyNights' => $busy,
-            'freeNights' => max(0, $daysInMonth - $busy),
+            'availableNights' => $availableNights,
+            'inactiveNights' => $inactiveNights,
             'bars' => $bars,
             'laneCount' => max(1, count($laneEnds)),
             'rows' => $rows,
             'legend' => [
-                ['label' => 'Free', 'swatch' => '#34d399'],
-                ['label' => 'Stay', 'swatch' => $this->kindMeta('STAY')['swatch']],
-                ['label' => 'Hold', 'swatch' => $this->kindMeta('HOLD')['swatch']],
-                ['label' => 'Blocked', 'swatch' => $this->kindMeta('MANUAL')['swatch']],
+                ['label' => 'Available', 'swatch' => '#34d399'],
+                ['label' => 'Booked', 'swatch' => '#7c3aed'],
+                ['label' => 'Inactive', 'swatch' => '#6b7280'],
             ],
             'backUrl' => \\App\\Filament\\Pages\\${backPage}::getUrl(),
         ];
@@ -279,36 +301,13 @@ class RoomCalendar extends Page
 
     private function kindMeta(string $kind): array
     {
-        return match ($kind) {
-            'HOLD' => [
-                'label' => 'Hold',
-                'swatch' => '#f59e0b',
-                'dot' => '#f59e0b',
-                'cell' => 'background:#fef3c7;border-color:#f59e0b;color:#78350f;',
-                'bar' => 'background:#f59e0b;color:#451a03;',
-            ],
-            'MANUAL' => [
-                'label' => 'Blocked',
-                'swatch' => '#0284c7',
-                'dot' => '#0284c7',
-                'cell' => 'background:#e0f2fe;border-color:#0284c7;color:#0c4a6e;',
-                'bar' => 'background:#0284c7;color:#ffffff;',
-            ],
-            'STAY' => [
-                'label' => 'Stay',
-                'swatch' => '#047857',
-                'dot' => '#ffffff',
-                'cell' => 'background:#047857;border-color:#065f46;color:#ffffff;',
-                'bar' => 'background:#047857;color:#ffffff;',
-            ],
-            default => [
-                'label' => 'Reserved',
-                'swatch' => '#7c3aed',
-                'dot' => '#ffffff',
-                'cell' => 'background:#7c3aed;border-color:#5b21b6;color:#ffffff;',
-                'bar' => 'background:#7c3aed;color:#ffffff;',
-            ],
-        };
+        return [
+            'label' => 'Booked',
+            'swatch' => '#7c3aed',
+            'dot' => '#ffffff',
+            'cell' => 'background:#7c3aed;border-color:#5b21b6;color:#ffffff;',
+            'bar' => 'background:#7c3aed;color:#ffffff;',
+        ];
     }
 }
 `
@@ -328,12 +327,19 @@ class RoomCalendar extends Page
             <div>
                 <p class="text-sm text-gray-500">
                     {{ $typeName !== '' ? $typeName : 'Room' }}
-                    @if(! empty($unit['floor'])) · Floor {{ $unit['floor'] }} @endif
-                    @if(! empty($unit['status'])) · {{ str_replace('_', ' ', (string) $unit['status']) }} @endif
+                    @php
+                        $statusLabel = match (strtoupper((string) ($unit['status'] ?? 'AVAILABLE'))) {
+                            'BOOKED' => 'Booked',
+                            'INACTIVE' => 'Inactive',
+                            default => 'Available',
+                        };
+                    @endphp
+                    · {{ $statusLabel }}
                 </p>
                 <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;">
-                    <span style="border-radius:999px;background:#047857;color:#ffffff;padding:4px 12px;font-size:14px;font-weight:600;">{{ $busyNights }} reserved</span>
-                    <span style="border-radius:999px;background:#ecfdf5;color:#065f46;border:1px solid #34d399;padding:4px 12px;font-size:14px;font-weight:600;">{{ $freeNights }} free</span>
+                    <span style="border-radius:999px;background:#ecfdf5;color:#065f46;border:1px solid #34d399;padding:4px 12px;font-size:14px;font-weight:600;">{{ $availableNights }} available</span>
+                    <span style="border-radius:999px;background:#7c3aed;color:#ffffff;padding:4px 12px;font-size:14px;font-weight:600;">{{ $busyNights }} booked</span>
+                    <span style="border-radius:999px;background:#f3f4f6;color:#4b5563;border:1px solid #6b7280;padding:4px 12px;font-size:14px;font-weight:600;">{{ $inactiveNights }} inactive</span>
                 </div>
             </div>
             <div class="flex flex-wrap items-center gap-2">
@@ -374,7 +380,7 @@ class RoomCalendar extends Page
                                 <p style="margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px;opacity:.8;">{{ $day['ref'] }}</p>
                             @endif
                         @elseif($day['inMonth'])
-                            <p style="margin:8px 0 0;font-size:11px;font-weight:700;">Free</p>
+                            <p style="margin:8px 0 0;font-size:11px;font-weight:700;">Available</p>
                         @endif
                     </div>
                 @endforeach
@@ -388,7 +394,7 @@ class RoomCalendar extends Page
                         <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ $bar['label'] }}</span>
                     </div>
                 @empty
-                    <div style="display:flex;height:100%;align-items:center;justify-content:center;font-size:14px;color:#64748b;">Every night this month is free.</div>
+                    <div style="display:flex;height:100%;align-items:center;justify-content:center;font-size:14px;color:#64748b;">Every night this month is available.</div>
                 @endforelse
             </div>
             <div class="mt-1 grid text-[10px] text-gray-400" style="grid-template-columns: repeat({{ $daysInMonth }}, minmax(0, 1fr));">
@@ -406,7 +412,7 @@ class RoomCalendar extends Page
                             <th class="px-3 py-2">Check-in</th>
                             <th class="px-3 py-2">Check-out</th>
                             <th class="px-3 py-2">Nights</th>
-                            <th class="px-3 py-2">Kind</th>
+                            <th class="px-3 py-2">Status</th>
                             <th class="px-3 py-2">Reference</th>
                         </tr>
                     </thead>

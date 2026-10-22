@@ -199,11 +199,11 @@ function filamentFilters(def: ResourceDef): string {
   const filters: string[] = []
   for (const field of def.fields) {
     if (field.type === 'boolean') {
-      filters.push(`Tables\\Filters\\TernaryFilter::make('${field.name}')->label('${phpStr(field.label)}')`)
+      filters.push(`Tables\\Filters\\TernaryFilter::make('${field.name}')->label('${phpStr(field.label)}')->placeholder('All')`)
     }
     if (SELECT_FILTER_FIELDS.has(field.name)) {
       filters.push(
-        `Tables\\Filters\\SelectFilter::make('${field.name}')->label('${phpStr(field.label)}')->searchable()->options(fn () => ${def.model}::query()->whereNotNull('${field.name}')->where('${field.name}', '!=', '')->distinct()->orderBy('${field.name}')->pluck('${field.name}', '${field.name}')->all())`,
+        `Tables\\Filters\\SelectFilter::make('${field.name}')->label('${phpStr(field.label)}')->placeholder('All')->searchable()->options(fn () => ${def.model}::query()->whereNotNull('${field.name}')->where('${field.name}', '!=', '')->distinct()->orderBy('${field.name}')->pluck('${field.name}', '${field.name}')->all())`,
       )
     }
   }
@@ -235,10 +235,10 @@ function postTableColumns(): string {
 }
 
 function generateResource(def: ResourceDef): string {
-  const formFields = def.fields.filter((field) => field.name !== 'sort_order').map(filamentField).join(",\n                ")
+  const formFields = def.fields.filter((field) => field.name !== 'sort_order' && field.name !== 'slug').map(filamentField).join(",\n                ")
   const tableCols = def.name === 'BlogPost' || def.name === 'NewsPost'
     ? postTableColumns()
-    : def.fields.filter((field) => field.name !== 'sort_order').map(filamentTableColumn).join(",\n                ")
+    : def.fields.filter((field) => field.name !== 'sort_order' && field.name !== 'slug').map(filamentTableColumn).join(",\n                ")
   const filters = filamentFilters(def)
   const filterChain = filters
     ? `->filters([\n                ${filters},\n            ])\n            `
@@ -313,6 +313,60 @@ class ${def.name}Resource extends Resource
 }
 
 function generateResourcePages(def: ResourceDef): Record<string, string> {
+  const hasSlug = def.fields.some((field) => field.name === 'slug')
+  const slugCreate = hasSlug
+    ? `
+        $data['slug'] = $this->uniqueSlug((string) ($data['title'] ?? ''), null);
+`
+    : ''
+  const slugSave = hasSlug
+    ? `
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        $data['slug'] = $this->uniqueSlug((string) ($data['title'] ?? ''), $this->getRecord()->getKey());
+
+        return $data;
+    }
+
+    private function uniqueSlug(string $title, mixed $ignoreId): string
+    {
+        $base = strtolower(trim((string) preg_replace('/[^A-Za-z0-9]+/', '-', $title), '-'));
+        if ($base === '') {
+            $base = 'post';
+        }
+        $slug = $base;
+        $suffix = 2;
+        $model = static::getModel();
+        while ($model::query()->where('slug', $slug)->when($ignoreId, fn ($query) => $query->whereKeyNot($ignoreId))->exists()) {
+            $slug = $base.'-'.$suffix;
+            $suffix++;
+        }
+
+        return $slug;
+    }
+`
+    : ''
+  const slugCreateMethod = hasSlug
+    ? `
+    private function uniqueSlug(string $title, mixed $ignoreId): string
+    {
+        $base = strtolower(trim((string) preg_replace('/[^A-Za-z0-9]+/', '-', $title), '-'));
+        if ($base === '') {
+            $base = 'post';
+        }
+        $slug = $base;
+        $suffix = 2;
+        $model = static::getModel();
+        while ($model::query()->where('slug', $slug)->when($ignoreId, fn ($query) => $query->whereKeyNot($ignoreId))->exists()) {
+            $slug = $base.'-'.$suffix;
+            $suffix++;
+        }
+
+        return $slug;
+    }
+`
+    : ''
+
   return {
     [`app/Filament/Resources/${def.name}Resource/Pages/List${def.name}s.php`]: `<?php
 
@@ -346,11 +400,10 @@ class Create${def.name} extends CreateRecord
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $model = static::getModel();
-        $data['sort_order'] = ($model::max('sort_order') ?? -1) + 1;
-
+        $data['sort_order'] = ($model::max('sort_order') ?? -1) + 1;${slugCreate}
         return $data;
     }
-}
+${slugCreateMethod}}
 `,
     [`app/Filament/Resources/${def.name}Resource/Pages/Edit${def.name}.php`]: `<?php
 
@@ -368,7 +421,7 @@ class Edit${def.name} extends EditRecord
     {
         return [Actions\\DeleteAction::make()];
     }
-}
+${slugSave}}
 `,
   }
 }
@@ -377,6 +430,7 @@ export function stayPoliciesAdminFiles(cardCheckout: boolean): Record<string, st
   const payHelp = cardCheckout
     ? 'When this is on, guests can pay at the property instead of paying by card, and that choice is shown while they reserve.'
     : 'When this is on, guests see that they can pay at the property when they arrive.'
+  const client = cardCheckout ? 'CrsClient' : 'BuildauraClient'
   const navigationGroup = 'Hospitality'
 
   return {
@@ -385,7 +439,13 @@ export function stayPoliciesAdminFiles(cardCheckout: boolean): Record<string, st
 namespace App\\Filament\\Pages;
 
 use App\\Models\\SiteSetting;
+use App\\Services\\${client};
+use App\\Support\\RoomPrice;
+use Filament\\Forms\\Components\\CheckboxList;
+use Filament\\Forms\\Components\\FileUpload;
+use Filament\\Forms\\Components\\TextInput;
 use Filament\\Forms\\Components\\Toggle;
+use Filament\\Forms\\Get;
 use Filament\\Forms\\Concerns\\InteractsWithForms;
 use Filament\\Forms\\Contracts\\HasForms;
 use Filament\\Forms\\Form;
@@ -400,9 +460,9 @@ class StayPolicies extends Page implements HasForms
 
     protected static ?string $navigationGroup = '${navigationGroup}';
 
-    protected static ?string $navigationLabel = 'Stay policies';
+    protected static ?string $navigationLabel = 'Hotel Policy';
 
-    protected static ?string $title = 'Stay policies';
+    protected static ?string $title = 'Hotel Policy';
 
     protected static ?int $navigationSort = -10;
 
@@ -410,32 +470,119 @@ class StayPolicies extends Page implements HasForms
 
     public ?array $data = [];
 
+    public bool $amenitiesReady = false;
+
+    public string $hotelCurrency = 'ETB';
+
     public function mount(): void
     {
         $settings = SiteSetting::current();
+        $options = $this->hotelAmenityOptions();
+        $selected = [];
+        if ($options !== []) {
+            try {
+                $hotel = app(${client}::class)->hotel();
+                $currency = $hotel['currency'] ?? 'ETB';
+                $this->hotelCurrency = is_string($currency) && $currency !== '' ? $currency : 'ETB';
+                $names = is_array($hotel['amenities'] ?? null) ? $hotel['amenities'] : [];
+                foreach ($names as $name) {
+                    if (is_string($name) && isset($options[$name])) {
+                        $selected[] = $name;
+                    }
+                }
+                $this->amenitiesReady = true;
+            } catch (\\Throwable) {
+                $this->amenitiesReady = false;
+            }
+        }
         $this->form->fill([
-            'free_cancellation' => (bool) $settings->free_cancellation,
+            'usdt_etb_rate' => $settings->usdt_etb_rate ?? 0,
+            'breakfast_price' => $settings->breakfast_price ?? 0,
+            'cancellation_fee' => $settings->cancellation_fee ?? 0,
+            'house_rules' => $settings->house_rules,
             'pay_on_arrival' => (bool) $settings->pay_on_arrival,
-            'free_breakfast' => (bool) $settings->free_breakfast,
+            'amenities' => $selected,
         ]);
     }
 
     public function form(Form $form): Form
     {
+        $options = $this->hotelAmenityOptions();
+
         return $form
             ->schema([
-                Toggle::make('free_cancellation')
-                    ->label('Free cancellation')
-                    ->helperText('When this is on, guests see that they can cancel a stay at no charge.')
-                    ->default(false),
+                TextInput::make('usdt_etb_rate')
+                    ->label('USD to ETB rate')
+                    ->numeric()
+                    ->minValue(0)
+                    ->default(0)
+                    ->required()
+                    ->live(onBlur: true)
+                    ->helperText('How many ETB equal 1 USD. A price entered in one currency shows the other from this rate.'),
+                TextInput::make('breakfast_price')
+                    ->label('Breakfast price')
+                    ->numeric()
+                    ->minValue(0)
+                    ->default(0)
+                    ->required()
+                    ->live(onBlur: true)
+                    ->helperText(function (Get $get) {
+                        $rate = is_numeric($get('usdt_etb_rate')) ? (float) $get('usdt_etb_rate') : 0.0;
+                        $amount = is_numeric($get('breakfast_price')) ? (float) $get('breakfast_price') : 0.0;
+                        $other = RoomPrice::other($amount, $this->hotelCurrency, $rate);
+                        if ($rate <= 0) {
+                            return 'Per night. Set the USD to ETB rate to show the other currency.';
+                        }
+                        if ($other === null) {
+                            return 'Per night. 1 USD = '.$rate.' ETB.';
+                        }
+
+                        return 'Per night. About '.$other.'.';
+                    }),
+                TextInput::make('cancellation_fee')
+                    ->label('Cancellation fee')
+                    ->numeric()
+                    ->minValue(0)
+                    ->default(0)
+                    ->required()
+                    ->live(onBlur: true)
+                    ->helperText(function (Get $get) {
+                        $rate = is_numeric($get('usdt_etb_rate')) ? (float) $get('usdt_etb_rate') : 0.0;
+                        $amount = is_numeric($get('cancellation_fee')) ? (float) $get('cancellation_fee') : 0.0;
+                        $other = RoomPrice::other($amount, $this->hotelCurrency, $rate);
+                        if ($rate <= 0) {
+                            return 'Charged when a room is not free to cancel. Set the USD to ETB rate to show the other currency.';
+                        }
+                        if ($other === null) {
+                            return 'Charged when a room is not free to cancel. 1 USD = '.$rate.' ETB.';
+                        }
+
+                        return 'Charged when a room is not free to cancel. About '.$other.'.';
+                    }),
+                FileUpload::make('house_rules')
+                    ->label('House rules')
+                    ->disk('public')
+                    ->directory('house-rules')
+                    ->acceptedFileTypes([
+                        'application/pdf',
+                        'application/msword',
+                        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                    ])
+                    ->rules(['nullable', 'file', 'mimes:pdf,doc,docx', 'max:10240'])
+                    ->maxSize(10240)
+                    ->downloadable()
+                    ->helperText('PDF or Word, up to 10 MB. Guests can download this from the hotel policy.'),
                 Toggle::make('pay_on_arrival')
                     ->label('Payment on arrival')
                     ->helperText('${payHelp}')
                     ->default(false),
-                Toggle::make('free_breakfast')
-                    ->label('Free breakfast')
-                    ->helperText('When this is on, guests see that breakfast is included with the stay.')
-                    ->default(false),
+                CheckboxList::make('amenities')
+                    ->label('Hotel amenities')
+                    ->options($options)
+                    ->columns(2)
+                    ->helperText($options === []
+                        ? 'Amenities could not be loaded.'
+                        : 'Tick the amenities this hotel offers. The platform manages the list.'),
             ])
             ->statePath('data');
     }
@@ -443,18 +590,54 @@ class StayPolicies extends Page implements HasForms
     public function save(): void
     {
         $state = $this->form->getState();
+        $houseRules = $state['house_rules'] ?? null;
+        if (is_array($houseRules)) {
+            $houseRules = $houseRules[0] ?? null;
+        }
         SiteSetting::current()->update([
-            'free_cancellation' => (bool) ($state['free_cancellation'] ?? false),
+            'usdt_etb_rate' => (float) ($state['usdt_etb_rate'] ?? 0),
+            'breakfast_price' => (float) ($state['breakfast_price'] ?? 0),
+            'cancellation_fee' => (float) ($state['cancellation_fee'] ?? 0),
+            'house_rules' => is_string($houseRules) && $houseRules !== '' ? $houseRules : null,
             'pay_on_arrival' => (bool) ($state['pay_on_arrival'] ?? false),
-            'free_breakfast' => (bool) ($state['free_breakfast'] ?? false),
         ]);
+        if ($this->amenitiesReady) {
+            $amenities = [];
+            foreach (is_array($state['amenities'] ?? null) ? $state['amenities'] : [] as $name) {
+                if (is_string($name) && $name !== '') {
+                    $amenities[] = $name;
+                }
+            }
+            app(${client}::class)->updateHotel(['amenities' => array_values($amenities)]);
+        }
 
-        Notification::make()->title('Stay policies saved')->success()->send();
+        Notification::make()->title('Hotel policy saved')->success()->send();
     }
 
     public function getSubheading(): ?string
     {
-        return 'Turn a policy on to show it to guests while they reserve. Off policies stay hidden, and they start off.';
+        return 'Set the exchange rate, breakfast price, cancellation fee, and house rules. Tick hotel amenities from the platform list.';
+    }
+
+    private function hotelAmenityOptions(): array
+    {
+        try {
+            $rows = app(${client}::class)->amenityCatalog('HOTEL');
+        } catch (\\Throwable) {
+            return [];
+        }
+        if (! is_array($rows)) {
+            return [];
+        }
+        $options = [];
+        foreach ($rows as $item) {
+            $name = is_array($item) ? (string) ($item['name'] ?? '') : '';
+            if ($name !== '') {
+                $options[$name] = $name;
+            }
+        }
+
+        return $options;
     }
 }
 `,
@@ -462,7 +645,7 @@ class StayPolicies extends Page implements HasForms
     <x-filament-panels::form id="form" wire:submit="save">
         {{ $this->form }}
         <div style="margin-top:16px;">
-            <x-filament::button type="submit">Save stay policies</x-filament::button>
+            <x-filament::button type="submit">Save hotel policy</x-filament::button>
         </div>
     </x-filament-panels::form>
 </x-filament-panels::page>

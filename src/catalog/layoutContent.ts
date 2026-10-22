@@ -104,9 +104,8 @@ export function studioPreviewContent(manifest: TemplateManifest): SiteContent {
             ...emptyRoomType(),
             name: 'Room type',
             slug: 'room-type',
-            shortDescription: 'Added in the website builder',
             description: 'Room details are content, not template.',
-            image: PLACEHOLDER_IMAGE,
+            photos: [PLACEHOLDER_IMAGE],
             isActive: true,
           },
         ]

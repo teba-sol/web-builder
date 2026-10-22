@@ -173,7 +173,7 @@ function footerPageLinks(ctx: CloneExportCtx): string {
   if (ctx.mode === 'blade') {
     return pages
       .map((page) => `@if($settings->page_visibility['${page.key}'] ?? false)<li><a href="{{ route('${page.route}') }}">${page.label}</a></li>@endif`)
-      .join('')
+      .join('\n')
   }
   return pages
     .filter((page) => ctx.content.pageVisibility[page.key])
@@ -354,7 +354,12 @@ function chromeNav(ctx: CloneExportCtx, theme: CloneTheme): string {
 
 function footerContactLines(ctx: CloneExportCtx): string {
   if (ctx.mode === 'blade') {
-    return `@if($settings->phone){{ $settings->phone }}<br/>@endif@if($settings->email){{ $settings->email }}<br/>@endif@if($settings->reservation_email){{ $settings->reservation_email }}<br/>@endif@if($settings->support_email){{ $settings->support_email }}<br/>@endif@if($settings->whatsapp){{ $settings->whatsapp }}<br/>@endif@if($settings->address){{ $settings->address }}@endif`
+    return `@if($settings->phone){{ $settings->phone }}<br/>@endif
+@if($settings->email){{ $settings->email }}<br/>@endif
+@if($settings->reservation_email){{ $settings->reservation_email }}<br/>@endif
+@if($settings->support_email){{ $settings->support_email }}<br/>@endif
+@if($settings->whatsapp){{ $settings->whatsapp }}<br/>@endif
+@if($settings->address){{ $settings->address }}@endif`
   }
   const c = ctx.content
   return [c.phone, c.email, c.reservationEmail, c.supportEmail, c.whatsapp, c.address]
@@ -365,7 +370,7 @@ function footerContactLines(ctx: CloneExportCtx): string {
 }
 
 function gateSection(ctx: CloneExportCtx, show: boolean, bladeCondition: string, html: string): string {
-  if (ctx.mode === 'blade') return `@if(${bladeCondition})${html}@endif`
+  if (ctx.mode === 'blade') return `@if(${bladeCondition})\n${html}\n@endif\n`
   return show ? html : ''
 }
 
@@ -528,7 +533,7 @@ function standardSections(ctx: CloneExportCtx, theme: CloneTheme): string {
 
   const footer = `<footer class="border-t py-12 px-4 text-xs ${theme.muted}"><div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-8"><div><div class="font-bold text-base mb-3">${txt(ctx, c.businessName, '{{ $settings->business_name }}')}</div><p>${txt(ctx, footerBlurb(c), '{{ filled($settings->footer_blurb) ? $settings->footer_blurb : ($settings->mission_statement ?: $settings->hero_subtext) }}')}</p></div><div><h4 class="font-bold mb-3 uppercase tracking-wider">Pages</h4><ul class="space-y-2">${footerPageLinks(ctx)}</ul></div><div><h4 class="font-bold mb-3 uppercase tracking-wider">Hours</h4><p>${txt(ctx, c.hours, '{{ $settings->hours }}')}</p></div><div><h4 class="font-bold mb-3 uppercase tracking-wider">Contact</h4><p>${footerContactLines(ctx)}</p></div></div><div class="max-w-7xl mx-auto mt-8 pt-8 border-t text-center">© ${new Date().getFullYear()} ${txt(ctx, c.businessName, '{{ $settings->business_name }}')}. ${txt(ctx, footerNote(c), "{{ $settings->footer_note ?: 'All rights reserved.' }}")}</div></footer>`
 
-  return `${statsHtml}${aboutHtml}${servicesHtml}${stepsHtml}${pricingHtml}${teamHtml}${reviewsHtml}${locHtml}${faqHtml}${ctaHtml}${contactHtml}${footer}`
+  return [statsHtml, aboutHtml, servicesHtml, stepsHtml, pricingHtml, teamHtml, reviewsHtml, locHtml, faqHtml, ctaHtml, contactHtml, footer].join('\n')
 }
 
 function t1Hero(ctx: CloneExportCtx, theme: CloneTheme): string {

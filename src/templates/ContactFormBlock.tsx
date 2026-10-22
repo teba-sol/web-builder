@@ -29,20 +29,20 @@ function formClasses(style: ContactFormStyleId = 'standard') {
       }
     case 'soft-rounded':
       return {
-        input: `${base} rounded-2xl border border-stone-200 bg-stone-50 px-5 py-3.5 placeholder:text-stone-400 focus:border-stone-400 focus:ring-2 focus:ring-stone-200`,
-        wrap: 'rounded-3xl border border-stone-200 bg-white p-8 shadow-sm',
+        input: `${base} rounded-2xl border border-stone-200 bg-stone-50 px-5 py-3.5 text-slate-900 placeholder:text-stone-400 focus:border-stone-400 focus:ring-2 focus:ring-stone-200`,
+        wrap: 'rounded-3xl border border-stone-200 bg-white p-8 text-slate-900 shadow-sm',
         label: 'text-sm font-medium text-stone-600',
       }
     case 'minimal-border':
       return {
-        input: `${base} rounded-md border border-slate-200 bg-white px-4 py-2.5 placeholder:text-slate-400 focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400/30`,
-        wrap: 'rounded-lg border border-slate-200 bg-slate-50/50 p-6',
+        input: `${base} rounded-md border border-slate-200 bg-white px-4 py-2.5 text-slate-900 placeholder:text-slate-400 focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400/30`,
+        wrap: 'rounded-lg border border-slate-200 bg-slate-50/50 p-6 text-slate-900',
         label: 'text-sm font-medium text-slate-700',
       }
     case 'bold-outline':
       return {
-        input: `${base} rounded-none border-2 border-black bg-white px-4 py-3 font-medium uppercase tracking-wide placeholder:text-neutral-400 focus:bg-neutral-50`,
-        wrap: 'rounded-none border-4 border-black bg-white p-6 shadow-[8px_8px_0_#000]',
+        input: `${base} rounded-none border-2 border-black bg-white px-4 py-3 font-medium uppercase tracking-wide text-slate-900 placeholder:text-neutral-400 focus:bg-neutral-50`,
+        wrap: 'rounded-none border-4 border-black bg-white p-6 text-slate-900 shadow-[8px_8px_0_#000]',
         label: 'text-xs font-black uppercase tracking-widest',
       }
     case 'elegant-serif':
@@ -60,7 +60,7 @@ function formClasses(style: ContactFormStyleId = 'standard') {
     default:
       return {
         input: `${base} rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20`,
-        wrap: 'rounded-2xl border border-slate-200 bg-white p-6 shadow-sm',
+        wrap: 'rounded-2xl border border-slate-200 bg-white p-6 text-slate-900 shadow-sm',
         label: 'text-sm font-medium text-slate-700',
       }
   }

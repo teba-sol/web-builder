@@ -24,8 +24,8 @@
   "homeSections": [
     "nav",
     "hero",
-    "stats",
     "rooms-teaser",
+    "stats",
     "services-teaser",
     "portfolio-teaser",
     "blog-teaser",

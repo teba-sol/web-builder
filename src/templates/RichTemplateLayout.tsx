@@ -34,12 +34,15 @@ import {
 import {
   BookPage,
   BookingConfirmPage,
+  HeroStaySearch,
   RoomDetailPage,
   RoomsPage,
 } from './booking/BookingPages'
+import { staySkin } from './booking/hospitalitySkin'
+import { isHospitalityTemplate } from '../data/hospitality'
 import { type TemplateTheme } from './themes'
 import { catalogueRoomTypes } from '../data/bookingPreview'
-import { formatMoney, parseRoomPrice } from '../data/hospitality'
+import { coverPhoto, discountPercentOf, formatMoney, parseRoomPrice, sellingAmount, stayCurrency } from '../data/hospitality'
 import { TaxFightersHome } from './TaxFightersHome'
 import { AureumHome } from './AureumHome'
 import { FluxHome } from './FluxHome'
@@ -131,7 +134,7 @@ export function RichTemplateLayout({
 
   const sections: Record<PageSectionId, ReactNode> = {
     nav: <TemplateNav c={c} t={t} variant={variant} navItems={navItems} basePath={basePath} />,
-    hero: <HeroSection c={c} t={t} variant={variant} heroLayout={layout.heroLayout} basePath={basePath} />,
+    hero: <HeroSection c={c} t={t} variant={variant} heroLayout={layout.heroLayout} basePath={basePath} accent={accent} />,
     stats: visibility.stats ? <StatsSection c={c} t={t} variant={variant} /> : null,
     about: <AboutSection c={c} t={t} />,
     services: <ServicesSection c={c} t={t} meta={meta?.servicesLabel} />,
@@ -142,7 +145,7 @@ export function RichTemplateLayout({
     'services-teaser': c.pageVisibility.services ? <ServicesTeaser {...layoutProps} /> : null,
     'portfolio-teaser': c.pageVisibility.portfolio ? <PortfolioTeaser {...layoutProps} /> : null,
     'about-teaser': c.pageVisibility.about ? <AboutTeaser {...layoutProps} /> : null,
-    'rooms-teaser': c.pageVisibility.rooms ? <RoomsTeaser c={c} t={t} basePath={basePath} accent={accent} /> : null,
+    'rooms-teaser': c.pageVisibility.rooms ? <RoomsTeaser c={c} basePath={basePath} accent={accent} variant={variant} /> : null,
     explore: <ExploreSectionView {...layoutProps} />,
     'blog-page': <BlogListPage {...layoutProps} />,
     'blog-post-page': <BlogPostPage {...layoutProps} slug={postSlug ?? ''} />,
@@ -265,55 +268,73 @@ function heroContentClass(variant: TemplateId, heroLayout: HeroLayout): string {
 
 function RoomsTeaser({
   c,
-  t,
   basePath,
   accent,
+  variant,
 }: {
   c: SiteContent
-  t: TemplateTheme
   basePath: string
   accent: string
+  variant: TemplateId
 }) {
   const rooms = catalogueRoomTypes(c.roomTypes)
   if (!rooms.length) return null
+  const skin = staySkin(variant)
   return (
-    <section className={`${t.sectionAlt || t.section} py-20`}>
+    <section className={`${skin.page} py-20`}>
       <div className="mx-auto max-w-6xl px-4 csm:px-6">
         <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
           <div>
-            <h2 className={t.sectionTitle}>{c.roomsSectionTitle || 'Rooms & Suites'}</h2>
-            <p className={t.sectionSubtitle}>{c.roomsSectionSubtitle}</p>
+            <p className={skin.eyebrow}>Browse by room type</p>
+            <h2 className={`mt-2 text-3xl font-bold ${skin.heading}`}>{c.roomsSectionTitle || 'Rooms'}</h2>
+            <p className="mt-2 max-w-2xl text-slate-600">{c.roomsSectionSubtitle}</p>
           </div>
-          <Link to={sitePath(basePath, 'book')} className="text-sm font-semibold" style={{ color: accent }}>
-            Check availability →
+          <Link to={sitePath(basePath, 'rooms')} className="text-sm font-semibold" style={{ color: accent }}>
+            Book
           </Link>
         </div>
         <div className="grid gap-6 cmd:grid-cols-3">
           {rooms.map((room) => {
-            const parentName = room.parentSlug
-              ? c.roomTypes.find((item) => item.slug === room.parentSlug)?.name
-              : ''
+            const photo = coverPhoto(room)
+            const base = parseRoomPrice(room.basePrice)
+            const percent = discountPercentOf(room)
+            const selling = sellingAmount(base, percent)
+            const currency = stayCurrency(room.currency)
             return (
               <Link
                 key={room.slug}
                 to={sitePath(basePath, `rooms/${room.slug}`)}
-                className="block overflow-hidden rounded-xl border bg-white hover:shadow-lg"
+                className={`block hover:shadow-lg ${skin.card}`}
               >
-                {room.image ? (
-                  <img src={room.image} alt="" className="aspect-[4/3] w-full object-cover" />
+                {photo ? (
+                  <img src={photo} alt="" className="aspect-[4/3] w-full object-cover" />
                 ) : (
                   <div className="aspect-[4/3] w-full bg-slate-100" />
                 )}
                 <div className="p-5">
-                  {parentName ? (
-                    <p className="text-xs uppercase tracking-widest text-slate-400">{parentName}</p>
-                  ) : null}
-                  <h3 className="font-semibold">{room.name}</h3>
-                  <p className="mt-1 line-clamp-2 text-sm opacity-70">{room.shortDescription}</p>
-                  <p data-part="price" className="mt-3 font-bold" style={{ color: accent }}>
-                    {formatMoney(parseRoomPrice(room.basePrice), room.currency)}{' '}
-                    <span className="text-sm font-normal opacity-60">/ night</span>
-                  </p>
+                  <h3 className={`text-lg ${skin.heading}`}>{room.name}</h3>
+                  <p className="mt-1 text-sm opacity-70">{room.maxAdults} adults · {room.maxChildren} children</p>
+                  {room.description ? <p className="mt-1 line-clamp-2 text-sm opacity-70">{room.description}</p> : null}
+                  <div data-part="price" className="mt-3">
+                    {percent > 0 ? (
+                      <>
+                        <p className="text-sm text-slate-500 line-through">{formatMoney(base, currency)}</p>
+                        <p className="font-bold" style={{ color: accent }}>
+                          {formatMoney(selling, currency)} <span className="text-sm font-normal text-slate-500">/ night</span>
+                        </p>
+                        <p className="text-sm font-semibold text-rose-700">{percent}% off</p>
+                      </>
+                    ) : (
+                      <p className="font-bold" style={{ color: accent }}>
+                        {formatMoney(selling, currency)} <span className="text-sm font-normal text-slate-500">/ night</span>
+                      </p>
+                    )}
+                  </div>
+                  {room.freeBreakfast ? (
+                    <p className="mt-2 text-xs font-semibold text-emerald-700">Breakfast included</p>
+                  ) : (
+                    <p className="mt-2 text-xs text-slate-600">Breakfast not included. Add or skip it when you book. The exported site shows the Hotel Policy price in ETB and USD.</p>
+                  )}
                 </div>
               </Link>
             )
@@ -324,7 +345,7 @@ function RoomsTeaser({
   )
 }
 
-function HeroSection({ c, t, variant, heroLayout, basePath }: { c: SiteContent; t: TemplateTheme; variant: TemplateId; heroLayout: HeroLayout; basePath: string }) {
+function HeroSection({ c, t, variant, heroLayout, basePath, accent }: { c: SiteContent; t: TemplateTheme; variant: TemplateId; heroLayout: HeroLayout; basePath: string; accent: string }) {
   const ctaHref = resolveSiteHref(basePath, c.ctaLink || (c.pageVisibility.rooms ? 'book' : 'contact'), c)
   const heroCfg = getManifest(variant)?.hero
   const hasOverlay = Boolean(heroCfg?.overlay) || heroLayout === 'immersive'
@@ -345,6 +366,7 @@ function HeroSection({ c, t, variant, heroLayout, basePath }: { c: SiteContent; 
         <h1 data-part="title" className={`mb-6 ${t.heroTitle}`}>{c.tagline}</h1>
         <p data-part="subtitle" className={`mb-8 ${t.heroText}`}>{c.heroSubtext || c.about.slice(0, 160)}</p>
         <Link data-part="cta" data-brand-cta to={ctaHref} className={`inline-block ${t.heroCta}`} style={brandCtaStyle(c)}>{c.ctaText} →</Link>
+        {isHospitalityTemplate(variant) ? <HeroStaySearch basePath={basePath} accent={accent} templateId={variant} /> : null}
         {!hasOverlay && c.heroImage && variant !== 'boutique' && (
           <img data-part="image" src={c.heroImage} alt="" className="rounded-2xl shadow-2xl w-full mt-8 clg:mt-0" />
         )}
@@ -383,7 +405,7 @@ function StatsSection({ c, t, variant }: { c: SiteContent; t: TemplateTheme; var
   return (
     <section className={t.stats}>
       <div data-part="heading" className="mx-auto max-w-6xl px-4 csm:px-6 pb-4 text-center">
-        <p className="text-sm font-semibold uppercase tracking-widest opacity-80">Trust signals</p>
+        <p className="text-sm font-semibold uppercase tracking-widest opacity-80">{isHospitalityTemplate(variant) ? 'Trusted' : 'Trust signals'}</p>
       </div>
       <div className={`tpl-stats-inner mx-auto max-w-6xl px-4 csm:px-6 ${statsGridClass(variant)}`}>
         {stats.map((s, i) => (
