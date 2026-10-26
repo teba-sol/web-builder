@@ -547,14 +547,6 @@ export function RoomDetailPage({ content: c, basePath, templateId, accent }: Boo
             </dl>
           </div>
         </div>
-        <section className="mt-12 grid items-center gap-8 clg:grid-cols-2">
-          <div>
-            <h2 className={`text-2xl ${skin.heading}`}>About the property</h2>
-            <p className="mt-4 leading-relaxed text-slate-700">{c.about || `${c.businessName} welcomes guests for an overnight stay.`}</p>
-            {c.missionStatement ? <p className="mt-4 text-slate-600">{c.missionStatement}</p> : null}
-          </div>
-          {c.aboutImage ? <img src={c.aboutImage} alt="" className={`aspect-[4/3] w-full object-cover ${skin.card}`} /> : <div className={`aspect-[4/3] w-full bg-slate-100 ${skin.card}`} />}
-        </section>
         <section className="mt-12">
           <h2 className={`text-2xl ${skin.heading}`}>Amenities</h2>
           {amenities.length ? (

@@ -20,15 +20,12 @@ export async function downloadWebsiteZip(
   layoutVariantId?: string,
   crs?: CrsExportSecrets,
 ) {
-  const { pages, assets, seoFiles } = buildAllSitePages(templateId, content, colorSchemeId, layoutVariantId)
+  const { pages, assets } = buildAllSitePages(templateId, content, colorSchemeId, layoutVariantId)
   const zip = new JSZip()
 
   // Static frontend (works without PHP) — multi-page site
   for (const [path, html] of Object.entries(pages)) {
     zip.file(`frontend/${path}`, html)
-  }
-  for (const [path, file] of Object.entries(seoFiles)) {
-    zip.file(`frontend/${path}`, file)
   }
   for (const asset of assets) {
     zip.file(`frontend/${asset.zipPath}`, asset.data)
@@ -60,7 +57,6 @@ FOLDERS / FILES:
 site.json     Checkpoint of this exact edit (template + content + colors).
               Import it in WebBuilder to restore your work. Same schema every time.
 frontend/     Multi-page static site (index.html, about.html, blog/, etc.)
-              When SEO is enabled: robots.txt + sitemap.xml included
 backend/      Laravel 11 + Filament 3 admin — dynamic content, contact form, deploy-ready
 
 STATIC FRONTEND (quick preview):

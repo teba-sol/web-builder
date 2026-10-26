@@ -374,8 +374,7 @@ for (const manifest of manifests) {
   const contactSettings = backend['app/Filament/Pages/ContactSettings.php'] ?? ''
   const visibilitySettings = backend['app/Filament/Pages/VisibilitySettings.php'] ?? ''
   const sectionTitleSettings = backend['app/Filament/Pages/SectionTitleSettings.php'] ?? ''
-  const seoSettings = backend['app/Filament/Pages/SeoSettings.php'] ?? ''
-  const settingsPages = [generalSettings, brandSettings, aboutSettings, footerSettings, contactSettings, visibilitySettings, sectionTitleSettings, seoSettings].join('\n')
+  const settingsPages = [generalSettings, brandSettings, aboutSettings, footerSettings, contactSettings, visibilitySettings, sectionTitleSettings].join('\n')
   assert(generalSettings.includes("make('business_name')->required()"), `${manifest.id}: general settings require the business name`)
   assert(generalSettings.includes("'business_name' => $state['business_name'] ?? ''"), `${manifest.id}: general settings save the business name`)
   assert(!generalSettings.includes("'logo'"), `${manifest.id}: general settings do not rewrite the logo`)
@@ -389,7 +388,8 @@ for (const manifest of manifests) {
   assert(footerSettings.includes("make('footer_blurb')"), `${manifest.id}: footer text stays editable`)
   assert(brandSettings.includes("'logo_show_name' => (bool) ($state['logo_show_name'] ?? false)"), `${manifest.id}: brand settings save the logo name toggle`)
   assert(!brandSettings.includes('hero_image'), `${manifest.id}: brand settings do not rewrite the hero image`)
-  assert(seoSettings.includes("'seo_enabled' => (bool) ($state['seo_enabled'] ?? false)"), `${manifest.id}: seo settings save the optimize toggle`)
+  assert(!backend['app/Filament/Pages/SeoSettings.php'], `${manifest.id}: exported admin has no SEO page`)
+  assert(!settingsPages.includes('seo_'), `${manifest.id}: website settings do not edit SEO`)
   assert(backend['resources/views/filament/pages/settings-form.blade.php']?.includes('wire:submit="save"'), `${manifest.id}: settings pages can be saved`)
   const adminPanel = backend['app/Providers/Filament/AdminPanelProvider.php'] ?? ''
   assert(adminPanel.includes('->navigationGroups(['), `${manifest.id}: admin navigation is grouped`)
@@ -397,6 +397,7 @@ for (const manifest of manifests) {
   assert(adminPanel.includes("'Content'"), `${manifest.id}: content resources are grouped`)
   assert(adminPanel.includes("'Inbox'"), `${manifest.id}: inbox is grouped`)
   const settingsMigration = backend['database/migrations/0001_01_01_000001_create_site_settings_table.php'] ?? ''
+  assert(!settingsMigration.includes('seo_'), `${manifest.id}: site settings do not store SEO`)
   assert(!settingsMigration.includes("'free_cancellation'"), `${manifest.id}: free cancellation is not a site setting`)
   assert(!settingsMigration.includes("'free_breakfast'"), `${manifest.id}: free breakfast is not a site setting`)
   assert(settingsMigration.includes("'pay_on_arrival'"), `${manifest.id}: settings store payment on arrival`)
@@ -405,6 +406,7 @@ for (const manifest of manifests) {
   assert(settingsMigration.includes("'cancellation_fee'"), `${manifest.id}: settings store the cancellation fee`)
   assert(settingsMigration.includes("'house_rules'"), `${manifest.id}: settings store the house rules file`)
   const settingsModel = backend['app/Models/SiteSetting.php'] ?? ''
+  assert(!settingsModel.includes('seo_'), `${manifest.id}: the site settings model does not store SEO`)
   assert(!settingsModel.includes("'free_cancellation'"), `${manifest.id}: free cancellation is not a site setting`)
   assert(!settingsModel.includes("'free_breakfast'"), `${manifest.id}: free breakfast is not a site setting`)
   assert(settingsModel.includes("'pay_on_arrival' => 'boolean'"), `${manifest.id}: payment on arrival is a boolean`)
@@ -416,6 +418,7 @@ for (const manifest of manifests) {
   assert(settingsSeed.includes('"breakfast_price": 0'), `${manifest.id}: the breakfast price starts at zero`)
   assert(settingsSeed.includes('"cancellation_fee": 0'), `${manifest.id}: the cancellation fee starts at zero`)
   assert(settingsSeed.includes('"pay_on_arrival": false'), `${manifest.id}: payment on arrival starts off`)
+  assert(!settingsSeed.includes('"seo_'), `${manifest.id}: SEO is not seeded on site settings`)
   assert(!settingsSeed.includes('"free_cancellation"'), `${manifest.id}: free cancellation is not seeded on site settings`)
   if (hospitality) {
     assert(adminPanel.includes("'Hospitality'"), `${manifest.id}: hospitality navigation is grouped`)
@@ -469,6 +472,8 @@ for (const manifest of manifests) {
     assert(roomDetail.includes('countSelectedRooms'), `${manifest.id}: breakfast follows the rooms the guest selects`)
     assert(roomDetail.includes('priceRateHint'), `${manifest.id}: the room page asks for the exchange rate when one currency is missing`)
     assert(roomDetail.includes('% off') || roomDetail.includes('partials.room-price'), `${manifest.id}: the room page shows the discounted price`)
+    assert(!roomDetail.includes('About the property'), `${manifest.id}: the room page does not repeat the about section`)
+    assert(!(backend['resources/views/site/rooms.blade.php'] ?? '').includes('About the property'), `${manifest.id}: the room list does not repeat the about section`)
     const checkout = backend['resources/views/site/book.blade.php'] ?? ''
     assert(checkout.includes('partials.stay-addons'), `${manifest.id}: checkout can add breakfast`)
     assert(checkout.includes('breakfastPerNight'), `${manifest.id}: checkout prices breakfast per night`)
@@ -704,6 +709,10 @@ assert(brandedBackend['app/Filament/Pages/FooterSettings.php']?.includes("naviga
 assert(brandedBackend['resources/views/partials/footer.blade.php']?.includes('footer_blurb'), 'Blade footer reads footer text')
 assert(brandedBackend['database/migrations/0001_01_01_000001_create_site_settings_table.php']?.includes('footer_note'), 'settings migration stores the copyright note')
 assert(brandedBackend['resources/views/layouts/site.blade.php']?.includes('data-site-brand'), 'Blade layout uses brand root')
+assert(!brandedPages.pages['index.html']?.includes('property="og:'), 'static export has no Open Graph tags')
+assert(!brandedBackend['public/robots.txt'], 'export does not write robots.txt')
+assert(!brandedBackend['public/sitemap.xml'], 'export does not write a sitemap')
+assert(!brandedBackend['resources/views/layouts/site.blade.php']?.includes('og:'), 'Blade layout has no Open Graph tags')
 assert(brandedBackend['resources/views/partials/nav.blade.php']?.includes('$settings->logo'), 'Blade nav renders logo')
 
 const customId = 'my-new-lodge'

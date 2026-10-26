@@ -73,7 +73,7 @@ Imported templates stored under `webbuilder-imported-templates` must keep loadin
 Visitor-visible work updates both renders.
 
 - Live: `src/templates/TemplateRenderer.tsx`, `SiteApp.tsx`, `sectionLayouts.tsx`, `PageLayoutSections.tsx`.
-- Static ZIP: `src/export/buildSitePages.ts`, `sectionExport.ts`, `navExport.ts`, `seoExport.ts`, `homePageExport.ts`.
+- Static ZIP: `src/export/buildSitePages.ts`, `sectionExport.ts`, `navExport.ts`, `homePageExport.ts`.
 - Laravel ZIP: `src/export/backend/generateBackend.ts`, `generateBlade.ts`, `generateFilament.ts`.
 
 Footer text and the copyright note travel with the rest of the content. If a visitor-facing footer changes, update the React footer and `resources/views/partials/footer.blade.php` from `generateBlade.ts` together. Clone homes embed their own footer in `cloneHomeExport.ts`, so that copy has to read the same fields.

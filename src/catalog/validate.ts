@@ -97,6 +97,11 @@ export function validateManifest(raw: unknown): { ok: true; manifest: TemplateMa
     delete raw.defaults.termsSectionTitle
     delete raw.defaults.termsContent
     delete raw.defaults.cookieBannerText
+    delete raw.defaults.seoEnabled
+    delete raw.defaults.seoTitle
+    delete raw.defaults.seoDescription
+    delete raw.defaults.seoKeywords
+    delete raw.defaults.seoSiteUrl
     if (typeof raw.defaults.logo !== 'string') raw.defaults.logo = ''
     if (typeof raw.defaults.logoShowName !== 'boolean') raw.defaults.logoShowName = true
     if (typeof raw.defaults.brandPrimary !== 'string') raw.defaults.brandPrimary = ''
