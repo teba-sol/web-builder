@@ -814,18 +814,6 @@ function websiteSettingsPages(): Record<string, string> {
     { name: 'footer_note', line: `Forms\\Components\\TextInput::make('footer_note')->label('Copyright note')->helperText('Appears after the year and business name. Hours, phone, email, and address come from Contact.')` },
   ])
 
-  const seo = settingsFields([
-    { name: 'seo_enabled', line: `Forms\\Components\\Toggle::make('seo_enabled')->label('Optimize SEO')` },
-    { name: 'seo_title', line: `Forms\\Components\\TextInput::make('seo_title')->label('Meta Title')` },
-    { name: 'seo_description', line: `Forms\\Components\\Textarea::make('seo_description')->label('Meta Description')->rows(3)` },
-    { name: 'seo_keywords', line: `Forms\\Components\\Textarea::make('seo_keywords')->label('Keywords')->rows(2)` },
-    { name: 'seo_site_url', line: `Forms\\Components\\TextInput::make('seo_site_url')->label('Live Site URL')->url()` },
-  ])
-  seo.persist = seo.persist.replace(
-    `'seo_enabled' => $state['seo_enabled'] ?? null`,
-    `'seo_enabled' => (bool) ($state['seo_enabled'] ?? false)`,
-  )
-
   const contact = settingsFields([
     { name: 'cta_text', line: `Forms\\Components\\TextInput::make('cta_text')` },
     { name: 'cta_link', line: `Forms\\Components\\TextInput::make('cta_link')` },
@@ -864,8 +852,7 @@ function websiteSettingsPages(): Record<string, string> {
     },
     { className: 'SectionTitleSettings', label: 'Section titles', icon: 'heroicon-o-bars-3-bottom-left', sort: 5, ...sections },
     { className: 'FooterSettings', label: 'Footer', icon: 'heroicon-o-bars-3', sort: 6, ...footer },
-    { className: 'SeoSettings', label: 'SEO', icon: 'heroicon-o-magnifying-glass', sort: 7, ...seo },
-    { className: 'ContactSettings', label: 'Contact', icon: 'heroicon-o-phone', sort: 8, ...contact },
+    { className: 'ContactSettings', label: 'Contact', icon: 'heroicon-o-phone', sort: 7, ...contact },
   ]
 
   const files: Record<string, string> = {

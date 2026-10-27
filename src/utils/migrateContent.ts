@@ -135,11 +135,6 @@ export function migrateContent(raw: Partial<SiteContent>, templateId?: TemplateI
     brandAccent: raw.brandAccent ?? merged.brandAccent ?? '',
     fontHeading: raw.fontHeading ?? merged.fontHeading ?? '',
     fontBody: raw.fontBody ?? merged.fontBody ?? '',
-    seoEnabled: raw.seoEnabled ?? merged.seoEnabled ?? false,
-    seoTitle: raw.seoTitle ?? merged.seoTitle ?? '',
-    seoDescription: raw.seoDescription ?? merged.seoDescription ?? '',
-    seoKeywords: raw.seoKeywords ?? merged.seoKeywords ?? '',
-    seoSiteUrl: raw.seoSiteUrl ?? merged.seoSiteUrl ?? '',
   }
 
   return clampVisibilityToProfile(id, sanitizeContentLinks(result))

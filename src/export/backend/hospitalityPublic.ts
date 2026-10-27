@@ -190,17 +190,6 @@ export function crsRoomDetailBlade(accent: string, templateId: string): string {
         </dl>
       </div>
     </div>
-    <section class="mt-12 grid items-center gap-8 lg:grid-cols-2">
-      <div>
-        <h2 class="text-2xl ${skin.heading}">About the property</h2>
-        <p class="mt-4 leading-relaxed text-slate-700">{{ $settings->about }}</p>
-      </div>
-      @if($settings->about_image)
-      <img src="{{ \\App\\Support\\PublicAsset::url($settings->about_image) }}" alt="" class="aspect-[4/3] w-full object-cover ${skin.card}" />
-      @else
-      <div class="aspect-[4/3] w-full bg-slate-100 ${skin.card}"></div>
-      @endif
-    </section>
     <section class="mt-12">
       <h2 class="text-2xl ${skin.heading}">Amenities</h2>
       <ul class="mt-4 flex flex-wrap gap-2">@foreach($amenities as $amenity)<li class="rounded-full border bg-white px-3 py-1 text-slate-900 text-sm">{{ $amenity }}</li>@endforeach</ul>
@@ -513,17 +502,6 @@ export function localRoomDetailBlade(accent: string, templateId: string): string
         </dl>
       </div>
     </div>
-    <section class="mt-12 grid items-center gap-8 lg:grid-cols-2">
-      <div>
-        <h2 class="text-2xl ${skin.heading}">About the property</h2>
-        <p class="mt-4 leading-relaxed text-slate-700">{{ $settings->about }}</p>
-      </div>
-      @if($settings->about_image)
-      <img src="{{ \\App\\Support\\PublicAsset::url($settings->about_image) }}" alt="" class="aspect-[4/3] w-full object-cover ${skin.card}" />
-      @else
-      <div class="aspect-[4/3] w-full bg-slate-100 ${skin.card}"></div>
-      @endif
-    </section>
     <section class="mt-12">
       <h2 class="text-2xl ${skin.heading}">Amenities</h2>
       <ul class="mt-4 flex flex-wrap gap-2">@foreach($amenities as $amenity)<li class="rounded-full border bg-white px-3 py-1 text-slate-900 text-sm">{{ $amenity }}</li>@endforeach</ul>

@@ -464,23 +464,6 @@ export function generateContactView(): string {
 
 export function generateSiteLayout(payload: SiteExportPayload): string {
   const title = payload.content.businessName || 'My Website'
-  const c = payload.content
-  const seoBlock = c.seoEnabled
-    ? `@if(($settings->seo_enabled ?? false))
-  <meta name="description" content="{{ $settings->seo_description }}" />
-  <meta name="robots" content="index, follow, max-image-preview:large" />
-  @if($settings->seo_keywords)<meta name="keywords" content="{{ $settings->seo_keywords }}" />@endif
-  @if($settings->seo_site_url)<link rel="canonical" href="{{ rtrim($settings->seo_site_url, '/') }}{{ request()->getPathInfo() === '/' ? '' : request()->getPathInfo() }}" />@endif
-  <meta property="og:type" content="@yield('og_type', 'website')" />
-  <meta property="og:title" content="@yield('title', $settings->seo_title ?: $settings->business_name)" />
-  <meta property="og:description" content="@yield('meta_description', $settings->seo_description)" />
-  <meta property="og:site_name" content="{{ $settings->business_name }}" />
-  @if($settings->hero_image)<meta property="og:image" content="{{ asset($settings->hero_image) }}" /><meta name="twitter:image" content="{{ asset($settings->hero_image) }}" />@endif
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="@yield('title', $settings->seo_title ?: $settings->business_name)" />
-  <meta name="twitter:description" content="@yield('meta_description', $settings->seo_description)" />
-  @endif`
-    : ''
   const cloneCss = isCloneTemplate(payload.templateId)
     ? clonePaletteCss(payload.templateId, resolveClonePalette(payload.templateId, payload.content, payload.colorSchemeId))
     : ''
@@ -494,7 +477,6 @@ export function generateSiteLayout(payload: SiteExportPayload): string {
     $settings = $settings ?? \\App\\Models\\SiteSetting::current();
     $layoutShell = \\App\\Support\\LayoutVariants::shellClass($settings->layout_variant_id ?? null);
   @endphp
-  ${seoBlock}
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="{{ \\App\\Support\\Brand::fontHref($settings->font_heading, $settings->font_body) }}" rel="stylesheet" />

@@ -231,11 +231,6 @@ export interface SiteContent {
   contactFormUrl: string
   contactFormButtonText: string
   mapUrl: string
-  seoEnabled: boolean
-  seoTitle: string
-  seoDescription: string
-  seoKeywords: string
-  seoSiteUrl: string
 }
 
 export interface ContactFieldDef {

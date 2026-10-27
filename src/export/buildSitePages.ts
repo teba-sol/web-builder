@@ -13,7 +13,6 @@ import { buildExportNavHtml } from './navExport'
 import { staticFooterHtml } from './footerHtml'
 import { escapeHtml, resolveImageForExport, type ImageAsset } from './imageUtils'
 import { rewriteContainerVariantsForExport, tailwindHead } from './htmlShared'
-import { buildRobotsTxt, buildSitemapXml, collectSitemapPaths, type PageSeoInput } from './seoExport'
 import { buildContactSectionHtml, buildFaqSectionHtml, buildStyledContactFormHtml } from './sectionExport'
 import { getLayoutVariant } from '../data/layoutVariants'
 
@@ -56,23 +55,14 @@ function buildFooter(ctx: SiteHtmlContext): string {
 
 
 
-function pageSeo(ctx: SiteHtmlContext, title: string, path: string, extra?: Partial<PageSeoInput>): PageSeoInput {
-  return {
-    content: ctx.content,
-    pageTitle: title,
-    pagePath: path,
-    ...extra,
-  }
-}
-
-function wrapPage(ctx: SiteHtmlContext, title: string, body: string, seo?: PageSeoInput): string {
+function wrapPage(ctx: SiteHtmlContext, title: string, body: string): string {
   const shell = ctx.layoutShellClass ?? 'layout-classic'
   const cloneCss = isCloneTemplate(ctx.templateId)
     ? clonePaletteCss(ctx.templateId, resolveClonePalette(ctx.templateId, ctx.content, ctx.colorSchemeId))
     : ''
   const head = cloneCss
-    ? tailwindHead(title, seo, ctx.content).replace('</style>', `${cloneCss}\n</style>`)
-    : tailwindHead(title, seo, ctx.content)
+    ? tailwindHead(title, ctx.content).replace('</style>', `${cloneCss}\n</style>`)
+    : tailwindHead(title, ctx.content)
   const clone = isCloneTemplate(ctx.templateId)
   const cloneNav = clone
     ? buildCloneChromeNav({
@@ -154,7 +144,7 @@ export function buildAllSitePages(
   content: SiteContent,
   colorSchemeId?: string,
   layoutVariantId?: string,
-): { pages: Record<string, string>; assets: ImageAsset[]; seoFiles: Record<string, string> } {
+): { pages: Record<string, string>; assets: ImageAsset[] } {
   const scheme = getColorSchemes(templateId).find((s) => s.id === colorSchemeId) ?? getColorSchemes(templateId)[0]
   const accent = resolveBrandAccent(content, scheme.swatches[1])
   const accentDark = scheme.swatches[0]
@@ -214,12 +204,11 @@ export function buildAllSitePages(
         layoutVariantId,
         resolveImage: (url, name) => resolveImageForExport(url, name, assets),
       },
-      pageSeo(ctx, content.businessName, 'index.html'),
     )
   } else {
     pages['index.html'] = wrapPage(ctx, content.businessName, `
 ${heroHtml}
-${homeBody}`, pageSeo(ctx, content.businessName, 'index.html'))
+${homeBody}`)
   }
 
   if (pv.about && canLinkToPage('about', content)) {
@@ -230,7 +219,7 @@ ${homeBody}`, pageSeo(ctx, content.businessName, 'index.html'))
     }).join('') : ''
     pages['about.html'] = wrapPage(ctx, `About — ${content.businessName}`, `
 <section class="py-20"><div class="max-w-6xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center"><div><h1 class="text-4xl font-bold mb-6">${escapeHtml(content.aboutTitle)}</h1><p class="text-lg leading-relaxed text-slate-600 mb-6">${escapeHtml(content.about)}</p>${content.missionStatement ? `<p class="border-l-4 pl-6 italic text-slate-600" style="border-color:${accent}">${escapeHtml(content.missionStatement)}</p>` : ''}</div>${aboutImg ? `<img src="${aboutImg}" class="rounded-2xl w-full" alt="${escapeHtml(content.aboutTitle)}" />` : ''}</div></section>
-${teamHtml ? `<section class="bg-slate-50 py-20"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold text-center mb-12">${escapeHtml(content.teamSectionTitle)}</h2><div class="grid md:grid-cols-3 gap-8">${teamHtml}</div></div></section>` : ''}`, pageSeo(ctx, `About — ${content.businessName}`, 'about.html'))
+${teamHtml ? `<section class="bg-slate-50 py-20"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold text-center mb-12">${escapeHtml(content.teamSectionTitle)}</h2><div class="grid md:grid-cols-3 gap-8">${teamHtml}</div></div></section>` : ''}`)
   }
 
   if (pv.services && canLinkToPage('services', content)) {
@@ -242,7 +231,7 @@ ${teamHtml ? `<section class="bg-slate-50 py-20"><div class="max-w-6xl mx-auto p
     pages['services.html'] = wrapPage(ctx, `Services — ${content.businessName}`, `
 ${services.length ? `<section class="bg-slate-50 py-20"><div class="max-w-6xl mx-auto px-6"><h1 class="text-4xl font-bold text-center mb-4">${escapeHtml(content.servicesSectionTitle)}</h1><p class="text-center text-slate-600 mb-12">${escapeHtml(content.servicesSectionSubtitle)}</p><div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">${servicesHtml}</div></div></section>` : ''}
 ${sv.steps && steps.length ? `<section class="py-20"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold text-center mb-12">${escapeHtml(content.stepsSectionTitle)}</h2><div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">${stepsHtml}</div></div></section>` : ''}
-${pricingHtml ? `<section class="bg-slate-50 py-20"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold text-center mb-12">${escapeHtml(content.pricingSectionTitle)}</h2><div class="grid md:grid-cols-3 gap-8">${pricingHtml}</div></div></section>` : ''}`, pageSeo(ctx, `Services — ${content.businessName}`, 'services.html'))
+${pricingHtml ? `<section class="bg-slate-50 py-20"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold text-center mb-12">${escapeHtml(content.pricingSectionTitle)}</h2><div class="grid md:grid-cols-3 gap-8">${pricingHtml}</div></div></section>` : ''}`)
   }
 
   if (pv.portfolio && canLinkToPage('portfolio', content)) {
@@ -256,7 +245,7 @@ ${pricingHtml ? `<section class="bg-slate-50 py-20"><div class="max-w-6xl mx-aut
     }).join('')
     const gridCls = layouts.portfolio === 'case-study' ? 'space-y-0' : 'grid sm:grid-cols-2 lg:grid-cols-3 gap-8'
     pages['portfolio.html'] = wrapPage(ctx, `${showcaseCfg.navLabel} — ${content.businessName}`, `
-<section class="py-20"><div class="max-w-6xl mx-auto px-6"><h1 class="text-4xl font-bold text-center mb-4">${escapeHtml(content.showcaseSectionTitle || showcaseCfg.sectionTitle)}</h1><p class="text-center text-slate-600 mb-12">${escapeHtml(content.showcaseSectionSubtitle || showcaseCfg.sectionSubtitle)}</p><div class="${gridCls}">${portfolioHtml}</div></div></section>`, pageSeo(ctx, `${showcaseCfg.navLabel} — ${content.businessName}`, 'portfolio.html'))
+<section class="py-20"><div class="max-w-6xl mx-auto px-6"><h1 class="text-4xl font-bold text-center mb-4">${escapeHtml(content.showcaseSectionTitle || showcaseCfg.sectionTitle)}</h1><p class="text-center text-slate-600 mb-12">${escapeHtml(content.showcaseSectionSubtitle || showcaseCfg.sectionSubtitle)}</p><div class="${gridCls}">${portfolioHtml}</div></div></section>`)
   }
 
   if (pv.gallery && canLinkToPage('gallery', content)) {
@@ -267,7 +256,7 @@ ${pricingHtml ? `<section class="bg-slate-50 py-20"><div class="max-w-6xl mx-aut
         : layouts.gallery === 'masonry'
           ? `<div class="columns-1 sm:columns-2 lg:columns-3 gap-4">${gallery.map((g) => `<img src="${g}" class="mb-4 w-full break-inside-avoid rounded-xl" />`).join('')}</div>`
           : `<div class="grid md:grid-cols-3 gap-4">${gallery.map((g) => `<img src="${g}" class="w-full rounded-xl aspect-[4/3] object-cover" />`).join('')}</div>`
-      pages['gallery.html'] = wrapPage(ctx, `Gallery — ${content.businessName}`, `<section class="py-20"><div class="max-w-6xl mx-auto px-6"><h1 class="text-4xl font-bold text-center mb-12">${escapeHtml(content.gallerySectionTitle)}</h1>${galleryGrid}</div></section>`, pageSeo(ctx, `Gallery — ${content.businessName}`, 'gallery.html'))
+      pages['gallery.html'] = wrapPage(ctx, `Gallery — ${content.businessName}`, `<section class="py-20"><div class="max-w-6xl mx-auto px-6"><h1 class="text-4xl font-bold text-center mb-12">${escapeHtml(content.gallerySectionTitle)}</h1>${galleryGrid}</div></section>`)
     }
   }
 
@@ -276,10 +265,10 @@ ${pricingHtml ? `<section class="bg-slate-50 py-20"><div class="max-w-6xl mx-aut
     const listLayout = layouts.blog === 'minimal'
       ? blogPosts.map((post) => `<a href="${staticPostPath('blog', postSlug(post), true)}" class="block py-8 border-b"><h3 class="text-xl font-semibold mb-2">${escapeHtml(post.title)}</h3><p class="opacity-80">${escapeHtml(post.excerpt)}</p></a>`).join('')
       : `<div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">${buildPostCards(blogCtx, 'blog', blogPosts)}</div>`
-    pages['blog/index.html'] = wrapPage(blogCtx, `Blog — ${content.businessName}`, `<section class="bg-slate-50 py-20"><div class="max-w-6xl mx-auto px-6"><h1 class="text-4xl font-bold text-center mb-4">${escapeHtml(content.blogSectionTitle)}</h1><p class="text-center text-slate-600 mb-12">${escapeHtml(content.blogSectionSubtitle)}</p>${listLayout}</div></section>`, pageSeo(blogCtx, `Blog — ${content.businessName}`, 'blog/index.html'))
+    pages['blog/index.html'] = wrapPage(blogCtx, `Blog — ${content.businessName}`, `<section class="bg-slate-50 py-20"><div class="max-w-6xl mx-auto px-6"><h1 class="text-4xl font-bold text-center mb-4">${escapeHtml(content.blogSectionTitle)}</h1><p class="text-center text-slate-600 mb-12">${escapeHtml(content.blogSectionSubtitle)}</p>${listLayout}</div></section>`)
     for (const post of blogPosts) {
       const blogPath = `blog/${postSlug(post)}.html`
-      pages[blogPath] = wrapPage(blogCtx, `${post.title} — ${content.businessName}`, buildPostArticle(blogCtx, 'blog', post), pageSeo(blogCtx, `${post.title} — ${content.businessName}`, blogPath, { pageType: 'article', article: post, ogImage: post.image }))
+      pages[blogPath] = wrapPage(blogCtx, `${post.title} — ${content.businessName}`, buildPostArticle(blogCtx, 'blog', post))
     }
   }
 
@@ -290,10 +279,10 @@ ${pricingHtml ? `<section class="bg-slate-50 py-20"><div class="max-w-6xl mx-aut
       : layouts.news === 'compact'
         ? `<div class="max-w-2xl mx-auto divide-y">${newsPosts.map((post) => `<a href="${staticPostPath('news', postSlug(post), true)}" class="flex justify-between py-5"><span class="font-semibold">${escapeHtml(post.title)}</span><span class="text-xs text-slate-400">${escapeHtml(formatPostDate(post.date))}</span></a>`).join('')}</div>`
         : `<div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">${buildPostCards(newsCtx, 'news', newsPosts)}</div>`
-    pages['news/index.html'] = wrapPage(newsCtx, `News — ${content.businessName}`, `<section class="py-20"><div class="max-w-6xl mx-auto px-6"><h1 class="text-4xl font-bold text-center mb-4">${escapeHtml(content.newsSectionTitle)}</h1><p class="text-center text-slate-600 mb-12">${escapeHtml(content.newsSectionSubtitle)}</p>${listLayout}</div></section>`, pageSeo(newsCtx, `News — ${content.businessName}`, 'news/index.html'))
+    pages['news/index.html'] = wrapPage(newsCtx, `News — ${content.businessName}`, `<section class="py-20"><div class="max-w-6xl mx-auto px-6"><h1 class="text-4xl font-bold text-center mb-4">${escapeHtml(content.newsSectionTitle)}</h1><p class="text-center text-slate-600 mb-12">${escapeHtml(content.newsSectionSubtitle)}</p>${listLayout}</div></section>`)
     for (const post of newsPosts) {
       const newsPath = `news/${postSlug(post)}.html`
-      pages[newsPath] = wrapPage(newsCtx, `${post.title} — ${content.businessName}`, buildPostArticle(newsCtx, 'news', post), pageSeo(newsCtx, `${post.title} — ${content.businessName}`, newsPath, { pageType: 'article', article: post, ogImage: post.image }))
+      pages[newsPath] = wrapPage(newsCtx, `${post.title} — ${content.businessName}`, buildPostArticle(newsCtx, 'news', post))
     }
   }
 
@@ -302,16 +291,10 @@ ${pricingHtml ? `<section class="bg-slate-50 py-20"><div class="max-w-6xl mx-aut
 
   if (pv.contact && canLinkToPage('contact', content)) {
     const contactBody = buildContactSectionHtml(templateId, content, contactForm)
-    pages['contact.html'] = wrapPage(ctx, `Contact — ${content.businessName}`, `${contactBody}${faqBlock}`, pageSeo(ctx, `Contact — ${content.businessName}`, 'contact.html'))
+    pages['contact.html'] = wrapPage(ctx, `Contact — ${content.businessName}`, `${contactBody}${faqBlock}`)
   }
 
-  const seoFiles: Record<string, string> = {}
-  if (content.seoEnabled) {
-    seoFiles['robots.txt'] = buildRobotsTxt(content.seoSiteUrl)
-    seoFiles['sitemap.xml'] = buildSitemapXml(content.seoSiteUrl, collectSitemapPaths(Object.keys(pages), content))
-  }
-
-  return { pages, assets, seoFiles }
+  return { pages, assets }
 }
 
 /** @deprecated Use buildAllSitePages for multi-page export. */

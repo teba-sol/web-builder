@@ -5,7 +5,6 @@ import {
 } from '../../data/layoutVariants'
 import type { SiteContent, TemplateId } from '../../types'
 import type { ImageAsset } from '../imageUtils'
-import { buildRobotsTxt, buildSitemapXml, collectLaravelSitemapPaths } from '../seoExport'
 import { buildExportPayload, resolveAssetPath, type CrsExportSecrets, type SiteExportPayload } from './exportPayload'
 import { generateAllBladeViews } from './generateBlade'
 import {
@@ -237,11 +236,6 @@ function buildSettingsRecord(payload: SiteExportPayload): Record<string, unknown
     template_id: payload.templateId,
     color_scheme_id: payload.colorSchemeId,
     layout_variant_id: payload.layoutVariantId,
-    seo_enabled: c.seoEnabled,
-    seo_title: c.seoTitle,
-    seo_description: c.seoDescription,
-    seo_keywords: c.seoKeywords,
-    seo_site_url: c.seoSiteUrl,
   }
 }
 
@@ -460,7 +454,6 @@ class SiteSetting extends Model
         'license_number', 'instagram', 'linkedin', 'website',
         'contact_section_title', 'contact_form_title', 'contact_form_button_text',
         'template_id', 'color_scheme_id', 'layout_variant_id',
-        'seo_enabled', 'seo_title', 'seo_description', 'seo_keywords', 'seo_site_url',
     ];
 
     protected $casts = [
@@ -471,7 +464,6 @@ class SiteSetting extends Model
         'usdt_etb_rate' => 'decimal:4',
         'breakfast_price' => 'decimal:2',
         'cancellation_fee' => 'decimal:2',
-        'seo_enabled' => 'boolean',
     ];
 
     public static function current(): self
@@ -1410,11 +1402,6 @@ return new class extends Migration
             $table->string('template_id')->nullable();
             $table->string('color_scheme_id')->nullable();
             $table->string('layout_variant_id')->nullable();
-            $table->boolean('seo_enabled')->default(false);
-            $table->string('seo_title')->nullable();
-            $table->text('seo_description')->nullable();
-            $table->text('seo_keywords')->nullable();
-            $table->string('seo_site_url')->nullable();
             $table->timestamps();
         });
     }
@@ -1724,11 +1711,6 @@ export function generateBackend(
     cardCheckout: isHospitalityTemplate(templateId) && !usesBuildauraCrs(templateId),
   }))
   Object.assign(files, usesBuildauraCrs(templateId) ? generateCrsBookingFiles(payload) : generateBookingFiles(payload))
-
-  if (content.seoEnabled) {
-    files['public/robots.txt'] = buildRobotsTxt(content.seoSiteUrl)
-    files['public/sitemap.xml'] = buildSitemapXml(content.seoSiteUrl, collectLaravelSitemapPaths(content))
-  }
 
   return files
 }

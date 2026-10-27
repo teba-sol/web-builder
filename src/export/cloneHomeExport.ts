@@ -4,7 +4,6 @@ import { brandCss } from '../data/brand'
 import { footerBlurb, footerNote } from '../data/footer'
 import { escapeHtml } from './imageUtils'
 import { mapEmbedHtml } from '../utils/mapEmbed'
-import { buildSeoMetaTags, resolveDocumentTitle, type PageSeoInput } from './seoExport'
 import { LAYOUT_SHELL_CSS, rewriteContainerVariantsForExport } from './htmlShared'
 import {
   clonePaletteCss,
@@ -25,7 +24,6 @@ export interface CloneExportCtx {
   content: SiteContent
   fromNested?: boolean
   resolveImage?: (url: string, name: string) => string
-  seo?: PageSeoInput
   colorSchemeId?: string
   layoutVariantId?: string
 }
@@ -698,9 +696,8 @@ export function buildCloneHomeBody(ctx: CloneExportCtx): string {
   return cloneBody(ctx)
 }
 
-export function buildCloneHomeDocument(ctx: CloneExportCtx, seo?: PageSeoInput): string {
-  const title = seo ? resolveDocumentTitle(seo) : ctx.content.businessName
-  const seoTags = seo ? buildSeoMetaTags(seo) : ''
+export function buildCloneHomeDocument(ctx: CloneExportCtx): string {
+  const title = ctx.content.businessName
   const extraCss = brandCss(ctx.content)
   const palette = resolveClonePalette(ctx.templateId, ctx.content, ctx.colorSchemeId)
   const paletteCss = clonePaletteCss(ctx.templateId, palette)
@@ -711,7 +708,7 @@ export function buildCloneHomeDocument(ctx: CloneExportCtx, seo?: PageSeoInput):
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>${escapeHtml(title)}</title>
-  ${seoTags ? `${seoTags}\n  ` : ''}<script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>html,body { overflow-x: hidden; max-width: 100%; } body { font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif; }

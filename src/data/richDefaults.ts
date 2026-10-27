@@ -156,11 +156,6 @@ export const baseRichContent: SiteContent = {
   ctaBannerText: 'Join hundreds of satisfied clients. Let us help you achieve your goals today.',
   ctaText: '',
   ctaLink: 'contact',
-  seoEnabled: false,
-  seoTitle: '',
-  seoDescription: '',
-  seoKeywords: '',
-  seoSiteUrl: '',
   ...emptyContacts,
 }
 

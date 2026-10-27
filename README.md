@@ -136,8 +136,8 @@ sequenceDiagram
 
   U->>D: Click Download Full Stack
   D->>Z: templateId + SiteContent + theme
-  Z->>S: Build static pages + assets + SEO
-  S-->>Z: pages{}, assets[], robots/sitemap
+  Z->>S: Build static pages + assets
+  S-->>Z: pages{}, assets[]
   Z->>L: Generate Laravel/Filament tree
   L-->>Z: path → file contents
   Z->>J: frontend/* + backend/* + README.txt
@@ -146,7 +146,7 @@ sequenceDiagram
 
 | Export side | Modules (entry points) | Output |
 |-------------|------------------------|--------|
-| Static | `export/buildSitePages.ts`, `generateHtml.ts`, section/nav/SEO helpers | `frontend/*.html`, assets, optional `robots.txt` / `sitemap.xml` |
+| Static | `export/buildSitePages.ts`, `generateHtml.ts`, section and nav helpers | `frontend/*.html` and assets |
 | Dynamic | `export/backend/generateBackend.ts`, Blade, Filament, booking | `backend/` ready for Composer + deploy |
 
 Hospitality templates can include **room types**, **inventory**, and **booking** flows that map into both the live React preview and the Laravel export.
@@ -172,7 +172,7 @@ web-builder-exp/
 │   ├── templates/                 # Per-industry React shells + SiteApp
 │   ├── export/                    # Static HTML + Laravel generators
 │   ├── types/                     # SiteContent, TemplateId, visibility, …
-│   └── utils/                     # storage, links, SEO helpers, slugs
+│   └── utils/                     # storage, links, slugs
 ├── package.json
 └── vite.config.ts
 ```

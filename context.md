@@ -92,7 +92,7 @@ Entry: `src/components/DownloadButton.tsx` → `src/export/downloadZip.ts`.
 Order:
 
 1. If the template is hospitality and a project id exists, cloud-save, then `POST /api/v1/projects/{id}/crs-credentials`.
-2. `buildAllSitePages` → `frontend/` HTML, assets, optional robots and sitemap.
+2. `buildAllSitePages` → `frontend/` HTML and assets.
 3. `generateBackend` → `backend/` Laravel 11 + Filament 3.
 4. `site.json` at the ZIP root.
 5. On success, `POST /api/v1/projects/{id}/export-event` (failure of this call does not undo the download).

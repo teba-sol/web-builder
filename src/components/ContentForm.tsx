@@ -15,7 +15,6 @@ import {
 } from '../data/editorProfile'
 import { getPageNavLabel } from '../data/pageConfig'
 import { getMapEmbedUrl, isShortMapLink } from '../utils/mapEmbed'
-import { optimizeSiteSeo } from '../utils/seoOptimizer'
 import { BrandIdentityForm } from './BrandIdentityForm'
 import { CUSTOM_COLOR_SCHEME_ID } from '../data/pickTemplate'
 import { FontPicker } from './style/FontPicker'
@@ -106,38 +105,6 @@ export function ContentForm() {
         onToggle={toggleSectionVisibility}
         sections={editableSections}
       />
-
-      <FormSection title="SEO">
-        <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-emerald-200 bg-emerald-50/80 p-4">
-          <input
-            type="checkbox"
-            checked={content.seoEnabled}
-            onChange={(e) => {
-              if (e.target.checked) {
-                updateContent(optimizeSiteSeo(content, templateId ?? undefined))
-              } else {
-                updateContent({ seoEnabled: false })
-              }
-            }}
-            className="mt-0.5 h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
-          />
-          <span>
-            <span className="block text-sm font-semibold text-emerald-900">Optimize SEO</span>
-            <span className="mt-1 block text-xs text-emerald-800/80">
-              Auto-generates meta title, description, keywords, slugs, sitemap, robots.txt, Open Graph tags, and structured data on export.
-            </span>
-          </span>
-        </label>
-        {content.seoEnabled && (
-          <div className="space-y-4 rounded-xl border border-slate-200 bg-slate-50 p-4">
-            <Field label="Meta Title" value={content.seoTitle} onChange={(v) => updateContent({ seoTitle: v })} placeholder="Business Name | Tagline" />
-            <Field label="Meta Description" value={content.seoDescription} onChange={(v) => updateContent({ seoDescription: v })} multiline rows={3} placeholder="155-character summary for search results" />
-            <Field label="Keywords" value={content.seoKeywords} onChange={(v) => updateContent({ seoKeywords: v })} placeholder="service, location, industry" />
-            <Field label="Live Site URL (for canonical links & sitemap)" value={content.seoSiteUrl} onChange={(v) => updateContent({ seoSiteUrl: v })} placeholder="https://www.yourbusiness.com" />
-            <p className="text-xs text-slate-500">Tip: add your real domain before exporting so canonical URLs and sitemap entries point to production.</p>
-          </div>
-        )}
-      </FormSection>
 
       <FormSection title="Hero">
         <Field label="Business Name" value={content.businessName} onChange={(v) => updateContent({ businessName: v })} />
