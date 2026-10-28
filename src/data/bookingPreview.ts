@@ -247,7 +247,7 @@ export function createPreviewReservation(input: {
   guestEmail: string
   guestPhone: string
   specialRequests: string
-  paymentMethod: PreviewPaymentMethod
+  paymentMethod?: PreviewPaymentMethod
   paymentLast4?: string
   breakfastSelected?: boolean
 }): PreviewReservation {

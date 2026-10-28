@@ -4,7 +4,7 @@ import { accentInk } from '../utils/accentInk'
 
 const EXPLORE_LINKS = `@if($settings->page_visibility['about'] ?? false)<a href="{{ route('about') }}" class="tpl-explore-link">About</a>@endif
 @if($settings->page_visibility['services'] ?? false)<a href="{{ route('services') }}" class="tpl-explore-link">Services</a>@endif
-@if($settings->page_visibility['portfolio'] ?? false)<a href="{{ route('portfolio') }}" class="tpl-explore-link">Portfolio</a>@endif
+@if(($settings->page_visibility['portfolio'] ?? false) && \\Illuminate\\Support\\Facades\\Route::has('portfolio'))<a href="{{ route('portfolio') }}" class="tpl-explore-link">Portfolio</a>@endif
 @if($settings->page_visibility['blog'] ?? false)<a href="{{ route('blog.index') }}" class="tpl-explore-link">Blog</a>@endif
 @if($settings->page_visibility['news'] ?? false)<a href="{{ route('news.index') }}" class="tpl-explore-link">News</a>@endif
 @if($settings->page_visibility['gallery'] ?? false)<a href="{{ route('gallery') }}" class="tpl-explore-link">Gallery</a>@endif

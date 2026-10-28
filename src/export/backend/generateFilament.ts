@@ -730,7 +730,7 @@ function settingsFields(fields: Array<{ name: string; line: string }>): { schema
   }
 }
 
-function websiteSettingsPages(): Record<string, string> {
+function websiteSettingsPages(hospitality = false): Record<string, string> {
   const general = settingsFields([
     { name: 'business_name', line: `Forms\\Components\\TextInput::make('business_name')->required()` },
     { name: 'tagline', line: `Forms\\Components\\TextInput::make('tagline')` },
@@ -769,7 +769,7 @@ function websiteSettingsPages(): Record<string, string> {
     ['news', 'News'],
     ['gallery', 'Gallery'],
     ['contact', 'Contact'],
-  ]
+  ].filter(([key]) => !(hospitality && key === 'portfolio'))
   const sectionToggles = [
     ['stats', 'Stats section'],
     ['steps', 'Process section'],
@@ -848,7 +848,9 @@ function websiteSettingsPages(): Record<string, string> {
       sort: 4,
       schema: visibilitySchema,
       fill: `'page_visibility' => $settings->page_visibility ?? [],\n            'section_visibility' => $settings->section_visibility ?? []`,
-      persist: `'page_visibility' => $state['page_visibility'] ?? [],\n            'section_visibility' => $state['section_visibility'] ?? []`,
+      persist: hospitality
+        ? `'page_visibility' => array_merge($state['page_visibility'] ?? [], ['portfolio' => false]),\n            'section_visibility' => $state['section_visibility'] ?? []`
+        : `'page_visibility' => $state['page_visibility'] ?? [],\n            'section_visibility' => $state['section_visibility'] ?? []`,
     },
     { className: 'SectionTitleSettings', label: 'Section titles', icon: 'heroicon-o-bars-3-bottom-left', sort: 5, ...sections },
     { className: 'FooterSettings', label: 'Footer', icon: 'heroicon-o-bars-3', sort: 6, ...footer },
@@ -1149,7 +1151,7 @@ export function generateFilamentFiles(
     Object.assign(files, stayPoliciesAdminFiles(Boolean(options.cardCheckout)))
   }
 
-  Object.assign(files, websiteSettingsPages())
+  Object.assign(files, websiteSettingsPages(Boolean(options?.hospitality)))
   files['app/Filament/Resources/ContactMessageResource.php'] = generateContactMessageResource()
 
   files['app/Filament/Resources/ContactMessageResource/Pages/ListContactMessages.php'] = `<?php

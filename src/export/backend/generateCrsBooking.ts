@@ -139,15 +139,20 @@ class BuildauraClient
     }
 
     /** Hold a room. The confirmation code is the only reference sent to Buildaura. */
-    public function occupy(string $unitId, string $checkIn, string $checkOut, string $confirmationCode): array
+    public function occupy(string $unitId, string $checkIn, string $checkOut, string $confirmationCode, string $kind = 'STAY'): array
     {
         return $this->send('POST', $this->path('/occupancy'), [
             'roomUnitId' => $unitId,
             'checkIn' => $checkIn,
             'checkOut' => $checkOut,
-            'kind' => 'STAY',
+            'kind' => $kind,
             'externalRef' => $confirmationCode,
         ]);
+    }
+
+    public function updateOccupancy(string $blockId, array $payload): array
+    {
+        return $this->send('PATCH', $this->path('/occupancy/'.$blockId), $payload);
     }
 
     public function release(string $blockId): array
@@ -284,6 +289,7 @@ return new class extends Migration
             $table->decimal('cancellation_fee', 12, 2)->default(0);
             $table->string('currency', 8)->default('USD');
             $table->text('special_requests')->nullable();
+            $table->text('admin_notes')->nullable();
             $table->string('payment_method')->default('sandbox');
             $table->string('payment_last4', 4)->nullable();
             $table->timestamps();
@@ -330,6 +336,7 @@ class GuestReservation extends Model
         'cancellation_fee',
         'currency',
         'special_requests',
+        'admin_notes',
         'payment_method',
         'payment_last4',
     ];
@@ -522,20 +529,11 @@ class BookingController extends Controller
             'adults' => 'required|integer|min:1|max:20',
             'children' => 'nullable|integer|min:0|max:10',
             'guest_name' => 'required|string|max:255',
-            'guest_email' => 'nullable|email|max:255',
+            'guest_email' => 'required|email|max:255',
             'guest_phone' => 'required|string|max:50',
             'special_requests' => 'nullable|string|max:2000',
             'add_breakfast' => 'nullable|boolean',
-            'payment_method' => 'required|in:chapa,sandbox,card',
         ]);
-        if ($validated['payment_method'] === 'card') {
-            $validated = array_merge($validated, $request->validate([
-                'card_holder' => 'required|string|max:255',
-                'card_number' => 'required|string|min:12|max:24',
-                'card_expiry' => 'required|string|max:7',
-                'card_cvc' => 'required|string|min:3|max:4',
-            ]));
-        }
 
         try {
             $availability = $this->crs->availability(
@@ -583,9 +581,6 @@ class BookingController extends Controller
             (float) SiteSetting::current()->breakfast_price,
             $nights
         );
-        $method = (string) $validated['payment_method'];
-        $digits = $method === 'card' ? preg_replace('/\\D/', '', (string) ($validated['card_number'] ?? '')) : '';
-        $last4 = ($method === 'card' && $digits !== '') ? substr($digits, -4) : null;
         $made = [];
         try {
             foreach ($chosen as $index => $unit) {
@@ -606,7 +601,7 @@ class BookingController extends Controller
                         'children' => $stay['children'],
                         'child_ages' => array_map('intval', $stay['childAges']),
                         'guest_name' => $validated['guest_name'],
-                        'guest_email' => $validated['guest_email'] ?? null,
+                        'guest_email' => $validated['guest_email'],
                         'guest_phone' => $validated['guest_phone'],
                         'status' => 'confirmed',
                         'nightly_rate' => $nightly,
@@ -617,8 +612,8 @@ class BookingController extends Controller
                         'cancellation_fee' => ! empty($type['freeCancellation']) ? 0 : (float) SiteSetting::current()->cancellation_fee,
                         'currency' => $type['currency'] ?? 'USD',
                         'special_requests' => $validated['special_requests'] ?? null,
-                        'payment_method' => $method,
-                        'payment_last4' => $last4,
+                        'payment_method' => 'none',
+                        'payment_last4' => null,
                     ]);
                 } catch (\\Throwable $e) {
                     if (! empty($block['id'])) {
@@ -963,10 +958,11 @@ use RuntimeException;
 
 class RoomTypes extends Page
 {
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-photo';
     protected static ?string $navigationGroup = 'Hospitality';
     protected static ?string $navigationLabel = 'Room types';
     protected static ?string $title = 'Room types';
+    protected static ?int $navigationSort = 1;
     protected static string $view = 'filament.pages.room-types';
 
     public ?array $filters = [
@@ -1631,10 +1627,11 @@ use RuntimeException;
 
 class Rooms extends Page
 {
-    protected static ?string $navigationIcon = 'heroicon-o-key';
+    protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
     protected static ?string $navigationGroup = 'Hospitality';
     protected static ?string $navigationLabel = 'Rooms';
     protected static ?string $title = 'Rooms';
+    protected static ?int $navigationSort = 2;
     protected static string $view = 'filament.pages.rooms';
 
     public ?array $filters = [
@@ -1996,13 +1993,7 @@ class Rooms extends Page
             <td style="padding:10px;vertical-align:middle;white-space:nowrap;font-weight:600;">{{ $unit['code'] ?? '' }}</td>
             <td style="padding:10px;vertical-align:middle;white-space:normal;word-break:normal;">{{ $typeNames[$unit['roomTypeId'] ?? ''] ?? '' }}</td>
             <td style="padding:10px;vertical-align:middle;white-space:nowrap;">{{ ! empty($unit['smokingAllowed']) ? 'Allowed' : 'No' }}</td>
-            <td style="padding:10px;vertical-align:middle;white-space:nowrap;">@php
-              $statusLabel = match (strtoupper((string) ($unit['status'] ?? 'AVAILABLE'))) {
-                  'BOOKED' => 'Booked',
-                  'INACTIVE' => 'Inactive',
-                  default => 'Available',
-              };
-            @endphp{{ $statusLabel }}</td>
+            <td style="padding:10px;vertical-align:middle;white-space:nowrap;">@if(strtoupper((string) ($unit['status'] ?? 'AVAILABLE')) === 'BOOKED') Booked @elseif(strtoupper((string) ($unit['status'] ?? 'AVAILABLE')) === 'INACTIVE') Inactive @else Available @endif</td>
             <td style="padding:10px;vertical-align:middle;white-space:nowrap;text-align:right;">
               <div style="display:flex;gap:8px;justify-content:flex-end;align-items:center;">
                 <x-filament::button tag="a" size="sm" color="gray" outlined :href="\\App\\Filament\\Pages\\RoomCalendar::getUrl(['unitId' => $unit['id']])">Calendar</x-filament::button>
@@ -2023,187 +2014,581 @@ class Rooms extends Page
 </x-filament-panels::page>
 `
 
-  files['app/Filament/Pages/GuestReservations.php'] = `<?php
+  files['app/Filament/Resources/ReservationResource.php'] = `<?php
 
-namespace App\\Filament\\Pages;
+namespace App\\Filament\\Resources;
 
+use App\\Filament\\Resources\\ReservationResource\\Pages;
 use App\\Models\\GuestReservation;
-use Filament\\Pages\\Page;
+use App\\Services\\BuildauraClient;
+use Filament\\Forms;
+use Filament\\Resources\\Resource;
+use Filament\\Tables;
 
-class GuestReservations extends Page
+class ReservationResource extends Resource
 {
-    protected static ?string $navigationIcon = 'heroicon-o-calendar';
+    protected static ?string $model = GuestReservation::class;
     protected static ?string $navigationGroup = 'Hospitality';
-    protected static ?string $navigationLabel = 'Guest reservations';
-    protected static ?string $title = 'Guest reservations';
-    protected static string $view = 'filament.pages.guest-reservations';
+    protected static ?string $navigationLabel = 'Reservations';
+    protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
+    protected static ?int $navigationSort = 3;
 
-    public ?array $filters = [
-        'search' => '',
-        'status' => '',
-        'roomType' => '',
-        'sort' => 'newest',
-    ];
-
-    protected function getForms(): array
+    public static function form(Forms\\Form $form): Forms\\Form
     {
-        return [];
+        return $form->schema([
+            Forms\\Components\\Placeholder::make('crs_note')
+                ->label('')
+                ->content('The room and dates are held in BuildAura. Guest details stay on this website.')
+                ->columnSpanFull(),
+            Forms\\Components\\Select::make('room_type_id')
+                ->label('Room type')
+                ->options(fn () => static::typeOptions())
+                ->searchable()
+                ->required()
+                ->live()
+                ->afterStateUpdated(function (Forms\\Set $set, ?string $state) {
+                    $set('room_unit_id', null);
+                    $type = static::findType($state);
+                    if ($type) {
+                        $set('nightly_rate', \\App\\Support\\RoomPrice::selling((float) ($type['basePrice'] ?? 0), (float) ($type['discountPercent'] ?? 0)));
+                        if (! empty($type['freeBreakfast'])) {
+                            $set('breakfast_selected', true);
+                        }
+                    }
+                }),
+            Forms\\Components\\Select::make('room_unit_id')
+                ->label('Room')
+                ->options(fn (Forms\\Get $get) => static::unitOptions($get('room_type_id')))
+                ->searchable()
+                ->required(),
+            Forms\\Components\\DatePicker::make('check_in')->required()->minDate(now()->startOfDay()),
+            Forms\\Components\\DatePicker::make('check_out')->required()->minDate(now()->startOfDay()),
+            Forms\\Components\\TextInput::make('adults')->numeric()->default(1)->minValue(1)->maxValue(20)->required(),
+            Forms\\Components\\TextInput::make('children')->numeric()->default(0)->minValue(0)->maxValue(10)->required(),
+            Forms\\Components\\TextInput::make('child_ages')
+                ->label('Child ages')
+                ->helperText('Comma-separated ages from 0 to 17, one for each child. Guests 18 and older count as adults.')
+                ->formatStateUsing(fn ($state) => is_array($state) ? implode(', ', $state) : (string) ($state ?? ''))
+                ->dehydrateStateUsing(function ($state) {
+                    if (is_array($state)) {
+                        return array_values(array_map('intval', $state));
+                    }
+                    $parts = array_values(array_filter(array_map('trim', explode(',', (string) $state)), fn ($age) => $age !== ''));
+
+                    return array_map('intval', $parts);
+                }),
+            Forms\\Components\\TextInput::make('nightly_rate')->numeric()->label('Price')->live(onBlur: true)->helperText(function (Forms\\Get $get) {
+                $rate = (float) \\App\\Models\\SiteSetting::current()->usdt_etb_rate;
+                $rawId = $get('room_type_id');
+                $type = static::findType(is_string($rawId) ? $rawId : null);
+                $currency = (string) ($type['currency'] ?? 'ETB');
+                $amount = is_numeric($get('nightly_rate')) ? (float) $get('nightly_rate') : 0.0;
+                $other = \\App\\Support\\RoomPrice::other($amount, $currency, $rate);
+                if ($rate <= 0) {
+                    return 'Set the USD to ETB rate on Hotel Policy to show the other currency.';
+                }
+                if ($other === null) {
+                    return '1 USD = '.$rate.' ETB.';
+                }
+
+                return 'About '.$other.' · 1 USD = '.$rate.' ETB.';
+            }),
+            Forms\\Components\\Toggle::make('breakfast_selected')
+                ->label('Add breakfast')
+                ->helperText('Included at no charge when the room type has breakfast. Otherwise the hotel breakfast price is added for each night.'),
+            Forms\\Components\\Select::make('status')->options([
+                'pending' => 'Pending',
+                'confirmed' => 'Confirmed',
+                'checked_in' => 'Checked in',
+                'checked_out' => 'Checked out',
+                'cancelled' => 'Cancelled',
+                'no_show' => 'No show',
+            ])->default('confirmed')->required(),
+            Forms\\Components\\TextInput::make('guest_name')->required(),
+            Forms\\Components\\TextInput::make('guest_email')->email()->required(),
+            Forms\\Components\\TextInput::make('guest_phone'),
+            Forms\\Components\\Textarea::make('special_requests')->columnSpanFull(),
+            Forms\\Components\\Textarea::make('admin_notes')->columnSpanFull(),
+            Forms\\Components\\TextInput::make('confirmation_code')->disabled()->dehydrated(false)->visibleOn('edit'),
+            Forms\\Components\\TextInput::make('room_type_name')->disabled()->dehydrated(false)->visibleOn('edit'),
+            Forms\\Components\\TextInput::make('room_code')->label('Room number')->disabled()->dehydrated(false)->visibleOn('edit'),
+            Forms\\Components\\TextInput::make('payment_last4')->label('Card last 4')->disabled()->dehydrated(false)->visibleOn('edit'),
+        ])->columns(2);
     }
 
-    public function clearGuestFilters(): void
+    public static function table(Tables\\Table $table): Tables\\Table
     {
-        $this->filters = [
-            'search' => '',
-            'status' => '',
-            'roomType' => '',
-            'sort' => 'newest',
-        ];
+        return $table->columns([
+            Tables\\Columns\\TextColumn::make('confirmation_code')->searchable()->sortable(),
+            Tables\\Columns\\TextColumn::make('guest_name')->searchable()->sortable(),
+            Tables\\Columns\\TextColumn::make('guest_email')->searchable()->sortable()->toggleable(),
+            Tables\\Columns\\TextColumn::make('guest_phone')->searchable()->sortable()->toggleable(),
+            Tables\\Columns\\TextColumn::make('room_type_name')->label('Room type')->searchable()->sortable(),
+            Tables\\Columns\\TextColumn::make('room_code')->label('Room')->searchable()->sortable(),
+            Tables\\Columns\\TextColumn::make('check_in')->date()->sortable(),
+            Tables\\Columns\\TextColumn::make('check_out')->date()->sortable(),
+            Tables\\Columns\\TextColumn::make('status')->badge()->searchable()->sortable(),
+            Tables\\Columns\\TextColumn::make('total_price')->money(fn ($record) => $record->currency)->sortable(),
+        ])->filters([
+            Tables\\Filters\\SelectFilter::make('status')->label('Status')->placeholder('All statuses')->options([
+                'pending' => 'Pending',
+                'confirmed' => 'Confirmed',
+                'checked_in' => 'Checked in',
+                'checked_out' => 'Checked out',
+                'cancelled' => 'Cancelled',
+                'no_show' => 'No show',
+            ]),
+            Tables\\Filters\\SelectFilter::make('room_type_name')
+                ->label('Room type')
+                ->placeholder('All room types')
+                ->searchable()
+                ->options(fn () => GuestReservation::query()->whereNotNull('room_type_name')->where('room_type_name', '!=', '')->distinct()->orderBy('room_type_name')->pluck('room_type_name', 'room_type_name')->all()),
+            Tables\\Filters\\SelectFilter::make('room_code')
+                ->label('Room')
+                ->placeholder('All rooms')
+                ->searchable()
+                ->options(fn () => GuestReservation::query()->whereNotNull('room_code')->where('room_code', '!=', '')->distinct()->orderBy('room_code')->pluck('room_code', 'room_code')->all()),
+            Tables\\Filters\\Filter::make('stay')
+                ->label('Stay dates')
+                ->form([
+                    Forms\\Components\\DatePicker::make('from')->label('Check-in from'),
+                    Forms\\Components\\DatePicker::make('until')->label('Check-out until'),
+                ])
+                ->query(function ($query, array $data) {
+                    return $query
+                        ->when($data['from'] ?? null, fn ($query, $date) => $query->whereDate('check_in', '>=', $date))
+                        ->when($data['until'] ?? null, fn ($query, $date) => $query->whereDate('check_out', '<=', $date));
+                }),
+        ])->actions([
+            Tables\\Actions\\EditAction::make(),
+        ])->defaultSort('created_at', 'desc')
+            ->persistSearchInSession()
+            ->persistFiltersInSession()
+            ->persistSortInSession();
     }
 
-    public function guestStatusOptions(): array
+    public static function getPages(): array
     {
-        return GuestReservation::query()
-            ->whereNotNull('status')
-            ->where('status', '!=', '')
-            ->distinct()
-            ->orderBy('status')
-            ->pluck('status', 'status')
-            ->all();
-    }
-
-    public function guestRoomTypeOptions(): array
-    {
-        return GuestReservation::query()
-            ->whereNotNull('room_type_name')
-            ->where('room_type_name', '!=', '')
-            ->distinct()
-            ->orderBy('room_type_name')
-            ->pluck('room_type_name', 'room_type_name')
-            ->all();
-    }
-
-    public function guestFiltersActive(): bool
-    {
-        return $this->filterText('search') !== ''
-            || $this->filterText('status') !== ''
-            || $this->filterText('roomType') !== '';
-    }
-
-    public function getViewData(): array
-    {
-        $query = GuestReservation::query();
-        $search = $this->filterText('search');
-        if ($search !== '') {
-            $like = '%'.addcslashes($search, '%_\\\\').'%';
-            $query->where(function ($inner) use ($like) {
-                $inner->where('confirmation_code', 'like', $like)
-                    ->orWhere('guest_name', 'like', $like)
-                    ->orWhere('guest_phone', 'like', $like)
-                    ->orWhere('room_code', 'like', $like);
-            });
-        }
-        $status = $this->filterText('status');
-        if ($status !== '') {
-            $query->where('status', $status);
-        }
-        $roomType = $this->filterText('roomType');
-        if ($roomType !== '') {
-            $query->where('room_type_name', $roomType);
-        }
-        match ($this->filterText('sort') ?: 'newest') {
-            'oldest' => $query->orderBy('id'),
-            'guest' => $query->orderBy('guest_name')->orderByDesc('id'),
-            'check_in' => $query->orderBy('check_in')->orderByDesc('id'),
-            'status' => $query->orderBy('status')->orderByDesc('id'),
-            default => $query->orderByDesc('id'),
-        };
-
         return [
-            'reservations' => $query->limit(200)->get(),
+            'index' => Pages\\ListReservations::route('/'),
+            'create' => Pages\\CreateReservation::route('/create'),
+            'edit' => Pages\\EditReservation::route('/{record}/edit'),
         ];
     }
 
-    private function filterText(string $key): string
+    private static function inventory(): array
     {
-        $value = $this->filters[$key] ?? null;
+        try {
+            return app(BuildauraClient::class)->inventory();
+        } catch (\\Throwable) {
+            return [];
+        }
+    }
 
-        return is_scalar($value) ? trim((string) $value) : '';
+    private static function typeOptions(): array
+    {
+        $options = [];
+        foreach (static::inventory()['roomTypes'] ?? [] as $type) {
+            if (! empty($type['id'])) {
+                $options[$type['id']] = $type['name'] ?? $type['id'];
+            }
+        }
+
+        return $options;
+    }
+
+    private static function unitOptions(?string $typeId): array
+    {
+        if (! $typeId) {
+            return [];
+        }
+        $options = [];
+        foreach (static::inventory()['units'] ?? [] as $unit) {
+            if (($unit['roomTypeId'] ?? null) !== $typeId || empty($unit['id'])) {
+                continue;
+            }
+            $options[$unit['id']] = $unit['code'] ?? $unit['id'];
+        }
+
+        return $options;
+    }
+
+    private static function findType(?string $typeId): ?array
+    {
+        if (! $typeId) {
+            return null;
+        }
+        foreach (static::inventory()['roomTypes'] ?? [] as $type) {
+            if (($type['id'] ?? null) === $typeId) {
+                return $type;
+            }
+        }
+
+        return null;
     }
 }
 `
 
-  files['resources/views/filament/pages/guest-reservations.blade.php'] = `<x-filament-panels::page>
-${flash}
-<p style="margin-bottom:12px">Guest name, email, and phone are stored on this website only.</p>
-<div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;align-items:end;margin-bottom:24px;">
-  <x-filament-forms::field-wrapper label="Search">
-    <x-filament::input.wrapper>
-      <x-filament::input type="search" placeholder="Code, guest, phone, room" wire:model.live.debounce.300ms="filters.search" />
-    </x-filament::input.wrapper>
-  </x-filament-forms::field-wrapper>
-  <x-filament-forms::field-wrapper label="Status">
-    <x-filament::input.wrapper>
-      <x-filament::input.select wire:model.live="filters.status">
-        <option value="">All statuses</option>
-        @foreach($this->guestStatusOptions() as $value => $label)
-          <option value="{{ $value }}">{{ $label }}</option>
-        @endforeach
-      </x-filament::input.select>
-    </x-filament::input.wrapper>
-  </x-filament-forms::field-wrapper>
-  <x-filament-forms::field-wrapper label="Room type">
-    <x-filament::input.wrapper>
-      <x-filament::input.select wire:model.live="filters.roomType">
-        <option value="">All room types</option>
-        @foreach($this->guestRoomTypeOptions() as $value => $label)
-          <option value="{{ $value }}">{{ $label }}</option>
-        @endforeach
-      </x-filament::input.select>
-    </x-filament::input.wrapper>
-  </x-filament-forms::field-wrapper>
-  <x-filament-forms::field-wrapper label="Sort">
-    <x-filament::input.wrapper>
-      <x-filament::input.select wire:model.live="filters.sort">
-        <option value="newest">Newest</option>
-        <option value="oldest">Oldest</option>
-        <option value="guest">Guest name</option>
-        <option value="check_in">Check-in</option>
-        <option value="status">Status</option>
-      </x-filament::input.select>
-    </x-filament::input.wrapper>
-  </x-filament-forms::field-wrapper>
-  <div>
-    <x-filament::button color="gray" size="sm" type="button" style="width:100%" wire:click="clearGuestFilters">Clear</x-filament::button>
-  </div>
-</div>
-@if($reservations->isEmpty())
-<p style="color:#6b7280;margin-bottom:12px;">@if($this->guestFiltersActive())No reservations match these filters.@else No reservations yet.@endif</p>
-@endif
-<table style="width:100%;border-collapse:collapse">
-  <thead><tr><th align="left">Code</th><th align="left">Guest</th><th align="left">Phone</th><th align="left">Room</th><th align="left">Dates</th><th align="left">Status</th><th></th></tr></thead>
-  <tbody>
-  @foreach($reservations as $row)
-  <tr>
-    <td style="padding:8px 8px 8px 0">{{ $row->confirmation_code }}</td>
-    <td>{{ $row->guest_name }}@if($row->children)<div style="color:#6b7280;font-size:12px">{{ $row->children }} children{{ (is_array($row->child_ages) && count($row->child_ages)) ? ' · '.collect($row->child_ages)->map(fn ($age) => $age.'y')->implode(', ') : '' }}</div>@endif</td>
-    <td>{{ $row->guest_phone }}</td>
-    <td>{{ $row->room_code }}</td>
-    <td>{{ $row->check_in->format('M j') }} – {{ $row->check_out->format('M j, Y') }}</td>
-    <td>{{ $row->status }}</td>
-    <td>
-      @if($row->status !== 'cancelled')
-      <form method="POST" action="{{ route('property.reservations.cancel') }}" wire:ignore>
-        @csrf
-        <input type="hidden" name="confirmation_code" value="{{ $row->confirmation_code }}" />
-        <button type="button" onclick="if (confirm('Cancel this reservation?')) this.form.submit()">Cancel</button>
-      </form>
-      @endif
-    </td>
-  </tr>
-  @endforeach
-  </tbody>
-</table>
-</x-filament-panels::page>
+  files['app/Filament/Resources/ReservationResource/Pages/ListReservations.php'] = `<?php
+
+namespace App\\Filament\\Resources\\ReservationResource\\Pages;
+
+use App\\Filament\\Resources\\ReservationResource;
+use Filament\\Actions;
+use Filament\\Resources\\Pages\\ListRecords;
+
+class ListReservations extends ListRecords
+{
+    protected static string $resource = ReservationResource::class;
+
+    protected function getHeaderActions(): array
+    {
+        return [Actions\\CreateAction::make()];
+    }
+}
+`
+
+  files['app/Filament/Resources/ReservationResource/Pages/CreateReservation.php'] = `<?php
+
+namespace App\\Filament\\Resources\\ReservationResource\\Pages;
+
+use App\\Filament\\Resources\\ReservationResource;
+use App\\Services\\ReservationDesk;
+use Filament\\Resources\\Pages\\CreateRecord;
+use Illuminate\\Database\\Eloquent\\Model;
+use Illuminate\\Validation\\ValidationException;
+use RuntimeException;
+
+class CreateReservation extends CreateRecord
+{
+    protected static string $resource = ReservationResource::class;
+
+    protected function handleRecordCreation(array $data): Model
+    {
+        try {
+            return app(ReservationDesk::class)->create($data);
+        } catch (RuntimeException $e) {
+            throw ValidationException::withMessages([
+                'room_unit_id' => $e->getMessage(),
+            ]);
+        }
+    }
+}
+`
+
+  files['app/Filament/Resources/ReservationResource/Pages/EditReservation.php'] = `<?php
+
+namespace App\\Filament\\Resources\\ReservationResource\\Pages;
+
+use App\\Filament\\Resources\\ReservationResource;
+use App\\Services\\ReservationDesk;
+use Filament\\Resources\\Pages\\EditRecord;
+use Illuminate\\Database\\Eloquent\\Model;
+use Illuminate\\Validation\\ValidationException;
+use RuntimeException;
+
+class EditReservation extends EditRecord
+{
+    protected static string $resource = ReservationResource::class;
+
+    protected function handleRecordUpdate(Model $record, array $data): Model
+    {
+        try {
+            return app(ReservationDesk::class)->update($record, $data);
+        } catch (RuntimeException $e) {
+            throw ValidationException::withMessages([
+                'room_unit_id' => $e->getMessage(),
+            ]);
+        }
+    }
+}
+`
+
+  files['app/Services/ReservationDesk.php'] = `<?php
+
+namespace App\\Services;
+
+use App\\Models\\GuestReservation;
+use App\\Models\\SiteSetting;
+use App\\Support\\RoomPrice;
+use Carbon\\Carbon;
+use Illuminate\\Database\\Eloquent\\Model;
+use Illuminate\\Support\\Str;
+use RuntimeException;
+
+class ReservationDesk
+{
+    private bool $loaded = false;
+
+    private array $inventory = [];
+
+    public function __construct(private BuildauraClient $crs) {}
+
+    public function create(array $data): GuestReservation
+    {
+        $data = $this->normalize($data);
+        $status = (string) ($data['status'] ?? 'confirmed');
+        [$type, $unit] = $this->selection($data);
+        $code = $this->confirmationCode();
+        $blockId = null;
+        if ($this->holdsRoom($status)) {
+            $blockId = $this->hold((string) $unit['id'], $data['check_in'], $data['check_out'], $code);
+        }
+        try {
+            return GuestReservation::create($this->attributes($data, $type, $unit, $status, $blockId, $code, null));
+        } catch (\\Throwable $e) {
+            if ($blockId) {
+                try {
+                    $this->crs->release($blockId);
+                } catch (\\Throwable $releaseError) {
+                    throw new RuntimeException($e->getMessage().' The room hold could not be released ('.$releaseError->getMessage().').', 0, $e);
+                }
+            }
+            throw $e;
+        }
+    }
+
+    public function update(Model $record, array $data): GuestReservation
+    {
+        if (! $record instanceof GuestReservation) {
+            throw new RuntimeException('Reservation not found.');
+        }
+        $data = $this->normalize($data);
+        $status = (string) ($data['status'] ?? $record->status);
+        [$type, $unit] = $this->selection($data);
+        $held = $this->holdsRoom((string) $record->status) && filled($record->crs_block_id);
+        $shouldHold = $this->holdsRoom($status);
+        $blockId = $record->crs_block_id;
+        $unitChanged = (string) $record->room_unit_id !== (string) $unit['id'];
+        $datesChanged = $record->check_in->toDateString() !== $data['check_in']
+            || $record->check_out->toDateString() !== $data['check_out'];
+
+        if ($held && ! $shouldHold) {
+            $this->crs->release((string) $blockId);
+            $blockId = null;
+        } elseif ($shouldHold && ! $held) {
+            $blockId = $this->hold((string) $unit['id'], $data['check_in'], $data['check_out'], (string) $record->confirmation_code);
+        } elseif ($shouldHold && $held && $unitChanged) {
+            $this->crs->release((string) $blockId);
+            try {
+                $blockId = $this->hold((string) $unit['id'], $data['check_in'], $data['check_out'], (string) $record->confirmation_code);
+            } catch (\\Throwable $e) {
+                $this->restoreHold($record, $e);
+            }
+        } elseif ($shouldHold && $held && $datesChanged) {
+            $this->crs->updateOccupancy((string) $blockId, [
+                'checkIn' => $data['check_in'],
+                'checkOut' => $data['check_out'],
+                'externalRef' => $record->confirmation_code,
+            ]);
+        }
+
+        $record->fill($this->attributes($data, $type, $unit, $status, $blockId, null, $record));
+        $record->save();
+
+        return $record;
+    }
+
+    private function selection(array $data): array
+    {
+        $this->assertDates($data);
+        $this->assertChildAges($data);
+        $type = $this->requireType((string) ($data['room_type_id'] ?? ''));
+        $adults = (int) ($data['adults'] ?? 1);
+        $children = (int) ($data['children'] ?? 0);
+        if ($adults < 1) {
+            throw new RuntimeException('At least one adult is required.');
+        }
+        if (
+            $adults > (int) ($type['maxAdults'] ?? 2)
+            || $children > (int) ($type['maxChildren'] ?? 0)
+        ) {
+            throw new RuntimeException('Guest count exceeds the maximum for this room type.');
+        }
+        $unit = $this->requireUnit((string) ($data['room_unit_id'] ?? ''), (string) $type['id']);
+
+        return [$type, $unit];
+    }
+
+    private function hold(string $unitId, string $checkIn, string $checkOut, string $code): string
+    {
+        $occupancy = $this->crs->occupy($unitId, $checkIn, $checkOut, $code, 'MANUAL');
+        $id = $occupancy['id'] ?? null;
+        if (! is_string($id) || $id === '') {
+            throw new RuntimeException('BuildAura did not confirm the room hold.');
+        }
+
+        return $id;
+    }
+
+    private function restoreHold(GuestReservation $reservation, \\Throwable $failed): void
+    {
+        try {
+            $reservation->crs_block_id = $this->hold(
+                (string) $reservation->room_unit_id,
+                $reservation->check_in->toDateString(),
+                $reservation->check_out->toDateString(),
+                (string) $reservation->confirmation_code,
+            );
+            $reservation->save();
+        } catch (\\Throwable) {
+            $reservation->crs_block_id = null;
+            $reservation->save();
+            throw new RuntimeException('The room change failed and the previous hold could not be restored. Check the room in BuildAura, then save again. '.$failed->getMessage(), 0, $failed);
+        }
+        throw new RuntimeException($failed->getMessage(), 0, $failed);
+    }
+
+    private function attributes(array $data, array $type, array $unit, string $status, ?string $blockId, ?string $code, ?GuestReservation $existing): array
+    {
+        $nights = max(1, (int) Carbon::parse($data['check_in'])->diffInDays(Carbon::parse($data['check_out'])));
+        $nightly = $data['nightly_rate'] ?? null;
+        if ($nightly === null || $nightly === '') {
+            $nightly = $existing
+                ? (float) $existing->nightly_rate
+                : RoomPrice::selling((float) ($type['basePrice'] ?? 0), (float) ($type['discountPercent'] ?? 0));
+        }
+        $typeChanged = $existing && (string) $existing->room_type_id !== (string) $type['id'];
+        $currency = (! $existing || $typeChanged)
+            ? (string) ($type['currency'] ?? 'ETB')
+            : (string) ($existing->currency ?: ($type['currency'] ?? 'ETB'));
+        $freeBreakfast = (bool) ($type['freeBreakfast'] ?? false);
+        $wantsBreakfast = $freeBreakfast || (bool) ($data['breakfast_selected'] ?? false);
+        $charge = RoomPrice::breakfastCharge(
+            $freeBreakfast,
+            $wantsBreakfast,
+            (float) SiteSetting::current()->breakfast_price,
+            $nights
+        );
+        $attributes = [
+            'room_type_id' => $type['id'],
+            'room_unit_id' => $unit['id'],
+            'crs_block_id' => $blockId,
+            'room_type_name' => $type['name'] ?? '',
+            'room_code' => $unit['code'] ?? '',
+            'check_in' => $data['check_in'],
+            'check_out' => $data['check_out'],
+            'adults' => (int) ($data['adults'] ?? 1),
+            'children' => (int) ($data['children'] ?? 0),
+            'child_ages' => array_values(array_map('intval', is_array($data['child_ages'] ?? null) ? $data['child_ages'] : [])),
+            'guest_name' => $data['guest_name'] ?? '',
+            'guest_email' => $data['guest_email'] ?? '',
+            'guest_phone' => $data['guest_phone'] ?? '',
+            'status' => $status,
+            'nightly_rate' => $nightly,
+            'breakfast_selected' => $charge['selected'],
+            'breakfast_total' => $charge['total'],
+            'free_cancellation' => (bool) ($type['freeCancellation'] ?? false),
+            'cancellation_fee' => ! empty($type['freeCancellation']) ? 0 : (float) SiteSetting::current()->cancellation_fee,
+            'total_price' => round((float) $nightly * $nights + $charge['total'], 2),
+            'currency' => $currency,
+            'special_requests' => $data['special_requests'] ?? null,
+            'admin_notes' => $data['admin_notes'] ?? null,
+        ];
+        if ($code !== null) {
+            $attributes['confirmation_code'] = $code;
+            $attributes['payment_method'] = 'admin';
+            $attributes['payment_last4'] = null;
+        }
+
+        return $attributes;
+    }
+
+    private function holdsRoom(string $status): bool
+    {
+        return ! in_array($status, ['cancelled', 'no_show'], true);
+    }
+
+    private function confirmationCode(): string
+    {
+        do {
+            $code = strtoupper(Str::random(8));
+        } while (GuestReservation::query()->where('confirmation_code', $code)->exists());
+
+        return $code;
+    }
+
+    private function normalize(array $data): array
+    {
+        $data['check_in'] = Carbon::parse($data['check_in'] ?? null)->toDateString();
+        $data['check_out'] = Carbon::parse($data['check_out'] ?? null)->toDateString();
+        $ages = $data['child_ages'] ?? [];
+        if (is_string($ages)) {
+            $ages = array_values(array_filter(array_map('trim', explode(',', $ages)), fn ($age) => $age !== ''));
+        }
+        if (! is_array($ages)) {
+            $ages = [];
+        }
+        $data['child_ages'] = array_values(array_map('intval', $ages));
+        $data['children'] = (int) ($data['children'] ?? 0);
+
+        return $data;
+    }
+
+    private function assertDates(array $data): void
+    {
+        $checkIn = Carbon::parse($data['check_in'])->startOfDay();
+        $checkOut = Carbon::parse($data['check_out'])->startOfDay();
+        if ($checkIn->lt(Carbon::today())) {
+            throw new RuntimeException('Check-in cannot be before today.');
+        }
+        if (! $checkOut->gt($checkIn)) {
+            throw new RuntimeException('Check-out must be after check-in.');
+        }
+    }
+
+    private function assertChildAges(array $data): void
+    {
+        $children = (int) ($data['children'] ?? 0);
+        $ages = $data['child_ages'] ?? [];
+        if ($children < 0 || $children > 10) {
+            throw new RuntimeException('Children must be between 0 and 10.');
+        }
+        if (! is_array($ages) || count($ages) !== $children) {
+            throw new RuntimeException($children > 0 ? 'Enter the age of each child.' : 'Child ages do not match the number of children.');
+        }
+        foreach ($ages as $age) {
+            if (! is_numeric($age) || (int) $age < 0 || (int) $age > 17) {
+                throw new RuntimeException('A child must be 17 or younger. Guests 18 and older count as adults.');
+            }
+        }
+    }
+
+    private function inventory(): array
+    {
+        if (! $this->loaded) {
+            $this->inventory = $this->crs->inventory();
+            $this->loaded = true;
+        }
+
+        return $this->inventory;
+    }
+
+    private function requireType(string $typeId): array
+    {
+        foreach ($this->inventory()['roomTypes'] ?? [] as $type) {
+            if (($type['id'] ?? null) === $typeId) {
+                return $type;
+            }
+        }
+        throw new RuntimeException('Select a room type from BuildAura.');
+    }
+
+    private function requireUnit(string $unitId, string $typeId): array
+    {
+        foreach ($this->inventory()['units'] ?? [] as $unit) {
+            if (($unit['id'] ?? null) !== $unitId) {
+                continue;
+            }
+            if (($unit['roomTypeId'] ?? null) !== $typeId) {
+                throw new RuntimeException('That room does not belong to the selected room type.');
+            }
+
+            return $unit;
+        }
+        throw new RuntimeException('Select a room from BuildAura.');
+    }
+}
 `
 
   files['app/Filament/Pages/ApiKey.php'] = `<?php
@@ -2218,6 +2603,7 @@ class ApiKey extends Page
     protected static ?string $navigationGroup = 'Hospitality';
     protected static ?string $navigationLabel = 'API key';
     protected static ?string $title = 'API key';
+    protected static ?int $navigationSort = 4;
     protected static string $view = 'filament.pages.api-key';
 
     public function getViewData(): array
@@ -2246,6 +2632,39 @@ ${flash}
   <button type="submit" style="padding:8px 12px;border-radius:8px;background:#111827;color:#fff">Request a new API key</button>
 </form>
 </x-filament-panels::page>
+`
+
+  files['app/Filament/Widgets/BookingStatsOverview.php'] = `<?php
+
+namespace App\\Filament\\Widgets;
+
+use App\\Models\\GuestReservation;
+use App\\Services\\BuildauraClient;
+use Filament\\Widgets\\StatsOverviewWidget as BaseWidget;
+use Filament\\Widgets\\StatsOverviewWidget\\Stat;
+
+class BookingStatsOverview extends BaseWidget
+{
+    protected static ?int $sort = 0;
+
+    protected function getStats(): array
+    {
+        $types = 0;
+        $units = 0;
+        try {
+            $inventory = app(BuildauraClient::class)->inventory();
+            $types = count($inventory['roomTypes'] ?? []);
+            $units = count($inventory['units'] ?? []);
+        } catch (\\Throwable) {
+        }
+
+        return [
+            Stat::make('CRS room types', $types),
+            Stat::make('CRS units', $units),
+            Stat::make('Local reservations', GuestReservation::count()),
+        ];
+    }
+}
 `
 
   Object.assign(files, roomCalendarFiles('BuildauraClient', 'Rooms'))

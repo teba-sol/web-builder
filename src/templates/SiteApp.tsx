@@ -1,4 +1,5 @@
 import { Navigate, Route, Routes, useParams } from 'react-router-dom'
+import { isHospitalityTemplate } from '../data/hospitality'
 import { canLinkToPage } from '../data/siteNav'
 import type { SitePageId } from '../data/siteNav'
 import type { SiteContent, TemplateId } from '../types'
@@ -62,7 +63,7 @@ export function SiteApp({ templateId, content, basePath, colorSchemeId, layoutVa
       <Route index element={<SitePage page="home" {...shared} />} />
       <Route path="about" element={<SitePage page="about" {...shared} />} />
       <Route path="services" element={<SitePage page="services" {...shared} />} />
-      <Route path="portfolio" element={<SitePage page="portfolio" {...shared} />} />
+      {isHospitalityTemplate(templateId) ? null : <Route path="portfolio" element={<SitePage page="portfolio" {...shared} />} />}
       <Route path="gallery" element={<SitePage page="gallery" {...shared} />} />
       <Route path="rooms" element={<SitePage page="rooms" {...shared} />} />
       <Route path="rooms/:slug" element={<SitePage page="room-detail" {...shared} />} />
