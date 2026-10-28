@@ -18,7 +18,6 @@ import {
   crsRouteLines,
   generateCrsBookingFiles,
   usesBuildauraCrs,
-  type CrsExportCredentials,
 } from './generateCrsBooking'
 import { generateFilamentFiles } from './generateFilament'
 import { generateSetupFiles, generateSetupToken } from './generateSetup'
@@ -630,7 +629,6 @@ ${hasBookingFeature(payload.content) && !usesBuildauraCrs(payload.templateId) ? 
 function generateSkeleton(
   payload: SiteExportPayload,
   setupToken: string,
-  credentials?: CrsExportCredentials,
 ): BackendFileMap {
   const slug = (payload.content.businessName || 'my-website')
     .toLowerCase()
