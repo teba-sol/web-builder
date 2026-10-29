@@ -15,7 +15,7 @@ import { generateFinanceHomeBlade } from './generateFinanceBlade'
 
 const NAV_LINKS = `@if($settings->page_visibility['about'] ?? false)<a href="{{ route('about') }}" class="hover:underline opacity-80">About</a>@endif
     @if($settings->page_visibility['services'] ?? false)<a href="{{ route('services') }}" class="hover:underline opacity-80">Services</a>@endif
-    @if($settings->page_visibility['portfolio'] ?? false)<a href="{{ route('portfolio') }}" class="hover:underline opacity-80">Portfolio</a>@endif
+    @if(($settings->page_visibility['portfolio'] ?? false) && \\Illuminate\\Support\\Facades\\Route::has('portfolio'))<a href="{{ route('portfolio') }}" class="hover:underline opacity-80">Portfolio</a>@endif
     @if($settings->page_visibility['rooms'] ?? false)<a href="{{ route('rooms.index') }}" class="hover:underline opacity-80">Book</a>@endif
     @if($settings->page_visibility['blog'] ?? false)<a href="{{ route('blog.index') }}" class="hover:underline opacity-80">Blog</a>@endif
     @if($settings->page_visibility['news'] ?? false)<a href="{{ route('news.index') }}" class="hover:underline opacity-80">News</a>@endif
@@ -92,7 +92,7 @@ function footerPartial(): string {
         <a href="{{ route('home') }}" class="hover:underline">Home</a>
         @if($settings->page_visibility['about'] ?? false)<a href="{{ route('about') }}" class="hover:underline">About</a>@endif
         @if($settings->page_visibility['services'] ?? false)<a href="{{ route('services') }}" class="hover:underline">Services</a>@endif
-        @if($settings->page_visibility['portfolio'] ?? false)<a href="{{ route('portfolio') }}" class="hover:underline">Portfolio</a>@endif
+        @if(($settings->page_visibility['portfolio'] ?? false) && \\Illuminate\\Support\\Facades\\Route::has('portfolio'))<a href="{{ route('portfolio') }}" class="hover:underline">Portfolio</a>@endif
         @if($settings->page_visibility['rooms'] ?? false)<a href="{{ route('rooms.index') }}" class="hover:underline">Book</a>@endif
         @if($settings->page_visibility['blog'] ?? false)<a href="{{ route('blog.index') }}" class="hover:underline">Blog</a>@endif
         @if($settings->page_visibility['news'] ?? false)<a href="{{ route('news.index') }}" class="hover:underline">News</a>@endif
@@ -288,7 +288,7 @@ ${roomsBeforeTrust(payload.templateId) ? trustBand : ''}
 </div></section>
 @endif
 
-@if(($settings->page_visibility['portfolio'] ?? false) && $showcaseItems->isNotEmpty())
+@if(($settings->page_visibility['portfolio'] ?? false) && \\Illuminate\\Support\\Facades\\Route::has('portfolio') && $showcaseItems->isNotEmpty())
 <section class="bg-slate-50 py-20 text-slate-900"><div class="max-w-6xl mx-auto px-6">
   <div class="flex flex-wrap justify-between items-end gap-4 mb-10"><div><h2 class="text-3xl font-bold">{{ $settings->showcase_section_title }}</h2><p class="text-slate-600 mt-2">{{ $settings->showcase_section_subtitle }}</p></div><a href="{{ route('portfolio') }}" class="text-sm font-semibold" style="color:${accent}">Explore all →</a></div>
   <div class="grid sm:grid-cols-3 gap-8">@foreach($showcaseItems->take(3) as $item)<a href="{{ route('portfolio') }}" class="block ${skin.card} hover:shadow-lg">@if($item->image)<img src="{{ \\App\\Support\\PublicAsset::url($item->image) }}" class="w-full aspect-[4/3] object-cover" alt="" />@endif<div class="p-6"><h3 class="font-semibold">{{ $item->title }}</h3><p class="opacity-80 line-clamp-2 mt-2">{{ $item->description }}</p></div></a>@endforeach</div>

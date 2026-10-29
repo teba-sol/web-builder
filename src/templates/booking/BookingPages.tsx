@@ -11,7 +11,6 @@ import {
   reservationUnitIds,
   roomTypeBySlug,
   unitsOfType,
-  type PreviewPaymentMethod,
   type PreviewReservation,
   type PreviewRoomUnit,
 } from '../../data/bookingPreview'
@@ -256,7 +255,7 @@ export function HeroStaySearch({ basePath, accent, templateId }: { basePath: str
 
 function BookingStepper({ step, templateId }: { step: 1 | 2 | 3; templateId: TemplateId }) {
   const skin = staySkin(templateId)
-  const labels = ['Reservation', 'Payment', 'Confirmation']
+  const labels = ['Reservation', 'Guest', 'Confirmation']
   return (
     <ol className={skin.stepper} aria-label="Booking steps">
       {labels.map((label, index) => {
@@ -346,12 +345,6 @@ function PropertyNotes({ content: c, accent }: { content: SiteContent; accent: s
       </section>
     </div>
   )
-}
-
-function paymentLabel(method: PreviewPaymentMethod | undefined): string {
-  if (method === 'chapa') return 'Chapa'
-  if (method === 'card') return 'Card'
-  return 'Sandbox'
 }
 
 export function RoomsPage({ content: c, basePath, templateId, accent }: BookingProps) {
@@ -718,7 +711,6 @@ export function BookPage({ content: c, basePath, templateId, accent }: BookingPr
   const units = useMemo(() => buildPreviewUnits(c.roomTypes), [c.roomTypes])
   const [reservations, setReservations] = useState(() => loadPreviewReservations(key))
   const [error, setError] = useState('')
-  const [method, setMethod] = useState<PreviewPaymentMethod>('sandbox')
   const [addBreakfast, setAddBreakfast] = useState(() => params.get('breakfast') === '1')
   const ready = Boolean(type && searchErrors.length === 0)
   const free = ready && type ? unitsOfType(type.slug, checkIn, checkOut, units, reservations) : []
@@ -731,7 +723,7 @@ export function BookPage({ content: c, basePath, templateId, accent }: BookingPr
   if (!ready || !type || !pricing || !capacityOk || chosen.length === 0) {
     return (
       <section className="py-20 text-center">
-        <p className="text-slate-600">{searchErrors[0] || 'Choose one or more rooms and dates before payment.'}</p>
+        <p className="text-slate-600">{searchErrors[0] || 'Choose one or more rooms and dates before you reserve.'}</p>
         <Link to={sitePath(basePath, 'rooms')} className="mt-4 inline-block text-sm font-semibold" style={{ color: accent }}>Book</Link>
       </section>
     )
@@ -743,7 +735,7 @@ export function BookPage({ content: c, basePath, templateId, accent }: BookingPr
       <div className="mx-auto max-w-6xl px-4 csm:px-6">
         <BookingStepper step={2} templateId={templateId} />
         <Link to={sitePath(basePath, `rooms/${type.slug}?${stayQueryString({ checkIn, checkOut, adults, children, childAges })}`)} className="text-sm text-slate-500 hover:underline">Back to {type.name}</Link>
-        <h1 className={`mt-4 text-3xl ${skin.heading}`}>Payment</h1>
+        <h1 className={`mt-4 text-3xl ${skin.heading}`}>Reserve</h1>
         {error ? <p className="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-red-800">{error}</p> : null}
         <div className="mt-8 grid items-start gap-6 clg:grid-cols-3">
           <aside className={`p-6 ${skin.card}`}>
@@ -779,13 +771,9 @@ export function BookPage({ content: c, basePath, templateId, accent }: BookingPr
               const data = new FormData(event.currentTarget)
               const guestName = String(data.get('guestName') || '')
               const guestEmail = String(data.get('guestEmail') || '')
-              const cardNumber = String(data.get('cardNumber') || '').replace(/\D/g, '')
-              if (!guestName || !guestEmail) {
-                setError('Name and email are required.')
-                return
-              }
-              if (method === 'card' && cardNumber.length < 12) {
-                setError('Enter a card number to pay by card.')
+              const guestPhone = String(data.get('guestPhone') || '')
+              if (!guestName || !guestEmail || !guestPhone) {
+                setError('Name, email, and phone are required.')
                 return
               }
               const stillFree = chosen.every((unit) => unitsOfType(type.slug, checkIn, checkOut, units, loadPreviewReservations(key)).some((item) => item.id === unit.id))
@@ -805,10 +793,8 @@ export function BookPage({ content: c, basePath, templateId, accent }: BookingPr
                 childAges: childAges.map((age) => Number(age)),
                 guestName,
                 guestEmail,
-                guestPhone: String(data.get('guestPhone') || ''),
+                guestPhone,
                 specialRequests: String(data.get('specialRequests') || ''),
-                paymentMethod: method,
-                paymentLast4: method === 'card' ? cardNumber.slice(-4) : undefined,
                 breakfastSelected: type.freeBreakfast || addBreakfast,
               })
               setReservations(loadPreviewReservations(key))
@@ -818,33 +804,10 @@ export function BookPage({ content: c, basePath, templateId, accent }: BookingPr
             <h2 className="text-lg font-semibold">Guest</h2>
             <label className="block text-sm"><span className="mb-1 block text-slate-500">Full name</span><input name="guestName" required className={skin.input} /></label>
             <label className="block text-sm"><span className="mb-1 block text-slate-500">Email</span><input type="email" name="guestEmail" required className={skin.input} /></label>
-            <label className="block text-sm"><span className="mb-1 block text-slate-500">Phone</span><input name="guestPhone" className={skin.input} /></label>
-            <label className="block text-sm"><span className="mb-1 block text-slate-500">Special requests</span><textarea name="specialRequests" rows={3} className={skin.input} /></label>
+            <label className="block text-sm"><span className="mb-1 block text-slate-500">Phone</span><input name="guestPhone" required className={skin.input} /></label>
+            <label className="block text-sm"><span className="mb-1 block text-slate-500">Special requests (optional)</span><textarea name="specialRequests" rows={3} className={skin.input} /></label>
             <BreakfastChoice included={type.freeBreakfast} selected={addBreakfast} onChange={setAddBreakfast} />
-            <fieldset className="space-y-2">
-              <legend className="text-sm font-semibold">Payment method</legend>
-              {([
-                ['chapa', 'Chapa', 'Records Chapa. The processor is not connected yet, and the stay is still confirmed.'],
-                ['sandbox', 'Sandbox', 'Confirms the stay without a payment processor.'],
-                ['card', 'Card', 'Card details stay in this preview. They are not sent to a processor.'],
-              ] as const).map(([value, label, note]) => (
-                <label key={value} className="flex items-start gap-2 text-sm">
-                  <input type="radio" name="paymentMethod" value={value} checked={method === value} onChange={() => setMethod(value)} />
-                  <span><span className="font-semibold">{label}</span><span className="mt-0.5 block text-xs text-slate-500">{note}</span></span>
-                </label>
-              ))}
-            </fieldset>
-            {method === 'card' ? (
-              <div className="space-y-3">
-                <label className="block text-sm"><span className="mb-1 block text-slate-500">Name on card</span><input name="cardHolder" required className={skin.input} /></label>
-                <label className="block text-sm"><span className="mb-1 block text-slate-500">Card number</span><input name="cardNumber" required inputMode="numeric" autoComplete="cc-number" className={skin.input} /></label>
-                <div className="grid grid-cols-2 gap-3">
-                  <label className="block text-sm"><span className="mb-1 block text-slate-500">Expiry</span><input name="cardExpiry" required placeholder="MM/YY" className={skin.input} /></label>
-                  <label className="block text-sm"><span className="mb-1 block text-slate-500">CVC</span><input name="cardCvc" required className={skin.input} /></label>
-                </div>
-              </div>
-            ) : null}
-            <button type="submit" className={`w-full ${skin.button.replace(/\btext-white\b/, accentInk(accent))}`} style={{ backgroundColor: accent }}>Pay</button>
+            <button type="submit" className={`w-full ${skin.button.replace(/\btext-white\b/, accentInk(accent))}`} style={{ backgroundColor: accent }}>Reserve</button>
           </form>
         </div>
       </div>
@@ -889,7 +852,9 @@ export function BookingConfirmPage({ content: c, basePath, templateId, accent }:
             <div className="flex justify-between gap-4"><span className="text-slate-500">Check-out</span><span>{reservation.checkOut}</span></div>
             <div className="flex justify-between gap-4"><span className="text-slate-500">Guests</span><span>{reservation.adults} adults{reservation.children ? ` · ${reservation.children} children` : ''}</span></div>
             <div className="flex justify-between gap-4"><span className="text-slate-500">Guest</span><span>{reservation.guestName}</span></div>
-            <div className="flex justify-between gap-4"><span className="text-slate-500">Payment</span><span>{paymentLabel(reservation.paymentMethod)}{reservation.paymentLast4 ? ` ···· ${reservation.paymentLast4}` : ''}</span></div>
+            <div className="flex justify-between gap-4"><span className="text-slate-500">Email</span><span>{reservation.guestEmail}</span></div>
+            <div className="flex justify-between gap-4"><span className="text-slate-500">Phone</span><span>{reservation.guestPhone}</span></div>
+            {reservation.specialRequests ? <div className="flex justify-between gap-4"><span className="text-slate-500">Special requests</span><span>{reservation.specialRequests}</span></div> : null}
             <div className="flex justify-between gap-4"><span className="text-slate-500">Breakfast</span><span>{room?.freeBreakfast ? 'Breakfast included' : reservation.breakfastSelected ? 'Breakfast added. The exported site charges the Hotel Policy price.' : 'Breakfast not included'}</span></div>
             <div className="flex justify-between gap-4 border-t pt-3"><span className="text-slate-500">Total</span><span className="font-bold" style={{ color: accent }}>{formatMoney(reservation.totalPrice, stayCurrency(reservation.currency))}</span></div>
             <p className="text-xs text-slate-500">ETB and USD both show on the exported site after the hotel sets the USD to ETB rate.</p>

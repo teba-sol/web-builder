@@ -14,7 +14,7 @@
   "pages": {
     "about": true,
     "services": true,
-    "portfolio": true,
+    "portfolio": false,
     "blog": true,
     "news": false,
     "gallery": true,
@@ -27,7 +27,6 @@
     "rooms-teaser",
     "stats",
     "services-teaser",
-    "portfolio-teaser",
     "blog-teaser",
     "news-teaser",
     "testimonials",
@@ -39,7 +38,6 @@
   "sectionOrder": [
     "nav",
     "hero",
-    "showcase",
     "stats",
     "about",
     "gallery",
@@ -263,7 +261,7 @@
     "pageVisibility": {
       "about": true,
       "services": true,
-      "portfolio": true,
+      "portfolio": false,
       "blog": true,
       "news": false,
       "gallery": true,

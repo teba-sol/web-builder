@@ -60,7 +60,7 @@ export function getEditorProfile(templateId: TemplateId | null | undefined): Edi
 function defaultPagesFor(templateId: TemplateId): Array<keyof PageVisibility> {
   const manifest = getManifest(templateId)
   if (isCloneTemplate(templateId) || manifest?.category === 'finance') return [...FINANCE_PAGES]
-  if (manifest?.features.includes('hospitality')) return [...PAGE_VISIBILITY_KEYS]
+  if (manifest?.features.includes('hospitality')) return PAGE_VISIBILITY_KEYS.filter((key) => key !== 'portfolio')
   return PAGE_VISIBILITY_KEYS.filter((key) => key !== 'rooms')
 }
 

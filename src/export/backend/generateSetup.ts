@@ -311,6 +311,7 @@ class DoctorService
     public function status(): array
     {
         return [
+            'mysql_ssl' => $this->checkMysqlSsl(),
             'app_key' => $this->checkAppKey(),
             'env_file' => $this->checkEnvFile(),
             'database' => $this->checkDatabase(),
@@ -325,6 +326,7 @@ class DoctorService
     public function run(string $action): array
     {
         return match ($action) {
+            'mysql_ssl' => $this->runMysqlSslPatch(),
             'key' => $this->runKey(),
             'migrate' => $this->runMigrate(false),
             'migrate_seed' => $this->runMigrate(true),
@@ -334,6 +336,38 @@ class DoctorService
             'all' => $this->runAll(),
             default => ['ok' => false, 'message' => 'Unknown action.'],
         };
+    }
+
+    private function checkMysqlSsl(): array
+    {
+        $file = base_path('vendor/laravel/framework/config/database.php');
+        if (! is_file($file)) {
+            return ['ok' => false, 'label' => 'PHP 8.5 MySQL driver', 'detail' => 'Laravel is not installed yet'];
+        }
+        $code = file_get_contents($file);
+        $needle = "PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),";
+        $ok = is_string($code) && ! str_contains($code, $needle);
+        return [
+            'ok' => $ok,
+            'label' => 'PHP 8.5 MySQL driver',
+            'detail' => $ok ? 'Uses Pdo\\\\Mysql::ATTR_SSL_CA' : 'Still evaluates PDO::MYSQL_ATTR_SSL_CA',
+        ];
+    }
+
+    private function runMysqlSslPatch(): array
+    {
+        $script = base_path('scripts/patch-mysql-ssl-ca.php');
+        if (! is_file($script)) {
+            return ['ok' => false, 'message' => 'Missing scripts/patch-mysql-ssl-ca.php'];
+        }
+        require_once $script;
+        $code = patchExportedLaravelMysqlSsl(base_path());
+        return [
+            'ok' => $code === 0,
+            'message' => $code === 0
+                ? 'Laravel database config now uses Pdo\\\\Mysql::ATTR_SSL_CA on PHP 8.5.'
+                : 'Could not update vendor/laravel/framework/config/database.php',
+        ];
     }
 
     private function checkAppKey(): array
@@ -521,7 +555,7 @@ class DoctorService
     private function runAll(): array
     {
         $steps = [];
-        foreach (['key', 'migrate_seed', 'storage_link', 'filament_assets', 'cache_clear'] as $action) {
+        foreach (['mysql_ssl', 'key', 'migrate_seed', 'storage_link', 'filament_assets', 'cache_clear'] as $action) {
             $result = $this->run($action);
             $steps[] = strtoupper($action) . ': ' . ($result['ok'] ? 'OK' : 'FAILED — ' . $result['message']);
             if (! $result['ok']) {
@@ -637,6 +671,7 @@ class DoctorController extends Controller
       <h2 class="font-semibold text-lg mb-4">Prescriptions</h2>
       <div class="grid sm:grid-cols-2 gap-3">
         @foreach([
+          ['mysql_ssl', 'Patch Laravel for PHP 8.5'],
           ['key', 'Generate App Key'],
           ['migrate_seed', 'Migrate & Seed Database'],
           ['filament_assets', 'Publish Filament Assets (fixes admin styling)'],

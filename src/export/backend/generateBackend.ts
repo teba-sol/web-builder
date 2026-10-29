@@ -18,7 +18,6 @@ import {
   crsRouteLines,
   generateCrsBookingFiles,
   usesBuildauraCrs,
-  type CrsExportCredentials,
 } from './generateCrsBooking'
 import { generateFilamentFiles } from './generateFilament'
 import { generateSetupFiles, generateSetupToken } from './generateSetup'
@@ -196,7 +195,9 @@ function buildSettingsRecord(payload: SiteExportPayload): Record<string, unknown
     mission_statement: c.missionStatement,
     footer_blurb: c.footerBlurb,
     footer_note: c.footerNote,
-    page_visibility: c.pageVisibility,
+    page_visibility: isHospitalityTemplate(payload.templateId)
+      ? { ...c.pageVisibility, portfolio: false }
+      : c.pageVisibility,
     section_visibility: c.sectionVisibility,
     news_section_title: c.newsSectionTitle,
     news_section_subtitle: c.newsSectionSubtitle,
@@ -630,7 +631,6 @@ ${hasBookingFeature(payload.content) && !usesBuildauraCrs(payload.templateId) ? 
 function generateSkeleton(
   payload: SiteExportPayload,
   setupToken: string,
-  credentials?: CrsExportCredentials,
 ): BackendFileMap {
   const slug = (payload.content.businessName || 'my-website')
     .toLowerCase()
@@ -658,8 +658,9 @@ function generateSkeleton(
           },
         },
         scripts: {
-          postAutoloadDump: [
+          'post-autoload-dump': [
             'Illuminate\\Foundation\\ComposerScripts::postAutoloadDump',
+            '@php scripts/patch-mysql-ssl-ca.php',
             '@php artisan package:discover --ansi',
             '@php artisan filament:upgrade',
           ],
@@ -773,8 +774,7 @@ use Illuminate\\Support\\Facades\\Route;
 Route::get('/', [SiteController::class, 'index'])->name('home');
 Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/services', [PageController::class, 'services'])->name('services');
-Route::get('/portfolio', [PageController::class, 'portfolio'])->name('portfolio');
-Route::get('/gallery', [PageController::class, 'gallery'])->name('gallery');
+${isHospitalityTemplate(payload.templateId) ? '' : "Route::get('/portfolio', [PageController::class, 'portfolio'])->name('portfolio');\n"}Route::get('/gallery', [PageController::class, 'gallery'])->name('gallery');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
@@ -1521,12 +1521,93 @@ return new class extends Migration
 !.gitignore
 `,
 
+    'scripts/patch-mysql-ssl-ca.php': String.raw`<?php
+
+/**
+ * Laravel 11 loads vendor/laravel/framework/config/database.php on every boot
+ * and evaluates PDO::MYSQL_ATTR_SSL_CA. PHP 8.5 deprecates that constant.
+ * This rewrites the framework file so PHP 8.5 uses Pdo\Mysql::ATTR_SSL_CA and
+ * PHP 8.2–8.4 keep PDO::MYSQL_ATTR_SSL_CA. The old constant is never evaluated
+ * on PHP 8.5.
+ *
+ * Composer runs this after install. It does not boot Laravel.
+ */
+
+if (! function_exists('patchExportedLaravelMysqlSsl')) {
+    function patchExportedLaravelMysqlSsl(string $root): int
+    {
+        $database = $root.'/vendor/laravel/framework/config/database.php';
+        $needle = "PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),";
+        $replacement = mysqlSslCaExpression()." => env('MYSQL_ATTR_SSL_CA'),";
+
+        if (! is_file($database)) {
+            fwrite(STDERR, "Laravel database config was not found at {$database}\n");
+
+            return 1;
+        }
+
+        if (! patchMysqlSslFile($database, $needle, $replacement)) {
+            fwrite(STDERR, "Could not replace PDO::MYSQL_ATTR_SSL_CA in {$database}\n");
+
+            return 1;
+        }
+
+        $updated = file_get_contents($database);
+        if ($updated === false || str_contains($updated, $needle)) {
+            fwrite(STDERR, "PDO::MYSQL_ATTR_SSL_CA is still evaluated in {$database}\n");
+
+            return 1;
+        }
+
+        patchMysqlSslFile(
+            $root.'/vendor/laravel/framework/src/Illuminate/Database/Schema/MySqlSchemaState.php',
+            "\$config['options'][\\PDO::MYSQL_ATTR_SSL_CA]",
+            "\$config['options'][".mysqlSslCaExpression().']',
+        );
+
+        return 0;
+    }
+
+    function mysqlSslCaExpression(): string
+    {
+        return "(defined('Pdo\\\\Mysql::ATTR_SSL_CA') ? \\Pdo\\Mysql::ATTR_SSL_CA : \\PDO::MYSQL_ATTR_SSL_CA)";
+    }
+
+    function patchMysqlSslFile(string $path, string $needle, string $replacement): bool
+    {
+        if (! is_file($path)) {
+            return false;
+        }
+
+        $code = file_get_contents($path);
+        if ($code === false) {
+            return false;
+        }
+
+        if (! str_contains($code, $needle)) {
+            return true;
+        }
+
+        $updated = str_replace($needle, $replacement, $code);
+
+        return $updated !== $code && file_put_contents($path, $updated) !== false;
+    }
+}
+
+if (PHP_SAPI === 'cli' && isset($_SERVER['argv'][0]) && realpath($_SERVER['argv'][0]) === realpath(__FILE__)) {
+    exit(patchExportedLaravelMysqlSsl(dirname(__DIR__)));
+}
+`,
+
     'setup.sh': `#!/usr/bin/env bash
 set -euo pipefail
 cd "$(dirname "$0")"
 
 echo "==> Installing PHP dependencies..."
 composer install --no-interaction
+
+echo "==> Patching Laravel for PHP 8.5..."
+php scripts/patch-mysql-ssl-ca.php
 
 echo "==> Setting up environment..."
 if [ ! -f .env ]; then cp .env.example .env; fi
@@ -1628,7 +1709,7 @@ This hotel or guest house keeps guest details on this website and updates room s
 - Guest name, email, and phone are stored only in this site's database.
 - Buildaura receives the room, the dates, and the confirmation code. It does not receive the guest.
 - Reservations run on this Laravel site (\`php artisan serve\` or your host). The static \`frontend/\` folder does not take reservations.
-- In **Admin → Hospitality**, create room types and rooms, review guest reservations, or request a new API key.
+- In **Admin → Hospitality**, create room types and rooms, review reservations, or request a new API key.
 
 Public pages:
 - \`/rooms\`

@@ -327,14 +327,7 @@ class RoomCalendar extends Page
             <div>
                 <p class="text-sm text-gray-500">
                     {{ $typeName !== '' ? $typeName : 'Room' }}
-                    @php
-                        $statusLabel = match (strtoupper((string) ($unit['status'] ?? 'AVAILABLE'))) {
-                            'BOOKED' => 'Booked',
-                            'INACTIVE' => 'Inactive',
-                            default => 'Available',
-                        };
-                    @endphp
-                    · {{ $statusLabel }}
+                    · @if(strtoupper((string) ($unit['status'] ?? 'AVAILABLE')) === 'BOOKED') Booked @elseif(strtoupper((string) ($unit['status'] ?? 'AVAILABLE')) === 'INACTIVE') Inactive @else Available @endif
                 </p>
                 <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;">
                     <span style="border-radius:999px;background:#ecfdf5;color:#065f46;border:1px solid #34d399;padding:4px 12px;font-size:14px;font-weight:600;">{{ $availableNights }} available</span>

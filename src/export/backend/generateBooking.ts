@@ -755,15 +755,19 @@ class AvailabilityService
             (float) SiteSetting::current()->breakfast_price,
             $nights
         );
-        $method = (string) ($data['payment_method'] ?? 'sandbox');
+        $method = (string) ($data['payment_method'] ?? 'none');
         if ($method === 'arrival') {
             $stored = 'pay_on_arrival';
         } elseif ($method === 'card') {
             $stored = 'fake_card';
         } elseif ($method === 'chapa') {
             $stored = 'chapa';
-        } else {
+        } elseif ($method === 'sandbox') {
             $stored = 'sandbox';
+        } elseif ($method === 'admin') {
+            $stored = 'admin';
+        } else {
+            $stored = 'none';
         }
         $paid = $stored === 'fake_card' || $stored === 'sandbox';
         $digits = $stored === 'fake_card' ? preg_replace('/\\D/', '', (string) ($data['card_number'] ?? '')) : '';
@@ -988,7 +992,6 @@ class BookingController extends Controller
         if ($stay['errors'] !== []) {
             return back()->withInput()->withErrors($stay['errors']);
         }
-        $payOnArrival = (bool) SiteSetting::current()->pay_on_arrival;
         $rules = [
             'room_type_id' => 'required|string',
             'room_unit_ids' => 'required|array|min:1',
@@ -999,21 +1002,11 @@ class BookingController extends Controller
             'children' => 'nullable|integer|min:0|max:10',
             'guest_name' => 'required|string|max:255',
             'guest_email' => 'required|email|max:255',
-            'guest_phone' => 'nullable|string|max:50',
+            'guest_phone' => 'required|string|max:50',
             'special_requests' => 'nullable|string|max:2000',
             'add_breakfast' => 'nullable|boolean',
         ];
-        $methods = $payOnArrival ? 'chapa,sandbox,card,arrival' : 'chapa,sandbox,card';
-        $rules['payment_method'] = 'required|in:'.$methods;
         $validated = $request->validate($rules);
-        if (($validated['payment_method'] ?? '') === 'card') {
-            $validated = array_merge($validated, $request->validate([
-                'card_holder' => 'required|string|max:255',
-                'card_number' => 'required|string|min:12|max:24',
-                'card_expiry' => 'required|string|max:7',
-                'card_cvc' => 'required|string|min:3|max:4',
-            ]));
-        }
         $validated['add_breakfast'] = $request->boolean('add_breakfast');
         $ids = array_values(array_filter((array) ($validated['room_unit_ids'] ?? [])));
         $code = Reservation::generateConfirmationCode();
@@ -2713,13 +2706,7 @@ class ManageRooms extends Page
                             <td style="padding:10px;vertical-align:middle;white-space:nowrap;font-weight:600;">{{ $unit['code'] ?? '' }}</td>
                             <td style="padding:10px;vertical-align:middle;white-space:normal;word-break:normal;">{{ $typeNames[$unit['roomTypeId'] ?? ''] ?? '' }}</td>
                             <td style="padding:10px;vertical-align:middle;white-space:nowrap;">{{ ! empty($unit['smokingAllowed']) ? 'Allowed' : 'No' }}</td>
-                            <td style="padding:10px;vertical-align:middle;white-space:nowrap;">@php
-                                $statusLabel = match (strtoupper((string) ($unit['status'] ?? 'AVAILABLE'))) {
-                                    'BOOKED' => 'Booked',
-                                    'INACTIVE' => 'Inactive',
-                                    default => 'Available',
-                                };
-                            @endphp{{ $statusLabel }}</td>
+                            <td style="padding:10px;vertical-align:middle;white-space:nowrap;">@if(strtoupper((string) ($unit['status'] ?? 'AVAILABLE')) === 'BOOKED') Booked @elseif(strtoupper((string) ($unit['status'] ?? 'AVAILABLE')) === 'INACTIVE') Inactive @else Available @endif</td>
                             <td style="padding:10px;vertical-align:middle;white-space:nowrap;text-align:right;">
                                 <div style="display:flex;gap:8px;justify-content:flex-end;align-items:center;">
                                     <x-filament::button tag="a" size="sm" color="gray" outlined :href="\\App\\Filament\\Pages\\RoomCalendar::getUrl(['unitId' => $unit['id']])">Calendar</x-filament::button>

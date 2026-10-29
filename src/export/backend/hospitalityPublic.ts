@@ -56,7 +56,7 @@ function stepper(step: number, templateId: string): string {
   const skin = skinOf(templateId)
   return `@php $bookingStep = ${step}; @endphp
 <ol class="${skin.stepper}" aria-label="Booking steps">
-  @foreach(['Reservation', 'Payment', 'Confirmation'] as $index => $label)
+  @foreach(['Reservation', 'Guest', 'Confirmation'] as $index => $label)
   <li class="{{ $bookingStep === $index + 1 ? '${skin.stepOn}' : '${skin.stepOff}' }}" @if($bookingStep === $index + 1) aria-current="step" @endif>
     <span class="mb-1 block text-[11px] opacity-70">{{ $index + 1 }}</span>{{ $label }}
   </li>
@@ -251,7 +251,7 @@ export function crsRoomDetailBlade(accent: string, templateId: string): string {
 export function crsBookBlade(accent: string, templateId: string): string {
   const skin = skinOf(templateId, accent)
   return `@extends('layouts.site')
-@section('title', 'Payment — ' . $settings->business_name)
+@section('title', 'Reserve — ' . $settings->business_name)
 @section('content')
 @php
   $row = ['type' => $roomType];
@@ -262,7 +262,7 @@ export function crsBookBlade(accent: string, templateId: string): string {
   <div class="mx-auto max-w-6xl px-6">
     ${stepper(2, templateId)}
     <a href="{{ route('rooms.show', ['slug' => $roomType['slug'], 'check_in' => $checkIn, 'check_out' => $checkOut, 'adults' => $adults, 'children' => $children]) }}" class="text-sm text-slate-500 hover:underline">Back to {{ $roomType['name'] }}</a>
-    <h1 class="mt-4 text-3xl ${skin.heading}">Payment</h1>
+    <h1 class="mt-4 text-3xl ${skin.heading}">Reserve</h1>
     @include('partials.stay-policies')
     @if($errors->any())<div class="mt-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-red-800">@foreach($errors->all() as $error)<p>{{ $error }}</p>@endforeach</div>@endif
     <div class="mt-8 grid items-start gap-6 lg:grid-cols-3">
@@ -302,40 +302,11 @@ export function crsBookBlade(accent: string, templateId: string): string {
         @foreach($childAges as $age)<input type="hidden" name="child_ages[]" value="{{ $age }}" />@endforeach
         <h2 class="text-lg font-semibold">Guest</h2>
         <label class="block text-sm"><span class="mb-1 block text-slate-500">Full name</span><input name="guest_name" required value="{{ old('guest_name') }}" class="${skin.input}" /></label>
-        <label class="block text-sm"><span class="mb-1 block text-slate-500">Email</span><input type="email" name="guest_email" value="{{ old('guest_email') }}" class="${skin.input}" /></label>
+        <label class="block text-sm"><span class="mb-1 block text-slate-500">Email</span><input type="email" name="guest_email" required value="{{ old('guest_email') }}" class="${skin.input}" /></label>
         <label class="block text-sm"><span class="mb-1 block text-slate-500">Phone</span><input name="guest_phone" required value="{{ old('guest_phone') }}" class="${skin.input}" /></label>
-        <label class="block text-sm"><span class="mb-1 block text-slate-500">Special requests</span><textarea name="special_requests" rows="3" class="${skin.input}">{{ old('special_requests') }}</textarea></label>
+        <label class="block text-sm"><span class="mb-1 block text-slate-500">Special requests (optional)</span><textarea name="special_requests" rows="3" class="${skin.input}">{{ old('special_requests') }}</textarea></label>
         @include('partials.stay-addons', ['freeBreakfast' => $roomType['freeBreakfast'] ?? false, 'freeCancellation' => $roomType['freeCancellation'] ?? false, 'breakfastPerNight' => (float) ($settings->breakfast_price ?? 0), 'cancellationFee' => (float) ($settings->cancellation_fee ?? 0), 'nights' => $nights, 'roomEach' => (float) $stayTotal, 'roomCount' => $count, 'currency' => $roomType['currency'] ?? ''])
-        <fieldset class="space-y-2">
-          <legend class="text-sm font-semibold">Payment method</legend>
-          <label class="flex items-start gap-2 text-sm"><input type="radio" name="payment_method" value="chapa" @checked(old('payment_method') === 'chapa') /> <span>Chapa<span class="mt-0.5 block text-xs text-slate-500">Records Chapa. The processor is not connected yet, and the stay is still confirmed.</span></span></label>
-          <label class="flex items-start gap-2 text-sm"><input type="radio" name="payment_method" value="sandbox" @checked(old('payment_method', 'sandbox') === 'sandbox') /> <span>Sandbox<span class="mt-0.5 block text-xs text-slate-500">Confirms the stay without a payment processor.</span></span></label>
-          <label class="flex items-start gap-2 text-sm"><input type="radio" name="payment_method" value="card" @checked(old('payment_method') === 'card') /> <span>Card<span class="mt-0.5 block text-xs text-slate-500">Card details stay on this website. They are not sent to Buildaura.</span></span></label>
-        </fieldset>
-        <div data-card-fields class="space-y-3" @if(old('payment_method') !== 'card') hidden @endif>
-          <label class="block text-sm"><span class="mb-1 block text-slate-500">Name on card</span><input name="card_holder" value="{{ old('card_holder') }}" class="${skin.input}" /></label>
-          <label class="block text-sm"><span class="mb-1 block text-slate-500">Card number</span><input name="card_number" inputmode="numeric" autocomplete="cc-number" value="{{ old('card_number') }}" class="${skin.input}" /></label>
-          <div class="grid grid-cols-2 gap-3">
-            <label class="block text-sm"><span class="mb-1 block text-slate-500">Expiry</span><input name="card_expiry" placeholder="MM/YY" value="{{ old('card_expiry') }}" class="${skin.input}" /></label>
-            <label class="block text-sm"><span class="mb-1 block text-slate-500">CVC</span><input name="card_cvc" value="{{ old('card_cvc') }}" class="${skin.input}" /></label>
-          </div>
-        </div>
-        <button type="submit" class="w-full ${skin.button}" style="background-color:${accent}">Pay</button>
-        <script>
-          (function () {
-            var form = document.currentScript && document.currentScript.closest('form');
-            if (!form) return;
-            var fields = form.querySelector('[data-card-fields]');
-            function sync() {
-              var selected = form.querySelector('input[name="payment_method"]:checked');
-              var card = selected && selected.value === 'card';
-              if (fields) fields.hidden = !card;
-              fields && fields.querySelectorAll('input').forEach(function (input) { input.required = !!card; });
-            }
-            form.querySelectorAll('input[name="payment_method"]').forEach(function (radio) { radio.addEventListener('change', sync); });
-            sync();
-          })();
-        </script>
+        <button type="submit" class="w-full ${skin.button}" style="background-color:${accent}">Reserve</button>
       </form>
     </div>
   </div>
@@ -372,9 +343,9 @@ export function crsConfirmBlade(accent: string, templateId: string): string {
         <div class="flex justify-between gap-4"><span class="text-slate-500">Check-out</span><span>{{ $reservation->check_out->format('M j, Y') }}</span></div>
         <div class="flex justify-between gap-4"><span class="text-slate-500">Guests</span><span>{{ $reservation->adults }} adults{{ $reservation->children ? ' · '.$reservation->children.' children'.((is_array($reservation->child_ages) && count($reservation->child_ages)) ? ' ('.collect($reservation->child_ages)->map(fn ($age) => $age.'y')->implode(', ').')' : '') : '' }}</span></div>
         <div class="flex justify-between gap-4"><span class="text-slate-500">Guest</span><span>{{ $reservation->guest_name }}</span></div>
+        <div class="flex justify-between gap-4"><span class="text-slate-500">Email</span><span>{{ $reservation->guest_email }}</span></div>
         <div class="flex justify-between gap-4"><span class="text-slate-500">Phone</span><span>{{ $reservation->guest_phone }}</span></div>
-        @if($reservation->guest_email)<div class="flex justify-between gap-4"><span class="text-slate-500">Email</span><span>{{ $reservation->guest_email }}</span></div>@endif
-        <div class="flex justify-between gap-4"><span class="text-slate-500">Payment</span><span>{{ $reservation->payment_method === 'chapa' ? 'Chapa' : ($reservation->payment_method === 'card' || $reservation->payment_method === 'fake_card' ? 'Card' : 'Sandbox') }}@if($reservation->payment_last4) ···· {{ $reservation->payment_last4 }}@endif</span></div>
+        @if($reservation->special_requests)<div class="flex justify-between gap-4"><span class="text-slate-500">Special requests</span><span>{{ $reservation->special_requests }}</span></div>@endif
         @if($reservation->breakfast_selected)
         <div class="flex justify-between gap-4"><span class="text-slate-500">Breakfast</span><span>{{ $breakfastSum > 0 ? number_format($breakfastSum, 0).' '.\\App\\Support\\RoomPrice::currency((string) $reservation->currency).($breakfastOther ? ' · '.$breakfastOther : '') : 'Breakfast included' }}</span></div>
         @else
@@ -563,15 +534,14 @@ export function localRoomDetailBlade(accent: string, templateId: string): string
 export function localBookBlade(accent: string, templateId: string): string {
   const skin = skinOf(templateId, accent)
   return `@extends('layouts.site')
-@section('title', 'Payment — ' . $settings->business_name)
+@section('title', 'Reserve — ' . $settings->business_name)
 @section('content')
 @php $count = max(1, count($units)); $roomTotal = round((float) $offer['total'] * $count, 2); @endphp
 <section class="${skin.page} py-12">
   <div class="mx-auto max-w-6xl px-6">
     ${stepper(2, templateId)}
     <a href="{{ route('rooms.show', array_merge(['slug' => $roomType->slug, 'check_in' => $checkIn, 'check_out' => $checkOut, 'adults' => $adults, 'children' => $children], $children > 0 ? ['child_ages' => $childAges] : [])) }}" class="text-sm text-slate-500 hover:underline">Back to {{ $roomType->name }}</a>
-    <h1 class="mt-4 text-3xl ${skin.heading}">Payment</h1>
-    <p class="mt-2 text-slate-600">Guest and card details stay on this website.</p>
+    <h1 class="mt-4 text-3xl ${skin.heading}">Reserve</h1>
     @include('partials.stay-policies')
     @if($errors->any())<div class="mt-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-red-800">@foreach($errors->all() as $error)<p>{{ $error }}</p>@endforeach</div>@endif
     <div class="mt-8 grid items-start gap-6 lg:grid-cols-3">
@@ -608,43 +578,10 @@ export function localBookBlade(accent: string, templateId: string): string {
         <h2 class="text-lg font-semibold">Guest</h2>
         <label class="block text-sm"><span class="mb-1 block text-slate-500">Full name</span><input name="guest_name" required value="{{ old('guest_name') }}" class="${skin.input}" /></label>
         <label class="block text-sm"><span class="mb-1 block text-slate-500">Email</span><input type="email" name="guest_email" required value="{{ old('guest_email') }}" class="${skin.input}" /></label>
-        <label class="block text-sm"><span class="mb-1 block text-slate-500">Phone</span><input name="guest_phone" value="{{ old('guest_phone') }}" class="${skin.input}" /></label>
-        <label class="block text-sm"><span class="mb-1 block text-slate-500">Special requests</span><textarea name="special_requests" rows="3" class="${skin.input}">{{ old('special_requests') }}</textarea></label>
+        <label class="block text-sm"><span class="mb-1 block text-slate-500">Phone</span><input name="guest_phone" required value="{{ old('guest_phone') }}" class="${skin.input}" /></label>
+        <label class="block text-sm"><span class="mb-1 block text-slate-500">Special requests (optional)</span><textarea name="special_requests" rows="3" class="${skin.input}">{{ old('special_requests') }}</textarea></label>
         @include('partials.stay-addons', ['freeBreakfast' => $roomType->free_breakfast, 'freeCancellation' => $roomType->free_cancellation, 'breakfastPerNight' => (float) ($settings->breakfast_price ?? 0), 'cancellationFee' => (float) ($settings->cancellation_fee ?? 0), 'nights' => $offer['nights'], 'roomEach' => (float) $offer['total'], 'roomCount' => $count, 'currency' => $roomType->currency])
-        <h2 class="pt-2 text-lg font-semibold">Payment</h2>
-        <fieldset class="space-y-2">
-          <legend class="text-sm font-medium text-slate-700">How will you pay?</legend>
-          <label class="flex items-start gap-2 text-sm"><input type="radio" name="payment_method" value="chapa" @checked(old('payment_method') === 'chapa') /> Chapa</label>
-          <label class="flex items-start gap-2 text-sm"><input type="radio" name="payment_method" value="sandbox" @checked(old('payment_method', 'sandbox') !== 'card' && old('payment_method') !== 'arrival' && old('payment_method') !== 'chapa') /> Sandbox</label>
-          <label class="flex items-start gap-2 text-sm"><input type="radio" name="payment_method" value="card" @checked(old('payment_method') === 'card') /> Card</label>
-          @if($settings->pay_on_arrival)
-          <label class="flex items-start gap-2 text-sm"><input type="radio" name="payment_method" value="arrival" @checked(old('payment_method') === 'arrival') /> Pay on arrival</label>
-          @endif
-        </fieldset>
-        <div data-card-fields class="space-y-4" @if(old('payment_method') !== 'card') hidden @endif>
-          <p class="text-xs text-slate-500">Card details are stored on this website only. They are not sent to BuildAura.</p>
-          <label class="block text-sm"><span class="mb-1 block text-slate-500">Name on card</span><input name="card_holder" value="{{ old('card_holder') }}" class="${skin.input}" /></label>
-          <label class="block text-sm"><span class="mb-1 block text-slate-500">Card number</span><input name="card_number" required inputmode="numeric" autocomplete="cc-number" value="{{ old('card_number') }}" class="${skin.input}" /></label>
-          <div class="grid grid-cols-2 gap-3">
-            <label class="block text-sm"><span class="mb-1 block text-slate-500">Expiry</span><input name="card_expiry" placeholder="MM/YY" value="{{ old('card_expiry') }}" class="${skin.input}" /></label>
-            <label class="block text-sm"><span class="mb-1 block text-slate-500">CVC</span><input name="card_cvc" value="{{ old('card_cvc') }}" class="${skin.input}" /></label>
-          </div>
-        </div>
-        <button type="submit" class="w-full ${skin.button}" style="background-color:${accent}">Pay</button>
-        <script>
-          (function () {
-            var form = document.currentScript && document.currentScript.closest('form');
-            if (!form) return;
-            var fields = form.querySelector('[data-card-fields]');
-            function sync() {
-              var selected = form.querySelector('input[name="payment_method"]:checked');
-              var card = selected && selected.value === 'card';
-              if (fields) fields.hidden = !card;
-            }
-            form.querySelectorAll('input[name="payment_method"]').forEach(function (radio) { radio.addEventListener('change', sync); });
-            sync();
-          })();
-        </script>
+        <button type="submit" class="w-full ${skin.button}" style="background-color:${accent}">Reserve</button>
       </form>
     </div>
   </div>
@@ -672,7 +609,7 @@ export function localConfirmBlade(accent: string, templateId: string): string {
     <div class="p-8 ${skin.card}">
       <p class="${skin.eyebrow}">Confirmed</p>
       <h1 class="mt-2 text-3xl ${skin.heading}">Your stay is confirmed</h1>
-      <p class="mt-2 text-slate-600">Guest and payment details were saved on this website only.</p>
+      <p class="mt-2 text-slate-600">Your contact details were saved on this website.</p>
       <div class="mt-8 space-y-3 text-sm">
         <div class="flex justify-between gap-4"><span class="text-slate-500">Confirmation</span><span class="font-mono font-bold">{{ $reservation->group_code ?: $reservation->confirmation_code }}</span></div>
         <div class="flex justify-between gap-4"><span class="text-slate-500">Room</span><span class="font-medium">{{ $reservation->room_type_name }}</span></div>
@@ -680,15 +617,9 @@ export function localConfirmBlade(accent: string, templateId: string): string {
         <div class="flex justify-between gap-4"><span class="text-slate-500">Stay</span><span>{{ $reservation->check_in->format('M j, Y') }} – {{ $reservation->check_out->format('M j, Y') }}</span></div>
         <div class="flex justify-between gap-4"><span class="text-slate-500">Guests</span><span>{{ $reservation->adults }} adults{{ $reservation->children ? ' · '.$reservation->children.' children'.((is_array($reservation->child_ages) && count($reservation->child_ages)) ? ' ('.collect($reservation->child_ages)->map(fn ($age) => $age.'y')->implode(', ').')' : '') : '' }}</span></div>
         <div class="flex justify-between gap-4"><span class="text-slate-500">Guest</span><span>{{ $reservation->guest_name }}</span></div>
-        @if($reservation->payment_method === 'pay_on_arrival')
-        <div class="flex justify-between gap-4"><span class="text-slate-500">Payment</span><span>Pay on arrival</span></div>
-        @elseif($reservation->payment_method === 'chapa')
-        <div class="flex justify-between gap-4"><span class="text-slate-500">Payment</span><span>Chapa</span></div>
-        @elseif($reservation->payment_method === 'sandbox')
-        <div class="flex justify-between gap-4"><span class="text-slate-500">Payment</span><span>Sandbox</span></div>
-        @else
-        <div class="flex justify-between gap-4"><span class="text-slate-500">Card</span><span>···· {{ $reservation->payment_last4 }}</span></div>
-        @endif
+        <div class="flex justify-between gap-4"><span class="text-slate-500">Email</span><span>{{ $reservation->guest_email }}</span></div>
+        <div class="flex justify-between gap-4"><span class="text-slate-500">Phone</span><span>{{ $reservation->guest_phone }}</span></div>
+        @if($reservation->special_requests)<div class="flex justify-between gap-4"><span class="text-slate-500">Special requests</span><span>{{ $reservation->special_requests }}</span></div>@endif
         @if($reservation->breakfast_selected)
         <div class="flex justify-between gap-4"><span class="text-slate-500">Breakfast</span><span>{{ $breakfastSum > 0 ? number_format($breakfastSum, 0).' '.\\App\\Support\\RoomPrice::currency((string) $reservation->currency).($breakfastOther ? ' · '.$breakfastOther : '') : 'Breakfast included' }}</span></div>
         @else

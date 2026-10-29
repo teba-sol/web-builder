@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { Building2, Plus, Search, UserRound } from 'lucide-react'
 import { createClient, listClients } from '../api/clients'
@@ -12,6 +12,7 @@ import { useTemplateCatalog } from '../catalog/useTemplateCatalog'
 import { getTemplateThumbnail } from '../catalog/thumbnails'
 import { businessTypes } from '../data/categories'
 import type { TemplateMeta } from '../types'
+import { ethiopianPhoneError, normalizeEthiopianPhone } from '../utils/ethiopianPhone'
 
 const STEPS = ['Client', 'Business', 'Template', 'Review']
 const fieldClass =
@@ -35,6 +36,9 @@ export function NewSitePage() {
   const [templateQuery, setTemplateQuery] = useState('')
   const [templateIndex, setTemplateIndex] = useState(0)
   const [error, setError] = useState<string | null>(null)
+  const [phoneError, setPhoneError] = useState<string | null>(null)
+  const [savingClient, setSavingClient] = useState(false)
+  const savingClientRef = useRef(false)
   const [submitting, setSubmitting] = useState(false)
 
   useEffect(() => {
@@ -128,12 +132,64 @@ export function NewSitePage() {
   const showExisting = () => {
     setCreatingClient(false)
     setError(null)
+    setPhoneError(null)
   }
 
   const showNew = () => {
     setCreatingClient(true)
     setClientId('')
     setError(null)
+    setPhoneError(null)
+  }
+
+  const continueFromClient = async () => {
+    setError(null)
+    if (!creatingClient) {
+      if (!clientId) {
+        setError('Choose a client')
+        return
+      }
+      setStep(1)
+      return
+    }
+    const name = clientName.trim()
+    if (!name) {
+      setError('Client name is required')
+      return
+    }
+    const invalidPhone = ethiopianPhoneError(clientPhone)
+    if (invalidPhone) {
+      setPhoneError(invalidPhone)
+      return
+    }
+    const phone = normalizeEthiopianPhone(clientPhone)
+    if (!phone) {
+      setPhoneError(ethiopianPhoneError(clientPhone))
+      return
+    }
+    if (savingClientRef.current) return
+    savingClientRef.current = true
+    setSavingClient(true)
+    setPhoneError(null)
+    try {
+      const created = await createClient({
+        name,
+        phone,
+        contactEmail: clientEmail.trim() || undefined,
+      })
+      setClients((prev) => [created, ...prev])
+      setClientId(created.id)
+      setClientName('')
+      setClientEmail('')
+      setClientPhone('')
+      setCreatingClient(false)
+      setStep(1)
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : 'Could not save the client')
+    } finally {
+      savingClientRef.current = false
+      setSavingClient(false)
+    }
   }
 
   const startSite = async () => {
@@ -141,26 +197,18 @@ export function NewSitePage() {
       setError('Choose a template')
       return
     }
+    if (!clientId) {
+      setError('Save the client on the first step before starting the site')
+      setStep(0)
+      return
+    }
     setSubmitting(true)
     setError(null)
     try {
-      let nextClientId = clientId
-      if (creatingClient) {
-        const created = await createClient({
-          name: clientName.trim(),
-          phone: clientPhone.trim(),
-          contactEmail: clientEmail || undefined,
-        })
-        nextClientId = created.id
-        setClients((prev) => [created, ...prev])
-        setClientId(created.id)
-        setCreatingClient(false)
-      }
-      const siteName = creatingClient ? clientName.trim() : selectedClient?.name
       const project = await createProject({
         templateId: selectedTemplate.id,
-        name: siteName || selectedTemplate.name,
-        clientId: nextClientId || undefined,
+        name: selectedClient?.name || selectedTemplate.name,
+        clientId,
       })
       navigate(`/editor/${selectedTemplate.id}?project=${project.id}`, { replace: true })
     } catch (err) {
@@ -218,7 +266,9 @@ export function NewSitePage() {
                 </span>
                 <div>
                   <h2 className="text-lg font-semibold text-navy">Register a client</h2>
-                  <p className="mt-1 text-sm text-slate-500">Name and Ethiopian phone are required. Email is optional.</p>
+                  <p className="mt-1 text-sm text-slate-500">
+                    Name and phone are required. Ethio telecom uses 09 or +2519. Safaricom uses 07 or +2517.
+                  </p>
                 </div>
               </div>
               <div className="grid gap-4 sm:grid-cols-2">
@@ -247,11 +297,25 @@ export function NewSitePage() {
                   Phone
                   <input
                     required
+                    type="tel"
+                    inputMode="tel"
+                    autoComplete="tel"
                     value={clientPhone}
-                    onChange={(e) => setClientPhone(e.target.value)}
+                    onChange={(e) => {
+                      setClientPhone(e.target.value)
+                      setPhoneError(null)
+                    }}
                     placeholder="0911 223 344"
-                    className={fieldClass}
+                    aria-invalid={phoneError ? true : undefined}
+                    className={`${fieldClass}${phoneError ? ' !border-red-400 focus:!border-red-500 focus:!ring-red-200' : ''}`}
                   />
+                  {phoneError ? (
+                    <span className="mt-1 block text-xs font-normal text-red-600">{phoneError}</span>
+                  ) : (
+                    <span className="mt-1 block text-xs font-normal text-slate-500">
+                      0911 223 344, 0711 223 344, +251911223344, or +251711223344
+                    </span>
+                  )}
                 </label>
               </div>
             </div>
@@ -308,14 +372,11 @@ export function NewSitePage() {
           <div className="mt-8 flex justify-end">
             <button
               type="button"
-              disabled={!clientReady}
-              onClick={() => {
-                setError(null)
-                setStep(1)
-              }}
+              disabled={!clientReady || savingClient}
+              onClick={() => void continueFromClient()}
               className="rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-white hover:bg-accent-dark disabled:opacity-50"
             >
-              Continue
+              {savingClient ? 'Saving…' : 'Continue'}
             </button>
           </div>
         </section>
@@ -447,12 +508,12 @@ export function NewSitePage() {
             <dl className="mt-4 space-y-3 text-sm">
               <div>
                 <dt className="text-xs uppercase tracking-wide text-slate-500">Client</dt>
-                <dd className="mt-1 font-medium">{creatingClient ? clientName : selectedClient?.name}</dd>
+                <dd className="mt-1 font-medium">{selectedClient?.name}</dd>
               </div>
               <div>
                 <dt className="text-xs uppercase tracking-wide text-slate-500">Brought by</dt>
                 <dd className="mt-1 font-medium">
-                  {creatingClient ? user?.fullName : selectedClient?.createdByName ?? user?.fullName}
+                  {selectedClient?.createdByName ?? user?.fullName}
                 </dd>
               </div>
               <div>

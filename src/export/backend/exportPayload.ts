@@ -1,4 +1,5 @@
 import { getColorSchemes } from '../../data/colorSchemes'
+import { isHospitalityTemplate } from '../../data/hospitality'
 import { getLayoutVariant } from '../../data/layoutVariants'
 import { getShowcaseConfig } from '../../data/sectionConfig'
 import type { SiteContent, TemplateId } from '../../types'
@@ -40,6 +41,10 @@ export function buildExportPayload(
     assetMap[asset.htmlPath] = asset.zipPath.replace(/^assets\//, '')
   }
 
+  const exportedContent = isHospitalityTemplate(templateId)
+    ? { ...content, pageVisibility: { ...content.pageVisibility, portfolio: false } }
+    : content
+
   return {
     templateId,
     colorSchemeId: scheme.id,
@@ -48,7 +53,7 @@ export function buildExportPayload(
     accentDark: scheme.swatches[0],
     showcaseConfig: getShowcaseConfig(templateId),
     layout,
-    content,
+    content: exportedContent,
     assetMap,
   }
 }
