@@ -1,4 +1,6 @@
-import { useState, type FormEvent } from 'react'
+import { LoaderCircle } from 'lucide-react'
+import { AuthPasswordField } from '../components/AuthPasswordField'
+import { useRef, useState, type FormEvent } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { ApiError } from '../api/types'
 import { useAuth } from '../auth/AuthContext'
@@ -12,9 +14,12 @@ export function LoginPage() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
+  const inFlight = useRef(false)
 
   const onSubmit = async (event: FormEvent) => {
     event.preventDefault()
+    if (inFlight.current) return
+    inFlight.current = true
     setSubmitting(true)
     setError(null)
     try {
@@ -24,6 +29,7 @@ export function LoginPage() {
     } catch (err) {
       setError(err instanceof ApiError ? err.message : 'Login failed')
     } finally {
+      inFlight.current = false
       setSubmitting(false)
     }
   }
@@ -33,10 +39,11 @@ export function LoginPage() {
   if (returnTo) signupQuery.set('return', returnTo)
 
   return (
-    <AuthShell title="Welcome back" subtitle="Personal accounts and salespeople sign in here. Agency admins use the agency portal.">
-      <form onSubmit={onSubmit} className="space-y-6">
-        {error && <p className="text-sm text-red-600">{error}</p>}
-        <label className="block text-[11px] font-semibold uppercase tracking-[0.22em] text-navy/50">
+    <AuthShell title="Welcome back" subtitle="Sign in to continue building your websites.">
+      <form onSubmit={onSubmit} className="space-y-5" aria-busy={submitting}>
+        {error && <p role="alert" className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm leading-6 text-red-700">{error}</p>}
+        <fieldset disabled={submitting} className="space-y-5">
+        <label className="block text-sm font-medium text-slate-700">
           Email
           <input
             type="email"
@@ -48,32 +55,21 @@ export function LoginPage() {
             className={authFieldClass}
           />
         </label>
-        <label className="block text-[11px] font-semibold uppercase tracking-[0.22em] text-navy/50">
-          Password
-          <input
-            type="password"
-            required
-            autoComplete="current-password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className={authFieldClass}
-          />
-        </label>
+        <AuthPasswordField value={password} onChange={setPassword} autoComplete="current-password" />
+        <div className="flex justify-end"><Link to="/forgot-password" className="text-sm font-semibold text-navy hover:underline">Forgot password?</Link></div>
         <button type="submit" disabled={submitting} className={authButtonClass}>
+          {submitting && <LoaderCircle size={17} className="animate-spin" aria-hidden="true" />}
           {submitting ? 'Signing in…' : 'Sign in'}
         </button>
+        </fieldset>
       </form>
-      <p className="mt-10 text-[11px] uppercase tracking-[0.22em] text-navy/45">
+      <p className="mt-6 border-t border-slate-100 pt-5 text-center text-sm text-slate-500">
         No account?{' '}
-        <Link to={`/signup${signupQuery.toString() ? `?${signupQuery}` : ''}`} className="text-navy">
+        <Link to={`/signup${signupQuery.toString() ? `?${signupQuery}` : ''}`} className="font-semibold text-navy hover:underline">
           Create one
         </Link>
       </p>
-      <p className="mt-4 text-[11px] uppercase tracking-[0.22em]">
-        <Link to="/forgot-password" className="text-navy/45 hover:text-navy">
-          Forgot password
-        </Link>
-      </p>
+
     </AuthShell>
   )
 }

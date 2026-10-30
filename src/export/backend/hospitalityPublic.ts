@@ -47,6 +47,8 @@ export function heroStaySearchPartial(templateId: string): string {
   'minDate' => $minDate,
   'submitLabel' => 'Search',
   'searchClass' => '${skin.search}',
+  'inputClass' => '${skin.input}',
+  'buttonClass' => '${skin.button.replace(/\btext-(?:white|\[#[a-fA-F0-9]+\])/g, '')}',
 ])
 </div>
 `
@@ -102,7 +104,7 @@ export function crsRoomsBlade(accent: string, templateId: string): string {
     <p class="mt-3 text-lg text-slate-600">{{ $settings->rooms_section_subtitle }}</p>
     @include('partials.stay-policies')
     <div class="mt-8">
-      @include('partials.stay-search', ['searchAction' => route('rooms.index'), 'checkIn' => $checkIn, 'checkOut' => $checkOut, 'adults' => $adults, 'children' => $children, 'childAges' => $childAges, 'minDate' => $minDate, 'submitLabel' => 'Search', 'searchClass' => '${skin.search}'])
+      @include('partials.stay-search', ['searchAction' => route('rooms.index'), 'checkIn' => $checkIn, 'checkOut' => $checkOut, 'adults' => $adults, 'children' => $children, 'childAges' => $childAges, 'minDate' => $minDate, 'submitLabel' => 'Search', 'searchClass' => '${skin.search}', 'inputClass' => '${skin.input}', 'buttonClass' => '${skin.button.replace(/\btext-(?:white|\[#[a-fA-F0-9]+\])/g, '')}'])
     </div>
     @if($apiError)<p class="mt-6 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-amber-900">{{ $apiError }}</p>@endif
     @if($errors->any())<div class="mt-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-red-800">@foreach($errors->all() as $error)<p>{{ $error }}</p>@endforeach</div>@endif
@@ -196,7 +198,7 @@ export function crsRoomDetailBlade(accent: string, templateId: string): string {
     </section>
     <section class="mt-12">
       <h2 class="text-2xl ${skin.heading}">Find a room</h2>
-      @include('partials.stay-search', ['searchAction' => route('rooms.show', $roomType['slug']), 'checkIn' => $checkIn, 'checkOut' => $checkOut, 'adults' => $adults, 'children' => $children, 'childAges' => $childAges, 'minDate' => $minDate, 'submitLabel' => 'Search room', 'searchClass' => '${skin.search}'])
+      @include('partials.stay-search', ['searchAction' => route('rooms.show', $roomType['slug']), 'checkIn' => $checkIn, 'checkOut' => $checkOut, 'adults' => $adults, 'children' => $children, 'childAges' => $childAges, 'minDate' => $minDate, 'submitLabel' => 'Search room', 'searchClass' => '${skin.search}', 'inputClass' => '${skin.input}', 'buttonClass' => '${skin.button.replace(/\btext-(?:white|\[#[a-fA-F0-9]+\])/g, '')}'])
     </section>
     @include('partials.stay-policies')
     @if($errors->any())<div class="mt-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-red-800">@foreach($errors->all() as $error)<p>{{ $error }}</p>@endforeach</div>@endif
@@ -378,7 +380,7 @@ export function localRoomsBlade(accent: string, templateId: string): string {
     <p class="mt-3 text-lg text-slate-600">{{ $settings->rooms_section_subtitle ?? 'Search dates, then open a room type to see which rooms are free.' }}</p>
     @include('partials.stay-policies')
     <div class="mt-8">
-      @include('partials.stay-search', ['searchAction' => route('rooms.index'), 'checkIn' => $checkIn, 'checkOut' => $checkOut, 'adults' => $adults, 'children' => $children, 'childAges' => $childAges, 'minDate' => $minDate, 'submitLabel' => 'Search', 'searchClass' => '${skin.search}'])
+      @include('partials.stay-search', ['searchAction' => route('rooms.index'), 'checkIn' => $checkIn, 'checkOut' => $checkOut, 'adults' => $adults, 'children' => $children, 'childAges' => $childAges, 'minDate' => $minDate, 'submitLabel' => 'Search', 'searchClass' => '${skin.search}', 'inputClass' => '${skin.input}', 'buttonClass' => '${skin.button.replace(/\btext-(?:white|\[#[a-fA-F0-9]+\])/g, '')}'])
     </div>
     @if($errors->any())<div class="mt-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-red-800">@foreach($errors->all() as $error)<p>{{ $error }}</p>@endforeach</div>@endif
     <div class="mt-8 space-y-5">
@@ -479,7 +481,7 @@ export function localRoomDetailBlade(accent: string, templateId: string): string
     </section>
     <section class="mt-12">
       <h2 class="text-2xl ${skin.heading}">Find a room</h2>
-      @include('partials.stay-search', ['searchAction' => route('rooms.show', $roomType->slug), 'checkIn' => $checkIn, 'checkOut' => $checkOut, 'adults' => $adults, 'children' => $children, 'childAges' => $childAges, 'minDate' => $minDate, 'submitLabel' => 'Search room', 'searchClass' => '${skin.search}'])
+      @include('partials.stay-search', ['searchAction' => route('rooms.show', $roomType->slug), 'checkIn' => $checkIn, 'checkOut' => $checkOut, 'adults' => $adults, 'children' => $children, 'childAges' => $childAges, 'minDate' => $minDate, 'submitLabel' => 'Search room', 'searchClass' => '${skin.search}', 'inputClass' => '${skin.input}', 'buttonClass' => '${skin.button.replace(/\btext-(?:white|\[#[a-fA-F0-9]+\])/g, '')}'])
     </section>
     @include('partials.stay-policies')
     @if($errors->any())<div class="mt-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-red-800">@foreach($errors->all() as $error)<p>{{ $error }}</p>@endforeach</div>@endif

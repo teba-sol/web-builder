@@ -1,150 +1,85 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { ArrowLeft, ArrowRight, Building2, Check, Cloud, Download, Palette, UserRound } from 'lucide-react'
 import { fetchPricing } from '../api/billing'
 import type { PriceTier } from '../api/types'
-import { BrowserFrame } from '../components/landing/BrowserFrame'
-import { FinalCTA } from '../components/landing/FinalCTA'
-import { Navbar } from '../components/landing/Navbar'
-import { SmoothScroll } from '../components/landing/SmoothScroll'
-import { showcaseSites } from '../components/landing/sites'
-
-function personalLabel(tier: PriceTier | undefined) {
-  if (!tier) return '9,000 ETB'
-  if (tier.contactUs) return 'Contact us'
-  return tier.displayPrice || '9,000 ETB'
-}
-
-function splitPrice(label: string) {
-  const match = label.trim().match(/^(.*?)(?:\s+)(ETB|USD|EUR|GBP)$/i)
-  if (!match) return { amount: label, currency: null as string | null }
-  return { amount: match[1], currency: match[2].toUpperCase() }
-}
+import { useAuth } from '../auth/AuthContext'
+import { AppHeader } from '../components/AppHeader'
+import { PublicHeader } from '../components/landing/PublicHeader'
+import { MarketingFooter } from '../components/MarketingFooter'
 
 export function PricingPublicPage() {
+  const { user, loading: authLoading } = useAuth()
   const [pricing, setPricing] = useState<PriceTier[] | null>(null)
+  const [error, setError] = useState(false)
+  const [attempt, setAttempt] = useState(0)
 
   useEffect(() => {
     const previous = document.title
-    document.title = 'Pricing — BuildAura'
-    fetchPricing()
-      .then((settings) => setPricing(settings.prices))
-      .catch(() => setPricing(null))
-    return () => {
-      document.title = previous
-    }
+    document.title = 'Pricing — Buildoura'
+    return () => { document.title = previous }
   }, [])
 
+  useEffect(() => {
+    let active = true
+    setError(false)
+    setPricing(null)
+    fetchPricing()
+      .then((settings) => { if (active) setPricing(settings.prices) })
+      .catch(() => { if (active) setError(true) })
+    return () => { active = false }
+  }, [attempt])
+
   const personal = pricing?.find((tier) => tier.userType === 'USER')
-  const price = splitPrice(personalLabel(personal))
-  const sites = showcaseSites()
-  const peek = sites.find((s) => s.id === 'axiom') ?? sites[0]
+  const personalPrice = personal?.contactUs ? 'Contact us' : personal?.displayPrice
+  const personalFeatures = ['Cloud save for this website', 'Full-stack website export', 'Your content and branding']
+  const agencyFeatures = ['Client websites in one workspace', 'Agency and salesperson accounts', 'Export when the website is unlocked']
 
   return (
-    <SmoothScroll>
-      <div className="landing min-h-screen bg-[#f6f7fb] text-navy">
-        <Navbar />
-        <main>
-          <section className="relative overflow-hidden px-4 pb-16 pt-28 md:px-8 md:pb-24 md:pt-36">
-            <p className="text-[10px] uppercase tracking-[0.32em] text-accent">Pricing</p>
-            <h1 className="font-display mt-4 text-[clamp(2.8rem,9.4vw,7rem)] text-navy">
-              One site.
-              <br />
-              One
-              <br />
-              payment.
-            </h1>
-            <p className="mt-8 max-w-md text-sm leading-relaxed text-navy/60 md:text-base">
-              Personal websites have a published price. Agency and salesperson work is priced as Contact us — there is no public rate.
-            </p>
-            <div className="mt-8 flex flex-wrap items-center gap-8 text-[11px] font-semibold uppercase tracking-[0.22em]">
-              <Link to="/signup" className="text-accent">
-                Start Building
-              </Link>
-              <Link to="/#templates" className="text-navy">
-                Explore Templates
-              </Link>
-            </div>
-          </section>
+    <div className="min-h-screen bg-white text-slate-900">
+      {user || authLoading ? <AppHeader /> : <PublicHeader />}
+      <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
+        {user && <Link to="/account" className="mb-7 inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-navy"><ArrowLeft size={15} /> Back to profile</Link>}
+        <div className="mb-10 max-w-2xl">
+          <p className="mb-4 text-xs font-semibold uppercase tracking-[0.16em] text-accent">Website pricing</p>
+          <h1 className="text-4xl font-semibold leading-tight tracking-tight text-navy sm:text-5xl">A clear next step<br className="hidden sm:block" /> for your website.</h1>
+          <p className="mt-5 text-base leading-7 text-slate-500">Choose a template and make it yours. Unlock cloud save and export for each website when you’re ready.</p>
+        </div>
 
-          <section className="relative grid items-end gap-10 border-t border-navy/10 px-4 py-20 md:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:py-28">
-            <div>
-              <p className="text-[10px] uppercase tracking-[0.28em] text-accent">01 — Personal</p>
-              <h2 className="font-display mt-3 text-[clamp(2.4rem,6vw,5rem)]">Yours.</h2>
-              <p className="mt-4 max-w-sm text-sm leading-relaxed text-navy/55">
-                One payment unlocks export and cloud save for that website. Pick a template, make it yours, then publish.
-              </p>
+        {error && <div role="alert" className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-900"><p>We couldn’t load the current personal website price.</p><button type="button" onClick={() => setAttempt((value) => value + 1)} className="rounded-lg border border-amber-300 px-3 py-2 font-semibold hover:bg-amber-100">Try again</button></div>}
+        <div className="grid items-stretch gap-6 md:grid-cols-2">
+          <section aria-labelledby="personal-price-heading" className="flex flex-col rounded-2xl border border-slate-200 bg-slate-50 p-6 sm:p-8">
+            <span className="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 bg-white text-navy"><UserRound size={21} strokeWidth={1.5} /></span>
+            <h2 id="personal-price-heading" className="text-xl font-semibold text-navy">Personal websites</h2>
+            <p className="mt-2 text-sm leading-6 text-slate-500">For your business, portfolio, or next idea.</p>
+            <div className="my-7" aria-live="polite">
+              {!pricing && !error ? <p role="status" className="text-sm text-slate-500">Loading current price…</p> : <p className="text-3xl font-semibold tracking-tight text-navy sm:text-4xl">{personalPrice || 'Price unavailable'}</p>}
+              <p className="mt-2 text-sm text-slate-500">One-time payment per website.</p>
             </div>
-            <div className="relative">
-              <p className="font-display text-[clamp(3.4rem,10vw,8rem)] leading-none text-navy">
-                {price.amount}
-                {price.currency ? (
-                  <span className="ml-3 align-top text-[clamp(0.9rem,2vw,1.4rem)] tracking-[0.18em] text-accent">
-                    {price.currency}
-                  </span>
-                ) : null}
-              </p>
-              <Link
-                to="/signup"
-                className="mt-8 inline-block text-[11px] font-semibold uppercase tracking-[0.22em] text-accent"
-              >
-                Create a personal account
-              </Link>
-            </div>
+            <ul className="mb-8 space-y-3 text-sm text-slate-600">{personalFeatures.map((item) => <li key={item} className="flex items-start gap-2.5"><Check size={17} className="mt-0.5 shrink-0 text-navy" />{item}</li>)}</ul>
+            <Link to={user ? '/' : '/signup'} className="mt-auto inline-flex items-center justify-center gap-2 rounded-xl bg-accent px-5 py-3 text-sm font-semibold text-white hover:bg-accent-dark">{user ? 'Go to workspace' : 'Create a personal account'}<ArrowRight size={16} /></Link>
           </section>
-
-          <section data-landing-dark className="relative overflow-hidden bg-navy px-4 py-24 text-white md:px-8 md:py-32">
-            {peek && (
-              <div className="pointer-events-none absolute -right-[12%] top-[18%] w-[42%] rotate-8 opacity-25">
-                <BrowserFrame src={peek.src} alt="" compact />
-              </div>
-            )}
-            <div className="relative mx-auto max-w-6xl">
-              <p className="text-[10px] uppercase tracking-[0.28em] text-accent">02 — Agency / salesperson</p>
-              <h2 className="font-display mt-4 max-w-[18ch] text-[clamp(2.8rem,10vw,7.5rem)]">
-                Contact
-                <br />
-                us.
-              </h2>
-              <p className="mt-8 max-w-md text-sm leading-relaxed text-white/65">
-                No published online price. Talk to us, then add salespeople from the agency portal. Export stays locked until the agency unlocks the site.
-              </p>
-              <Link
-                to="/signup?type=agency"
-                className="mt-10 inline-block text-[11px] font-semibold uppercase tracking-[0.22em] text-accent"
-              >
-                Register an agency
-              </Link>
-            </div>
+          <section aria-labelledby="agency-price-heading" className="flex flex-col rounded-2xl border border-slate-200 bg-white p-6 sm:p-8">
+            <span className="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-slate-100 text-navy"><Building2 size={21} strokeWidth={1.5} /></span>
+            <h2 id="agency-price-heading" className="text-xl font-semibold text-navy">Agencies & salespeople</h2>
+            <p className="mt-2 text-sm leading-6 text-slate-500">For teams creating websites for their clients.</p>
+            <div className="my-7"><p className="text-3xl font-semibold tracking-tight text-navy sm:text-4xl">Contact us</p><p className="mt-2 text-sm text-slate-500">Agency pricing is arranged directly.</p></div>
+            <ul className="mb-8 space-y-3 text-sm text-slate-600">{agencyFeatures.map((item) => <li key={item} className="flex items-start gap-2.5"><Check size={17} className="mt-0.5 shrink-0 text-navy" />{item}</li>)}</ul>
+            {user ? <p className="mt-auto rounded-xl bg-slate-50 px-4 py-3 text-sm leading-6 text-slate-500">Work with your agency admin to arrange pricing and unlock client websites.</p> : <Link to="/signup?type=agency" className="mt-auto inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 px-5 py-3 text-sm font-semibold text-navy hover:bg-slate-50">Register an agency <ArrowRight size={16} /></Link>}
           </section>
+        </div>
 
-          <section className="px-4 py-24 md:px-8 md:py-32">
-            <p className="text-[10px] uppercase tracking-[0.28em] text-accent">03 — Included</p>
-            <h2 className="font-display mt-3 text-[clamp(2.4rem,7vw,6rem)]">
-              What you
-              <br />
-              actually get.
-            </h2>
-            <ul className="mt-16 max-w-4xl divide-y divide-navy/10 border-y border-navy/10">
-              {[
-                { n: '01', title: 'Export', body: 'A real website — not a mockup, not a prototype.' },
-                { n: '02', title: 'Cloud save', body: 'Keep the draft after payment, then come back and finish it.' },
-                { n: '03', title: 'Templates', body: 'Every professionally designed starting point in the studio.' },
-                { n: '04', title: 'Control', body: 'Copy, color, type, images, sections, and branding on the canvas.' },
-              ].map((item) => (
-                <li key={item.n} className="grid gap-3 py-8 sm:grid-cols-[4.5rem_minmax(0,1fr)] sm:items-start">
-                  <p className="text-[10px] uppercase tracking-[0.28em] text-accent">{item.n}</p>
-                  <div>
-                    <h3 className="font-display text-[clamp(1.6rem,3vw,2.6rem)]">{item.title}</h3>
-                    <p className="mt-2 max-w-xl text-sm leading-relaxed text-navy/55">{item.body}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </section>
-
-          <FinalCTA />
-        </main>
-      </div>
-    </SmoothScroll>
+        <section className="py-12 sm:py-16" aria-labelledby="pricing-included-heading">
+          <h2 id="pricing-included-heading" className="mb-7 text-2xl font-semibold tracking-tight text-navy">What unlocking a website includes</h2>
+          <div className="grid gap-7 sm:grid-cols-3">{[
+            { icon: Cloud, title: 'Save and return', text: 'Keep your website draft in the cloud and continue editing later.' },
+            { icon: Palette, title: 'Make it yours', text: 'Customize your copy, images, fonts, colors, and available sections.' },
+            { icon: Download, title: 'Export your website', text: 'Download a full-stack website for your own hosting.' },
+          ].map(({ icon: Icon, title, text }) => <div key={title}><Icon size={22} strokeWidth={1.5} className="mb-4 text-navy" /><h3 className="font-semibold text-navy">{title}</h3><p className="mt-2 text-sm leading-6 text-slate-500">{text}</p></div>)}</div>
+        </section>
+        <div className="flex justify-end border-t border-slate-200 pt-6"><Link to={user ? '/' : '/templates'} className="inline-flex shrink-0 items-center gap-2 text-sm font-semibold text-navy hover:underline">{user ? 'Back to workspace' : 'Explore templates'}<ArrowRight size={16} /></Link></div>
+      </main>
+      <MarketingFooter />
+    </div>
   )
 }

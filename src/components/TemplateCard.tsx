@@ -7,9 +7,10 @@ import type { TemplateMeta } from '../types'
 
 interface Props {
   template: TemplateMeta
+  featured?: boolean
 }
 
-export function TemplateCard({ template }: Props) {
+export function TemplateCard({ template, featured = false }: Props) {
   const { user } = useAuth()
   const useHref = user
     ? user.role === 'SALESPERSON'
@@ -21,13 +22,14 @@ export function TemplateCard({ template }: Props) {
   const thumbnail = getTemplateThumbnail(template.id)
 
   return (
-    <div className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl">
-      <div className="relative aspect-[16/9] overflow-hidden bg-slate-900">
+    <div className={`group flex overflow-hidden rounded-2xl shadow-sm ${featured ? 'flex-col border border-navy bg-navy text-white lg:flex-row-reverse' : 'h-full flex-col border border-slate-200 bg-white transition-shadow hover:shadow-lg'}`}>
+      <div className={`relative overflow-hidden bg-slate-900 ${featured ? 'aspect-[16/10] lg:aspect-auto lg:w-[58%] lg:shrink-0' : 'aspect-[16/9]'}`}>
         {thumbnail ? (
           <img
             src={thumbnail}
             alt={`${template.name} hero`}
-            className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+            loading="lazy"
+            className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105 motion-reduce:transform-none"
           />
         ) : (
           <div className={`absolute inset-0 bg-gradient-to-br ${template.previewGradient}`} />
@@ -49,15 +51,17 @@ export function TemplateCard({ template }: Props) {
           )}
         </div>
       </div>
-      <div className="flex flex-1 flex-col p-6">
-        <p className="mb-2 font-mono text-[11px] font-semibold uppercase tracking-wider text-slate-400">{template.id}</p>
-        <h3 className="mb-2 text-lg font-semibold text-slate-900">{template.name}</h3>
-        <p className="flex-1 text-sm leading-relaxed text-slate-500">{template.description}</p>
+      <div className={`flex min-w-0 flex-1 flex-col ${featured ? 'justify-center p-7 sm:p-10 lg:py-12' : 'p-5'}`}>
+        {featured && <p className="mb-5 text-xs font-semibold uppercase tracking-[0.2em] text-orange-300">In the spotlight</p>}
+        <h3 className={`mb-3 font-semibold ${featured ? 'text-3xl tracking-tight sm:text-4xl' : 'text-lg text-slate-900'}`}>{template.name}</h3>
+        <p className={`text-sm leading-7 ${featured ? 'text-white/75' : 'flex-1 text-slate-500'}`}>{template.description}</p>
         <div className="mt-5 flex gap-3">
           <Link
             to={`/demo/${template.id}`}
             target="_blank"
-            className="flex-1 rounded-lg border border-slate-300 px-4 py-2.5 text-center text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
+            rel="noopener noreferrer"
+            aria-label={`Preview ${template.name} (opens in a new tab)`}
+            className={`flex-1 rounded-lg border px-4 py-2.5 text-center text-sm font-semibold transition-colors ${featured ? 'border-white/30 text-white hover:bg-white/10' : 'border-slate-300 text-slate-700 hover:bg-slate-50'}`}
           >
             Preview
           </Link>

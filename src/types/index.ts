@@ -1,3 +1,5 @@
+import type { LucideIcon } from 'lucide-react'
+
 export type TemplateCategory =
   | 'business'
   | 'creative'
@@ -242,7 +244,7 @@ export interface ContactFieldDef {
 export interface CategoryMeta {
   id: TemplateCategory | 'all'
   label: string
-  icon: string
+  icon: LucideIcon
   blurb?: string
 }
 

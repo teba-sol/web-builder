@@ -20,7 +20,8 @@ import { addDays, localToday, readChildAges, stayQueryString, staySearchErrors }
 import { sitePath } from '../../data/siteNav'
 import type { TemplateTheme } from '../themes'
 import { getMapEmbedUrl, getMapOpenUrl } from '../../utils/mapEmbed'
-import { accentInk } from '../../utils/accentInk'
+import { Search } from 'lucide-react'
+import { actionBackground, accentInk } from '../../utils/accentInk'
 import { staySkin } from './hospitalitySkin'
 
 interface BookingProps {
@@ -138,31 +139,33 @@ export function StaySearch({
   const today = localToday()
   const minOut = checkIn >= today ? addDays(checkIn, 1) : addDays(today, 1)
   const ageCount = Math.max(0, Math.min(10, children))
-  const field = inputClass || 'w-full rounded-lg border px-3 py-2.5'
+  const buttonColor = actionBackground(accent)
+  const field = `${inputClass || 'w-full rounded-lg border px-3 py-2.5'} h-12 min-w-0 text-sm outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-400/30`
   return (
-    <form onSubmit={onSubmit} className={className || 'grid items-end gap-4 rounded-2xl border bg-white p-5 shadow-sm cmd:grid-cols-2 clg:grid-cols-6'}>
-      <label className="block text-sm">
+    <form onSubmit={onSubmit} className={className || 'grid grid-cols-1 items-end gap-4 rounded-2xl border bg-white p-5 shadow-sm cmd:grid-cols-2 clg:grid-cols-5'}>
+      <label className="block min-w-0 text-sm">
         <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">Check-in</span>
         <input type="date" required min={today} value={checkIn} onChange={(event) => onCheckIn(event.target.value)} className={field} />
       </label>
-      <label className="block text-sm">
+      <label className="block min-w-0 text-sm">
         <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">Check-out</span>
         <input type="date" required min={minOut} value={checkOut} onChange={(event) => onCheckOut(event.target.value)} className={field} />
       </label>
-      <label className="block text-sm">
+      <label className="block min-w-0 text-sm">
         <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">Adults</span>
         <input type="number" min={1} max={20} required value={adults} onChange={(event) => onAdults(Number(event.target.value))} className={field} />
       </label>
-      <label className="block text-sm">
+      <label className="block min-w-0 text-sm">
         <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">Children</span>
         <input type="number" min={0} max={10} required value={children} onChange={(event) => onChildren(Number(event.target.value))} className={field} />
       </label>
-      <button type="submit" className={(buttonClass || 'rounded-lg px-5 py-3 font-semibold text-white').replace(/\btext-white\b/, accentInk(accent))} style={{ backgroundColor: accent }}>
-        {label}
+      <button type="submit" className={`${(buttonClass || 'rounded-lg px-5 py-3 font-semibold text-white').replace(/\btext-white\b/, accentInk(buttonColor))} inline-flex h-12 w-full items-center justify-center gap-2 self-end whitespace-nowrap shadow-sm transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-500 focus-visible:ring-offset-2 cmd:col-span-2 clg:col-span-1`} style={{ backgroundColor: buttonColor }}>
+        <Search size={17} aria-hidden="true" className="shrink-0" /> {label}
       </button>
-      <p className="text-xs text-slate-500 clg:col-span-6">Children are 17 or younger. Guests 18 and older count as adults.</p>
+      <p className="col-span-full border-t border-slate-200/70 pt-3 text-xs leading-5 text-slate-500">Children are 17 or younger. Guests 18 and older count as adults.</p>
+      {ageCount > 0 && <div className="col-span-full grid gap-3 csm:grid-cols-2 clg:grid-cols-4">
       {Array.from({ length: ageCount }, (_, index) => (
-        <label key={index} className="block text-sm">
+        <label key={index} className="block min-w-0 text-sm">
           <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">Child {index + 1} age</span>
           <input
             type="number"
@@ -175,6 +178,7 @@ export function StaySearch({
           />
         </label>
       ))}
+      </div>}
     </form>
   )
 }

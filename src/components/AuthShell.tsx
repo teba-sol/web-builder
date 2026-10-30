@@ -1,81 +1,31 @@
+import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
-import { BrowserFrame } from './landing/BrowserFrame'
-import { showcaseSites } from './landing/sites'
+import { ArrowLeft, ExternalLink } from 'lucide-react'
+import { PublicHeader } from './landing/PublicHeader'
 
 export const authFieldClass =
-  'mt-2 w-full border-0 border-b border-navy/20 bg-transparent px-0 py-2.5 text-navy outline-none transition placeholder:text-navy/30 focus:border-accent'
+  'mt-1.5 h-12 w-full rounded-xl border border-slate-300 bg-white px-3.5 text-sm font-normal text-slate-900 outline-none placeholder:text-slate-400 focus:border-navy focus:ring-2 focus:ring-navy/15 disabled:bg-slate-50 disabled:text-slate-500'
 export const authButtonClass =
-  'mt-2 text-[12px] font-semibold uppercase tracking-[0.24em] text-accent disabled:opacity-50'
+  'inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-navy px-5 py-3 text-sm font-semibold text-white hover:bg-navy/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2 disabled:cursor-wait disabled:opacity-60'
 
-export function AuthShell({
-  title,
-  subtitle,
-  children,
-}: {
+export function AuthShell({ title, subtitle, children }: {
   title: string
   subtitle: string
-  children: React.ReactNode
+  children: ReactNode
 }) {
-  const peek = showcaseSites().find((s) => s.id === 'hotel') ?? showcaseSites()[0]
   const adminOrigin = import.meta.env.VITE_ADMIN_ORIGIN || 'http://localhost:5174'
-
   return (
-    <div className="landing min-h-screen bg-[#f6f7fb] text-navy lg:grid lg:grid-cols-2">
-      <div className="relative hidden overflow-hidden bg-navy px-10 py-12 text-white lg:flex lg:flex-col lg:justify-between">
-        {peek && (
-          <div className="pointer-events-none absolute -right-[18%] bottom-[8%] w-[72%] rotate-8 opacity-30">
-            <BrowserFrame src={peek.src} alt="" compact />
-          </div>
-        )}
-        <Link to="/" className="relative text-[13px] font-semibold uppercase tracking-[0.18em]">
-          BuildAura
-        </Link>
-        <div className="relative max-w-lg">
-          <p className="text-[10px] uppercase tracking-[0.32em] text-accent">Template studio</p>
-          <h2 className="font-display mt-4 text-[clamp(2.4rem,calc((50vw-5rem)/9.2),4.4rem)]">
-            Start
-            <br />
-            from
-            <br />
-            designed.
-          </h2>
-          <p className="mt-8 max-w-sm text-sm leading-relaxed text-white/65">
-            Pick a template, make it yours, and publish a real website.
-          </p>
-          <ul className="mt-12 max-w-sm space-y-6 text-[11px] uppercase tracking-[0.22em] text-white/55">
-            <li>
-              <span className="text-accent">01</span>
-              <span className="ml-4 text-white">Personal — one site, one payment</span>
-            </li>
-            <li>
-              <span className="text-accent">02</span>
-              <span className="ml-4 text-white">Agency — contact us</span>
-            </li>
-            <li>
-              <span className="text-accent">03</span>
-              <span className="ml-4 text-white">Cloud save after unlock</span>
-            </li>
-          </ul>
-        </div>
-        <p className="relative text-[10px] uppercase tracking-[0.22em] text-white/40">
-          Agency portal · {adminOrigin.replace(/^https?:\/\//, '')}
-        </p>
-      </div>
-
-      <div className="flex min-h-screen flex-col px-6 py-10 md:px-12 md:py-16">
-        <Link
-          to="/"
-          className="mb-16 text-[13px] font-semibold uppercase tracking-[0.18em] text-navy lg:hidden"
-        >
-          BuildAura
-        </Link>
-        <div className="mx-auto w-full max-w-md flex-1">
-          <p className="text-[10px] uppercase tracking-[0.32em] text-accent">Account</p>
-          <h1 className="font-display mt-3 text-[clamp(2rem,calc(100%/7.6),3.25rem)]">{title}</h1>
-          <p className="mt-4 max-w-sm text-sm leading-relaxed text-navy/55">{subtitle}</p>
-          <div className="mt-10">{children}</div>
-        </div>
-      </div>
+    <div className="min-h-screen bg-slate-50 text-slate-900">
+      <PublicHeader />
+      <main className="mx-auto w-full max-w-lg px-4 py-8 sm:px-6 sm:py-12">
+        <Link to="/" className="mb-6 inline-flex items-center gap-2 rounded-lg text-sm font-medium text-slate-500 hover:text-navy"><ArrowLeft size={15} /> Back to home</Link>
+        <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8" aria-labelledby="auth-title">
+          <h1 id="auth-title" className="text-3xl font-semibold tracking-tight text-navy">{title}</h1>
+          <p className="mt-3 text-sm leading-6 text-slate-500">{subtitle}</p>
+          <div className="mt-7">{children}</div>
+        </section>
+        <p className="mt-6 text-center text-xs leading-6 text-slate-500">Managing an agency? <a href={adminOrigin} className="inline-flex items-center gap-1 font-semibold text-navy hover:underline">Open the agency portal <ExternalLink size={12} /></a></p>
+      </main>
     </div>
   )
 }

@@ -1,3 +1,4 @@
+import { actionBackground } from '../utils/accentInk'
 import { lazy, Suspense, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { getColorSchemes } from '../data/colorSchemes'
@@ -130,11 +131,12 @@ export function RichTemplateLayout({
   const accent = resolveBrandAccent(c, scheme?.swatches[1] ?? '#2563eb')
   const brandStyles = brandCss(c)
   const fontHref = brandFontHref(c)
-  const bookingProps = { content: c, basePath, theme: t, templateId: variant, accent }
+  const bookingAccent = actionBackground(accent, scheme?.swatches[1])
+  const bookingProps = { content: c, basePath, theme: t, templateId: variant, accent: bookingAccent }
 
   const sections: Record<PageSectionId, ReactNode> = {
     nav: <TemplateNav c={c} t={t} variant={variant} navItems={navItems} basePath={basePath} />,
-    hero: <HeroSection c={c} t={t} variant={variant} heroLayout={layout.heroLayout} basePath={basePath} accent={accent} />,
+    hero: <HeroSection c={c} t={t} variant={variant} heroLayout={layout.heroLayout} basePath={basePath} accent={bookingAccent} />,
     stats: visibility.stats ? <StatsSection c={c} t={t} variant={variant} /> : null,
     about: <AboutSection c={c} t={t} />,
     services: <ServicesSection c={c} t={t} meta={meta?.servicesLabel} />,
@@ -365,8 +367,11 @@ function HeroSection({ c, t, variant, heroLayout, basePath, accent }: { c: SiteC
         {variant === 'restaurant' && <p data-part="badge" className={`mb-3 ${t.heroBadge}`}>Est. 2010</p>}
         <h1 data-part="title" className={`mb-6 ${t.heroTitle}`}>{c.tagline}</h1>
         <p data-part="subtitle" className={`mb-8 ${t.heroText}`}>{c.heroSubtext || c.about.slice(0, 160)}</p>
-        <Link data-part="cta" data-brand-cta to={ctaHref} className={`inline-block ${t.heroCta}`} style={brandCtaStyle(c)}>{c.ctaText} →</Link>
-        {isHospitalityTemplate(variant) ? <HeroStaySearch basePath={basePath} accent={accent} templateId={variant} /> : null}
+        {isHospitalityTemplate(variant) ? (
+          <HeroStaySearch basePath={basePath} accent={accent} templateId={variant} />
+        ) : (
+          <Link data-part="cta" data-brand-cta to={ctaHref} className={`inline-block ${t.heroCta}`} style={brandCtaStyle(c)}>{c.ctaText} →</Link>
+        )}
         {!hasOverlay && c.heroImage && variant !== 'boutique' && (
           <img data-part="image" src={c.heroImage} alt="" className="rounded-2xl shadow-2xl w-full mt-8 clg:mt-0" />
         )}

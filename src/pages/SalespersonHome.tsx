@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
+import { DeleteProjectButton } from '../components/DeleteProjectButton'
 import { listProjects } from '../api/projects'
 import type { ProjectResponse } from '../api/types'
 import { useAuth } from '../auth/AuthContext'
-import { PageShell, ProgressBar, StatusBadge } from '../components/workspace'
+import { PageShell, StatusBadge } from '../components/workspace'
 import { getTemplateMeta } from '../data/defaults'
 import { getTemplateThumbnail } from '../catalog/thumbnails'
 
@@ -54,35 +55,32 @@ export function SalespersonHome() {
             const meta = getTemplateMeta(site.templateId)
             const thumb = getTemplateThumbnail(site.templateId)
             return (
-              <Link
+              <article
                 key={site.id}
-                to={`/editor/${site.templateId}?project=${site.id}`}
                 className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
               >
-                <div className="relative aspect-[16/9] bg-slate-900">
-                  {thumb ? (
-                    <img src={thumb} alt="" className="absolute inset-0 h-full w-full object-cover object-top" />
-                  ) : (
-                    <div className={`absolute inset-0 bg-gradient-to-br ${meta?.previewGradient ?? 'from-slate-700 to-slate-900'}`} />
-                  )}
-                </div>
-                <div className="p-4">
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <p className="font-semibold text-slate-900">{site.name}</p>
-                      <p className="mt-0.5 text-sm text-slate-500">{site.clientName ?? 'No client'} · {meta?.name ?? site.templateId}</p>
+                <Link to={`/editor/${site.templateId}?project=${site.id}`} className="block">
+                  <div className="relative aspect-[16/9] bg-slate-900">
+                    {thumb ? (
+                      <img src={thumb} alt="" className="absolute inset-0 h-full w-full object-cover object-top" />
+                    ) : (
+                      <div className={`absolute inset-0 bg-gradient-to-br ${meta?.previewGradient ?? 'from-slate-700 to-slate-900'}`} />
+                    )}
+                  </div>
+                  <div className="p-4">
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <p className="font-semibold text-slate-900">{site.name}</p>
+                        <p className="mt-0.5 text-sm text-slate-500">{site.clientName ?? 'No client'} · {meta?.name ?? site.templateId}</p>
+                      </div>
+                      <StatusBadge status={site.status} />
                     </div>
-                    <StatusBadge status={site.status} />
                   </div>
-                  <div className="mt-4 flex items-center justify-between text-xs text-slate-500">
-                    <span>Progress</span>
-                    <span>{site.progressPercent}%</span>
-                  </div>
-                  <div className="mt-2">
-                    <ProgressBar value={site.progressPercent} />
-                  </div>
+                </Link>
+                <div className="flex justify-end border-t border-slate-100 px-2 py-1">
+                  <DeleteProjectButton id={site.id} name={site.name} onDeleted={() => setSites((current) => current?.filter((item) => item.id !== site.id) ?? [])} />
                 </div>
-              </Link>
+              </article>
             )
           })}
         </div>

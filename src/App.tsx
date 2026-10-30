@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './auth/AuthContext'
 import { RequireAuth } from './auth/RequireAuth'
 import { WebsiteProvider } from './context/WebsiteContext'
+import { TemplateLibraryPage } from './pages/TemplateLibraryPage'
 import { HomePage } from './pages/HomePage'
 import { EditorPage } from './pages/EditorPage'
 import { HandoffPage } from './pages/HandoffPage'
@@ -26,6 +27,7 @@ export default function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="/templates" element={<TemplateLibraryPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/pricing" element={<PricingPublicPage />} />
             <Route path="/login" element={<LoginPage />} />

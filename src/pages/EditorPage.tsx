@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
-import { Lock, Save } from 'lucide-react'
+import { Lock, PanelLeftClose, PanelLeftOpen, Save } from 'lucide-react'
 import { toast } from 'sonner'
 import { createProject, getProject } from '../api/projects'
 import { ContentForm } from '../components/ContentForm'
@@ -38,6 +38,7 @@ export function EditorPage() {
   const bootedKey = useRef<string | null>(null)
   const [paywallOpen, setPaywallOpen] = useState(false)
   const [saving, setSaving] = useState(false)
+  const [editorCollapsed, setEditorCollapsed] = useState(false)
 
   const id = templateId ?? ''
   const held = useHospitalityTemplateGuard(id)
@@ -113,6 +114,19 @@ export function EditorPage() {
     <div className="flex h-screen flex-col bg-slate-100">
       <header className="relative z-[200] flex h-14 shrink-0 items-center justify-between border-b border-slate-200 bg-white px-4">
         <div className="flex min-w-0 items-center gap-3">
+          {!readOnly && (
+            <button
+              type="button"
+              onClick={() => setEditorCollapsed((collapsed) => !collapsed)}
+              aria-label={editorCollapsed ? 'Expand editor panel' : 'Collapse editor panel'}
+              aria-expanded={!editorCollapsed}
+              aria-controls="editor-panel"
+              title={editorCollapsed ? 'Expand editor panel' : 'Collapse editor panel'}
+              className="shrink-0 rounded-lg border border-slate-200 p-2 text-slate-600 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+            >
+              {editorCollapsed ? <PanelLeftOpen size={18} /> : <PanelLeftClose size={18} />}
+            </button>
+          )}
           <Link to="/" className="text-sm font-medium text-slate-500 hover:text-slate-800">
             ← Sites
           </Link>
@@ -179,14 +193,16 @@ export function EditorPage() {
 
       <div className="flex flex-1 overflow-hidden">
         {!readOnly && (
-          <aside className="w-full max-w-md shrink-0 overflow-y-auto border-r border-slate-200 bg-white p-5">
-            <h2 className="mb-5 text-sm font-semibold uppercase tracking-wide text-slate-500">Content</h2>
+          <aside
+            id="editor-panel"
+            className={`${editorCollapsed ? 'hidden' : 'flex'} h-full w-full max-w-md shrink-0 flex-col overflow-hidden border-r border-slate-200 bg-white`}
+          >
             <ContentForm />
           </aside>
         )}
 
-        <main className="flex-1 overflow-hidden bg-slate-200 p-4">
-          <div className="mx-auto flex h-full w-[90%] flex-col overflow-hidden rounded-xl border border-slate-300 bg-white shadow-lg">
+        <main className="min-w-0 flex-1 overflow-hidden bg-slate-200 p-4">
+          <div className={`mx-auto flex h-full ${editorCollapsed ? 'w-full' : 'w-[90%]'} flex-col overflow-hidden rounded-xl border border-slate-300 bg-white shadow-lg`}>
             <div className="flex items-center gap-2 border-b border-slate-200 bg-slate-50 px-4 py-2">
               <div className="flex gap-1.5">
                 <div className="h-3 w-3 rounded-full bg-red-400" />

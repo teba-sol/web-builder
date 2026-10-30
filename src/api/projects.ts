@@ -50,3 +50,7 @@ export function issueCrsCredentials(id: string) {
 export function getExportEntitlement(id: string) {
   return apiFetch<ProjectResponse>(`/api/v1/projects/${id}/export-entitlement`)
 }
+
+export function deleteProject(id: string) {
+  return apiFetch<void>(`/api/v1/projects/${id}`, { method: 'DELETE' })
+}

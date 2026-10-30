@@ -1,3 +1,4 @@
+import { actionBackground } from '../utils/accentInk'
 import { resolveBrandAccent } from '../data/brand'
 import { getColorSchemes } from '../data/colorSchemes'
 import { getShowcaseConfig } from '../data/sectionConfig'
@@ -172,6 +173,7 @@ export function buildAllSitePages(
   const heroHtml = buildStaticHeroHtml({
     templateId,
     heroLayout: layout.heroLayout,
+    accent: actionBackground(accent, scheme.swatches[1]),
     heroImage: hero,
     businessName: content.businessName,
     tagline: content.tagline,
