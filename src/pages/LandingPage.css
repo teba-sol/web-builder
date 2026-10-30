@@ -1,0 +1,1151 @@
+.aura-page {
+  --aura-ink:#111112;
+  --aura-paper:#eeeae3;
+  --aura-orange:#ff8354;
+  --aura-muted:#99969f;
+  --aura-line:rgba(255,255,255,.16);
+  background:var(--aura-ink);
+  color:var(--aura-paper);
+  font-family:Manrope,Inter,system-ui,sans-serif;
+  overflow-x:clip;
+}
+
+.aura-page *, .aura-page *::before,.aura-page *::after {
+  box-sizing:border-box;
+}
+
+.aura-page a,.aura-page button,.aura-page summary {
+  -webkit-tap-highlight-color:transparent;
+}
+
+.aura-page :is(a,button,summary):focus-visible {
+  outline:2px solid var(--aura-orange);
+  outline-offset:6px;
+}
+
+.aura-page a {
+  text-decoration:none;
+}
+
+.aura-skip {
+  position:fixed;
+  left:20px;
+  top:-100px;
+  z-index:100;
+  background:#fff;
+  color:#111;
+  padding:12px 20px;
+}
+
+.aura-skip:focus {
+  top:12px;
+}
+
+.aura-nav {
+  height:84px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 4vw;
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  z-index:40;
+  border-bottom:1px solid var(--aura-line);
+  background:rgba(17,17,18,.65);
+  backdrop-filter:blur(16px);
+}
+
+.aura-logo {
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  font-size:21px;
+  font-weight:650;
+  letter-spacing:-1px;
+}
+
+.aura-logo>span:first-child {
+  display:grid;
+  place-items:center;
+  width:30px;
+  height:34px;
+  border:1px solid currentColor;
+  border-radius:9px;
+  font-size:17px;
+  letter-spacing:0;
+}
+
+.aura-logo-dot {
+  font-size:10px;
+  align-self:flex-start;
+  padding-top:4px;
+}
+
+.aura-nav-links,.aura-nav-actions {
+  display:flex;
+  align-items:center;
+  gap:28px;
+  font-size:12px;
+}
+
+.aura-nav-links a {
+  color:#c1bdc6;
+}
+
+.aura-nav a:hover {
+  color:var(--aura-orange);
+}
+
+.aura-nav-actions {
+  gap:21px;
+}
+
+.aura-nav-cta {
+  display:inline-flex;
+  align-items:center;
+  gap:15px;
+  border:1px solid var(--aura-line);
+  border-radius:999px;
+  padding:12px 18px;
+}
+
+.aura-motion {
+  display:flex;
+  align-items:center;
+  gap:6px;
+  color:#b0aab7;
+  font-size:10px;
+  cursor:pointer;
+}
+
+.aura-motion:disabled {
+  opacity:.5;
+  cursor:default;
+}
+
+.aura-mobile-menu {
+  display:none;
+}
+
+.aura-hero {
+  position:relative;
+  min-height:900px;
+}
+
+.aura-page[data-immersive=true] .aura-hero {
+  height:155svh;
+  min-height:1000px;
+}
+
+.aura-hero-stage {
+  position:relative;
+  min-height:900px;
+  height:100svh;
+  max-height:1250px;
+  overflow:hidden;
+}
+
+.aura-page[data-immersive=true] .aura-hero-stage {
+  position:sticky;
+  top:0;
+}
+
+.aura-hero-grid {
+  position:absolute;
+  inset:0;
+  opacity:.2;
+  background-image:linear-gradient(to right,transparent calc(100% - 1px),#59535d 1px);
+  background-size:20% 100%;
+  mask-image:linear-gradient(#000,transparent);
+}
+
+.aura-hero-copy {
+  position:relative;
+  z-index:3;
+  padding:clamp(170px,20vh,250px) 5vw 0;
+  pointer-events:none;
+  width:100%;
+}
+
+.aura-hero-copy a {
+  pointer-events:auto;
+}
+
+.aura-kicker {
+  font-size:10px;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  font-weight:500;
+}
+
+.aura-live-dot {
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  display:inline-block;
+  background:var(--aura-orange);
+  margin-right:10px;
+  box-shadow:0 0 18px #ff835477;
+}
+
+.aura-hero h1 {
+  font-size:clamp(72px,8.7vw,156px);
+  font-weight:500;
+  line-height:.99;
+  letter-spacing:-.075em;
+  margin:30px 0;
+  max-width:1200px;
+}
+
+.aura-hero h1>span {
+  display:block;
+}
+
+.aura-page em {
+  font-family:Georgia,'Times New Roman',serif;
+  font-weight:400;
+  letter-spacing:-.065em;
+}
+
+.aura-hero h1 em {
+  color:#cebae9;
+}
+
+.aura-hero-description {
+  font-size:14px;
+  line-height:1.8;
+  color:#b9b2c0;
+  max-width:470px;
+}
+
+.aura-hero-actions {
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:26px;
+  margin-top:28px;
+}
+
+.aura-button {
+  display:inline-flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:30px;
+  min-height:54px;
+  padding:15px 22px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:600;
+  transition:background .2s,transform .2s;
+}
+
+.aura-button:hover {
+  transform:translateY(-3px);
+}
+
+.aura-button-orange {
+  background:var(--aura-orange);
+  color:#151212;
+}
+
+.aura-button-light {
+  background:var(--aura-paper);
+  color:#161416;
+}
+
+.aura-button-dark {
+  background:#181515;
+  color:#fff;
+}
+
+.aura-text-link {
+  display:inline-flex;
+  align-items:center;
+  gap:12px;
+  font-size:12px;
+  border-bottom:1px solid #ffffff4d;
+  padding:10px 0;
+}
+
+.aura-orbit {
+  position:absolute;
+  z-index:1;
+  width:62vw;
+  height:62vw;
+  max-width:1000px;
+  max-height:1000px;
+  right:-5vw;
+  top:20px;
+  pointer-events:none;
+}
+
+.aura-orbit-fallback {
+  position:absolute;
+  inset:20%;
+  border:45px solid #ad88bb;
+  border-radius:42% 58% 65% 35%/55% 41% 59% 45%;
+  transform:rotate(-30deg);
+  background:radial-gradient(ellipse,transparent 40%,#ff835455);
+  box-shadow:inset 12px -14px 30px #ff835477,14px 18px 70px #a58bcd33,0 0 100px #8e5b9b33;
+}
+
+.aura-sculpture {
+  position:absolute;
+  inset:0;
+}
+
+.aura-sculpture canvas {
+  width:100%;
+  height:100%;
+  position:relative;
+  z-index:1;
+}
+
+.aura-orbit:has([data-ready=true]) .aura-orbit-fallback {
+  opacity:0;
+}
+
+.aura-float {
+  position:absolute;
+  z-index:4;
+  border-radius:9px;
+  border:1px solid #ffffff40;
+  box-shadow:0 25px 60px #0009;
+  overflow:hidden;
+  background:#252127;
+  width:24vw;
+  max-width:370px;
+  display:block;
+  will-change:transform;
+}
+
+.aura-float:hover {
+  border-color:var(--aura-orange);
+}
+
+.aura-float img {
+  width:100%;
+  aspect-ratio:1.65;
+  object-fit:cover;
+  object-position:top;
+}
+
+.aura-window-bar {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:9px 12px;
+  font-size:8px;
+  color:#d5cedd;
+  gap:10px;
+}
+
+.aura-window-bar>span:first-child {
+  font-size:6px;
+  letter-spacing:3px;
+  color:#77707e;
+}
+
+.aura-float-0 {
+  right:23vw;
+  bottom:90px;
+  transform:rotate(-7deg);
+}
+
+.aura-float-1 {
+  right:-2vw;
+  bottom:250px;
+  transform:rotate(9deg);
+}
+
+.aura-float-2 {
+  right:1vw;
+  bottom:50px;
+  transform:rotate(-3deg);
+  width:19vw;
+}
+
+.aura-hero-bottom {
+  position:absolute;
+  bottom:22px;
+  left:5vw;
+  right:5vw;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  color:#8c8693;
+  font-size:9px;
+  letter-spacing:.06em;
+}
+
+.aura-hero-bottom>a {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  color:#ddd7e3;
+}
+
+.aura-coordinates {
+  font-family:monospace;
+}
+
+.aura-section-marker {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+  font:9px/1.6 monospace;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  padding-bottom:24px;
+  border-bottom:1px solid currentColor;
+}
+
+.aura-section-marker>span:last-child {
+  opacity:.5;
+}
+
+.aura-section-marker a {
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.aura-manifesto {
+  background:var(--aura-paper);
+  color:#252228;
+  padding:45px 5vw 35px;
+  position:relative;
+  overflow:hidden;
+}
+
+.aura-manifesto .aura-section-marker {
+  border-color:#23202833;
+}
+
+.aura-manifesto-copy {
+  font-size:clamp(36px,5.6vw,90px);
+  font-weight:500;
+  line-height:1.12;
+  letter-spacing:-.055em;
+  padding:85px 0 70px 15vw;
+}
+
+.aura-manifesto-copy em {
+  color:#755c87;
+}
+
+.aura-running-type {
+  font-size:clamp(100px,18vw,300px);
+  font-weight:550;
+  letter-spacing:-.075em;
+  line-height:1;
+  white-space:nowrap;
+  color:transparent;
+  -webkit-text-stroke:1px #b4aaa9;
+  margin-left:-8vw;
+  user-select:none;
+}
+
+.aura-running-type span {
+  display:block;
+  width:max-content;
+}
+
+.aura-manifesto-footer {
+  margin-top:42px;
+  display:flex;
+  align-items:center;
+  gap:22px;
+}
+
+.aura-manifesto-footer p {
+  font-size:12px;
+  line-height:1.7;
+}
+
+.aura-round-link {
+  margin-left:auto;
+  border:1px solid #25222855;
+  width:54px;
+  height:54px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+}
+
+.aura-work {
+  padding:70px 5vw 80px;
+  scroll-margin-top:24px;
+}
+
+.aura-work .aura-section-marker {
+  color:#aaa2ae;
+  border-color:var(--aura-line);
+}
+
+.aura-work-heading {
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:30px;
+  margin:65px 0;
+}
+
+.aura-work-heading h2,.aura-experience h2 {
+  font-size:clamp(36px,5.3vw,84px);
+  font-weight:500;
+  line-height:1.07;
+  letter-spacing:-.055em;
+}
+
+.aura-work-heading em {
+  color:#c8b4de;
+}
+
+.aura-work-heading p {
+  font-size:12px;
+  line-height:1.9;
+  color:#aaa2ae;
+  padding-bottom:8px;
+}
+
+.aura-project-grid {
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:80px 5vw;
+  align-items:start;
+}
+
+.aura-project:nth-child(even) {
+  margin-top:110px;
+}
+
+.aura-project-visual {
+  position:relative;
+  display:block;
+  overflow:hidden;
+  aspect-ratio:1.25;
+  background:#27232c;
+}
+
+.aura-project:nth-child(even) .aura-project-visual {
+  aspect-ratio:.95;
+}
+
+.aura-project-visual img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:top;
+  will-change:transform;
+}
+
+.aura-project-open {
+  position:absolute;
+  right:20px;
+  bottom:20px;
+  display:grid;
+  place-items:center;
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  background:#eeeae3;
+  color:#222;
+  transition:background .2s,transform .2s;
+}
+
+.aura-project-visual:hover .aura-project-open {
+  background:var(--aura-orange);
+  transform:rotate(45deg);
+}
+
+.aura-project-index {
+  position:absolute;
+  top:16px;
+  left:18px;
+  font:10px monospace;
+  background:#141116b8;
+  color:white;
+  padding:7px 10px;
+  border-radius:999px;
+}
+
+.aura-project-meta {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  padding:20px 0;
+  border-bottom:1px solid var(--aura-line);
+}
+
+.aura-project-meta h3 {
+  font-size:17px;
+  font-weight:500;
+  letter-spacing:-.03em;
+}
+
+.aura-project-meta p {
+  font-size:10px;
+  color:#9e96a6;
+  margin-top:6px;
+}
+
+.aura-project-use {
+  display:flex;
+  gap:12px;
+  align-items:center;
+  font-size:11px;
+}
+
+.aura-library-link {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:25px;
+  border-top:1px solid var(--aura-line);
+  padding-top:25px;
+  margin-top:80px;
+  font-size:13px;
+  color:#9e96a6;
+}
+
+.aura-library-link>span {
+  display:flex;
+  gap:30px;
+  align-items:center;
+  color:var(--aura-paper);
+}
+
+.aura-experience {
+  padding:60px 5vw 100px;
+  background:#1b181e;
+  scroll-margin-top:24px;
+}
+
+.aura-experience .aura-section-marker {
+  color:#b2a8bd;
+  border-color:var(--aura-line);
+}
+
+.aura-experience-layout {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7vw;
+  align-items:start;
+  margin-top:85px;
+}
+
+.aura-experience-intro {
+  position:sticky;
+  top:70px;
+}
+
+.aura-experience-intro>.aura-kicker {
+  color:#a49aac;
+  margin-bottom:25px;
+}
+
+.aura-experience h2 {
+  font-size:clamp(36px,4vw,64px);
+}
+
+.aura-experience h2 em {
+  color:#c7b0dc;
+}
+
+.aura-experience-intro .aura-button {
+  margin-top:35px;
+}
+
+.aura-steps article {
+  display:grid;
+  grid-template-columns:35px 1fr;
+  gap:20px;
+  border-top:1px solid var(--aura-line);
+  padding:30px 0 45px;
+}
+
+.aura-step-number {
+  font:10px monospace;
+  color:var(--aura-orange);
+  padding-top:7px;
+}
+
+.aura-steps h3 {
+  font-size:clamp(23px,2.2vw,36px);
+  font-weight:450;
+  letter-spacing:-.04em;
+}
+
+.aura-steps p {
+  font-size:13px;
+  line-height:1.9;
+  color:#aaa0b4;
+  margin:18px 0;
+  max-width:390px;
+}
+
+.aura-step-tag {
+  font:9px monospace;
+  text-transform:uppercase;
+  letter-spacing:.04em;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:#cbbad8;
+}
+
+.aura-finale {
+  background:var(--aura-orange);
+  color:#211716;
+  padding:40px 5vw 55px;
+  overflow:hidden;
+}
+
+.aura-finale .aura-section-marker {
+  border-color:#21171655;
+}
+
+.aura-finale>.aura-kicker {
+  margin-top:65px;
+}
+
+.aura-finale h2 {
+  position:relative;
+  font-size:clamp(90px,18vw,290px);
+  line-height:.85;
+  letter-spacing:-.08em;
+  font-weight:500;
+  margin:40px 0;
+}
+
+.aura-finale h2 em {
+  margin-left:19vw;
+}
+
+.aura-finale h2 svg {
+  position:absolute;
+  width:12vw;
+  height:12vw;
+  stroke-width:.6;
+  right:0;
+  top:0;
+}
+
+.aura-finale-bottom {
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:25px;
+  margin-top:60px;
+}
+
+.aura-finale-bottom p {
+  font-size:15px;
+  line-height:1.6;
+}
+
+.aura-footer {
+  padding:40px 5vw;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:25px;
+  font-size:10px;
+  color:#9f96a9;
+}
+
+.aura-footer .aura-logo {
+  color:var(--aura-paper);
+  font-size:18px;
+}
+
+.aura-footer nav {
+  display:flex;
+  gap:25px;
+}
+
+@media(min-width:1700px) {
+  .aura-hero-copy {
+    padding-top:210px;
+  }
+  .aura-float-0 {
+    bottom:120px;
+  }
+  .aura-float-1 {
+    bottom:300px;
+  }
+}
+
+@media(max-width:1100px) {
+  .aura-nav-links {
+    gap:16px;
+    font-size:11px;
+  }
+  .aura-nav-actions {
+    gap:14px;
+  }
+  .aura-motion span {
+    display:none;
+  }
+  .aura-hero {
+    min-height:800px;
+  }
+  .aura-hero-stage {
+    min-height:800px;
+  }
+  .aura-hero h1 {
+    font-size:10vw;
+  }
+  .aura-orbit {
+    width:80vw;
+    height:80vw;
+    right:-25vw;
+    top:60px;
+  }
+  .aura-hero-description {
+    max-width:390px;
+    font-size:13px;
+  }
+  .aura-float {
+    width:30vw;
+  }
+  .aura-float-0 {
+    right:28vw;
+    bottom:110px;
+  }
+  .aura-float-1 {
+    bottom:160px;
+  }
+  .aura-float-2 {
+    width:24vw;
+    bottom:20px;
+  }
+  .aura-hero-bottom>span {
+    display:none;
+  }
+  .aura-manifesto-copy {
+    padding-left:5vw;
+  }
+}
+
+@media(max-width:767px) {
+  .aura-nav {
+    height:72px;
+    padding:0 5vw;
+  }
+  .aura-nav-links,.aura-sign-in {
+    display:none;
+  }
+  .aura-nav-cta {
+    font-size:11px;
+    padding:10px 14px;
+    gap:8px;
+  }
+  .aura-nav-actions {
+    gap:14px;
+  }
+  .aura-logo {
+    font-size:18px;
+  }
+  .aura-logo>span:first-child {
+    width:26px;
+    height:30px;
+  }
+  .aura-mobile-menu {
+    display:block;
+  }
+  .aura-mobile-menu summary {
+    list-style:none;
+    cursor:pointer;
+  }
+  .aura-mobile-menu summary::-webkit-details-marker {
+    display:none;
+  }
+  .aura-mobile-menu nav {
+    position:absolute;
+    right:5vw;
+    top:64px;
+    background:#252027;
+    border:1px solid #ffffff25;
+    border-radius:12px;
+    min-width:190px;
+    padding:10px;
+    display:grid;
+  }
+  .aura-mobile-menu nav a {
+    padding:12px;
+    font-size:13px;
+  }
+  .aura-hero,.aura-hero-stage {
+    height:auto;
+    min-height:840px;
+    max-height:none;
+  }
+  .aura-hero-copy {
+    padding:135px 5vw 0;
+  }
+  .aura-kicker {
+    font-size:8px;
+    letter-spacing:.12em;
+  }
+  .aura-hero h1 {
+    font-size:clamp(49px,11.5vw,85px);
+    margin:26px 0;
+    line-height:1.02;
+  }
+  .aura-hero-description {
+    font-size:13px;
+    max-width:360px;
+  }
+  .aura-desktop-break {
+    display:none;
+  }
+  .aura-hero-actions {
+    gap:18px;
+    margin-top:24px;
+  }
+  .aura-button {
+    font-size:11px;
+    min-height:48px;
+    padding:12px 18px;
+    gap:22px;
+  }
+  .aura-text-link {
+    font-size:10px;
+  }
+  .aura-orbit {
+    width:110vw;
+    height:110vw;
+    right:-45vw;
+    top:230px;
+    opacity:.5;
+  }
+  .aura-orbit-fallback {
+    border-width:30px;
+  }
+  .aura-floating-previews {
+    position:relative;
+    height:300px;
+    margin-top:50px;
+  }
+  .aura-float {
+    width:55vw;
+    max-width:none;
+  }
+  .aura-float-0 {
+    right:33vw;
+    bottom:50px;
+  }
+  .aura-float-1 {
+    right:-10vw;
+    bottom:100px;
+    width:58vw;
+  }
+  .aura-float-2 {
+    right:6vw;
+    bottom:0;
+    width:45vw;
+  }
+  .aura-hero-bottom {
+    position:relative;
+    left:auto;
+    right:auto;
+    bottom:auto;
+    margin:20px 5vw 25px;
+  }
+  .aura-hero-grid {
+    background-size:33.33% 100%;
+  }
+  .aura-section-marker {
+    font-size:8px;
+    gap:15px;
+  }
+  .aura-section-marker>span:last-child {
+    display:none;
+  }
+  .aura-manifesto {
+    padding-top:30px;
+  }
+  .aura-manifesto-copy {
+    padding:55px 0 45px;
+    font-size:clamp(30px,6.9vw,50px);
+  }
+  .aura-manifesto-footer {
+    gap:15px;
+    margin-top:30px;
+  }
+  .aura-manifesto-footer p {
+    font-size:10px;
+  }
+  .aura-round-link {
+    width:42px;
+    height:42px;
+    flex-shrink:0;
+  }
+  .aura-work {
+    padding-top:40px;
+    padding-bottom:45px;
+  }
+  .aura-work-heading {
+    display:block;
+    margin:40px 0 30px;
+  }
+  .aura-work-heading h2 {
+    font-size:10vw;
+  }
+  .aura-work-heading p {
+    font-size:11px;
+    margin-top:20px;
+  }
+  .aura-project-grid {
+    grid-template-columns:1fr;
+    gap:35px;
+  }
+  .aura-project:nth-child(even) {
+    margin-top:0;
+  }
+  .aura-project-visual,.aura-project:nth-child(even) .aura-project-visual {
+    aspect-ratio:1.3;
+  }
+  .aura-project-meta {
+    padding:16px 0;
+  }
+  .aura-project-meta h3 {
+    font-size:16px;
+  }
+  .aura-project-use {
+    font-size:10px;
+    gap:6px;
+  }
+  .aura-library-link {
+    margin-top:40px;
+    align-items:flex-start;
+    flex-direction:column;
+    font-size:12px;
+    gap:15px;
+  }
+  .aura-library-link>span {
+    gap:20px;
+  }
+  .aura-experience {
+    padding:35px 5vw 40px;
+  }
+  .aura-experience-layout {
+    grid-template-columns:1fr;
+    gap:40px;
+    margin-top:40px;
+  }
+  .aura-experience-intro {
+    position:static;
+  }
+  .aura-experience h2 {
+    font-size:10vw;
+  }
+  .aura-steps article {
+    gap:10px;
+    padding:25px 0;
+  }
+  .aura-steps p {
+    font-size:12px;
+  }
+  .aura-step-tag {
+    font-size:8px;
+  }
+  .aura-finale {
+    padding:30px 5vw 35px;
+  }
+  .aura-finale>.aura-kicker {
+    margin-top:40px;
+  }
+  .aura-finale h2 {
+    font-size:23vw;
+    margin:35px 0;
+    line-height:.95;
+  }
+  .aura-finale h2 em {
+    margin-left:10vw;
+  }
+  .aura-finale-bottom {
+    margin-top:35px;
+    align-items:flex-start;
+    flex-direction:column;
+  }
+  .aura-finale-bottom p {
+    font-size:13px;
+  }
+  .aura-footer {
+    flex-wrap:wrap;
+    padding:30px 5vw;
+    gap:25px;
+  }
+  .aura-footer>span {
+    display:none;
+  }
+  .aura-footer nav {
+    gap:20px;
+  }
+  .aura-footer>a:last-child {
+    margin-left:auto;
+  }
+}
+
+.aura-page[data-motion=off] .aura-hero,.aura-page[data-motion=off] .aura-hero-stage {
+  height:auto;
+  min-height:900px;
+}
+
+.aura-page[data-motion=off] .aura-hero-stage {
+  position:relative;
+}
+
+.aura-page[data-motion=off] * {
+  scroll-behavior:auto!important;
+  animation:none!important;
+  transition:none!important;
+}
+
+.aura-page[data-motion=off] .aura-project-visual img {
+  transform:none!important;
+}
+
+@media(prefers-reduced-motion:reduce) {
+  .aura-page * {
+    animation:none!important;
+    transition:none!important;
+    scroll-behavior:auto!important;
+  }
+  .aura-page .aura-button:hover {
+    transform:none;
+  }
+}
+
+@media(max-width:767px) {
+  .aura-page[data-motion=off] .aura-hero,.aura-page[data-motion=off] .aura-hero-stage {
+    min-height:840px;
+  }
+}
+
+@media(max-width:380px) {
+  .aura-logo {
+    font-size:16px;
+    gap:7px;
+  }
+  .aura-logo-dot {
+    display:none;
+  }
+  .aura-nav-actions {
+    gap:10px;
+  }
+  .aura-nav-cta {
+    font-size:10px;
+    padding:9px 10px;
+    gap:6px;
+  }
+}
+

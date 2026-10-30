@@ -1,94 +1,132 @@
-import { useEffect } from 'react'
+import { useAuraTheme } from '../hooks/useAuraTheme'
+import { AuraHeader } from '../components/landing/AuraHeader'
+import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowRight, Check, Download, LayoutTemplate, Palette, PanelLeftClose } from 'lucide-react'
-import { PublicHeader } from '../components/landing/PublicHeader'
-import { MarketingFooter } from '../components/MarketingFooter'
-import { TemplateCard } from '../components/TemplateCard'
+import { ArrowDown, ArrowRight, ArrowUpRight, Check, Layers3, MoveUpRight } from 'lucide-react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { SmoothScroll } from '../components/landing/SmoothScroll'
+import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
+import { useIsNarrow } from '../hooks/useIsNarrow'
 import { useTemplateCatalog } from '../catalog/useTemplateCatalog'
 import { getTemplateThumbnail } from '../catalog/thumbnails'
 import { templatesForPersonalAccount } from '../data/hospitalityAccess'
+import './LandingPage.css'
+
+const AuraSculpture = lazy(() => import('../components/landing/AuraSculpture'))
+gsap.registerPlugin(ScrollTrigger)
 
 export function LandingPage() {
+  const { theme } = useAuraTheme()
+  const root = useRef<HTMLDivElement>(null)
+  const reduced = usePrefersReducedMotion()
+  const narrow = useIsNarrow('(max-width: 767px)')
+  const [paused, setPaused] = useState(false)
+  const motion = !reduced && !paused
+  const immersive = motion && !narrow
   const templates = templatesForPersonalAccount(useTemplateCatalog())
-  const featured = ['realtor', 'restaurant', 'creative'].flatMap((id) => {
-    const template = templates.find((item) => item.id === id)
-    return template ? [template] : []
+  const picks = ['restaurant', 'creative', 'photography', 'realtor'].flatMap((id) => {
+    const match = templates.find((template) => template.id === id)
+    return match ? [match] : []
   })
-  const hero = featured[0] ?? templates[0]
-  const thumbnail = hero ? getTemplateThumbnail(hero.id) : undefined
 
   useEffect(() => {
     const previous = document.title
-    document.title = 'Buildoura — Create a website that feels like yours'
+    document.title = 'Buildoura — Give your ideas a new dimension'
     return () => { document.title = previous }
   }, [])
 
+  useEffect(() => {
+    if (!motion || !root.current) return
+    const context = gsap.context(() => {
+      gsap.fromTo('[data-hero-line]', { y: 65, opacity: 0 }, { y: 0, opacity: 1, duration: 1.15, stagger: 0.12, ease: 'power3.out' })
+      gsap.utils.toArray<HTMLElement>('[data-reveal]').forEach((element) => {
+        gsap.fromTo(element, { y: 35, opacity: 0.35 }, { y: 0, opacity: 1, ease: 'power2.out', duration: 0.85, scrollTrigger: { trigger: element, start: 'top 92%', once: true } })
+      })
+      if (!narrow) {
+        const hero = gsap.timeline({ scrollTrigger: { trigger: '[data-hero]', start: 'top top', end: 'bottom top', scrub: 1 } })
+        hero.to('[data-hero-copy]', { yPercent: -20, opacity: 0.2, ease: 'none' }, 0)
+          .to('[data-float="0"]', { y: -150, rotation: -12, ease: 'none' }, 0)
+          .to('[data-float="1"]', { y: -250, rotation: 13, ease: 'none' }, 0)
+          .to('[data-float="2"]', { y: -95, rotation: -4, ease: 'none' }, 0)
+          .to('[data-orbit]', { y: 100, scale: 1.1, ease: 'none' }, 0)
+        gsap.utils.toArray<HTMLElement>('[data-project-image]').forEach((element) => {
+          gsap.fromTo(element, { yPercent: -5, scale: 1.13 }, { yPercent: 5, scale: 1.13, ease: 'none', scrollTrigger: { trigger: element.parentElement, start: 'top bottom', end: 'bottom top', scrub: 1 } })
+        })
+        gsap.to('[data-manifesto-word]', { xPercent: -12, ease: 'none', scrollTrigger: { trigger: '[data-manifesto]', start: 'top bottom', end: 'bottom top', scrub: 1 } })
+      }
+    }, root)
+    return () => context.revert()
+  }, [motion, narrow])
+
   return (
-    <div className="min-h-screen bg-white text-slate-900">
-      <a href="#main-content" className="sr-only z-50 rounded-lg bg-navy p-3 text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4">Skip to content</a>
-      <PublicHeader />
-      <main id="main-content">
-        <section className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-14 sm:px-6 sm:py-20 lg:grid-cols-[0.9fr_1.1fr] lg:gap-12">
-          <div>
-            <p className="mb-5 text-xs font-semibold uppercase tracking-[0.16em] text-accent">Your website, your way</p>
-            <h1 className="max-w-xl text-4xl font-semibold leading-[1.12] tracking-tight text-navy sm:text-5xl lg:text-[3.4rem]">A great website.<br />A simpler way to build it.</h1>
-            <p className="mt-6 max-w-md text-base leading-7 text-slate-500">Start with a thoughtful design. Add your content, make it yours, and export a working website—all in one place.</p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link to="/signup" className="inline-flex items-center justify-center gap-2 rounded-xl bg-accent px-5 py-3 text-sm font-semibold text-white hover:bg-accent-dark">Start building <ArrowRight size={16} /></Link>
-              <Link to="/templates" className="inline-flex items-center justify-center rounded-xl border border-slate-300 px-5 py-3 text-sm font-semibold text-navy hover:bg-slate-50">Explore templates</Link>
-            </div>
-            <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-xs text-slate-500">
-              {['Live previews', 'Your own branding', 'Full-stack export'].map((label) => <span key={label} className="inline-flex items-center gap-1.5"><Check size={14} className="text-navy" />{label}</span>)}
-            </div>
-          </div>
-          {hero && <div className="min-w-0 rounded-2xl border border-slate-200 bg-slate-50 p-3 sm:p-5">
-            <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-              <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3 text-xs text-slate-500"><span className="flex items-center gap-2"><PanelLeftClose size={14} />Website preview</span><span>{hero.name}</span></div>
-              <Link to={`/demo/${hero.id}`} target="_blank" rel="noopener noreferrer" aria-label={`Preview ${hero.name} in a new tab`} className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-navy">
-                {thumbnail ? <img src={thumbnail} alt={`${hero.name} website design`} fetchPriority="high" className="aspect-[4/3] w-full object-cover object-top" /> : <div className={`aspect-[4/3] bg-gradient-to-br ${hero.previewGradient}`} />}
-              </Link>
-              <div className="flex items-center justify-between gap-3 border-t border-slate-100 px-4 py-3"><span className="text-xs text-slate-500">One design. Your possibilities.</span><Link to={`/demo/${hero.id}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs font-semibold text-navy">Preview <ArrowRight size={14} /></Link></div>
-            </div>
-          </div>}
-        </section>
+    <SmoothScroll enabled={immersive}>
+      <div ref={root} className="aura-page" data-theme={theme} data-motion={motion ? 'on' : 'off'} data-immersive={immersive ? 'true' : 'false'}>
+        <a href="#main-content" className="aura-skip">Skip to content</a>
+        <AuraHeader motion={motion} reduced={reduced} onToggleMotion={() => setPaused((value) => !value)} />
 
-        <section id="templates" className="scroll-mt-24 border-y border-slate-200 bg-slate-50 py-12 sm:py-16">
-          <div className="mx-auto max-w-6xl px-4 sm:px-6">
-            <div className="mb-7 flex flex-wrap items-end justify-between gap-4">
-              <div><p className="mb-2 text-xs font-semibold uppercase tracking-widest text-slate-500">A head start, by design</p><h2 className="text-2xl font-semibold tracking-tight text-navy sm:text-3xl">Find a look that fits.</h2><p className="mt-3 text-sm leading-6 text-slate-500">Designs for businesses, creative work, and everything you’re ready to share.</p></div>
-              <Link to="/templates" className="inline-flex items-center gap-2 rounded-lg py-2 text-sm font-semibold text-navy hover:underline">View all templates <ArrowRight size={16} /></Link>
+        <main id="main-content">
+          <section className="aura-hero" data-hero>
+            <div className="aura-hero-stage">
+              <div className="aura-hero-grid" aria-hidden="true" />
+              <div className="aura-orbit" data-orbit aria-hidden="true">
+                <div className="aura-orbit-fallback" />
+                {!reduced && !narrow && <Suspense fallback={null}><AuraSculpture paused={paused} /></Suspense>}
+              </div>
+              <div className="aura-hero-copy" data-hero-copy>
+                <p className="aura-kicker" data-hero-line><span className="aura-live-dot" /> A new dimension of website building</p>
+                <h1><span data-hero-line>Ideas deserve</span><span data-hero-line>more <em>space.</em></span></h1>
+                <p className="aura-hero-description" data-hero-line>For the businesses, the makers, the next big things.<br className="aura-desktop-break" /> Turn a starting point into a presence that’s unmistakably you.</p>
+                <div className="aura-hero-actions" data-hero-line><Link to="/signup" className="aura-button aura-button-orange">Make your mark <ArrowUpRight size={19} /></Link><Link to="/templates" className="aura-text-link">Explore the possibilities <ArrowRight size={17} /></Link></div>
+              </div>
+              <div className="aura-floating-previews">
+                {picks.slice(0, 3).map((template, index) => {
+                  const thumbnail = getTemplateThumbnail(template.id)
+                  return thumbnail && <Link key={template.id} to={`/demo/${template.id}`} target="_blank" rel="noopener noreferrer" aria-label={`Preview ${template.name} in a new tab`} className={`aura-float aura-float-${index}`} data-float={index}>
+                    <div className="aura-window-bar"><span>● ● ●</span><span>{template.name}</span><ArrowUpRight size={11} /></div><img src={thumbnail} alt={`${template.name} template`} loading={index === 0 ? 'eager' : 'lazy'} />
+                  </Link>
+                })}
+              </div>
+              <div className="aura-hero-bottom"><a href="#templates"><ArrowDown size={15} /> Scroll to discover</a><span>Designed to be yours. Built to go beyond.</span><span className="aura-coordinates">TEMPLATES / EXPRESSION / EXPORT</span></div>
             </div>
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">{featured.map((template) => <TemplateCard key={template.id} template={template} />)}</div>
-          </div>
-        </section>
+          </section>
 
-        <section id="features" className="mx-auto max-w-6xl scroll-mt-24 px-4 py-12 sm:px-6 sm:py-16">
-          <div className="mb-8 max-w-xl"><h2 className="text-2xl font-semibold tracking-tight text-navy sm:text-3xl">Less setup. More making it yours.</h2><p className="mt-3 text-sm leading-6 text-slate-500">The tools you need to turn a starting point into your own website.</p></div>
-          <div className="grid gap-8 sm:grid-cols-3">
-            {[
-              { icon: LayoutTemplate, title: 'Start with structure', copy: 'Choose a template built around your business, with pages and sections ready to customize.' },
-              { icon: Palette, title: 'Make it feel like you', copy: 'Edit your text, images, fonts, and colors. See your changes in the live preview.' },
-              { icon: Download, title: 'Take your website with you', copy: 'Export a full-stack website when it’s unlocked, ready for your own hosting.' },
-            ].map(({ icon: Icon, title, copy }) => <div key={title}><span className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-navy"><Icon size={20} strokeWidth={1.5} /></span><h3 className="font-semibold text-navy">{title}</h3><p className="mt-2 text-sm leading-6 text-slate-500">{copy}</p></div>)}
-          </div>
-        </section>
+          <section className="aura-manifesto" data-manifesto>
+            <div className="aura-section-marker"><span>01 / THE POSSIBILITIES</span><span>YOUR VISION. A DIFFERENT PERSPECTIVE.</span></div>
+            <p className="aura-manifesto-copy" data-reveal>Not another blank canvas.<br />A <em>head start</em> for something<br />that hasn’t existed before.</p>
+            <div className="aura-running-type" aria-hidden="true"><span data-manifesto-word>MAKE IT YOURS. MAKE IT YOURS.</span></div>
+            <div className="aura-manifesto-footer"><Layers3 size={24} strokeWidth={1} /><p>Thoughtful templates. An intuitive editor.<br />The freedom to take your website with you.</p><Link to="/templates" className="aura-round-link" aria-label="Explore template library"><ArrowUpRight size={24} /></Link></div>
+          </section>
 
-        <section className="border-t border-slate-200 bg-slate-50 py-12 sm:py-16">
-          <div className="mx-auto grid max-w-6xl gap-8 px-4 sm:px-6 lg:grid-cols-[1fr_1.5fr] lg:gap-16">
-            <div><h2 className="text-2xl font-semibold tracking-tight text-navy sm:text-3xl">From idea to website.</h2><p className="mt-3 text-sm leading-6 text-slate-500">A straightforward process, at your own pace.</p></div>
-            <ol className="grid gap-6 sm:grid-cols-3">{[
-              { title: 'Choose', copy: 'Explore templates and preview the pages.' },
-              { title: 'Customize', copy: 'Add your content and shape your brand.' },
-              { title: 'Export', copy: 'Unlock your website and download your files.' },
-            ].map(({ title, copy }, index) => <li key={title} className="border-t border-slate-300 pt-4"><span className="text-xs font-semibold text-accent">0{index + 1}</span><h3 className="mt-3 font-semibold text-navy">{title}</h3><p className="mt-2 text-sm leading-6 text-slate-500">{copy}</p></li>)}</ol>
-          </div>
-        </section>
+          <section id="templates" className="aura-work">
+            <div className="aura-section-marker"><span>02 / SELECTED DIRECTIONS</span><Link to="/templates">View the whole collection <ArrowUpRight size={14} /></Link></div>
+            <div className="aura-work-heading" data-reveal><h2>Different worlds.<br /><em>One starting point.</em></h2><p>A few possibilities from the studio.<br />Find your direction. Then make it your own.</p></div>
+            <div className="aura-project-grid">{picks.map((template, index) => {
+              const thumbnail = getTemplateThumbnail(template.id)
+              return <article key={template.id} className={`aura-project aura-project-${index}`} data-reveal>
+                <Link to={`/demo/${template.id}`} target="_blank" rel="noopener noreferrer" className="aura-project-visual" aria-label={`Preview ${template.name} in a new tab`}>
+                  {thumbnail ? <img data-project-image src={thumbnail} alt={`${template.name} website preview`} loading="lazy" /> : <div className={`h-full bg-gradient-to-br ${template.previewGradient}`} />}
+                  <span className="aura-project-open"><ArrowUpRight size={24} /></span><span className="aura-project-index">0{index + 1}</span>
+                </Link>
+                <div className="aura-project-meta"><div><h3>{template.name}</h3><p>{template.category === 'food' ? 'Food & dining' : template.category === 'realestate' ? 'Real estate' : 'Creative & portfolio'}</p></div><Link to={`/login?return=${encodeURIComponent(`/editor/${template.id}`)}`} className="aura-project-use">Make it yours <ArrowUpRight size={16} /></Link></div>
+              </article>
+            })}</div>
+            <Link to="/templates" className="aura-library-link">Your starting point is in here.<span>Explore all templates <ArrowUpRight size={24} /></span></Link>
+          </section>
 
-        <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
-          <div className="flex flex-col items-start justify-between gap-6 rounded-2xl bg-navy p-7 text-white sm:flex-row sm:items-center sm:p-10"><div><h2 className="text-2xl font-semibold tracking-tight">Ready to make it yours?</h2><p className="mt-2 text-sm leading-6 text-white/70">Your next website starts with a design you love.</p></div><Link to="/signup" className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-semibold text-navy hover:bg-slate-100">Get started <ArrowRight size={16} /></Link></div>
-        </section>
-      </main>
-      <MarketingFooter />
-    </div>
+          <section id="features" className="aura-experience">
+            <div className="aura-section-marker"><span>03 / FROM IDEA TO OUT THERE</span><span>LESS FRICTION. MORE EXPRESSION.</span></div>
+            <div className="aura-experience-layout"><div className="aura-experience-intro" data-reveal><p className="aura-kicker">Build without the blank-page feeling.</p><h2>In your hands.<br /><em>Out of the ordinary.</em></h2><Link to="/signup" className="aura-button aura-button-light">Find your flow <ArrowUpRight size={18} /></Link></div><div className="aura-steps">{[
+              { n: '01', title: 'Choose a direction.', body: 'A restaurant. A creative studio. Your next venture. Explore complete designs built around the way you work.', tag: 'A foundation, not a formula' },
+              { n: '02', title: 'Change the frequency.', body: 'Your words, your images, your own visual language. Shape the fonts, colors, and sections, with a live preview as you go.', tag: 'Every detail, a little more you' },
+              { n: '03', title: 'Go beyond the builder.', body: 'Unlock cloud save and export for your website. Download the full-stack files and take the next step on your own hosting.', tag: 'Your website has somewhere to go' },
+            ].map((step) => <article key={step.n} data-reveal><span className="aura-step-number">{step.n}</span><div><h3>{step.title}</h3><p>{step.body}</p><span className="aura-step-tag"><Check size={12} />{step.tag}</span></div></article>)}</div></div>
+          </section>
+
+          <section className="aura-finale"><div className="aura-section-marker"><span>NEXT / YOUR MOVE</span><span>THE INTERNET HAS ROOM FOR YOU.</span></div><p className="aura-kicker" data-reveal>Something good starts here.</p><h2 data-reveal>Take up<br /><em>space.</em><MoveUpRight aria-hidden="true" /></h2><div className="aura-finale-bottom"><p>It’s your idea.<br />Let’s give it an address.</p><Link to="/signup" className="aura-button aura-button-dark">Start your next chapter <ArrowUpRight size={20} /></Link></div></section>
+        </main>
+        <footer className="aura-footer"><Link to="/" className="aura-logo"><span>B</span>buildoura</Link><span>Made for what’s next.</span><nav aria-label="Footer navigation"><Link to="/templates">Templates</Link><Link to="/pricing">Pricing</Link><Link to="/login">Sign in</Link></nav><a href="#main-content" aria-label="Back to top"><ArrowUpRight size={20} /></a></footer>
+      </div>
+    </SmoothScroll>
   )
 }

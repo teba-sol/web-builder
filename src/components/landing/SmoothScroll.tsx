@@ -8,7 +8,7 @@ import { LenisContext } from './lenisContext'
 
 gsap.registerPlugin(ScrollTrigger)
 
-export function SmoothScroll({ children }: { children: ReactNode }) {
+export function SmoothScroll({ children, enabled = true }: { children: ReactNode; enabled?: boolean }) {
   const reduced = usePrefersReducedMotion()
   const [lenis, setLenis] = useState<Lenis | null>(null)
 
@@ -22,7 +22,7 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
     const refreshTimer = window.setTimeout(refresh, 250)
     window.addEventListener('load', refresh)
 
-    if (reduced) {
+    if (reduced || !enabled) {
       return () => {
         window.clearTimeout(refreshTimer)
         window.removeEventListener('load', refresh)
@@ -36,13 +36,13 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
       smoothWheel: true,
       syncTouch: false,
       autoRaf: false,
+      anchors: { offset: -80 },
     })
     instance.on('scroll', ScrollTrigger.update)
     const ticker = (time: number) => {
       instance.raf(time * 1000)
     }
     gsap.ticker.add(ticker)
-    gsap.ticker.lagSmoothing(0)
     setLenis(instance)
     requestAnimationFrame(refresh)
 
@@ -50,7 +50,7 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
     const hashTimer = hash
       ? window.setTimeout(() => {
           refresh()
-          const target = document.querySelector(hash)
+          const target = document.getElementById(hash.slice(1))
           if (target) instance.scrollTo(target as HTMLElement, { offset: 0, immediate: true })
         }, 280)
       : 0
@@ -65,7 +65,7 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
       root.classList.remove('landing-active')
       root.style.scrollBehavior = previousBehavior
     }
-  }, [reduced])
+  }, [reduced, enabled])
 
   return <LenisContext.Provider value={lenis}>{children}</LenisContext.Provider>
 }
