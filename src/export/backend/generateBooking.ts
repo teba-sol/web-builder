@@ -11,7 +11,7 @@ import {
   parseRoomPrice,
   stayCurrency,
 } from '../../data/hospitality'
-import { accentInk } from '../../utils/accentInk'
+import { actionBackground, accentInk } from '../../utils/accentInk'
 import type { SiteExportPayload } from './exportPayload'
 import { resolveAssetPath } from './exportPayload'
 import { stayPoliciesAdminFiles } from './generateFilament'
@@ -161,16 +161,17 @@ class StayRequest
 }
 
 export function staySearchPartial(accent: string): string {
-  return `<form method="GET" action="{{ $searchAction }}" data-stay-search data-today="{{ $minDate ?? now()->toDateString() }}" class="{{ $searchClass ?? 'grid gap-4 rounded-2xl border bg-white p-5 text-slate-900 shadow-sm md:grid-cols-2 lg:grid-cols-6 lg:items-end' }}">
-  <label class="block text-sm"><span class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">Check-in</span><input type="date" name="check_in" value="{{ $checkIn }}" min="{{ $minDate ?? now()->toDateString() }}" required class="w-full rounded-lg border border-slate-300 px-3 py-2.5" /></label>
-  <label class="block text-sm"><span class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">Check-out</span><input type="date" name="check_out" value="{{ $checkOut }}" min="{{ $minDate ?? now()->toDateString() }}" required class="w-full rounded-lg border border-slate-300 px-3 py-2.5" /></label>
-  <label class="block text-sm"><span class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">Adults</span><input type="number" name="adults" min="1" max="20" value="{{ $adults }}" required class="w-full rounded-lg border border-slate-300 px-3 py-2.5" /></label>
-  <label class="block text-sm"><span class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">Children</span><input type="number" name="children" min="0" max="10" value="{{ $children }}" required class="w-full rounded-lg border border-slate-300 px-3 py-2.5" /></label>
-  <button type="submit" class="rounded-lg px-5 py-3 font-semibold ${accentInk(accent)}" style="background-color:${accent}">{{ $submitLabel ?? 'Search' }}</button>
-  <p class="text-xs text-slate-500 lg:col-span-6">Children are 17 or younger. Guests 18 and older count as adults.</p>
-  <div data-child-ages class="grid gap-3 sm:grid-cols-2 lg:col-span-6 lg:grid-cols-4">
+  const buttonColor = actionBackground(accent)
+  return `<form method="GET" action="{{ $searchAction }}" data-stay-search data-today="{{ $minDate ?? now()->toDateString() }}" class="{{ $searchClass ?? 'grid gap-4 rounded-2xl border bg-white p-5 text-slate-900 shadow-sm grid-cols-1 md:grid-cols-2 lg:grid-cols-5 items-end' }}">
+  <label class="block min-w-0 text-sm"><span class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">Check-in</span><input type="date" name="check_in" value="{{ $checkIn }}" min="{{ $minDate ?? now()->toDateString() }}" required class="{{ $inputClass ?? 'w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5' }} h-12 min-w-0 text-sm text-slate-900 outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-400/30" /></label>
+  <label class="block min-w-0 text-sm"><span class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">Check-out</span><input type="date" name="check_out" value="{{ $checkOut }}" min="{{ $minDate ?? now()->toDateString() }}" required class="{{ $inputClass ?? 'w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5' }} h-12 min-w-0 text-sm text-slate-900 outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-400/30" /></label>
+  <label class="block min-w-0 text-sm"><span class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">Adults</span><input type="number" name="adults" min="1" max="20" value="{{ $adults }}" required class="{{ $inputClass ?? 'w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5' }} h-12 min-w-0 text-sm text-slate-900 outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-400/30" /></label>
+  <label class="block min-w-0 text-sm"><span class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">Children</span><input type="number" name="children" min="0" max="10" value="{{ $children }}" required class="{{ $inputClass ?? 'w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5' }} h-12 min-w-0 text-sm text-slate-900 outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-400/30" /></label>
+  <button type="submit" class="{{ $buttonClass ?? 'rounded-lg px-5 py-3 font-semibold' }} ${accentInk(buttonColor)} inline-flex h-12 w-full items-center justify-center gap-2 self-end whitespace-nowrap shadow-sm transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-500 focus-visible:ring-offset-2 md:col-span-2 lg:col-span-1" style="background-color:${buttonColor}"><svg aria-hidden="true" class="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>{{ $submitLabel ?? 'Search' }}</button>
+  <p class="col-span-full border-t border-slate-200/70 pt-3 text-xs leading-5 text-slate-500">Children are 17 or younger. Guests 18 and older count as adults.</p>
+  <div data-child-ages class="grid gap-3 col-span-full sm:grid-cols-2 lg:grid-cols-4 empty:hidden">
     @foreach(($childAges ?? []) as $index => $age)
-    <label class="block text-sm"><span class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">Child {{ $index + 1 }} age</span><input type="number" name="child_ages[]" min="0" max="17" @if($age !== '') required @endif value="{{ $age }}" class="w-full rounded-lg border border-slate-300 px-3 py-2.5" /></label>
+    <label class="block min-w-0 text-sm"><span class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">Child {{ $index + 1 }} age</span><input type="number" name="child_ages[]" min="0" max="17" @if($age !== '') required @endif value="{{ $age }}" class="{{ $inputClass ?? 'w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5' }} h-12 min-w-0 text-sm text-slate-900 outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-400/30" /></label>
     @endforeach
   </div>
   <script type="application/json" data-child-ages-seed>@json($childAges ?? [])</script>
@@ -227,7 +228,7 @@ export function staySearchPartial(accent: string): string {
       input.max = '17';
       input.required = true;
       input.value = current[i] != null ? String(current[i]) : '';
-      input.className = 'w-full rounded-lg border border-slate-300 px-3 py-2.5';
+      input.className = (checkIn ? checkIn.className : 'w-full h-12 min-w-0 rounded-lg border border-slate-300 px-3 py-2.5');
       label.appendChild(span);
       label.appendChild(input);
       box.appendChild(label);

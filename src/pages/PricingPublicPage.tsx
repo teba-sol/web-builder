@@ -1,150 +1,89 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { ArrowLeft, ArrowUpRight, Building2, Check, Cloud, Download, Palette, UserRound } from 'lucide-react'
 import { fetchPricing } from '../api/billing'
 import type { PriceTier } from '../api/types'
-import { BrowserFrame } from '../components/landing/BrowserFrame'
-import { FinalCTA } from '../components/landing/FinalCTA'
-import { Navbar } from '../components/landing/Navbar'
-import { SmoothScroll } from '../components/landing/SmoothScroll'
-import { showcaseSites } from '../components/landing/sites'
-
-function personalLabel(tier: PriceTier | undefined) {
-  if (!tier) return '9,000 ETB'
-  if (tier.contactUs) return 'Contact us'
-  return tier.displayPrice || '9,000 ETB'
-}
-
-function splitPrice(label: string) {
-  const match = label.trim().match(/^(.*?)(?:\s+)(ETB|USD|EUR|GBP)$/i)
-  if (!match) return { amount: label, currency: null as string | null }
-  return { amount: match[1], currency: match[2].toUpperCase() }
-}
+import { useAuth } from '../auth/AuthContext'
+import { AuraArtwork, AuraExperience } from '../components/landing/AuraExperience'
 
 export function PricingPublicPage() {
+  const { user } = useAuth()
   const [pricing, setPricing] = useState<PriceTier[] | null>(null)
+  const [error, setError] = useState(false)
+  const [attempt, setAttempt] = useState(0)
 
   useEffect(() => {
     const previous = document.title
-    document.title = 'Pricing — BuildAura'
-    fetchPricing()
-      .then((settings) => setPricing(settings.prices))
-      .catch(() => setPricing(null))
-    return () => {
-      document.title = previous
-    }
+    document.title = 'Pricing — Buildoura'
+    return () => { document.title = previous }
   }, [])
 
+  useEffect(() => {
+    let active = true
+    setError(false)
+    setPricing(null)
+    fetchPricing()
+      .then((settings) => { if (active) setPricing(settings.prices) })
+      .catch(() => { if (active) setError(true) })
+    return () => { active = false }
+  }, [attempt])
+
   const personal = pricing?.find((tier) => tier.userType === 'USER')
-  const price = splitPrice(personalLabel(personal))
-  const sites = showcaseSites()
-  const peek = sites.find((s) => s.id === 'axiom') ?? sites[0]
+  const personalPrice = personal?.contactUs ? 'Contact us' : personal?.displayPrice
+  const personalFeatures = ['Cloud save for this website', 'Full-stack website export', 'Your content and branding']
+  const agencyFeatures = ['Client websites in one workspace', 'Agency and salesperson accounts', 'Export when the website is unlocked']
 
   return (
-    <SmoothScroll>
-      <div className="landing min-h-screen bg-[#f6f7fb] text-navy">
-        <Navbar />
-        <main>
-          <section className="relative overflow-hidden px-4 pb-16 pt-28 md:px-8 md:pb-24 md:pt-36">
-            <p className="text-[10px] uppercase tracking-[0.32em] text-accent">Pricing</p>
-            <h1 className="font-display mt-4 text-[clamp(2.8rem,9.4vw,7rem)] text-navy">
-              One site.
-              <br />
-              One
-              <br />
-              payment.
-            </h1>
-            <p className="mt-8 max-w-md text-sm leading-relaxed text-navy/60 md:text-base">
-              Personal websites have a published price. Agency and salesperson work is priced as Contact us — there is no public rate.
-            </p>
-            <div className="mt-8 flex flex-wrap items-center gap-8 text-[11px] font-semibold uppercase tracking-[0.22em]">
-              <Link to="/signup" className="text-accent">
-                Start Building
-              </Link>
-              <Link to="/#templates" className="text-navy">
-                Explore Templates
-              </Link>
-            </div>
-          </section>
+    <AuraExperience smooth workspaceHeader>
+      {({ paused }) => <main id="aura-inner-main" className="aura-pricing-main">
+        <section className="aura-pricing-hero">
+          {user && <Link to="/account" className="aura-pricing-back"><ArrowLeft size={14} /> Back to profile</Link>}
+          <div className="aura-pricing-hero-copy" data-aura-intro>
+            <p className="aura-kicker">AN INVESTMENT IN WHAT’S NEXT</p>
+            <h1>Big ideas.<br /><em>Clear next steps.</em></h1>
+            <p>Your vision deserves a place of its own.<br />Find the right path from starting point to your next chapter.</p>
+          </div>
+          <div className="aura-pricing-art"><AuraArtwork paused={paused} /></div>
+          <div className="aura-pricing-hero-caption"><span>YOUR PRESENCE STARTS HERE.</span><span>PERSONAL / AGENCY</span></div>
+        </section>
 
-          <section className="relative grid items-end gap-10 border-t border-navy/10 px-4 py-20 md:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:py-28">
-            <div>
-              <p className="text-[10px] uppercase tracking-[0.28em] text-accent">01 — Personal</p>
-              <h2 className="font-display mt-3 text-[clamp(2.4rem,6vw,5rem)]">Yours.</h2>
-              <p className="mt-4 max-w-sm text-sm leading-relaxed text-navy/55">
-                One payment unlocks export and cloud save for that website. Pick a template, make it yours, then publish.
-              </p>
-            </div>
-            <div className="relative">
-              <p className="font-display text-[clamp(3.4rem,10vw,8rem)] leading-none text-navy">
-                {price.amount}
-                {price.currency ? (
-                  <span className="ml-3 align-top text-[clamp(0.9rem,2vw,1.4rem)] tracking-[0.18em] text-accent">
-                    {price.currency}
-                  </span>
-                ) : null}
-              </p>
-              <Link
-                to="/signup"
-                className="mt-8 inline-block text-[11px] font-semibold uppercase tracking-[0.22em] text-accent"
-              >
-                Create a personal account
-              </Link>
-            </div>
-          </section>
-
-          <section data-landing-dark className="relative overflow-hidden bg-navy px-4 py-24 text-white md:px-8 md:py-32">
-            {peek && (
-              <div className="pointer-events-none absolute -right-[12%] top-[18%] w-[42%] rotate-8 opacity-25">
-                <BrowserFrame src={peek.src} alt="" compact />
+        <section className="aura-pricing-plans" aria-label="Website pricing options">
+          <div className="aura-section-marker"><span>01 / CHOOSE YOUR DIRECTION</span><span>MADE FOR INDIVIDUALS. BUILT FOR TEAMS.</span></div>
+          {error && <div role="alert" className="aura-price-error"><p>We couldn’t load the current personal website price.</p><button type="button" onClick={() => setAttempt((value) => value + 1)}>Try again <ArrowUpRight size={14} /></button></div>}
+          <div className="aura-price-grid">
+            <section aria-labelledby="personal-price-heading" className="aura-price-card aura-price-personal">
+              <div className="aura-price-card-top"><span>01 / PERSONAL WEBSITES</span><UserRound size={22} strokeWidth={1.2} /></div>
+              <h2 id="personal-price-heading">Go <em>personal.</em></h2>
+              <p className="aura-price-description">Your business. Your portfolio. Your next big thing.</p>
+              <div className="aura-price-amount" aria-live="polite">
+                {!pricing && !error ? <p role="status" className="aura-price-loading">Loading current price…</p> : <p>{personalPrice || 'Price unavailable'}</p>}
+                <span>{personal?.contactUs ? 'Let’s find the right fit.' : 'One-time payment per website.'}</span>
               </div>
-            )}
-            <div className="relative mx-auto max-w-6xl">
-              <p className="text-[10px] uppercase tracking-[0.28em] text-accent">02 — Agency / salesperson</p>
-              <h2 className="font-display mt-4 max-w-[18ch] text-[clamp(2.8rem,10vw,7.5rem)]">
-                Contact
-                <br />
-                us.
-              </h2>
-              <p className="mt-8 max-w-md text-sm leading-relaxed text-white/65">
-                No published online price. Talk to us, then add salespeople from the agency portal. Export stays locked until the agency unlocks the site.
-              </p>
-              <Link
-                to="/signup?type=agency"
-                className="mt-10 inline-block text-[11px] font-semibold uppercase tracking-[0.22em] text-accent"
-              >
-                Register an agency
-              </Link>
-            </div>
-          </section>
+              <ul>{personalFeatures.map((item) => <li key={item}><Check size={15} />{item}</li>)}</ul>
+              <Link to={user ? '/' : '/signup'} className="aura-button aura-button-dark">{user ? 'Go to workspace' : 'Create a personal account'}<ArrowUpRight size={18} /></Link>
+            </section>
+            <section aria-labelledby="agency-price-heading" className="aura-price-card aura-price-agency">
+              <div className="aura-price-card-top"><span>02 / AGENCIES & SALESPEOPLE</span><Building2 size={22} strokeWidth={1.2} /></div>
+              <h2 id="agency-price-heading">Think <em>together.</em></h2>
+              <p className="aura-price-description">For the teams building their clients’ next chapters.</p>
+              <div className="aura-price-amount"><p>Contact us</p><span>Agency pricing, arranged directly.</span></div>
+              <ul>{agencyFeatures.map((item) => <li key={item}><Check size={15} />{item}</li>)}</ul>
+              {user ? <p className="aura-price-agency-note">Work with your agency admin to arrange pricing and unlock client websites.</p> : <Link to="/signup?type=agency" className="aura-button aura-button-orange">Register an agency <ArrowUpRight size={18} /></Link>}
+            </section>
+          </div>
+        </section>
 
-          <section className="px-4 py-24 md:px-8 md:py-32">
-            <p className="text-[10px] uppercase tracking-[0.28em] text-accent">03 — Included</p>
-            <h2 className="font-display mt-3 text-[clamp(2.4rem,7vw,6rem)]">
-              What you
-              <br />
-              actually get.
-            </h2>
-            <ul className="mt-16 max-w-4xl divide-y divide-navy/10 border-y border-navy/10">
-              {[
-                { n: '01', title: 'Export', body: 'A real website — not a mockup, not a prototype.' },
-                { n: '02', title: 'Cloud save', body: 'Keep the draft after payment, then come back and finish it.' },
-                { n: '03', title: 'Templates', body: 'Every professionally designed starting point in the studio.' },
-                { n: '04', title: 'Control', body: 'Copy, color, type, images, sections, and branding on the canvas.' },
-              ].map((item) => (
-                <li key={item.n} className="grid gap-3 py-8 sm:grid-cols-[4.5rem_minmax(0,1fr)] sm:items-start">
-                  <p className="text-[10px] uppercase tracking-[0.28em] text-accent">{item.n}</p>
-                  <div>
-                    <h3 className="font-display text-[clamp(1.6rem,3vw,2.6rem)]">{item.title}</h3>
-                    <p className="mt-2 max-w-xl text-sm leading-relaxed text-navy/55">{item.body}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </section>
-
-          <FinalCTA />
-        </main>
-      </div>
-    </SmoothScroll>
+        <section className="aura-price-included" aria-labelledby="pricing-included-heading">
+          <div className="aura-section-marker"><span>02 / BEYOND THE STARTING POINT</span><span>THE TOOLS TO MAKE IT YOURS.</span></div>
+          <h2 id="pricing-included-heading">A little less friction.<br /><em>A lot more possibility.</em></h2>
+          <div className="aura-price-features">{[
+            { icon: Cloud, title: 'Save your momentum.', text: 'Keep your website draft in the cloud and continue editing later.' },
+            { icon: Palette, title: 'Find your signature.', text: 'Customize your copy, images, fonts, colors, and available sections.' },
+            { icon: Download, title: 'Go your own way.', text: 'Download a full-stack website for your own hosting.' },
+          ].map(({ icon: Icon, title, text }, index) => <article key={title}><div><span>0{index + 1}</span><Icon size={24} strokeWidth={1.2} /></div><h3>{title}</h3><p>{text}</p></article>)}</div>
+        </section>
+        <section className="aura-price-outro"><div><p className="aura-kicker">NO NEED TO START FROM NOTHING.</p><h2>Find a little <em>inspiration.</em></h2></div><Link to={user ? '/' : '/templates'} className="aura-button aura-button-dark">{user ? 'Back to workspace' : 'Explore templates'}<ArrowUpRight size={19} /></Link></section>
+      </main>}
+    </AuraExperience>
   )
 }

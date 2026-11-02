@@ -13,6 +13,8 @@ export function CategoryFilter({ active, onChange, counts }: Props) {
       {categories.filter((cat) => cat.id === 'all' || counts[cat.id] > 0).map((cat) => (
         <button
           key={cat.id}
+          type="button"
+          aria-pressed={active === cat.id}
           onClick={() => onChange(cat.id)}
           className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all ${
             active === cat.id
@@ -20,7 +22,7 @@ export function CategoryFilter({ active, onChange, counts }: Props) {
               : 'bg-white text-slate-600 border border-slate-200 hover:border-accent hover:text-accent'
           }`}
         >
-          <span>{cat.icon}</span>
+          <cat.icon size={16} aria-hidden="true" className="shrink-0" />
           {cat.label}
           <span
             className={`rounded-full px-2 py-0.5 text-xs ${

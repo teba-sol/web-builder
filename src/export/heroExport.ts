@@ -1,3 +1,5 @@
+import { exportStaySkin } from '../templates/booking/hospitalitySkin'
+import { actionBackground, accentInk } from '../utils/accentInk'
 import { requireManifest } from '../catalog/catalog'
 import type { HeroLayout } from '../data/layoutVariants'
 import { isHospitalityTemplate } from '../data/hospitality'
@@ -113,6 +115,7 @@ export interface HeroExportInput {
   heroSubtext: string
   ctaText: string
   ctaHref: string
+  accent?: string
   stats?: { value: string; label: string }[]
 }
 
@@ -129,7 +132,7 @@ function heroTextBlock(input: HeroExportInput, mode: 'html' | 'blade'): string {
   return `${heroBadgeHtml(input.templateId, input.businessName, mode)}
       <h1 class="mb-6 ${t.heroTitle}">${tagline}</h1>
       <p class="mb-8 ${t.heroText}">${subtext}</p>
-      <a href="${ctaHref}" data-brand-cta class="inline-block ${t.heroCta}">${ctaText} →</a>`
+      ${isHospitalityTemplate(input.templateId) ? '' : `<a href="${ctaHref}" data-brand-cta class="inline-block ${t.heroCta}">${ctaText} →</a>`}`
 }
 
 function heroCopy(input: HeroExportInput, mode: 'html' | 'blade') {
@@ -296,29 +299,31 @@ function buildHeroHtml(input: HeroExportInput, mode: 'html' | 'blade'): string {
     return `<header class="${headerClasses(templateId, heroLayout)}">
   ${imageTag}
   <div class="${wrapperClass}">
-    ${inner}${hospitalitySearch(templateId, mode)}
+    ${inner}${hospitalitySearch(templateId, mode, input.accent)}
   </div>
 </header>`
   }
 
   return `<header class="${headerClasses(templateId, heroLayout)}">
   <div class="${wrapperClass}">
-    ${inner}${hospitalitySearch(templateId, mode)}
+    ${inner}${hospitalitySearch(templateId, mode, input.accent)}
   </div>
 </header>`
 }
 
-function hospitalitySearch(templateId: TemplateId, mode: 'html' | 'blade'): string {
+function hospitalitySearch(templateId: TemplateId, mode: 'html' | 'blade', accent?: string): string {
   if (!isHospitalityTemplate(templateId)) return ''
   if (mode === 'blade') {
     return `\n    @include('partials.hero-stay-search')`
   }
+  const skin = exportStaySkin(templateId)
+  const color = actionBackground(accent ?? requireManifest(templateId).colorSchemes[0]?.swatches[1] ?? '#0f172a')
   return `
-    <form action="rooms/index.html" method="get" class="mt-8 grid w-full gap-3 rounded-2xl bg-white/95 p-4 text-left text-slate-900 shadow-xl md:grid-cols-5 md:items-end">
-      <label class="block text-sm"><span class="mb-1 block text-xs font-semibold uppercase tracking-wider text-slate-500">Check-in</span><input type="date" name="check_in" required class="w-full rounded-lg border px-3 py-2.5" /></label>
-      <label class="block text-sm"><span class="mb-1 block text-xs font-semibold uppercase tracking-wider text-slate-500">Check-out</span><input type="date" name="check_out" required class="w-full rounded-lg border px-3 py-2.5" /></label>
-      <label class="block text-sm"><span class="mb-1 block text-xs font-semibold uppercase tracking-wider text-slate-500">Adults</span><input type="number" name="adults" min="1" value="2" required class="w-full rounded-lg border px-3 py-2.5" /></label>
-      <label class="block text-sm"><span class="mb-1 block text-xs font-semibold uppercase tracking-wider text-slate-500">Children</span><input type="number" name="children" min="0" value="0" required class="w-full rounded-lg border px-3 py-2.5" /></label>
-      <button type="submit" class="rounded-lg bg-slate-900 px-5 py-3 font-semibold text-white">Search</button>
+    <form action="rooms/index.html" method="get" class="mt-8 ${skin.search}">
+      <label class="block min-w-0 text-sm"><span class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">Check-in</span><input type="date" name="check_in" required class="${skin.input} h-12 min-w-0 text-sm outline-none focus:ring-2 focus:ring-slate-400/30" /></label>
+      <label class="block min-w-0 text-sm"><span class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">Check-out</span><input type="date" name="check_out" required class="${skin.input} h-12 min-w-0 text-sm outline-none focus:ring-2 focus:ring-slate-400/30" /></label>
+      <label class="block min-w-0 text-sm"><span class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">Adults</span><input type="number" name="adults" min="1" value="2" required class="${skin.input} h-12 min-w-0 text-sm outline-none focus:ring-2 focus:ring-slate-400/30" /></label>
+      <label class="block min-w-0 text-sm"><span class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">Children</span><input type="number" name="children" min="0" value="0" required class="${skin.input} h-12 min-w-0 text-sm outline-none focus:ring-2 focus:ring-slate-400/30" /></label>
+      <button type="submit" class="${skin.button.replace(/\btext-white\b/, accentInk(color))} inline-flex h-12 w-full items-center justify-center gap-2 self-end whitespace-nowrap shadow-sm hover:brightness-110 focus-visible:ring-2 focus-visible:ring-slate-500 focus-visible:ring-offset-2 md:col-span-2 lg:col-span-1" style="background-color:${color}">Search</button>
     </form>`
 }

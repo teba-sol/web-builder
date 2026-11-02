@@ -25,7 +25,7 @@ export function AppHeader({ extra }: { extra?: React.ReactNode }) {
             </div>
             <span className="text-[15px] font-semibold tracking-tight text-slate-900">Buildoura</span>
           </Link>
-          <nav className="hidden items-center gap-5 text-sm font-medium text-slate-600 md:flex">
+          {!loading && !user && <nav className="hidden items-center gap-5 text-sm font-medium text-slate-600 md:flex">
             <NavLink to="/" end className={({ isActive }) => (isActive ? 'text-navy' : 'hover:text-navy')}>
               Home
             </NavLink>
@@ -35,20 +35,12 @@ export function AppHeader({ extra }: { extra?: React.ReactNode }) {
             <NavLink to="/pricing" className={({ isActive }) => (isActive ? 'text-navy' : 'hover:text-navy')}>
               Pricing
             </NavLink>
-          </nav>
+          </nav>}
         </div>
         <div className="flex items-center gap-2 sm:gap-3">
           {extra}
           {loading ? null : user ? (
             <>
-              {user.role === 'SALESPERSON' && (
-                <Link
-                  to="/new-site"
-                  className="rounded-lg bg-accent px-3 py-1.5 text-sm font-semibold text-white hover:bg-accent-dark"
-                >
-                  New site
-                </Link>
-              )}
               {user.role === 'AGENCY_ADMIN' && (
                 <a
                   href={`${import.meta.env.VITE_ADMIN_ORIGIN || 'http://localhost:5174'}/portal`}

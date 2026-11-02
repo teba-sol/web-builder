@@ -1,0 +1,198 @@
+.aura-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 0;
+  font-size: 10px;
+  color: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.aura-workspace-motion {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.aura-page[data-theme=light] {
+  --aura-ink: #04245c;
+  --aura-paper: #ffffff;
+  --aura-orange: #ff701f;
+  --aura-muted: #526783;
+  --aura-line: rgba(4, 36, 92, .17);
+  background: #f7f9fd;
+  color: #04245c;
+  color-scheme: light;
+}
+.aura-page[data-theme=dark] {
+  color-scheme: dark;
+}
+/* Forms stay light in both designs for a stable reading and editing surface. */
+.aura-page .aura-auth-card {
+  color-scheme: light;
+}
+.aura-page[data-theme=light] .aura-nav {
+  background: rgba(255,255,255,.82);
+}
+.aura-page[data-theme=light] :is(.aura-nav-links a, .aura-motion, .aura-hero-description, .aura-work-heading p, .aura-project-meta p, .aura-library-link, .aura-steps p, .aura-footer, .aura-hero-bottom, .aura-auth-back, .aura-pricing-back, .aura-auth-portal, .aura-pricing-hero-copy > p:last-child) {
+  color: #526783;
+}
+.aura-page[data-theme=light] :is(.aura-hero h1 em, .aura-work-heading em, .aura-experience h2 em, .aura-auth-statement h2 em, .aura-pricing-hero h1 em, .aura-price-included h2 em, .aura-price-agency h2 em) {
+  color: #0b3a86;
+}
+.aura-page[data-theme=light] :is(.aura-hero-bottom > a, .aura-library-link > span, .aura-footer .aura-logo, .aura-auth-portal a) {
+  color: #04245c;
+}
+.aura-page[data-theme=light] .aura-text-link {
+  border-color: #04245c55;
+}
+.aura-page[data-theme=light] .aura-button-orange {
+  background: #ff701f;
+  color: #04245c;
+}
+.aura-page[data-theme=light] :is(.aura-button-dark, .aura-button-light) {
+  background: #04245c;
+  color: #fff;
+}
+.aura-page[data-theme=light] .aura-button:hover {
+  filter: brightness(.96);
+}
+.aura-page[data-theme=light] .aura-orbit-fallback {
+  border-color: #3b68b5;
+  background: radial-gradient(ellipse, transparent 40%, #ff701f33);
+  box-shadow: inset 12px -14px 30px #ff701f66, 14px 18px 70px #4376d433, 0 0 100px #abc8ff44;
+}
+.aura-page[data-theme=light] .aura-float {
+  border-color: #04245c33;
+  box-shadow: 0 24px 55px #04245c22;
+  background: #fff;
+}
+.aura-page[data-theme=light] .aura-window-bar {
+  color: #526783;
+}
+.aura-page[data-theme=light] .aura-window-bar > span:first-child {
+  color: #9aaec8;
+}
+.aura-page[data-theme=light] .aura-manifesto {
+  background: #eaf0fb;
+  color: #04245c;
+}
+.aura-page[data-theme=light] .aura-manifesto-copy em {
+  color: #0b3a86;
+}
+.aura-page[data-theme=light] .aura-running-type {
+  -webkit-text-stroke-color: #a5b8d8;
+}
+.aura-page[data-theme=light] :is(.aura-work .aura-section-marker, .aura-experience .aura-section-marker, .aura-experience-intro > .aura-kicker, .aura-step-tag, .aura-auth-statement .aura-kicker, .aura-auth-caption > span, .aura-pricing-hero-caption, .aura-pricing-plans .aura-section-marker, .aura-price-included .aura-section-marker, .aura-price-features article > div) {
+  color: #526783;
+}
+.aura-page[data-theme=light] .aura-work {
+  background: #fff;
+}
+.aura-page[data-theme=light] :is(.aura-experience, .aura-price-included) {
+  background: #eaf0fb;
+}
+.aura-page[data-theme=light] .aura-project-visual {
+  background: #dce6f6;
+}
+.aura-page[data-theme=light] .aura-project-open {
+  background: #fff;
+  color: #04245c;
+}
+.aura-page[data-theme=light] .aura-project-visual:hover .aura-project-open {
+  background: #ff701f;
+}
+.aura-page[data-theme=light] .aura-finale,
+.aura-page[data-theme=light] .aura-price-outro {
+  background: #ff701f;
+  color: #04245c;
+}
+.aura-page[data-theme=light] .aura-finale .aura-section-marker {
+  border-color: #04245c55;
+}
+.aura-page[data-theme=light] .aura-mobile-menu nav {
+  background: #fff;
+  border-color: #04245c33;
+  box-shadow: 0 10px 35px #04245c22;
+}
+.aura-page[data-theme=light] .aura-auth-card {
+  background: #fff;
+  border-color: #d6e0ed;
+  color: #04245c;
+  box-shadow: 0 20px 70px #04245c0a;
+}
+.aura-page[data-theme=light] :is(.aura-auth-subtitle, .aura-auth-eyebrow, .aura-auth-caption p) {
+  color: #526783;
+}
+.aura-page[data-theme=light] .aura-auth-card :is(a, label) {
+  color: #04245c;
+}
+.aura-page[data-theme=light] .aura-auth-card input {
+  background: #f7f9fd;
+  border-color: #c4d2e4;
+  color: #04245c;
+}
+.aura-page[data-theme=light] .aura-auth-card input:focus {
+  border-color: #0b3a86;
+  --tw-ring-color: #0b3a8626;
+}
+.aura-page[data-theme=light] .aura-auth-card button[type=submit] {
+  background: #04245c;
+  color: #fff;
+}
+.aura-page[data-theme=light] .aura-auth-card [role=group] button {
+  color: #526783;
+  border-color: #c4d2e4;
+  background: #fff;
+}
+.aura-page[data-theme=light] .aura-auth-card [role=group] button[aria-pressed=true] {
+  background: #eaf0fb;
+  color: #04245c;
+  border-color: #0b3a86;
+  --tw-ring-color: #0b3a86;
+}
+.aura-page[data-theme=light] .aura-auth-card :is(a,button):focus-visible {
+  outline-color: #0b3a86;
+}
+.aura-page[data-theme=light] .aura-price-personal {
+  background: #fff;
+  color: #04245c;
+  border-color: #c4d2e4;
+  box-shadow: 0 20px 60px #04245c08;
+}
+.aura-page[data-theme=light] .aura-price-agency {
+  background: #eaf0fb;
+  color: #04245c;
+  border-color: #c4d2e4;
+}
+.aura-page[data-theme=light] :is(.aura-price-agency-note, .aura-price-features p) {
+  color: #526783;
+}
+.aura-page[data-theme=light] .aura-price-error {
+  background: #fff1e8;
+  border-color: #ff701f88;
+  color: #8d3800;
+}
+.aura-page[data-theme=light] .aura-workspace-motion {
+  color: #04245c;
+}
+@media(max-width:1100px) {
+  .aura-theme-toggle span {
+    display: none;
+  }
+  .aura-nav-actions {
+    gap: 16px;
+  }
+}
+@media(max-width:380px) {
+  .aura-nav-actions {
+    gap: 8px;
+  }
+  .aura-page .aura-nav-cta {
+    padding: 8px;
+  }
+}
+/* Use deeper orange for small text while keeping the original orange on surfaces. */
+.aura-page[data-theme=light] .aura-nav a:hover,
+.aura-page[data-theme=light] .aura-step-number {
+  color: #a83c00;
+}

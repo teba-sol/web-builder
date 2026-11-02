@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { EditorPanels, EditorPanel } from './EditorPanels'
 import { getDefaultColorSchemeId } from '../data/colorSchemes'
 import { getTemplateMeta } from '../data/defaults'
 import { LIST_MAX_COUNT, LIST_MIN_COUNT, listAddLabels } from '../data/listDefaults'
@@ -62,9 +63,9 @@ export function ContentForm() {
     : 'Add Service'
 
   return (
-    <div className="space-y-8">
+    <EditorPanels>
       {templateId && (
-        <>
+        <EditorPanel title="Colors & Fonts">
           <PalettePicker
             templateId={templateId}
             colorSchemeId={colorSchemeId || getDefaultColorSchemeId(templateId)}
@@ -89,22 +90,28 @@ export function ContentForm() {
             previewName={content.businessName}
             onChange={(heading, body) => updateContent({ fontHeading: heading, fontBody: body })}
           />
-        </>
+        </EditorPanel>
       )}
 
-      <BrandIdentityForm content={content} onChange={updateContent} />
+      <EditorPanel title="Brand Identity">
+        <BrandIdentityForm content={content} onChange={updateContent} />
+      </EditorPanel>
 
+      <EditorPanel title="Pages & Navigation">
       <PageVisibilityPicker
         visibility={content.pageVisibility}
         onToggle={togglePageVisibility}
         pages={editablePages}
       />
+      </EditorPanel>
 
+      <EditorPanel title="Optional Sections">
       <SectionVisibilityPicker
         visibility={content.sectionVisibility}
         onToggle={toggleSectionVisibility}
         sections={editableSections}
       />
+      </EditorPanel>
 
       <FormSection title="Hero">
         <Field label="Business Name" value={content.businessName} onChange={(v) => updateContent({ businessName: v })} />
@@ -589,7 +596,7 @@ export function ContentForm() {
           />
         </FormSection>
       )}
-    </div>
+    </EditorPanels>
   )
 }
 

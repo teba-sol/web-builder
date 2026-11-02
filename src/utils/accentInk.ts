@@ -24,3 +24,9 @@ export function accentInk(accent: string): 'text-white' | 'text-slate-950' {
 export function accentLabelColor(accent: string): string {
   return accentInk(accent) === 'text-white' ? accent : '#020617'
 }
+
+/** Keep primary actions visible against the light surfaces used by booking forms. */
+export function actionBackground(accent: string, fallback = '#0f172a'): string {
+  if ((whiteContrast(accent) ?? 0) >= 4.5) return accent
+  return (whiteContrast(fallback) ?? 0) >= 4.5 ? fallback : '#0f172a'
+}

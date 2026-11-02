@@ -1,3 +1,4 @@
+import { actionBackground } from '../utils/accentInk'
 import { getColorSchemes } from '../data/colorSchemes'
 import { getTemplateMeta } from '../data/defaults'
 import { getLayoutVariant } from '../data/layoutVariants'
@@ -189,6 +190,7 @@ export function generateHtml(
     hero: buildStaticHeroHtml({
       templateId,
       heroLayout: layout.heroLayout,
+    accent: actionBackground(accent, scheme.swatches[1]),
       heroImage: hero,
       businessName: content.businessName,
       tagline: content.tagline,

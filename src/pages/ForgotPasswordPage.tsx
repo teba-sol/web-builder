@@ -24,12 +24,12 @@ export function ForgotPasswordPage() {
     <AuthShell title="Reset password" subtitle="If the email exists, we send a one-time reset link.">
       {sent ? (
         <p className="text-sm leading-relaxed text-navy/70">
-          If an account exists for that email, a reset link was sent. In local development the link is printed in the API logs.
+          If an account exists for that email, a reset link was sent. Check your inbox and spam folder.
         </p>
       ) : (
         <form onSubmit={onSubmit} className="space-y-6">
-          {error && <p className="text-sm text-red-600">{error}</p>}
-          <label className="block text-[11px] font-semibold uppercase tracking-[0.22em] text-navy/50">
+          {error && <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>}
+          <label className="block text-sm font-medium text-slate-700">
             Email
             <input
               type="email"
@@ -44,7 +44,7 @@ export function ForgotPasswordPage() {
           </button>
         </form>
       )}
-      <p className="mt-10 text-[11px] uppercase tracking-[0.22em]">
+      <p className="mt-6 text-center text-sm">
         <Link to="/login" className="text-navy">
           Back to sign in
         </Link>
