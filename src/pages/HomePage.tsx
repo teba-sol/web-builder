@@ -4,7 +4,6 @@ import { AppHeader } from '../components/AppHeader'
 import { RecentlyUsed } from '../components/RecentlyUsed'
 import { TemplateGallery } from '../components/TemplateGallery'
 import { useAuth } from '../auth/AuthContext'
-import { AgencyReviewHome } from './AgencyReviewHome'
 import { LandingPage } from './LandingPage'
 import { SalespersonHome } from './SalespersonHome'
 
@@ -18,9 +17,6 @@ export function HomePage() {
   }
   if (!loading && user?.role === 'SALESPERSON') {
     return <SalespersonHome />
-  }
-  if (!loading && (user?.role === 'AGENCY_ADMIN' || user?.role === 'PLATFORM_ADMIN')) {
-    return <AgencyReviewHome />
   }
 
   return (

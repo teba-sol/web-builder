@@ -1,4 +1,5 @@
 import { LoaderCircle } from 'lucide-react'
+import { toast } from 'sonner'
 import { AuthPasswordField } from '../components/AuthPasswordField'
 import { useRef, useState, type FormEvent } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
@@ -27,7 +28,11 @@ export function LoginPage() {
       const next = params.get('return') || '/'
       navigate(next, { replace: true })
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : 'Login failed')
+      if (err instanceof ApiError && err.code === 'BUILDER_ACCOUNT_NOT_ALLOWED') {
+        toast.error(err.message, { duration: 7000 })
+      } else {
+        setError(err instanceof ApiError ? err.message : 'Login failed')
+      }
     } finally {
       inFlight.current = false
       setSubmitting(false)
