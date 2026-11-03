@@ -1,5 +1,13 @@
 import { apiFetch, clearTokens, storeTokens } from './client'
 import type { AuthResponse, MeResponse, UserProfile } from './types'
+import { ApiError } from './types'
+
+function requireBuilderAccount(user: UserProfile) {
+  if (user.role !== 'CONSUMER' && user.role !== 'SALESPERSON') {
+    clearTokens()
+    throw new ApiError(403, 'BUILDER_ACCOUNT_NOT_ALLOWED', 'This account cannot sign in to the web builder. Please visit the agency or admin portal instead.')
+  }
+}
 
 export async function register(
   fullName: string,
@@ -18,6 +26,7 @@ export async function register(
       agencyName: accountType === 'agency' ? agencyName : undefined,
     }),
   })
+  requireBuilderAccount(response.user)
   storeTokens(response.accessToken, response.refreshToken)
   return response
 }
@@ -27,6 +36,7 @@ export async function login(email: string, password: string) {
     method: 'POST',
     body: JSON.stringify({ email, password }),
   })
+  requireBuilderAccount(response.user)
   storeTokens(response.accessToken, response.refreshToken)
   return response
 }
@@ -57,8 +67,10 @@ export async function resetPassword(token: string, password: string) {
   })
 }
 
-export function fetchMe() {
-  return apiFetch<MeResponse>('/api/v1/me')
+export async function fetchMe() {
+  const response = await apiFetch<MeResponse>('/api/v1/me')
+  requireBuilderAccount(response.user)
+  return response
 }
 
 export async function updateMe(body: { fullName?: string; currentPassword?: string; newPassword?: string }) {
@@ -72,6 +84,7 @@ export async function updateMe(body: { fullName?: string; currentPassword?: stri
     method: 'PATCH',
     body: JSON.stringify(body),
   })
+  requireBuilderAccount(response.user)
   if (response.accessToken && response.refreshToken) {
     storeTokens(response.accessToken, response.refreshToken)
   }
@@ -83,6 +96,7 @@ export async function consumeHandoff(code: string) {
     method: 'POST',
     body: JSON.stringify({ code }),
   })
+  requireBuilderAccount(response.user)
   storeTokens(response.accessToken, response.refreshToken)
   return response
 }
