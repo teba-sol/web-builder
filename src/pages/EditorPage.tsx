@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { Lock, PanelLeftClose, PanelLeftOpen, Save } from 'lucide-react'
 import { toast } from 'sonner'
-import { createProject, getProject } from '../api/projects'
+import { createProject, getProject, listProjects, saveProjectDraft } from '../api/projects'
 import { ContentForm } from '../components/ContentForm'
 import { DownloadButton } from '../components/DownloadButton'
 import { PaywallModal } from '../components/PaywallModal'
@@ -14,6 +14,7 @@ import { getTemplateDefaults, getTemplateMeta } from '../data/defaults'
 import { appearanceFromSearchParams } from '../data/pickTemplate'
 import { isValidTemplateId } from '../data/templateIds'
 import { useHospitalityTemplateGuard } from '../hooks/useHospitalityTemplateGuard'
+import { buildSiteDocument } from '../siteDocument/io'
 
 export function EditorPage() {
   const { templateId } = useParams<{ templateId: string }>()
@@ -73,6 +74,41 @@ export function EditorPage() {
     }
   }, [held, id, selectedId, searchParams, content.businessName, selectTemplate, navigate])
 
+  const isCreatingRef = useRef(false)
+  const initialContentRef = useRef<string | null>(null)
+
+  const ensureProject = async (): Promise<string | null> => {
+    if (projectId) return projectId
+    if (isCreatingRef.current) return null
+    isCreatingRef.current = true
+    try {
+      const document = buildSiteDocument(id, content, colorSchemeId, layoutVariantId)
+      const project = await createProject({
+        templateId: id,
+        name: content.businessName || template?.name || id,
+        colorSchemeId,
+        layoutVariantId,
+      })
+      bootedKey.current = `${id}:${project.id}`
+      bindProject(project)
+      navigate(`/editor/${id}?project=${project.id}`, { replace: true })
+      if (project.canCloudSave) {
+        await saveProjectDraft(project.id, {
+          name: content.businessName || template?.name || id,
+          colorSchemeId,
+          layoutVariantId,
+          document,
+        })
+      }
+      return project.id
+    } catch (err) {
+      console.error('Failed to create project:', err)
+      return null
+    } finally {
+      isCreatingRef.current = false
+    }
+  }
+
   useEffect(() => {
     if (held || !isValidTemplateId(id)) return
     const key = `${id}:${projectQuery ?? 'new'}`
@@ -89,18 +125,37 @@ export function EditorPage() {
           navigate(`/new-site?template=${id}`, { replace: true })
           return
         }
-        const project = await createProject({
-          templateId: id,
-          name: template?.name ?? id,
-        })
-        bindProject(project)
-        navigate(`/editor/${id}?project=${project.id}`, { replace: true })
+        const { items } = await listProjects()
+        const existing = items
+          .filter((p) => p.templateId === id)
+          .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())[0]
+        if (existing) {
+          bindProject(existing)
+          navigate(`/editor/${id}?project=${existing.id}`, { replace: true })
+          return
+        }
+        initialContentRef.current = JSON.stringify({ content, colorSchemeId, layoutVariantId })
       } catch {
         bootedKey.current = null
       }
     }
     void run()
-  }, [held, id, projectQuery, bindProject, navigate, template?.name, user?.role])
+  }, [held, id, projectQuery, bindProject, navigate, user?.role, content, colorSchemeId, layoutVariantId])
+
+  useEffect(() => {
+    if (held || !isValidTemplateId(id) || projectId || readOnly) return
+    if (!initialContentRef.current) {
+      initialContentRef.current = JSON.stringify({ content, colorSchemeId, layoutVariantId })
+      return
+    }
+    const current = JSON.stringify({ content, colorSchemeId, layoutVariantId })
+    if (current === initialContentRef.current) return
+
+    const timer = setTimeout(() => {
+      void ensureProject()
+    }, 1500)
+    return () => clearTimeout(timer)
+  }, [held, id, projectId, readOnly, content, colorSchemeId, layoutVariantId])
 
   if (held || !template || !isValidTemplateId(id)) return null
 
@@ -161,21 +216,29 @@ export function EditorPage() {
               <button
                 type="button"
                 disabled={saving}
-                onClick={() => {
-                  if (!canCloudSave) {
+                onClick={async () => {
+                  if (projectId && !canCloudSave) {
                     setPaywallOpen(true)
                     return
                   }
                   setSaving(true)
-                  void persistNow()
-                    .then(() => toast.success('Site saved'))
-                    .catch((err: Error) => toast.error(err.message))
-                    .finally(() => setSaving(false))
+                  try {
+                    if (!projectId) {
+                      await ensureProject()
+                    } else {
+                      await persistNow()
+                    }
+                    toast.success('Site saved')
+                  } catch (err: unknown) {
+                    toast.error(err instanceof Error ? err.message : 'Could not save site')
+                  } finally {
+                    setSaving(false)
+                  }
                 }}
                 className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-60"
               >
-                {canCloudSave ? <Save size={14} /> : <Lock size={14} />}
-                {saving ? 'Saving…' : canCloudSave ? 'Save' : 'Save locked'}
+                {canCloudSave || !projectId ? <Save size={14} /> : <Lock size={14} />}
+                {saving ? 'Saving…' : canCloudSave || !projectId ? 'Save' : 'Save locked'}
               </button>
               <DownloadButton
                 templateId={id}
