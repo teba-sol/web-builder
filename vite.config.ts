@@ -6,7 +6,15 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
     proxy: {
-      '/api': 'https://a455-196-188-241-45.ngrok-free.app',
+      '/api': {
+        target: 'https://5ad7-196-188-245-181.ngrok-free.app',
+        changeOrigin: true,
+        configure: (proxy) => {
+          proxy.on('proxyReq', (proxyReq) => {
+            proxyReq.setHeader('ngrok-skip-browser-warning', 'true')
+          })
+        },
+      },
     },
   },
 })
