@@ -16,7 +16,7 @@ import { isValidTemplateId } from '../data/templateIds'
 import { useHospitalityTemplateGuard } from '../hooks/useHospitalityTemplateGuard'
 
 export function EditorPage() {
-  const { templateId } = useParams<{ templateId: string }>()
+  const { templateId, '*': splat = '' } = useParams<{ templateId: string; '*': string }>()
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
   const {
@@ -41,10 +41,45 @@ export function EditorPage() {
   const [editorCollapsed, setEditorCollapsed] = useState(false)
 
   const id = templateId ?? ''
+  const subPath = splat.replace(/^\/+|\/+$/g, '')
+  const subPathRef = useRef(subPath)
+  subPathRef.current = subPath
   const held = useHospitalityTemplateGuard(id)
   const template = isValidTemplateId(id) ? getTemplateMeta(id) : undefined
   const projectQuery = searchParams.get('project')
-  const viewRequested = searchParams.get('mode') === 'view'
+  const modeQuery = searchParams.get('mode')
+
+  const hostQueryRef = useRef<{ id: string; project: string | null; mode: string | null } | null>(null)
+  if (hostQueryRef.current?.id !== id) {
+    hostQueryRef.current = { id, project: projectQuery, mode: modeQuery }
+  } else {
+    if (projectQuery) hostQueryRef.current.project = projectQuery
+    if (searchParams.has('mode')) hostQueryRef.current.mode = modeQuery
+  }
+
+  const effectiveProjectQuery =
+    projectQuery ?? (hostQueryRef.current?.id === id ? hostQueryRef.current.project : null)
+  const viewRequested =
+    modeQuery === 'view' || (hostQueryRef.current?.id === id && hostQueryRef.current.mode === 'view')
+
+  useEffect(() => {
+    if (held || !isValidTemplateId(id)) return
+    const host = hostQueryRef.current
+    if (!host || host.id !== id) return
+    const nextParams = new URLSearchParams(searchParams)
+    let changed = false
+    if (host.project && !nextParams.get('project')) {
+      nextParams.set('project', host.project)
+      changed = true
+    }
+    if (host.mode === 'view' && nextParams.get('mode') !== 'view') {
+      nextParams.set('mode', 'view')
+      changed = true
+    }
+    if (!changed) return
+    const target = subPath ? `/editor/${id}/${subPath}` : `/editor/${id}`
+    navigate(`${target}?${nextParams.toString()}`, { replace: true })
+  }, [held, id, subPath, searchParams, navigate])
 
   useEffect(() => {
     if (held) return
@@ -52,7 +87,7 @@ export function EditorPage() {
       navigate('/')
       return
     }
-    rememberProjectId(searchParams.get('project'))
+    rememberProjectId(effectiveProjectQuery)
     const appearance = appearanceFromSearchParams(searchParams)
     const queryKey = `${id}?${searchParams.toString()}`
     if (appearance) {
@@ -71,17 +106,17 @@ export function EditorPage() {
     if (!content.businessName?.trim() && sample.businessName?.trim()) {
       selectTemplate(id)
     }
-  }, [held, id, selectedId, searchParams, content.businessName, selectTemplate, navigate])
+  }, [held, id, selectedId, searchParams, effectiveProjectQuery, content.businessName, selectTemplate, navigate])
 
   useEffect(() => {
     if (held || !isValidTemplateId(id)) return
-    const key = `${id}:${projectQuery ?? 'new'}`
+    const key = `${id}:${effectiveProjectQuery ?? 'new'}`
     if (bootedKey.current === key) return
     bootedKey.current = key
     const run = async () => {
       try {
-        if (projectQuery) {
-          const project = await getProject(projectQuery)
+        if (effectiveProjectQuery) {
+          const project = await getProject(effectiveProjectQuery)
           bindProject(project)
           return
         }
@@ -93,18 +128,24 @@ export function EditorPage() {
           templateId: id,
           name: template?.name ?? id,
         })
+        if (hostQueryRef.current?.id === id) {
+          hostQueryRef.current.project = project.id
+        }
+        bootedKey.current = `${id}:${project.id}`
         bindProject(project)
-        navigate(`/editor/${id}?project=${project.id}`, { replace: true })
+        const target = subPathRef.current ? `/editor/${id}/${subPathRef.current}` : `/editor/${id}`
+        navigate(`${target}?project=${project.id}`, { replace: true })
       } catch {
         bootedKey.current = null
       }
     }
     void run()
-  }, [held, id, projectQuery, bindProject, navigate, template?.name, user?.role])
+  }, [held, id, effectiveProjectQuery, bindProject, navigate, template?.name, user?.role])
 
   if (held || !template || !isValidTemplateId(id)) return null
 
   const readOnly = viewRequested || !canEdit
+  const previewContent = selectedId === id ? content : getTemplateDefaults(id)
 
   const openFullscreen = () => {
     window.open(`/site/${id}?chromeless=true`, '_blank', 'noopener,noreferrer')
@@ -152,12 +193,6 @@ export function EditorPage() {
           </button>
           {!readOnly && (
             <>
-              <Link
-                to={`/preview/${id}`}
-                className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
-              >
-                Preview
-              </Link>
               <button
                 type="button"
                 disabled={saving}
@@ -221,7 +256,7 @@ export function EditorPage() {
               </button>
             </div>
             <div className="editor-site-preview relative min-h-0 flex-1 overflow-y-auto">
-              <TemplateRenderer templateId={id} content={content} basePath={`/editor/${id}`} colorSchemeId={colorSchemeId} layoutVariantId={layoutVariantId} />
+              <TemplateRenderer templateId={id} content={previewContent} basePath={`/editor/${id}`} colorSchemeId={colorSchemeId} layoutVariantId={layoutVariantId} />
             </div>
           </div>
         </main>

@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes, useParams } from 'react-router-dom'
+import { Navigate, Route, Routes, useLocation, useParams } from 'react-router-dom'
 import { isHospitalityTemplate } from '../data/hospitality'
 import { canLinkToPage } from '../data/siteNav'
 import type { SitePageId } from '../data/siteNav'
@@ -32,15 +32,16 @@ function SitePage({
   postSlug,
   ...rest
 }: Props & { page: SitePageId; postSlug?: string }) {
+  const { search } = useLocation()
   const guardKey = PAGE_ROUTE_GUARD[page]
   if (guardKey && !canLinkToPage(guardKey, rest.content)) {
-    return <Navigate to={rest.basePath} replace />
+    return <Navigate to={`${rest.basePath}${search}`} replace />
   }
   if (page === 'blog-post' && !canLinkToPage('blog', rest.content)) {
-    return <Navigate to={rest.basePath} replace />
+    return <Navigate to={`${rest.basePath}${search}`} replace />
   }
   if (page === 'news-post' && !canLinkToPage('news', rest.content)) {
-    return <Navigate to={rest.basePath} replace />
+    return <Navigate to={`${rest.basePath}${search}`} replace />
   }
 
   return (
@@ -57,6 +58,7 @@ function SitePage({
 }
 
 export function SiteApp({ templateId, content, basePath, colorSchemeId, layoutVariantId }: Props) {
+  const { search } = useLocation()
   const shared = { templateId, content, basePath, colorSchemeId, layoutVariantId }
   return (
     <Routes>
@@ -74,7 +76,7 @@ export function SiteApp({ templateId, content, basePath, colorSchemeId, layoutVa
       <Route path="news" element={<SitePage page="news" {...shared} />} />
       <Route path="news/:slug" element={<PostRoute page="news-post" {...shared} />} />
       <Route path="contact" element={<SitePage page="contact" {...shared} />} />
-      <Route path="*" element={<Navigate to={basePath} replace />} />
+      <Route path="*" element={<Navigate to={`${basePath}${search}`} replace />} />
     </Routes>
   )
 }
