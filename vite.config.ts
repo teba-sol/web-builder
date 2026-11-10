@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://5ad7-196-188-245-181.ngrok-free.app',
+        target: 'https://24.144.94.138.sslip.io/',
         changeOrigin: true,
         configure: (proxy) => {
           proxy.on('proxyReq', (proxyReq) => {

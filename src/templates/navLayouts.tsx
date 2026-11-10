@@ -336,8 +336,8 @@ function renderDesktopNav({
           <nav className="sticky top-0 z-50 overflow-visible rounded-b-3xl text-white shadow-lg" style={{ backgroundColor: 'var(--clone-accent, #800020)' }}>
             <div className="mx-auto max-w-7xl px-4">
               <div className="flex h-20 items-center justify-between">
-                <Link to={basePath} className="shrink-0 text-xl font-bold">
-                  {c.logo ? <img src={c.logo} alt={c.businessName} className="h-16 w-16 object-contain" /> : <BrandMark c={c} />}
+                <Link to={basePath} className="shrink-0 text-xl font-bold no-underline">
+                  <BrandMark c={c} />
                 </Link>
                 <div className="hidden items-center gap-1 clg:flex">
                   {pageLinks.map((item) => (
@@ -432,8 +432,8 @@ function renderDesktopNav({
           </div>
           <nav className="sticky top-0 z-50 overflow-visible border-b border-slate-300 bg-slate-50/95 shadow-xl">
             <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 csm:px-6">
-              <Link to={basePath} className="text-xl font-black tracking-tight text-slate-900">
-                {c.logo ? <img src={c.logo} alt="" className="h-10 w-auto object-contain" /> : <BrandMark c={c} />}
+              <Link to={basePath} className="text-xl font-black tracking-tight text-slate-900 no-underline">
+                <BrandMark c={c} />
               </Link>
               <div className="hidden items-center gap-1 clg:flex">
                 {pageLinks.map((item) => (

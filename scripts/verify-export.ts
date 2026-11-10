@@ -698,6 +698,7 @@ const branded = {
   ...templateDefaults.hotel,
   logo: 'https://example.com/brand-logo.png',
   logoShowName: false,
+  logoSize: 44,
   brandPrimary: '#112233',
   brandSecondary: '#445566',
   brandAccent: '#778899',
@@ -706,20 +707,33 @@ const branded = {
 }
 const brandedDoc = buildSiteDocument('hotel', branded, 'gold', 'luxury')
 assert(brandedDoc.content.logo === branded.logo, 'branded site document stores logo')
+assert(brandedDoc.content.logoSize === 44, 'branded site document stores logoSize')
 assert(brandedDoc.content.brandPrimary === '#112233', 'branded site document stores primary')
 assert(brandedDoc.content.fontHeading === 'playfair', 'branded site document stores heading font')
 
 const brandedPages = buildAllSitePages('hotel', branded)
 assert(brandedPages.pages['index.html']?.includes('brand-logo.png'), 'static export includes logo')
+assert(brandedPages.pages['index.html']?.includes('data-brand-logo'), 'static export marks brand logo')
+assert(brandedPages.pages['index.html']?.includes('height:44px'), 'static export applies logoSize')
 assert(brandedPages.pages['index.html']?.includes('--brand-primary: #112233'), 'static export includes primary color')
 assert(brandedPages.pages['index.html']?.includes('--brand-secondary: #445566'), 'static export includes secondary color')
 assert(brandedPages.pages['index.html']?.includes('Playfair+Display'), 'static export loads heading font')
 assert(brandedPages.pages['index.html']?.includes('data-site-brand'), 'static export marks brand root')
 
+const brandedClonePages = buildAllSitePages('cpa', {
+  ...templateDefaults.cpa,
+  logo: 'https://example.com/cpa-logo.png',
+  logoSize: 40,
+})
+assert(brandedClonePages.pages['index.html']?.includes('cpa-logo.png'), 'clone static export includes logo')
+assert(brandedClonePages.pages['index.html']?.includes('height:40px'), 'clone static export applies logoSize')
+
 const brandedBackend = generateBackend('hotel', branded, 'gold', 'luxury', [])
 assert(brandedBackend['app/Support/Brand.php']?.includes('playfair'), 'Laravel Brand helper includes fonts')
 assert(brandedBackend['database/migrations/0001_01_01_000001_create_site_settings_table.php']?.includes("'logo'"), 'settings migration has logo')
+assert(brandedBackend['database/migrations/0001_01_01_000001_create_site_settings_table.php']?.includes("'logo_size'"), 'settings migration has logo_size')
 assert(brandedBackend['app/Filament/Pages/BrandSettings.php']?.includes("navigationLabel = 'Brand'"), 'Filament has a Brand page')
+assert(brandedBackend['app/Filament/Pages/BrandSettings.php']?.includes("'logo_size'"), 'Filament Brand page manages logo_size')
 assert(brandedBackend['app/Filament/Pages/FooterSettings.php']?.includes("navigationLabel = 'Footer'"), 'Filament has a Footer page')
 assert(brandedBackend['resources/views/partials/footer.blade.php']?.includes('footer_blurb'), 'Blade footer reads footer text')
 assert(brandedBackend['database/migrations/0001_01_01_000001_create_site_settings_table.php']?.includes('footer_note'), 'settings migration stores the copyright note')
@@ -729,6 +743,7 @@ assert(!brandedBackend['public/robots.txt'], 'export does not write robots.txt')
 assert(!brandedBackend['public/sitemap.xml'], 'export does not write a sitemap')
 assert(!brandedBackend['resources/views/layouts/site.blade.php']?.includes('og:'), 'Blade layout has no Open Graph tags')
 assert(brandedBackend['resources/views/partials/nav.blade.php']?.includes('$settings->logo'), 'Blade nav renders logo')
+assert(brandedBackend['resources/views/partials/nav.blade.php']?.includes('$settings->logo_size'), 'Blade nav applies logo_size')
 
 const customId = 'my-new-lodge'
 const customDoc = buildSiteDocument('hotel', { ...templateDefaults.hotel, businessName: 'New Lodge' }, 'gold', 'classic')

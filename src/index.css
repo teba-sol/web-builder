@@ -74,9 +74,11 @@ body {
   max-width: 100%;
 }
 
-[data-site-brand] img:not([class*='object-cover']):not([class*='h-full']):not(.absolute) {
-  max-width: 100%;
-  height: auto;
+@layer base {
+  [data-site-brand] img:not([data-brand-logo]):not([class*='object-cover']):not([class*='object-contain']):not([class*='h-full']):not(.absolute) {
+    max-width: 100%;
+    height: auto;
+  }
 }
 
 [data-site-brand] h1,

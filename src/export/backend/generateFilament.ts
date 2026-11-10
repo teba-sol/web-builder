@@ -742,16 +742,22 @@ function websiteSettingsPages(hospitality = false): Record<string, string> {
   const brand = settingsFields([
     { name: 'logo', line: `\\App\\Support\\AdminImage::upload('logo')->helperText('Shown in the site navigation.')` },
     { name: 'logo_show_name', line: `Forms\\Components\\Toggle::make('logo_show_name')->label('Show business name next to logo')->default(true)` },
+    { name: 'logo_size', line: `Forms\\Components\\TextInput::make('logo_size')->label('Logo height (px)')->numeric()->minValue(20)->maxValue(56)->default(32)->helperText('20–56 px inside the navigation bar.')` },
     { name: 'brand_primary', line: `Forms\\Components\\ColorPicker::make('brand_primary')->label('Primary')->helperText('Buttons and calls to action.')` },
     { name: 'brand_secondary', line: `Forms\\Components\\ColorPicker::make('brand_secondary')->label('Secondary')` },
     { name: 'brand_accent', line: `Forms\\Components\\ColorPicker::make('brand_accent')->label('Accent')->helperText('Links, prices, and highlights.')` },
     { name: 'font_heading', line: `Forms\\Components\\Select::make('font_heading')->label('Heading font')->options(\\App\\Support\\Brand::selectOptions())->native(false)` },
     { name: 'font_body', line: `Forms\\Components\\Select::make('font_body')->label('Body font')->options(\\App\\Support\\Brand::selectOptions())->native(false)` },
   ])
-  brand.persist = brand.persist.replace(
-    `'logo_show_name' => $state['logo_show_name'] ?? null`,
-    `'logo_show_name' => (bool) ($state['logo_show_name'] ?? false)`,
-  )
+  brand.persist = brand.persist
+    .replace(
+      `'logo_show_name' => $state['logo_show_name'] ?? null`,
+      `'logo_show_name' => (bool) ($state['logo_show_name'] ?? false)`,
+    )
+    .replace(
+      `'logo_size' => $state['logo_size'] ?? null`,
+      `'logo_size' => max(20, min(56, (int) ($state['logo_size'] ?? 32)))`,
+    )
 
   const about = settingsFields([
     { name: 'about_title', line: `Forms\\Components\\TextInput::make('about_title')` },
