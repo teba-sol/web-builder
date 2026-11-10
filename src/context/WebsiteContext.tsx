@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react'
+import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from 'react'
 import { saveProjectDraft } from '../api/projects'
 import type { ProjectResponse } from '../api/types'
 import { getDefaultColorSchemeId } from '../data/colorSchemes'
@@ -49,6 +49,7 @@ interface WebsiteContextValue {
   togglePageVisibility: (page: keyof PageVisibility) => void
   restoreSite: (document: SiteDocument) => void
   bindProject: (project: ProjectResponse) => void
+  clearProject: () => void
   markProjectPaid: () => void
   persistNow: () => Promise<void>
   reset: () => void
@@ -117,7 +118,16 @@ export function WebsiteProvider({ children }: { children: ReactNode }) {
     return () => window.clearTimeout(handle)
   }, [projectId, canCloudSave, templateId, content, colorSchemeId, layoutVariantId])
 
-  const selectTemplate = (id: TemplateId, appearance?: EditorAppearance | null) => {
+  const clearProject = useCallback(() => {
+    setProjectId(null)
+    setCanExport(false)
+    setCanCloudSave(false)
+    setCanEdit(true)
+    setEntitlementStatus(null)
+  }, [])
+
+  const selectTemplate = useCallback((id: TemplateId, appearance?: EditorAppearance | null) => {
+    clearProject()
     setTemplateId(id)
     const defaults = sanitizeContentLinks({ ...getEditorContent(id) })
     if (appearance) {
@@ -130,7 +140,7 @@ export function WebsiteProvider({ children }: { children: ReactNode }) {
       setColorSchemeId(schemeId)
     }
     setLayoutVariantId(getDefaultLayoutVariantId(id))
-  }
+  }, [clearProject])
 
   const setColorScheme = (schemeId: string) => {
     setColorSchemeId(schemeId)
@@ -198,14 +208,14 @@ export function WebsiteProvider({ children }: { children: ReactNode }) {
     }))
   }
 
-  const restoreSite = (document: SiteDocument) => {
+  const restoreSite = useCallback((document: SiteDocument) => {
     setTemplateId(document.templateId)
     setContent(sanitizeContentLinks(migrateContent(document.content, document.templateId)))
     setColorSchemeId(document.colorSchemeId || getDefaultColorSchemeId(document.templateId))
     setLayoutVariantId(document.layoutVariantId || getDefaultLayoutVariantId(document.templateId))
-  }
+  }, [])
 
-  const bindProject = (project: ProjectResponse) => {
+  const bindProject = useCallback((project: ProjectResponse) => {
     skipNextCloudSave.current = true
     setProjectId(project.id)
     setCanExport(project.canExport)
@@ -222,7 +232,7 @@ export function WebsiteProvider({ children }: { children: ReactNode }) {
       setColorSchemeId(project.colorSchemeId || getDefaultColorSchemeId(project.templateId))
       setLayoutVariantId(project.layoutVariantId || getDefaultLayoutVariantId(project.templateId))
     }
-  }
+  }, [restoreSite])
 
   const markProjectPaid = () => {
     setCanExport(true)
@@ -247,11 +257,7 @@ export function WebsiteProvider({ children }: { children: ReactNode }) {
     setContent(defaultContent)
     setColorSchemeId('')
     setLayoutVariantId('')
-    setProjectId(null)
-    setCanExport(false)
-    setCanCloudSave(false)
-    setCanEdit(true)
-    setEntitlementStatus(null)
+    clearProject()
     clearSavedSite()
   }
 
@@ -278,6 +284,7 @@ export function WebsiteProvider({ children }: { children: ReactNode }) {
         togglePageVisibility,
         restoreSite,
         bindProject,
+        clearProject,
         markProjectPaid,
         persistNow,
         reset,

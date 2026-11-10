@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { Lock, PanelLeftClose, PanelLeftOpen, Save } from 'lucide-react'
 import { toast } from 'sonner'
 import { createProject, getProject, listProjects, saveProjectDraft } from '../api/projects'
+import type { ProjectResponse } from '../api/types'
 import { ContentForm } from '../components/ContentForm'
 import { DownloadButton } from '../components/DownloadButton'
 import { PaywallModal } from '../components/PaywallModal'
@@ -31,12 +32,17 @@ export function EditorPage() {
     canCloudSave,
     canEdit,
     bindProject,
+    clearProject,
     markProjectPaid,
     persistNow,
   } = useWebsite()
   const { user } = useAuth()
   const appliedQuery = useRef<string | null>(null)
   const bootedKey = useRef<string | null>(null)
+  const bootGuardRef = useRef<Promise<boolean> | null>(null)
+  const inFlightCreateRef = useRef<Promise<ProjectResponse | null> | null>(null)
+  const initialContentRef = useRef<string | null>(null)
+  const [newDraftReady, setNewDraftReady] = useState(false)
   const [paywallOpen, setPaywallOpen] = useState(false)
   const [saving, setSaving] = useState(false)
   const [editorCollapsed, setEditorCollapsed] = useState(false)
@@ -46,6 +52,10 @@ export function EditorPage() {
   const template = isValidTemplateId(id) ? getTemplateMeta(id) : undefined
   const projectQuery = searchParams.get('project')
   const viewRequested = searchParams.get('mode') === 'view'
+  const readOnly = viewRequested || !canEdit
+
+  const latestRef = useRef({ projectId, selectedId, searchParams })
+  latestRef.current = { projectId, selectedId, searchParams }
 
   useEffect(() => {
     if (held) return
@@ -74,92 +84,146 @@ export function EditorPage() {
     }
   }, [held, id, selectedId, searchParams, content.businessName, selectTemplate, navigate])
 
-  const isCreatingRef = useRef(false)
-  const initialContentRef = useRef<string | null>(null)
+  const ensureProject = useCallback(async (): Promise<ProjectResponse | null> => {
+    if (latestRef.current.projectId) return null
+    if (inFlightCreateRef.current) return inFlightCreateRef.current
 
-  const ensureProject = async (): Promise<string | null> => {
-    if (projectId) return projectId
-    if (isCreatingRef.current) return null
-    isCreatingRef.current = true
-    try {
+    const promise = (async (): Promise<ProjectResponse | null> => {
+      if (bootGuardRef.current) {
+        const redirected = await bootGuardRef.current
+        if (redirected) return null
+      }
+      if (latestRef.current.projectId) return null
+
       const document = buildSiteDocument(id, content, colorSchemeId, layoutVariantId)
-      const project = await createProject({
+      const created = await createProject({
         templateId: id,
         name: content.businessName || template?.name || id,
         colorSchemeId,
-        layoutVariantId,
       })
-      bootedKey.current = `${id}:${project.id}`
-      bindProject(project)
-      navigate(`/editor/${id}?project=${project.id}`, { replace: true })
-      if (project.canCloudSave) {
-        await saveProjectDraft(project.id, {
+      bootedKey.current = `${id}:${created.id}`
+      let bound = created
+      if (created.canCloudSave) {
+        bound = await saveProjectDraft(created.id, {
           name: content.businessName || template?.name || id,
           colorSchemeId,
           layoutVariantId,
           document,
         })
       }
-      return project.id
-    } catch (err) {
-      console.error('Failed to create project:', err)
-      return null
+      bindProject(bound)
+      navigate(`/editor/${id}?project=${bound.id}`, { replace: true })
+      return bound
+    })()
+
+    inFlightCreateRef.current = promise
+    try {
+      return await promise
     } finally {
-      isCreatingRef.current = false
+      inFlightCreateRef.current = null
     }
-  }
+  }, [id, content, colorSchemeId, layoutVariantId, template?.name, bindProject, navigate])
 
   useEffect(() => {
     if (held || !isValidTemplateId(id)) return
     const key = `${id}:${projectQuery ?? 'new'}`
     if (bootedKey.current === key) return
     bootedKey.current = key
-    const run = async () => {
+    let active = true
+    let settled = false
+    initialContentRef.current = null
+    setNewDraftReady(false)
+
+    const run = async (): Promise<boolean> => {
       try {
         if (projectQuery) {
           const project = await getProject(projectQuery)
+          if (!active) return false
+          const hasDocContent = Boolean((project.document as { content?: unknown } | null)?.content)
+          if (project.id !== latestRef.current.projectId && !hasDocContent) {
+            selectTemplate(id)
+          }
           bindProject(project)
-          return
+          settled = true
+          return true
         }
         if (user?.role === 'SALESPERSON' || user?.role === 'AGENCY_ADMIN') {
           navigate(`/new-site?template=${id}`, { replace: true })
-          return
+          settled = true
+          return true
+        }
+        if (appearanceFromSearchParams(latestRef.current.searchParams)) {
+          if (latestRef.current.projectId) clearProject()
+          setNewDraftReady(true)
+          settled = true
+          return false
         }
         const { items } = await listProjects()
+        if (!active) return false
         const existing = items
-          .filter((p) => p.templateId === id)
+          .filter((p) => p.templateId === id && (!user || p.ownerId === user.id))
           .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())[0]
         if (existing) {
-          bindProject(existing)
+          if (existing.id === latestRef.current.projectId && latestRef.current.selectedId === id) {
+            bootedKey.current = `${id}:${existing.id}`
+          }
           navigate(`/editor/${id}?project=${existing.id}`, { replace: true })
-          return
+          settled = true
+          return true
         }
-        initialContentRef.current = JSON.stringify({ content, colorSchemeId, layoutVariantId })
-      } catch {
-        bootedKey.current = null
+        if (latestRef.current.projectId) clearProject()
+        setNewDraftReady(true)
+        settled = true
+        return false
+      } catch (err: unknown) {
+        if (active) {
+          if (projectQuery) {
+            toast.error(err instanceof Error ? err.message : 'Could not load project')
+          } else if (bootedKey.current === key) {
+            bootedKey.current = null
+          }
+        }
+        return false
       }
     }
-    void run()
-  }, [held, id, projectQuery, bindProject, navigate, user?.role, content, colorSchemeId, layoutVariantId])
+
+    const bootPromise = run()
+    bootGuardRef.current = bootPromise
+    void bootPromise.finally(() => {
+      if (bootGuardRef.current === bootPromise) {
+        bootGuardRef.current = null
+      }
+    })
+    return () => {
+      active = false
+      if (!settled && bootedKey.current === key) {
+        bootedKey.current = null
+      }
+      if (bootGuardRef.current === bootPromise) {
+        bootGuardRef.current = null
+      }
+    }
+  }, [held, id, projectQuery, user, navigate, selectTemplate, bindProject, clearProject])
 
   useEffect(() => {
-    if (held || !isValidTemplateId(id) || projectId || readOnly) return
+    if (held || !isValidTemplateId(id) || projectQuery || projectId || readOnly || !newDraftReady) return
+    if (selectedId !== id) return
+    const snapshot = JSON.stringify({ content, colorSchemeId, layoutVariantId })
     if (!initialContentRef.current) {
-      initialContentRef.current = JSON.stringify({ content, colorSchemeId, layoutVariantId })
+      initialContentRef.current = snapshot
       return
     }
-    const current = JSON.stringify({ content, colorSchemeId, layoutVariantId })
-    if (current === initialContentRef.current) return
+    if (snapshot === initialContentRef.current) return
 
-    const timer = setTimeout(() => {
-      void ensureProject()
+    const timer = window.setTimeout(() => {
+      void ensureProject().catch((err: unknown) => {
+        console.error('Failed to create project:', err)
+      })
     }, 1500)
-    return () => clearTimeout(timer)
-  }, [held, id, projectId, readOnly, content, colorSchemeId, layoutVariantId])
+    return () => window.clearTimeout(timer)
+  }, [held, id, selectedId, projectQuery, projectId, readOnly, newDraftReady, content, colorSchemeId, layoutVariantId, ensureProject])
 
   if (held || !template || !isValidTemplateId(id)) return null
-
-  const readOnly = viewRequested || !canEdit
 
   const openFullscreen = () => {
     window.open(`/site/${id}?chromeless=true`, '_blank', 'noopener,noreferrer')
@@ -224,7 +288,20 @@ export function EditorPage() {
                   setSaving(true)
                   try {
                     if (!projectId) {
-                      await ensureProject()
+                      if (bootGuardRef.current) {
+                        const loaded = await bootGuardRef.current
+                        if (loaded) return
+                      }
+                      if (projectQuery) {
+                        toast.error('This project could not be loaded. Refresh the page and try again.')
+                        return
+                      }
+                      const created = await ensureProject()
+                      if (!created) return
+                      if (!created.canCloudSave) {
+                        setPaywallOpen(true)
+                        return
+                      }
                     } else {
                       await persistNow()
                     }
@@ -247,7 +324,26 @@ export function EditorPage() {
                 layoutVariantId={layoutVariantId}
                 canExport={canExport}
                 projectId={projectId}
-                onNeedPayment={() => setPaywallOpen(true)}
+                onNeedPayment={async () => {
+                  if (!projectId) {
+                    if (bootGuardRef.current) {
+                      const loaded = await bootGuardRef.current
+                      if (loaded) return
+                    }
+                    if (projectQuery) {
+                      toast.error('This project could not be loaded. Refresh the page and try again.')
+                      return
+                    }
+                    try {
+                      const created = await ensureProject()
+                      if (!created || created.canExport) return
+                    } catch (err: unknown) {
+                      toast.error(err instanceof Error ? err.message : 'Could not start project')
+                      return
+                    }
+                  }
+                  setPaywallOpen(true)
+                }}
               />
             </>
           )}
