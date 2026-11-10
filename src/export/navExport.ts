@@ -51,7 +51,7 @@ export function buildExportNavHtml(
   const mobileLinks = linkHtml(pageLinks, fromNested, 'block rounded-lg px-3 py-2.5 text-base font-medium hover:bg-slate-100')
   const mobileNav = `<nav class="sticky top-0 z-50 border-b border-slate-200 bg-white/95 text-slate-900 backdrop-blur lg:hidden">
   <div class="flex items-center justify-between gap-3 px-4 py-3">
-    <a href="${homeHref}" class="min-w-0 truncate font-semibold">${brand}</a>
+    <a href="${homeHref}" class="min-w-0 truncate font-semibold no-underline">${brand}</a>
     <details class="relative">
       <summary class="flex h-10 w-10 cursor-pointer list-none items-center justify-center rounded-lg border border-slate-300 [&::-webkit-details-marker]:hidden">
         <span class="sr-only">Menu</span>
@@ -108,17 +108,17 @@ export function buildExportNavHtml(
 
     terra: `<nav class="sticky top-0 z-50 bg-orange-50/95 backdrop-blur px-6 py-4"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4 rounded-full border border-orange-200 bg-orange-50/90 px-6 py-3 shadow-sm"><a href="${homeHref}" class="text-lg font-bold text-orange-950">${brand}</a><div class="hidden lg:flex gap-6 text-sm font-medium">${allLinks}</div>${ctaBtn}</div></nav>`,
 
-    coastal: `<nav class="sticky top-0 z-50 bg-sky-50/95 backdrop-blur px-6 py-4"><div class="max-w-6xl mx-auto border-b-2 border-sky-300/50 pb-3 flex items-center justify-between gap-4"><a href="${homeHref}" class="text-xl font-bold text-sky-950"><span class="border-b-2 border-sky-400 pb-0.5">${brand}</span></a><div class="hidden lg:flex gap-7 text-sm font-medium text-sky-900">${allLinks}</div>${ctaBtn}</div></nav>`,
+    coastal: `<nav class="sticky top-0 z-50 bg-sky-50/95 backdrop-blur px-6 py-4"><div class="max-w-6xl mx-auto border-b-2 border-sky-300/50 pb-3 flex items-center justify-between gap-4"><a href="${homeHref}" class="text-xl font-bold text-sky-950 no-underline">${brand}</a><div class="hidden lg:flex gap-7 text-sm font-medium text-sky-900">${allLinks}</div>${ctaBtn}</div></nav>`,
 
-    hotel: `<nav class="sticky top-0 z-50 border-b bg-stone-950/95 text-amber-50 backdrop-blur px-6 py-4"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4"><a href="${homeHref}" class="text-lg font-semibold tracking-[0.15em] uppercase">${brand}</a><div class="hidden lg:flex gap-7 text-sm font-medium">${allLinks}</div>${ctaBtn}</div></nav>`,
+    hotel: `<nav class="sticky top-0 z-50 border-b bg-stone-950/95 text-amber-50 backdrop-blur px-6 py-4"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4"><a href="${homeHref}" class="text-lg font-semibold tracking-[0.15em] uppercase no-underline">${brand}</a><div class="hidden lg:flex gap-7 text-sm font-medium">${allLinks}</div>${ctaBtn}</div></nav>`,
 
-    guesthouse: `<nav class="sticky top-0 z-50 border-b border-stone-200 bg-[#f7f3ec]/95 backdrop-blur px-6 py-4"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4"><a href="${homeHref}" class="font-serif text-2xl text-stone-900">${brand}</a><div class="hidden lg:flex gap-6 text-sm">${allLinks}</div>${ctaBtn}</div></nav>`,
+    guesthouse: `<nav class="sticky top-0 z-50 border-b border-stone-200 bg-[#f7f3ec]/95 backdrop-blur px-6 py-4"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4"><a href="${homeHref}" class="font-serif text-2xl text-stone-900 no-underline">${brand}</a><div class="hidden lg:flex gap-6 text-sm">${allLinks}</div>${ctaBtn}</div></nav>`,
 
-    alpine: `<nav class="sticky top-0 z-50 bg-slate-950/90 text-sky-50 backdrop-blur border-b border-sky-400/20 px-6 py-4"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4"><a href="${homeHref}" class="text-lg font-light tracking-[0.2em] uppercase">${brand}</a><div class="hidden lg:flex gap-7 text-sm font-medium">${allLinks}</div>${ctaBtn}</div></nav>`,
+    alpine: `<nav class="sticky top-0 z-50 bg-slate-950/90 text-sky-50 backdrop-blur border-b border-sky-400/20 px-6 py-4"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4"><a href="${homeHref}" class="text-lg font-light tracking-[0.2em] uppercase no-underline">${brand}</a><div class="hidden lg:flex gap-7 text-sm font-medium">${allLinks}</div>${ctaBtn}</div></nav>`,
 
-    ryokan: `<nav class="sticky top-0 z-50 bg-[#f3efe6]/95 backdrop-blur border-b border-stone-300 px-6 py-4"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4"><a href="${homeHref}" class="font-serif text-xl tracking-wide text-stone-900">${brand}</a><div class="hidden lg:flex gap-8 text-sm">${allLinks}</div>${ctaBtn}</div></nav>`,
+    ryokan: `<nav class="sticky top-0 z-50 bg-[#f3efe6]/95 backdrop-blur border-b border-stone-300 px-6 py-4"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4"><a href="${homeHref}" class="font-serif text-xl tracking-wide text-stone-900 no-underline">${brand}</a><div class="hidden lg:flex gap-8 text-sm">${allLinks}</div>${ctaBtn}</div></nav>`,
 
-    jungle: `<nav class="sticky top-0 z-50 bg-[#0a120c]/90 backdrop-blur border-b border-lime-700/30 text-lime-50 px-6 py-4"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4"><a href="${homeHref}" class="text-lg font-medium tracking-wide">${brand}</a><div class="hidden lg:flex gap-7 text-sm font-medium">${allLinks}</div>${ctaBtn}</div></nav>`,
+    jungle: `<nav class="sticky top-0 z-50 bg-[#0a120c]/90 backdrop-blur border-b border-lime-700/30 text-lime-50 px-6 py-4"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4"><a href="${homeHref}" class="text-lg font-medium tracking-wide no-underline">${brand}</a><div class="hidden lg:flex gap-7 text-sm font-medium">${allLinks}</div>${ctaBtn}</div></nav>`,
 
     vineyard: `<nav class="sticky top-0 z-50 bg-rose-50/95 backdrop-blur px-6 py-5"><div class="max-w-6xl mx-auto flex items-center justify-between border-b border-rose-900/20 pb-4"><a href="${homeHref}" class="font-serif text-2xl font-semibold text-rose-950">${brand}</a><div class="hidden lg:flex items-center gap-8 text-sm">${allLinks}${ctaBtn}</div></div></nav>`,
 

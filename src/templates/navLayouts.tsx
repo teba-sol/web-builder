@@ -55,7 +55,7 @@ function MobileSiteNav({
   return (
     <nav className={`${t.nav} clg:hidden`}>
       <div className="flex items-center justify-between gap-3 px-4 py-3 csm:px-6">
-        <Link to={basePath} className="inline-flex min-w-0 items-center gap-2 truncate text-base font-semibold">
+        <Link to={basePath} className="inline-flex min-w-0 items-center gap-2 truncate text-base font-semibold no-underline">
           <BrandMark c={c} />
         </Link>
         <button
@@ -503,8 +503,8 @@ function renderDesktopNav({
         <nav className={t.nav}>
           <div className="mx-auto max-w-6xl border-b-2 border-sky-300/50 px-6 py-4">
             <div className="flex items-center justify-between gap-4">
-              <Link to={basePath} className="text-xl font-bold text-sky-950">
-                <span className="border-b-2 border-sky-400 pb-0.5"><BrandMark c={c} /></span>
+              <Link to={basePath} className="text-xl font-bold text-sky-950 no-underline">
+                <BrandMark c={c} />
               </Link>
               <div className="hidden gap-7 text-sm font-medium text-sky-900 clg:flex">
                 <NavLinks items={pageLinks} t={t} basePath={basePath} />
@@ -560,7 +560,7 @@ function renderDesktopNav({
       return (
         <nav className={t.nav}>
           <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-            <Link to={basePath} className="text-xl font-bold"><BrandMark c={c} /></Link>
+            <Link to={basePath} className="text-xl font-bold no-underline"><BrandMark c={c} /></Link>
             <div className="hidden gap-6 text-sm font-medium clg:flex">
               <NavLinks items={pageLinks} t={t} basePath={basePath} />
             </div>
