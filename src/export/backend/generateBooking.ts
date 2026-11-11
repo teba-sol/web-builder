@@ -1,3 +1,4 @@
+import { ROOM_PRICE_COLORS } from '../../data/roomPrice'
 /**
  * Hospitality booking for exported Laravel + Filament sites.
  *
@@ -2951,7 +2952,6 @@ class RoomPrice
   $base = (float) ($priceBase ?? 0);
   $percent = max(0, min(100, (float) ($pricePercent ?? 0)));
   $currency = \\App\\Support\\RoomPrice::currency((string) ($priceCurrency ?? ''));
-  $accent = $priceAccent ?? 'inherit';
   $suffix = (string) ($priceSuffix ?? '');
   $selling = \\App\\Support\\RoomPrice::selling($base, $percent);
   $rate = (float) ($settings->usdt_etb_rate ?? 0);
@@ -2960,18 +2960,20 @@ class RoomPrice
   $percentLabel = rtrim(rtrim(number_format($percent, 2), '0'), '.');
   $align = ($priceAlign ?? '') === 'end' ? 'text-right' : '';
 @endphp
-<div class="mt-1 {{ $align }}">
-@if($percent > 0)
-    <p class="text-sm text-gray-500 line-through">{{ number_format($base, 0) }} {{ $currency }}@if($otherBase) · {{ $otherBase }}@endif</p>
-    <p class="text-lg font-bold text-gray-900">{{ number_format($selling, 0) }} {{ $currency }}@if($suffix !== '')<span class="text-sm font-normal text-gray-500"> {{ $suffix }}</span>@endif</p>
-    <p class="mt-1 text-sm font-semibold text-rose-700">{{ $percentLabel }}% off</p>
-@else
-    <p class="text-lg font-bold">{{ number_format($selling, 0) }} {{ $currency }}@if($suffix !== '')<span class="text-sm font-normal text-gray-500"> {{ $suffix }}</span>@endif</p>
-@endif
+<div data-room-price class="mt-1 inline-block max-w-full rounded-xl px-3 py-2 leading-normal {{ $align }}" style="background-color:${ROOM_PRICE_COLORS.background};color:${ROOM_PRICE_COLORS.amount};text-decoration:none;">
+  @if($percent > 0)
+    <div class="mb-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
+      <span style="color:${ROOM_PRICE_COLORS.muted};"><del data-price-original style="text-decoration:line-through;">{{ number_format($base, 0) }} {{ $currency }}@if($otherBase) · {{ $otherBase }}@endif</del></span>
+      <span class="rounded-full px-2 py-0.5 text-xs font-semibold" style="color:${ROOM_PRICE_COLORS.discount};background-color:${ROOM_PRICE_COLORS.discountBackground};">{{ $percentLabel }}% off</span>
+    </div>
+  @endif
+  <p>
+    <span data-price-current class="text-xl font-bold tabular-nums" style="color:${ROOM_PRICE_COLORS.amount};text-decoration:none;">{{ number_format($selling, 0) }} {{ $currency }}</span>@if($suffix !== '')<span class="ml-1 text-sm font-normal" style="color:${ROOM_PRICE_COLORS.muted};">{{ $suffix }}</span>@endif
+  </p>
   @if($other)
-    <p class="mt-1 text-sm font-medium text-slate-700">{{ $other }}@if($suffix !== '') {{ $suffix }}@endif</p>
+    <p class="mt-1 text-sm font-medium" style="color:${ROOM_PRICE_COLORS.muted};">{{ $other }}@if($suffix !== '') {{ $suffix }}@endif</p>
   @elseif(!empty($priceRateHint))
-    <p class="mt-1 text-xs text-slate-500">Set the USD to ETB rate on Hotel Policy to show this price in ETB and USD.</p>
+    <p class="mt-1 text-xs font-normal" style="color:${ROOM_PRICE_COLORS.muted};">Set the USD to ETB rate on Hotel Policy to show this price in ETB and USD.</p>
   @endif
 </div>
 `,
