@@ -32,8 +32,9 @@ export function isHexColor(value: string | undefined): boolean {
 }
 
 export function resolveBrandAccent(content: SiteContent, fallback: string): string {
-  if (isHexColor(content.brandAccent)) return content.brandAccent.trim()
+  // Primary is the foreground/action brand color; brandAccent stores light surface highlights.
   if (isHexColor(content.brandPrimary)) return content.brandPrimary.trim()
+  if (isHexColor(content.brandAccent)) return content.brandAccent.trim()
   return fallback
 }
 

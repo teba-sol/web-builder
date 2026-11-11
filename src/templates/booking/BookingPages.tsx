@@ -21,7 +21,7 @@ import { sitePath } from '../../data/siteNav'
 import type { TemplateTheme } from '../themes'
 import { getMapEmbedUrl, getMapOpenUrl } from '../../utils/mapEmbed'
 import { Search } from 'lucide-react'
-import { actionBackground, accentInk } from '../../utils/accentInk'
+import { accentInk, accentLabelColor, actionBackground } from '../../utils/accentInk'
 import { staySkin } from './hospitalitySkin'
 
 interface BookingProps {
@@ -37,19 +37,20 @@ function RoomPrice({ room, accent, suffix, rateHint }: { room: RoomTypeItem; acc
   const percent = discountPercentOf(room)
   const selling = sellingAmount(base, percent)
   const currency = stayCurrency(room.currency)
+  const labelColor = accentLabelColor(accent)
   return (
     <span className="block">
       {percent > 0 ? (
         <>
           <span className="block text-sm font-normal text-slate-500 line-through">{formatMoney(base, currency)}</span>
-          <span className="block text-lg font-bold" style={{ color: accent }}>
+          <span className="block text-lg font-bold" style={{ color: labelColor }}>
             {formatMoney(selling, currency)}
             {suffix ? <span className="text-sm font-normal text-slate-500"> {suffix}</span> : null}
           </span>
           <span className="mt-1 block text-sm font-semibold text-rose-700">{percent}% off</span>
         </>
       ) : (
-        <span className="block text-lg font-bold" style={{ color: accent }}>
+        <span className="block text-lg font-bold" style={{ color: labelColor }}>
           {formatMoney(selling, currency)}
           {suffix ? <span className="text-sm font-normal text-slate-500"> {suffix}</span> : null}
         </span>
@@ -342,7 +343,7 @@ function PropertyNotes({ content: c, accent }: { content: SiteContent; accent: s
           </div>
         ) : null}
         {open ? (
-          <a href={open} className="mt-3 inline-block text-sm font-semibold underline" style={{ color: accent }} target="_blank" rel="noreferrer">
+          <a href={open} className="mt-3 inline-block text-sm font-semibold underline" style={{ color: accentLabelColor(accent) }} target="_blank" rel="noreferrer">
             View on Google Maps
           </a>
         ) : null}
@@ -355,6 +356,7 @@ export function RoomsPage({ content: c, basePath, templateId, accent }: BookingP
   const navigate = useNavigate()
   const draft = useStayDraft()
   const skin = staySkin(templateId)
+  const buttonColor = actionBackground(accent)
   const submitted = draft.params.has('check_in')
   const childAges = submitted ? readChildAges(draft.params, Number(draft.params.get('children') || 0)) : draft.childAges
   const searchErrors = submitted
@@ -461,7 +463,7 @@ export function RoomsPage({ content: c, basePath, templateId, accent }: BookingP
                       {amenities.map((item) => <span key={item} className="rounded-full bg-slate-100 px-3 py-1">{item}</span>)}
                     </div>
                     <div className="mt-5 flex justify-end">
-                      <Link to={sitePath(basePath, `rooms/${room.slug}${query}`)} className={skin.button.replace(/\btext-white\b/, accentInk(accent))} style={{ backgroundColor: accent }}>
+                      <Link to={sitePath(basePath, `rooms/${room.slug}${query}`)} className={skin.button.replace(/\btext-white\b/, accentInk(buttonColor))} style={{ backgroundColor: buttonColor }}>
                         See availability
                       </Link>
                     </div>
@@ -484,6 +486,7 @@ export function RoomDetailPage({ content: c, basePath, templateId, accent }: Boo
   const navigate = useNavigate()
   const draft = useStayDraft()
   const skin = staySkin(templateId)
+  const buttonColor = actionBackground(accent)
   const type = roomTypeBySlug(c.roomTypes, slug)
   const submitted = draft.params.has('check_in')
   const checkIn = draft.params.get('check_in') || ''
@@ -498,11 +501,12 @@ export function RoomDetailPage({ content: c, basePath, templateId, accent }: Boo
   const [error, setError] = useState('')
   const [selected, setSelected] = useState<string[]>([])
   const [addBreakfast, setAddBreakfast] = useState(false)
+  const labelColor = accentLabelColor(accent)
   if (!type) {
     return (
       <section className="py-20 text-center">
         <p className="text-slate-600">Room not found.</p>
-        <Link to={sitePath(basePath, 'rooms')} className="mt-4 inline-block text-sm font-semibold" style={{ color: accent }}>Back to Book</Link>
+        <Link to={sitePath(basePath, 'rooms')} className="mt-4 inline-block text-sm font-semibold" style={{ color: labelColor }}>Back to Book</Link>
       </section>
     )
   }
@@ -633,8 +637,8 @@ export function RoomDetailPage({ content: c, basePath, templateId, accent }: Boo
               </p>
               <button
                 type="button"
-                className={skin.button.replace(/\btext-white\b/, accentInk(accent))}
-                style={{ backgroundColor: accent }}
+                className={skin.button.replace(/\btext-white\b/, accentInk(buttonColor))}
+                style={{ backgroundColor: buttonColor }}
                 onClick={() => {
                   const stay = stayQueryString({ checkIn, checkOut, adults, children, childAges })
                   const breakfast = !type.freeBreakfast && addBreakfast ? '&breakfast=1' : ''
@@ -688,7 +692,7 @@ function UnitRow({
       </div>
       <div className="text-right">
         <RoomPrice room={room} accent={accent} suffix="/ night" rateHint />
-        <p className="mt-1 text-sm font-semibold" style={{ color: accent }}>{formatMoney(total, stayCurrency(room.currency))}</p>
+        <p className="mt-1 text-sm font-semibold" style={{ color: accentLabelColor(accent) }}>{formatMoney(total, stayCurrency(room.currency))}</p>
         <p className="text-xs text-slate-500">{nights} night{nights === 1 ? '' : 's'}</p>
         <label className="mt-3 inline-flex items-center gap-2 text-sm font-semibold">
           <input type="checkbox" checked={checked} onChange={onToggle} />
@@ -722,13 +726,15 @@ export function BookPage({ content: c, basePath, templateId, accent }: BookingPr
   const chosen = free.filter((unit) => requested.includes(unit.id))
   const pricing = ready && type ? computeStayTotal(type, checkIn, checkOut) : null
   const capacityOk = type ? guestCapacityOk(type, adults, children) : false
+  const labelColor = accentLabelColor(accent)
+  const buttonColor = actionBackground(accent)
   const roomTotal = pricing ? pricing.total * chosen.length : 0
 
   if (!ready || !type || !pricing || !capacityOk || chosen.length === 0) {
     return (
       <section className="py-20 text-center">
         <p className="text-slate-600">{searchErrors[0] || 'Choose one or more rooms and dates before you reserve.'}</p>
-        <Link to={sitePath(basePath, 'rooms')} className="mt-4 inline-block text-sm font-semibold" style={{ color: accent }}>Book</Link>
+        <Link to={sitePath(basePath, 'rooms')} className="mt-4 inline-block text-sm font-semibold" style={{ color: labelColor }}>Book</Link>
       </section>
     )
   }
@@ -749,7 +755,7 @@ export function BookPage({ content: c, basePath, templateId, accent }: BookingPr
               <div className="flex justify-between gap-4"><dt className="text-slate-500">Nights</dt><dd>{pricing.nights}</dd></div>
               <div className="flex justify-between gap-4"><dt className="text-slate-500">Nightly</dt><dd className="text-right"><RoomPrice room={type} accent={accent} suffix="/ night" rateHint /></dd></div>
               <div className="flex justify-between gap-4"><dt className="text-slate-500">Guests</dt><dd>{adults} adults · {children} children</dd></div>
-              <div className="flex justify-between gap-4 border-t pt-3 text-base"><dt className="font-semibold">Total</dt><dd className="text-right font-bold" style={{ color: accent }}>{formatMoney(roomTotal, stayCurrency(pricing.currency))}</dd></div>
+              <div className="flex justify-between gap-4 border-t pt-3 text-base"><dt className="font-semibold">Total</dt><dd className="text-right font-bold" style={{ color: labelColor }}>{formatMoney(roomTotal, stayCurrency(pricing.currency))}</dd></div>
             </dl>
             <p className="mt-4 text-xs text-slate-500">{type.freeCancellation ? 'Free cancellation.' : 'This rate is non-refundable.'}</p>
             <p className="mt-2 text-sm text-slate-700">{type.freeBreakfast ? 'Breakfast included' : addBreakfast ? 'Breakfast added. The exported site charges the Hotel Policy price.' : 'Breakfast not included'}</p>
@@ -811,7 +817,7 @@ export function BookPage({ content: c, basePath, templateId, accent }: BookingPr
             <label className="block text-sm"><span className="mb-1 block text-slate-500">Phone</span><input name="guestPhone" required className={skin.input} /></label>
             <label className="block text-sm"><span className="mb-1 block text-slate-500">Special requests (optional)</span><textarea name="specialRequests" rows={3} className={skin.input} /></label>
             <BreakfastChoice included={type.freeBreakfast} selected={addBreakfast} onChange={setAddBreakfast} />
-            <button type="submit" className={`w-full ${skin.button.replace(/\btext-white\b/, accentInk(accent))}`} style={{ backgroundColor: accent }}>Reserve</button>
+            <button type="submit" className={`w-full ${skin.button.replace(/\btext-white\b/, accentInk(buttonColor))}`} style={{ backgroundColor: buttonColor }}>Reserve</button>
           </form>
         </div>
       </div>
@@ -831,11 +837,12 @@ export function BookingConfirmPage({ content: c, basePath, templateId, accent }:
       ? reservationUnitIds(reservation)
       : []
 
+  const labelColor = accentLabelColor(accent)
   if (!reservation) {
     return (
       <section className="py-20 text-center">
         <p className="text-slate-600">Reservation not found in this preview session.</p>
-        <Link to={sitePath(basePath, 'rooms')} className="mt-4 inline-block text-sm font-semibold" style={{ color: accent }}>Book</Link>
+        <Link to={sitePath(basePath, 'rooms')} className="mt-4 inline-block text-sm font-semibold" style={{ color: labelColor }}>Book</Link>
       </section>
     )
   }
@@ -860,10 +867,10 @@ export function BookingConfirmPage({ content: c, basePath, templateId, accent }:
             <div className="flex justify-between gap-4"><span className="text-slate-500">Phone</span><span>{reservation.guestPhone}</span></div>
             {reservation.specialRequests ? <div className="flex justify-between gap-4"><span className="text-slate-500">Special requests</span><span>{reservation.specialRequests}</span></div> : null}
             <div className="flex justify-between gap-4"><span className="text-slate-500">Breakfast</span><span>{room?.freeBreakfast ? 'Breakfast included' : reservation.breakfastSelected ? 'Breakfast added. The exported site charges the Hotel Policy price.' : 'Breakfast not included'}</span></div>
-            <div className="flex justify-between gap-4 border-t pt-3"><span className="text-slate-500">Total</span><span className="font-bold" style={{ color: accent }}>{formatMoney(reservation.totalPrice, stayCurrency(reservation.currency))}</span></div>
+            <div className="flex justify-between gap-4 border-t pt-3"><span className="text-slate-500">Total</span><span className="font-bold" style={{ color: labelColor }}>{formatMoney(reservation.totalPrice, stayCurrency(reservation.currency))}</span></div>
             <p className="text-xs text-slate-500">ETB and USD both show on the exported site after the hotel sets the USD to ETB rate.</p>
           </div>
-          <Link to={basePath} className="mt-8 inline-block text-sm font-semibold" style={{ color: accent }}>Back to home</Link>
+          <Link to={basePath} className="mt-8 inline-block text-sm font-semibold" style={{ color: labelColor }}>Back to home</Link>
         </div>
       </div>
     </section>

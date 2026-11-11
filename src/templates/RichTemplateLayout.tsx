@@ -1,4 +1,4 @@
-import { actionBackground } from '../utils/accentInk'
+import { accentLabelColor, actionBackground } from '../utils/accentInk'
 import { lazy, Suspense, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { getColorSchemes } from '../data/colorSchemes'
@@ -129,9 +129,11 @@ export function RichTemplateLayout({
   const scheme =
     getColorSchemes(variant).find((s) => s.id === colorSchemeId) ?? getColorSchemes(variant)[0]
   const accent = resolveBrandAccent(c, scheme?.swatches[1] ?? '#2563eb')
+  const accentFallback = c.brandSecondary?.trim() || scheme?.swatches[0]
   const brandStyles = brandCss(c)
   const fontHref = brandFontHref(c)
-  const bookingAccent = actionBackground(accent, scheme?.swatches[1])
+  const bookingAccent = actionBackground(accent, accentFallback)
+  const teaserAccent = accentLabelColor(accent, accentFallback)
   const bookingProps = { content: c, basePath, theme: t, templateId: variant, accent: bookingAccent }
 
   const sections: Record<PageSectionId, ReactNode> = {
@@ -147,7 +149,7 @@ export function RichTemplateLayout({
     'services-teaser': c.pageVisibility.services ? <ServicesTeaser {...layoutProps} /> : null,
     'portfolio-teaser': c.pageVisibility.portfolio ? <PortfolioTeaser {...layoutProps} /> : null,
     'about-teaser': c.pageVisibility.about ? <AboutTeaser {...layoutProps} /> : null,
-    'rooms-teaser': c.pageVisibility.rooms ? <RoomsTeaser c={c} basePath={basePath} accent={accent} variant={variant} /> : null,
+    'rooms-teaser': c.pageVisibility.rooms ? <RoomsTeaser c={c} basePath={basePath} accent={teaserAccent} variant={variant} /> : null,
     explore: <ExploreSectionView {...layoutProps} />,
     'blog-page': <BlogListPage {...layoutProps} />,
     'blog-post-page': <BlogPostPage {...layoutProps} slug={postSlug ?? ''} />,
@@ -282,6 +284,7 @@ function RoomsTeaser({
   const rooms = catalogueRoomTypes(c.roomTypes)
   if (!rooms.length) return null
   const skin = staySkin(variant)
+  const labelColor = accentLabelColor(accent)
   return (
     <section className={`${skin.page} py-20`}>
       <div className="mx-auto max-w-6xl px-4 csm:px-6">
@@ -291,7 +294,7 @@ function RoomsTeaser({
             <h2 className={`mt-2 text-3xl font-bold ${skin.heading}`}>{c.roomsSectionTitle || 'Rooms'}</h2>
             <p className="mt-2 max-w-2xl text-slate-600">{c.roomsSectionSubtitle}</p>
           </div>
-          <Link to={sitePath(basePath, 'rooms')} className="text-sm font-semibold" style={{ color: accent }}>
+          <Link to={sitePath(basePath, 'rooms')} className="text-sm font-semibold" style={{ color: labelColor }}>
             Book
           </Link>
         </div>
@@ -321,13 +324,13 @@ function RoomsTeaser({
                     {percent > 0 ? (
                       <>
                         <p className="text-sm text-slate-500 line-through">{formatMoney(base, currency)}</p>
-                        <p className="font-bold" style={{ color: accent }}>
+                        <p className="font-bold" style={{ color: labelColor }}>
                           {formatMoney(selling, currency)} <span className="text-sm font-normal text-slate-500">/ night</span>
                         </p>
                         <p className="text-sm font-semibold text-rose-700">{percent}% off</p>
                       </>
                     ) : (
-                      <p className="font-bold" style={{ color: accent }}>
+                      <p className="font-bold" style={{ color: labelColor }}>
                         {formatMoney(selling, currency)} <span className="text-sm font-normal text-slate-500">/ night</span>
                       </p>
                     )}
