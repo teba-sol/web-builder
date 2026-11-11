@@ -320,15 +320,15 @@ function RoomsTeaser({
                   <div data-part="price" className="mt-3">
                     {percent > 0 ? (
                       <>
-                        <p className="text-sm text-slate-600 line-through">{formatMoney(base, currency)}</p>
+                        <p className="text-sm text-slate-800 line-through">{formatMoney(base, currency)}</p>
                         <p className="font-bold" style={{ color: accent }}>
-                          {formatMoney(selling, currency)} <span className="text-sm font-normal text-slate-800">/ night</span>
+                          {formatMoney(selling, currency)} <span className="text-sm font-normal text-slate-900">/ night</span>
                         </p>
                         <p className="text-sm font-semibold text-rose-700">{percent}% off</p>
                       </>
                     ) : (
                       <p className="font-bold" style={{ color: accent }}>
-                        {formatMoney(selling, currency)} <span className="text-sm font-normal text-slate-800">/ night</span>
+                        {formatMoney(selling, currency)} <span className="text-sm font-normal text-slate-900">/ night</span>
                       </p>
                     )}
                   </div>
