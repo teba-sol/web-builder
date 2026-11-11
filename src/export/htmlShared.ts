@@ -45,7 +45,7 @@ export function tailwindHead(title: string, content?: SiteContent): string {
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="${fontHref || 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap'}" rel="stylesheet" />
-  <style>html,body { overflow-x: hidden; max-width: 100%; } body { font-family: Inter, system-ui, sans-serif; }
+  <style>html,body { overflow-x: clip; max-width: 100%; } body { font-family: Inter, system-ui, sans-serif; }
 iframe { max-width: 100%; }
 img:not([class*="object-cover"]):not([class*="h-full"]) { max-width: 100%; height: auto; }
 h1, h2, h3, p { overflow-wrap: break-word; }

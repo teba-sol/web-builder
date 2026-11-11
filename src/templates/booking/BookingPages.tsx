@@ -41,17 +41,17 @@ function RoomPrice({ room, accent, suffix, rateHint }: { room: RoomTypeItem; acc
     <span className="block">
       {percent > 0 ? (
         <>
-          <span className="block text-sm font-normal text-slate-500 line-through">{formatMoney(base, currency)}</span>
+          <span className="block text-sm font-normal text-slate-600 line-through">{formatMoney(base, currency)}</span>
           <span className="block text-lg font-bold" style={{ color: accent }}>
             {formatMoney(selling, currency)}
-            {suffix ? <span className="text-sm font-normal text-slate-500"> {suffix}</span> : null}
+            {suffix ? <span className="text-sm font-normal text-slate-700"> {suffix}</span> : null}
           </span>
           <span className="mt-1 block text-sm font-semibold text-rose-700">{percent}% off</span>
         </>
       ) : (
         <span className="block text-lg font-bold" style={{ color: accent }}>
           {formatMoney(selling, currency)}
-          {suffix ? <span className="text-sm font-normal text-slate-500"> {suffix}</span> : null}
+          {suffix ? <span className="text-sm font-normal text-slate-700"> {suffix}</span> : null}
         </span>
       )}
       {rateHint ? (

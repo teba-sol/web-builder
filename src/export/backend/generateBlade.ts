@@ -480,7 +480,7 @@ export function generateSiteLayout(payload: SiteExportPayload): string {
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="{{ \\App\\Support\\Brand::fontHref($settings->font_heading, $settings->font_body) }}" rel="stylesheet" />
-  <style>html,body { overflow-x: hidden; max-width: 100%; }
+  <style>html,body { overflow-x: clip; max-width: 100%; }
 iframe { max-width: 100%; }
 img:not([class*="object-cover"]):not([class*="h-full"]) { max-width: 100%; height: auto; }
 @media (max-width: 640px) { h1 { font-size: clamp(1.75rem, 8vw, 2.75rem) !important; line-height: 1.15 !important; } }
