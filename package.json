@@ -7,6 +7,7 @@
     "dev": "node -e \"require(require('path').join(require('path').dirname(process.env.npm_package_json),'scripts/run-bin.cjs'))\"",
     "build": "tsc -b && node -e \"require(require('path').join(require('path').dirname(process.env.npm_package_json),'scripts/run-bin.cjs'))\" build",
     "lint": "oxlint",
+    "test:manual-save": "node tests/manual-save.test.cjs",
     "preview": "node -e \"require(require('path').join(require('path').dirname(process.env.npm_package_json),'scripts/run-bin.cjs'))\" preview",
     "dump:manifests": "tsx scripts/dump-manifests.ts",
     "verify:export": "vite-node scripts/verify-export.ts"

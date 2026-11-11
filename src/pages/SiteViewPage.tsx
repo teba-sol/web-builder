@@ -4,7 +4,7 @@ import { getTemplateDefaults } from '../data/defaults'
 import { isValidTemplateId } from '../data/templateIds'
 import { useHospitalityTemplateGuard } from '../hooks/useHospitalityTemplateGuard'
 import { TemplateRenderer } from '../templates/TemplateRenderer'
-import { loadSavedSite } from '../utils/storage'
+import { loadSavedSite, loadPreviewSite } from '../utils/storage'
 
 export function SiteViewPage() {
   const { templateId } = useParams<{ templateId: string }>()
@@ -15,7 +15,8 @@ export function SiteViewPage() {
   const isDemo = searchParams.get('demo') === 'true'
   const chromeless = searchParams.get('chromeless') === 'true'
 
-  const saved = loadSavedSite()
+  const preview = loadPreviewSite()
+  const saved = preview?.templateId === id ? preview : loadSavedSite()
   const hasUserContent = isValidTemplateId(id) && saved?.templateId === id
   const content = isValidTemplateId(id)
     ? isDemo

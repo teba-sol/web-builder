@@ -59,3 +59,21 @@ export function getSiteOrDefault(templateId: TemplateId): SiteContent {
   if (saved?.templateId === templateId) return saved.content
   return defaultContent
 }
+const PREVIEW_KEY = 'webbuilder-preview'
+
+export function savePreviewSite(site: SavedSite) {
+  localStorage.setItem(PREVIEW_KEY, JSON.stringify(site))
+}
+
+export function loadPreviewSite(): SavedSite | null {
+  try {
+    const raw = localStorage.getItem(PREVIEW_KEY)
+    return raw ? JSON.parse(raw) as SavedSite : null
+  } catch {
+    return null
+  }
+}
+
+export function clearPreviewSite() {
+  localStorage.removeItem(PREVIEW_KEY)
+}
