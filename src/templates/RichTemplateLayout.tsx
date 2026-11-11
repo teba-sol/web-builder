@@ -322,13 +322,13 @@ function RoomsTeaser({
                       <>
                         <p className="text-sm text-slate-600 line-through">{formatMoney(base, currency)}</p>
                         <p className="font-bold" style={{ color: accent }}>
-                          {formatMoney(selling, currency)} <span className="text-sm font-normal text-slate-700">/ night</span>
+                          {formatMoney(selling, currency)} <span className="text-sm font-normal text-slate-800">/ night</span>
                         </p>
                         <p className="text-sm font-semibold text-rose-700">{percent}% off</p>
                       </>
                     ) : (
                       <p className="font-bold" style={{ color: accent }}>
-                        {formatMoney(selling, currency)} <span className="text-sm font-normal text-slate-700">/ night</span>
+                        {formatMoney(selling, currency)} <span className="text-sm font-normal text-slate-800">/ night</span>
                       </p>
                     )}
                   </div>
