@@ -321,7 +321,7 @@ function RoomsTeaser({
                     {percent > 0 ? (
                       <>
                         <p className="text-sm text-slate-800 line-through">{formatMoney(base, currency)}</p>
-                        <p className="font-bold" style={{ color: accent }}>
+                        <p className="font-bold text-slate-900">
                           {formatMoney(selling, currency)} <span className="text-sm font-normal text-slate-900">/ night</span>
                         </p>
                         <p className="text-sm font-semibold text-rose-700">{percent}% off</p>
