@@ -163,6 +163,7 @@ export interface SiteContent {
   heroImage: string
   logo: string
   logoShowName: boolean
+  logoSize: number
   brandPrimary: string
   brandSecondary: string
   brandAccent: string

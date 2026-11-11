@@ -1,3 +1,4 @@
+import { LOGO_SIZE_DEFAULT } from '../data/brand'
 import { defaultSectionVisibility, createShowcaseItems } from '../data/sectionConfig'
 import { emptyRoomType } from '../data/hospitality'
 import { mergeRichContent } from '../data/richDefaults'
@@ -16,6 +17,7 @@ export function layoutContent(manifest: TemplateManifest): SiteContent {
     heroImage: '',
     logo: '',
     logoShowName: true,
+    logoSize: LOGO_SIZE_DEFAULT,
     brandPrimary: '',
     brandSecondary: '',
     brandAccent: '',

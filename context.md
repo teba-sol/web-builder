@@ -49,10 +49,10 @@ Nested site paths (about, services, portfolio, gallery, blog, news, contact, roo
 
 `src/context/WebsiteContext.tsx` is the editor store: template id, `SiteContent`, color scheme, layout variant, and the bound project flags.
 
-- Every edit is written to `localStorage` through `src/utils/storage.ts`.
-- When `projectId` and `canCloudSave` are set, the same edit is `PUT /api/v1/projects/{id}` after 2.5 seconds. The body includes the full site document from `src/siteDocument/io.ts`.
+- Editing stays in memory until explicit Save. `persistNow` PUTs the full site document and updates local storage only after success. There is no autosave timer.
+- `hasUnsavedChanges` compares content, template, palette, and layout with the last initialized or saved snapshot. Save failures preserve that state; discard restores the snapshot. The editor blocks exit navigation and warns on tab close/refresh.
 - `bindProject` prefers `project.document` (a site document). The top-level `layoutVariantId` column is only a fallback when the document has no content. The API currently ignores the top-level layout field on create and save and keeps the stored column. The document JSON is the copy the editor restores. Do not “fix” that API null unless the task is to persist the column again.
-- `skipNextCloudSave` stops a bind from immediately writing the draft back.
+- `bindProject(project, true)` attaches newly created project permissions without replacing in-flight edits. A successful creation is bound before the first PUT, so retries reuse its id.
 
 `SiteContent` is `src/types/index.ts`. It is words and media, not design. Design (which sections exist, theme, schemes, nav shell, hero) is the template manifest.
 
@@ -76,7 +76,7 @@ Live render path: `TemplateRenderer` → per-template shells in `src/templates/`
 
 `src/pages/EditorPage.tsx`:
 
-- No `?project=` and the user is a consumer: `POST /api/v1/projects`, then replace the URL with `?project=`. Hospitality templates are not offered. `useHospitalityTemplateGuard` sends the browser home.
+- No `?project=` and the user is a consumer: resume the latest owned project for the template, or initialize an unsaved template. Only explicit Save (or an unlock/export action) creates a new project. Hospitality templates are not offered. `useHospitalityTemplateGuard` sends the browser home.
 - The personal gallery uses `templatesForPersonalAccount`. Salesperson and agency `/new-site` still lists hospitality templates.
 - No `?project=` and the user is a salesperson or agency admin: redirect to `/new-site?template=`.
 - `?mode=view` or `canEdit === false`: read-only. Hide the form.

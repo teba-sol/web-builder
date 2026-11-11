@@ -19,7 +19,7 @@ App.tsx routes
 - Tokens: `localStorage` keys `buildoura.accessToken` and `buildoura.refreshToken`.
 - Failures throw `ApiError` (`status`, `code`, `message`). Show `error.message`.
 - Editor state lives only in `src/context/WebsiteContext.tsx`. Content fields use `updateContent` or the list helpers in `src/data/listDefaults.ts`.
-- Every edit is stored by `src/utils/storage.ts`. When `projectId` and `canCloudSave` are set, `WebsiteContext` PUTs the site document from `src/siteDocument/io.ts` after 2.5 seconds.
+- Edits stay in memory until explicit Save. `WebsiteContext.persistNow` PUTs the site document and updates local storage after success. Do not add autosave timers. Preserve unsaved edits on save failure and keep the exit dialog and native tab-close warning.
 - `bindProject` restores from `project.document` when that document has `content`. Layout variant is inside that document.
 - `canExport`, `canCloudSave`, and `canEdit` come from the project response. The UI reads them. It does not decide them.
 - `VITE_ADMIN_ORIGIN` is only the link from the review home back to the agency portal. Default `http://localhost:5174`.
@@ -99,7 +99,7 @@ Hospitality download order in `src/components/DownloadButton.tsx`: cloud-save th
 
 Role-specific flow stays in the page that already branches:
 
-- Consumer opening `/editor/:templateId` with no `?project=` creates the project and replaces the URL with `?project=`.
+- Consumer opening `/editor/:templateId` with no `?project=` resumes the latest owned project or initializes an unsaved template. Create a new project only on explicit Save or unlock/export intent, and bind the created id before saving so retries do not duplicate projects.
 - Salesperson or agency admin without `?project=` goes to `/new-site?template=`.
 - `/new-site` collects client, business type, and template. A new client needs a name and an Ethiopian phone.
 - `?mode=view` or `canEdit === false` hides the form and save.

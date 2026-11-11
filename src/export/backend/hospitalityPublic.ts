@@ -1,9 +1,11 @@
+import { actionBackground, accentLabelColor } from '../../utils/accentInk'
+import { ROOM_PRICE_COLORS } from '../../data/roomPrice'
 import { accentButton, exportStaySkin } from '../../templates/booking/hospitalitySkin'
 
 function skinOf(templateId: string, accent?: string) {
   const skin = exportStaySkin(templateId)
   if (!accent) return skin
-  return { ...skin, button: accentButton(templateId, accent) }
+  return { ...skin, button: accentButton(templateId, actionBackground(accent)) }
 }
 
 export function breakfastStatus(freeExpr: string, currencyExpr: string, invite: boolean): string {
@@ -71,7 +73,7 @@ function tail(templateId: string, accent: string): string {
   return `<section class="mt-12">
   <h2 class="text-2xl ${skin.heading}">House rules</h2>
   @if(!empty($settings->house_rules))
-  <a href="{{ \\App\\Support\\PublicAsset::url($settings->house_rules) }}" class="mt-3 inline-block text-sm font-semibold underline" style="color:${accent}" target="_blank" rel="noreferrer">Download house rules</a>
+  <a href="{{ \\App\\Support\\PublicAsset::url($settings->house_rules) }}" class="mt-3 inline-block text-sm font-semibold underline" style="color:${accentLabelColor(accent)}" target="_blank" rel="noreferrer">Download house rules</a>
   <p class="mt-2 text-sm text-slate-600">PDF or Word, published by the hotel.</p>
   @else
   <p class="mt-3 text-slate-600">House rules will appear here when the hotel uploads a PDF or Word file.</p>
@@ -134,7 +136,7 @@ export function crsRoomsBlade(accent: string, templateId: string): string {
             </div>
             <div class="mt-4">@include('partials.stay-policies', ['compact' => true])</div>
             <div class="mt-5 flex justify-end">
-              <a href="{{ route('rooms.show', array_merge(['slug' => $type['slug']], $stayQuery)) }}" class="${skin.button}" style="background-color:${accent}">See availability</a>
+              <a href="{{ route('rooms.show', array_merge(['slug' => $type['slug']], $stayQuery)) }}" class="${skin.button}" style="background-color:${actionBackground(accent)}">See availability</a>
             </div>
           </div>
         </div>
@@ -234,7 +236,7 @@ export function crsRoomDetailBlade(accent: string, templateId: string): string {
           </label>
           @endforeach
           @include('partials.stay-addons', ['freeBreakfast' => $roomType['freeBreakfast'] ?? false, 'freeCancellation' => $roomType['freeCancellation'] ?? false, 'showCancellation' => false, 'breakfastPerNight' => (float) ($settings->breakfast_price ?? 0), 'cancellationFee' => (float) ($settings->cancellation_fee ?? 0), 'nights' => $nights, 'roomEach' => (float) $stayTotal, 'roomCount' => 1, 'countSelectedRooms' => true, 'currency' => $roomType['currency'] ?? ''])
-          <div class="flex justify-end"><button type="submit" class="${skin.button}" style="background-color:${accent}">Reserve</button></div>
+          <div class="flex justify-end"><button type="submit" class="${skin.button}" style="background-color:${actionBackground(accent)}">Reserve</button></div>
         </form>
         @else
         <p class="p-8 text-slate-600 ${skin.card}">No rooms of this type are free for those dates and guests.</p>
@@ -275,7 +277,7 @@ export function crsBookBlade(accent: string, templateId: string): string {
           <div class="flex justify-between gap-4"><dt class="text-slate-500">Nights</dt><dd>{{ $nights }}</dd></div>
           <div class="flex justify-between gap-4"><dt class="text-slate-500">Nightly</dt><dd class="text-right">@include('partials.room-price', ['priceBase' => $listNightly ?? ($roomType['basePrice'] ?? 0), 'pricePercent' => $roomType['discountPercent'] ?? 0, 'priceCurrency' => $roomType['currency'] ?? '', 'priceAccent' => '${accent}', 'priceSuffix' => '/ night', 'priceAlign' => 'end', 'priceRateHint' => true])</dd></div>
           <div class="flex justify-between gap-4" data-breakfast-line hidden><dt class="text-slate-500">Breakfast</dt><dd><span data-breakfast-amount>0</span> {{ \\App\\Support\\RoomPrice::currency((string) ($roomType['currency'] ?? '')) }}</dd></div>
-          <div class="flex justify-between gap-4 border-t pt-3 text-base"><dt class="font-semibold">Total</dt><dd class="text-right font-bold" style="color:${accent}"><span data-stay-total>{{ number_format($roomTotal, 0) }}</span> {{ \\App\\Support\\RoomPrice::currency((string) ($roomType['currency'] ?? '')) }}<span class="mt-1 block text-xs font-medium text-slate-500" data-other-total></span></dd></div>
+          <div class="flex justify-between gap-4 border-t pt-3 text-base"><dt class="font-semibold">Total</dt><dd class="text-right font-bold" style="color:${ROOM_PRICE_COLORS.amount}"><span data-stay-total>{{ number_format($roomTotal, 0) }}</span> {{ \\App\\Support\\RoomPrice::currency((string) ($roomType['currency'] ?? '')) }}<span class="mt-1 block text-xs font-medium text-slate-500" data-other-total></span></dd></div>
         </dl>
       </aside>
       <section class="p-6 ${skin.card}">
@@ -308,7 +310,7 @@ export function crsBookBlade(accent: string, templateId: string): string {
         <label class="block text-sm"><span class="mb-1 block text-slate-500">Phone</span><input name="guest_phone" required value="{{ old('guest_phone') }}" class="${skin.input}" /></label>
         <label class="block text-sm"><span class="mb-1 block text-slate-500">Special requests (optional)</span><textarea name="special_requests" rows="3" class="${skin.input}">{{ old('special_requests') }}</textarea></label>
         @include('partials.stay-addons', ['freeBreakfast' => $roomType['freeBreakfast'] ?? false, 'freeCancellation' => $roomType['freeCancellation'] ?? false, 'breakfastPerNight' => (float) ($settings->breakfast_price ?? 0), 'cancellationFee' => (float) ($settings->cancellation_fee ?? 0), 'nights' => $nights, 'roomEach' => (float) $stayTotal, 'roomCount' => $count, 'currency' => $roomType['currency'] ?? ''])
-        <button type="submit" class="w-full ${skin.button}" style="background-color:${accent}">Reserve</button>
+        <button type="submit" class="w-full ${skin.button}" style="background-color:${actionBackground(accent)}">Reserve</button>
       </form>
     </div>
   </div>
@@ -354,10 +356,10 @@ export function crsConfirmBlade(accent: string, templateId: string): string {
         <div class="flex justify-between gap-4"><span class="text-slate-500">Breakfast</span><span>Breakfast is not included.</span></div>
         @endif
         <div class="flex justify-between gap-4"><span class="text-slate-500">Cancellation</span><span>{{ \\App\\Support\\RoomPrice::cancellationNote((bool) $reservation->free_cancellation, (float) $reservation->cancellation_fee, (string) $reservation->currency) }}</span></div>
-        <div class="flex justify-between gap-4 border-t pt-3"><span class="text-slate-500">Total</span><span class="font-bold" style="color:${accent}">{{ number_format($total, 0) }} {{ \\App\\Support\\RoomPrice::currency((string) $reservation->currency) }}@if($confirmOther)<span class="mt-1 block text-xs font-medium text-slate-500">{{ $confirmOther }}</span>@else<span class="mt-1 block text-xs font-normal text-slate-500">Set the USD to ETB rate on Hotel Policy to show this price in ETB and USD.</span>@endif</span></div>
+        <div class="flex justify-between gap-4 border-t pt-3"><span class="text-slate-500">Total</span><span class="font-bold" style="color:${ROOM_PRICE_COLORS.amount}">{{ number_format($total, 0) }} {{ \\App\\Support\\RoomPrice::currency((string) $reservation->currency) }}@if($confirmOther)<span class="mt-1 block text-xs font-medium text-slate-500">{{ $confirmOther }}</span>@else<span class="mt-1 block text-xs font-normal text-slate-500">Set the USD to ETB rate on Hotel Policy to show this price in ETB and USD.</span>@endif</span></div>
       </div>
       @include('partials.stay-policies')
-      <a href="{{ route('home') }}" class="mt-8 inline-block text-sm font-semibold" style="color:${accent}">Back to home</a>
+      <a href="{{ route('home') }}" class="mt-8 inline-block text-sm font-semibold" style="color:${accentLabelColor(accent)}">Back to home</a>
     </div>
   </div>
 </section>
@@ -416,7 +418,7 @@ export function localRoomsBlade(accent: string, templateId: string): string {
             </div>
             <div class="mt-4">@include('partials.stay-policies', ['compact' => true])</div>
             <div class="mt-5 flex justify-end">
-              <a href="{{ route('rooms.show', array_merge(['slug' => $type->slug], $stayQuery)) }}" class="${skin.button}" style="background-color:${accent}">See availability</a>
+              <a href="{{ route('rooms.show', array_merge(['slug' => $type->slug], $stayQuery)) }}" class="${skin.button}" style="background-color:${actionBackground(accent)}">See availability</a>
             </div>
           </div>
         </div>
@@ -517,7 +519,7 @@ export function localRoomDetailBlade(accent: string, templateId: string): string
           </label>
           @endforeach
           @include('partials.stay-addons', ['freeBreakfast' => $roomType->free_breakfast, 'freeCancellation' => $roomType->free_cancellation, 'showCancellation' => false, 'breakfastPerNight' => (float) ($settings->breakfast_price ?? 0), 'cancellationFee' => (float) ($settings->cancellation_fee ?? 0), 'nights' => $offer['nights'], 'roomEach' => (float) $offer['total'], 'roomCount' => 1, 'countSelectedRooms' => true, 'currency' => $roomType->currency])
-          <div class="flex justify-end"><button type="submit" class="${skin.button}" style="background-color:${accent}">Reserve</button></div>
+          <div class="flex justify-end"><button type="submit" class="${skin.button}" style="background-color:${actionBackground(accent)}">Reserve</button></div>
         </form>
         @else
         <p class="p-8 text-slate-600 ${skin.card}">No rooms of this type are free for those dates and guests.</p>
@@ -555,7 +557,7 @@ export function localBookBlade(accent: string, templateId: string): string {
           <div class="flex justify-between gap-4"><dt class="text-slate-500">Nightly</dt><dd class="text-right">@include('partials.room-price', ['priceBase' => $offer['listNightly'], 'pricePercent' => $roomType->discount_percent, 'priceCurrency' => $roomType->currency, 'priceAccent' => '${accent}', 'priceSuffix' => '/ night', 'priceAlign' => 'end', 'priceRateHint' => true])</dd></div>
           <div class="flex justify-between gap-4"><dt class="text-slate-500">Guests</dt><dd>{{ $adults }} adults · {{ $children }} children</dd></div>
           <div class="flex justify-between gap-4" data-breakfast-line hidden><dt class="text-slate-500">Breakfast</dt><dd><span data-breakfast-amount>0</span> {{ \\App\\Support\\RoomPrice::currency((string) $roomType->currency) }}</dd></div>
-          <div class="flex justify-between gap-4 border-t pt-3 text-base"><dt class="font-semibold">Total</dt><dd class="text-right font-bold" style="color:${accent}"><span data-stay-total>{{ number_format($roomTotal, 0) }}</span> {{ \\App\\Support\\RoomPrice::currency((string) $roomType->currency) }}<span class="mt-1 block text-xs font-medium text-slate-500" data-other-total></span></dd></div>
+          <div class="flex justify-between gap-4 border-t pt-3 text-base"><dt class="font-semibold">Total</dt><dd class="text-right font-bold" style="color:${ROOM_PRICE_COLORS.amount}"><span data-stay-total>{{ number_format($roomTotal, 0) }}</span> {{ \\App\\Support\\RoomPrice::currency((string) $roomType->currency) }}<span class="mt-1 block text-xs font-medium text-slate-500" data-other-total></span></dd></div>
         </dl>
       </aside>
       <section class="p-6 ${skin.card}">
@@ -583,7 +585,7 @@ export function localBookBlade(accent: string, templateId: string): string {
         <label class="block text-sm"><span class="mb-1 block text-slate-500">Phone</span><input name="guest_phone" required value="{{ old('guest_phone') }}" class="${skin.input}" /></label>
         <label class="block text-sm"><span class="mb-1 block text-slate-500">Special requests (optional)</span><textarea name="special_requests" rows="3" class="${skin.input}">{{ old('special_requests') }}</textarea></label>
         @include('partials.stay-addons', ['freeBreakfast' => $roomType->free_breakfast, 'freeCancellation' => $roomType->free_cancellation, 'breakfastPerNight' => (float) ($settings->breakfast_price ?? 0), 'cancellationFee' => (float) ($settings->cancellation_fee ?? 0), 'nights' => $offer['nights'], 'roomEach' => (float) $offer['total'], 'roomCount' => $count, 'currency' => $roomType->currency])
-        <button type="submit" class="w-full ${skin.button}" style="background-color:${accent}">Reserve</button>
+        <button type="submit" class="w-full ${skin.button}" style="background-color:${actionBackground(accent)}">Reserve</button>
       </form>
     </div>
   </div>
@@ -628,10 +630,10 @@ export function localConfirmBlade(accent: string, templateId: string): string {
         <div class="flex justify-between gap-4"><span class="text-slate-500">Breakfast</span><span>Breakfast is not included.</span></div>
         @endif
         <div class="flex justify-between gap-4"><span class="text-slate-500">Cancellation</span><span>{{ \\App\\Support\\RoomPrice::cancellationNote((bool) $reservation->free_cancellation, (float) $reservation->cancellation_fee, (string) $reservation->currency) }}</span></div>
-        <div class="flex justify-between gap-4 border-t pt-3"><span class="text-slate-500">Total</span><span class="font-bold" style="color:${accent}">{{ number_format($total, 0) }} {{ \\App\\Support\\RoomPrice::currency((string) $reservation->currency) }}@if($confirmOther)<span class="mt-1 block text-xs font-medium text-slate-500">{{ $confirmOther }}</span>@else<span class="mt-1 block text-xs font-normal text-slate-500">Set the USD to ETB rate on Hotel Policy to show this price in ETB and USD.</span>@endif</span></div>
+        <div class="flex justify-between gap-4 border-t pt-3"><span class="text-slate-500">Total</span><span class="font-bold" style="color:${ROOM_PRICE_COLORS.amount}">{{ number_format($total, 0) }} {{ \\App\\Support\\RoomPrice::currency((string) $reservation->currency) }}@if($confirmOther)<span class="mt-1 block text-xs font-medium text-slate-500">{{ $confirmOther }}</span>@else<span class="mt-1 block text-xs font-normal text-slate-500">Set the USD to ETB rate on Hotel Policy to show this price in ETB and USD.</span>@endif</span></div>
       </div>
       @include('partials.stay-policies')
-      <a href="{{ route('home') }}" class="mt-8 inline-block text-sm font-semibold" style="color:${accent}">Back to the hotel</a>
+      <a href="{{ route('home') }}" class="mt-8 inline-block text-sm font-semibold" style="color:${accentLabelColor(accent)}">Back to the hotel</a>
     </div>
   </div>
 </section>

@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider, Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './auth/AuthContext'
 import { RequireAuth } from './auth/RequireAuth'
 import { WebsiteProvider } from './context/WebsiteContext'
@@ -20,53 +20,57 @@ import { AboutPage } from './pages/AboutPage'
 import { PricingPublicPage } from './pages/PricingPublicPage'
 import { SandboxBillingPage } from './pages/SandboxBillingPage'
 
-export default function App() {
+function AppRoutes() {
   return (
     <AuthProvider>
       <WebsiteProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/templates" element={<TemplateLibraryPage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/pricing" element={<PricingPublicPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/handoff" element={<HandoffPage />} />
-            <Route path="/signup" element={<SignupPage />} />
-            <Route
-              path="/new-site"
-              element={
-                <RequireAuth>
-                  <NewSitePage />
-                </RequireAuth>
-              }
-            />
-            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-            <Route path="/reset-password" element={<ResetPasswordPage />} />
-            <Route path="/account" element={<AccountPage />} />
-            <Route path="/billing/sandbox" element={<SandboxBillingPage />} />
-            <Route path="/pick-template" element={<PickTemplatePage />} />
-            <Route path="/demo/:templateId/*" element={<TemplateDemoPage />} />
-            <Route
-              path="/editor/:templateId/*"
-              element={
-                <RequireAuth>
-                  <EditorPage />
-                </RequireAuth>
-              }
-            />
-            <Route
-              path="/preview/:templateId/*"
-              element={
-                <RequireAuth>
-                  <PreviewPage />
-                </RequireAuth>
-              }
-            />
-            <Route path="/site/:templateId/*" element={<SiteViewPage />} />
-          </Routes>
-        </BrowserRouter>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/templates" element={<TemplateLibraryPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/pricing" element={<PricingPublicPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/handoff" element={<HandoffPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route
+            path="/new-site"
+            element={
+              <RequireAuth>
+                <NewSitePage />
+              </RequireAuth>
+            }
+          />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/account" element={<AccountPage />} />
+          <Route path="/billing/sandbox" element={<SandboxBillingPage />} />
+          <Route path="/pick-template" element={<PickTemplatePage />} />
+          <Route path="/demo/:templateId/*" element={<TemplateDemoPage />} />
+          <Route
+            path="/editor/:templateId/*"
+            element={
+              <RequireAuth>
+                <EditorPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/preview/:templateId/*"
+            element={
+              <RequireAuth>
+                <PreviewPage />
+              </RequireAuth>
+            }
+          />
+          <Route path="/site/:templateId/*" element={<SiteViewPage />} />
+        </Routes>
       </WebsiteProvider>
     </AuthProvider>
   )
+}
+
+const router = createBrowserRouter([{ path: '*', element: <AppRoutes /> }])
+
+export default function App() {
+  return <RouterProvider router={router} />
 }

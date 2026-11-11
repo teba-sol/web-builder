@@ -22,7 +22,7 @@ export function accentInk(accent: string): 'text-white' | 'text-slate-950' {
 }
 
 export function accentLabelColor(accent: string, fallback = '#020617'): string {
-  if (accentInk(accent) === 'text-white') return accent
+  if ((whiteContrast(accent) ?? 0) >= 4.5) return accent.trim()
   return (whiteContrast(fallback) ?? 0) >= 4.5 ? fallback.trim() : '#020617'
 }
 

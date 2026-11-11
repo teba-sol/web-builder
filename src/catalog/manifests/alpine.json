@@ -208,7 +208,7 @@
     },
     {
       "key": "phone",
-      "label": "Concierge",
+      "label": "Phone Number",
       "placeholder": "+41 33 555 2040"
     },
     {

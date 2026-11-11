@@ -1,5 +1,5 @@
 import { getNavShellId } from '../catalog/catalog'
-import { showBrandName } from '../data/brand'
+import { logoImageStyleAttr, showBrandName } from '../data/brand'
 import type { SiteContent, TemplateId } from '../types'
 import { getSiteNavItems, resolveStaticHref, staticSitePath, type SiteNavItem } from '../data/siteNav'
 import { escapeHtml } from './imageUtils'
@@ -32,13 +32,14 @@ export function buildExportNavHtml(
   const ctaHref = resolveStaticHref(content.ctaLink || 'contact', content, fromNested)
   const name = escapeHtml(content.businessName)
   const logoSrc = brandImageSrc(content.logo, fromNested)
+  const logoStyle = logoImageStyleAttr(content)
   const logo = logoSrc
-    ? `<img src="${escapeHtml(logoSrc)}" alt="" class="h-8 w-auto max-h-9 max-w-[10rem] object-contain" />`
+    ? `<img src="${escapeHtml(logoSrc)}" alt="" data-brand-logo class="shrink-0 object-contain" style="${logoStyle}" />`
     : ''
   const nameSpan = showBrandName(content)
     ? `<span>${name}</span>`
     : `<span class="sr-only">${name || 'Home'}</span>`
-  const brand = `<span class="inline-flex items-center gap-2">${logo}${nameSpan}</span>`
+  const brand = `<span class="inline-flex min-w-0 max-w-full items-center gap-2">${logo}${nameSpan}</span>`
   const cta = escapeHtml(content.ctaText)
   const ctaBtn = `<a href="${ctaHref}" data-brand-cta class="text-white px-5 py-2 rounded-lg text-sm font-semibold shrink-0" style="background-color:${accent}">${cta}</a>`
   const linkClass = 'hover:underline opacity-80'
@@ -51,7 +52,7 @@ export function buildExportNavHtml(
   const mobileLinks = linkHtml(pageLinks, fromNested, 'block rounded-lg px-3 py-2.5 text-base font-medium hover:bg-slate-100')
   const mobileNav = `<nav class="sticky top-0 z-50 border-b border-slate-200 bg-white/95 text-slate-900 backdrop-blur lg:hidden">
   <div class="flex items-center justify-between gap-3 px-4 py-3">
-    <a href="${homeHref}" class="min-w-0 truncate font-semibold">${brand}</a>
+    <a href="${homeHref}" class="min-w-0 truncate font-semibold no-underline">${brand}</a>
     <details class="relative">
       <summary class="flex h-10 w-10 cursor-pointer list-none items-center justify-center rounded-lg border border-slate-300 [&::-webkit-details-marker]:hidden">
         <span class="sr-only">Menu</span>
@@ -94,13 +95,13 @@ export function buildExportNavHtml(
 
     axiom: `<nav class="sticky top-0 z-50 border-b bg-white shadow-sm"><div class="max-w-7xl mx-auto px-4 h-[72px] flex items-center justify-between"><a href="${homeHref}" class="text-lg font-black text-[#0A1628]">${brand}</a><div class="hidden lg:flex gap-1 text-sm font-semibold">${allLinks}</div><a href="${ctaHref}" class="rounded-lg px-6 py-2.5 text-sm font-bold text-white" style="background-color:#0B4F8A">${cta}</a></div></nav>`,
 
-    helix: `<div><div class="bg-black text-white py-3 px-4"><div class="max-w-7xl mx-auto flex items-center justify-between">${content.email ? `<a href="mailto:${escapeHtml(content.email)}" class="font-medium hover:underline">Email</a>` : ''}${content.phone ? `<a href="tel:${escapeHtml(content.phone)}" class="font-medium text-sm md:text-2xl">${escapeHtml(content.phone)}</a>` : ''}</div></div><nav class="sticky top-0 z-50 bg-[#800020] text-white shadow-lg rounded-b-3xl"><div class="max-w-7xl mx-auto px-4"><div class="flex items-center justify-between h-20"><a href="${homeHref}" class="shrink-0 font-bold text-xl">${logoSrc ? `<img src="${escapeHtml(logoSrc)}" alt="" class="h-16 w-16 object-contain" />` : brand}</a><div class="hidden md:flex items-center gap-1">${allLinks}</div><a href="${ctaHref}" class="hidden md:block bg-white text-[#800020] px-6 py-2 rounded-lg font-semibold">Book now</a></div></div></nav></div>`,
+    helix: `<div><div class="bg-black text-white py-3 px-4"><div class="max-w-7xl mx-auto flex items-center justify-between">${content.email ? `<a href="mailto:${escapeHtml(content.email)}" class="font-medium hover:underline">Email</a>` : ''}${content.phone ? `<a href="tel:${escapeHtml(content.phone)}" class="font-medium text-sm md:text-2xl">${escapeHtml(content.phone)}</a>` : ''}</div></div><nav class="sticky top-0 z-50 bg-[#800020] text-white shadow-lg rounded-b-3xl"><div class="max-w-7xl mx-auto px-4"><div class="flex items-center justify-between h-20"><a href="${homeHref}" class="shrink-0 font-bold text-xl no-underline">${brand}</a><div class="hidden md:flex items-center gap-1">${allLinks}</div><a href="${ctaHref}" class="hidden md:block bg-white text-[#800020] px-6 py-2 rounded-lg font-semibold">Book now</a></div></div></nav></div>`,
 
     flux: `<div><div class="text-xs text-[#FFF3E7]" style="background-color:#241C15"><div class="max-w-7xl mx-auto px-4 py-2 flex flex-wrap gap-6">${content.phone ? `<a href="tel:${escapeHtml(content.phone)}">${escapeHtml(content.phone)}</a>` : ''}${content.email ? `<span>${escapeHtml(content.email)}</span>` : ''}</div></div><nav class="sticky top-0 z-50 border-b border-[#EEDFCF] bg-[#FFF9F4]/95"><div class="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between"><a href="${homeHref}" class="text-xl font-black text-[#241C15]">${brand}</a><div class="hidden lg:flex gap-1">${allLinks}</div><a href="${ctaHref}" class="rounded-xl px-6 py-3 text-sm font-bold text-white" style="background-color:#FA6B34">${cta}</a></div></nav></div>`,
 
     aureum: `<div><div class="border-b border-purple-200 text-xs" style="background-color:#eee4e6"><div class="max-w-7xl mx-auto px-4 py-2 flex flex-wrap gap-6 text-purple-700">${content.phone ? `<a href="tel:${escapeHtml(content.phone)}">${escapeHtml(content.phone)}</a>` : ''}${content.email ? `<span>${escapeHtml(content.email)}</span>` : ''}</div></div><nav class="sticky top-0 z-50 border-b border-slate-300 bg-slate-50/95"><div class="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between"><a href="${homeHref}" class="text-xl font-black">${brand}</a><div class="hidden lg:flex gap-1">${allLinks}</div><a href="${ctaHref}" class="rounded-xl px-6 py-3 text-sm font-bold text-white" style="background-color:#9333ea">${cta}</a></div></nav></div>`,
 
-    taxfighters: `<div><div class="border-b border-rose-200 text-xs" style="background-color:#eee4e6"><div class="max-w-7xl mx-auto px-4 py-2 flex flex-wrap gap-6 text-rose-700">${content.phone ? `<a href="tel:${escapeHtml(content.phone)}">${escapeHtml(content.phone)}</a>` : ''}${content.email ? `<span>${escapeHtml(content.email)}</span>` : ''}</div></div><nav class="sticky top-0 z-50 border-b border-slate-300 bg-slate-50/95"><div class="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between"><a href="${homeHref}" class="text-xl font-black">${logoSrc ? `<img src="${escapeHtml(logoSrc)}" alt="" class="h-10 w-auto object-contain" />` : brand}</a><div class="hidden lg:flex gap-1">${allLinks}</div><a href="${ctaHref}" class="rounded-xl px-6 py-3 text-sm font-bold text-white" style="background-color:#e60039">${cta}</a></div></nav></div>`,
+    taxfighters: `<div><div class="border-b border-rose-200 text-xs" style="background-color:#eee4e6"><div class="max-w-7xl mx-auto px-4 py-2 flex flex-wrap gap-6 text-rose-700">${content.phone ? `<a href="tel:${escapeHtml(content.phone)}">${escapeHtml(content.phone)}</a>` : ''}${content.email ? `<span>${escapeHtml(content.email)}</span>` : ''}</div></div><nav class="sticky top-0 z-50 border-b border-slate-300 bg-slate-50/95"><div class="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between"><a href="${homeHref}" class="text-xl font-black no-underline">${brand}</a><div class="hidden lg:flex gap-1">${allLinks}</div><a href="${ctaHref}" class="rounded-xl px-6 py-3 text-sm font-bold text-white" style="background-color:#e60039">${cta}</a></div></nav></div>`,
 
     salon: `<nav class="sticky top-0 z-50 border-b bg-pink-50/90 backdrop-blur px-6 py-5"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4"><div class="hidden lg:flex flex-1 justify-end gap-6 text-sm">${leftLinks}</div><a href="${homeHref}" class="font-serif text-2xl font-light tracking-wide text-pink-900">${brand}</a><div class="flex flex-1 justify-end items-center gap-6 text-sm"><div class="hidden lg:flex gap-6">${rightLinks}</div>${ctaBtn}</div></div></nav>`,
 
@@ -108,17 +109,17 @@ export function buildExportNavHtml(
 
     terra: `<nav class="sticky top-0 z-50 bg-orange-50/95 backdrop-blur px-6 py-4"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4 rounded-full border border-orange-200 bg-orange-50/90 px-6 py-3 shadow-sm"><a href="${homeHref}" class="text-lg font-bold text-orange-950">${brand}</a><div class="hidden lg:flex gap-6 text-sm font-medium">${allLinks}</div>${ctaBtn}</div></nav>`,
 
-    coastal: `<nav class="sticky top-0 z-50 bg-sky-50/95 backdrop-blur px-6 py-4"><div class="max-w-6xl mx-auto border-b-2 border-sky-300/50 pb-3 flex items-center justify-between gap-4"><a href="${homeHref}" class="text-xl font-bold text-sky-950"><span class="border-b-2 border-sky-400 pb-0.5">${brand}</span></a><div class="hidden lg:flex gap-7 text-sm font-medium text-sky-900">${allLinks}</div>${ctaBtn}</div></nav>`,
+    coastal: `<nav class="sticky top-0 z-50 bg-sky-50/95 backdrop-blur px-6 py-4"><div class="max-w-6xl mx-auto border-b-2 border-sky-300/50 pb-3 flex items-center justify-between gap-4"><a href="${homeHref}" class="text-xl font-bold text-sky-950 no-underline">${brand}</a><div class="hidden lg:flex gap-7 text-sm font-medium text-sky-900">${allLinks}</div>${ctaBtn}</div></nav>`,
 
-    hotel: `<nav class="sticky top-0 z-50 border-b bg-stone-950/95 text-amber-50 backdrop-blur px-6 py-4"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4"><a href="${homeHref}" class="text-lg font-semibold tracking-[0.15em] uppercase">${brand}</a><div class="hidden lg:flex gap-7 text-sm font-medium">${allLinks}</div>${ctaBtn}</div></nav>`,
+    hotel: `<nav class="sticky top-0 z-50 border-b bg-stone-950/95 text-amber-50 backdrop-blur px-6 py-4"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4"><a href="${homeHref}" class="text-lg font-semibold tracking-[0.15em] uppercase no-underline">${brand}</a><div class="hidden lg:flex gap-7 text-sm font-medium">${allLinks}</div>${ctaBtn}</div></nav>`,
 
-    guesthouse: `<nav class="sticky top-0 z-50 border-b border-stone-200 bg-[#f7f3ec]/95 backdrop-blur px-6 py-4"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4"><a href="${homeHref}" class="font-serif text-2xl text-stone-900">${brand}</a><div class="hidden lg:flex gap-6 text-sm">${allLinks}</div>${ctaBtn}</div></nav>`,
+    guesthouse: `<nav class="sticky top-0 z-50 border-b border-stone-200 bg-[#f7f3ec]/95 backdrop-blur px-6 py-4"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4"><a href="${homeHref}" class="font-serif text-2xl text-stone-900 no-underline">${brand}</a><div class="hidden lg:flex gap-6 text-sm">${allLinks}</div>${ctaBtn}</div></nav>`,
 
-    alpine: `<nav class="sticky top-0 z-50 bg-slate-950/90 text-sky-50 backdrop-blur border-b border-sky-400/20 px-6 py-4"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4"><a href="${homeHref}" class="text-lg font-light tracking-[0.2em] uppercase">${brand}</a><div class="hidden lg:flex gap-7 text-sm font-medium">${allLinks}</div>${ctaBtn}</div></nav>`,
+    alpine: `<nav class="sticky top-0 z-50 bg-slate-950/90 text-sky-50 backdrop-blur border-b border-sky-400/20 px-6 py-4"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4"><a href="${homeHref}" class="text-lg font-light tracking-[0.2em] uppercase no-underline">${brand}</a><div class="hidden lg:flex gap-7 text-sm font-medium">${allLinks}</div>${ctaBtn}</div></nav>`,
 
-    ryokan: `<nav class="sticky top-0 z-50 bg-[#f3efe6]/95 backdrop-blur border-b border-stone-300 px-6 py-4"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4"><a href="${homeHref}" class="font-serif text-xl tracking-wide text-stone-900">${brand}</a><div class="hidden lg:flex gap-8 text-sm">${allLinks}</div>${ctaBtn}</div></nav>`,
+    ryokan: `<nav class="sticky top-0 z-50 bg-[#f3efe6]/95 backdrop-blur border-b border-stone-300 px-6 py-4"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4"><a href="${homeHref}" class="font-serif text-xl tracking-wide text-stone-900 no-underline">${brand}</a><div class="hidden lg:flex gap-8 text-sm">${allLinks}</div>${ctaBtn}</div></nav>`,
 
-    jungle: `<nav class="sticky top-0 z-50 bg-[#0a120c]/90 backdrop-blur border-b border-lime-700/30 text-lime-50 px-6 py-4"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4"><a href="${homeHref}" class="text-lg font-medium tracking-wide">${brand}</a><div class="hidden lg:flex gap-7 text-sm font-medium">${allLinks}</div>${ctaBtn}</div></nav>`,
+    jungle: `<nav class="sticky top-0 z-50 bg-[#0a120c]/90 backdrop-blur border-b border-lime-700/30 text-lime-50 px-6 py-4"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4"><a href="${homeHref}" class="text-lg font-medium tracking-wide no-underline">${brand}</a><div class="hidden lg:flex gap-7 text-sm font-medium">${allLinks}</div>${ctaBtn}</div></nav>`,
 
     vineyard: `<nav class="sticky top-0 z-50 bg-rose-50/95 backdrop-blur px-6 py-5"><div class="max-w-6xl mx-auto flex items-center justify-between border-b border-rose-900/20 pb-4"><a href="${homeHref}" class="font-serif text-2xl font-semibold text-rose-950">${brand}</a><div class="hidden lg:flex items-center gap-8 text-sm">${allLinks}${ctaBtn}</div></div></nav>`,
 
