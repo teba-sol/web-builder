@@ -78,7 +78,6 @@ export function EditorPage() {
     if (selectedId !== id) {
       if (appliedQuery.current?.startsWith(`${id}?`)) return
       selectTemplate(id)
-      return
     }
   }, [held, id, selectedId, searchParams, selectTemplate, navigate])
 
