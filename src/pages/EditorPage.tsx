@@ -10,7 +10,7 @@ import { useAuth } from '../auth/AuthContext'
 import { rememberProjectId } from '../auth/builderSession'
 import { useWebsite } from '../context/WebsiteContext'
 import { TemplateRenderer } from '../templates/TemplateRenderer'
-import { getTemplateDefaults, getTemplateMeta } from '../data/defaults'
+import { getTemplateMeta } from '../data/defaults'
 import { appearanceFromSearchParams } from '../data/pickTemplate'
 import { isValidTemplateId } from '../data/templateIds'
 import { useHospitalityTemplateGuard } from '../hooks/useHospitalityTemplateGuard'
@@ -65,13 +65,8 @@ export function EditorPage() {
     if (selectedId !== id) {
       if (appliedQuery.current?.startsWith(`${id}?`)) return
       selectTemplate(id)
-      return
     }
-    const sample = getTemplateDefaults(id)
-    if (!content.businessName?.trim() && sample.businessName?.trim()) {
-      selectTemplate(id)
-    }
-  }, [held, id, selectedId, searchParams, content.businessName, selectTemplate, navigate])
+  }, [held, id, selectedId, searchParams, selectTemplate, navigate])
 
   useEffect(() => {
     if (held || !isValidTemplateId(id)) return
