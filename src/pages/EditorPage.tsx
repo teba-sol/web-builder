@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate, useParams, useSearchParams, useBlocker } from 'react-router-dom'
-import { Lock, PanelLeftClose, PanelLeftOpen, Save } from 'lucide-react'
+import { Lock, Maximize2, Monitor, PanelLeftClose, PanelLeftOpen, Save, Smartphone, Tablet } from 'lucide-react'
 import { toast } from 'sonner'
 import { createProject, getProject, listProjects } from '../api/projects'
 import type { ProjectResponse } from '../api/types'
 import { ContentForm } from '../components/ContentForm'
+import { DevicePreviewFrame } from '../components/DevicePreviewFrame'
 import { DownloadButton } from '../components/DownloadButton'
 import { UnsavedChangesDialog } from '../components/UnsavedChangesDialog'
 import { PaywallModal } from '../components/PaywallModal'
@@ -18,8 +19,14 @@ import { isValidTemplateId } from '../data/templateIds'
 import { savePreviewSite } from '../utils/storage'
 import { useHospitalityTemplateGuard } from '../hooks/useHospitalityTemplateGuard'
 
+const previewDevices = [
+  { id: 'mobile', label: 'Mobile', width: 390, Icon: Smartphone },
+  { id: 'tablet', label: 'Tablet', width: 768, Icon: Tablet },
+  { id: 'desktop', label: 'Desktop', width: 1280, Icon: Monitor },
+] as const
+
 export function EditorPage() {
-  const { templateId } = useParams<{ templateId: string }>()
+  const { templateId, '*': splat = '' } = useParams<{ templateId: string; '*': string }>()
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
   const {
@@ -48,12 +55,51 @@ export function EditorPage() {
   const [saving, setSaving] = useState(false)
   const savingRef = useRef(false)
   const [editorCollapsed, setEditorCollapsed] = useState(false)
+  const [previewDevice, setPreviewDevice] = useState<'mobile' | 'tablet' | 'desktop'>('desktop')
+  const previewWidth = previewDevices.find((device) => device.id === previewDevice)!.width
 
+  const subPath = splat.replace(/^\/+|\/+$/g, '')
+  const subPathRef = useRef(subPath)
+  subPathRef.current = subPath
   const id = templateId ?? ''
   const held = useHospitalityTemplateGuard(id)
   const template = isValidTemplateId(id) ? getTemplateMeta(id) : undefined
   const projectQuery = searchParams.get('project')
-  const viewRequested = searchParams.get('mode') === 'view'
+  const modeQuery = searchParams.get('mode')
+
+  const hostQueryRef = useRef<{ id: string; project: string | null; mode: string | null } | null>(null)
+  if (hostQueryRef.current?.id !== id) {
+    hostQueryRef.current = { id, project: projectQuery, mode: modeQuery }
+  } else {
+    if (projectQuery) hostQueryRef.current.project = projectQuery
+    if (searchParams.has('mode')) hostQueryRef.current.mode = modeQuery
+  }
+
+  const effectiveProjectQuery =
+    projectQuery ?? (hostQueryRef.current?.id === id ? hostQueryRef.current.project : null)
+  const viewRequested =
+    modeQuery === 'view' || (hostQueryRef.current?.id === id && hostQueryRef.current.mode === 'view')
+
+  useEffect(() => {
+    if (held || !isValidTemplateId(id)) return
+    const host = hostQueryRef.current
+    if (!host || host.id !== id) return
+    const nextParams = new URLSearchParams(searchParams)
+    let changed = false
+    if (host.project && !nextParams.get('project')) {
+      nextParams.set('project', host.project)
+      changed = true
+    }
+    if (host.mode === 'view' && nextParams.get('mode') !== 'view') {
+      nextParams.set('mode', 'view')
+      changed = true
+    }
+    if (!changed) return
+    const target = subPath ? `/editor/${id}/${subPath}` : `/editor/${id}`
+    internalNavigation.current = true
+    void navigate(`${target}?${nextParams.toString()}`, { replace: true })
+    internalNavigation.current = false
+  }, [held, id, subPath, searchParams, navigate])
   const readOnly = viewRequested || !canEdit
 
   const latestRef = useRef({ projectId, selectedId, searchParams })
@@ -65,7 +111,7 @@ export function EditorPage() {
       navigate('/')
       return
     }
-    rememberProjectId(searchParams.get('project'))
+    rememberProjectId(effectiveProjectQuery)
     const appearance = appearanceFromSearchParams(searchParams)
     const queryKey = `${id}?${searchParams.toString()}`
     if (appearance) {
@@ -79,7 +125,7 @@ export function EditorPage() {
       if (appliedQuery.current?.startsWith(`${id}?`)) return
       selectTemplate(id)
     }
-  }, [held, id, selectedId, searchParams, selectTemplate, navigate])
+  }, [held, id, selectedId, searchParams, effectiveProjectQuery, selectTemplate, navigate])
 
   const ensureProject = async (): Promise<ProjectResponse | null> => {
     if (latestRef.current.projectId) return null
@@ -98,18 +144,21 @@ export function EditorPage() {
   }
 
   const internalNavigation = useRef(false)
-  const blocker = useBlocker(({ currentLocation, nextLocation }) =>
+  const blocker = useBlocker(({ nextLocation }) =>
     !internalNavigation.current && !readOnly && (hasUnsavedChanges || saving) &&
     (!(nextLocation.pathname === `/editor/${id}` || nextLocation.pathname.startsWith(`/editor/${id}/`)) ||
-      currentLocation.search !== nextLocation.search),
+      Boolean(new URLSearchParams(nextLocation.search).get('project') && new URLSearchParams(nextLocation.search).get('project') !== effectiveProjectQuery)),
   )
 
   useEffect(() => {
     if (!projectId || projectQuery || !ready || selectedId !== id || bootedKey.current !== `${id}:${projectId}` || blocker.state !== 'unblocked') return
     internalNavigation.current = true
-    void navigate(`/editor/${id}?project=${projectId}`, { replace: true })
+    const params = new URLSearchParams(searchParams)
+    params.set('project', projectId)
+    const target = subPath ? `/editor/${id}/${subPath}` : `/editor/${id}`
+    void navigate(`${target}?${params}`, { replace: true })
     internalNavigation.current = false
-  }, [projectId, projectQuery, ready, blocker.state, selectedId, id, navigate])
+  }, [projectId, projectQuery, ready, blocker.state, selectedId, id, subPath, searchParams, navigate])
 
   useEffect(() => {
     if (readOnly || (!hasUnsavedChanges && !saving)) return
@@ -156,7 +205,7 @@ export function EditorPage() {
 
   useEffect(() => {
     if (held || !isValidTemplateId(id)) return
-    const key = `${id}:${projectQuery ?? 'new'}`
+    const key = `${id}:${effectiveProjectQuery ?? 'new'}`
     if (bootedKey.current === key) return
     bootedKey.current = key
     let active = true
@@ -165,8 +214,8 @@ export function EditorPage() {
 
     const run = async (): Promise<boolean> => {
       try {
-        if (projectQuery) {
-          const project = await getProject(projectQuery)
+        if (effectiveProjectQuery) {
+          const project = await getProject(effectiveProjectQuery)
           if (!active) return false
           bindProject(project)
           setReady(true)
@@ -190,7 +239,10 @@ export function EditorPage() {
           .filter((p) => p.templateId === id && (!user || p.ownerId === user.id))
           .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())[0]
         if (existing) {
-          navigate(`/editor/${id}?project=${existing.id}`, { replace: true })
+          const params = new URLSearchParams(latestRef.current.searchParams)
+          params.set('project', existing.id)
+          const target = subPathRef.current ? `/editor/${id}/${subPathRef.current}` : `/editor/${id}`
+          navigate(`${target}?${params}`, { replace: true })
           settled = true
           return true
         }
@@ -200,7 +252,7 @@ export function EditorPage() {
         return false
       } catch (err: unknown) {
         if (active) {
-          if (projectQuery) {
+          if (effectiveProjectQuery) {
             toast.error(err instanceof Error ? err.message : 'Could not load project')
           } else {
             toast.error(err instanceof Error ? err.message : 'Could not load drafts. Refresh the page and try again.')
@@ -218,18 +270,19 @@ export function EditorPage() {
         bootedKey.current = null
       }
     }
-  }, [held, id, projectQuery, user, navigate, selectTemplate, bindProject, clearProject])
+  }, [held, id, effectiveProjectQuery, user, navigate, selectTemplate, bindProject, clearProject])
 
   if (held || !template || !isValidTemplateId(id)) return null
 
   const openFullscreen = () => {
     savePreviewSite({ templateId: id, content, colorSchemeId, layoutVariantId })
-    window.open(`/site/${id}?chromeless=true`, '_blank', 'noopener,noreferrer')
+    const target = subPath ? `/site/${id}/${subPath}` : `/site/${id}`
+    window.open(`${target}?chromeless=true`, '_blank', 'noopener,noreferrer')
   }
 
   return (
     <div className="flex h-screen flex-col bg-slate-100">
-      <header className="relative z-[200] flex h-14 shrink-0 items-center justify-between border-b border-slate-200 bg-white px-4">
+      <header className="relative z-[200] flex min-h-14 shrink-0 flex-wrap items-center justify-between gap-3 border-b border-slate-200 bg-white px-4 py-2">
         <div className="flex min-w-0 items-center gap-3">
           {!readOnly && (
             <button
@@ -261,20 +314,32 @@ export function EditorPage() {
           )}
         </div>
         <div className="flex items-center gap-2">
+          <div role="group" aria-label="Preview device" className="inline-flex items-center gap-0.5 rounded-lg border border-slate-200 bg-slate-50 p-0.5">
+            {previewDevices.map(({ id: deviceId, label, width, Icon }) => (
+              <button
+                key={deviceId}
+                type="button"
+                aria-label={`${label} preview (${width}px)`}
+                aria-pressed={previewDevice === deviceId}
+                title={`${label} · ${width}px`}
+                onClick={() => setPreviewDevice(deviceId)}
+                className={`rounded-md p-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${previewDevice === deviceId ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-400 hover:bg-white hover:text-slate-700'}`}
+              >
+                <Icon size={17} aria-hidden="true" />
+              </button>
+            ))}
+          </div>
           <button
+            type="button"
             onClick={openFullscreen}
-            className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
+            aria-label="Open full preview in a new tab"
+            title="Full preview · new tab"
+            className="rounded-lg border border-slate-200 p-2 text-slate-500 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
           >
-            Full preview
+            <Maximize2 size={17} aria-hidden="true" />
           </button>
           {!readOnly && (
             <>
-              <Link
-                to={`/preview/${id}`}
-                className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
-              >
-                Preview
-              </Link>
               <span role="status" className="sr-only">{!ready ? 'Loading editor' : saving ? 'Saving changes' : hasUnsavedChanges ? 'Unsaved changes' : 'All changes saved'}</span>
               <span className="group relative inline-flex">
                 <button
@@ -319,7 +384,7 @@ export function EditorPage() {
         )}
 
         <main className="min-w-0 flex-1 overflow-hidden bg-slate-200 p-4">
-          <div className={`mx-auto flex h-full ${editorCollapsed ? 'w-full' : 'w-[90%]'} flex-col overflow-hidden rounded-xl border border-slate-300 bg-white shadow-lg`}>
+          <div className="mx-auto flex h-full w-full flex-col overflow-hidden rounded-xl border border-slate-300 bg-white shadow-lg">
             <div className="flex items-center gap-2 border-b border-slate-200 bg-slate-50 px-4 py-2">
               <div className="flex gap-1.5">
                 <div className="h-3 w-3 rounded-full bg-red-400" />
@@ -329,17 +394,15 @@ export function EditorPage() {
               <div className="flex-1 rounded-md bg-white px-3 py-1 text-center text-xs text-slate-400">
                 {content.businessName || 'your-site'}.webbuilder.app
               </div>
-              <button
-                onClick={openFullscreen}
-                title="Open full window preview"
-                className="rounded px-2 py-0.5 text-xs text-slate-500 hover:bg-slate-200"
-              >
-                ⛶
-              </button>
+              <span className="shrink-0 text-xs tabular-nums text-slate-400" aria-live="polite">{previewWidth}px</span>
             </div>
-            <div className="editor-site-preview relative min-h-0 flex-1 overflow-y-auto">
-              <TemplateRenderer templateId={id} content={content} basePath={`/editor/${id}`} colorSchemeId={colorSchemeId} layoutVariantId={layoutVariantId} />
-            </div>
+            <DevicePreviewFrame width={previewWidth}>
+              {ready && selectedId === id && (!effectiveProjectQuery || projectId === effectiveProjectQuery) ? (
+                <TemplateRenderer templateId={id} content={content} basePath={`/editor/${id}`} colorSchemeId={colorSchemeId} layoutVariantId={layoutVariantId} />
+              ) : (
+                <div role="status" className="flex h-full items-center justify-center text-sm text-slate-500">Loading preview…</div>
+              )}
+            </DevicePreviewFrame>
           </div>
         </main>
       </div>

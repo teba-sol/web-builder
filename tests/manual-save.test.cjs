@@ -131,7 +131,7 @@ function elements(tree) {
   if (!tree || typeof tree !== 'object') return []
   return [tree, ...[tree.props?.children].flat(Infinity).flatMap(elements)]
 }
-function editorHarness({ canCloudSave = true, failedSave = false } = {}) {
+function editorHarness({ canCloudSave = true, failedSave = false, subPath = '', query = '', loadProject } = {}) {
   const react = hooks()
   let creates = 0
   let saves = 0
@@ -139,7 +139,8 @@ function editorHarness({ canCloudSave = true, failedSave = false } = {}) {
   let fail = failedSave
   let shouldBlock
   const listeners = new Map()
-  const params = new URLSearchParams()
+  const params = new URLSearchParams(query)
+  let currentPath = `/editor/business${subPath ? `/${subPath}` : ''}`
   const blocker = { state: 'unblocked', proceed() { proceeded = true }, reset() { this.state = 'unblocked' } }
   const value = {
     templateId: 'business', content: { ...content }, colorSchemeId: 'blue', layoutVariantId: 'classic',
@@ -149,22 +150,23 @@ function editorHarness({ canCloudSave = true, failedSave = false } = {}) {
     async persistNow() { saves++; if (fail) throw Error('Save failed'); value.hasUnsavedChanges = false },
   }
   const user = { id: 'user', role: 'CONSUMER' }
-  const navigate = (path) => { const query = path.split('?')[1]; if (query) params.set('project', new URLSearchParams(query).get('project')) }
+  const navigate = (path) => { currentPath = path.split('?')[0]; subPath = currentPath.replace('/editor/business', '').replace(/^\//, ''); const next = new URLSearchParams(path.split('?')[1]); for (const key of [...params.keys()]) params.delete(key); next.forEach((value, key) => params.set(key, value)) }
   const Link = () => null
   const { EditorPage } = load('pages/EditorPage.tsx', {
     react,
-    'react-router-dom': { Link, useNavigate: () => navigate, useParams: () => ({ templateId: 'business' }), useSearchParams: () => [params], useBlocker: (check) => { shouldBlock = check; return blocker } },
-    'lucide-react': { Lock: Link, Save: Link, PanelLeftClose: Link, PanelLeftOpen: Link },
+    'react-router-dom': { Link, useNavigate: () => navigate, useParams: () => ({ templateId: 'business', '*': subPath }), useSearchParams: () => [params], useBlocker: (check) => { shouldBlock = check; return blocker } },
+    'lucide-react': { Lock: Link, Save: Link, PanelLeftClose: Link, PanelLeftOpen: Link, Monitor: Link, Smartphone: Link, Tablet: Link, Maximize2: Link },
     sonner: { toast: { success() {}, error() {} } },
-    '../api/projects': { listProjects: async () => ({ items: [] }), createProject: async () => { creates++; return { id: 'p1', canCloudSave } } },
+    '../api/projects': { listProjects: async () => ({ items: [] }), getProject: loadProject ?? (async (id) => ({ id, canCloudSave, canEdit: true })), createProject: async () => { creates++; return { id: 'p1', canCloudSave } } },
     '../auth/AuthContext': { useAuth: () => ({ user }) },
     '../auth/builderSession': { rememberProjectId() {} },
     '../context/WebsiteContext': { useWebsite: () => value },
     '../components/ContentForm': { ContentForm: Link },
+    '../components/DevicePreviewFrame': { DevicePreviewFrame: function DevicePreviewFrame() {} },
     '../components/DownloadButton': { DownloadButton: Link },
     '../components/PaywallModal': { PaywallModal: Link },
     '../components/UnsavedChangesDialog': { UnsavedChangesDialog: function UnsavedChangesDialog() {} },
-    '../templates/TemplateRenderer': { TemplateRenderer: Link },
+    '../templates/TemplateRenderer': { TemplateRenderer: function TemplateRenderer() {} },
     '../data/defaults': { getTemplateMeta: () => ({ name: 'Business' }) },
     '../data/pickTemplate': { appearanceFromSearchParams: () => null },
     '../data/templateIds': { isValidTemplateId: () => true },
@@ -174,7 +176,7 @@ function editorHarness({ canCloudSave = true, failedSave = false } = {}) {
   global.window = { addEventListener(name, fn) { listeners.set(name, fn) }, removeEventListener(name) { listeners.delete(name) } }
   function render() { react.begin(); const tree = EditorPage(); react.effects(); return tree }
   return {
-    render, value, blocker, listeners, shouldBlock: (nextPath, nextSearch = params.toString() ? `?${params}` : '') => shouldBlock({ currentLocation: { pathname: '/editor/business', search: params.toString() ? `?${params}` : '' }, nextLocation: { pathname: nextPath, search: nextSearch } }), counts: () => ({ creates, saves, proceeded }), retry() { fail = false },
+    render, value, blocker, listeners, navigateTo: navigate, location: () => `${currentPath}${params.size ? `?${params}` : ''}`, shouldBlock: (nextPath, nextSearch = params.toString() ? `?${params}` : '') => shouldBlock({ currentLocation: { pathname: '/editor/business', search: params.toString() ? `?${params}` : '' }, nextLocation: { pathname: nextPath, search: nextSearch } }), counts: () => ({ creates, saves, proceeded }), retry() { fail = false },
     save() { const button = elements(render()).find((element) => element.type === 'button' && typeof element.props.children?.[1] === 'string' && element.props.children[1].startsWith('Save')); return button.props.onClick() },
     async ready() { render(); await Promise.resolve(); render() },
   }
@@ -263,4 +265,36 @@ test('Keep editing cancels departure; Discard leaves without saving', async () =
   dialog = elements(h.render()).find((element) => element.type.name === 'UnsavedChangesDialog')
   dialog.props.onDiscard()
   assert.deepEqual(h.counts(), { creates: 0, saves: 0, proceeded: true })
+})
+
+test('subpage navigation restores project and view mode without creating a project', async () => {
+  const h = editorHarness({ query: 'project=p1&mode=view' })
+  await h.ready()
+  h.navigateTo('/editor/business/gallery')
+  const tree = h.render()
+  assert.equal(h.location(), '/editor/business/gallery?project=p1&mode=view')
+  assert.ok(elements(tree).some((element) => element.props?.children === 'Viewing'))
+  assert.equal(h.counts().creates, 0)
+})
+test('project preview waits for loaded content before mounting page visibility guards', async () => {
+  let finish
+  const pending = new Promise((resolve) => { finish = resolve })
+  const h = editorHarness({ subPath: 'gallery', query: 'project=p1', loadProject: () => pending })
+  let tree = h.render()
+  assert.equal(elements(tree).some((element) => element.type?.name === 'TemplateRenderer'), false)
+  finish({ id: 'p1', canCloudSave: true, canEdit: true })
+  await new Promise(setImmediate)
+  tree = h.render()
+  assert.ok(elements(tree).some((element) => element.type?.name === 'TemplateRenderer'))
+  assert.equal(h.location(), '/editor/business/gallery?project=p1')
+})
+test('saving a new project keeps the current subpage', async () => {
+  const h = editorHarness({ subPath: 'gallery' })
+  await h.ready()
+  h.value.hasUnsavedChanges = true
+  h.save()
+  await new Promise(setImmediate)
+  h.render()
+  assert.equal(h.location(), '/editor/business/gallery?project=p1')
+  assert.deepEqual(h.counts(), { creates: 1, saves: 1, proceeded: false })
 })
