@@ -6,7 +6,10 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
     proxy: {
-      '/api': 'http://localhost:8080',
+      '/api': {
+        target: 'https://24.144.94.138.sslip.io/',
+        changeOrigin: true,
+      },
     },
   },
 })
