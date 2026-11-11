@@ -93,6 +93,7 @@ export function FaqSectionView({ c, t, variant }: SectionProps) {
           </div>
         </section>
       )
+
     case 'numbered':
       return (
         <section id="faq" className={t.section}>

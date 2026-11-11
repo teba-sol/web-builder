@@ -37,6 +37,45 @@ export function resolveBrandAccent(content: SiteContent, fallback: string): stri
   return fallback
 }
 
+export const LOGO_SIZE_MIN = 20
+export const LOGO_SIZE_MAX = 56
+export const LOGO_SIZE_DEFAULT = 32
+
+export const LOGO_SIZE_PRESETS = [
+  { id: 'small', label: 'Small', size: 24 },
+  { id: 'medium', label: 'Medium', size: 32 },
+  { id: 'large', label: 'Large', size: 44 },
+  { id: 'xl', label: 'XL', size: 56 },
+] as const
+
+export function resolveLogoSize(value: unknown): number {
+  const num = typeof value === 'number' ? value : Number(value)
+  if (!Number.isFinite(num) || num <= 0) return LOGO_SIZE_DEFAULT
+  return Math.min(LOGO_SIZE_MAX, Math.max(LOGO_SIZE_MIN, Math.round(num)))
+}
+
+export function logoImageStyle(content: Pick<SiteContent, 'logoSize'>): {
+  height: string
+  width: string
+  maxHeight: string
+  maxWidth: string
+  objectFit: 'contain'
+} {
+  const size = resolveLogoSize(content.logoSize)
+  return {
+    height: `${size}px`,
+    width: 'auto',
+    maxHeight: `${LOGO_SIZE_MAX}px`,
+    maxWidth: 'min(100%, 14rem)',
+    objectFit: 'contain',
+  }
+}
+
+export function logoImageStyleAttr(content: Pick<SiteContent, 'logoSize'>): string {
+  const size = resolveLogoSize(content.logoSize)
+  return `height:${size}px;width:auto;max-height:${LOGO_SIZE_MAX}px;max-width:min(100%,14rem);object-fit:contain`
+}
+
 export function showBrandName(content: SiteContent): boolean {
   if (!content.logo) return true
   return content.logoShowName !== false

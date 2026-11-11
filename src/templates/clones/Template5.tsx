@@ -529,7 +529,7 @@ export function Template5({ c, basePath }: { c: SiteContent; basePath: string })
               <h4 className="text-lg font-bold" style={{ color: C.primary }}>Need Help?</h4>
               <p className="text-xs" style={{ color: C.textMuted }}>Our team is ready to assist you with any questions.</p>
               <button
-                onClick={() => { const el = document.getElementById('contact'); el?.scrollIntoView({ behavior: 'smooth' }); }}
+                onClick={(event) => { const el = event.currentTarget.ownerDocument.getElementById('contact'); el?.scrollIntoView({ behavior: 'smooth' }); }}
                 className="px-5 py-2.5 rounded-lg font-bold text-xs text-white transition hover:brightness-110"
                 style={{ backgroundColor: C.primary }}
               >

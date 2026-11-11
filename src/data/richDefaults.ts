@@ -1,4 +1,5 @@
 import type { SiteContent } from '../types'
+import { LOGO_SIZE_DEFAULT } from './brand'
 import { emptyContacts } from './contacts'
 import { defaultPageVisibility } from './pageConfig'
 import {
@@ -15,6 +16,7 @@ export const baseRichContent: SiteContent = {
   heroImage: '',
   logo: '',
   logoShowName: true,
+  logoSize: LOGO_SIZE_DEFAULT,
   brandPrimary: '',
   brandSecondary: '',
   brandAccent: '',

@@ -1,3 +1,4 @@
+import { resolveLogoSize } from '../data/brand'
 import { THEME_KEYS } from './theme'
 import type { TemplateManifest } from './types'
 import { TEMPLATE_MANIFEST_SCHEMA_VERSION } from './types'
@@ -104,6 +105,7 @@ export function validateManifest(raw: unknown): { ok: true; manifest: TemplateMa
     delete raw.defaults.seoSiteUrl
     if (typeof raw.defaults.logo !== 'string') raw.defaults.logo = ''
     if (typeof raw.defaults.logoShowName !== 'boolean') raw.defaults.logoShowName = true
+    raw.defaults.logoSize = resolveLogoSize(raw.defaults.logoSize)
     if (typeof raw.defaults.brandPrimary !== 'string') raw.defaults.brandPrimary = ''
     if (typeof raw.defaults.brandSecondary !== 'string') raw.defaults.brandSecondary = ''
     if (typeof raw.defaults.brandAccent !== 'string') raw.defaults.brandAccent = ''

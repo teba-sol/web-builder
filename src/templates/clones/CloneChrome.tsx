@@ -5,6 +5,7 @@ import type { CSSProperties } from 'react'
 import type { CloneTemplateId } from '../cloneTheme'
 import { getMapEmbedUrl, getMapOpenUrl } from '../../utils/mapEmbed'
 import { footerBlurb, footerNote } from '../../data/footer'
+import { logoImageStyle, showBrandName } from '../../data/brand'
 import type { CloneHomeData } from './cloneHomeData'
 
 interface ChromeProps {
@@ -208,7 +209,13 @@ export function CloneNav({ templateId, d, onBook }: ChromeProps) {
         <div className="relative mx-auto flex min-h-16 max-w-7xl items-center justify-between gap-2 overflow-hidden px-4 py-2 csm:h-20 csm:overflow-visible csm:px-6 csm:py-0">
           <Link to={d.hrefs.home} className="flex min-w-0 flex-1 items-center gap-2 csm:gap-3">
             {c.logo ? (
-              <img src={c.logo} alt="" className={`shrink-0 object-contain ${v.rounded ? 'h-10 w-10 csm:h-14 csm:w-14' : 'h-8 w-auto max-w-[7rem] csm:h-11 csm:max-w-[10rem]'}`} />
+              <img
+                src={c.logo}
+                alt=""
+                data-brand-logo=""
+                className="shrink-0 object-contain"
+                style={logoImageStyle(c)}
+              />
             ) : (
               <div
                 className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl shadow-lg csm:h-11 csm:w-11"
@@ -217,7 +224,7 @@ export function CloneNav({ templateId, d, onBook }: ChromeProps) {
                 <Shield className="h-5 w-5 text-white csm:h-6 csm:w-6" />
               </div>
             )}
-            <div className={`min-w-0 ${c.logo && v.rounded ? 'clg:hidden' : ''}`}>
+            <div className={`min-w-0 ${showBrandName(c) ? (c.logo && v.rounded ? 'clg:hidden' : '') : 'sr-only'}`}>
               <div className={`truncate text-sm font-black tracking-tight csm:text-xl ${v.logoOnDark ? 'text-white' : ''}`}>{c.businessName}</div>
               <div className={`hidden truncate text-[10px] font-semibold uppercase tracking-widest opacity-60 csm:block ${v.logoOnDark ? 'text-white' : ''}`}>
                 {c.tagline}
