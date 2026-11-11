@@ -1,9 +1,16 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { getTemplateDefaults } from '../data/defaults'
 import { isValidTemplateId } from '../data/templateIds'
 import { useHospitalityTemplateGuard } from '../hooks/useHospitalityTemplateGuard'
 import { TemplateRenderer } from '../templates/TemplateRenderer'
+import { toast } from 'sonner'
+import { openReviewPreview } from '../auth/openReviewPreview'
+import { getProject } from '../api/projects'
+import type { ProjectResponse } from '../api/types'
+import { parseReviewTarget, readReviewSession, reviewPortalUrl } from '../auth/reviewSession'
+import { migrateContent } from '../utils/migrateContent'
+import type { SiteDocument } from '../siteDocument/types'
 import { loadSavedSite, loadPreviewSite } from '../utils/storage'
 
 export function SiteViewPage() {
@@ -15,6 +22,23 @@ export function SiteViewPage() {
   const held = useHospitalityTemplateGuard(id)
   const isDemo = searchParams.get('demo') === 'true'
   const chromeless = searchParams.get('chromeless') === 'true'
+  const review = readReviewSession()
+  const reviewId = review?.projectId
+  const [reviewProject, setReviewProject] = useState<ProjectResponse | null>(null)
+  const [reviewError, setReviewError] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (!reviewId) return
+    let active = true
+    setReviewProject(null)
+    setReviewError(null)
+    void getProject(reviewId).then((project) => {
+      if (!active) return
+      if (project.templateId !== id) throw new Error('This review link does not match the website.')
+      setReviewProject(project)
+    }).catch((error) => { if (active) setReviewError(error instanceof Error ? error.message : 'Could not load website') })
+    return () => { active = false }
+  }, [reviewId, id])
 
   const hostFlagsRef = useRef<{ id: string; demo: boolean; chromeless: boolean } | null>(null)
   if (hostFlagsRef.current?.id !== id) {
@@ -29,12 +53,15 @@ export function SiteViewPage() {
 
   const preview = loadPreviewSite()
   const saved = preview?.templateId === id ? preview : loadSavedSite()
-  const hasUserContent = isValidTemplateId(id) && saved?.templateId === id
+  const hasUserContent = reviewId ? Boolean(reviewProject) : isValidTemplateId(id) && saved?.templateId === id
+  const reviewDocument = reviewProject?.document as SiteDocument | null
   const content = isValidTemplateId(id)
-    ? effectiveDemo
+    ? reviewId
+      ? reviewProject ? migrateContent(reviewDocument?.content ?? getTemplateDefaults(id), id) : null
+      : effectiveDemo
       ? getTemplateDefaults(id)
       : hasUserContent
-        ? saved.content
+        ? saved?.content ?? null
         : null
     : null
 
@@ -44,7 +71,7 @@ export function SiteViewPage() {
       navigate('/')
       return
     }
-    if (!effectiveDemo && !hasUserContent) {
+    if (!reviewId && !effectiveDemo && !hasUserContent) {
       navigate(`/editor/${id}`)
       return
     }
@@ -62,12 +89,15 @@ export function SiteViewPage() {
       const target = subPath ? `/site/${id}/${subPath}` : `/site/${id}`
       navigate(`${target}?${nextParams.toString()}`, { replace: true })
     }
-  }, [held, id, subPath, effectiveDemo, effectiveChromeless, hasUserContent, searchParams, navigate])
+  }, [held, id, subPath, effectiveDemo, effectiveChromeless, hasUserContent, searchParams, navigate, reviewId])
 
+  if (reviewId && (!reviewProject || reviewError)) {
+    return <div className="flex min-h-screen flex-col items-center justify-center gap-4 text-sm text-slate-600"><p>{reviewError ?? 'Loading website review…'}</p>{reviewError && <a href={reviewPortalUrl(review?.role)} className="font-semibold underline">Back to portal</a>}</div>
+  }
   if (held || !isValidTemplateId(id) || !content) return null
 
-  const schemeId = effectiveDemo ? undefined : saved?.colorSchemeId
-  const layoutVariantId = effectiveDemo ? undefined : saved?.layoutVariantId
+  const schemeId = reviewProject ? reviewDocument?.colorSchemeId || reviewProject.colorSchemeId || undefined : effectiveDemo ? undefined : saved?.colorSchemeId
+  const layoutVariantId = reviewProject ? reviewDocument?.layoutVariantId || reviewProject.layoutVariantId || undefined : effectiveDemo ? undefined : saved?.layoutVariantId
 
   if (effectiveChromeless) {
     return <TemplateRenderer templateId={id} content={content} basePath={`/site/${id}`} colorSchemeId={schemeId} layoutVariantId={layoutVariantId} />
@@ -78,6 +108,11 @@ export function SiteViewPage() {
     if (effectiveDemo) params.set('demo', 'true')
     params.set('chromeless', 'true')
     const target = subPath ? `/site/${id}/${subPath}` : `/site/${id}`
+    if (review) {
+      params.set('project', review.projectId)
+      void openReviewPreview(parseReviewTarget(`${target}?${params}`)).catch((err) => toast.error(err instanceof Error ? err.message : 'Could not open preview'))
+      return
+    }
     window.open(`${target}?${params.toString()}`, '_blank', 'noopener,noreferrer')
   }
 

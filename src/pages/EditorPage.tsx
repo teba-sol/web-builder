@@ -9,6 +9,8 @@ import { DevicePreviewFrame } from '../components/DevicePreviewFrame'
 import { DownloadButton } from '../components/DownloadButton'
 import { UnsavedChangesDialog } from '../components/UnsavedChangesDialog'
 import { PaywallModal } from '../components/PaywallModal'
+import { openReviewPreview } from '../auth/openReviewPreview'
+import { parseReviewTarget, readReviewSession, reviewPortalUrl } from '../auth/reviewSession'
 import { useAuth } from '../auth/AuthContext'
 import { rememberProjectId } from '../auth/builderSession'
 import { useWebsite } from '../context/WebsiteContext'
@@ -64,19 +66,20 @@ export function EditorPage() {
   const id = templateId ?? ''
   const held = useHospitalityTemplateGuard(id)
   const template = isValidTemplateId(id) ? getTemplateMeta(id) : undefined
+  const review = readReviewSession()
   const projectQuery = searchParams.get('project')
   const modeQuery = searchParams.get('mode')
 
   const hostQueryRef = useRef<{ id: string; project: string | null; mode: string | null } | null>(null)
   if (hostQueryRef.current?.id !== id) {
-    hostQueryRef.current = { id, project: projectQuery, mode: modeQuery }
+    hostQueryRef.current = { id, project: projectQuery ?? review?.projectId ?? null, mode: review ? 'view' : modeQuery }
   } else {
     if (projectQuery) hostQueryRef.current.project = projectQuery
     if (searchParams.has('mode')) hostQueryRef.current.mode = modeQuery
   }
 
   const effectiveProjectQuery =
-    projectQuery ?? (hostQueryRef.current?.id === id ? hostQueryRef.current.project : null)
+    projectQuery ?? review?.projectId ?? (hostQueryRef.current?.id === id ? hostQueryRef.current.project : null)
   const viewRequested =
     modeQuery === 'view' || (hostQueryRef.current?.id === id && hostQueryRef.current.mode === 'view')
 
@@ -100,7 +103,9 @@ export function EditorPage() {
     void navigate(`${target}?${nextParams.toString()}`, { replace: true })
     internalNavigation.current = false
   }, [held, id, subPath, searchParams, navigate])
-  const readOnly = viewRequested || !canEdit
+  const reviewing = user?.role === 'AGENCY_ADMIN' || user?.role === 'PLATFORM_ADMIN'
+  const portal = reviewPortalUrl(user?.role)
+  const readOnly = reviewing || viewRequested || !canEdit
 
   const latestRef = useRef({ projectId, selectedId, searchParams })
   latestRef.current = { projectId, selectedId, searchParams }
@@ -277,6 +282,11 @@ export function EditorPage() {
   const openFullscreen = () => {
     savePreviewSite({ templateId: id, content, colorSchemeId, layoutVariantId })
     const target = subPath ? `/site/${id}/${subPath}` : `/site/${id}`
+    if (review) {
+      const next = parseReviewTarget(`${target}?project=${encodeURIComponent(review.projectId)}&chromeless=true`)
+      void openReviewPreview(next).catch((err) => toast.error(err instanceof Error ? err.message : 'Could not open preview'))
+      return
+    }
     window.open(`${target}?chromeless=true`, '_blank', 'noopener,noreferrer')
   }
 
@@ -297,9 +307,11 @@ export function EditorPage() {
               {editorCollapsed ? <PanelLeftOpen size={18} /> : <PanelLeftClose size={18} />}
             </button>
           )}
-          <Link to="/" className="text-sm font-medium text-slate-500 hover:text-slate-800">
-            ← Sites
-          </Link>
+          {reviewing ? (
+            <a href={portal} className="text-sm font-medium text-slate-500 hover:text-slate-800">← Portal</a>
+          ) : (
+            <Link to="/" className="text-sm font-medium text-slate-500 hover:text-slate-800">← Sites</Link>
+          )}
           <div className="h-4 w-px bg-slate-200" />
           <span className="truncate font-semibold text-slate-900">{content.businessName || template.name}</span>
           {readOnly && (
@@ -332,6 +344,7 @@ export function EditorPage() {
           <button
             type="button"
             onClick={openFullscreen}
+            disabled={!ready}
             aria-label="Open full preview in a new tab"
             title="Full preview · new tab"
             className="rounded-lg border border-slate-200 p-2 text-slate-500 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"

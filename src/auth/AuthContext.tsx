@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import {
   consumeHandoff as consumeHandoffRequest,
   fetchMe,
@@ -8,6 +8,7 @@ import {
   updateMe,
 } from '../api/auth'
 import { ApiError } from '../api/types'
+import type { ReviewTarget } from './reviewSession'
 import { clearTokens, getAccessToken } from '../api/client'
 import type { UserProfile } from '../api/types'
 
@@ -22,7 +23,7 @@ interface AuthContextValue {
     accountType?: 'personal' | 'agency',
     agencyName?: string,
   ) => Promise<void>
-  completeHandoff: (code: string) => Promise<void>
+  completeHandoff: (code: string, target: ReviewTarget) => Promise<void>
   updateProfile: (body: { fullName?: string; currentPassword?: string; newPassword?: string }) => Promise<void>
   logout: () => Promise<void>
 }
@@ -32,22 +33,25 @@ const AuthContext = createContext<AuthContextValue | null>(null)
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<UserProfile | null>(null)
   const [loading, setLoading] = useState(true)
+  const sessionVersion = useRef(0)
 
   useEffect(() => {
+    const version = sessionVersion.current
     const token = getAccessToken()
     if (!token) {
       setLoading(false)
       return
     }
     fetchMe()
-      .then((me) => setUser(me.user))
+      .then((me) => { if (version === sessionVersion.current) setUser(me.user) })
       .catch((error) => {
+        if (version !== sessionVersion.current) return
         if (error instanceof ApiError && (error.status === 401 || error.status === 403)) {
           clearTokens()
         }
         setUser(null)
       })
-      .finally(() => setLoading(false))
+      .finally(() => { if (version === sessionVersion.current) setLoading(false) })
   }, [])
 
   const login = useCallback(async (email: string, password: string) => {
@@ -69,9 +73,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     [],
   )
 
-  const completeHandoff = useCallback(async (code: string) => {
-    const response = await consumeHandoffRequest(code)
-    setUser(response.user)
+  const completeHandoff = useCallback(async (code: string, target: ReviewTarget) => {
+    sessionVersion.current += 1
+    setLoading(true)
+    try {
+      const response = await consumeHandoffRequest(code, target)
+      sessionVersion.current += 1
+      setUser(response.user)
+    } finally {
+      setLoading(false)
+    }
   }, [])
 
   const updateProfile = useCallback(async (body: { fullName?: string; currentPassword?: string; newPassword?: string }) => {
