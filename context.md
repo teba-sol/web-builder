@@ -20,6 +20,8 @@ The generated Laravel app is output inside the ZIP. It is not a running app in t
 
 Tokens live in `localStorage` under `buildoura.accessToken` and `buildoura.refreshToken`. A 401 retries once after `POST /api/v1/auth/refresh`. Errors throw `ApiError` with `status`, `code`, and `message`.
 
+Normal builder sign-in accepts consumers and salespeople. Agency/platform admins enter through a one-time portal handoff into a read-only review tab. `auth/reviewSession.ts` keeps that tab's access token and selected project in `sessionStorage` under `buildoura.reviewSession`; personal builder tokens stay untouched. Review tabs do not refresh or fall back to personal tokens. Expired reviews must be reopened from the portal. `ReviewAccessGuard` limits review navigation to the selected site's editor and fullscreen pages. The API still enforces agency visibility and ownership on every project request.
+
 Env used by this app:
 
 - `VITE_ADMIN_ORIGIN` — agency portal link on the review home. Default `http://localhost:5174`.

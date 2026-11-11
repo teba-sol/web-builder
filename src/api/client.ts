@@ -1,14 +1,15 @@
+import { expireReviewSession, readReviewSession } from '../auth/reviewSession'
 import { ApiError, type ApiErrorBody, type AuthResponse } from './types'
 
 const ACCESS_KEY = 'buildoura.accessToken'
 const REFRESH_KEY = 'buildoura.refreshToken'
 
 export function getAccessToken() {
-  return localStorage.getItem(ACCESS_KEY)
+  return readReviewSession()?.accessToken ?? localStorage.getItem(ACCESS_KEY)
 }
 
 export function getRefreshToken() {
-  return localStorage.getItem(REFRESH_KEY)
+  return readReviewSession() ? null : localStorage.getItem(REFRESH_KEY)
 }
 
 export function storeTokens(accessToken: string, refreshToken: string) {
@@ -17,6 +18,10 @@ export function storeTokens(accessToken: string, refreshToken: string) {
 }
 
 export function clearTokens() {
+  if (readReviewSession()) {
+    expireReviewSession()
+    return
+  }
   localStorage.removeItem(ACCESS_KEY)
   localStorage.removeItem(REFRESH_KEY)
 }

@@ -1,3 +1,4 @@
+import { clearReviewSession, readReviewSession, storeReviewSession, type ReviewTarget } from '../auth/reviewSession'
 import { apiFetch, clearTokens, storeTokens } from './client'
 import type { AuthResponse, MeResponse, UserProfile } from './types'
 import { ApiError } from './types'
@@ -32,6 +33,7 @@ export async function register(
 }
 
 export async function login(email: string, password: string) {
+  clearReviewSession()
   const response = await apiFetch<AuthResponse>('/api/v1/auth/login', {
     method: 'POST',
     body: JSON.stringify({ email, password }),
@@ -42,6 +44,10 @@ export async function login(email: string, password: string) {
 }
 
 export async function logout() {
+  if (readReviewSession()) {
+    clearReviewSession()
+    return
+  }
   const refreshToken = localStorage.getItem('buildoura.refreshToken')
   try {
     await apiFetch('/api/v1/auth/logout', {
@@ -68,8 +74,16 @@ export async function resetPassword(token: string, password: string) {
 }
 
 export async function fetchMe() {
+  const review = readReviewSession()
   const response = await apiFetch<MeResponse>('/api/v1/me')
-  requireBuilderAccount(response.user)
+  if (review) {
+    if (review.userId !== response.user.id || (response.user.role !== 'AGENCY_ADMIN' && response.user.role !== 'PLATFORM_ADMIN')) {
+      clearTokens()
+      throw new ApiError(403, 'REVIEW_SESSION_INVALID', 'Open this website again from your portal.')
+    }
+  } else {
+    requireBuilderAccount(response.user)
+  }
   return response
 }
 
@@ -91,12 +105,18 @@ export async function updateMe(body: { fullName?: string; currentPassword?: stri
   return response
 }
 
-export async function consumeHandoff(code: string) {
+export async function consumeHandoff(code: string, target: ReviewTarget) {
   const response = await apiFetch<AuthResponse>('/api/v1/auth/handoff/consume', {
     method: 'POST',
     body: JSON.stringify({ code }),
   })
-  requireBuilderAccount(response.user)
-  storeTokens(response.accessToken, response.refreshToken)
+  if (response.user.role !== 'AGENCY_ADMIN' && response.user.role !== 'PLATFORM_ADMIN') {
+    throw new ApiError(403, 'REVIEW_ACCOUNT_NOT_ALLOWED', 'This review link requires an agency or platform admin.')
+  }
+  storeReviewSession(response.accessToken, response.user, target)
   return response
+}
+
+export async function createHandoff() {
+  return apiFetch<{ code: string }>('/api/v1/auth/handoff', { method: 'POST' })
 }

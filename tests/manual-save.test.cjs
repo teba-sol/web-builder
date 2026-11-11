@@ -131,7 +131,7 @@ function elements(tree) {
   if (!tree || typeof tree !== 'object') return []
   return [tree, ...[tree.props?.children].flat(Infinity).flatMap(elements)]
 }
-function editorHarness({ canCloudSave = true, failedSave = false, subPath = '', query = '', loadProject } = {}) {
+function editorHarness({ canCloudSave = true, failedSave = false, subPath = '', query = '', loadProject, role = 'CONSUMER', reviewTarget = null } = {}) {
   const react = hooks()
   let creates = 0
   let saves = 0
@@ -149,7 +149,7 @@ function editorHarness({ canCloudSave = true, failedSave = false, subPath = '', 
     bindProject(project) { value.projectId = project.id; value.canCloudSave = project.canCloudSave },
     async persistNow() { saves++; if (fail) throw Error('Save failed'); value.hasUnsavedChanges = false },
   }
-  const user = { id: 'user', role: 'CONSUMER' }
+  const user = { id: 'user', role }
   const navigate = (path) => { currentPath = path.split('?')[0]; subPath = currentPath.replace('/editor/business', '').replace(/^\//, ''); const next = new URLSearchParams(path.split('?')[1]); for (const key of [...params.keys()]) params.delete(key); next.forEach((value, key) => params.set(key, value)) }
   const Link = () => null
   const { EditorPage } = load('pages/EditorPage.tsx', {
@@ -157,6 +157,8 @@ function editorHarness({ canCloudSave = true, failedSave = false, subPath = '', 
     'react-router-dom': { Link, useNavigate: () => navigate, useParams: () => ({ templateId: 'business', '*': subPath }), useSearchParams: () => [params], useBlocker: (check) => { shouldBlock = check; return blocker } },
     'lucide-react': { Lock: Link, Save: Link, PanelLeftClose: Link, PanelLeftOpen: Link, Monitor: Link, Smartphone: Link, Tablet: Link, Maximize2: Link },
     sonner: { toast: { success() {}, error() {} } },
+    '../auth/openReviewPreview': { openReviewPreview: async () => {} },
+    '../auth/reviewSession': { readReviewSession: () => reviewTarget, reviewPortalUrl: () => 'http://localhost:5174' },
     '../api/projects': { listProjects: async () => ({ items: [] }), getProject: loadProject ?? (async (id) => ({ id, canCloudSave, canEdit: true })), createProject: async () => { creates++; return { id: 'p1', canCloudSave } } },
     '../auth/AuthContext': { useAuth: () => ({ user }) },
     '../auth/builderSession': { rememberProjectId() {} },
@@ -297,4 +299,15 @@ test('saving a new project keeps the current subpage', async () => {
   h.render()
   assert.equal(h.location(), '/editor/business/gallery?project=p1')
   assert.deepEqual(h.counts(), { creates: 1, saves: 1, proceeded: false })
+})
+
+test('agency handoff stays read-only even when the project response allows editing', async () => {
+  const h = editorHarness({ role: 'AGENCY_ADMIN', query: 'project=p1&mode=edit', reviewTarget: { projectId: 'p1' } })
+  await h.ready()
+  h.value.canEdit = true
+  h.value.canCloudSave = true
+  const tree = h.render()
+  assert.ok(elements(tree).some((element) => element.props?.children === 'Viewing'))
+  assert.equal(elements(tree).some((element) => element.type?.name === 'ContentForm'), false)
+  assert.equal(h.counts().creates, 0)
 })
