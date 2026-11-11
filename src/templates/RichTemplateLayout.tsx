@@ -1,4 +1,4 @@
-import { actionBackground } from '../utils/accentInk'
+import { accentLabelColor, actionBackground } from '../utils/accentInk'
 import { lazy, Suspense, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { getColorSchemes } from '../data/colorSchemes'
@@ -132,7 +132,8 @@ export function RichTemplateLayout({
   const accent = resolveBrandAccent(c, scheme?.swatches[1] ?? '#2563eb')
   const brandStyles = brandCss(c)
   const fontHref = brandFontHref(c)
-  const bookingAccent = actionBackground(accent, scheme?.swatches[1])
+  const accentFallback = c.brandSecondary?.trim() || scheme?.swatches[0]
+  const bookingAccent = actionBackground(accent, accentFallback)
   const bookingProps = { content: c, basePath, theme: t, templateId: variant, accent: bookingAccent }
 
   const sections: Record<PageSectionId, ReactNode> = {
@@ -283,6 +284,7 @@ function RoomsTeaser({
   const rooms = catalogueRoomTypes(c.roomTypes)
   if (!rooms.length) return null
   const skin = staySkin(variant)
+  const labelColor = accentLabelColor(accent)
   return (
     <section className={`${skin.page} py-20`}>
       <div className="mx-auto max-w-6xl px-4 csm:px-6">
@@ -292,7 +294,7 @@ function RoomsTeaser({
             <h2 className={`mt-2 text-3xl font-bold ${skin.heading}`}>{c.roomsSectionTitle || 'Rooms'}</h2>
             <p className="mt-2 max-w-2xl text-slate-600">{c.roomsSectionSubtitle}</p>
           </div>
-          <Link to={sitePath(basePath, 'rooms')} className="text-sm font-semibold" style={{ color: accent }}>
+          <Link to={sitePath(basePath, 'rooms')} className="text-sm font-semibold" style={{ color: labelColor }}>
             Book
           </Link>
         </div>

@@ -21,7 +21,7 @@ import { sitePath } from '../../data/siteNav'
 import type { TemplateTheme } from '../themes'
 import { getMapEmbedUrl, getMapOpenUrl } from '../../utils/mapEmbed'
 import { Search } from 'lucide-react'
-import { actionBackground, accentInk } from '../../utils/accentInk'
+import { actionBackground, accentInk, accentLabelColor } from '../../utils/accentInk'
 import { staySkin } from './hospitalitySkin'
 import { RoomPrice } from './RoomPrice'
 import { ROOM_PRICE_COLORS } from '../../data/roomPrice'
@@ -315,7 +315,7 @@ function PropertyNotes({ content: c, accent }: { content: SiteContent; accent: s
           </div>
         ) : null}
         {open ? (
-          <a href={open} className="mt-3 inline-block text-sm font-semibold underline" style={{ color: accent }} target="_blank" rel="noreferrer">
+          <a href={open} className="mt-3 inline-block text-sm font-semibold underline" style={{ color: accentLabelColor(accent) }} target="_blank" rel="noreferrer">
             View on Google Maps
           </a>
         ) : null}
@@ -328,6 +328,7 @@ export function RoomsPage({ content: c, basePath, templateId, accent }: BookingP
   const navigate = useNavigate()
   const draft = useStayDraft()
   const skin = staySkin(templateId)
+  const buttonColor = actionBackground(accent)
   const submitted = draft.params.has('check_in')
   const childAges = submitted ? readChildAges(draft.params, Number(draft.params.get('children') || 0)) : draft.childAges
   const searchErrors = submitted
@@ -434,7 +435,7 @@ export function RoomsPage({ content: c, basePath, templateId, accent }: BookingP
                       {amenities.map((item) => <span key={item} className="rounded-full bg-slate-100 px-3 py-1">{item}</span>)}
                     </div>
                     <div className="mt-5 flex justify-end">
-                      <Link to={sitePath(basePath, `rooms/${room.slug}${query}`)} className={skin.button.replace(/\btext-white\b/, accentInk(accent))} style={{ backgroundColor: accent }}>
+                      <Link to={sitePath(basePath, `rooms/${room.slug}${query}`)} className={skin.button.replace(/\btext-white\b/, accentInk(buttonColor))} style={{ backgroundColor: buttonColor }}>
                         See availability
                       </Link>
                     </div>
@@ -457,6 +458,7 @@ export function RoomDetailPage({ content: c, basePath, templateId, accent }: Boo
   const navigate = useNavigate()
   const draft = useStayDraft()
   const skin = staySkin(templateId)
+  const buttonColor = actionBackground(accent)
   const type = roomTypeBySlug(c.roomTypes, slug)
   const submitted = draft.params.has('check_in')
   const checkIn = draft.params.get('check_in') || ''
@@ -475,7 +477,7 @@ export function RoomDetailPage({ content: c, basePath, templateId, accent }: Boo
     return (
       <section className="py-20 text-center">
         <p className="text-slate-600">Room not found.</p>
-        <Link to={sitePath(basePath, 'rooms')} className="mt-4 inline-block text-sm font-semibold" style={{ color: accent }}>Back to Book</Link>
+        <Link to={sitePath(basePath, 'rooms')} className="mt-4 inline-block text-sm font-semibold" style={{ color: accentLabelColor(accent) }}>Back to Book</Link>
       </section>
     )
   }
@@ -605,8 +607,8 @@ export function RoomDetailPage({ content: c, basePath, templateId, accent }: Boo
               </p>
               <button
                 type="button"
-                className={skin.button.replace(/\btext-white\b/, accentInk(accent))}
-                style={{ backgroundColor: accent }}
+                className={skin.button.replace(/\btext-white\b/, accentInk(buttonColor))}
+                style={{ backgroundColor: buttonColor }}
                 onClick={() => {
                   const stay = stayQueryString({ checkIn, checkOut, adults, children, childAges })
                   const breakfast = !type.freeBreakfast && addBreakfast ? '&breakfast=1' : ''
@@ -673,6 +675,7 @@ export function BookPage({ content: c, basePath, templateId, accent }: BookingPr
   const [params] = useSearchParams()
   const navigate = useNavigate()
   const skin = staySkin(templateId)
+  const buttonColor = actionBackground(accent)
   const slug = params.get('room') || ''
   const checkIn = params.get('check_in') || ''
   const checkOut = params.get('check_out') || ''
@@ -698,7 +701,7 @@ export function BookPage({ content: c, basePath, templateId, accent }: BookingPr
     return (
       <section className="py-20 text-center">
         <p className="text-slate-600">{searchErrors[0] || 'Choose one or more rooms and dates before you reserve.'}</p>
-        <Link to={sitePath(basePath, 'rooms')} className="mt-4 inline-block text-sm font-semibold" style={{ color: accent }}>Book</Link>
+        <Link to={sitePath(basePath, 'rooms')} className="mt-4 inline-block text-sm font-semibold" style={{ color: accentLabelColor(accent) }}>Book</Link>
       </section>
     )
   }
@@ -781,7 +784,7 @@ export function BookPage({ content: c, basePath, templateId, accent }: BookingPr
             <label className="block text-sm"><span className="mb-1 block text-slate-500">Phone</span><input name="guestPhone" required className={skin.input} /></label>
             <label className="block text-sm"><span className="mb-1 block text-slate-500">Special requests (optional)</span><textarea name="specialRequests" rows={3} className={skin.input} /></label>
             <BreakfastChoice included={type.freeBreakfast} selected={addBreakfast} onChange={setAddBreakfast} />
-            <button type="submit" className={`w-full ${skin.button.replace(/\btext-white\b/, accentInk(accent))}`} style={{ backgroundColor: accent }}>Reserve</button>
+            <button type="submit" className={`w-full ${skin.button.replace(/\btext-white\b/, accentInk(buttonColor))}`} style={{ backgroundColor: buttonColor }}>Reserve</button>
           </form>
         </div>
       </div>
@@ -805,7 +808,7 @@ export function BookingConfirmPage({ content: c, basePath, templateId, accent }:
     return (
       <section className="py-20 text-center">
         <p className="text-slate-600">Reservation not found in this preview session.</p>
-        <Link to={sitePath(basePath, 'rooms')} className="mt-4 inline-block text-sm font-semibold" style={{ color: accent }}>Book</Link>
+        <Link to={sitePath(basePath, 'rooms')} className="mt-4 inline-block text-sm font-semibold" style={{ color: accentLabelColor(accent) }}>Book</Link>
       </section>
     )
   }
@@ -833,7 +836,7 @@ export function BookingConfirmPage({ content: c, basePath, templateId, accent }:
             <div className="flex justify-between gap-4 border-t pt-3"><span className="text-slate-500">Total</span><span className="font-bold" style={{ color: ROOM_PRICE_COLORS.amount }}>{formatMoney(reservation.totalPrice, stayCurrency(reservation.currency))}</span></div>
             <p className="text-xs text-slate-500">ETB and USD both show on the exported site after the hotel sets the USD to ETB rate.</p>
           </div>
-          <Link to={basePath} className="mt-8 inline-block text-sm font-semibold" style={{ color: accent }}>Back to home</Link>
+          <Link to={basePath} className="mt-8 inline-block text-sm font-semibold" style={{ color: accentLabelColor(accent) }}>Back to home</Link>
         </div>
       </div>
     </section>
