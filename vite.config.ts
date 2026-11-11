@@ -6,15 +6,7 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
     proxy: {
-      '/api': {
-        target: 'https://24.144.94.138.sslip.io/',
-        changeOrigin: true,
-        configure: (proxy) => {
-          proxy.on('proxyReq', (proxyReq) => {
-            proxyReq.setHeader('ngrok-skip-browser-warning', 'true')
-          })
-        },
-      },
+      '/api': 'http://localhost:8080',
     },
   },
 })

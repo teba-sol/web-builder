@@ -31,7 +31,7 @@ export function BrandIdentityForm({ content, onChange }: Props) {
         fit="contain"
       />
       {content.logo && (
-        <div className="space-y-4 border-t border-navy/10 pt-3">
+        <div className="space-y-3 border-t border-navy/10 pt-3">
           <label className="flex items-center gap-2 text-sm text-slate-700">
             <input
               type="checkbox"
@@ -42,48 +42,10 @@ export function BrandIdentityForm({ content, onChange }: Props) {
             Show business name next to logo
           </label>
 
-          <div className="space-y-2.5">
-            <div className="flex items-center justify-between gap-2">
-              <label htmlFor="logo-size-slider" className="text-sm font-medium text-slate-700">
-                Logo size
-              </label>
-              <div className="flex items-center gap-2">
-                <span className="rounded-md bg-white px-2 py-0.5 text-xs font-semibold text-slate-700 ring-1 ring-slate-200">
-                  {logoSize}px
-                </span>
-                {logoSize !== LOGO_SIZE_DEFAULT && (
-                  <button
-                    type="button"
-                    onClick={() => onChange({ logoSize: LOGO_SIZE_DEFAULT })}
-                    className="text-xs font-medium text-accent hover:underline"
-                  >
-                    Reset
-                  </button>
-                )}
-              </div>
-            </div>
-
-            <div className="grid grid-cols-4 gap-1.5" role="group" aria-label="Logo size presets">
-              {LOGO_SIZE_PRESETS.map((preset) => {
-                const active = logoSize === preset.size
-                return (
-                  <button
-                    key={preset.id}
-                    type="button"
-                    aria-pressed={active}
-                    onClick={() => onChange({ logoSize: preset.size })}
-                    className={`rounded-lg border px-2 py-1.5 text-center text-xs font-semibold transition-colors ${
-                      active
-                        ? 'border-accent bg-accent text-white'
-                        : 'border-slate-200 bg-white text-slate-700 hover:border-navy/40'
-                    }`}
-                  >
-                    {preset.label}
-                  </button>
-                )
-              })}
-            </div>
-
+          <div className="grid grid-cols-[auto_minmax(0,1fr)_auto_auto] items-center gap-x-3 gap-y-1">
+            <label htmlFor="logo-size-slider" className="shrink-0 text-xs font-medium text-slate-600">
+              Size
+            </label>
             <input
               id="logo-size-slider"
               type="range"
@@ -91,13 +53,36 @@ export function BrandIdentityForm({ content, onChange }: Props) {
               max={LOGO_SIZE_MAX}
               step={2}
               value={logoSize}
+              aria-valuetext={`${logoSize} pixels`}
               onChange={(e) => onChange({ logoSize: resolveLogoSize(Number(e.target.value)) })}
-              className="h-2 w-full cursor-pointer accent-accent"
+              className="m-0 h-1.5 w-full min-w-0 cursor-pointer accent-accent"
             />
-            <div className="flex justify-between text-[11px] text-slate-400">
-              <span>{LOGO_SIZE_MIN}px</span>
-              <span>Fits inside the navbar ({LOGO_SIZE_MAX}px max)</span>
-              <span>{LOGO_SIZE_MAX}px</span>
+            <output htmlFor="logo-size-slider" className="w-10 shrink-0 text-right text-xs tabular-nums text-slate-500">
+              {logoSize}px
+            </output>
+            <button
+              type="button"
+              disabled={logoSize === LOGO_SIZE_DEFAULT}
+              onClick={() => onChange({ logoSize: LOGO_SIZE_DEFAULT })}
+              aria-label="Reset logo size to 32 pixels"
+              className="shrink-0 rounded px-1 py-1 text-xs font-medium text-accent hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent disabled:cursor-default disabled:text-slate-300"
+            >
+              Reset
+            </button>
+            <div aria-hidden="true" className="relative col-start-2 mx-2 h-5">
+              {LOGO_SIZE_PRESETS.map((preset) => (
+                <span
+                  key={preset.id}
+                  className={`absolute top-0 flex flex-col items-center gap-1 text-[10px] leading-none ${logoSize === preset.size ? 'font-semibold text-accent' : 'text-slate-400'}`}
+                  style={{
+                    left: `${((preset.size - LOGO_SIZE_MIN) / (LOGO_SIZE_MAX - LOGO_SIZE_MIN)) * 100}%`,
+                    transform: preset.size === LOGO_SIZE_MAX ? 'translateX(-100%)' : 'translateX(-50%)',
+                  }}
+                >
+                  <span className="h-1 w-px bg-current" />
+                  {preset.label}
+                </span>
+              ))}
             </div>
           </div>
         </div>
