@@ -2963,10 +2963,10 @@ class RoomPrice
 <div class="mt-1 {{ $align }}">
 @if($percent > 0)
     <p class="text-sm text-gray-500 line-through">{{ number_format($base, 0) }} {{ $currency }}@if($otherBase) · {{ $otherBase }}@endif</p>
-    <p class="text-lg font-bold text-gray-900" style="color:{{ $accent }}">{{ number_format($selling, 0) }} {{ $currency }}@if($suffix !== '')<span class="text-sm font-normal text-gray-500"> {{ $suffix }}</span>@endif</p>
+    <p class="text-lg font-bold text-gray-900">{{ number_format($selling, 0) }} {{ $currency }}@if($suffix !== '')<span class="text-sm font-normal text-gray-500"> {{ $suffix }}</span>@endif</p>
     <p class="mt-1 text-sm font-semibold text-rose-700">{{ $percentLabel }}% off</p>
 @else
-    <p class="text-lg font-bold" style="color:{{ $accent }}">{{ number_format($selling, 0) }} {{ $currency }}@if($suffix !== '')<span class="text-sm font-normal text-slate-900"> {{ $suffix }}</span>@endif</p>
+    <p class="text-lg font-bold">{{ number_format($selling, 0) }} {{ $currency }}@if($suffix !== '')<span class="text-sm font-normal text-gray-500"> {{ $suffix }}</span>@endif</p>
 @endif
   @if($other)
     <p class="mt-1 text-sm font-medium text-slate-700">{{ $other }}@if($suffix !== '') {{ $suffix }}@endif</p>
