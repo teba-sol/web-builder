@@ -1,4 +1,5 @@
 import { knownHotelAmenities, knownRoomAmenities } from '../data/amenityCatalog'
+import { resolveLogoSize } from '../data/brand'
 import { contactButtonLabel } from '../data/footer'
 import { clampVisibilityToProfile } from '../data/editorProfile'
 import { emptyRoomType, parseAmenities, stayCurrency } from '../data/hospitality'
@@ -130,6 +131,7 @@ export function migrateContent(raw: Partial<SiteContent>, templateId?: TemplateI
     propertyAmenities: knownHotelAmenities(parseAmenities(raw.propertyAmenities ?? merged.propertyAmenities ?? '')).join(', '),
     logo: raw.logo ?? merged.logo ?? '',
     logoShowName: raw.logoShowName ?? merged.logoShowName ?? true,
+    logoSize: resolveLogoSize(raw.logoSize ?? merged.logoSize),
     brandPrimary: raw.brandPrimary ?? merged.brandPrimary ?? '',
     brandSecondary: raw.brandSecondary ?? merged.brandSecondary ?? '',
     brandAccent: raw.brandAccent ?? merged.brandAccent ?? '',

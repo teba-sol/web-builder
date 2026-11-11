@@ -220,7 +220,7 @@
     },
     {
       "key": "phone",
-      "label": "Concierge",
+      "label": "Phone Number",
       "placeholder": "+39 02 555 9090"
     },
     {

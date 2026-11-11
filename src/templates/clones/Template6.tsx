@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
+import { logoImageStyle } from '../../data/brand'
 import { resolveSiteHref, sitePath } from '../../data/siteNav'
 import type { SiteContent } from '../../types'
 import { CloneMap, CloneNav, ClonePricingSection, CloneTeamSection } from './CloneChrome'
@@ -377,7 +378,7 @@ export function Template6({ c, basePath }: Props) {
           ) : null}
           <div className="flex flex-col items-center justify-between gap-4 border-t border-gray-600 pt-8 cmd:flex-row">
             <div>
-              {c.logo ? <img src={c.logo} alt="" className="h-16 w-auto" /> : <span className="font-bold">{c.businessName}</span>}
+              {c.logo ? <img src={c.logo} alt="" data-brand-logo="" className="object-contain" style={logoImageStyle(c)} /> : <span className="font-bold">{c.businessName}</span>}
               {(c.footerBlurb || c.missionStatement || c.heroSubtext) ? (
                 <p className="mt-3 max-w-md text-sm text-white/70">{c.footerBlurb || c.missionStatement || c.heroSubtext}</p>
               ) : null}

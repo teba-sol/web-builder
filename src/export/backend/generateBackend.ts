@@ -3,6 +3,7 @@ import {
   LAYOUT_VARIANT_PRESETS,
   type LayoutVariantId,
 } from '../../data/layoutVariants'
+import { resolveLogoSize } from '../../data/brand'
 import type { SiteContent, TemplateId } from '../../types'
 import type { ImageAsset } from '../imageUtils'
 import { buildExportPayload, resolveAssetPath, type CrsExportSecrets, type SiteExportPayload } from './exportPayload'
@@ -184,6 +185,7 @@ function buildSettingsRecord(payload: SiteExportPayload): Record<string, unknown
     hero_image: mapImage(c.heroImage, 'hero'),
     logo: mapImage(c.logo, 'logo'),
     logo_show_name: c.logoShowName !== false,
+    logo_size: resolveLogoSize(c.logoSize),
     brand_primary: c.brandPrimary,
     brand_secondary: c.brandSecondary,
     brand_accent: c.brandAccent,
@@ -439,7 +441,7 @@ class SiteSetting extends Model
 {
     protected $fillable = [
         'business_name', 'tagline', 'hero_subtext', 'hero_image',
-        'logo', 'logo_show_name', 'brand_primary', 'brand_secondary', 'brand_accent',
+        'logo', 'logo_show_name', 'logo_size', 'brand_primary', 'brand_secondary', 'brand_accent',
         'font_heading', 'font_body',
         'about_title', 'about', 'about_image', 'mission_statement', 'footer_blurb', 'footer_note',
         'page_visibility', 'section_visibility', 'services_section_title', 'services_section_subtitle',
@@ -461,6 +463,7 @@ class SiteSetting extends Model
         'page_visibility' => 'array',
         'section_visibility' => 'array',
         'logo_show_name' => 'boolean',
+        'logo_size' => 'integer',
         'pay_on_arrival' => 'boolean',
         'usdt_etb_rate' => 'decimal:4',
         'breakfast_price' => 'decimal:2',
@@ -1343,6 +1346,7 @@ return new class extends Migration
             $table->text('hero_image')->nullable();
             $table->text('logo')->nullable();
             $table->boolean('logo_show_name')->default(true);
+            $table->unsignedSmallInteger('logo_size')->default(32);
             $table->string('brand_primary')->nullable();
             $table->string('brand_secondary')->nullable();
             $table->string('brand_accent')->nullable();

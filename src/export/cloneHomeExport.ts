@@ -1,6 +1,6 @@
 import { canLinkToPage, resolveStaticHref } from '../data/siteNav'
 import type { SiteContent } from '../types'
-import { brandCss } from '../data/brand'
+import { brandCss, logoImageStyleAttr, showBrandName } from '../data/brand'
 import { footerBlurb, footerNote } from '../data/footer'
 import { escapeHtml } from './imageUtils'
 import { mapEmbedHtml } from '../utils/mapEmbed'
@@ -329,14 +329,27 @@ function chromeNav(ctx: CloneExportCtx, theme: CloneTheme): string {
       ? ''
       : `<div class="${theme.topbar}"${topbarStyle}><div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2"><div class="flex items-center gap-6 font-semibold ${theme.topbarText}">${c.phone || ctx.mode === 'blade' ? `<a href="tel:${ctx.mode === 'blade' ? '{{ $settings->phone }}' : escapeHtml(c.phone)}">${phone}</a>` : ''}${c.email || ctx.mode === 'blade' ? `<span class="hidden md:inline">${email}</span>` : ''}${c.hours || ctx.mode === 'blade' ? `<span class="hidden lg:inline">${hours}</span>` : ''}</div></div></div>`
 
+  const logoImgStyle = logoImageStyleAttr(c)
+  const logoSrc = c.logo
+    ? (/^(https?:|data:|\/)/i.test(c.logo) ? c.logo : `${ctx.fromNested ? '../' : ''}${c.logo}`)
+    : ''
+  const navBrandMark = ctx.mode === 'blade'
+    ? `@if($settings->logo)<img src="{{ \\App\\Support\\PublicAsset::url($settings->logo) }}" alt="" data-brand-logo class="shrink-0 object-contain" style="height:{{ max(20, min(56, (int) ($settings->logo_size ?? 32))) }}px;width:auto;max-height:56px;max-width:min(100%,14rem);object-fit:contain;" />@else<div class="w-11 h-11 rounded-xl flex items-center justify-center shadow-lg shrink-0" style="background-color:${theme.accent}"></div>@endif`
+    : logoSrc
+      ? `<img src="${escapeHtml(logoSrc)}" alt="" data-brand-logo class="shrink-0 object-contain" style="${logoImgStyle}" />`
+      : `<div class="w-11 h-11 rounded-xl flex items-center justify-center shadow-lg shrink-0" style="background-color:${theme.accent}"></div>`
+  const navNameCls = ctx.mode === 'blade'
+    ? `@if($settings->logo && !($settings->logo_show_name ?? true)) sr-only @endif`
+    : showBrandName(c) ? '' : 'sr-only'
+
   return `<div class="relative z-50">${topbar}
   <header class="${theme.header}"${headerStyle}>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-      <a href="${href(ctx, 'home')}" class="flex items-center gap-3">
-        <div class="w-11 h-11 rounded-xl flex items-center justify-center shadow-lg" style="background-color:${theme.accent}"></div>
-        <div>
-          <div class="text-xl font-black tracking-tight ${logoColor}">${name}</div>
-          <div class="text-[10px] ${theme.muted} font-semibold uppercase tracking-widest">${txt(ctx, c.tagline, '{{ $settings->tagline }}')}</div>
+      <a href="${href(ctx, 'home')}" class="flex min-w-0 items-center gap-3">
+        ${navBrandMark}
+        <div class="min-w-0 ${navNameCls}">
+          <div class="truncate text-xl font-black tracking-tight ${logoColor}">${name}</div>
+          <div class="truncate text-[10px] ${theme.muted} font-semibold uppercase tracking-widest">${txt(ctx, c.tagline, '{{ $settings->tagline }}')}</div>
         </div>
       </a>
       <nav class="hidden lg:flex items-center gap-1">${desktopLinks}</nav>
@@ -618,9 +631,9 @@ function helixTaxFightersBody(ctx: CloneExportCtx): string {
   const phone = txt(ctx, c.phone, '{{ $settings->phone }}')
   const email = txt(ctx, c.email, '{{ $settings->email }}')
   const logo = ctx.mode === 'blade'
-    ? `@if($settings->logo)<img src="{{ \\App\\Support\\PublicAsset::url($settings->logo) }}" alt="" class="h-16 w-16 object-contain" />@else<span class="font-bold text-xl">${name}</span>@endif`
+    ? `@if($settings->logo)<img src="{{ \\App\\Support\\PublicAsset::url($settings->logo) }}" alt="" data-brand-logo class="object-contain" style="height:{{ max(20, min(56, (int) ($settings->logo_size ?? 32))) }}px;width:auto;max-height:56px;max-width:min(100%,14rem);object-fit:contain;" />@else<span class="font-bold text-xl">${name}</span>@endif`
     : c.logo
-      ? `<img src="${escapeHtml(c.logo)}" alt="" class="h-16 w-16 object-contain" />`
+      ? `<img src="${escapeHtml(c.logo)}" alt="" data-brand-logo class="object-contain" style="${logoImageStyleAttr(c)}" />`
       : `<span class="font-bold text-xl">${name}</span>`
   const hero = ctx.mode === 'blade'
     ? `@if($settings->hero_image)<img src="{{ \\App\\Support\\PublicAsset::url($settings->hero_image) }}" class="absolute inset-0 h-full w-full object-cover" alt="" />@endif`
@@ -713,7 +726,7 @@ export function buildCloneHomeDocument(ctx: CloneExportCtx): string {
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>html,body { overflow-x: hidden; max-width: 100%; } body { font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif; }
 iframe { max-width: 100%; }
-img:not([class*="object-cover"]):not([class*="h-full"]) { max-width: 100%; height: auto; }
+img:not([data-brand-logo]):not([class*="object-cover"]):not([class*="object-contain"]):not([class*="h-full"]) { max-width: 100%; height: auto; }
 @media (max-width: 640px) { h1 { font-size: clamp(1.75rem, 8vw, 2.75rem) !important; line-height: 1.15 !important; } }
 ${LAYOUT_SHELL_CSS}
 ${extraCss}
