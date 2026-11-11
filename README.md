@@ -58,7 +58,9 @@ flowchart LR
 3. **Preview / Site** — navigate the multi-page site (about, services, rooms, booking, blog, …) as a real React app.
 4. **Download** — browser builds HTML + PHP files with [JSZip](https://stuk.github.io/jszip/) and downloads `{business-name}-fullstack.zip`.
 
-Drafts are auto-saved in **localStorage** while editing (see `src/utils/storage.ts`).
+Drafts are saved manually with **Save**. Opening a template or editing it creates no project until the user saves. The editor resumes the latest owned project for that template when one exists. Saving remains subject to the API's cloud-save permission.
+
+Leaving with unsaved edits offers **Save and leave**, **Discard changes**, and **Keep editing**. Refreshing or closing the tab uses the browser's native warning. Local draft storage is updated only after a successful save; fullscreen previews use a separate snapshot.
 
 ---
 
@@ -223,6 +225,9 @@ npm run dev
 
 # Typecheck + production build → dist/
 npm run build
+
+# Manual-save regression checks (no browser required)
+npm run test:manual-save
 
 # Lint
 npm run lint

@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { DownloadButton } from '../components/DownloadButton'
 import { useWebsite } from '../context/WebsiteContext'
 import { TemplateRenderer } from '../templates/TemplateRenderer'
-import { loadSavedSite } from '../utils/storage'
+import { loadSavedSite, savePreviewSite } from '../utils/storage'
 import { isValidTemplateId } from '../data/templateIds'
 import { useHospitalityTemplateGuard } from '../hooks/useHospitalityTemplateGuard'
 import type { TemplateId } from '../types'
@@ -32,6 +32,7 @@ export function PreviewPage() {
   const templateIdTyped = id as TemplateId
 
   const openFullscreen = () => {
+    savePreviewSite({ templateId: id, content: activeContent, colorSchemeId: activeSchemeId, layoutVariantId: activeLayoutVariantId })
     window.open(`/site/${id}?chromeless=true`, '_blank', 'noopener,noreferrer')
   }
 
