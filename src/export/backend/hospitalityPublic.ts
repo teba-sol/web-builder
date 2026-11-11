@@ -1,3 +1,4 @@
+import { ROOM_PRICE_COLORS } from '../../data/roomPrice'
 import { accentButton, exportStaySkin } from '../../templates/booking/hospitalitySkin'
 
 function skinOf(templateId: string, accent?: string) {
@@ -275,7 +276,7 @@ export function crsBookBlade(accent: string, templateId: string): string {
           <div class="flex justify-between gap-4"><dt class="text-slate-500">Nights</dt><dd>{{ $nights }}</dd></div>
           <div class="flex justify-between gap-4"><dt class="text-slate-500">Nightly</dt><dd class="text-right">@include('partials.room-price', ['priceBase' => $listNightly ?? ($roomType['basePrice'] ?? 0), 'pricePercent' => $roomType['discountPercent'] ?? 0, 'priceCurrency' => $roomType['currency'] ?? '', 'priceAccent' => '${accent}', 'priceSuffix' => '/ night', 'priceAlign' => 'end', 'priceRateHint' => true])</dd></div>
           <div class="flex justify-between gap-4" data-breakfast-line hidden><dt class="text-slate-500">Breakfast</dt><dd><span data-breakfast-amount>0</span> {{ \\App\\Support\\RoomPrice::currency((string) ($roomType['currency'] ?? '')) }}</dd></div>
-          <div class="flex justify-between gap-4 border-t pt-3 text-base"><dt class="font-semibold">Total</dt><dd class="text-right font-bold" style="color:${accent}"><span data-stay-total>{{ number_format($roomTotal, 0) }}</span> {{ \\App\\Support\\RoomPrice::currency((string) ($roomType['currency'] ?? '')) }}<span class="mt-1 block text-xs font-medium text-slate-500" data-other-total></span></dd></div>
+          <div class="flex justify-between gap-4 border-t pt-3 text-base"><dt class="font-semibold">Total</dt><dd class="text-right font-bold" style="color:${ROOM_PRICE_COLORS.amount}"><span data-stay-total>{{ number_format($roomTotal, 0) }}</span> {{ \\App\\Support\\RoomPrice::currency((string) ($roomType['currency'] ?? '')) }}<span class="mt-1 block text-xs font-medium text-slate-500" data-other-total></span></dd></div>
         </dl>
       </aside>
       <section class="p-6 ${skin.card}">
@@ -354,7 +355,7 @@ export function crsConfirmBlade(accent: string, templateId: string): string {
         <div class="flex justify-between gap-4"><span class="text-slate-500">Breakfast</span><span>Breakfast is not included.</span></div>
         @endif
         <div class="flex justify-between gap-4"><span class="text-slate-500">Cancellation</span><span>{{ \\App\\Support\\RoomPrice::cancellationNote((bool) $reservation->free_cancellation, (float) $reservation->cancellation_fee, (string) $reservation->currency) }}</span></div>
-        <div class="flex justify-between gap-4 border-t pt-3"><span class="text-slate-500">Total</span><span class="font-bold" style="color:${accent}">{{ number_format($total, 0) }} {{ \\App\\Support\\RoomPrice::currency((string) $reservation->currency) }}@if($confirmOther)<span class="mt-1 block text-xs font-medium text-slate-500">{{ $confirmOther }}</span>@else<span class="mt-1 block text-xs font-normal text-slate-500">Set the USD to ETB rate on Hotel Policy to show this price in ETB and USD.</span>@endif</span></div>
+        <div class="flex justify-between gap-4 border-t pt-3"><span class="text-slate-500">Total</span><span class="font-bold" style="color:${ROOM_PRICE_COLORS.amount}">{{ number_format($total, 0) }} {{ \\App\\Support\\RoomPrice::currency((string) $reservation->currency) }}@if($confirmOther)<span class="mt-1 block text-xs font-medium text-slate-500">{{ $confirmOther }}</span>@else<span class="mt-1 block text-xs font-normal text-slate-500">Set the USD to ETB rate on Hotel Policy to show this price in ETB and USD.</span>@endif</span></div>
       </div>
       @include('partials.stay-policies')
       <a href="{{ route('home') }}" class="mt-8 inline-block text-sm font-semibold" style="color:${accent}">Back to home</a>
@@ -555,7 +556,7 @@ export function localBookBlade(accent: string, templateId: string): string {
           <div class="flex justify-between gap-4"><dt class="text-slate-500">Nightly</dt><dd class="text-right">@include('partials.room-price', ['priceBase' => $offer['listNightly'], 'pricePercent' => $roomType->discount_percent, 'priceCurrency' => $roomType->currency, 'priceAccent' => '${accent}', 'priceSuffix' => '/ night', 'priceAlign' => 'end', 'priceRateHint' => true])</dd></div>
           <div class="flex justify-between gap-4"><dt class="text-slate-500">Guests</dt><dd>{{ $adults }} adults · {{ $children }} children</dd></div>
           <div class="flex justify-between gap-4" data-breakfast-line hidden><dt class="text-slate-500">Breakfast</dt><dd><span data-breakfast-amount>0</span> {{ \\App\\Support\\RoomPrice::currency((string) $roomType->currency) }}</dd></div>
-          <div class="flex justify-between gap-4 border-t pt-3 text-base"><dt class="font-semibold">Total</dt><dd class="text-right font-bold" style="color:${accent}"><span data-stay-total>{{ number_format($roomTotal, 0) }}</span> {{ \\App\\Support\\RoomPrice::currency((string) $roomType->currency) }}<span class="mt-1 block text-xs font-medium text-slate-500" data-other-total></span></dd></div>
+          <div class="flex justify-between gap-4 border-t pt-3 text-base"><dt class="font-semibold">Total</dt><dd class="text-right font-bold" style="color:${ROOM_PRICE_COLORS.amount}"><span data-stay-total>{{ number_format($roomTotal, 0) }}</span> {{ \\App\\Support\\RoomPrice::currency((string) $roomType->currency) }}<span class="mt-1 block text-xs font-medium text-slate-500" data-other-total></span></dd></div>
         </dl>
       </aside>
       <section class="p-6 ${skin.card}">
@@ -628,7 +629,7 @@ export function localConfirmBlade(accent: string, templateId: string): string {
         <div class="flex justify-between gap-4"><span class="text-slate-500">Breakfast</span><span>Breakfast is not included.</span></div>
         @endif
         <div class="flex justify-between gap-4"><span class="text-slate-500">Cancellation</span><span>{{ \\App\\Support\\RoomPrice::cancellationNote((bool) $reservation->free_cancellation, (float) $reservation->cancellation_fee, (string) $reservation->currency) }}</span></div>
-        <div class="flex justify-between gap-4 border-t pt-3"><span class="text-slate-500">Total</span><span class="font-bold" style="color:${accent}">{{ number_format($total, 0) }} {{ \\App\\Support\\RoomPrice::currency((string) $reservation->currency) }}@if($confirmOther)<span class="mt-1 block text-xs font-medium text-slate-500">{{ $confirmOther }}</span>@else<span class="mt-1 block text-xs font-normal text-slate-500">Set the USD to ETB rate on Hotel Policy to show this price in ETB and USD.</span>@endif</span></div>
+        <div class="flex justify-between gap-4 border-t pt-3"><span class="text-slate-500">Total</span><span class="font-bold" style="color:${ROOM_PRICE_COLORS.amount}">{{ number_format($total, 0) }} {{ \\App\\Support\\RoomPrice::currency((string) $reservation->currency) }}@if($confirmOther)<span class="mt-1 block text-xs font-medium text-slate-500">{{ $confirmOther }}</span>@else<span class="mt-1 block text-xs font-normal text-slate-500">Set the USD to ETB rate on Hotel Policy to show this price in ETB and USD.</span>@endif</span></div>
       </div>
       @include('partials.stay-policies')
       <a href="{{ route('home') }}" class="mt-8 inline-block text-sm font-semibold" style="color:${accent}">Back to the hotel</a>

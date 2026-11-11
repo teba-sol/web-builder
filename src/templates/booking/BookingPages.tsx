@@ -14,7 +14,7 @@ import {
   type PreviewReservation,
   type PreviewRoomUnit,
 } from '../../data/bookingPreview'
-import { coverPhoto, discountPercentOf, formatMoney, parseRoomPrice, sellingAmount, stayCurrency } from '../../data/hospitality'
+import { coverPhoto, discountPercentOf, formatMoney, stayCurrency } from '../../data/hospitality'
 import type { RoomTypeItem, SiteContent, TemplateId } from '../../types'
 import { addDays, localToday, readChildAges, stayQueryString, staySearchErrors } from '../../data/staySearch'
 import { sitePath } from '../../data/siteNav'
@@ -23,6 +23,8 @@ import { getMapEmbedUrl, getMapOpenUrl } from '../../utils/mapEmbed'
 import { Search } from 'lucide-react'
 import { actionBackground, accentInk } from '../../utils/accentInk'
 import { staySkin } from './hospitalitySkin'
+import { RoomPrice } from './RoomPrice'
+import { ROOM_PRICE_COLORS } from '../../data/roomPrice'
 
 interface BookingProps {
   content: SiteContent
@@ -30,35 +32,6 @@ interface BookingProps {
   theme: TemplateTheme
   templateId: TemplateId
   accent: string
-}
-
-function RoomPrice({ room, accent, suffix, rateHint }: { room: RoomTypeItem; accent: string; suffix?: string; rateHint?: boolean }) {
-  const base = parseRoomPrice(room.basePrice)
-  const percent = discountPercentOf(room)
-  const selling = sellingAmount(base, percent)
-  const currency = stayCurrency(room.currency)
-  return (
-    <span className="block">
-      {percent > 0 ? (
-        <>
-          <span className="block text-sm font-normal text-slate-500 line-through">{formatMoney(base, currency)}</span>
-          <span className="block text-lg font-bold" style={{ color: accent }}>
-            {formatMoney(selling, currency)}
-            {suffix ? <span className="text-sm font-normal text-slate-500"> {suffix}</span> : null}
-          </span>
-          <span className="mt-1 block text-sm font-semibold text-rose-700">{percent}% off</span>
-        </>
-      ) : (
-        <span className="block text-lg font-bold" style={{ color: accent }}>
-          {formatMoney(selling, currency)}
-          {suffix ? <span className="text-sm font-normal text-slate-500"> {suffix}</span> : null}
-        </span>
-      )}
-      {rateHint ? (
-        <span className="mt-1 block text-xs font-normal text-slate-500">ETB and USD both show on the exported site after the hotel sets the USD to ETB rate.</span>
-      ) : null}
-    </span>
-  )
 }
 
 function BreakfastChoice({
@@ -450,7 +423,7 @@ export function RoomsPage({ content: c, basePath, templateId, accent }: BookingP
                         <p className="mt-1 text-sm text-slate-500">{room.maxAdults} adults · {room.maxChildren} children</p>
                       </div>
                       <div className="text-right">
-                        <RoomPrice room={room} accent={accent} suffix="/ night" />
+                        <RoomPrice room={room} suffix="/ night" />
                       </div>
                     </div>
                     <StayFlags room={room} />
@@ -531,7 +504,7 @@ export function RoomDetailPage({ content: c, basePath, templateId, accent }: Boo
             <p className={skin.eyebrow}>Room type</p>
             <h1 className={`mt-2 text-4xl ${skin.heading}`}>{type.name}</h1>
             <p className="mt-2 text-sm text-slate-500">{type.maxAdults} adults · {type.maxChildren} children</p>
-            <div className="mt-4"><RoomPrice room={type} accent={accent} suffix="/ night" rateHint /></div>
+            <div className="mt-4"><RoomPrice room={type} suffix="/ night" rateHint /></div>
             <StayFlags room={type} />
             <div className="mt-3">
               <BreakfastChoice included={type.freeBreakfast} selected={addBreakfast} onChange={setAddBreakfast} />
@@ -608,7 +581,6 @@ export function RoomDetailPage({ content: c, basePath, templateId, accent }: Boo
                     key={unit.id}
                     unit={unit}
                     room={type}
-                    accent={accent}
                     skinCard={skin.card}
                     badge={skin.badge}
                     nights={pricing.nights}
@@ -655,7 +627,6 @@ export function RoomDetailPage({ content: c, basePath, templateId, accent }: Boo
 function UnitRow({
   unit,
   room,
-  accent,
   skinCard,
   badge,
   nights,
@@ -666,7 +637,6 @@ function UnitRow({
 }: {
   unit: PreviewRoomUnit
   room: RoomTypeItem
-  accent: string
   skinCard: string
   badge: string
   nights: number
@@ -687,8 +657,8 @@ function UnitRow({
         {room.sizeSqm ? <p className="text-sm text-slate-600">{room.sizeSqm} m²</p> : null}
       </div>
       <div className="text-right">
-        <RoomPrice room={room} accent={accent} suffix="/ night" rateHint />
-        <p className="mt-1 text-sm font-semibold" style={{ color: accent }}>{formatMoney(total, stayCurrency(room.currency))}</p>
+        <RoomPrice room={room} suffix="/ night" rateHint />
+        <p className="mt-1 text-sm font-semibold" style={{ color: ROOM_PRICE_COLORS.amount }}>{formatMoney(total, stayCurrency(room.currency))}</p>
         <p className="text-xs text-slate-500">{nights} night{nights === 1 ? '' : 's'}</p>
         <label className="mt-3 inline-flex items-center gap-2 text-sm font-semibold">
           <input type="checkbox" checked={checked} onChange={onToggle} />
@@ -747,9 +717,9 @@ export function BookPage({ content: c, basePath, templateId, accent }: BookingPr
             <dl className="mt-4 space-y-3 text-sm">
               <div className="flex justify-between gap-4"><dt className="text-slate-500">Rooms</dt><dd>{chosen.length}</dd></div>
               <div className="flex justify-between gap-4"><dt className="text-slate-500">Nights</dt><dd>{pricing.nights}</dd></div>
-              <div className="flex justify-between gap-4"><dt className="text-slate-500">Nightly</dt><dd className="text-right"><RoomPrice room={type} accent={accent} suffix="/ night" rateHint /></dd></div>
+              <div className="flex justify-between gap-4"><dt className="text-slate-500">Nightly</dt><dd className="text-right"><RoomPrice room={type} suffix="/ night" rateHint /></dd></div>
               <div className="flex justify-between gap-4"><dt className="text-slate-500">Guests</dt><dd>{adults} adults · {children} children</dd></div>
-              <div className="flex justify-between gap-4 border-t pt-3 text-base"><dt className="font-semibold">Total</dt><dd className="text-right font-bold" style={{ color: accent }}>{formatMoney(roomTotal, stayCurrency(pricing.currency))}</dd></div>
+              <div className="flex justify-between gap-4 border-t pt-3 text-base"><dt className="font-semibold">Total</dt><dd className="text-right font-bold" style={{ color: ROOM_PRICE_COLORS.amount }}>{formatMoney(roomTotal, stayCurrency(pricing.currency))}</dd></div>
             </dl>
             <p className="mt-4 text-xs text-slate-500">{type.freeCancellation ? 'Free cancellation.' : 'This rate is non-refundable.'}</p>
             <p className="mt-2 text-sm text-slate-700">{type.freeBreakfast ? 'Breakfast included' : addBreakfast ? 'Breakfast added. The exported site charges the Hotel Policy price.' : 'Breakfast not included'}</p>
@@ -860,7 +830,7 @@ export function BookingConfirmPage({ content: c, basePath, templateId, accent }:
             <div className="flex justify-between gap-4"><span className="text-slate-500">Phone</span><span>{reservation.guestPhone}</span></div>
             {reservation.specialRequests ? <div className="flex justify-between gap-4"><span className="text-slate-500">Special requests</span><span>{reservation.specialRequests}</span></div> : null}
             <div className="flex justify-between gap-4"><span className="text-slate-500">Breakfast</span><span>{room?.freeBreakfast ? 'Breakfast included' : reservation.breakfastSelected ? 'Breakfast added. The exported site charges the Hotel Policy price.' : 'Breakfast not included'}</span></div>
-            <div className="flex justify-between gap-4 border-t pt-3"><span className="text-slate-500">Total</span><span className="font-bold" style={{ color: accent }}>{formatMoney(reservation.totalPrice, stayCurrency(reservation.currency))}</span></div>
+            <div className="flex justify-between gap-4 border-t pt-3"><span className="text-slate-500">Total</span><span className="font-bold" style={{ color: ROOM_PRICE_COLORS.amount }}>{formatMoney(reservation.totalPrice, stayCurrency(reservation.currency))}</span></div>
             <p className="text-xs text-slate-500">ETB and USD both show on the exported site after the hotel sets the USD to ETB rate.</p>
           </div>
           <Link to={basePath} className="mt-8 inline-block text-sm font-semibold" style={{ color: accent }}>Back to home</Link>

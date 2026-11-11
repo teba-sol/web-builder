@@ -40,10 +40,11 @@ import {
   RoomsPage,
 } from './booking/BookingPages'
 import { staySkin } from './booking/hospitalitySkin'
+import { RoomPrice } from './booking/RoomPrice'
 import { isHospitalityTemplate } from '../data/hospitality'
 import { type TemplateTheme } from './themes'
 import { catalogueRoomTypes } from '../data/bookingPreview'
-import { coverPhoto, discountPercentOf, formatMoney, parseRoomPrice, sellingAmount, stayCurrency } from '../data/hospitality'
+import { coverPhoto } from '../data/hospitality'
 import { TaxFightersHome } from './TaxFightersHome'
 import { AureumHome } from './AureumHome'
 import { FluxHome } from './FluxHome'
@@ -211,7 +212,7 @@ export function RichTemplateLayout({
         if (node === null) return null
         const design = getBlockDesign(getManifest(variant), id)
         return (
-          <div key={id} className={blockWrapperClass(design)} {...blockHideAttrs(design)}>
+          <div key={id} className={id === 'nav' ? 'contents' : blockWrapperClass(design)} {...blockHideAttrs(design)}>
             {node}
           </div>
         )
@@ -298,10 +299,6 @@ function RoomsTeaser({
         <div className="grid gap-6 cmd:grid-cols-3">
           {rooms.map((room) => {
             const photo = coverPhoto(room)
-            const base = parseRoomPrice(room.basePrice)
-            const percent = discountPercentOf(room)
-            const selling = sellingAmount(base, percent)
-            const currency = stayCurrency(room.currency)
             return (
               <Link
                 key={room.slug}
@@ -318,19 +315,7 @@ function RoomsTeaser({
                   <p className="mt-1 text-sm opacity-70">{room.maxAdults} adults · {room.maxChildren} children</p>
                   {room.description ? <p className="mt-1 line-clamp-2 text-sm opacity-70">{room.description}</p> : null}
                   <div data-part="price" className="mt-3">
-                    {percent > 0 ? (
-                      <>
-                        <p className="text-sm text-slate-500 line-through">{formatMoney(base, currency)}</p>
-                        <p className="font-bold" style={{ color: accent }}>
-                          {formatMoney(selling, currency)} <span className="text-sm font-normal text-slate-500">/ night</span>
-                        </p>
-                        <p className="text-sm font-semibold text-rose-700">{percent}% off</p>
-                      </>
-                    ) : (
-                      <p className="font-bold" style={{ color: accent }}>
-                        {formatMoney(selling, currency)} <span className="text-sm font-normal text-slate-500">/ night</span>
-                      </p>
-                    )}
+                    <RoomPrice room={room} suffix="/ night" />
                   </div>
                   {room.freeBreakfast ? (
                     <p className="mt-2 text-xs font-semibold text-emerald-700">Breakfast included</p>
