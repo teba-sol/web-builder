@@ -211,7 +211,7 @@ export function RichTemplateLayout({
         if (node === null) return null
         const design = getBlockDesign(getManifest(variant), id)
         return (
-          <div key={id} className={blockWrapperClass(design)} {...blockHideAttrs(design)}>
+          <div key={id} className={id === 'nav' ? 'contents' : blockWrapperClass(design)} {...blockHideAttrs(design)}>
             {node}
           </div>
         )
