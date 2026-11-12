@@ -346,6 +346,28 @@ function HeroSection({ c, t, variant, heroLayout, basePath, accent }: { c: SiteC
   const ctaHref = resolveSiteHref(basePath, c.ctaLink || (c.pageVisibility.rooms ? 'book' : 'contact'), c)
   const heroCfg = getManifest(variant)?.hero
   const hasOverlay = Boolean(heroCfg?.overlay) || heroLayout === 'immersive'
+  const gridHero = Boolean(
+    heroLayout !== 'immersive' &&
+      !hasOverlay &&
+      c.heroImage &&
+      ['saas', 'medical', 'business', 'lawfirm', 'cpa', 'aureum', 'flux', 'axiom', 'helix'].includes(variant),
+  )
+
+  const copy = (
+    <>
+      {variant !== 'restaurant' && variant !== 'photography' && (
+        <p data-part="badge" className={`mb-4 ${t.heroBadge}`}>{c.businessName}</p>
+      )}
+      {variant === 'restaurant' && <p data-part="badge" className={`mb-3 ${t.heroBadge}`}>Est. 2010</p>}
+      <h1 data-part="title" className={`mb-6 ${t.heroTitle}`}>{c.tagline}</h1>
+      <p data-part="subtitle" className={`mb-8 ${t.heroText}`}>{c.heroSubtext || c.about.slice(0, 160)}</p>
+      {isHospitalityTemplate(variant) ? (
+        <HeroStaySearch basePath={basePath} accent={accent} templateId={variant} />
+      ) : (
+        <Link data-part="cta" data-brand-cta to={ctaHref} className={`inline-block ${t.heroCta}`} style={brandCtaStyle(c)}>{c.ctaText} →</Link>
+      )}
+    </>
+  )
 
   if (variant === 'saas' && !hasOverlay) {
     return <header className={`relative isolate ${t.hero} ${t.page}`} style={{ paddingBlock: 0 }}>
@@ -409,22 +431,21 @@ function HeroSection({ c, t, variant, heroLayout, basePath, accent }: { c: SiteC
         </>
       )}
       <div className={heroContentClass(variant, heroLayout)}>
-        {variant !== 'restaurant' && variant !== 'photography' && (
-          <p data-part="badge" className={`mb-4 ${t.heroBadge}`}>{c.businessName}</p>
-        )}
-        {variant === 'restaurant' && <p data-part="badge" className={`mb-3 ${t.heroBadge}`}>Est. 2010</p>}
-        <h1 data-part="title" className={`mb-6 ${t.heroTitle}`}>{c.tagline}</h1>
-        <p data-part="subtitle" className={`mb-8 ${t.heroText}`}>{c.heroSubtext || c.about.slice(0, 160)}</p>
-        {isHospitalityTemplate(variant) ? (
-          <HeroStaySearch basePath={basePath} accent={accent} templateId={variant} />
+        {gridHero ? (
+          <>
+            <div>{copy}</div>
+            <img data-part="image" src={c.heroImage} alt="" className="h-full max-h-[28rem] w-full rounded-2xl object-cover shadow-2xl" />
+          </>
         ) : (
-          <Link data-part="cta" data-brand-cta to={ctaHref} className={`inline-block ${t.heroCta}`} style={brandCtaStyle(c)}>{c.ctaText} →</Link>
-        )}
-        {!hasOverlay && c.heroImage && variant !== 'boutique' && (
-          <img data-part="image" src={c.heroImage} alt="" className="rounded-2xl shadow-2xl w-full mt-8 clg:mt-0" />
-        )}
-        {variant === 'boutique' && c.heroImage && (
-          <img data-part="image" src={c.heroImage} alt="" className="mx-auto mt-10 max-h-[500px] w-full max-w-4xl object-cover" />
+          <>
+            {copy}
+            {!hasOverlay && c.heroImage && variant !== 'boutique' && (
+              <img data-part="image" src={c.heroImage} alt="" className="rounded-2xl shadow-2xl w-full mt-8 clg:mt-0" />
+            )}
+            {variant === 'boutique' && c.heroImage && (
+              <img data-part="image" src={c.heroImage} alt="" className="mx-auto mt-10 max-h-[500px] w-full max-w-4xl object-cover" />
+            )}
+          </>
         )}
       </div>
     </header>

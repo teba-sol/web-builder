@@ -1,3 +1,4 @@
+import { requireManifest } from '../catalog/catalog'
 import { getTemplateMeta } from '../data/defaults'
 import { getSectionVariants } from '../data/sectionVariants'
 import { getSiteNavItems, staticSitePath } from '../data/siteNav'
@@ -104,6 +105,7 @@ export function buildExploreSectionHtml(
   const items = getSiteNavItems(templateId, content).filter((i) => i.page !== 'home')
   if (!items.length) return ''
   const cfg = getSectionVariants(templateId)
+  if (!requireManifest(templateId).homeSections.includes('explore')) return ''
   const header = `<div class="mb-10"><h2 class="text-3xl font-bold">${escapeHtml(cfg.exploreTitle)}</h2><p class="mt-2 text-slate-600 max-w-2xl">${escapeHtml(cfg.exploreSubtitle)}</p></div>`
 
   switch (cfg.explore) {
