@@ -1,3 +1,4 @@
+import { resolveCrsApiUrl } from './crsApiUrl'
 import {
   LAYOUT_VARIANT_IDS,
   LAYOUT_VARIANT_PRESETS,
@@ -1753,7 +1754,7 @@ Use the \`backend/\` folder when you want dynamic content and an admin dashboard
 }
 
 function crsEnvBlock(secrets?: CrsExportSecrets): string {
-  const url = (secrets?.apiBaseUrl || 'http://localhost:8080').replace(/\/+$/, '')
+  const url = resolveCrsApiUrl(secrets?.apiBaseUrl)
   return `CRS_API_URL=${url}
 CRS_API_KEY=${secrets?.apiKey ?? ''}
 CRS_HOTEL_ID=${secrets?.hotelId ?? ''}`
