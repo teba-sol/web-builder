@@ -1,7 +1,8 @@
 import type { FormEvent } from 'react'
 import type { ContactFormStyleId } from '../data/sectionVariants'
-import type { SiteContent } from '../types'
+import type { SiteContent, TemplateId } from '../types'
 import type { ContactLayout } from '../data/layoutVariants'
+import { accentInk } from '../utils/accentInk'
 import { canEmbedForm, EMBED_FORM_HEIGHT, getEmbedFormUrl } from '../utils/formEmbed'
 import type { TemplateTheme } from './themes'
 
@@ -9,6 +10,8 @@ interface Props {
   c: SiteContent
   t: TemplateTheme
   layout: ContactLayout
+  variant: TemplateId
+  accent: string
   formStyle?: ContactFormStyleId
 }
 
@@ -66,9 +69,12 @@ function formClasses(style: ContactFormStyleId = 'standard') {
   }
 }
 
-function NativeContactForm({ c, t, formStyle }: { c: SiteContent; t: TemplateTheme; formStyle?: ContactFormStyleId }) {
+function NativeContactForm({ c, t, variant, accent, formStyle }: { c: SiteContent; t: TemplateTheme; variant: TemplateId; accent: string; formStyle?: ContactFormStyleId }) {
   const mailTarget = c.email || c.reservationEmail || c.supportEmail
   const cls = formClasses(formStyle)
+  const buttonStyle = variant === 'alpine'
+    ? { backgroundColor: accent, color: accentInk(accent) === 'text-white' ? '#ffffff' : '#020617' }
+    : undefined
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -104,7 +110,7 @@ function NativeContactForm({ c, t, formStyle }: { c: SiteContent; t: TemplateThe
         <label htmlFor="contact-message" className={`mb-1.5 block ${cls.label}`}>Message</label>
         <textarea id="contact-message" name="message" required rows={5} className={cls.input} placeholder="How can we help you?" />
       </div>
-      <button type="submit" className={`w-full ${t.navCta}`}>{c.contactFormButtonText || 'Send message'}</button>
+      <button type="submit" className={`w-full ${t.navCta}`} style={buttonStyle}>{c.contactFormButtonText || 'Send message'}</button>
       {!c.contactFormUrl.trim() && !mailTarget && (
         <p className={`text-xs ${t.cardText}`}>Add an email or form link in the editor to receive submissions.</p>
       )}
@@ -129,7 +135,7 @@ function EmbeddedForm({ c, embedUrl, wrapClass }: { c: SiteContent; embedUrl: st
   )
 }
 
-export function ContactFormBlock({ c, t, layout, formStyle = 'standard' }: Props) {
+export function ContactFormBlock({ c, t, layout, variant, accent, formStyle = 'standard' }: Props) {
   const formUrl = c.contactFormUrl.trim()
   const embedUrl = getEmbedFormUrl(formUrl)
   const embeddable = canEmbedForm(formUrl)
@@ -154,7 +160,7 @@ export function ContactFormBlock({ c, t, layout, formStyle = 'standard' }: Props
           Fill out the form below — your message will open our contact page to complete.
         </p>
       )}
-      <NativeContactForm c={c} t={t} formStyle={formStyle} />
+      <NativeContactForm c={c} t={t} variant={variant} accent={accent} formStyle={formStyle} />
       {formUrl && (
         <p className={`mt-4 text-center text-sm ${t.cardText}`}>
           Or <a href={formUrl} target="_blank" rel="noopener noreferrer" className="font-medium underline">open the full form directly</a>

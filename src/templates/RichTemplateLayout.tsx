@@ -165,7 +165,7 @@ export function RichTemplateLayout({
     team: visibility.team ? <TeamSection c={c} t={t} /> : null,
     faq: visibility.faq ? <FaqSectionView c={c} t={t} variant={variant} /> : null,
     cta: visibility.cta ? <CtaBannerSection c={c} t={t} basePath={basePath} /> : null,
-    contact: <ContactSectionView c={c} t={t} variant={variant} layout={layout.contactLayout} basePath={basePath} />,
+    contact: <ContactSectionView c={c} t={t} variant={variant} accent={accent} layout={layout.contactLayout} basePath={basePath} />,
     footer: <FooterSection c={c} t={t} navItems={navItems} basePath={basePath} />,
   }
 

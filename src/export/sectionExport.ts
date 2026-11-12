@@ -2,6 +2,7 @@ import { getTemplateMeta } from '../data/defaults'
 import { getSectionVariants } from '../data/sectionVariants'
 import { getSiteNavItems, staticSitePath } from '../data/siteNav'
 import type { SiteContent, TemplateId } from '../types'
+import { accentInk } from '../utils/accentInk'
 import { canEmbedForm, EMBED_FORM_HEIGHT, getEmbedFormUrl } from '../utils/formEmbed'
 import { mapEmbedHtml } from '../utils/mapEmbed'
 import { escapeHtml } from './imageUtils'
@@ -42,6 +43,7 @@ export function buildStyledContactFormHtml(content: SiteContent, accent: string,
   const embedUrl = getEmbedFormUrl(formUrl)
   const mailTarget = content.email || content.reservationEmail || content.supportEmail
   const { input, wrap } = formInputClasses(templateId)
+  const buttonInk = templateId === 'alpine' ? accentInk(accent) : 'text-white'
 
   if (canEmbedForm(formUrl) && embedUrl) {
     return `<div class="${wrap}" style="height:${EMBED_FORM_HEIGHT}px;overflow:hidden"><iframe src="${escapeHtml(embedUrl)}" width="100%" height="${EMBED_FORM_HEIGHT}" style="border:0"></iframe></div>`
@@ -53,7 +55,7 @@ export function buildStyledContactFormHtml(content: SiteContent, accent: string,
       <div><label class="block text-sm font-medium mb-1.5">Email</label><input name="email" type="email" required class="${input}" /></div>
       <div><label class="block text-sm font-medium mb-1.5">Phone</label><input name="phone" type="tel" class="${input}" /></div>
       <div><label class="block text-sm font-medium mb-1.5">Message</label><textarea name="message" required rows="5" class="${input}"></textarea></div>
-      <button type="submit" class="w-full text-white px-6 py-3 rounded-lg font-semibold" style="background-color:${accent}">${escapeHtml(content.contactFormButtonText || 'Send message')}</button>
+      <button type="submit" class="w-full ${buttonInk} px-6 py-3 rounded-lg font-semibold" style="background-color:${accent}">${escapeHtml(content.contactFormButtonText || 'Send message')}</button>
       <div class="js-form-success hidden rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-center text-xs font-semibold text-emerald-800">Message sent. We will follow up shortly.</div>
     </form>
   </div>`

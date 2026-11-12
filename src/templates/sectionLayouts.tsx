@@ -392,20 +392,20 @@ function ContactMap({ c }: { c: SiteContent }) {
   )
 }
 
-function ContactFormWrap({ c, t, variant, layout }: { c: SiteContent; t: TemplateTheme; variant: TemplateId; layout: ContactLayout }) {
+function ContactFormWrap({ c, t, variant, accent, layout }: { c: SiteContent; t: TemplateTheme; variant: TemplateId; accent: string; layout: ContactLayout }) {
   const formStyle = getSectionVariants(variant).contactForm
-  return <ContactFormBlock c={c} t={t} layout={layout} formStyle={formStyle} />
+  return <ContactFormBlock c={c} t={t} variant={variant} accent={accent} layout={layout} formStyle={formStyle} />
 }
 
 export function ContactSectionView({
-  c, t, variant, layout, basePath = '/',
-}: SectionProps & { layout: ContactLayout }) {
+  c, t, variant, accent, layout, basePath = '/',
+}: SectionProps & { accent: string; layout: ContactLayout }) {
   const meta = getTemplateMeta(variant)
   if (!meta) return null
   const shell = getSectionVariants(variant).contactShell
   const title = c.contactSectionTitle || 'Get in Touch'
   const ctaHref = resolveSiteHref(basePath, c.ctaLink || 'contact', c)
-  const form = <ContactFormWrap c={c} t={t} variant={variant} layout={layout} />
+  const form = <ContactFormWrap c={c} t={t} variant={variant} accent={accent} layout={layout} />
   const info = (
     <div>
       <ContactDetails c={c} t={t} meta={meta} />
