@@ -1,3 +1,4 @@
+import { DEPLOYED_CRS_API_URL } from './crsApiUrl'
 import { ROOM_PRICE_COLORS } from '../../data/roomPrice'
 /**
  * Hospitality booking for exported Laravel + Filament sites.
@@ -313,7 +314,7 @@ export function generateBookingFiles(payload: SiteExportPayload): Record<string,
   files['config/crs.php'] = `<?php
 
 return [
-    'url' => rtrim((string) env('CRS_API_URL', 'http://localhost:8080'), '/'),
+    'url' => rtrim((string) env('CRS_API_URL', '${DEPLOYED_CRS_API_URL}'), '/'),
     'key' => (string) env('CRS_API_KEY', ''),
     'hotel_id' => (string) env('CRS_HOTEL_ID', ''),
 ];

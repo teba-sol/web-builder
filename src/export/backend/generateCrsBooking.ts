@@ -1,3 +1,4 @@
+import { DEPLOYED_CRS_API_URL, resolveCrsApiUrl } from './crsApiUrl'
 /**
  * Hotel and guest house exports talk to the Buildaura room API.
  * Guest name, email, and phone stay in this site's database.
@@ -26,7 +27,7 @@ export function usesBuildauraCrs(templateId: string): boolean {
 }
 
 export function crsEnvExample(credentials?: CrsExportCredentials): string {
-  const url = (credentials?.apiBaseUrl || 'http://localhost:8080').replace(/\/+$/, '')
+  const url = resolveCrsApiUrl(credentials?.apiBaseUrl)
   const hotelId = credentials?.hotelId || ''
   const apiKey = credentials?.apiKey || ''
   const note = apiKey
@@ -77,7 +78,7 @@ export function generateCrsBookingFiles(payload: SiteExportPayload): Record<stri
 
 return [
     'buildaura' => [
-        'url' => rtrim((string) env('BUILDAURA_API_URL', env('CRS_API_URL', 'http://localhost:8080')), '/'),
+        'url' => rtrim((string) env('BUILDAURA_API_URL', env('CRS_API_URL', '${DEPLOYED_CRS_API_URL}')), '/'),
         'hotel_id' => env('BUILDAURA_HOTEL_ID', env('CRS_HOTEL_ID')),
         'key' => env('BUILDAURA_API_KEY', env('CRS_API_KEY')),
     ],
