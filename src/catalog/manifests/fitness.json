@@ -33,7 +33,6 @@
     "about-teaser",
     "faq",
     "contact",
-    "explore",
     "footer"
   ],
   "sectionOrder": [
@@ -157,10 +156,7 @@
     "faq": "numbered",
     "explore": "strips",
     "contactShell": "split-dark",
-    "contactForm": "bold-outline",
-    "exploreTitle": "Train",
-    "exploreSubtitle": "Programs, schedules, results, and membership",
-    "exploreLinkLabel": "Start"
+    "contactForm": "bold-outline"
   },
   "showcase": {
     "sectionTitle": "Membership Plans",

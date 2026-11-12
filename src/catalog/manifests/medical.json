@@ -33,7 +33,6 @@
     "about-teaser",
     "faq",
     "contact",
-    "explore",
     "footer"
   ],
   "sectionOrder": [
@@ -171,10 +170,7 @@
     "faq": "accordion",
     "explore": "list-arrows",
     "contactShell": "intake",
-    "contactForm": "soft-rounded",
-    "exploreTitle": "Patient Care",
-    "exploreSubtitle": "Services, providers, insurance, and appointments",
-    "exploreLinkLabel": "Learn"
+    "contactForm": "soft-rounded"
   },
   "showcase": {
     "sectionTitle": "Care Programs",

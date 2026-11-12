@@ -33,7 +33,6 @@
     "about-teaser",
     "faq",
     "contact",
-    "explore",
     "footer"
   ],
   "sectionOrder": [
@@ -150,10 +149,7 @@
     "faq": "two-column",
     "explore": "list-arrows",
     "contactShell": "sidebar-panel",
-    "contactForm": "minimal-border",
-    "exploreTitle": "Product",
-    "exploreSubtitle": "Features, pricing, docs, and product updates",
-    "exploreLinkLabel": "Go to"
+    "contactForm": "minimal-border"
   },
   "showcase": {
     "sectionTitle": "Pricing Plans",
