@@ -1,3 +1,5 @@
+import { resolveBrandAccent, isHexColor } from '../../data/brand'
+import { CUSTOM_COLOR_SCHEME_ID } from '../../data/pickTemplate'
 import { getColorSchemes } from '../../data/colorSchemes'
 import { isHospitalityTemplate } from '../../data/hospitality'
 import { getLayoutVariant } from '../../data/layoutVariants'
@@ -47,10 +49,10 @@ export function buildExportPayload(
 
   return {
     templateId,
-    colorSchemeId: scheme.id,
+    colorSchemeId: colorSchemeId === CUSTOM_COLOR_SCHEME_ID ? CUSTOM_COLOR_SCHEME_ID : scheme.id,
     layoutVariantId: layout.id,
-    accent: scheme.swatches[1],
-    accentDark: scheme.swatches[0],
+    accent: resolveBrandAccent(content, scheme.swatches[1]),
+    accentDark: isHexColor(content.brandSecondary) ? content.brandSecondary.trim() : scheme.swatches[0],
     showcaseConfig: getShowcaseConfig(templateId),
     layout,
     content: exportedContent,

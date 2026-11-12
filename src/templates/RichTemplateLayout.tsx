@@ -1,4 +1,9 @@
-import { accentLabelColor, actionBackground } from '../utils/accentInk'
+import { flowstackHeroGrid, FLOWSTACK_COPY, FLOWSTACK_MEDIA, FLOWSTACK_IMAGE, FLOWSTACK_ACTION } from './flowstackHero'
+import { MEDICAL_CSS, medicalHeroClass } from './medicalStyles'
+import { heroContentWrapperClass } from './heroLayout'
+import { HOSPITALITY_CSS } from './booking/hospitalityTheme'
+import { FITNESS_CSS } from './fitnessStyles'
+import { accentInk, accentLabelColor, actionBackground } from '../utils/accentInk'
 import { lazy, Suspense, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { getColorSchemes } from '../data/colorSchemes'
@@ -150,7 +155,7 @@ export function RichTemplateLayout({
     'portfolio-teaser': c.pageVisibility.portfolio ? <PortfolioTeaser {...layoutProps} /> : null,
     'about-teaser': c.pageVisibility.about ? <AboutTeaser {...layoutProps} /> : null,
     'rooms-teaser': c.pageVisibility.rooms ? <RoomsTeaser c={c} basePath={basePath} accent={accent} variant={variant} /> : null,
-    explore: <ExploreSectionView {...layoutProps} />,
+    explore: variant === 'fitness' || isHospitalityTemplate(variant) ? null : <ExploreSectionView {...layoutProps} />,
     'blog-page': <BlogListPage {...layoutProps} />,
     'blog-post-page': <BlogPostPage {...layoutProps} slug={postSlug ?? ''} />,
     'news-page': <NewsListPage {...layoutProps} />,
@@ -164,7 +169,7 @@ export function RichTemplateLayout({
     pricing: visibility.pricing ? <PricingSection c={c} t={t} /> : null,
     team: visibility.team ? <TeamSection c={c} t={t} /> : null,
     faq: visibility.faq ? <FaqSectionView c={c} t={t} variant={variant} /> : null,
-    cta: visibility.cta ? <CtaBannerSection c={c} t={t} basePath={basePath} /> : null,
+    cta: visibility.cta ? <CtaBannerSection variant={variant} accent={accent} c={c} t={t} basePath={basePath} /> : null,
     contact: <ContactSectionView c={c} t={t} variant={variant} layout={layout.contactLayout} basePath={basePath} />,
     footer: <FooterSection c={c} t={t} navItems={navItems} basePath={basePath} />,
   }
@@ -184,7 +189,7 @@ export function RichTemplateLayout({
 
   if (custom || (isCloneTemplate(variant) && page !== 'home')) {
     return (
-      <div data-site-brand {...(customPalette ? { 'data-custom-palette': '' } : {})} className={`@container ${cloneClass}`}>
+      <div data-site-brand {...(isHospitalityTemplate(variant) ? { 'data-hospitality-site': '' } : {})} {...(customPalette ? { 'data-custom-palette': '' } : {})} className={`@container ${cloneClass}`}>
         {fontHref ? <link rel="stylesheet" href={fontHref} /> : null}
         {brandStyles ? <style>{brandStyles}</style> : null}
         {cloneCss ? <style>{cloneCss}</style> : null}
@@ -204,7 +209,10 @@ export function RichTemplateLayout({
   }
 
   return (
-    <div data-site-brand {...(customPalette ? { 'data-custom-palette': '' } : {})} className={`@container min-h-screen tpl-${variant} ${layout.shellClass} ${t.page} ${isCloneTemplate(variant) ? 'webtemplate-clone' : ''}`}>
+    <div data-site-brand {...(isHospitalityTemplate(variant) ? { 'data-hospitality-site': '' } : {})} {...(customPalette ? { 'data-custom-palette': '' } : {})} className={`@container min-h-screen tpl-${variant} ${layout.shellClass} ${t.page} ${isCloneTemplate(variant) ? 'webtemplate-clone' : ''}`}>
+      {variant === 'fitness' && <style>{FITNESS_CSS}</style>}
+      {variant === 'medical' && <style>{MEDICAL_CSS}</style>}
+      {isHospitalityTemplate(variant) && <style>{HOSPITALITY_CSS}</style>}
       {fontHref ? <link rel="stylesheet" href={fontHref} /> : null}
       {brandStyles ? <style>{brandStyles}</style> : null}
       {cloneCss ? <style>{cloneCss}</style> : null}
@@ -338,6 +346,81 @@ function HeroSection({ c, t, variant, heroLayout, basePath, accent }: { c: SiteC
   const ctaHref = resolveSiteHref(basePath, c.ctaLink || (c.pageVisibility.rooms ? 'book' : 'contact'), c)
   const heroCfg = getManifest(variant)?.hero
   const hasOverlay = Boolean(heroCfg?.overlay) || heroLayout === 'immersive'
+  const gridHero = Boolean(
+    heroLayout !== 'immersive' &&
+      !hasOverlay &&
+      c.heroImage &&
+      ['saas', 'medical', 'business', 'lawfirm', 'cpa', 'aureum', 'flux', 'axiom', 'helix'].includes(variant),
+  )
+
+  const copy = (
+    <>
+      {variant !== 'restaurant' && variant !== 'photography' && (
+        <p data-part="badge" className={`mb-4 ${t.heroBadge}`}>{c.businessName}</p>
+      )}
+      {variant === 'restaurant' && <p data-part="badge" className={`mb-3 ${t.heroBadge}`}>Est. 2010</p>}
+      <h1 data-part="title" className={`mb-6 ${t.heroTitle}`}>{c.tagline}</h1>
+      <p data-part="subtitle" className={`mb-8 ${t.heroText}`}>{c.heroSubtext || c.about.slice(0, 160)}</p>
+      {isHospitalityTemplate(variant) ? (
+        <HeroStaySearch basePath={basePath} accent={accent} templateId={variant} />
+      ) : (
+        <Link data-part="cta" data-brand-cta to={ctaHref} className={`inline-block ${t.heroCta}`} style={brandCtaStyle(c)}>{c.ctaText} →</Link>
+      )}
+    </>
+  )
+
+  if (variant === 'saas' && !hasOverlay) {
+    return <header className={`relative isolate ${t.hero} ${t.page}`} style={{ paddingBlock: 0 }}>
+      <div className={flowstackHeroGrid(heroLayout, Boolean(c.heroImage))}>
+        <div data-hero-copy className={FLOWSTACK_COPY}>
+          <p data-part="badge" className={`mb-5 inline-block ${t.heroBadge}`}>{c.businessName}</p>
+          <h1 data-part="title" className={`mb-6 text-balance ${t.heroTitle}`}>{c.tagline}</h1>
+          <p data-part="subtitle" className={`mb-8 leading-relaxed ${t.heroText}`}>{c.heroSubtext || c.about.slice(0, 160)}</p>
+          <Link data-part="cta" data-brand-cta to={ctaHref} className={`${FLOWSTACK_ACTION} ${t.heroCta}`} style={brandCtaStyle(c)}>
+            {c.ctaText}<span aria-hidden="true">→</span>
+          </Link>
+        </div>
+        {c.heroImage && <div data-hero-media className={FLOWSTACK_MEDIA}>
+          <img data-part="image" src={c.heroImage} alt="" className={FLOWSTACK_IMAGE} fetchPriority="high" decoding="async" />
+        </div>}
+      </div>
+    </header>
+  }
+
+  if (variant === 'medical' && heroLayout !== 'immersive') {
+    return <header className={`relative isolate ${medicalHeroClass(heroLayout)} ${t.hero}`}>
+      <div className="medical-hero-layout">
+        <div className="medical-hero-copy">
+          <p data-part="badge" className={t.heroBadge}>{c.businessName}</p>
+          <h1 data-part="title" className={`medical-hero-title ${t.heroTitle}`}>{c.tagline}</h1>
+          <p data-part="subtitle" className={`medical-hero-description ${t.heroText}`}>{c.heroSubtext || c.about.slice(0, 160)}</p>
+          <Link data-part="cta" data-brand-cta to={ctaHref} className={`medical-hero-action ${t.heroCta}`} style={brandCtaStyle(c)}>
+            {c.ctaText}<span aria-hidden="true">→</span>
+          </Link>
+        </div>
+        {c.heroImage && <div className="medical-hero-media">
+          <img data-part="image" src={c.heroImage} alt="" className="medical-hero-image object-cover" fetchPriority="high" decoding="async" />
+        </div>}
+      </div>
+    </header>
+  }
+
+  if (isHospitalityTemplate(variant)) {
+    const wrapper = heroContentWrapperClass(variant, heroLayout, hasOverlay)
+      .replaceAll('sm:', 'csm:').replaceAll('lg:', 'clg:')
+    return <header className={`stay-hero relative z-0 isolate ${t.hero}`}>
+      {hasOverlay && c.heroImage && <>
+        <img data-part="image" src={c.heroImage} alt="" className="absolute inset-0 h-full w-full object-cover" />
+        <div className={`absolute inset-0 ${heroCfg?.overlayGradient || 'bg-black/30'}`} />
+      </>}
+      <div className={wrapper}>
+        <p data-part="badge" className={`mb-4 ${t.heroBadge}`}>{c.businessName}</p>
+        <h1 data-part="title" className={`mb-6 ${t.heroTitle}`}>{c.tagline}</h1>
+        <p data-part="subtitle" className={`mb-8 ${t.heroText}`}>{c.heroSubtext}</p>
+        <HeroStaySearch basePath={basePath} accent={accent} templateId={variant} />
+      </div>
+    </header>
+  }
 
   return (
     <header className={`relative z-0 isolate ${t.hero} ${heroLayout === 'immersive' && !['restaurant', 'realtor', 'photography', 'creative', 'fitness', 'noir', 'coastal', 'hotel', 'alpine', 'ryokan', 'jungle', 'vineyard', 'arcade'].includes(variant) ? 'min-h-[85vh] flex flex-col justify-center' : ''}`}>
@@ -348,22 +431,21 @@ function HeroSection({ c, t, variant, heroLayout, basePath, accent }: { c: SiteC
         </>
       )}
       <div className={heroContentClass(variant, heroLayout)}>
-        {variant !== 'restaurant' && variant !== 'photography' && (
-          <p data-part="badge" className={`mb-4 ${t.heroBadge}`}>{c.businessName}</p>
-        )}
-        {variant === 'restaurant' && <p data-part="badge" className={`mb-3 ${t.heroBadge}`}>Est. 2010</p>}
-        <h1 data-part="title" className={`mb-6 ${t.heroTitle}`}>{c.tagline}</h1>
-        <p data-part="subtitle" className={`mb-8 ${t.heroText}`}>{c.heroSubtext || c.about.slice(0, 160)}</p>
-        {isHospitalityTemplate(variant) ? (
-          <HeroStaySearch basePath={basePath} accent={accent} templateId={variant} />
+        {gridHero ? (
+          <>
+            <div>{copy}</div>
+            <img data-part="image" src={c.heroImage} alt="" className="h-full max-h-[28rem] w-full rounded-2xl object-cover shadow-2xl" />
+          </>
         ) : (
-          <Link data-part="cta" data-brand-cta to={ctaHref} className={`inline-block ${t.heroCta}`} style={brandCtaStyle(c)}>{c.ctaText} →</Link>
-        )}
-        {!hasOverlay && c.heroImage && variant !== 'boutique' && (
-          <img data-part="image" src={c.heroImage} alt="" className="rounded-2xl shadow-2xl w-full mt-8 clg:mt-0" />
-        )}
-        {variant === 'boutique' && c.heroImage && (
-          <img data-part="image" src={c.heroImage} alt="" className="mx-auto mt-10 max-h-[500px] w-full max-w-4xl object-cover" />
+          <>
+            {copy}
+            {!hasOverlay && c.heroImage && variant !== 'boutique' && (
+              <img data-part="image" src={c.heroImage} alt="" className="rounded-2xl shadow-2xl w-full mt-8 clg:mt-0" />
+            )}
+            {variant === 'boutique' && c.heroImage && (
+              <img data-part="image" src={c.heroImage} alt="" className="mx-auto mt-10 max-h-[500px] w-full max-w-4xl object-cover" />
+            )}
+          </>
         )}
       </div>
     </header>
@@ -395,11 +477,11 @@ function StatsSection({ c, t, variant }: { c: SiteContent; t: TemplateTheme; var
   const stats = c.stats.filter((s) => s.value)
   if (stats.length === 0) return null
   return (
-    <section className={t.stats}>
+    <section className={`${t.stats}${variant === 'fitness' ? ' pulse-trust' : isHospitalityTemplate(variant) ? ' stay-trust' : ''}`}>
       <div data-part="heading" className="mx-auto max-w-6xl px-4 csm:px-6 pb-4 text-center">
         <p className="text-sm font-semibold uppercase tracking-widest opacity-80">{isHospitalityTemplate(variant) ? 'Trusted' : 'Trust signals'}</p>
       </div>
-      <div className={`tpl-stats-inner mx-auto max-w-6xl px-4 csm:px-6 ${statsGridClass(variant)}`}>
+      <div className={`tpl-stats-inner mx-auto max-w-6xl px-4 csm:px-6 ${statsGridClass(variant)}${variant === 'fitness' ? ' pulse-trust-grid' : ''}`}>
         {stats.map((s, i) => (
           <div key={i}>
             <p className={t.statValue}>{s.value}</p>
@@ -575,14 +657,14 @@ function TeamSection({ c, t }: { c: SiteContent; t: TemplateTheme }) {
   )
 }
 
-function CtaBannerSection({ c, t, basePath }: { c: SiteContent; t: TemplateTheme; basePath: string }) {
+function CtaBannerSection({ c, t, basePath, variant, accent }: { accent: string; variant: TemplateId; c: SiteContent; t: TemplateTheme; basePath: string }) {
   const ctaHref = resolveSiteHref(basePath, c.ctaLink || 'contact', c)
   return (
-    <section className={t.ctaBanner}>
+    <section className={`${t.ctaBanner}${variant === 'fitness' ? ' pulse-cta' : ''} ${isHospitalityTemplate(variant) ? accentInk(accent) : ''}`} style={isHospitalityTemplate(variant) ? { backgroundColor: accent } : undefined}>
       <div className="mx-auto max-w-3xl px-6 text-center">
         <h2 className="text-3xl font-bold mb-4">{c.ctaBannerTitle}</h2>
         <p className="mb-8 opacity-80 text-lg">{c.ctaBannerText}</p>
-        <Link data-brand-cta to={ctaHref} className={`inline-block ${t.ctaBannerBtn}`} style={brandCtaStyle(c)}>{c.ctaText}</Link>
+        <Link data-brand-cta={isHospitalityTemplate(variant) ? undefined : ''} to={ctaHref} className={`inline-block ${t.ctaBannerBtn}`} style={isHospitalityTemplate(variant) ? { color: accentLabelColor(accent), backgroundColor: '#fff' } : brandCtaStyle(c)}>{c.ctaText}</Link>
       </div>
     </section>
   )

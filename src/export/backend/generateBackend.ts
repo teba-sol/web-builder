@@ -167,6 +167,41 @@ return new class extends Migration
 `
 }
 
+/** Add gallery metadata without rerunning the original table migration. */
+function generateGalleryMetadataMigration(): string {
+  return `<?php
+
+use Illuminate\\Database\\Migrations\\Migration;
+use Illuminate\\Database\\Schema\\Blueprint;
+use Illuminate\\Support\\Facades\\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        foreach (['title', 'category'] as $column) {
+            if (! Schema::hasColumn('gallery_images', $column)) {
+                Schema::table('gallery_images', function (Blueprint $table) use ($column): void {
+                    $table->string($column)->nullable();
+                });
+            }
+        }
+    }
+
+    public function down(): void
+    {
+        foreach (['title', 'category'] as $column) {
+            if (Schema::hasColumn('gallery_images', $column)) {
+                Schema::table('gallery_images', function (Blueprint $table) use ($column): void {
+                    $table->dropColumn($column);
+                });
+            }
+        }
+    }
+};
+`
+}
+
 function jsonForPhp(obj: unknown): string {
   return JSON.stringify(obj, null, 2).replace(/'/g, "\\'")
 }
@@ -1792,8 +1827,10 @@ export function generateBackend(
     files[`database/migrations/0001_01_01_1000_create_${model.table}_table.php`] =
       model.table === 'blog_posts' || model.table === 'news_posts'
         ? generatePostMigration(model.table)
-        : generateMigration(model.table, [...model.fields])
+        : generateMigration(model.table, model.table === 'gallery_images' ? ['path'] : [...model.fields])
   }
+
+  files['database/migrations/0001_01_01_1001_add_metadata_to_gallery_images_table.php'] = generateGalleryMetadataMigration()
 
   Object.assign(files, generateFilamentFiles(content.sectionVisibility, content.pageVisibility, {
     hospitality: isHospitalityTemplate(templateId),

@@ -1,3 +1,4 @@
+import { requireManifest } from '../catalog/catalog'
 import { getTemplateMeta } from '../data/defaults'
 import { getSectionVariants } from '../data/sectionVariants'
 import { getSiteNavItems, staticSitePath } from '../data/siteNav'
@@ -11,7 +12,7 @@ function contactFieldsHtml(c: SiteContent, templateId: TemplateId): string {
   if (!meta) return ''
   return meta.contactFields
     .filter((f) => c[f.key])
-    .map((f) => `<div><p class="opacity-60 mb-1 text-sm">${escapeHtml(f.label)}</p><p>${escapeHtml(c[f.key])}</p></div>`)
+    .map((f) => `<div><p class="opacity-60 mb-1 text-sm">${escapeHtml(f.label)}</p><p class="[overflow-wrap:anywhere]">${templateId === 'fitness' && f.key === 'bookingUrl' ? `<a href="${escapeHtml(c[f.key])}" target="_blank" rel="noopener noreferrer">Book a class ↗</a>` : escapeHtml(c[f.key])}</p></div>`)
     .join('')
 }
 
@@ -100,9 +101,11 @@ export function buildExploreSectionHtml(
   accent: string,
   fromNested?: boolean,
 ): string {
+  if (templateId === 'fitness') return ''
   const items = getSiteNavItems(templateId, content).filter((i) => i.page !== 'home')
   if (!items.length) return ''
   const cfg = getSectionVariants(templateId)
+  if (!requireManifest(templateId).homeSections.includes('explore')) return ''
   const header = `<div class="mb-10"><h2 class="text-3xl font-bold">${escapeHtml(cfg.exploreTitle)}</h2><p class="mt-2 text-slate-600 max-w-2xl">${escapeHtml(cfg.exploreSubtitle)}</p></div>`
 
   switch (cfg.explore) {
@@ -130,6 +133,9 @@ export function buildContactSectionHtml(
   content: SiteContent,
   contactFormHtml: string,
 ): string {
+  if (templateId === 'fitness') {
+    return `<section id="contact" class="bg-black text-white py-20"><div class="pulse-contact-grid px-6"><div class="min-w-0"><h2 class="text-4xl font-black uppercase mb-6">${escapeHtml(content.contactSectionTitle)}</h2><div class="pulse-contact-details">${contactFieldsHtml(content, templateId)}</div>${mapEmbedHtml(content.mapUrl, content.address)}</div><div class="pulse-contact-form"><h3 class="text-2xl font-bold mb-6">${escapeHtml(content.contactFormTitle)}</h3>${contactFormHtml}</div></div></section>`
+  }
   const shell = getSectionVariants(templateId).contactShell
   const title = escapeHtml(content.contactSectionTitle || 'Contact Us')
   const info = `${contactFieldsHtml(content, templateId)}${mapEmbedHtml(content.mapUrl, content.address)}`

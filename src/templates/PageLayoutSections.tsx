@@ -370,10 +370,11 @@ export function PortfolioPage({ c, t, variant, basePath }: LayoutProps) {
           <h3 className={`mb-2 font-semibold ${large ? 'text-2xl' : ''} ${t.cardTitle}`}>{item.title}</h3>
           <p className={`${large ? 'text-lg' : ''} ${t.cardText}`}>{item.description}</p>
           {cfg.showPrice && item.price && <p className={`mt-3 ${t.showcasePrice}`}>{item.price}</p>}
+          {variant === 'fitness' && <div className="pulse-card-cue">Ask about this membership <span aria-hidden="true">→</span></div>}
         </div>
       </>
     )
-    const cls = `block ${t.showcaseCard}`
+    const cls = `block ${t.showcaseCard}${variant === 'fitness' ? ' pulse-card' : ''}`
     return item.link?.startsWith('http')
       ? <a key={i} href={item.link} className={cls}>{inner}</a>
       : <Link key={i} to={resolveSiteHref(basePath, item.link || 'contact', c)} className={cls}>{inner}</Link>
@@ -449,7 +450,7 @@ export function NewsTeaser({ c, t, basePath }: Omit<LayoutProps, 'variant'>) {
   )
 }
 
-export function ServicesTeaser({ c, t, basePath }: LayoutProps) {
+export function ServicesTeaser({ c, t, basePath, variant }: LayoutProps) {
   const services = c.services.filter((s) => s.title).slice(0, 4)
   if (services.length === 0 || !canLinkToPage('services', c)) return null
   const servicesHref = resolveSiteHref(basePath, 'services', c)
@@ -465,10 +466,11 @@ export function ServicesTeaser({ c, t, basePath }: LayoutProps) {
         </div>
         <div className="grid gap-6 cmd:grid-cols-2 clg:grid-cols-4">
           {services.map((service, i) => (
-            <Link key={i} to={servicesHref} className={`block ${t.card}`}>
+            <Link key={i} to={servicesHref} className={`block ${t.card}${variant === 'fitness' ? ' pulse-card' : ''}`}>
               <div className={`mb-3 ${t.stepNum}`}>{i + 1}</div>
               <h3 className={`mb-2 ${t.cardTitle}`}>{service.title}</h3>
               <p className={`line-clamp-3 ${t.cardText}`}>{service.description}</p>
+              {variant === 'fitness' && <div className="pulse-card-cue">Explore programs <span aria-hidden="true">→</span></div>}
             </Link>
           ))}
         </div>
@@ -523,10 +525,11 @@ export function PortfolioTeaser({ c, t, variant, basePath }: LayoutProps) {
                 <div className="p-6">
                   <h3 className={`mb-2 ${t.cardTitle}`}>{item.title}</h3>
                   <p className={`line-clamp-2 ${t.cardText}`}>{item.description}</p>
+                  {variant === 'fitness' && <div className="pulse-card-cue">View memberships <span aria-hidden="true">→</span></div>}
                 </div>
               </>
             )
-            return <Link key={i} to={portfolioHref} className={`block ${t.showcaseCard}`}>{inner}</Link>
+            return <Link key={i} to={portfolioHref} className={`block ${t.showcaseCard}${variant === 'fitness' ? ' pulse-card' : ''}`}>{inner}</Link>
           })}
         </div>
       </div>

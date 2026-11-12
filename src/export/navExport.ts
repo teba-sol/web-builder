@@ -1,3 +1,5 @@
+import { getTheme } from '../templates/getTheme'
+import { isHospitalityTemplate } from '../data/hospitality'
 import { getNavShellId } from '../catalog/catalog'
 import { logoImageStyleAttr, showBrandName } from '../data/brand'
 import type { SiteContent, TemplateId } from '../types'
@@ -25,6 +27,7 @@ export function buildExportNavHtml(
   content: SiteContent,
   accent: string,
   fromNested?: boolean,
+  colorSchemeId?: string,
 ): string {
   const navItems = getSiteNavItems(templateId, content)
   const pageLinks = navItems.filter((i) => i.page !== 'home')
@@ -41,8 +44,8 @@ export function buildExportNavHtml(
     : `<span class="sr-only">${name || 'Home'}</span>`
   const brand = `<span class="inline-flex min-w-0 max-w-full items-center gap-2">${logo}${nameSpan}</span>`
   const cta = escapeHtml(content.ctaText)
-  const ctaBtn = `<a href="${ctaHref}" data-brand-cta class="text-white px-5 py-2 rounded-lg text-sm font-semibold shrink-0" style="background-color:${accent}">${cta}</a>`
-  const linkClass = 'hover:underline opacity-80'
+  const ctaBtn = `<a href="${ctaHref}" data-brand-cta class="${templateId === 'medical' ? getTheme(templateId, colorSchemeId).navCta : 'text-white px-5 py-2 rounded-lg text-sm font-semibold shrink-0'}" style="background-color:${accent}">${cta}</a>`
+  const linkClass = templateId === 'medical' ? getTheme(templateId, colorSchemeId).navLink : 'hover:underline opacity-80'
   const half = Math.ceil(pageLinks.length / 2)
   const left = pageLinks.slice(0, half)
   const right = pageLinks.slice(half)
@@ -128,6 +131,9 @@ export function buildExportNavHtml(
     coffee: `<nav class="sticky top-0 z-50 border-b border-amber-900/10 bg-[#faf6f0]/85 backdrop-blur-xl px-6 py-4"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4"><a href="${homeHref}" class="font-serif text-2xl font-semibold text-[#2d1810]">${brand}</a><div class="hidden lg:flex gap-8 text-sm">${allLinks}</div>${ctaBtn}</div></nav>`,
   }
 
-  const desktop = shells[getNavShellId(templateId)] ?? shells.business
-  return `${mobileNav}<div class="hidden lg:block">${desktop}</div>`
+  const theme = getTheme(templateId, colorSchemeId)
+  const desktop = isHospitalityTemplate(templateId) || templateId === 'medical'
+    ? `<nav class="${theme.nav}"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4 px-6 py-4"><a href="${homeHref}" class="text-xl font-semibold no-underline">${brand}</a><div class="hidden lg:flex gap-7 text-sm">${allLinks}</div>${ctaBtn}</div></nav>`
+    : shells[getNavShellId(templateId)] ?? shells.business
+  return `${mobileNav}<div class="hidden lg:block${(templateId === 'fitness' || templateId === 'medical' || isHospitalityTemplate(templateId)) ? ' sticky top-0 z-50' : ''}">${desktop}</div>`
 }

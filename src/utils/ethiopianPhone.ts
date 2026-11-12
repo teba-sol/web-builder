@@ -16,6 +16,13 @@ export function ethiopianMobileNational(raw: string): string | null {
 export function ethiopianPhoneError(raw: string): string | null {
   if (!raw.trim()) return 'Phone is required'
   if (ethiopianMobileNational(raw)) return null
+  const compact = raw.trim().replace(SEPARATORS, '')
+  if (/^0[79]\d*$/.test(compact) && compact.length !== 10) {
+    return 'Phone number must contain 10 digits when starting with 09 or 07.'
+  }
+  if (/^\+?251[79]\d*$/.test(compact) && compact.replace(/^\+/, '').length !== 12) {
+    return 'Phone number must contain 12 digits, excluding +, when starting with 2519 or 2517.'
+  }
   return 'Use an Ethio telecom number (09 or +2519) or a Safaricom number (07 or +2517), such as 0911 223 344'
 }
 
