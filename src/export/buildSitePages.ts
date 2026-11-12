@@ -8,6 +8,7 @@ import { getShowcaseConfig } from '../data/sectionConfig'
 import { canLinkToPage, getSiteNavItems, resolveStaticHref, staticPostPath, staticSitePath } from '../data/siteNav'
 import { getPageLayouts } from '../templates/pageLayouts'
 import type { BlogPostItem, NewsItem, SiteContent, TemplateId } from '../types'
+import { getPopulatedGalleryEntries, groupGalleryEntries } from '../utils/gallery'
 import { slugify } from '../utils/slugify'
 import { buildStaticHeroHtml } from './heroExport'
 import { buildStaticHomePageBody } from './homePageExport'
@@ -255,14 +256,24 @@ ${pricingHtml ? `<section class="bg-slate-50 py-20"><div class="max-w-6xl mx-aut
   }
 
   if (pv.gallery && canLinkToPage('gallery', content)) {
-    const gallery = content.galleryImages.map((img, i) => img ? resolveImageForExport(img, `gallery-${i + 1}`, assets) : '').filter(Boolean)
-    if (gallery.length) {
-      const galleryGrid = layouts.gallery === 'rows'
-        ? gallery.map((g) => `<img src="${g}" class="w-full rounded-xl mb-6 object-cover max-h-96" />`).join('')
-        : layouts.gallery === 'masonry'
-          ? `<div class="columns-1 sm:columns-2 lg:columns-3 gap-4">${gallery.map((g) => `<img src="${g}" class="mb-4 w-full break-inside-avoid rounded-xl" />`).join('')}</div>`
-          : `<div class="grid md:grid-cols-3 gap-4">${gallery.map((g) => `<img src="${g}" class="w-full rounded-xl aspect-[4/3] object-cover" />`).join('')}</div>`
-      pages['gallery.html'] = wrapPage(ctx, `Gallery — ${content.businessName}`, `<section class="py-20"><div class="max-w-6xl mx-auto px-6"><h1 class="text-4xl font-bold text-center mb-12">${escapeHtml(content.gallerySectionTitle)}</h1>${galleryGrid}</div></section>`)
+    const entries = getPopulatedGalleryEntries(content).map((item, i) => ({
+      ...item,
+      resolved: resolveImageForExport(item.image, `gallery-${i + 1}`, assets),
+    }))
+    if (entries.length) {
+      const { groups } = groupGalleryEntries(entries.map(({ resolved, title, category }) => ({ image: resolved, title, category })))
+      const renderCard = (item: { image: string; title: string }, imgCls: string) =>
+        `<figure${layouts.gallery === 'masonry' ? ' class="mb-4 break-inside-avoid"' : ''}><img src="${item.image}" alt="${escapeHtml(item.title || content.gallerySectionTitle)}" class="${imgCls}" />${item.title ? `<figcaption class="mt-2 text-sm font-medium text-slate-700">${escapeHtml(item.title)}</figcaption>` : ''}</figure>`
+      const galleryGroupsHtml = groups.map((group) => {
+        const heading = group.category ? `<h2 class="text-2xl font-semibold mb-5">${escapeHtml(group.category)}</h2>` : ''
+        const itemsHtml = layouts.gallery === 'rows'
+          ? group.items.map((g) => renderCard(g, 'w-full rounded-xl mb-2 object-cover max-h-96')).join('<div class="mb-4"></div>')
+          : layouts.gallery === 'masonry'
+            ? `<div class="columns-1 sm:columns-2 lg:columns-3 gap-4">${group.items.map((g) => renderCard(g, 'w-full rounded-xl')).join('')}</div>`
+            : `<div class="grid md:grid-cols-3 gap-4">${group.items.map((g) => renderCard(g, 'w-full rounded-xl aspect-[4/3] object-cover')).join('')}</div>`
+        return `<div>${heading}${itemsHtml}</div>`
+      }).join('<div class="my-10"></div>')
+      pages['gallery.html'] = wrapPage(ctx, `Gallery — ${content.businessName}`, `<section class="py-20"><div class="max-w-6xl mx-auto px-6"><h1 class="text-4xl font-bold text-center mb-12">${escapeHtml(content.gallerySectionTitle)}</h1><div class="space-y-12">${galleryGroupsHtml}</div></div></section>`)
     }
   }
 

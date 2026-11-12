@@ -155,7 +155,7 @@
       "title": "Skyline Suite Weekend",
       "description": "Two nights in an Executive Suite with spa credit and late checkout.",
       "image": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600&q=80",
-      "price": "53,900 ETB",
+      "price": "$580",
       "tag": "Package",
       "link": "contact"
     },
@@ -163,7 +163,7 @@
       "title": "Rooftop Dining",
       "description": "Chef's tasting menu with skyline views — reserve with your room.",
       "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80",
-      "price": "9,080 ETB",
+      "price": "$65",
       "tag": "Dining",
       "link": "contact"
     },
@@ -171,7 +171,7 @@
       "title": "Spa Day Pass",
       "description": "Full access to thermal suites, pool, and a 50-minute massage.",
       "image": "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600&q=80",
-      "price": "12,100 ETB",
+      "price": "$85",
       "tag": "Wellness",
       "link": "contact"
     },
@@ -179,7 +179,7 @@
       "title": "Boardroom Half-Day",
       "description": "Meeting space for 12 with AV, coffee, and working lunch.",
       "image": "https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80",
-      "price": "24,750 ETB",
+      "price": "$190",
       "tag": "Business",
       "link": "contact"
     },
@@ -187,7 +187,7 @@
       "title": "Airport Transfer",
       "description": "Private sedan to/from the airport timed to your reservation.",
       "image": "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=600&q=80",
-      "price": "5,220 ETB",
+      "price": "$35",
       "tag": "Transport",
       "link": "contact"
     },
@@ -204,28 +204,28 @@
   "contactFields": [
     {
       "key": "reservationEmail",
-      "label": "Reservations Email",
-      "placeholder": "reservations@skylinehotel.example"
+      "label": "Booking Email",
+      "placeholder": "booking@skylineaddis.et"
     },
     {
       "key": "phone",
-      "label": "Front Desk",
-      "placeholder": "+65 6800 2400"
+      "label": "Phone Number",
+      "placeholder": "+251 11 667 2400"
     },
     {
       "key": "address",
       "label": "Hotel Address",
-      "placeholder": "18 Harbor Avenue"
+      "placeholder": "Bole Medhanialem Road, Addis Ababa"
     },
     {
       "key": "hours",
       "label": "Front Desk Hours",
-      "placeholder": "24/7"
+      "placeholder": "Open 24 hours"
     },
     {
       "key": "email",
       "label": "General Email",
-      "placeholder": "stay@skylinehotel.example"
+      "placeholder": "info@skylineaddis.et"
     }
   ],
   "servicesLabel": "Hotel Services",
@@ -239,20 +239,20 @@
   },
   "hero": {
     "overlay": true,
-    "overlayGradient": "bg-gradient-to-t from-sky-950/90 via-sky-900/40 to-transparent",
+    "overlayGradient": "bg-gradient-to-t from-stone-950/90 via-stone-900/45 to-transparent",
     "splitColumns": false,
     "badge": "name",
     "grayscaleImage": false
   },
   "defaults": {
     "businessName": "Skyline Hotel",
-    "tagline": "The city, from a higher floor",
-    "heroSubtext": "A landmark hotel with refined suites, a quiet dining room, and booking from search to check-in.",
+    "tagline": "Modern city comfort in the heart of Bole",
+    "heroSubtext": "Clean city suites, Ethiopian and international dining, and fast Bole Airport pickup — booked direct.",
     "heroImage": "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200&q=80",
-    "aboutTitle": "The hotel",
-    "about": "Skyline Hotel is a full-service city hotel. Suites stay calm, the desk is staffed through the night, and a reservation is confirmed before you arrive.",
+    "aboutTitle": "About Our Hotel",
+    "about": "Skyline Hotel is a full-service hotel in Bole, Addis Ababa. Our rooms are quiet and restful for business travelers and families, our reception desk stays open day and night, and airport pickup can be arranged with your room.",
     "aboutImage": "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800&q=80",
-    "missionStatement": "A well-run hotel stay, booked directly.",
+    "missionStatement": "Warm Ethiopian hospitality and dependable comfort in the city.",
     "pageVisibility": {
       "about": true,
       "services": true,
@@ -282,219 +282,254 @@
         "label": "Guest Rating"
       },
       {
-        "value": "3",
-        "label": "Restaurants"
+        "value": "10 min",
+        "label": "To Bole Airport"
       },
       {
         "value": "24/7",
-        "label": "Concierge"
+        "label": "Front Desk"
       }
     ],
     "servicesSectionTitle": "Hotel Services",
-    "servicesSectionSubtitle": "Everything you need under one roof",
+    "servicesSectionSubtitle": "Practical services that make every city stay easy",
     "services": [
       {
-        "title": "Rooftop Spa",
-        "description": "Thermal suites, treatments, and a skyline infinity pool."
+        "title": "Bole Airport Shuttle",
+        "description": "Free or scheduled airport pickup straight to our front door — day or night."
       },
       {
-        "title": "Fine Dining",
-        "description": "Three restaurants including a seasonal tasting counter."
+        "title": "Restaurant & Coffee Bar",
+        "description": "Daily breakfast, Ethiopian traditional platters, and freshly brewed Addis coffee."
       },
       {
-        "title": "Meeting Spaces",
-        "description": "Boardrooms and ballrooms with full AV support."
+        "title": "Meeting & Conference Halls",
+        "description": "Equipped conference rooms for workshops, NGOs, and company meetings."
       },
       {
-        "title": "Airport Transfer",
-        "description": "Private car service arranged with your reservation."
+        "title": "Gym & Spa",
+        "description": "Fitness studio, sauna, and relaxing massage after a busy day in town."
       }
     ],
-    "stepsSectionTitle": "How It Works",
+    "stepsSectionTitle": "How Booking Works",
     "steps": [
       {
-        "title": "Consultation",
-        "description": "We learn about your goals and challenges in a discovery session."
+        "title": "Enter Stay Dates",
+        "description": "Choose your arrival and departure dates along with the number of guests."
       },
       {
-        "title": "Strategy",
-        "description": "Our team crafts a tailored plan designed for your success."
+        "title": "Compare Room Types",
+        "description": "View clear photos, amenities, and nightly rates in USD or ETB."
       },
       {
-        "title": "Execution",
-        "description": "We deliver with precision, keeping you informed every step."
+        "title": "Reserve Direct",
+        "description": "Submit your contact details and add airport pickup or breakfast notes."
       },
       {
-        "title": "Growth",
-        "description": "We measure results and optimize for continuous improvement."
+        "title": "Easy Check-In",
+        "description": "Show your booking code at our 24-hour front desk and settle comfortably on arrival."
       }
     ],
-    "showcaseSectionTitle": "Signature Stays",
-    "showcaseSectionSubtitle": "Featured suites and experiences for discerning travelers",
+    "showcaseSectionTitle": "Featured Rooms & Services",
+    "showcaseSectionSubtitle": "Comfortable rooms, meeting spaces, and airport support in Bole",
     "showcaseItems": [
       {
-        "title": "Skyline Suite Weekend",
-        "description": "Two nights in an Executive Suite with spa credit and late checkout.",
+        "title": "Executive City Weekend",
+        "description": "Two nights in an Executive Suite with buffet breakfast and late check-out.",
         "image": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600&q=80",
-        "price": "53,900 ETB",
+        "price": "$580",
         "tag": "Package",
-        "link": "contact"
+        "link": "book"
       },
       {
-        "title": "Rooftop Dining",
-        "description": "Chef's tasting menu with skyline views — reserve with your room.",
+        "title": "Rooftop Dinner & Terrace",
+        "description": "Evening dinner overlooking Bole lights with local and international dishes.",
         "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80",
-        "price": "9,100 ETB",
+        "price": "$65",
         "tag": "Dining",
         "link": "contact"
       },
       {
-        "title": "Spa Day Pass",
-        "description": "Full access to thermal suites, pool, and a 50-minute massage.",
+        "title": "Spa & Sauna Pass",
+        "description": "Full access to steam, sauna, and 50-minute relaxation massage.",
         "image": "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600&q=80",
-        "price": "12,100 ETB",
+        "price": "$85",
         "tag": "Wellness",
         "link": "contact"
       },
       {
-        "title": "Boardroom Half-Day",
-        "description": "Meeting space for 12 with AV, coffee, and working lunch.",
+        "title": "Conference Room Half-Day",
+        "description": "Meeting room for 20 guests with projector, fast Wi-Fi, and coffee break.",
         "image": "https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80",
-        "price": "24,750 ETB",
-        "tag": "Business",
+        "price": "$190",
+        "tag": "Meetings",
         "link": "contact"
       },
       {
-        "title": "Airport Transfer",
-        "description": "Private sedan to/from the airport timed to your reservation.",
+        "title": "Bole Airport Transfer",
+        "description": "Private hotel driver waiting outside arrivals matched to your flight.",
         "image": "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=600&q=80",
-        "price": "5,200 ETB",
-        "tag": "Transport",
+        "price": "$35",
+        "tag": "Transfer",
         "link": "contact"
       },
       {
-        "title": "Club Lounge Access",
-        "description": "Complimentary for high-floor deluxe and suite guests.",
+        "title": "Business Lounge Access",
+        "description": "Quiet workspace with fresh coffee and snacks included for suite guests.",
         "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&q=80",
         "price": "Included",
-        "tag": "Perk",
-        "link": "contact"
+        "tag": "Business",
+        "link": "book"
       }
     ],
-    "gallerySectionTitle": "The Property",
+    "gallerySectionTitle": "Hotel Gallery",
     "galleryImages": [
-      "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&q=80",
-      "https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=600&q=80",
-      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600&q=80"
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80",
+      "https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800&q=80",
+      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&q=80",
+      "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80",
+      "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80",
+      "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800&q=80"
+    ],
+    "galleryItems": [
+      {
+        "category": "Exterior & Lobby",
+        "title": "Evening Hotel Courtyard",
+        "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80"
+      },
+      {
+        "category": "Rooms & Suites",
+        "title": "Deluxe King Room",
+        "image": "https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800&q=80"
+      },
+      {
+        "category": "Rooms & Suites",
+        "title": "Executive Sitting Suite",
+        "image": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&q=80"
+      },
+      {
+        "category": "Dining & Meetings",
+        "title": "Main Restaurant Dining",
+        "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80"
+      },
+      {
+        "category": "Dining & Meetings",
+        "title": "Conference & Boardroom",
+        "image": "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80"
+      },
+      {
+        "category": "Exterior & Lobby",
+        "title": "Welcome Reception Hall",
+        "image": "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800&q=80"
+      }
     ],
     "testimonialsSectionTitle": "Guest Reviews",
     "testimonials": [
       {
-        "quote": "Outstanding service and incredible results. Highly recommended!",
-        "author": "Elena Ward",
-        "role": "CEO, TechStart"
+        "quote": "Ten minutes from Bole Airport, super clean rooms, fast Wi-Fi for work calls, and the best breakfast buffet in the neighborhood.",
+        "author": "Abebe Kebede",
+        "role": "Business Traveler, Nairobi & Addis"
       },
       {
-        "quote": "They transformed our business. Professional, creative, and reliable.",
-        "author": "Noah Bennett",
-        "role": "Founder, Bloom Co"
+        "quote": "We held our three-day workshop in their conference hall and all our international guests stayed happily on site.",
+        "author": "Tigist Haile",
+        "role": "Program Coordinator, Addis Ababa"
       },
       {
-        "quote": "The best decision we made this year. Exceeded every expectation.",
-        "author": "Maya Chen",
-        "role": "Director, Apex Group"
+        "quote": "Polite 24-hour front desk staff, reliable hot water, and smooth airport pickup after a midnight flight.",
+        "author": "Samuel Tesfaye",
+        "role": "Visiting Consultant"
       }
     ],
     "faqSectionTitle": "Frequently Asked Questions",
     "faqs": [
       {
-        "question": "How do I get started?",
-        "answer": "Simply reach out via our contact form or give us a call. We offer a free initial consultation."
+        "question": "What time are check-in and check-out?",
+        "answer": "Check-in is from 2:00 PM and check-out is at 12:00 PM. Let us know if your flight arrives late at night — our desk is open 24/7."
       },
       {
-        "question": "What are your pricing options?",
-        "answer": "We offer flexible packages tailored to your needs and budget. Contact us for a custom quote."
+        "question": "Do you provide Bole International Airport pickup?",
+        "answer": "Yes. Share your flight number in your reservation message and our driver will meet you outside arrivals."
       },
       {
-        "question": "How long does a typical project take?",
-        "answer": "Timelines vary by scope, but most projects are completed within 2–8 weeks."
+        "question": "Can I pay in ETB or USD?",
+        "answer": "Yes. Room rates default to USD, and guests can settle in USD or the ETB equivalent at the hotel desk."
       },
       {
-        "question": "Do you offer ongoing support?",
-        "answer": "Yes! We provide continued support and maintenance to ensure long-term success."
+        "question": "Do all rooms include Wi-Fi and backup power?",
+        "answer": "Yes, high-speed Wi-Fi and full automatic generator backup run across every floor and meeting room."
       }
     ],
-    "teamSectionTitle": "Meet the Team",
-    "blogSectionTitle": "Latest from Our Blog",
-    "blogSectionSubtitle": "Insights, tips, and updates from our team",
-    "newsSectionTitle": "News & Updates",
-    "newsSectionSubtitle": "Announcements, press releases, and company news",
+    "teamSectionTitle": "Meet Our Team",
+    "blogSectionTitle": "City Guides & Travel Notes",
+    "blogSectionSubtitle": "Helpful tips for visiting Addis Ababa, Ethiopian food, and business travel",
+    "newsSectionTitle": "Hotel News & Offers",
+    "newsSectionSubtitle": "New halls, seasonal stays, and updates from Skyline Hotel",
     "newsPosts": [
       {
-        "title": "We Are Expanding to Serve You Better",
-        "slug": "expanding-to-serve-you-better",
-        "excerpt": "New locations, extended hours, and more ways to connect with our team.",
-        "body": "We are thrilled to announce expanded service hours and a new consultation space designed around your comfort and convenience.\n\nThis investment reflects our commitment to accessibility and excellence. Thank you for being part of our journey — we cannot wait to welcome you.",
-        "image": "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80",
+        "title": "New Bole Conference Wing Open for Group Bookings",
+        "slug": "new-bole-conference-wing-open",
+        "excerpt": "Two modern meeting halls with high-speed Wi-Fi, projector screens, and coffee catering.",
+        "body": "Skyline Hotel has opened two newly furnished conference rooms designed for workshops, diplomatic briefings, and corporate trainings.\n\nEach room supports flexible seating for 20 to 60 participants, fast internet, and full catering breaks with Ethiopian coffee, pastries, and buffet lunch.",
+        "image": "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80",
         "author": "Selam Tadesse",
         "date": "2026-04-01"
       },
       {
-        "title": "Award Recognizes Our Commitment to Quality",
-        "slug": "award-quality-commitment",
-        "excerpt": "Industry leaders honored our team for outstanding client satisfaction.",
-        "body": "Receiving this recognition is a testament to the people behind our work — dedicated professionals who show up every day with care and craft.\n\nWe share this award with every client who trusted us with their goals. Your feedback shapes how we grow and improve.",
-        "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80",
-        "author": "Communications",
+        "title": "Extended 24-Hour Airport Shuttle for International Flights",
+        "slug": "24-hour-airport-shuttle-addis",
+        "excerpt": "Midnight arrivals from Addis Ababa Bole Airport now connect straight to our lobby.",
+        "body": "Because many international flights land late at night, our hotel shuttle team now operates continuously around the clock.\n\nGuests simply add their airline and arrival time when booking online, and a labeled hotel vehicle waits at arrivals.",
+        "image": "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=800&q=80",
+        "author": "Biniyam Solomon",
         "date": "2026-03-18"
       },
       {
-        "title": "Partnership Opens New Opportunities",
-        "slug": "partnership-new-opportunities",
-        "excerpt": "Strategic collaboration brings enhanced offerings to our community.",
-        "body": "Our new partnership combines complementary strengths to deliver more value, faster turnaround, and broader expertise under one roof.\n\nStay tuned for launch events and early-access opportunities for existing clients.",
-        "image": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80",
-        "author": "Leadership",
+        "title": "Monthly Corporate & NGO Stay Rates Now Available",
+        "slug": "corporate-ngo-stay-rates",
+        "excerpt": "Discounted weekly and monthly packages for visiting project teams in Addis Ababa.",
+        "body": "Organizations hosting long-term staff or consultants in Bole can now reserve block stays with laundry service, breakfast, and meeting room credits included.\n\nContact our reservations team directly for tailored corporate invoices.",
+        "image": "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800&q=80",
+        "author": "Management Team",
         "date": "2026-02-05"
       }
     ],
-    "pricingSectionTitle": "Pricing Plans",
+    "pricingSectionTitle": "Long-Stay Packages",
     "pricing": [
       {
-        "title": "Starter",
-        "description": "Essential features for individuals and small teams getting started.",
-        "price": "1,600 ETB/mo",
+        "title": "Short Business Stay",
+        "description": "Standard Deluxe Room with breakfast and airport transfer.",
+        "price": "$140/night",
         "tag": "Most popular",
         "featured": false
       },
       {
-        "title": "Professional",
-        "description": "Advanced tools, priority support, and integrations for growing businesses.",
-        "price": "4,350 ETB/mo",
+        "title": "Weekly Executive",
+        "description": "Seven nights in a Suite with laundry credit and lounge access.",
+        "price": "$290/night",
         "tag": "Best value",
         "featured": true
       },
       {
-        "title": "Enterprise",
-        "description": "Custom solutions, dedicated account management, and SLA guarantees.",
+        "title": "Group & Conference",
+        "description": "Custom room blocks and meeting hall catering for organizations.",
         "price": "Custom",
         "tag": "Contact us",
         "featured": false
       }
     ],
     "roomsSectionTitle": "Rooms & Suites",
-    "roomsSectionSubtitle": "City rooms and suites in the district, priced per night in local currency.",
+    "roomsSectionSubtitle": "Clean city rooms and suites in Bole, priced per night in USD.",
     "bookingSectionTitle": "Book Your Stay",
-    "bookingSectionSubtitle": "Search live availability, open a room, then check out on its own page.",
+    "bookingSectionSubtitle": "Check live room availability, choose your room type, and reserve direct.",
     "roomTypes": [
       {
         "name": "Deluxe Room",
         "slug": "deluxe-room",
         "parentSlug": "",
-        "description": "A quiet king room with a work desk, rain shower, and a view toward the district skyline. Built for business nights and short city stays.",
-        "shortDescription": "King bed · the district view · 32 m²",
-        "basePrice": "8500",
-        "currency": "ETB",
+        "description": "A quiet king room with a work desk, rain shower, and city view — great for business trips and short city stays.",
+        "shortDescription": "King bed · City view · 32 m²",
+        "basePrice": "160",
+        "currency": "USD",
         "maxAdults": "2",
         "maxChildren": "1",
         "maxOccupancy": "3",
@@ -510,10 +545,10 @@
         "name": "Deluxe High Floor",
         "slug": "deluxe-high-floor",
         "parentSlug": "deluxe-room",
-        "description": "The same deluxe layout on the upper floors, with a longer view toward the hill and access to the lounge for coffee and evening snacks.",
-        "shortDescription": "the hill view · Lounge · 32 m²",
-        "basePrice": "10500",
-        "currency": "ETB",
+        "description": "Our deluxe layout on the upper floors with Entoto hill views and access to the evening coffee lounge.",
+        "shortDescription": "Hill view · Lounge · 32 m²",
+        "basePrice": "195",
+        "currency": "USD",
         "maxAdults": "2",
         "maxChildren": "1",
         "maxOccupancy": "3",
@@ -529,10 +564,10 @@
         "name": "Executive Suite",
         "slug": "executive-suite",
         "parentSlug": "",
-        "description": "A separate sitting room, dining nook, and a deep bath. A practical choice for longer the city stays and guests who need space to meet.",
+        "description": "Separate sitting room, dining area, and deep bathtub — ideal for longer Addis stays or private meetings.",
         "shortDescription": "Sitting room · 58 m²",
-        "basePrice": "18500",
-        "currency": "ETB",
+        "basePrice": "320",
+        "currency": "USD",
         "maxAdults": "3",
         "maxChildren": "2",
         "maxOccupancy": "4",
@@ -548,10 +583,10 @@
         "name": "Presidential Suite",
         "slug": "presidential-suite",
         "parentSlug": "executive-suite",
-        "description": "Two bedrooms, a dining table for eight, and a terrace over the district. The hotel's largest residence, reserved for celebrations and delegations.",
+        "description": "Two bedrooms, private dining table for eight, and a wide terrace overlooking Bole.",
         "shortDescription": "2 bedrooms · Terrace · 120 m²",
-        "basePrice": "42000",
-        "currency": "ETB",
+        "basePrice": "680",
+        "currency": "USD",
         "maxAdults": "4",
         "maxChildren": "2",
         "maxOccupancy": "6",
@@ -567,10 +602,10 @@
         "name": "Twin Classic",
         "slug": "twin-classic",
         "parentSlug": "",
-        "description": "Two twin beds and a compact layout for colleagues sharing an the city night. Desk, shower, and a quiet corridor.",
+        "description": "Two comfortable twin beds and a tidy desk for colleagues or friends sharing a city stay.",
         "shortDescription": "2 twins · 28 m²",
-        "basePrice": "7200",
-        "currency": "ETB",
+        "basePrice": "140",
+        "currency": "USD",
         "maxAdults": "2",
         "maxChildren": "0",
         "maxOccupancy": "2",
@@ -585,77 +620,77 @@
     ],
     "blogPosts": [
       {
-        "title": "5 Strategies to Grow Your Business This Year",
-        "slug": "5-strategies-to-grow-your-business",
-        "excerpt": "Practical steps you can take today to build momentum and reach more customers.",
-        "body": "Growing a business takes focus, consistency, and a willingness to adapt. Start by clarifying your core offer, then double down on the channels that already bring results.\n\nReview your customer journey from first touch to repeat purchase. Small improvements at each step compound into meaningful revenue gains. Finally, invest in relationships — referrals and retention often outperform cold outreach.",
-        "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
+        "title": "48 Hours in Addis Ababa: Food, Coffee & Must-See Stops",
+        "slug": "48-hours-in-addis-ababa-guide",
+        "excerpt": "A simple two-day plan covering Entoto Park, Unity Park, local coffee houses, and evening dining.",
+        "body": "Whether you are in Addis Ababa between flights or visiting for work, two days is plenty to experience the city’s best spots.\n\nStart Day 1 at Entoto Natural Park for fresh eucalyptus air and panoramic views, then visit the National Museum to see Lucy. Spend the afternoon at an authentic Tomoca or traditional buna spot before enjoying injera and live cultural music in Bole.",
+        "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80",
         "author": "Yonas Gebre",
         "date": "2026-03-12"
       },
       {
-        "title": "What Clients Are Asking Us Right Now",
-        "slug": "what-clients-are-asking-us",
-        "excerpt": "A quick roundup of the most common questions we hear — and how we answer them.",
-        "body": "Every season brings a new set of priorities. Lately, clients ask about pricing transparency, faster turnaround times, and how to stand out in crowded markets.\n\nOur advice stays grounded in fundamentals: deliver exceptional value, communicate clearly, and measure what matters. When in doubt, talk to your customers — their feedback is the best roadmap.",
-        "image": "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80",
+        "title": "Bole Arrival Guide: Airport Pickup, SIM Cards & Local Payments",
+        "slug": "bole-arrival-guide-sim-payments",
+        "excerpt": "Practical arrival answers for guests landing at Addis Ababa Bole International Airport.",
+        "body": "Landing late or for the first time in Addis Ababa is simple when you prepare a few basics ahead of time.\n\nOur hotel driver meets guests right outside arrivals. In the morning, our reception team can direct you to nearby Ethio Telecom and Safaricom shops for local SIM cards and bank ATMs within a five-minute walk of the lobby.",
+        "image": "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800&q=80",
         "author": "Meron Assefa",
         "date": "2026-02-28"
       },
       {
-        "title": "Behind the Scenes: How We Work",
-        "slug": "behind-the-scenes-how-we-work",
-        "excerpt": "Take a peek at our process, tools, and the principles that guide every project.",
-        "body": "We believe great outcomes come from clear goals, collaborative planning, and disciplined execution. Every engagement starts with listening — understanding where you are and where you want to go.\n\nFrom there we build a tailored plan with milestones you can track. Throughout delivery we keep communication open so there are no surprises, only steady progress toward results you can measure.",
-        "image": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80",
+        "title": "Hosting Smooth Meetings & Events in Addis Ababa",
+        "slug": "hosting-meetings-events-addis",
+        "excerpt": "How hotels in Bole combine meeting rooms, reliable internet, and guest lodging under one roof.",
+        "body": "Planning a conference or NGO training works best when participants stay in the same building where sessions happen.\n\nWith high-speed Wi-Fi, backup power, coffee breaks featuring freshly roasted Ethiopian coffee, and airport transfers, guests focus on their work while our team runs every detail smoothly.",
+        "image": "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80",
         "author": "Kalkidan Tesfaye",
         "date": "2026-01-15"
       }
     ],
     "team": [
       {
-        "name": "James Carter",
-        "role": "Founder & CEO",
+        "name": "Dawit Bekele",
+        "role": "General Manager",
         "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80"
       },
       {
-        "name": "Elena Ward",
-        "role": "Creative Director",
+        "name": "Rahel Tadesse",
+        "role": "Front Desk Manager",
         "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
       },
       {
-        "name": "Noah Bennett",
-        "role": "Operations Lead",
+        "name": "Mulugeta Teshome",
+        "role": "Executive Chef",
         "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80"
       }
     ],
-    "ctaBannerTitle": "Book your stay",
-    "ctaBannerText": "Best rate guaranteed when you reserve direct. Free cancellation up to 48 hours before arrival.",
+    "ctaBannerTitle": "Book your stay directly",
+    "ctaBannerText": "Get our best room rates, complimentary breakfast options, and 24/7 Bole Airport pickup.",
     "ctaText": "Check Availability",
     "ctaLink": "book",
-    "email": "stay@skylinehotel.example",
-    "phone": "+65 6800 2400",
-    "address": "18 Harbor Avenue",
+    "email": "info@skylineaddis.et",
+    "phone": "+251 11 667 2400",
+    "address": "Bole Medhanialem Road, Addis Ababa",
     "hours": "Front desk open 24 hours",
     "instagram": "",
     "website": "",
     "linkedin": "",
     "whatsapp": "",
     "supportEmail": "",
-    "reservationEmail": "reservations@skylinehotel.example",
+    "reservationEmail": "booking@skylineaddis.et",
     "licenseNumber": "",
     "bookingUrl": "",
-    "contactSectionTitle": "Get in Touch",
+    "contactSectionTitle": "Contact Us",
     "contactFormTitle": "Send Us a Message",
     "contactFormUrl": "",
     "contactFormButtonText": "Send message",
-    "city": "Singapore",
-    "country": "Singapore",
+    "city": "Addis Ababa",
+    "country": "Ethiopia",
     "starRating": "5",
     "checkInTime": "14:00",
     "checkOutTime": "12:00",
     "propertyAmenities": "Wi-Fi, Restaurant, Parking, Generator backup, Breakfast",
-    "footerBlurb": "Suites, dining, and a front desk that answers.",
+    "footerBlurb": "Comfortable suites, dining, and a 24/7 front desk in Bole.",
     "footerNote": "All rights reserved."
   }
 }

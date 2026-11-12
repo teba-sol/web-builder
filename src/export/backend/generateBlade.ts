@@ -159,20 +159,23 @@ function generateHeroPartials(payload: SiteExportPayload): Record<string, string
   return files
 }
 
-function testimonialsPartial(): string {
+function testimonialsPartial(payload: SiteExportPayload): string {
+  const subtitle = isHospitalityTemplate(payload.templateId)
+    ? 'What our guests say about their stay'
+    : 'What our clients say about us'
   return `@if($settings->section_visibility['testimonials'] ?? false)
 <section class="py-20"><div class="max-w-6xl mx-auto px-6">
   <h2 class="text-3xl font-bold text-center mb-4">{{ $settings->testimonials_section_title }}</h2>
-  <p class="text-center opacity-70 mb-12">What our clients say about us</p>
+  <p class="text-center opacity-70 mb-12">${subtitle}</p>
   @if($testimonials->isEmpty())
-    <p class="text-center opacity-70">Client reviews</p>
+    <p class="text-center opacity-70">Guest and client reviews</p>
   @else
     @php $tLayout = \\App\\Support\\LayoutVariants::testimonialLayout($settings->layout_variant_id); @endphp
     @if($tLayout === 'featured')
       <div class="space-y-8">
         @php $first = $testimonials->first(); $rest = $testimonials->slice(1)->take(3); @endphp
-        <div class="mx-auto max-w-3xl rounded-xl border bg-white p-10 text-center text-slate-900">
-          <div class="mb-4 text-amber-400">★★★★★</div>
+        <div class="mx-auto max-w-3xl rounded-xl border bg-white p-10 text-center text-slate-900 flex flex-col items-center">
+          <div class="mb-4 flex justify-center gap-0.5 text-amber-400">★★★★★</div>
           <p class="mb-6 text-2xl leading-relaxed">"{{ $first->quote }}"</p>
           <p class="text-lg font-semibold">{{ $first->author }}</p>
           <p class="text-sm opacity-70">{{ $first->role }}</p>
@@ -180,11 +183,15 @@ function testimonialsPartial(): string {
         @if($rest->isNotEmpty())
         <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           @foreach($rest as $item)
-          <div class="rounded-xl border bg-white p-8 text-slate-900">
-            <div class="mb-3 text-amber-400">★★★★★</div>
-            <p class="mb-6 text-lg">"{{ $item->quote }}"</p>
-            <p class="font-semibold">{{ $item->author }}</p>
-            <p class="text-sm opacity-70">{{ $item->role }}</p>
+          <div class="rounded-xl border bg-white p-8 text-slate-900 flex h-full flex-col items-center justify-between text-center">
+            <div class="flex flex-col items-center">
+              <div class="mb-4 flex justify-center gap-0.5 text-amber-400">★★★★★</div>
+              <p class="mb-6 text-lg">"{{ $item->quote }}"</p>
+            </div>
+            <div class="mt-auto pt-2 flex flex-col items-center">
+              <p class="font-semibold">{{ $item->author }}</p>
+              <p class="text-sm opacity-70">{{ $item->role }}</p>
+            </div>
           </div>
           @endforeach
         </div>
@@ -193,24 +200,26 @@ function testimonialsPartial(): string {
     @elseif($tLayout === 'list')
       <div class="mx-auto max-w-3xl space-y-6">
         @foreach($testimonials->take(6) as $item)
-        <div class="flex flex-col gap-4 rounded-xl border bg-white p-6 text-slate-900 sm:flex-row sm:items-start">
-          <div class="shrink-0 text-2xl text-amber-400">★★★★★</div>
-          <div>
-            <p class="mb-3 text-lg leading-relaxed">"{{ $item->quote }}"</p>
-            <p class="font-semibold">{{ $item->author }}</p>
-            <p class="text-sm opacity-70">{{ $item->role }}</p>
-          </div>
+        <div class="flex flex-col items-center text-center gap-3 rounded-xl border bg-white p-8 text-slate-900">
+          <div class="flex justify-center gap-0.5 text-2xl text-amber-400">★★★★★</div>
+          <p class="mb-2 text-lg leading-relaxed">"{{ $item->quote }}"</p>
+          <p class="font-semibold">{{ $item->author }}</p>
+          <p class="text-sm opacity-70">{{ $item->role }}</p>
         </div>
         @endforeach
       </div>
     @else
       <div class="grid md:grid-cols-3 gap-6">
         @foreach($testimonials->take(3) as $item)
-        <div class="rounded-xl border bg-white p-8 text-slate-900">
-          <div class="mb-3 text-amber-400">★★★★★</div>
-          <p class="mb-6 text-lg">"{{ $item->quote }}"</p>
-          <p class="font-semibold">{{ $item->author }}</p>
-          <p class="text-sm opacity-70">{{ $item->role }}</p>
+        <div class="rounded-xl border bg-white p-8 text-slate-900 flex h-full flex-col items-center justify-between text-center">
+          <div class="flex flex-col items-center">
+            <div class="mb-4 flex justify-center gap-0.5 text-amber-400">★★★★★</div>
+            <p class="mb-6 text-lg">"{{ $item->quote }}"</p>
+          </div>
+          <div class="mt-auto pt-2 flex flex-col items-center">
+            <p class="font-semibold">{{ $item->author }}</p>
+            <p class="text-sm opacity-70">{{ $item->role }}</p>
+          </div>
         </div>
         @endforeach
       </div>
@@ -224,7 +233,7 @@ export function generateBladePartials(payload: SiteExportPayload): Record<string
   return {
     'resources/views/partials/nav.blade.php': navPartial(payload),
     'resources/views/partials/footer.blade.php': footerPartial(),
-    'resources/views/partials/testimonials.blade.php': testimonialsPartial(),
+    'resources/views/partials/testimonials.blade.php': testimonialsPartial(payload),
     'resources/views/partials/map.blade.php': `@php
     $settings = $settings ?? \\App\\Models\\SiteSetting::current();
     $mapSrc = \\App\\Support\\MapEmbed::src($settings->map_url ?? null, $settings->address ?? null);
@@ -395,7 +404,13 @@ export function generateGalleryView(): string {
   return `@extends('layouts.site')
 @section('content')
 @if($galleryImages->isNotEmpty())
-<section class="py-20"><div class="max-w-6xl mx-auto px-6"><h1 class="text-4xl font-bold text-center mb-12">{{ $settings->gallery_section_title }}</h1><div class="grid md:grid-cols-3 gap-4">@foreach($galleryImages as $image)<img src="{{ \\App\\Support\\PublicAsset::url($image->path) }}" class="w-full rounded-xl aspect-[4/3] object-cover" alt="" />@endforeach</div></div></section>
+@php
+    $hasCategories = $galleryImages->contains(fn ($img) => filled($img->category));
+    $groups = $hasCategories
+        ? $galleryImages->groupBy(fn ($img) => filled($img->category) ? $img->category : 'Other Photos')
+        : collect(['' => $galleryImages]);
+@endphp
+<section class="py-20"><div class="max-w-6xl mx-auto px-6"><h1 class="text-4xl font-bold text-center mb-12">{{ $settings->gallery_section_title }}</h1><div class="space-y-12">@foreach($groups as $category => $items)<div>@if($category)<h2 class="text-2xl font-semibold mb-5">{{ $category }}</h2>@endif<div class="grid md:grid-cols-3 gap-4">@foreach($items as $image)<figure><img src="{{ \\App\\Support\\PublicAsset::url($image->path) }}" class="w-full rounded-xl aspect-[4/3] object-cover" alt="{{ $image->title ?: $settings->gallery_section_title }}" />@if($image->title)<figcaption class="mt-2 text-sm font-medium">{{ $image->title }}</figcaption>@endif</figure>@endforeach</div></div>@endforeach</div></div></section>
 @endif
 @endsection`
 }

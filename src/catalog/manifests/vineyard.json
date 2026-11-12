@@ -163,7 +163,7 @@
     {
       "title": "Estate Reserve Cabernet",
       "description": "2019 single-vineyard cabernet — dark fruit, cedar, and a long silky finish.",
-      "image": "https://images.unsplash.com/photo-1510812431400-5740104b0a3a?w=600&q=80",
+      "image": "https://images.unsplash.com/photo-1474722883778-792e7990302f?w=600&q=80",
       "price": "4,680 ETB",
       "tag": "Bottle",
       "link": "contact"
@@ -171,7 +171,7 @@
     {
       "title": "Classic Tasting Flight",
       "description": "Five estate wines with artisan cheese board in our stone tasting room.",
-      "image": "https://images.unsplash.com/photo-1553361371-9b22f78e2b35?w=600&q=80",
+      "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&q=80",
       "price": "2,480 ETB",
       "tag": "45 min",
       "link": "contact"
@@ -179,7 +179,7 @@
     {
       "title": "Vineyard Tour & Lunch",
       "description": "Guided walk through the vines, cellar visit, and farm-to-table lunch.",
-      "image": "https://images.unsplash.com/photo-1506377247377-5ecb8f951b1e?w=600&q=80",
+      "image": "https://images.unsplash.com/photo-1474722883778-792e7990302f?w=600&q=80",
       "price": "5,220 ETB",
       "tag": "Half day",
       "link": "contact"
@@ -187,7 +187,7 @@
     {
       "title": "Private Barrel Tasting",
       "description": "Exclusive access to barrel samples with our head winemaker.",
-      "image": "https://images.unsplash.com/photo-1506377585624-bedcbb027afc?w=600&q=80",
+      "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80",
       "price": "8,250 ETB",
       "tag": "Private",
       "link": "contact"
@@ -195,7 +195,7 @@
     {
       "title": "Rosé Collection",
       "description": "Three rosés from our coastal block — strawberry, citrus, and mineral notes.",
-      "image": "https://images.unsplash.com/photo-1510812431400-5740104b0a3a?w=600&q=80",
+      "image": "https://images.unsplash.com/photo-1474722883778-792e7990302f?w=600&q=80",
       "price": "2,090 ETB",
       "tag": "Flight",
       "link": "contact"
@@ -257,10 +257,10 @@
     "businessName": "Valley Estate",
     "tagline": "Estate wine, grown in the valley",
     "heroSubtext": "A family estate on the lake. Estate-grown wine, shade trees, and tastings in the cellar.",
-    "heroImage": "https://images.unsplash.com/photo-1506377247377-5ecb8f951b1e?w=1200&q=80",
+    "heroImage": "https://images.unsplash.com/photo-1474722883778-792e7990302f?w=1200&q=80",
     "aboutTitle": "The estate",
     "about": "Valley Estate grows, bottles, and pours on one property. Tastings are seated, and the cellar is open by appointment.",
-    "aboutImage": "https://images.unsplash.com/photo-1506377585624-bedcbb027afc?w=800&q=80",
+    "aboutImage": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80",
     "missionStatement": "Wine from this valley, poured where it was grown.",
     "pageVisibility": {
       "about": true,
@@ -344,7 +344,7 @@
       {
         "title": "Estate Reserve Cabernet",
         "description": "2019 single-vineyard cabernet — dark fruit, cedar, and a long silky finish.",
-        "image": "https://images.unsplash.com/photo-1510812431400-5740104b0a3a?w=600&q=80",
+        "image": "https://images.unsplash.com/photo-1474722883778-792e7990302f?w=600&q=80",
         "price": "4,680 ETB",
         "tag": "Bottle",
         "link": "contact"
@@ -352,7 +352,7 @@
       {
         "title": "Classic Tasting Flight",
         "description": "Five estate wines with artisan cheese board in our stone tasting room.",
-        "image": "https://images.unsplash.com/photo-1553361371-9b22f78e2b35?w=600&q=80",
+        "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&q=80",
         "price": "2,480 ETB",
         "tag": "45 min",
         "link": "contact"
@@ -360,7 +360,7 @@
       {
         "title": "Vineyard Tour & Lunch",
         "description": "Guided walk through the vines, cellar visit, and farm-to-table lunch.",
-        "image": "https://images.unsplash.com/photo-1506377247377-5ecb8f951b1e?w=600&q=80",
+        "image": "https://images.unsplash.com/photo-1474722883778-792e7990302f?w=600&q=80",
         "price": "5,220 ETB",
         "tag": "Half day",
         "link": "contact"
@@ -368,7 +368,7 @@
       {
         "title": "Private Barrel Tasting",
         "description": "Exclusive access to barrel samples with our head winemaker.",
-        "image": "https://images.unsplash.com/photo-1506377585624-bedcbb027afc?w=600&q=80",
+        "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80",
         "price": "8,250 ETB",
         "tag": "Private",
         "link": "contact"
@@ -376,7 +376,7 @@
       {
         "title": "Rosé Collection",
         "description": "Three rosés from our coastal block — strawberry, citrus, and mineral notes.",
-        "image": "https://images.unsplash.com/photo-1510812431400-5740104b0a3a?w=600&q=80",
+        "image": "https://images.unsplash.com/photo-1474722883778-792e7990302f?w=600&q=80",
         "price": "2,090 ETB",
         "tag": "Flight",
         "link": "contact"
@@ -392,8 +392,8 @@
     ],
     "gallerySectionTitle": "Among the Vines",
     "galleryImages": [
-      "https://images.unsplash.com/photo-1506377247377-5ecb8f951b1e?w=600&q=80",
-      "https://images.unsplash.com/photo-1510812431400-5740104b0a3a?w=600&q=80",
+      "https://images.unsplash.com/photo-1474722883778-792e7990302f?w=600&q=80",
+      "https://images.unsplash.com/photo-1474722883778-792e7990302f?w=600&q=80",
       "https://images.unsplash.com/photo-1474722883778-792e7990302f?w=600&q=80"
     ],
     "testimonialsSectionTitle": "Wine Club Voices",

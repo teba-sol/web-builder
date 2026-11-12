@@ -44,4 +44,3 @@ export function heroContentWrapperClass(templateId: TemplateId, heroLayout: Hero
       return `${base} py-32`
   }
 }
-

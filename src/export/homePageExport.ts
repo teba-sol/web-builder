@@ -242,10 +242,11 @@ export function buildStaticHomePageBody(ctx: HomeExportContext): string {
 
   const testimonials = c.testimonials.filter((t) => t.quote)
   if (sv.testimonials) {
+    const sub = isHospitalityTemplate(ctx.templateId) ? 'What our guests say about their stay' : 'What our clients say about us'
     const cards = testimonials.length
-      ? testimonials.slice(0, 3).map((t) => `<div class="rounded-xl border bg-white p-8"><p class="text-lg mb-6">"${escapeHtml(t.quote)}"</p><p class="font-semibold">${escapeHtml(t.author)}</p><p class="text-sm opacity-70">${escapeHtml(t.role)}</p></div>`).join('')
-      : '<p class="text-center text-slate-500 col-span-full">Client reviews</p>'
-    parts.push(`<section class="py-20"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold text-center mb-4">${escapeHtml(c.testimonialsSectionTitle)}</h2><p class="text-center text-slate-600 mb-12">What our clients say about us</p><div class="grid md:grid-cols-3 gap-6">${cards}</div></div></section>`)
+      ? testimonials.slice(0, 3).map((t) => `<div class="rounded-xl border bg-white p-8 flex h-full flex-col items-center justify-between text-center"><div class="flex flex-col items-center"><div class="mb-3 flex justify-center gap-0.5 text-amber-400">★★★★★</div><p class="text-lg mb-6">"${escapeHtml(t.quote)}"</p></div><div class="mt-auto pt-2"><p class="font-semibold">${escapeHtml(t.author)}</p><p class="text-sm opacity-70">${escapeHtml(t.role)}</p></div></div>`).join('')
+      : '<p class="text-center text-slate-500 col-span-full">Guest and client reviews</p>'
+    parts.push(`<section class="py-20"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold text-center mb-4">${escapeHtml(c.testimonialsSectionTitle)}</h2><p class="text-center text-slate-600 mb-12">${sub}</p><div class="grid md:grid-cols-3 gap-6">${cards}</div></div></section>`)
   }
 
   if (pv.about && c.about?.trim() && canLinkToPage('about', c)) {

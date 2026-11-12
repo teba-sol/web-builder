@@ -1,3 +1,7 @@
+import { execFileSync } from 'node:child_process'
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join, resolve } from 'node:path'
 import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { MemoryRouter } from 'react-router-dom'
@@ -67,6 +71,9 @@ for (const manifest of manifests) {
     assert(contact.includes('booking_url') && contact.includes('Book a class'), 'fitness: booking action is exported')
     assert((backend['resources/views/layouts/site.blade.php'] ?? '').includes('.tpl-fitness footer'), 'fitness: readable footer styles are exported')
   }
+  const galleryCreate = backend['database/migrations/0001_01_01_1000_create_gallery_images_table.php'] ?? ''
+  assert(!galleryCreate.includes("string('title')") && !galleryCreate.includes("string('category')"), `${manifest.id}: original gallery migration remains compatible with existing exports`)
+  assert(backend['database/migrations/0001_01_01_1001_add_metadata_to_gallery_images_table.php'], `${manifest.id}: export includes a pending gallery metadata upgrade`)
   assert(backend['composer.json'], `${manifest.id}: missing composer.json`)
   const staticExplore = buildExploreSectionHtml(manifest.id, defaults, manifest.colorSchemes[0].swatches[1])
   const bladeExplore = backend['resources/views/partials/home-explore.blade.php'] ?? ''
@@ -977,3 +984,19 @@ for (const manifest of manifests.filter((entry) => entry.features.includes('hosp
 console.log(`ok: ${hospitalityThemeCases} hospitality palette/layout combinations share light page surfaces and selected themes`)
 
 console.log(`ok: ${manifests.length} templates, preview defaults + static ZIP + Laravel ZIP`)
+
+// Set GALLERY_MIGRATION_AUTOLOAD to a Laravel vendor/autoload.php to exercise
+// the generated migration on real in-memory SQLite schemas.
+if (process.env.GALLERY_MIGRATION_AUTOLOAD) {
+  const directory = mkdtempSync(join(tmpdir(), 'buildaura-gallery-migration-'))
+  try {
+    const backend = generateBackend('hotel', templateDefaults.hotel, undefined, undefined, [])
+    const createPath = join(directory, 'create.php')
+    const upgradePath = join(directory, 'upgrade.php')
+    writeFileSync(createPath, backend['database/migrations/0001_01_01_1000_create_gallery_images_table.php'])
+    writeFileSync(upgradePath, backend['database/migrations/0001_01_01_1001_add_metadata_to_gallery_images_table.php'])
+    execFileSync('php', [resolve('scripts/verify-gallery-migration.php'), process.env.GALLERY_MIGRATION_AUTOLOAD, createPath, upgradePath], { stdio: 'inherit' })
+  } finally {
+    rmSync(directory, { recursive: true, force: true })
+  }
+}

@@ -200,7 +200,7 @@ export function computeStayTotal(roomType: RoomTypeItem, checkIn: string, checkO
   const nights = stayNights(checkIn, checkOut)
   const nightlyRate = sellingAmount(parseRoomPrice(roomType.basePrice), discountPercentOf(roomType))
   const total = nights * nightlyRate
-  const currency = roomType.currency || 'ETB'
+  const currency = roomType.currency || 'USD'
   return {
     nights,
     nightlyRate,

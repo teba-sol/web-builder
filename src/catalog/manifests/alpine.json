@@ -140,61 +140,61 @@
     "exploreLinkLabel": "Explore"
   },
   "showcase": {
-    "sectionTitle": "Peak Experiences",
-    "sectionSubtitle": "Trek days, spa nights, and rooms that face the summit",
+    "sectionTitle": "Highland Stays & Tours",
+    "sectionSubtitle": "Guided mountain walks, warm spa care, and rooms facing the hills",
     "navLabel": "Experiences",
     "itemLabel": "Experience",
     "showPrice": true,
     "priceLabel": "From",
     "showTag": true,
-    "tagLabel": "Season"
+    "tagLabel": "Category"
   },
   "defaultShowcase": [
     {
-      "title": "Dawn Trek Package",
-      "description": "Two nights, trek storage, and guided dawn trek morning.",
+      "title": "Morning Mountain Walk",
+      "description": "Two nights in a valley-view room with a guided Simien morning walk.",
       "image": "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600&q=80",
-      "price": "37,400 ETB",
-      "tag": "Winter",
+      "price": "$195",
+      "tag": "Walks",
       "link": "contact"
     },
     {
-      "title": "Spa Circuit",
-      "description": "Sauna, cold plunge, and 50-minute massage.",
+      "title": "Warm Steam & Massage",
+      "description": "Herbal steam room and a relaxing 50-minute full-body massage after hiking.",
       "image": "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600&q=80",
-      "price": "9,900 ETB",
+      "price": "$45",
       "tag": "Wellness",
       "link": "contact"
     },
     {
-      "title": "Coffee by the fire",
-      "description": "Private timber dining for two with valley wines.",
+      "title": "Fireside Coffee & Dinner",
+      "description": "Warm Ethiopian dinner and roasted coffee beside the stone fireplace.",
       "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80",
-      "price": "6,600 ETB",
+      "price": "$35",
       "tag": "Dining",
       "link": "contact"
     },
     {
-      "title": "Scenic transfer",
-      "description": "Private helicopter transfer to the high peaks.",
+      "title": "Gondar Airport Pickup",
+      "description": "Private 4x4 hotel car directly from Gondar Airport to our lodge.",
       "image": "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&q=80",
       "price": "On request",
-      "tag": "Transfer",
+      "tag": "Transport",
       "link": "contact"
     },
     {
-      "title": "Chalet Weekend",
-      "description": "Three nights in a chalet suite with fireplace.",
+      "title": "Weekend Highland Suite",
+      "description": "Three nights in a spacious hillside suite with balcony and fireplace.",
       "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600&q=80",
-      "price": "99,000 ETB",
+      "price": "$520",
       "tag": "Suite",
       "link": "contact"
     },
     {
-      "title": "Guided Tour",
-      "description": "Full-day highland trek with certified mountain guide.",
+      "title": "Guided Simien Day Tour",
+      "description": "Full-day highland trip with an experienced local guide and lunch.",
       "image": "https://images.unsplash.com/photo-1551632811-561732d1e306?w=600&q=80",
-      "price": "19,250 ETB",
+      "price": "$95",
       "tag": "Adventure",
       "link": "contact"
     }
@@ -203,31 +203,31 @@
   "contactFields": [
     {
       "key": "reservationEmail",
-      "label": "Reservations",
-      "placeholder": "book@highlandhotel.example"
+      "label": "Booking Email",
+      "placeholder": "booking@highlandhotel.et"
     },
     {
       "key": "phone",
       "label": "Phone Number",
-      "placeholder": "+41 33 555 2040"
+      "placeholder": "+251 58 114 2040"
     },
     {
       "key": "address",
       "label": "Address",
-      "placeholder": "4 Ridge Road"
+      "placeholder": "Simien Road, Gondar"
     },
     {
       "key": "hours",
-      "label": "Front Desk",
-      "placeholder": "7am–11pm"
+      "label": "Front Desk Hours",
+      "placeholder": "6:00 AM – 10:00 PM daily"
     },
     {
       "key": "email",
       "label": "Email",
-      "placeholder": "stay@highlandhotel.example"
+      "placeholder": "hello@highlandhotel.et"
     }
   ],
-  "servicesLabel": "Mountain Services",
+  "servicesLabel": "Hotel Services",
   "pageLayouts": {
     "blog": "grid",
     "blogPost": "split",
@@ -245,13 +245,13 @@
   },
   "defaults": {
     "businessName": "Highland Hotel",
-    "tagline": "Above the valley, on the ridge",
-    "heroSubtext": "Timber rooms, heated floors, and a fire after a day on the trails.",
+    "tagline": "Warm hospitality in the northern hills",
+    "heroSubtext": "Comfortable rooms, roaring evening fires, and guided visits to Gondar and the Simien Highlands.",
     "heroImage": "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1200&q=80",
-    "aboutTitle": "The hotel",
-    "about": "Highland Hotel sits above the valley, where the air is cold after sunset. Rooms are lined in timber, floors are heated, and the terrace looks across the peaks.",
+    "aboutTitle": "Our Hotel",
+    "about": "Highland Hotel welcomes travelers above Gondar where mountain evenings turn crisp and clear. Our timber-lined rooms, warm stone lounge, and helpful local team give every guest a comfortable base in northern Ethiopia.",
     "aboutImage": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&q=80",
-    "missionStatement": "A warm room after a cold day in the mountains.",
+    "missionStatement": "A warm room and friendly service after a day in the hills.",
     "pageVisibility": {
       "about": true,
       "services": true,
@@ -277,248 +277,283 @@
         "label": "Rooms & Suites"
       },
       {
-        "value": "2,100m",
-        "label": "Elevation"
+        "value": "2,133m",
+        "label": "Gondar Elevation"
       },
       {
         "value": "4.9★",
         "label": "Guest Rating"
       },
       {
-        "value": "Trailhead",
-        "label": "Access"
+        "value": "24/7",
+        "label": "Guest Assistance"
       }
     ],
-    "servicesSectionTitle": "Mountain Services",
-    "servicesSectionSubtitle": "Everything for trek days and slow evenings",
+    "servicesSectionTitle": "Hotel Services",
+    "servicesSectionSubtitle": "Everything arranged for highland trips and relaxing evenings",
     "services": [
       {
-        "title": "Trek desk",
-        "description": "Boot fitting, equipment, and dawn trek guidance from our mountain team."
+        "title": "Guided Hill Tours",
+        "description": "Local drivers and certified guides for Gondar castles and Simien Mountain viewpoints."
       },
       {
-        "title": "Alpine Spa",
-        "description": "Sauna circuit, cold plunge, and massage after the slopes."
+        "title": "Warm Steam & Massage",
+        "description": "Relaxing steam room and evening massage to help you rest after long drives or walks."
       },
       {
-        "title": "Fondue & Grill",
-        "description": "Timber dining room with local cheeses and valley wines."
+        "title": "Fireside Restaurant",
+        "description": "Fresh Ethiopian meals, hot soup, and local highland honey tea beside the fireplace."
       },
       {
-        "title": "Scenic transfer",
-        "description": "Private transfers arranged to and from the high peaks."
+        "title": "Airport Pickup",
+        "description": "Private 4x4 hotel transport to and from Gondar Airport whenever your flight lands."
       }
     ],
     "stepsSectionTitle": "How It Works",
     "steps": [
       {
-        "title": "Consultation",
-        "description": "We learn about your goals and challenges in a discovery session."
+        "title": "Select Your Room",
+        "description": "Browse our valley-view rooms, suites, and chalets to choose what fits your group."
       },
       {
-        "title": "Strategy",
-        "description": "Our team crafts a tailored plan designed for your success."
+        "title": "Set Travel Dates",
+        "description": "Pick your stay nights and tell us if you want airport pickup or guided Simien tours."
       },
       {
-        "title": "Execution",
-        "description": "We deliver with precision, keeping you informed every step."
+        "title": "Book Directly",
+        "description": "Confirm your reservation easily with transparent USD nightly pricing and zero hidden fees."
       },
       {
-        "title": "Growth",
-        "description": "We measure results and optimize for continuous improvement."
+        "title": "Check In & Explore",
+        "description": "Enjoy a warm fireplace welcome, fresh breakfast, and stress-free sightseeing."
       }
     ],
-    "showcaseSectionTitle": "Peak Experiences",
-    "showcaseSectionSubtitle": "Trek days, spa nights, and rooms that face the summit",
+    "showcaseSectionTitle": "Highland Stays & Tours",
+    "showcaseSectionSubtitle": "Guided mountain walks, warm spa care, and rooms facing the hills",
     "showcaseItems": [
       {
-        "title": "Dawn Trek Package",
-        "description": "Two nights, trek storage, and guided dawn trek morning.",
+        "title": "Morning Mountain Walk",
+        "description": "Two nights in a valley-view room with a guided Simien morning walk.",
         "image": "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600&q=80",
-        "price": "37,400 ETB",
-        "tag": "Winter",
+        "price": "$195",
+        "tag": "Walks",
         "link": "contact"
       },
       {
-        "title": "Spa Circuit",
-        "description": "Sauna, cold plunge, and 50-minute massage.",
+        "title": "Warm Steam & Massage",
+        "description": "Herbal steam room and a relaxing 50-minute full-body massage after hiking.",
         "image": "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600&q=80",
-        "price": "9,900 ETB",
+        "price": "$45",
         "tag": "Wellness",
         "link": "contact"
       },
       {
-        "title": "Coffee by the fire",
-        "description": "Private timber dining for two with valley wines.",
+        "title": "Fireside Coffee & Dinner",
+        "description": "Warm Ethiopian dinner and roasted coffee beside the stone fireplace.",
         "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80",
-        "price": "6,600 ETB",
+        "price": "$35",
         "tag": "Dining",
         "link": "contact"
       },
       {
-        "title": "Scenic transfer",
-        "description": "Private helicopter transfer to the high peaks.",
+        "title": "Gondar Airport Pickup",
+        "description": "Private 4x4 hotel car directly from Gondar Airport to our lodge.",
         "image": "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&q=80",
         "price": "On request",
-        "tag": "Transfer",
+        "tag": "Transport",
         "link": "contact"
       },
       {
-        "title": "Chalet Weekend",
-        "description": "Three nights in a chalet suite with fireplace.",
+        "title": "Weekend Highland Suite",
+        "description": "Three nights in a spacious hillside suite with balcony and fireplace.",
         "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600&q=80",
-        "price": "99,000 ETB",
+        "price": "$520",
         "tag": "Suite",
         "link": "contact"
       },
       {
-        "title": "Guided Tour",
-        "description": "Full-day trek tour with certified mountain guide.",
+        "title": "Guided Simien Day Tour",
+        "description": "Full-day highland trip with an experienced local guide and lunch.",
         "image": "https://images.unsplash.com/photo-1551632811-561732d1e306?w=600&q=80",
-        "price": "19,250 ETB",
+        "price": "$95",
         "tag": "Adventure",
         "link": "contact"
       }
     ],
-    "gallerySectionTitle": "Peak Views",
+    "gallerySectionTitle": "Hotel & Mountain Views",
+    "galleryItems": [
+      {
+        "title": "Northern Highland Ridge",
+        "category": "Views",
+        "image": "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600&q=80"
+      },
+      {
+        "title": "Timber Hillside Room",
+        "category": "Rooms",
+        "image": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600&q=80"
+      },
+      {
+        "title": "Mountain Chalet Exterior",
+        "category": "Rooms",
+        "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600&q=80"
+      },
+      {
+        "title": "Evening Stone Terrace",
+        "category": "Facilities",
+        "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&q=80"
+      },
+      {
+        "title": "Morning Simien Trail",
+        "category": "Views",
+        "image": "https://images.unsplash.com/photo-1551632811-561732d1e306?w=600&q=80"
+      },
+      {
+        "title": "Fireside Dining Hall",
+        "category": "Dining",
+        "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80"
+      }
+    ],
     "galleryImages": [
       "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600&q=80",
       "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600&q=80",
-      "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600&q=80"
+      "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600&q=80",
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&q=80",
+      "https://images.unsplash.com/photo-1551632811-561732d1e306?w=600&q=80",
+      "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80"
     ],
-    "testimonialsSectionTitle": "Guest Stories",
+    "testimonialsSectionTitle": "Guest Reviews",
     "testimonials": [
       {
-        "quote": "Outstanding service and incredible results. Highly recommended!",
-        "author": "Elena Ward",
-        "role": "CEO, TechStart"
+        "quote": "Waking up to the morning mist over the northern hills was unforgettable. Warm rooms and kind service.",
+        "author": "Berekhet Alemu",
+        "role": "Mountain Guest"
       },
       {
-        "quote": "They transformed our business. Professional, creative, and reliable.",
-        "author": "Noah Bennett",
-        "role": "Founder, Bloom Co"
+        "quote": "They planned our Gondar castle visit and Simien walk smoothly from start to finish.",
+        "author": "Tigist Tesfaye",
+        "role": "Family Traveler"
       },
       {
-        "quote": "The best decision we made this year. Exceeded every expectation.",
-        "author": "Maya Chen",
-        "role": "Director, Apex Group"
+        "quote": "Cozy fireplaces, great Ethiopian dinner, and helpful guides ready every morning.",
+        "author": "Daniel Worku",
+        "role": "Weekend Visitor"
       }
     ],
     "faqSectionTitle": "Frequently Asked Questions",
     "faqs": [
       {
-        "question": "How do I get started?",
-        "answer": "Simply reach out via our contact form or give us a call. We offer a free initial consultation."
+        "question": "How can I book a room or highland tour?",
+        "answer": "Use our Contact Us form or call our Gondar desk directly. Tell us your dates and how many guests are traveling."
       },
       {
-        "question": "What are your pricing options?",
-        "answer": "We offer flexible packages tailored to your needs and budget. Contact us for a custom quote."
+        "question": "Are rooms warm during cool highland evenings?",
+        "answer": "Yes. Every room has thick wool blankets and room heating, and our main lounge features a lit stone fireplace every evening."
       },
       {
-        "question": "How long does a typical project take?",
-        "answer": "Timelines vary by scope, but most projects are completed within 2–8 weeks."
+        "question": "Can you organize transport from Gondar Airport?",
+        "answer": "Yes, we offer private car pickup from Gondar Airport and can arrange park vehicles for Simien Mountain day trips."
       },
       {
-        "question": "Do you offer ongoing support?",
-        "answer": "Yes! We provide continued support and maintenance to ensure long-term success."
+        "question": "Do you accommodate group retreats and family holidays?",
+        "answer": "Yes! We welcome families, hiking groups, and company retreats with custom meal plans and connecting rooms."
       }
     ],
-    "teamSectionTitle": "Meet the Team",
-    "blogSectionTitle": "Latest from Our Blog",
-    "blogSectionSubtitle": "Insights, tips, and updates from our team",
+    "teamSectionTitle": "Meet Our Team",
+    "blogSectionTitle": "Highland Travel Stories",
+    "blogSectionSubtitle": "Guides to Gondar, mountain trails, and cool-season comfort",
     "newsSectionTitle": "News & Updates",
-    "newsSectionSubtitle": "Announcements, press releases, and company news",
+    "newsSectionSubtitle": "New highland suites, seasonal menus, and hotel news",
     "newsPosts": [
       {
-        "title": "We Are Expanding to Serve You Better",
-        "slug": "expanding-to-serve-you-better",
-        "excerpt": "New locations, extended hours, and more ways to connect with our team.",
-        "body": "We are thrilled to announce expanded service hours and a new consultation space designed around your comfort and convenience.\n\nThis investment reflects our commitment to accessibility and excellence. Thank you for being part of our journey — we cannot wait to welcome you.",
-        "image": "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80",
+        "title": "New Valley-View Restaurant Terrace Now Open",
+        "slug": "valley-view-terrace-open",
+        "excerpt": "Enjoy breakfast and evening coffee looking out across the northern hills.",
+        "body": "Guests at Highland Hotel can now dine on our sheltered stone terrace with wide views across the hills toward the Simien range.\n\nWe serve fresh local dishes, highland honey, and hot coffee roasted daily.",
+        "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80",
         "author": "Selam Tadesse",
         "date": "2026-04-01"
       },
       {
-        "title": "Award Recognizes Our Commitment to Quality",
-        "slug": "award-quality-commitment",
-        "excerpt": "Industry leaders honored our team for outstanding client satisfaction.",
-        "body": "Receiving this recognition is a testament to the people behind our work — dedicated professionals who show up every day with care and craft.\n\nWe share this award with every client who trusted us with their goals. Your feedback shapes how we grow and improve.",
-        "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80",
-        "author": "Communications",
+        "title": "Guided Simien Day Trips Available All Season",
+        "slug": "guided-simien-day-trips",
+        "excerpt": "Easy morning departures with local guides, water, and packed lunch.",
+        "body": "Our hotel guide team now runs small-group day trips from our lobby every morning after breakfast.\n\nWhether you want a gentle scenic walk or a full ridge tour, we take care of transport and park entry.",
+        "image": "https://images.unsplash.com/photo-1551632811-561732d1e306?w=800&q=80",
+        "author": "Guest Relations",
         "date": "2026-03-18"
       },
       {
-        "title": "Partnership Opens New Opportunities",
-        "slug": "partnership-new-opportunities",
-        "excerpt": "Strategic collaboration brings enhanced offerings to our community.",
-        "body": "Our new partnership combines complementary strengths to deliver more value, faster turnaround, and broader expertise under one roof.\n\nStay tuned for launch events and early-access opportunities for existing clients.",
-        "image": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80",
-        "author": "Leadership",
+        "title": "Heated Stone Lounge & Spa Hours Extended",
+        "slug": "heated-lounge-spa-hours",
+        "excerpt": "Warm evening steam sessions and massage slots now open until 9:00 PM.",
+        "body": "Returning guests can now unwind later in the evening with warm herbal steam and massage appointments after long drives or hikes.\n\nBook at the front desk when you check in.",
+        "image": "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800&q=80",
+        "author": "Hotel Management",
         "date": "2026-02-05"
       }
     ],
-    "pricingSectionTitle": "Pricing Plans",
+    "pricingSectionTitle": "Stay Packages",
     "pricing": [
       {
-        "title": "Starter",
-        "description": "Essential features for individuals and small teams getting started.",
-        "price": "1,600 ETB/mo",
+        "title": "Room & Breakfast",
+        "description": "Comfortable highland room with fireplace lounge access and daily breakfast.",
+        "price": "$145/night",
         "tag": "Most popular",
         "featured": false
       },
       {
-        "title": "Professional",
-        "description": "Advanced tools, priority support, and integrations for growing businesses.",
-        "price": "4,350 ETB/mo",
+        "title": "Highland Explorer",
+        "description": "Two-night stay with dinner, guided morning walk, and spa steam session.",
+        "price": "$380/stay",
         "tag": "Best value",
         "featured": true
       },
       {
-        "title": "Enterprise",
-        "description": "Custom solutions, dedicated account management, and SLA guarantees.",
-        "price": "Custom",
-        "tag": "Contact us",
+        "title": "Chalet Suite",
+        "description": "Private hillside chalet for families or small groups seeking extra space.",
+        "price": "$310/night",
+        "tag": "Private suite",
         "featured": false
       }
     ],
     "roomsSectionTitle": "Rooms & Chalets",
-    "roomsSectionSubtitle": "Highland rooms and a chalet suite, priced per night in local currency.",
-    "bookingSectionTitle": "Book Your Mountain Stay",
-    "bookingSectionSubtitle": "Search your trek dates, then reserve a specific room.",
+    "roomsSectionSubtitle": "Comfortable highland rooms and chalet suites, priced per night in USD.",
+    "bookingSectionTitle": "Book Your Stay",
+    "bookingSectionSubtitle": "Choose your travel dates, compare rooms, and reserve directly.",
     "roomTypes": [
       {
         "name": "Highland Room",
         "slug": "alpine-room",
         "parentSlug": "",
-        "description": "Timber-lined room with a mountain view, heated floors, and a deep tub for the evening after the escarpment.",
-        "shortDescription": "Escarpment view · Heated floors · 30 m²",
-        "basePrice": "9800",
-        "currency": "ETB",
+        "description": "Warm timber-lined room looking out toward the valley with room heating, soft wool blankets, and hot bath.",
+        "shortDescription": "Valley view · Warm heating · 30 m²",
+        "basePrice": "145",
+        "currency": "USD",
         "maxAdults": "2",
         "maxChildren": "1",
         "maxOccupancy": "3",
         "bedConfiguration": "1 King",
         "sizeSqm": "30",
-        "amenities": "Wi-Fi, Heated floors, Soaking tub, Fireplace nook",
+        "amenities": "Wi-Fi, Room heating, Hot bath, Tea & coffee",
         "image": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=900&q=80",
         "unitCount": "8",
         "unitPrefix": "ALP-",
         "isActive": true
       },
       {
-        "name": "Highland Room · Summit View",
+        "name": "Highland Room · Panorama View",
         "slug": "alpine-summit-view",
         "parentSlug": "alpine-room",
-        "description": "A corner room with glass toward the peaks and a private sauna for two.",
-        "shortDescription": "Peak view · Private sauna · 36 m²",
-        "basePrice": "12500",
-        "currency": "ETB",
+        "description": "Corner room with wide windows toward the northern hills and private balcony seating.",
+        "shortDescription": "Hillside view · Balcony · 36 m²",
+        "basePrice": "195",
+        "currency": "USD",
         "maxAdults": "2",
         "maxChildren": "1",
         "maxOccupancy": "3",
         "bedConfiguration": "1 King",
         "sizeSqm": "36",
-        "amenities": "Wi-Fi, Private sauna, Heated floors, Mini bar",
+        "amenities": "Wi-Fi, Private balcony, Room heating, Breakfast included",
         "image": "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=900&q=80",
         "unitCount": "4",
         "unitPrefix": "SUM-",
@@ -528,16 +563,16 @@
         "name": "Chalet Suite",
         "slug": "chalet-suite",
         "parentSlug": "",
-        "description": "Two levels with a fireplace, a boot room, and a balcony over the valley above the trailhead.",
+        "description": "Spacious hillside suite with private fireplace, living room, and balcony looking across the ridge.",
         "shortDescription": "Fireplace · Balcony · 68 m²",
-        "basePrice": "18600",
-        "currency": "ETB",
+        "basePrice": "310",
+        "currency": "USD",
         "maxAdults": "4",
         "maxChildren": "2",
         "maxOccupancy": "5",
         "bedConfiguration": "1 King + sofa bed",
         "sizeSqm": "68",
-        "amenities": "Wi-Fi, Fireplace, Kitchenette, Boot room, Balcony",
+        "amenities": "Wi-Fi, Fireplace, Kitchenette, Balcony, Breakfast included",
         "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=900&q=80",
         "unitCount": "3",
         "unitPrefix": "CHA-",
@@ -546,77 +581,77 @@
     ],
     "blogPosts": [
       {
-        "title": "5 Strategies to Grow Your Business This Year",
-        "slug": "5-strategies-to-grow-your-business",
-        "excerpt": "Practical steps you can take today to build momentum and reach more customers.",
-        "body": "Growing a business takes focus, consistency, and a willingness to adapt. Start by clarifying your core offer, then double down on the channels that already bring results.\n\nReview your customer journey from first touch to repeat purchase. Small improvements at each step compound into meaningful revenue gains. Finally, invest in relationships — referrals and retention often outperform cold outreach.",
-        "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
-        "author": "Yonas Gebre",
+        "title": "Exploring Gondar's Royal Castles & Local Markets",
+        "slug": "gondar-castles-local-markets",
+        "excerpt": "How to spend a relaxed day walking historic stone courtyards before evening dinner.",
+        "body": "Gondar blends rich centuries of Ethiopian history with friendly neighborhood streets.\n\nVisit the historic stone enclosure in the morning while the air is cool, stop by local honey shops in the afternoon, and return to Highland Hotel in time for sunset over the hills.",
+        "image": "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=800&q=80",
+        "author": "Tadesse Alemu",
         "date": "2026-03-12"
       },
       {
-        "title": "What Clients Are Atrekng Us Right Now",
-        "slug": "what-clients-are-atrekng-us",
-        "excerpt": "A quick roundup of the most common questions we hear — and how we answer them.",
-        "body": "Every season brings a new set of priorities. Lately, clients ask about pricing transparency, faster turnaround times, and how to stand out in crowded markets.\n\nOur advice stays grounded in fundamentals: deliver exceptional value, communicate clearly, and measure what matters. When in doubt, talk to your customers — their feedback is the best roadmap.",
-        "image": "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80",
-        "author": "Meron Assefa",
+        "title": "Packing for Cool Highland Mornings in Northern Ethiopia",
+        "slug": "packing-for-highland-mornings",
+        "excerpt": "Simple clothing and timing tips for bright daytime sun and crisp mountain nights.",
+        "body": "At over 2,100 meters elevation, highland weather changes quickly from warm midday sunshine to cool evenings.\n\nBring breathable layers for walking tours, comfortable closed walking shoes, and a warm sweater for relaxing on the evening terrace.",
+        "image": "https://images.unsplash.com/photo-1551632811-561732d1e306?w=800&q=80",
+        "author": "Selamawit Fekadu",
         "date": "2026-02-28"
       },
       {
-        "title": "Behind the Scenes: How We Work",
-        "slug": "behind-the-scenes-how-we-work",
-        "excerpt": "Take a peek at our process, tools, and the principles that guide every project.",
-        "body": "We believe great outcomes come from clear goals, collaborative planning, and disciplined execution. Every engagement starts with listening — understanding where you are and where you want to go.\n\nFrom there we build a tailored plan with milestones you can track. Throughout delivery we keep communication open so there are no surprises, only steady progress toward results you can measure.",
-        "image": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80",
-        "author": "Kalkidan Tesfaye",
+        "title": "Warm Highland Honey Tea & Evening Fireside Traditions",
+        "slug": "highland-honey-tea-traditions",
+        "excerpt": "Why guests gather around the stone fireplace every evening before dinner.",
+        "body": "White honey harvested in northern Ethiopian villages pairs wonderfully with spiced black tea after a day outdoors.\n\nOur lounge lights the fireplace at 6:00 PM daily so travelers can warm up and share trip stories.",
+        "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80",
+        "author": "Mekdes Tesfaye",
         "date": "2026-01-15"
       }
     ],
     "team": [
       {
-        "name": "James Carter",
-        "role": "Founder & CEO",
+        "name": "Tadesse Alemu",
+        "role": "General Manager",
         "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80"
       },
       {
-        "name": "Elena Ward",
-        "role": "Creative Director",
+        "name": "Selamawit Fekadu",
+        "role": "Front Desk & Tour Manager",
         "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
       },
       {
-        "name": "Noah Bennett",
-        "role": "Operations Lead",
+        "name": "Dawit Hailu",
+        "role": "Head Chef",
         "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80"
       }
     ],
-    "ctaBannerTitle": "Reserve your peak stay",
-    "ctaBannerText": "Book direct for complimentary spa access and heated trek storage.",
+    "ctaBannerTitle": "Book your stay in the Gondar highlands",
+    "ctaBannerText": "Reserve direct for breakfast included, airport transfer help, and local trip planning.",
     "ctaText": "Check Availability",
     "ctaLink": "book",
-    "email": "stay@highlandhotel.example",
-    "phone": "+41 33 555 2040",
-    "address": "4 Ridge Road",
-    "hours": "Front desk 7:00–21:00",
+    "email": "hello@highlandhotel.et",
+    "phone": "+251 58 114 2040",
+    "address": "Simien Road, Gondar",
+    "hours": "Front desk 6:00–22:00",
     "instagram": "",
     "website": "",
     "linkedin": "",
     "whatsapp": "",
     "supportEmail": "",
-    "reservationEmail": "book@highlandhotel.example",
+    "reservationEmail": "booking@highlandhotel.et",
     "licenseNumber": "",
     "bookingUrl": "",
-    "contactSectionTitle": "Get in Touch",
+    "contactSectionTitle": "Contact Us",
     "contactFormTitle": "Send Us a Message",
     "contactFormUrl": "",
-    "contactFormButtonText": "Send message",
-    "city": "Interlaken",
-    "country": "Switzerland",
+    "contactFormButtonText": "Send Message",
+    "city": "Gondar",
+    "country": "Ethiopia",
     "starRating": "4",
     "checkInTime": "14:00",
     "checkOutTime": "11:00",
-    "propertyAmenities": "Wi-Fi, Fireplace, Restaurant, Parking, Generator backup",
-    "footerBlurb": "Heated rooms and a terrace over the valley.",
+    "propertyAmenities": "Wi-Fi, Fireplace lounge, Restaurant, Parking, Airport shuttle",
+    "footerBlurb": "Warm rooms, evening fires, and hillside views in northern Ethiopia.",
     "footerNote": "All rights reserved."
   }
 }

@@ -25,6 +25,7 @@ import { generateFilamentFiles } from './generateFilament'
 import { generateSetupFiles, generateSetupToken } from './generateSetup'
 import { FONT_OPTIONS } from '../../data/brand'
 import { isHospitalityTemplate } from '../../data/hospitality'
+import { getPopulatedGalleryEntries } from '../../utils/gallery'
 import { phpStr } from './phpUtils'
 
 export type BackendFileMap = Record<string, string>
@@ -38,7 +39,7 @@ const LIST_MODELS = [
     table: 'showcase_items',
     fields: ['title', 'description', 'image', 'price', 'tag', 'link'],
   },
-  { name: 'GalleryImage', table: 'gallery_images', fields: ['path'] },
+  { name: 'GalleryImage', table: 'gallery_images', fields: ['title', 'category', 'path'] },
   { name: 'TeamMember', table: 'team_members', fields: ['name', 'role', 'image'] },
   { name: 'Testimonial', table: 'testimonials', fields: ['quote', 'author', 'role'] },
   { name: 'BlogPost', table: 'blog_posts', fields: ['title', 'slug', 'excerpt', 'body', 'image', 'author', 'is_published', 'published_at'] },
@@ -133,7 +134,7 @@ function generateMigration(table: string, columns: string[]): string {
       if (c === 'image' || c === 'path') {
         return `$table->text('${c}')->nullable();`
       }
-      if (c === 'link' || c === 'tag') {
+      if (c === 'link' || c === 'tag' || c === 'title' || c === 'category') {
         return `$table->string('${c}')->nullable();`
       }
       return `$table->string('${c}');`
@@ -161,6 +162,41 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('${table}');
+    }
+};
+`
+}
+
+/** Add gallery metadata without rerunning the original table migration. */
+function generateGalleryMetadataMigration(): string {
+  return `<?php
+
+use Illuminate\\Database\\Migrations\\Migration;
+use Illuminate\\Database\\Schema\\Blueprint;
+use Illuminate\\Support\\Facades\\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        foreach (['title', 'category'] as $column) {
+            if (! Schema::hasColumn('gallery_images', $column)) {
+                Schema::table('gallery_images', function (Blueprint $table) use ($column): void {
+                    $table->string($column)->nullable();
+                });
+            }
+        }
+    }
+
+    public function down(): void
+    {
+        foreach (['title', 'category'] as $column) {
+            if (Schema::hasColumn('gallery_images', $column)) {
+                Schema::table('gallery_images', function (Blueprint $table) use ($column): void {
+                    $table->dropColumn($column);
+                });
+            }
+        }
     }
 };
 `
@@ -528,9 +564,11 @@ function generateSeeder(payload: SiteExportPayload): string {
         ...item,
         image: mapImage(item.image, `showcase-${i + 1}`),
       })),
-    gallery_images: c.galleryImages
-      .filter(Boolean)
-      .map((img, i) => ({ path: mapImage(img, `gallery-${i + 1}`) })),
+    gallery_images: getPopulatedGalleryEntries(c).map((item, i) => ({
+      title: item.title || null,
+      category: item.category || null,
+      path: mapImage(item.image, `gallery-${i + 1}`),
+    })),
     team: c.team
       .filter((m) => m.name)
       .map((m) => ({ ...m, image: mapImage(m.image, `team-${m.name}`) })),
@@ -1789,8 +1827,10 @@ export function generateBackend(
     files[`database/migrations/0001_01_01_1000_create_${model.table}_table.php`] =
       model.table === 'blog_posts' || model.table === 'news_posts'
         ? generatePostMigration(model.table)
-        : generateMigration(model.table, [...model.fields])
+        : generateMigration(model.table, model.table === 'gallery_images' ? ['path'] : [...model.fields])
   }
+
+  files['database/migrations/0001_01_01_1001_add_metadata_to_gallery_images_table.php'] = generateGalleryMetadataMigration()
 
   Object.assign(files, generateFilamentFiles(content.sectionVisibility, content.pageVisibility, {
     hospitality: isHospitalityTemplate(templateId),
