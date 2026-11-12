@@ -1,3 +1,6 @@
+import { CUSTOM_COLOR_SCHEME_ID } from '../data/pickTemplate'
+import { getTheme } from '../templates/getTheme'
+import { isHospitalityTemplate } from '../data/hospitality'
 import { actionBackground } from '../utils/accentInk'
 import { resolveBrandAccent } from '../data/brand'
 import { getColorSchemes } from '../data/colorSchemes'
@@ -41,7 +44,7 @@ interface SiteHtmlContext {
 }
 
 function buildNav(ctx: SiteHtmlContext): string {
-  return buildExportNavHtml(ctx.templateId, ctx.content, ctx.accent, ctx.fromNested)
+  return buildExportNavHtml(ctx.templateId, ctx.content, ctx.accent, ctx.fromNested, ctx.colorSchemeId)
 }
 
 function buildFooter(ctx: SiteHtmlContext): string {
@@ -76,7 +79,7 @@ function wrapPage(ctx: SiteHtmlContext, title: string, body: string): string {
       } as CloneExportCtx)
     : buildNav(ctx)
   return rewriteContainerVariantsForExport(`${head}
-<body data-site-brand class="${clone ? 'bg-[var(--clone-surface)] text-[var(--clone-ink)]' : 'bg-white text-slate-800'} ${shell} ${clone ? 'webtemplate-clone' : ''}">
+<body data-site-brand${ctx.colorSchemeId === CUSTOM_COLOR_SCHEME_ID ? ' data-custom-palette' : ''}${isHospitalityTemplate(ctx.templateId) ? ' data-hospitality-site' : ''} class="${clone ? 'bg-[var(--clone-surface)] text-[var(--clone-ink)]' : isHospitalityTemplate(ctx.templateId) ? getTheme(ctx.templateId, ctx.colorSchemeId).page : ctx.templateId === 'fitness' ? 'tpl-fitness bg-black text-white' : ctx.templateId === 'medical' ? 'tpl-medical bg-white text-slate-800' : 'bg-white text-slate-800'} ${shell} ${clone ? 'webtemplate-clone' : ''}">
 ${cloneNav}
 ${body}
 ${buildFooter(ctx)}
@@ -173,6 +176,7 @@ export function buildAllSitePages(
   const heroHtml = buildStaticHeroHtml({
     templateId,
     heroLayout: layout.heroLayout,
+    colorSchemeId,
     accent: actionBackground(accent, scheme.swatches[1]),
     heroImage: hero,
     businessName: content.businessName,
@@ -242,8 +246,8 @@ ${pricingHtml ? `<section class="bg-slate-50 py-20"><div class="max-w-6xl mx-aut
       const cls = layouts.portfolio === 'case-study' ? 'mb-16 block rounded-xl border overflow-hidden' : 'block rounded-xl border overflow-hidden hover:shadow-lg'
       const itemHref = item.link?.startsWith('http') ? item.link : resolveStaticHref(item.link || 'contact', content)
       return item.link?.startsWith('http')
-        ? `<a href="${escapeHtml(item.link)}" class="${cls}">${img ? `<img src="${img}" class="w-full ${layouts.portfolio === 'case-study' ? 'aspect-[21/9]' : 'aspect-[4/3]'} object-cover" />` : ''}<div class="p-6"><h3 class="font-semibold text-lg mb-2">${escapeHtml(item.title)}</h3><p class="opacity-80">${escapeHtml(item.description)}</p>${showcaseCfg.showPrice && item.price ? `<p class="text-lg font-bold mt-2" style="color:${accent}">${escapeHtml(item.price)}</p>` : ''}</div></a>`
-        : `<a href="${itemHref}" class="${cls}">${img ? `<img src="${img}" class="w-full ${layouts.portfolio === 'case-study' ? 'aspect-[21/9]' : 'aspect-[4/3]'} object-cover" />` : ''}<div class="p-6"><h3 class="font-semibold text-lg mb-2">${escapeHtml(item.title)}</h3><p class="opacity-80">${escapeHtml(item.description)}</p>${showcaseCfg.showPrice && item.price ? `<p class="text-lg font-bold mt-2" style="color:${accent}">${escapeHtml(item.price)}</p>` : ''}</div></a>`
+        ? `<a href="${escapeHtml(item.link)}" class="${cls}${templateId === 'fitness' ? ' pulse-card' : ''}">${img ? `<img src="${img}" class="w-full ${layouts.portfolio === 'case-study' ? 'aspect-[21/9]' : 'aspect-[4/3]'} object-cover" />` : ''}<div class="p-6"><h3 class="font-semibold text-lg mb-2">${escapeHtml(item.title)}</h3><p class="opacity-80">${escapeHtml(item.description)}</p>${templateId === 'fitness' ? '<div class="pulse-card-cue">Ask about this membership <span aria-hidden="true">→</span></div>' : ''}${showcaseCfg.showPrice && item.price ? `<p class="text-lg font-bold mt-2" style="color:${accent}">${escapeHtml(item.price)}</p>` : ''}</div></a>`
+        : `<a href="${itemHref}" class="${cls}${templateId === 'fitness' ? ' pulse-card' : ''}">${img ? `<img src="${img}" class="w-full ${layouts.portfolio === 'case-study' ? 'aspect-[21/9]' : 'aspect-[4/3]'} object-cover" />` : ''}<div class="p-6"><h3 class="font-semibold text-lg mb-2">${escapeHtml(item.title)}</h3><p class="opacity-80">${escapeHtml(item.description)}</p>${templateId === 'fitness' ? '<div class="pulse-card-cue">Ask about this membership <span aria-hidden="true">→</span></div>' : ''}${showcaseCfg.showPrice && item.price ? `<p class="text-lg font-bold mt-2" style="color:${accent}">${escapeHtml(item.price)}</p>` : ''}</div></a>`
     }).join('')
     const gridCls = layouts.portfolio === 'case-study' ? 'space-y-0' : 'grid sm:grid-cols-2 lg:grid-cols-3 gap-8'
     pages['portfolio.html'] = wrapPage(ctx, `${showcaseCfg.navLabel} — ${content.businessName}`, `
