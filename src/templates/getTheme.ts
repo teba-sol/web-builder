@@ -1,3 +1,4 @@
+import { applyHospitalitySurfaces } from './booking/hospitalityTheme'
 import { requireManifest } from '../catalog/catalog'
 import { CUSTOM_COLOR_SCHEME_ID } from '../data/pickTemplate'
 import type { TemplateId } from '../types'
@@ -11,5 +12,6 @@ export function getTheme(templateId: TemplateId, colorSchemeId?: string): Templa
   const scheme =
     manifest.colorSchemes.find((item) => item.id === requested) ?? manifest.colorSchemes[0]
   const theme = { ...manifest.theme, ...scheme?.overrides }
-  return custom ? applyCustomPaletteToTheme(theme) : theme
+  const selected = custom ? applyCustomPaletteToTheme(theme) : theme
+  return manifest.features.includes('hospitality') ? applyHospitalitySurfaces(selected, theme) : selected
 }

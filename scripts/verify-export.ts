@@ -1,6 +1,14 @@
+import { createElement } from 'react'
+import { renderToStaticMarkup } from 'react-dom/server'
+import { MemoryRouter } from 'react-router-dom'
+import { RichTemplateLayout } from '../src/templates/RichTemplateLayout'
+import { getTheme } from '../src/templates/getTheme'
+import { HOSPITALITY_PAGE } from '../src/templates/booking/hospitalityTheme'
+import { staySkin, exportStaySkin } from '../src/templates/booking/hospitalitySkin'
+import { buildExportPayload } from '../src/export/backend/exportPayload'
 /**
  * Prove preview data + ZIP generators still work after the catalog migration.
- * Run: npx vite-node scripts/verify-export.ts
+ * Run: npm run verify:export
  */
 import { listManifests, requireManifest, templateHasFeature } from '../src/catalog/catalog.ts'
 import { parseTemplateJson, stringifyManifest } from '../src/catalog/io.ts'
@@ -40,6 +48,24 @@ for (const manifest of manifests) {
     manifest.defaultLayoutVariantId,
     assets,
   )
+  if (manifest.id === 'fitness') {
+    const html = pages['index.html'] ?? ''
+    const homeBlade = backend['resources/views/site/index.blade.php'] ?? ''
+    for (const [label, home] of [['HTML', html], ['Blade', homeBlade]]) {
+      assert(home.includes('pulse-trust-grid'), `fitness ${label}: metrics have separate cards`)
+      assert(home.includes('View memberships'), `fitness ${label}: membership navigation is explicit`)
+      assert(home.includes('Explore programs'), `fitness ${label}: program navigation is explicit`)
+      assert(home.includes('pulse-cta'), `fitness ${label}: CTA banner is contained`)
+      assert(!home.includes("@include('partials.home-explore')") && !home.includes('Programs, schedules, results, and membership'), `fitness ${label}: TRAIN section is removed`)
+    }
+    for (const [label, nav] of [['HTML', html], ['Blade', backend['resources/views/partials/nav.blade.php'] ?? '']]) {
+      assert(nav.includes('<div class="hidden lg:block sticky top-0 z-50">'), `fitness ${label}: desktop navbar wrapper stays pinned`)
+    }
+    const contact = backend['resources/views/partials/home-contact.blade.php'] ?? ''
+    assert(contact.includes('pulse-contact-form') && contact.includes('pulse-contact-details'), 'fitness: modern contact layout is exported')
+    assert(contact.includes('booking_url') && contact.includes('Book a class'), 'fitness: booking action is exported')
+    assert((backend['resources/views/layouts/site.blade.php'] ?? '').includes('.tpl-fitness footer'), 'fitness: readable footer styles are exported')
+  }
   assert(backend['composer.json'], `${manifest.id}: missing composer.json`)
   const composer = JSON.parse(backend['composer.json'] ?? '{}') as {
     config?: { policy?: { advisories?: { block?: boolean } } }
@@ -629,7 +655,11 @@ for (const manifest of manifests) {
   assert(backend['app/Support/AdminImage.php']?.includes('fetchFileInformation(false)'), `${manifest.id}: stored image urls are not dropped on save`)
   assert(settingsMigration.includes("text('hero_image')"), `${manifest.id}: hero image stores a long url`)
   assert(backend['resources/views/partials/map.blade.php']?.includes('MapEmbed::src'), `${manifest.id}: map partial builds an embed`)
-  assert(backend['resources/views/site/contact.blade.php']?.includes("@include('partials.map')"), `${manifest.id}: contact page shows the map`)
+  const contactPage = backend['resources/views/site/contact.blade.php'] ?? ''
+  assert(contactPage.includes("@include('partials.map')") || (
+    contactPage.includes("@include('partials.home-contact')") &&
+    backend['resources/views/partials/home-contact.blade.php']?.includes("@include('partials.map')")
+  ), `${manifest.id}: contact page shows the map`)
   assert(!backend['resources/views/site/contact.blade.php']?.includes('urlencode($mapSrc)'), `${manifest.id}: contact map does not wrap the raw url`)
   assert((backend['resources/views/partials/home-contact.blade.php'] ?? '').includes("@include('partials.map')"), `${manifest.id}: home contact shows the map`)
   const guestNotes = backend['resources/views/partials/testimonials.blade.php'] ?? ''
@@ -864,5 +894,75 @@ assert(!alpineBackend['app/Models/RoomType.php'], 'alpine inventory stays on the
 assert(alpineBackend['app/Services/CrsClient.php'], 'alpine keeps the site CRS client')
 assert(!alpineBackend['.env.example']?.includes('BUILDAURA_API_KEY'), 'alpine must not receive a Buildaura key')
 assert(gluedHits.length === 0, `glued Blade directives:\n${gluedHits.join('\n')}`)
+
+for (const layoutId of ['classic', 'modern'] as const) {
+  const content = templateDefaults.medical
+  const preview = renderToStaticMarkup(createElement(MemoryRouter, null,
+    createElement(RichTemplateLayout, { variant: 'medical', content, layoutVariantId: layoutId, basePath: '/' })))
+  const { pages } = buildAllSitePages('medical', content, 'teal', layoutId)
+  const backend = generateBackend('medical', content, 'teal', layoutId, [])
+  const hero = backend[`resources/views/partials/heroes/${layoutId}.blade.php`] ?? ''
+  for (const [label, html] of [['preview', preview], ['static', pages['index.html'] ?? ''], ['Laravel', hero]]) {
+    assert(/<div class="medical-hero-copy">[\s\S]*?<h1[\s\S]*?<p[\s\S]*?<a[\s\S]*?<\/a>\s*<\/div>\s*(?:@if\([^\n]*?\))?<div class="medical-hero-media">/.test(html), `medical ${label}/${layoutId}: hero text and CTA stay grouped beside the image`)
+    assert(html.includes('medical-hero-image object-cover'), `medical ${label}: hero image has a consistent crop`)
+  }
+  assert(preview.includes('aria-label="Open menu"') && preview.includes('aria-controls='), 'medical: mobile menu has an accessible toggle')
+  assert((backend['resources/views/partials/nav.blade.php'] ?? '').includes('<details'), 'medical: Laravel includes expandable mobile navigation')
+  assert(pages['index.html']?.includes('<summary'), 'medical: static export includes mobile navigation')
+  assert((backend['resources/views/partials/nav.blade.php'] ?? '').includes('<div class="hidden lg:block sticky top-0 z-50">'), 'medical: desktop navigation stays pinned in the Laravel export')
+}
+
+for (const layoutId of ['classic', 'modern'] as const) {
+  const content = templateDefaults.saas
+  const preview = renderToStaticMarkup(createElement(MemoryRouter, null,
+    createElement(RichTemplateLayout, { variant: 'saas', content, layoutVariantId: layoutId, basePath: '/' })))
+  const { pages } = buildAllSitePages('saas', content, 'indigo', layoutId)
+  const backend = generateBackend('saas', content, 'indigo', layoutId, [])
+  const hero = backend[`resources/views/partials/heroes/${layoutId}.blade.php`] ?? ''
+  for (const [label, html] of [['preview', preview], ['static', pages['index.html'] ?? ''], ['Laravel', hero]]) {
+    assert(/<div data-hero-copy[^>]*>[\s\S]*?<h1[\s\S]*?<p[\s\S]*?<a[\s\S]*?<\/a>\s*<\/div>\s*(?:@if\([^\n]*?\))?<div data-hero-media/.test(html), `Flowstack ${label}/${layoutId}: badge, heading, description and CTA stay in one column beside the image`)
+    assert(html.includes('aspect-[4/3] w-full object-cover'), `Flowstack ${label}: image is cropped without distortion`)
+    assert(html.includes('padding-block:0'), `Flowstack ${label}: hero does not double its vertical padding`)
+  }
+  if (layoutId === 'classic') {
+    assert(preview.includes('clg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]'), 'Flowstack: editor uses two equal desktop columns')
+    assert(pages['index.html']?.includes('lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]'), 'Flowstack: export uses the same desktop columns')
+  }
+}
+const flowstackWithoutImage = renderToStaticMarkup(createElement(MemoryRouter, null,
+  createElement(RichTemplateLayout, { variant: 'saas', content: { ...templateDefaults.saas, heroImage: '' }, layoutVariantId: 'classic', basePath: '/' })))
+assert(!flowstackWithoutImage.includes('data-hero-media'), 'Flowstack: removing the image leaves no empty media element')
+assert(!flowstackWithoutImage.includes('clg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]'), 'Flowstack: missing image does not leave an empty column')
+
+let hospitalityThemeCases = 0
+for (const manifest of manifests.filter((entry) => entry.features.includes('hospitality'))) {
+  const schemes = [...manifest.colorSchemes.map((scheme) => scheme.id), 'custom']
+  for (const schemeId of schemes) {
+    const theme = getTheme(manifest.id, schemeId)
+    assert(theme.page === HOSPITALITY_PAGE, `${manifest.id}/${schemeId}: hotel page stays light`)
+    assert(staySkin(manifest.id).page === theme.page, `${manifest.id}: booking and site page surfaces agree`)
+    assert(exportStaySkin(manifest.id).page === theme.page, `${manifest.id}: exported booking surface agrees`)
+    for (const layoutId of ['classic', 'modern', 'luxury']) {
+      const content = { ...templateDefaults[manifest.id], brandPrimary: '#111111', brandSecondary: '#000000', brandAccent: '#eeeeee' }
+      const { pages } = buildAllSitePages(manifest.id, content, schemeId, layoutId)
+      const backend = generateBackend(manifest.id, content, schemeId, layoutId, [])
+      const layout = backend['resources/views/layouts/site.blade.php'] ?? ''
+      const hero = backend[`resources/views/partials/heroes/${layoutId}.blade.php`] ?? ''
+      for (const html of Object.values(pages)) {
+        assert(html.includes('data-hospitality-site'), `${manifest.id}: all exported pages share hotel surface rules`)
+        assert(html.includes(theme.page), `${manifest.id}/${schemeId}/${layoutId}: static page matches the preview surface`)
+      }
+      assert(layout.includes(theme.page), `${manifest.id}/${schemeId}: Laravel page matches preview surface`)
+      assert(hero.includes(theme.heroTitle.replaceAll('cmd:', 'md:').replaceAll('csm:', 'sm:')), `${manifest.id}/${schemeId}: hero typography matches preview`)
+      assert((backend['resources/views/partials/nav.blade.php'] ?? '').includes(theme.nav), `${manifest.id}/${schemeId}: Laravel navbar matches preview theme`)
+      if (schemeId === 'custom') {
+        assert(pages['index.html']?.includes('data-custom-palette') && layout.includes('data-custom-palette'), `${manifest.id}: custom palette survives export`)
+        assert(buildExportPayload(manifest.id, content, schemeId, layoutId, []).colorSchemeId === 'custom', `${manifest.id}: custom scheme is preserved`)
+      }
+      hospitalityThemeCases++
+    }
+  }
+}
+console.log(`ok: ${hospitalityThemeCases} hospitality palette/layout combinations share light page surfaces and selected themes`)
 
 console.log(`ok: ${manifests.length} templates, preview defaults + static ZIP + Laravel ZIP`)

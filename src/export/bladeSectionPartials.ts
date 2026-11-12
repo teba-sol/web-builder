@@ -115,6 +115,11 @@ export function generateBladeSectionPartials(payload: SiteExportPayload): Record
 section[id="contact"] .${wrapCls.split(' ')[0]}{width:100%}
 </style>`
 
+  if (payload.templateId === 'fitness') {
+    const details = CONTACT_INFO.replace("@include('partials.map')", '') + `
+@if($settings->booking_url)<div><p class="mb-1 text-sm">Class booking</p><p><a href="{{ $settings->booking_url }}" target="_blank" rel="noopener noreferrer">Book a class ↗</a></p></div>@endif`
+    contactShells['split-dark'] = `<section id="contact" class="bg-black text-white py-20"><div class="pulse-contact-grid px-6"><div class="min-w-0"><h2 class="text-4xl font-black uppercase mb-6">{{ $settings->contact_section_title }}</h2><div class="pulse-contact-details">${details}</div>@include('partials.map')</div><div class="pulse-contact-form"><h3 class="text-2xl font-bold mb-6">{{ $settings->contact_form_title }}</h3>${contactForm}</div></div></section>`
+  }
   return {
     'resources/views/partials/home-faq.blade.php': faqShells[cfg.faq] ?? faqShells.stacked,
     'resources/views/partials/home-explore.blade.php': `${exploreCss}${exploreShells[cfg.explore] ?? exploreShells['card-grid']}`,

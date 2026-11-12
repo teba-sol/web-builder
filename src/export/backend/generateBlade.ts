@@ -1,4 +1,9 @@
-import { getNavShellId, requireManifest } from '../../catalog/catalog'
+import { MEDICAL_CSS } from '../../templates/medicalStyles'
+import { CUSTOM_COLOR_SCHEME_ID } from '../../data/pickTemplate'
+import { HOSPITALITY_CSS } from '../../templates/booking/hospitalityTheme'
+import { getTheme } from '../../templates/getTheme'
+import { FITNESS_CSS } from '../../templates/fitnessStyles'
+import { getNavShellId } from '../../catalog/catalog'
 import { clonePaletteCss, isCloneTemplate, resolveClonePalette } from '../../templates/cloneTheme'
 import { LAYOUT_VARIANT_IDS, LAYOUT_VARIANT_PRESETS } from '../../data/layoutVariants'
 import { generateBladeSectionPartials } from '../bladeSectionPartials'
@@ -26,7 +31,7 @@ const BRAND_MARK = `<span class="inline-flex min-w-0 max-w-full items-center gap
 
 function navPartial(payload: SiteExportPayload): string {
   const { accent, templateId } = payload
-  const cta = `<a href="{{ \\App\\Support\\SiteLinks::href($settings->cta_link) }}" data-brand-cta class="text-white px-5 py-2 rounded-lg text-sm font-semibold shrink-0" style="background-color:{{ filled($settings->brand_primary) ? $settings->brand_primary : '${accent}' }}">{{ $settings->cta_text }}</a>`
+  const cta = `<a href="{{ \\App\\Support\\SiteLinks::href($settings->cta_link) }}" data-brand-cta class="${templateId === 'medical' ? getTheme(templateId, payload.colorSchemeId).navCta : 'text-white px-5 py-2 rounded-lg text-sm font-semibold shrink-0'}" style="background-color:{{ filled($settings->brand_primary) ? $settings->brand_primary : '${accent}' }}">{{ $settings->cta_text }}</a>`
 
   const shells: Record<string, string> = {
     business: `<nav class="sticky top-0 z-50 border-b bg-white/90 text-slate-900 backdrop-blur px-6 py-4"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4"><a href="{{ route('home') }}" class="text-xl font-bold">${BRAND_MARK}</a><div class="hidden lg:flex gap-6 text-sm font-medium">${NAV_LINKS}</div>${cta}</div></nav>`,
@@ -59,7 +64,10 @@ function navPartial(payload: SiteExportPayload): string {
     jungle: `<nav class="sticky top-0 z-50 bg-[#0a120c]/90 backdrop-blur border-b border-lime-700/30 text-lime-50 px-6 py-4"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4"><a href="{{ route('home') }}" class="text-lg font-medium tracking-wide no-underline">${BRAND_MARK}</a><div class="hidden lg:flex gap-7 text-sm font-medium">${NAV_LINKS}</div>${cta}</div></nav>`,
   }
 
-  const desktop = shells[getNavShellId(templateId)] ?? shells.business
+  const theme = getTheme(templateId, payload.colorSchemeId)
+  const desktop = isHospitalityTemplate(templateId) || templateId === 'medical'
+    ? `<nav class="${theme.nav}"><div class="max-w-6xl mx-auto flex items-center justify-between gap-4 px-6 py-4"><a href="{{ route('home') }}" class="text-xl font-semibold no-underline">${BRAND_MARK}</a><div class="hidden lg:flex gap-7 text-sm">${NAV_LINKS}</div>${cta}</div></nav>`
+    : shells[getNavShellId(templateId)] ?? shells.business
   const mobileNav = `<nav class="sticky top-0 z-50 border-b border-slate-200 bg-white/95 text-slate-900 backdrop-blur lg:hidden">
   <div class="flex items-center justify-between gap-3 px-4 py-3">
     <a href="{{ route('home') }}" class="min-w-0 truncate font-semibold no-underline">${BRAND_MARK}</a>
@@ -75,7 +83,7 @@ function navPartial(payload: SiteExportPayload): string {
     </details>
   </div>
 </nav>`
-  return `${mobileNav}<div class="hidden lg:block">${desktop}</div>`
+  return `${mobileNav}<div class="hidden lg:block${(payload.templateId === 'fitness' || payload.templateId === 'medical' || isHospitalityTemplate(payload.templateId)) ? ' sticky top-0 z-50' : ''}">${desktop}</div>`
 }
 
 function footerPartial(): string {
@@ -129,6 +137,7 @@ function generateHeroPartials(payload: SiteExportPayload): Record<string, string
     files[`resources/views/partials/heroes/${id}.blade.php`] = buildBladeHeroHtml({
       templateId: payload.templateId,
       heroLayout: preset.heroLayout,
+      colorSchemeId: payload.colorSchemeId,
       heroImage: 'hero',
       businessName: payload.content.businessName,
       tagline: payload.content.tagline,
@@ -264,9 +273,9 @@ export function generateBladeView(payload: SiteExportPayload): string {
   const trustLabel = isHospitalityTemplate(payload.templateId) ? 'Trusted' : 'Trust signals'
   const trustBand = `
 @if(($settings->section_visibility['stats'] ?? false) && $stats->isNotEmpty())
-<section class="py-16 ${accentInk(accent)}" style="background-color:${accent}">
+<section class="py-16 ${accentInk(accent)}${payload.templateId === 'fitness' ? ' pulse-trust' : isHospitalityTemplate(payload.templateId) ? ' stay-trust' : ''}" style="background-color:${accent}">
   <div class="max-w-6xl mx-auto px-6 pb-2 text-center"><p class="text-sm font-semibold uppercase tracking-widest opacity-80">${trustLabel}</p></div>
-  <div class="max-w-6xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8">
+  <div class="max-w-6xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8${payload.templateId === 'fitness' ? ' pulse-trust-grid' : ''}">
     @foreach($stats as $stat)
     <div class="text-center"><p class="text-3xl font-bold">{{ $stat->value }}</p><p class="text-sm opacity-70 mt-1">{{ $stat->label }}</p></div>
     @endforeach
@@ -284,14 +293,14 @@ ${roomsBeforeTrust(payload.templateId) ? trustBand : ''}
 @if(($settings->page_visibility['services'] ?? false) && $services->isNotEmpty())
 <section class="py-20"><div class="max-w-6xl mx-auto px-6">
   <div class="flex flex-wrap justify-between items-end gap-4 mb-10"><div><h2 class="text-3xl font-bold">{{ $settings->services_section_title }}</h2><p class="mt-2 opacity-70">{{ $settings->services_section_subtitle }}</p></div><a href="{{ route('services') }}" class="text-sm font-semibold" style="color:${accent}">Explore all →</a></div>
-  <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">@foreach($services->take(4) as $service)<a href="{{ route('services') }}" class="block rounded-xl border p-6 hover:shadow-md"><h3 class="font-semibold text-lg mb-2">{{ $service->title }}</h3><p class="opacity-80 line-clamp-3">{{ $service->description }}</p></a>@endforeach</div>
+  <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">@foreach($services->take(4) as $service)<a href="{{ route('services') }}" class="block rounded-xl border p-6 hover:shadow-md${payload.templateId === 'fitness' ? ' pulse-card' : ''}"><h3 class="font-semibold text-lg mb-2">{{ $service->title }}</h3><p class="opacity-80 line-clamp-3">{{ $service->description }}</p>${payload.templateId === 'fitness' ? '<div class="pulse-card-cue">Explore programs <span aria-hidden="true">→</span></div>' : ''}</a>@endforeach</div>
 </div></section>
 @endif
 
 @if(($settings->page_visibility['portfolio'] ?? false) && \\Illuminate\\Support\\Facades\\Route::has('portfolio') && $showcaseItems->isNotEmpty())
 <section class="bg-slate-50 py-20 text-slate-900"><div class="max-w-6xl mx-auto px-6">
   <div class="flex flex-wrap justify-between items-end gap-4 mb-10"><div><h2 class="text-3xl font-bold">{{ $settings->showcase_section_title }}</h2><p class="text-slate-600 mt-2">{{ $settings->showcase_section_subtitle }}</p></div><a href="{{ route('portfolio') }}" class="text-sm font-semibold" style="color:${accent}">Explore all →</a></div>
-  <div class="grid sm:grid-cols-3 gap-8">@foreach($showcaseItems->take(3) as $item)<a href="{{ route('portfolio') }}" class="block ${skin.card} hover:shadow-lg">@if($item->image)<img src="{{ \\App\\Support\\PublicAsset::url($item->image) }}" class="w-full aspect-[4/3] object-cover" alt="" />@endif<div class="p-6"><h3 class="font-semibold">{{ $item->title }}</h3><p class="opacity-80 line-clamp-2 mt-2">{{ $item->description }}</p></div></a>@endforeach</div>
+  <div class="grid sm:grid-cols-3 gap-8">@foreach($showcaseItems->take(3) as $item)<a href="{{ route('portfolio') }}" class="block ${skin.card} hover:shadow-lg${payload.templateId === 'fitness' ? ' pulse-card' : ''}">@if($item->image)<img src="{{ \\App\\Support\\PublicAsset::url($item->image) }}" class="w-full aspect-[4/3] object-cover" alt="" />@endif<div class="p-6"><h3 class="font-semibold">{{ $item->title }}</h3><p class="opacity-80 line-clamp-2 mt-2">{{ $item->description }}</p>${payload.templateId === 'fitness' ? '<div class="pulse-card-cue">View memberships <span aria-hidden="true">→</span></div>' : ''}</div></a>@endforeach</div>
 </div></section>
 @endif
 
@@ -332,13 +341,13 @@ ${roomsBeforeTrust(payload.templateId) ? trustBand : ''}
 @endif
 
 @if($settings->section_visibility['cta'] ?? false)
-<section class="py-20 ${accentInk(accent)}" style="background-color:${accent}"><div class="max-w-3xl mx-auto px-6 text-center"><h2 class="text-3xl font-bold mb-4">{{ $settings->cta_banner_title }}</h2><p class="mb-8 text-lg opacity-80">{{ $settings->cta_banner_text }}</p><a href="{{ \\App\\Support\\SiteLinks::href($settings->cta_link) }}" class="inline-block bg-white px-8 py-3 rounded-lg font-semibold" style="color:${accentLabelColor(accent)}">{{ $settings->cta_text }}</a></div></section>
+<section class="py-20 ${accentInk(accent)}${payload.templateId === 'fitness' ? ' pulse-cta' : ''}" style="background-color:${accent}"><div class="max-w-3xl mx-auto px-6 text-center"><h2 class="text-3xl font-bold mb-4">{{ $settings->cta_banner_title }}</h2><p class="mb-8 text-lg opacity-80">{{ $settings->cta_banner_text }}</p><a href="{{ \\App\\Support\\SiteLinks::href($settings->cta_link) }}" class="inline-block bg-white px-8 py-3 rounded-lg font-semibold" style="color:${accentLabelColor(accent)}">{{ $settings->cta_text }}</a></div></section>
 @endif
 
 @if($settings->page_visibility['contact'] ?? false)
 @include('partials.home-contact')
 @endif
-${isHospitalityTemplate(payload.templateId) ? '' : "\n@include('partials.home-explore')"}
+${isHospitalityTemplate(payload.templateId) || payload.templateId === 'fitness' ? '' : "\n@include('partials.home-explore')"}
 @endsection`
 }
 
@@ -377,7 +386,7 @@ export function generatePortfolioView(payload: SiteExportPayload): string {
   return `@extends('layouts.site')
 @section('content')
 @if($showcaseItems->isNotEmpty())
-<section class="py-20"><div class="max-w-6xl mx-auto px-6"><h1 class="text-4xl font-bold text-center mb-4">{{ $settings->showcase_section_title }}</h1><p class="text-center opacity-70 mb-12">{{ $settings->showcase_section_subtitle }}</p><div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">@foreach($showcaseItems as $item)<a href="{{ route('contact') }}" class="block rounded-xl border overflow-hidden hover:shadow-lg">@if($item->image)<img src="{{ \\App\\Support\\PublicAsset::url($item->image) }}" class="w-full aspect-[4/3] object-cover" alt="" />@endif<div class="p-6"><h3 class="font-semibold text-lg mb-2">{{ $item->title }}</h3><p class="opacity-80">{{ $item->description }}</p>@if($item->price)<p class="text-lg font-bold mt-2" style="color:${accent}">{{ $item->price }}</p>@endif</div></a>@endforeach</div></div></section>
+<section class="py-20"><div class="max-w-6xl mx-auto px-6"><h1 class="text-4xl font-bold text-center mb-4">{{ $settings->showcase_section_title }}</h1><p class="text-center opacity-70 mb-12">{{ $settings->showcase_section_subtitle }}</p><div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">@foreach($showcaseItems as $item)<a href="{{ route('contact') }}" class="block rounded-xl border overflow-hidden hover:shadow-lg${payload.templateId === 'fitness' ? ' pulse-card' : ''}">@if($item->image)<img src="{{ \\App\\Support\\PublicAsset::url($item->image) }}" class="w-full aspect-[4/3] object-cover" alt="" />@endif<div class="p-6"><h3 class="font-semibold text-lg mb-2">{{ $item->title }}</h3><p class="opacity-80">{{ $item->description }}</p>${payload.templateId === 'fitness' ? '<div class="pulse-card-cue">Ask about this membership <span aria-hidden="true">→</span></div>' : ''}@if($item->price)<p class="text-lg font-bold mt-2" style="color:${accent}">{{ $item->price }}</p>@endif</div></a>@endforeach</div></div></section>
 @endif
 @endsection`
 }
@@ -452,7 +461,16 @@ export function generateNewsPostView(_payload: SiteExportPayload): string {
 @endsection`
 }
 
-export function generateContactView(): string {
+export function generateContactView(payload?: SiteExportPayload): string {
+  if (payload?.templateId === 'fitness') {
+    return `@extends('layouts.site')
+@section('content')
+@include('partials.home-contact')
+@if($settings->section_visibility['faq'] ?? false)
+@include('partials.home-faq')
+@endif
+@endsection`
+  }
   return `@extends('layouts.site')
 @section('content')
 <section class="py-20"><div class="max-w-6xl mx-auto px-6"><h1 class="text-4xl font-bold mb-10">{{ $settings->contact_section_title }}</h1><div class="grid lg:grid-cols-2 gap-12"><div><h2 class="text-xl font-semibold mb-6">{{ $settings->contact_form_title }}</h2><div class="grid sm:grid-cols-2 gap-6 text-sm">@if($settings->email)<div><p class="opacity-60 mb-1">Email</p><p>{{ $settings->email }}</p></div>@endif @if($settings->reservation_email)<div><p class="opacity-60 mb-1">Reservations</p><p>{{ $settings->reservation_email }}</p></div>@endif @if($settings->support_email)<div><p class="opacity-60 mb-1">Support</p><p>{{ $settings->support_email }}</p></div>@endif @if($settings->whatsapp)<div><p class="opacity-60 mb-1">WhatsApp</p><p>{{ $settings->whatsapp }}</p></div>@endif @if($settings->phone)<div><p class="opacity-60 mb-1">Phone</p><p>{{ $settings->phone }}</p></div>@endif @if($settings->address)<div><p class="opacity-60 mb-1">Address</p><p>{{ $settings->address }}</p></div>@endif @if($settings->hours)<div><p class="opacity-60 mb-1">Hours</p><p>{{ $settings->hours }}</p></div>@endif</div>@include('partials.map')</div><div>@include('partials.contact-form')</div></div></section>
@@ -485,11 +503,14 @@ iframe { max-width: 100%; }
 img:not([data-brand-logo]):not([class*="object-cover"]):not([class*="object-contain"]):not([class*="h-full"]) { max-width: 100%; height: auto; }
 @media (max-width: 640px) { h1 { font-size: clamp(1.75rem, 8vw, 2.75rem) !important; line-height: 1.15 !important; } }
 ${LAYOUT_SHELL_CSS}
+${FITNESS_CSS}
+${MEDICAL_CSS}
+${HOSPITALITY_CSS}
 {!! \\App\\Support\\Brand::css($settings) !!}
 ${cloneCss}
 </style>
 </head>
-<body data-site-brand class="@hasSection('fullpage') webtemplate-clone @else tpl-${payload.templateId} ${requireManifest(payload.templateId).theme.page} {{ $layoutShell }} @endif">
+<body data-site-brand${payload.colorSchemeId === CUSTOM_COLOR_SCHEME_ID ? ' data-custom-palette' : ''}${isHospitalityTemplate(payload.templateId) ? ' data-hospitality-site' : ''} class="@hasSection('fullpage') webtemplate-clone @else tpl-${payload.templateId} ${getTheme(payload.templateId, payload.colorSchemeId).page} {{ $layoutShell }} @endif">
   @hasSection('fullpage')
     @yield('fullpage')
   @else
@@ -514,7 +535,7 @@ export function generateAllBladeViews(payload: SiteExportPayload): Record<string
     'resources/views/site/blog-post.blade.php': generateBlogPostView(payload),
     'resources/views/site/news.blade.php': generateNewsIndexView(payload),
     'resources/views/site/news-post.blade.php': generateNewsPostView(payload),
-    'resources/views/site/contact.blade.php': generateContactView(),
+    'resources/views/site/contact.blade.php': generateContactView(payload),
   }
   return Object.fromEntries(Object.entries(views).map(([path, html]) => [path, rewriteContainerVariantsForExport(html)]))
 }

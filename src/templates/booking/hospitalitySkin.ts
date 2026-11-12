@@ -22,7 +22,7 @@ export function roomsBeforeTrust(templateId: string): boolean {
   return templateId === 'hotel' || templateId === 'coastal' || templateId === 'jungle'
 }
 
-export function staySkin(templateId: string): StaySkin {
+function templateStaySkin(templateId: string): StaySkin {
   switch (templateId) {
     case 'guesthouse':
       return {
@@ -121,6 +121,10 @@ export function staySkin(templateId: string): StaySkin {
         tile: 'overflow-hidden rounded-sm border border-stone-300 bg-white text-slate-900 shadow-sm',
       }
   }
+}
+
+export function staySkin(templateId: string): StaySkin {
+  return { ...templateStaySkin(templateId), page: 'bg-white text-slate-800' }
 }
 
 export function accentButton(templateId: string, accent: string): string {
