@@ -169,16 +169,10 @@ export function RichTemplateLayout({
     pricing: visibility.pricing ? <PricingSection c={c} t={t} /> : null,
     team: visibility.team ? <TeamSection c={c} t={t} /> : null,
     faq: visibility.faq ? <FaqSectionView c={c} t={t} variant={variant} /> : null,
-<<<<<<< HEAD
-    cta: visibility.cta ? <CtaBannerSection c={c} t={t} basePath={basePath} /> : null,
-    contact: <ContactSectionView c={c} t={t} variant={variant} accent={accent} layout={layout.contactLayout} basePath={basePath} />,
-=======
     cta: visibility.cta ? <CtaBannerSection variant={variant} accent={accent} c={c} t={t} basePath={basePath} /> : null,
     contact: <ContactSectionView c={c} t={t} variant={variant} layout={layout.contactLayout} basePath={basePath} />,
->>>>>>> f8609a9ed8a87d219d98e9a9c924050d9ee55964
     footer: <FooterSection c={c} t={t} navItems={navItems} basePath={basePath} />,
-  }
-
+};
   const customHome: Record<string, ReactNode> = {
     axiom: <AxiomHome c={c} basePath={basePath} />,
     helix: <HelixHome c={c} basePath={basePath} />,
