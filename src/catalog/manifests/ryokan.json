@@ -135,66 +135,66 @@
     "explore": "magazine",
     "contactShell": "noir-gold",
     "contactForm": "elegant-serif",
-    "exploreTitle": "The hotel",
-    "exploreSubtitle": "Rooms, hot springs, and the rock churches",
-    "exploreLinkLabel": "Enter"
+    "exploreTitle": "The Courtyard",
+    "exploreSubtitle": "Quiet stone rooms, local dining, and rock-hewn visits",
+    "exploreLinkLabel": "Explore"
   },
   "showcase": {
-    "sectionTitle": "Seasonal Moments",
-    "sectionSubtitle": "a seasonal dinner, hot spring, and garden rituals for a quiet stay",
-    "navLabel": "Moments",
-    "itemLabel": "Moment",
+    "sectionTitle": "Courtyard Experiences",
+    "sectionSubtitle": "Traditional meals, coffee rituals, and quiet stays near Lalibela",
+    "navLabel": "Experiences",
+    "itemLabel": "Experience",
     "showPrice": true,
     "priceLabel": "From",
     "showTag": true,
-    "tagLabel": "Season"
+    "tagLabel": "Type"
   },
   "defaultShowcase": [
     {
-      "title": "regional Dinner",
-      "description": "Seasonal multi-course meal in a private dining room.",
+      "title": "Traditional Courtyard Dinner",
+      "description": "Freshly prepared Ethiopian seasonal meal in our quiet courtyard dining hall.",
       "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80",
-      "price": "6,600 ETB",
+      "price": "$30",
       "tag": "Dining",
       "link": "contact"
     },
     {
-      "title": "Private Hot Spring",
-      "description": "Reserved open-air bath bath for 60 minutes.",
+      "title": "Warm Herbal Bath",
+      "description": "Private warm stone bath infused with local highland herbs for 60 minutes.",
       "image": "https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80",
-      "price": "2,930 ETB",
-      "tag": "Hot spring",
+      "price": "$28",
+      "tag": "Wellness",
       "link": "contact"
     },
     {
-      "title": "Coffee Ceremony",
-      "description": "Matcha and sweets in our garden pavilion.",
+      "title": "Evening Coffee Ceremony",
+      "description": "Fresh green beans roasted beside your table with traditional snacks.",
       "image": "https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=600&q=80",
-      "price": "2,200 ETB",
-      "tag": "Ritual",
-      "link": "contact"
-    },
-    {
-      "title": "Rock-Hewn Morning",
-      "description": "Early walk with concierge to quiet temple paths.",
-      "image": "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=600&q=80",
-      "price": "Included",
+      "price": "$15",
       "tag": "Culture",
       "link": "contact"
     },
     {
-      "title": "Courtyard Stay",
-      "description": "Woven room with breakfast and hot spring access.",
+      "title": "Morning Church Walk",
+      "description": "Early guided walk from the hotel courtyard to Lalibela's rock-hewn churches.",
+      "image": "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=600&q=80",
+      "price": "Included",
+      "tag": "Heritage",
+      "link": "contact"
+    },
+    {
+      "title": "Courtyard Suite Stay",
+      "description": "Hand-crafted stone and timber room with breakfast included.",
       "image": "https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=600&q=80",
-      "price": "10,270 ETB",
+      "price": "$180",
       "tag": "Room",
       "link": "contact"
     },
     {
-      "title": "Garden Walk",
-      "description": "Private tour of seasonal plantings with our gardener.",
+      "title": "Courtyard Garden Walk",
+      "description": "Relaxed afternoon tour of our local herb garden and stone terrace.",
       "image": "https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80",
-      "price": "1,100 ETB",
+      "price": "$12",
       "tag": "Garden",
       "link": "contact"
     }
@@ -203,31 +203,31 @@
   "contactFields": [
     {
       "key": "reservationEmail",
-      "label": "Reservations",
-      "placeholder": "book@courtyardhotel.example"
+      "label": "Booking Email",
+      "placeholder": "booking@courtyardlalibela.et"
     },
     {
       "key": "phone",
-      "label": "Front Desk",
-      "placeholder": "+81 75 555 0100"
+      "label": "Phone Number",
+      "placeholder": "+251 33 336 0100"
     },
     {
       "key": "address",
       "label": "Address",
-      "placeholder": "7 Courtyard Lane"
+      "placeholder": "Rock-Hewn Road, Lalibela"
     },
     {
       "key": "hours",
-      "label": "Check-in",
-      "placeholder": "3pm–7pm"
+      "label": "Check-in Hours",
+      "placeholder": "2:00 PM – 10:00 PM"
     },
     {
       "key": "email",
       "label": "Email",
-      "placeholder": "stay@courtyardhotel.example"
+      "placeholder": "hello@courtyardlalibela.et"
     }
   ],
-  "servicesLabel": "Hospitality",
+  "servicesLabel": "Hotel Services",
   "pageLayouts": {
     "blog": "minimal",
     "blogPost": "editorial",
@@ -245,13 +245,13 @@
   },
   "defaults": {
     "businessName": "Courtyard Hotel",
-    "tagline": "Quiet rooms around the courtyard",
-    "heroSubtext": "A timber-and-stone hotel with courtyard rooms and a hot spring for the evening.",
+    "tagline": "Quiet stone rooms in the heart of Lalibela",
+    "heroSubtext": "Hand-crafted stone and timber rooms, warm courtyard dinners, and quiet paths near Lalibela's rock churches.",
     "heroImage": "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=1200&q=80",
-    "aboutTitle": "The hotel",
-    "about": "Courtyard Hotel keeps a slow pace. Guests leave their shoes at the step, eat by the courtyard fire, and sleep in rooms that face the garden.",
+    "aboutTitle": "Our Hotel",
+    "about": "Courtyard Hotel offers a calm, welcoming stay in Lalibela built around a peaceful stone courtyard. Guests enjoy fresh Ethiopian meals beside the evening fire, traditional coffee ceremonies, and rooms overlooking our garden.",
     "aboutImage": "https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=800&q=80",
-    "missionStatement": "A courtyard hotel with an evening bath and a quiet room.",
+    "missionStatement": "A quiet courtyard hotel with warm hospitality in Lalibela.",
     "pageVisibility": {
       "about": true,
       "services": true,
@@ -274,349 +274,384 @@
     "stats": [
       {
         "value": "18",
-        "label": "Rooms"
+        "label": "Courtyard Rooms"
       },
       {
-        "value": "1924",
-        "label": "Family Roots"
+        "value": "4.9★",
+        "label": "Guest Rating"
       },
       {
-        "value": "2",
-        "label": "Hot Springs"
+        "value": "Included",
+        "label": "Daily Breakfast"
       },
       {
-        "value": "a seasonal dinner",
-        "label": "Dinner"
+        "value": "5 Min",
+        "label": "To Rock Churches"
       }
     ],
-    "servicesSectionTitle": "Hospitality",
-    "servicesSectionSubtitle": "The rituals of a considered stay",
+    "servicesSectionTitle": "Hotel Services",
+    "servicesSectionSubtitle": "Simple comforts and thoughtful local care during your Lalibela stay",
     "services": [
       {
-        "title": "regional Dining",
-        "description": "Seasonal multi-course meals prepared by our head chef."
+        "title": "Traditional Dining",
+        "description": "Fresh Ethiopian and international meals served daily in our courtyard dining room."
       },
       {
-        "title": "Hot Spring",
-        "description": "Communal and private baths with mineral spring water."
+        "title": "Warm Stone Bath",
+        "description": "Soothing warm stone baths infused with highland herbs after your day of walking."
       },
       {
         "title": "Coffee Ceremony",
-        "description": "Optional matcha ceremony in our garden pavilion."
+        "description": "Afternoon freshly roasted Ethiopian coffee prepared beside our sunny garden terrace."
       },
       {
-        "title": "Temple Concierge",
-        "description": "Early access and quiet paths to nearby temples."
+        "title": "Guided Church Visits",
+        "description": "Friendly local guides and early morning walks to Lalibela's historic rock-hewn churches."
       }
     ],
     "stepsSectionTitle": "How It Works",
     "steps": [
       {
-        "title": "Consultation",
-        "description": "We learn about your goals and challenges in a discovery session."
+        "title": "Choose Your Room",
+        "description": "Browse our quiet courtyard rooms and main-house suite to pick your favorite space."
       },
       {
-        "title": "Strategy",
-        "description": "Our team crafts a tailored plan designed for your success."
+        "title": "Pick Travel Dates",
+        "description": "Select your check-in dates and add airport pickup from Lalibela Airport if needed."
       },
       {
-        "title": "Execution",
-        "description": "We deliver with precision, keeping you informed every step."
+        "title": "Book Directly",
+        "description": "Confirm your reservation easily with clear nightly rates in USD."
       },
       {
-        "title": "Growth",
-        "description": "We measure results and optimize for continuous improvement."
+        "title": "Check In & Unwind",
+        "description": "Arrive to warm hospitality, fresh coffee, and helpful local guidance throughout your stay."
       }
     ],
-    "showcaseSectionTitle": "Seasonal Moments",
-    "showcaseSectionSubtitle": "a seasonal dinner, hot spring, and garden rituals for a quiet stay",
+    "showcaseSectionTitle": "Courtyard Experiences",
+    "showcaseSectionSubtitle": "Traditional meals, coffee rituals, and quiet stays near Lalibela",
     "showcaseItems": [
       {
-        "title": "regional Dinner",
-        "description": "Seasonal multi-course meal in a private dining room.",
+        "title": "Traditional Courtyard Dinner",
+        "description": "Freshly prepared Ethiopian seasonal meal in our quiet courtyard dining hall.",
         "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80",
-        "price": "6,600 ETB",
+        "price": "$30",
         "tag": "Dining",
         "link": "contact"
       },
       {
-        "title": "Private Hot Spring",
-        "description": "Reserved open-air bath bath for 60 minutes.",
+        "title": "Warm Herbal Bath",
+        "description": "Private warm stone bath infused with local highland herbs for 60 minutes.",
         "image": "https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80",
-        "price": "2,930 ETB",
-        "tag": "Hot spring",
+        "price": "$28",
+        "tag": "Wellness",
         "link": "contact"
       },
       {
-        "title": "Coffee Ceremony",
-        "description": "Matcha and sweets in our garden pavilion.",
+        "title": "Evening Coffee Ceremony",
+        "description": "Fresh green beans roasted beside your table with traditional snacks.",
         "image": "https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=600&q=80",
-        "price": "2,200 ETB",
-        "tag": "Ritual",
-        "link": "contact"
-      },
-      {
-        "title": "Rock-Hewn Morning",
-        "description": "Early walk with concierge to quiet temple paths.",
-        "image": "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=600&q=80",
-        "price": "Included",
+        "price": "$15",
         "tag": "Culture",
         "link": "contact"
       },
       {
-        "title": "Courtyard Stay",
-        "description": "Woven room with breakfast and hot spring access.",
+        "title": "Morning Church Walk",
+        "description": "Early guided walk from the hotel courtyard to Lalibela's rock-hewn churches.",
+        "image": "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=600&q=80",
+        "price": "Included",
+        "tag": "Heritage",
+        "link": "contact"
+      },
+      {
+        "title": "Courtyard Suite Stay",
+        "description": "Hand-crafted stone and timber room with breakfast included.",
         "image": "https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=600&q=80",
-        "price": "10,270 ETB",
+        "price": "$180",
         "tag": "Room",
         "link": "contact"
       },
       {
-        "title": "Garden Walk",
-        "description": "Private tour of seasonal plantings with our gardener.",
+        "title": "Courtyard Garden Walk",
+        "description": "Relaxed afternoon tour of our local herb garden and stone terrace.",
         "image": "https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80",
-        "price": "1,100 ETB",
+        "price": "$12",
         "tag": "Garden",
         "link": "contact"
       }
     ],
-    "gallerySectionTitle": "Garden & Halls",
+    "gallerySectionTitle": "Around the Courtyard",
+    "galleryItems": [
+      {
+        "title": "Stone Terrace Sunrise",
+        "category": "Courtyard",
+        "image": "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=600&q=80"
+      },
+      {
+        "title": "Timber Courtyard Room",
+        "category": "Rooms",
+        "image": "https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=600&q=80"
+      },
+      {
+        "title": "Quiet Garden Pathway",
+        "category": "Courtyard",
+        "image": "https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80"
+      },
+      {
+        "title": "Courtyard Dining Room",
+        "category": "Dining",
+        "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80"
+      },
+      {
+        "title": "Afternoon Coffee Pavilion",
+        "category": "Dining",
+        "image": "https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=600&q=80"
+      },
+      {
+        "title": "Main House Suite",
+        "category": "Rooms",
+        "image": "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=600&q=80"
+      }
+    ],
     "galleryImages": [
       "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=600&q=80",
       "https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=600&q=80",
-      "https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80"
+      "https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80",
+      "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80",
+      "https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=600&q=80",
+      "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=600&q=80"
     ],
-    "testimonialsSectionTitle": "Guests Reflect",
+    "testimonialsSectionTitle": "Guest Reviews",
     "testimonials": [
       {
-        "quote": "Outstanding service and incredible results. Highly recommended!",
-        "author": "Elena Ward",
-        "role": "CEO, TechStart"
+        "quote": "So peaceful and close to the rock churches. Our room was spotless and the courtyard dinner was wonderful.",
+        "author": "Yohannes Mekonnen",
+        "role": "Cultural Traveler"
       },
       {
-        "quote": "They transformed our business. Professional, creative, and reliable.",
-        "author": "Noah Bennett",
-        "role": "Founder, Bloom Co"
+        "quote": "The morning coffee ceremony and calm garden terrace made our Lalibela trip truly special.",
+        "author": "Rahel Desta",
+        "role": "Weekend Guest"
       },
       {
-        "quote": "The best decision we made this year. Exceeded every expectation.",
-        "author": "Maya Chen",
-        "role": "Director, Apex Group"
+        "quote": "Warm hospitality, helpful airport pickup, and thoughtful local advice from the reception desk.",
+        "author": "Kebede Tilahun",
+        "role": "Family Guest"
       }
     ],
     "faqSectionTitle": "Frequently Asked Questions",
     "faqs": [
       {
-        "question": "How do I get started?",
-        "answer": "Simply reach out via our contact form or give us a call. We offer a free initial consultation."
+        "question": "How close is the hotel to Lalibela's rock-hewn churches?",
+        "answer": "We are a short walk from the main church paths, and our reception team can arrange a trusted local guide for your morning visit."
       },
       {
-        "question": "What are your pricing options?",
-        "answer": "We offer flexible packages tailored to your needs and budget. Contact us for a custom quote."
+        "question": "Are meals and traditional coffee ceremonies available?",
+        "answer": "Yes. Daily breakfast is included, and guests can reserve dinner and traditional coffee ceremonies in the courtyard."
       },
       {
-        "question": "How long does a typical project take?",
-        "answer": "Timelines vary by scope, but most projects are completed within 2–8 weeks."
+        "question": "Do you provide Lalibela Airport shuttle service?",
+        "answer": "Yes, share your arrival flight with us and our hotel vehicle will meet you at Lalibela Airport."
       },
       {
-        "question": "Do you offer ongoing support?",
-        "answer": "Yes! We provide continued support and maintenance to ensure long-term success."
+        "question": "Can we book multiple rooms together for a tour group?",
+        "answer": "Yes, send us your group size and travel dates through Contact Us and we will reserve courtyard rooms side by side."
       }
     ],
-    "teamSectionTitle": "Meet the Team",
-    "blogSectionTitle": "Latest from Our Blog",
-    "blogSectionSubtitle": "Insights, tips, and updates from our team",
+    "teamSectionTitle": "Meet Our Team",
+    "blogSectionTitle": "Stories from Lalibela",
+    "blogSectionSubtitle": "Heritage walks, traditional food, and peaceful stays in the highlands",
     "newsSectionTitle": "News & Updates",
-    "newsSectionSubtitle": "Announcements, press releases, and company news",
+    "newsSectionSubtitle": "Seasonal dining, cultural mornings, and courtyard hotel updates",
     "newsPosts": [
       {
-        "title": "We Are Expanding to Serve You Better",
-        "slug": "expanding-to-serve-you-better",
-        "excerpt": "New locations, extended hours, and more ways to connect with our team.",
-        "body": "We are thrilled to announce expanded service hours and a new consultation space designed around your comfort and convenience.\n\nThis investment reflects our commitment to accessibility and excellence. Thank you for being part of our journey — we cannot wait to welcome you.",
-        "image": "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80",
+        "title": "Evening Stone Terrace Opens for Dinner Guests",
+        "slug": "evening-stone-terrace-opens",
+        "excerpt": "Dine under the clear Lalibela night sky with local dishes and fresh honey wine.",
+        "body": "Our newly finished stone terrace overlooks the quiet eastern valley of Lalibela.\n\nGuests can reserve traditional Ethiopian platters and warm spiced tea beside courtyard lanterns.",
+        "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80",
         "author": "Selam Tadesse",
         "date": "2026-04-01"
       },
       {
-        "title": "Award Recognizes Our Commitment to Quality",
-        "slug": "award-quality-commitment",
-        "excerpt": "Industry leaders honored our team for outstanding client satisfaction.",
-        "body": "Receiving this recognition is a testament to the people behind our work — dedicated professionals who show up every day with care and craft.\n\nWe share this award with every client who trusted us with their goals. Your feedback shapes how we grow and improve.",
-        "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80",
-        "author": "Communications",
+        "title": "Daily Coffee Ceremony Now Included for Weekend Stays",
+        "slug": "daily-coffee-ceremony-included",
+        "excerpt": "Relax in the courtyard pavilion every afternoon with freshly roasted Ethiopian coffee.",
+        "body": "Every Friday through Sunday, guests are invited to gather in our sheltered garden courtyard for a traditional buna ceremony.\n\nWe serve fresh beans alongside warm kocho bread and roasted barley.",
+        "image": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=80",
+        "author": "Guest Relations",
         "date": "2026-03-18"
       },
       {
-        "title": "Partnership Opens New Opportunities",
-        "slug": "partnership-new-opportunities",
-        "excerpt": "Strategic collaboration brings enhanced offerings to our community.",
-        "body": "Our new partnership combines complementary strengths to deliver more value, faster turnaround, and broader expertise under one roof.\n\nStay tuned for launch events and early-access opportunities for existing clients.",
-        "image": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80",
-        "author": "Leadership",
+        "title": "Trusted Airport Transfers from Lalibela Airport",
+        "slug": "lalibela-airport-transfers",
+        "excerpt": "Easy 25-minute drive from arrivals directly to your courtyard room.",
+        "body": "Our hotel drivers track incoming daily flights so there is never a wait at the terminal.\n\nJust add your flight time when messaging our desk.",
+        "image": "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80",
+        "author": "Reception Desk",
         "date": "2026-02-05"
       }
     ],
-    "pricingSectionTitle": "Pricing Plans",
+    "pricingSectionTitle": "Stay Packages",
     "pricing": [
       {
-        "title": "Starter",
-        "description": "Essential features for individuals and small teams getting started.",
-        "price": "1,600 ETB/mo",
+        "title": "Courtyard Stay",
+        "description": "Quiet stone room for one or two guests with fresh breakfast every morning.",
+        "price": "$115/night",
         "tag": "Most popular",
         "featured": false
       },
       {
-        "title": "Professional",
-        "description": "Advanced tools, priority support, and integrations for growing businesses.",
-        "price": "4,350 ETB/mo",
+        "title": "Heritage Half-Board",
+        "description": "Courtyard suite stay with dinner, afternoon coffee ceremony, and local walking guide.",
+        "price": "$180/night",
         "tag": "Best value",
         "featured": true
       },
       {
-        "title": "Enterprise",
-        "description": "Custom solutions, dedicated account management, and SLA guarantees.",
-        "price": "Custom",
-        "tag": "Contact us",
+        "title": "Main-House Suite",
+        "description": "Private lounge, spacious courtyard balcony, and airport pickup included.",
+        "price": "$265/night",
+        "tag": "Luxury stay",
         "featured": false
       }
     ],
-    "roomsSectionTitle": "Rooms",
-    "roomsSectionSubtitle": "Courtyard rooms and a main-house suite, priced per night in local currency.",
+    "roomsSectionTitle": "Courtyard Rooms",
+    "roomsSectionSubtitle": "Quiet stone rooms and a main-house suite, priced per night in USD.",
     "bookingSectionTitle": "Reserve Your Stay",
-    "bookingSectionSubtitle": "Search your pilgrimage dates and reserve the room that is free.",
+    "bookingSectionSubtitle": "Select your travel dates and reserve an open room in Lalibela.",
     "roomTypes": [
       {
         "name": "Courtyard Room",
-        "slug": "washitsu",
+        "slug": "courtyard-room",
         "parentSlug": "",
-        "description": "A quiet room with woven floor mats, cotton bedding, and a view of the hotel garden. Dinner in the courtyard is optional.",
+        "description": "A peaceful stone-and-timber room opening onto our sunlit garden courtyard, with fresh cotton bedding and breakfast included.",
         "shortDescription": "Garden view · 22 m²",
-        "basePrice": "6200",
-        "currency": "ETB",
+        "basePrice": "115",
+        "currency": "USD",
         "maxAdults": "2",
         "maxChildren": "1",
         "maxOccupancy": "3",
-        "bedConfiguration": "2 floor beds",
+        "bedConfiguration": "1 Queen",
         "sizeSqm": "22",
-        "amenities": "Cotton robe, Hot spring access, Coffee set, Garden view",
+        "amenities": "Wi-Fi, Breakfast included, Garden view, Tea & coffee",
         "image": "https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=900&q=80",
         "unitCount": "6",
-        "unitPrefix": "WA-",
+        "unitPrefix": "CY-",
         "isActive": true
       },
       {
-        "name": "Courtyard Room · Private Spring",
-        "slug": "washitsu-private-hot spring",
-        "parentSlug": "washitsu",
-        "description": "The courtyard room with a private hot-spring bath in cedar, for two guests.",
-        "shortDescription": "Private spring · 28 m²",
-        "basePrice": "9800",
-        "currency": "ETB",
+        "name": "Courtyard Room · Private Bath Suite",
+        "slug": "courtyard-private-bath",
+        "parentSlug": "courtyard-room",
+        "description": "Spacious courtyard room featuring a deep warm stone bath and quiet seating porch.",
+        "shortDescription": "Warm stone bath · 28 m²",
+        "basePrice": "180",
+        "currency": "USD",
         "maxAdults": "2",
         "maxChildren": "0",
         "maxOccupancy": "2",
-        "bedConfiguration": "2 floor beds",
+        "bedConfiguration": "1 King",
         "sizeSqm": "28",
-        "amenities": "Private hot spring, Cotton robe, Coffee set, Garden",
+        "amenities": "Wi-Fi, Warm stone bath, Private porch, Breakfast included",
         "image": "https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=900&q=80",
         "unitCount": "3",
-        "unitPrefix": "ON-",
+        "unitPrefix": "CB-",
         "isActive": true
       },
       {
         "name": "Main House Suite",
-        "slug": "honkan-suite",
+        "slug": "main-house-suite",
         "parentSlug": "",
-        "description": "The main-house suite combines a sitting room, a king bed, and a veranda over the compound.",
+        "description": "Our largest suite combining a sunlit sitting room, a king bedroom, and a wide veranda looking across the stone courtyard.",
         "shortDescription": "Veranda · 40 m²",
-        "basePrice": "14500",
-        "currency": "ETB",
+        "basePrice": "265",
+        "currency": "USD",
         "maxAdults": "3",
         "maxChildren": "1",
         "maxOccupancy": "4",
-        "bedConfiguration": "1 King + floor bed",
+        "bedConfiguration": "1 King + daybed",
         "sizeSqm": "40",
-        "amenities": "Hot spring access, Veranda, Coffee set, Concierge",
+        "amenities": "Wi-Fi, Wide veranda, Lounge, Breakfast included, Airport pickup",
         "image": "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=900&q=80",
         "unitCount": "2",
-        "unitPrefix": "HN-",
+        "unitPrefix": "MH-",
         "isActive": true
       }
     ],
     "blogPosts": [
       {
-        "title": "5 Strategies to Grow Your Business This Year",
-        "slug": "5-strategies-to-grow-your-business",
-        "excerpt": "Practical steps you can take today to build momentum and reach more customers.",
-        "body": "Growing a business takes focus, consistency, and a willingness to adapt. Start by clarifying your core offer, then double down on the channels that already bring results.\n\nReview your customer journey from first touch to repeat purchase. Small improvements at each step compound into meaningful revenue gains. Finally, invest in relationships — referrals and retention often outperform cold outreach.",
-        "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
-        "author": "Yonas Gebre",
+        "title": "Visiting Lalibela's Rock-Hewn Churches at Sunrise",
+        "slug": "lalibela-rock-churches-sunrise",
+        "excerpt": "Why early morning is the calmest time to explore the stone pathways and courtyards.",
+        "body": "Walking through Lalibela just after sunrise lets you hear morning chants echo gently across the ancient carved courtyards before daytime crowds arrive.\n\nHave hot tea and honey bread on our terrace at 6:30 AM, then join our local guide for a relaxed five-minute stroll down to the first church gate.",
+        "image": "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800&q=80",
+        "author": "Abebe Worku",
         "date": "2026-03-12"
       },
       {
-        "title": "What Clients Are Asking Us Right Now",
-        "slug": "what-clients-are-asking-us",
-        "excerpt": "A quick roundup of the most common questions we hear — and how we answer them.",
-        "body": "Every season brings a new set of priorities. Lately, clients ask about pricing transparency, faster turnaround times, and how to stand out in crowded markets.\n\nOur advice stays grounded in fundamentals: deliver exceptional value, communicate clearly, and measure what matters. When in doubt, talk to your customers — their feedback is the best roadmap.",
-        "image": "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80",
-        "author": "Meron Assefa",
+        "title": "Seasonal Ethiopian Meals from Local Highlands",
+        "slug": "seasonal-ethiopian-meals-lalibela",
+        "excerpt": "Warm stews, fresh teff injera, and local white honey served in our courtyard dining room.",
+        "body": "Good travel memories often start around the dinner table.\n\nOur kitchen partners with surrounding farming families in Lasta to bring fresh teff, garden greens, and golden highland honey to evening service alongside quiet candlelight.",
+        "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80",
+        "author": "Almaz Belay",
         "date": "2026-02-28"
       },
       {
-        "title": "Behind the Scenes: How We Work",
-        "slug": "behind-the-scenes-how-we-work",
-        "excerpt": "Take a peek at our process, tools, and the principles that guide every project.",
-        "body": "We believe great outcomes come from clear goals, collaborative planning, and disciplined execution. Every engagement starts with listening — understanding where you are and where you want to go.\n\nFrom there we build a tailored plan with milestones you can track. Throughout delivery we keep communication open so there are no surprises, only steady progress toward results you can measure.",
-        "image": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80",
-        "author": "Kalkidan Tesfaye",
+        "title": "Planning Your Stay Around Ethiopian Holidays & Timkat",
+        "slug": "planning-stay-ethiopian-holidays",
+        "excerpt": "How far ahead to reserve rooms during Genna, Timkat, and busy harvest travel months.",
+        "body": "Lalibela comes alive during Christmas (Genna) and Epiphany (Timkat) with peaceful white-robed processions and warm hospitality throughout town.\n\nBooking your courtyard room early ensures quiet rest just steps from the celebrations.",
+        "image": "https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=800&q=80",
+        "author": "Yonas Getahun",
         "date": "2026-01-15"
       }
     ],
     "team": [
       {
-        "name": "James Carter",
-        "role": "Founder & CEO",
+        "name": "Abebe Worku",
+        "role": "Hotel Manager",
         "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80"
       },
       {
-        "name": "Elena Ward",
-        "role": "Creative Director",
+        "name": "Almaz Belay",
+        "role": "Head Chef",
         "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
       },
       {
-        "name": "Noah Bennett",
-        "role": "Operations Lead",
+        "name": "Yonas Getahun",
+        "role": "Guest Experience Manager",
         "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80"
       }
     ],
-    "ctaBannerTitle": "Reserve your room",
-    "ctaBannerText": "Book a washitsu or private hot spring suite. Check-in from 3pm.",
+    "ctaBannerTitle": "Reserve your stay in Lalibela",
+    "ctaBannerText": "Check open dates and book a quiet courtyard room or main-house suite directly.",
     "ctaText": "Book Stay",
     "ctaLink": "book",
-    "email": "stay@courtyardhotel.example",
-    "phone": "+81 75 555 0100",
-    "address": "7 Courtyard Lane",
-    "hours": "Front desk 6:30–22:00",
+    "email": "hello@courtyardlalibela.et",
+    "phone": "+251 33 336 0100",
+    "address": "Rock-Hewn Road, Lalibela",
+    "hours": "Front desk 6:00–22:00",
     "instagram": "",
     "website": "",
     "linkedin": "",
     "whatsapp": "",
     "supportEmail": "",
-    "reservationEmail": "book@courtyardhotel.example",
+    "reservationEmail": "booking@courtyardlalibela.et",
     "licenseNumber": "",
     "bookingUrl": "",
-    "contactSectionTitle": "Get in Touch",
+    "contactSectionTitle": "Contact Us",
     "contactFormTitle": "Send Us a Message",
     "contactFormUrl": "",
-    "contactFormButtonText": "Send message",
-    "city": "Kyoto",
-    "country": "Japan",
+    "contactFormButtonText": "Send Message",
+    "city": "Lalibela",
+    "country": "Ethiopia",
     "starRating": "4",
     "checkInTime": "14:00",
     "checkOutTime": "11:00",
-    "propertyAmenities": "Wi-Fi, Courtyard, Hot spring, Restaurant, Generator backup",
-    "footerBlurb": "Courtyard rooms and an evening bath.",
+    "propertyAmenities": "Wi-Fi, Courtyard garden, Restaurant, Coffee ceremony, Airport pickup",
+    "footerBlurb": "Quiet courtyard rooms and traditional hospitality in Lalibela.",
     "footerNote": "All rights reserved."
   }
 }

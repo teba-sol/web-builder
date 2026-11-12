@@ -3,6 +3,7 @@ import { lazy, Suspense, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { getColorSchemes } from '../data/colorSchemes'
 import { getTemplateMeta } from '../data/defaults'
+import { isHospitalityTemplate } from '../data/hospitality'
 import { getLayoutVariant, type HeroLayout, type TestimonialLayout } from '../data/layoutVariants'
 
 import { getManifest } from '../catalog/catalog'
@@ -41,7 +42,6 @@ import {
 } from './booking/BookingPages'
 import { staySkin } from './booking/hospitalitySkin'
 import { RoomPrice } from './booking/RoomPrice'
-import { isHospitalityTemplate } from '../data/hospitality'
 import { type TemplateTheme } from './themes'
 import { catalogueRoomTypes } from '../data/bookingPreview'
 import { coverPhoto } from '../data/hospitality'
@@ -143,7 +143,7 @@ export function RichTemplateLayout({
     about: <AboutSection c={c} t={t} />,
     services: <ServicesSection c={c} t={t} meta={meta?.servicesLabel} />,
     steps: visibility.steps ? <StepsSection c={c} t={t} /> : null,
-    testimonials: visibility.testimonials ? <TestimonialsSection c={c} t={t} layout={layout.testimonialLayout} /> : null,
+    testimonials: visibility.testimonials ? <TestimonialsSection c={c} t={t} layout={layout.testimonialLayout} hospitality={isHospitalityTemplate(variant)} /> : null,
     'blog-teaser': c.pageVisibility.blog ? <BlogTeaser {...layoutProps} /> : null,
     'news-teaser': c.pageVisibility.news ? <NewsTeaser {...layoutProps} /> : null,
     'services-teaser': c.pageVisibility.services ? <ServicesTeaser {...layoutProps} /> : null,
@@ -479,7 +479,7 @@ function StepsSection({ c, t }: { c: SiteContent; t: TemplateTheme }) {
 
 function StarRating() {
   return (
-    <div className="mb-4 flex gap-0.5 text-amber-400" aria-hidden>
+    <div className="mb-4 flex w-full justify-center gap-0.5 text-amber-400" aria-hidden>
       {Array.from({ length: 5 }).map((_, i) => (
         <span key={i}>★</span>
       ))}
@@ -489,28 +489,33 @@ function StarRating() {
 
 function ReviewCard({ item, t }: { item: { quote: string; author: string; role: string }; t: TemplateTheme }) {
   return (
-    <div className={t.testimonial}>
-      <StarRating />
-      <p className={`mb-6 text-lg leading-relaxed ${t.cardText}`}>"{item.quote}"</p>
-      <p className={`font-semibold ${t.cardTitle}`}>{item.author}</p>
-      <p className={`text-sm ${t.cardText}`}>{item.role}</p>
+    <div className={`${t.testimonial} flex h-full flex-col items-center justify-between text-center`}>
+      <div className="flex w-full flex-col items-center">
+        <StarRating />
+        <p className={`mb-6 text-lg leading-relaxed ${t.cardText}`}>"{item.quote}"</p>
+      </div>
+      <div className="mt-auto flex flex-col items-center pt-2">
+        <p className={`font-semibold ${t.cardTitle}`}>{item.author}</p>
+        <p className={`text-sm ${t.cardText}`}>{item.role}</p>
+      </div>
     </div>
   )
 }
 
-function TestimonialsSection({ c, t, layout }: { c: SiteContent; t: TemplateTheme; layout: TestimonialLayout }) {
+function TestimonialsSection({ c, t, layout, hospitality }: { c: SiteContent; t: TemplateTheme; layout: TestimonialLayout; hospitality: boolean }) {
   const testimonials = c.testimonials.filter((item) => item.quote)
+  const subtitle = hospitality ? 'What our guests say about their stay' : 'What our clients say about us'
 
   return (
     <section id="testimonials" className={t.sectionAlt}>
       <div className="mx-auto max-w-6xl px-4 csm:px-6">
         <h2 className={`mb-4 text-center ${t.sectionTitle}`}>{c.testimonialsSectionTitle}</h2>
-        <p className={`mb-14 text-center ${t.sectionSubtitle}`}>What our clients say about us</p>
+        <p className={`mb-14 text-center ${t.sectionSubtitle}`}>{subtitle}</p>
         {testimonials.length === 0 ? (
-          <p className={`text-center ${t.cardText}`}>Add client reviews in the editor to showcase social proof.</p>
+          <p className={`text-center ${t.cardText}`}>Add guest or client reviews in the editor.</p>
         ) : layout === 'featured' ? (
           <div className="space-y-8">
-            <div className={`mx-auto max-w-3xl text-center ${t.testimonial}`}>
+            <div className={`${t.testimonial} mx-auto flex max-w-3xl flex-col items-center text-center`}>
               <StarRating />
               <p className={`mb-6 text-2xl leading-relaxed ${t.cardText}`}>"{testimonials[0].quote}"</p>
               <p className={`text-lg font-semibold ${t.cardTitle}`}>{testimonials[0].author}</p>
@@ -527,13 +532,11 @@ function TestimonialsSection({ c, t, layout }: { c: SiteContent; t: TemplateThem
         ) : layout === 'list' ? (
           <div className="mx-auto max-w-3xl space-y-6">
             {testimonials.map((item, i) => (
-              <div key={i} className={`${t.testimonial} flex flex-col csm:flex-row csm:items-start csm:gap-6`}>
+              <div key={i} className={`${t.testimonial} flex flex-col items-center text-center`}>
                 <StarRating />
-                <div>
-                  <p className={`mb-4 text-lg leading-relaxed ${t.cardText}`}>"{item.quote}"</p>
-                  <p className={`font-semibold ${t.cardTitle}`}>{item.author}</p>
-                  <p className={`text-sm ${t.cardText}`}>{item.role}</p>
-                </div>
+                <p className={`mb-4 text-lg leading-relaxed ${t.cardText}`}>"{item.quote}"</p>
+                <p className={`font-semibold ${t.cardTitle}`}>{item.author}</p>
+                <p className={`text-sm ${t.cardText}`}>{item.role}</p>
               </div>
             ))}
           </div>

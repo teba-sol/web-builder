@@ -403,7 +403,7 @@ export function ContactSectionView({
   const meta = getTemplateMeta(variant)
   if (!meta) return null
   const shell = getSectionVariants(variant).contactShell
-  const title = c.contactSectionTitle || 'Get in Touch'
+  const title = c.contactSectionTitle || 'Contact Us'
   const ctaHref = resolveSiteHref(basePath, c.ctaLink || 'contact', c)
   const form = <ContactFormWrap c={c} t={t} variant={variant} layout={layout} />
   const info = (
@@ -557,12 +557,10 @@ export function ContactSectionView({
     ),
     'coastal-wave': (
       <section id="contact" className={t.contact}>
-        <div className="border-b-4 border-sky-400 bg-gradient-to-b from-sky-50 to-white px-6 py-14">
-          <div className="mx-auto max-w-6xl">
-            <h2 className={`mb-2 text-3xl font-bold text-sky-950 ${t.sectionTitle}`}>{title}</h2>
-            <p className="mb-10 text-sky-700">Reach our team for bookings and local recommendations</p>
-            <div className="grid gap-12 clg:grid-cols-2">{info}{form}</div>
-          </div>
+        <div className="mx-auto max-w-6xl px-6">
+          <h2 className={`mb-2 text-3xl font-bold ${t.sectionTitle}`}>{title}</h2>
+          <p className={`mb-10 ${t.sectionSubtitle}`}>Reach our team for bookings and local recommendations</p>
+          <div className="grid gap-12 clg:grid-cols-2">{info}{form}</div>
         </div>
       </section>
     ),
@@ -593,7 +591,7 @@ export function ContactSectionView({
           <div className="grid items-start gap-12 clg:grid-cols-[1fr_1.1fr]">
             <div>
               <h2 className={`mb-4 font-serif text-3xl text-[#2d1810] ${t.sectionTitle}`}>{title}</h2>
-              <p className={`mb-8 text-[#5c3d2e] ${t.cardText}`}>Questions about beans, events, or catering? Send us a note.</p>
+              <p className={`mb-8 text-[#5c3d2e] ${t.cardText}`}>{c.contactFormTitle || 'Have a question or booking request? Send us a message.'}</p>
               {info}
             </div>
             <div>{form}</div>

@@ -108,6 +108,12 @@ export interface TestimonialItem {
   role: string
 }
 
+export interface GalleryItem {
+  image: string
+  title: string
+  category: string
+}
+
 export interface FaqItem {
   question: string
   answer: string
@@ -188,6 +194,7 @@ export interface SiteContent {
   showcaseItems: ShowcaseItem[]
   gallerySectionTitle: string
   galleryImages: string[]
+  galleryItems?: GalleryItem[]
   testimonialsSectionTitle: string
   testimonials: TestimonialItem[]
   faqSectionTitle: string

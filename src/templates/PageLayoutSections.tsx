@@ -1,7 +1,9 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { getShowcaseConfig } from '../data/sectionConfig'
 import { canLinkToPage, resolveSiteHref } from '../data/siteNav'
 import type { BlogPostItem, NewsItem, SiteContent, TemplateId } from '../types'
+import { getPopulatedGalleryEntries, groupGalleryEntries } from '../utils/gallery'
 import { getPageLayouts } from './pageLayouts'
 import type { TemplateTheme } from './themes'
 
@@ -270,31 +272,82 @@ export function NewsPostPage({ c, t, variant, basePath, slug }: LayoutProps & { 
 // ─── Gallery ────────────────────────────────────────────────────────────────
 
 export function GalleryPage({ c, t, variant }: Omit<LayoutProps, 'basePath'>) {
-  const images = c.galleryImages.filter(Boolean)
-  if (images.length === 0) return <EmptyPage t={t} title={c.gallerySectionTitle} message="Add gallery images in the editor to populate this page." />
+  const entries = getPopulatedGalleryEntries(c)
+  const [activeCategory, setActiveCategory] = useState<string>('All')
+  if (entries.length === 0) return <EmptyPage t={t} title={c.gallerySectionTitle} message="Add gallery images in the editor to populate this page." />
   const layout = getPageLayouts(variant).gallery
+  const { categories, groups } = groupGalleryEntries(entries)
+  const visibleGroups =
+    activeCategory === 'All' || !categories.includes(activeCategory)
+      ? groups
+      : groups.filter((g) => g.category === activeCategory)
+
+  const renderFigure = (item: { image: string; title: string }, i: number, imgCls: string) => (
+    <figure key={i} className={layout === 'masonry' ? 'mb-4 break-inside-avoid' : ''}>
+      <img src={item.image} alt={item.title || c.gallerySectionTitle} className={imgCls} />
+      {item.title && (
+        <figcaption className={`mt-2 text-sm font-medium ${t.cardTitle}`}>
+          {item.title}
+        </figcaption>
+      )}
+    </figure>
+  )
 
   return (
     <section className={t.sectionAlt}>
       <div className="mx-auto max-w-6xl px-4 csm:px-6 py-12">
         <PageHeader title={c.gallerySectionTitle} t={t} centered />
-        {layout === 'masonry' ? (
-          <div className="columns-1 gap-4 csm:columns-2 clg:columns-3">
-            {images.map((img, i) => (
-              <img key={i} src={img} alt="" className={`mb-4 w-full break-inside-avoid ${t.gallery}`} />
-            ))}
-          </div>
-        ) : layout === 'rows' ? (
-          <div className="space-y-6">
-            {images.map((img, i) => (
-              <img key={i} src={img} alt="" className={`w-full ${t.gallery} ${i % 2 === 0 ? 'max-h-[480px] object-cover' : 'max-h-72 object-cover'}`} />
-            ))}
-          </div>
-        ) : (
-          <div className="grid gap-4 cmd:grid-cols-3">
-            {images.map((img, i) => <img key={i} src={img} alt="" className={t.gallery} />)}
+        {categories.length > 0 && (
+          <div className="mb-10 flex flex-wrap justify-center gap-2">
+            {['All', ...categories].map((category) => {
+              const selected = activeCategory === category || (activeCategory !== 'All' && !categories.includes(activeCategory) && category === 'All')
+              return (
+                <button
+                  key={category}
+                  type="button"
+                  onClick={() => setActiveCategory(category)}
+                  className={`rounded-full border px-4 py-1.5 text-sm font-medium transition ${
+                    selected
+                      ? 'border-current bg-black/10 font-semibold'
+                      : 'border-current/20 opacity-75 hover:opacity-100'
+                  }`}
+                >
+                  {category}
+                </button>
+              )
+            })}
           </div>
         )}
+        <div className="space-y-12">
+          {visibleGroups.map((group) => (
+            <div key={group.category || 'all'}>
+              {group.category && (
+                <h3 className={`mb-5 text-2xl font-semibold ${t.cardTitle}`}>
+                  {group.category}
+                </h3>
+              )}
+              {layout === 'masonry' ? (
+                <div className="columns-1 gap-4 csm:columns-2 clg:columns-3">
+                  {group.items.map((item, i) => renderFigure(item, i, `w-full ${t.gallery}`))}
+                </div>
+              ) : layout === 'rows' ? (
+                <div className="space-y-6">
+                  {group.items.map((item, i) =>
+                    renderFigure(
+                      item,
+                      i,
+                      `w-full ${t.gallery} ${i % 2 === 0 ? 'max-h-[480px] object-cover' : 'max-h-72 object-cover'}`,
+                    ),
+                  )}
+                </div>
+              ) : (
+                <div className="grid gap-4 cmd:grid-cols-3">
+                  {group.items.map((item, i) => renderFigure(item, i, t.gallery))}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   )

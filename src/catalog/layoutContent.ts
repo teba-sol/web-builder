@@ -50,6 +50,7 @@ export function layoutContent(manifest: TemplateManifest): SiteContent {
     showcaseSectionSubtitle: '',
     showcaseItems: createShowcaseItems([]),
     galleryImages: ['', '', ''],
+    galleryItems: [],
     testimonials: [{ quote: '', author: '', role: '' }],
     faqs: [{ question: '', answer: '' }],
     team: [],

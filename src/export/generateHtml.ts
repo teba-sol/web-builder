@@ -7,6 +7,7 @@ import { resolveStaticHref } from '../data/siteNav'
 import type { BlogPostItem, PageVisibility, SectionVisibility, SiteContent, TemplateId } from '../types'
 import { type SectionId } from '../templates/themes'
 import { canEmbedForm, EMBED_FORM_HEIGHT, getEmbedFormUrl } from '../utils/formEmbed'
+import { getPopulatedGalleryEntries, groupGalleryEntries } from '../utils/gallery'
 import { buildStaticHeroHtml } from './heroExport'
 import { escapeHtml, resolveImageForExport, type ImageAsset } from './imageUtils'
 import { staticFooterHtml } from './footerHtml'
@@ -47,11 +48,11 @@ function buildContactFormHtml(content: SiteContent, accent: string): string {
     <form class="space-y-4" action="${formUrl ? escapeHtml(formUrl) : mailTarget ? `mailto:${escapeHtml(mailTarget)}` : '#'}" method="${formUrl ? 'get' : 'post'}"${formUrl ? ' target="_blank" rel="noopener noreferrer"' : ''}>
       <div>
         <label class="block text-sm font-medium text-slate-700 mb-1.5">Your Name</label>
-        <input name="name" type="text" required class="${inputCls}" placeholder="John Smith" />
+        <input name="name" type="text" required class="${inputCls}" placeholder="Abebe Kebede" />
       </div>
       <div>
         <label class="block text-sm font-medium text-slate-700 mb-1.5">Email Address</label>
-        <input name="email" type="email" required class="${inputCls}" placeholder="you@example.com" />
+        <input name="email" type="email" required class="${inputCls}" placeholder="abebe@example.com" />
       </div>
       <div>
         <label class="block text-sm font-medium text-slate-700 mb-1.5">Message</label>
@@ -94,9 +95,12 @@ export function generateHtml(
   const aboutImg = content.aboutImage
     ? resolveImageForExport(content.aboutImage, 'about', assets)
     : ''
-  const gallery = content.galleryImages
-    .map((img, i) => (img ? resolveImageForExport(img, `gallery-${i + 1}`, assets) : ''))
-    .filter(Boolean)
+  const galleryEntries = getPopulatedGalleryEntries(content).map((item, i) => ({
+    image: resolveImageForExport(item.image, `gallery-${i + 1}`, assets),
+    title: item.title,
+    category: item.category,
+  }))
+  const gallery = galleryEntries.map((item) => item.image)
 
   const meta = getTemplateMeta(templateId)
   const contactHtml = meta?.contactFields
@@ -134,14 +138,19 @@ export function generateHtml(
     </a>`
   }).join('')
 
-  const galleryHtml = gallery.map((g) =>
-    `<img src="${g}" alt="" class="w-full rounded-xl aspect-[4/3] object-cover" />`
-  ).join('')
+  const { groups: galleryGroups } = groupGalleryEntries(galleryEntries)
+  const galleryHtml = galleryGroups.map((group) => {
+    const heading = group.category ? `<h3 class="text-2xl font-semibold mb-4">${escapeHtml(group.category)}</h3>` : ''
+    const cards = group.items.map((g) =>
+      `<figure><img src="${g.image}" alt="${escapeHtml(g.title || content.gallerySectionTitle)}" class="w-full rounded-xl aspect-[4/3] object-cover" />${g.title ? `<figcaption class="mt-2 text-sm font-medium text-slate-700">${escapeHtml(g.title)}</figcaption>` : ''}</figure>`
+    ).join('')
+    return `<div>${heading}<div class="grid md:grid-cols-3 gap-4">${cards}</div></div>`
+  }).join('')
 
   const testimonials = content.testimonials.filter((t) => t.quote)
-  const stars = '<div class="text-amber-400 mb-3">★★★★★</div>'
+  const stars = '<div class="mb-4 flex justify-center gap-0.5 text-amber-400">★★★★★</div>'
   const testimonialsHtml = testimonials.map((t) =>
-    `<div class="border rounded-xl p-6">${stars}<p class="italic mb-4 text-lg">"${escapeHtml(t.quote)}"</p><p class="font-semibold">${escapeHtml(t.author)}</p><p class="text-sm opacity-70">${escapeHtml(t.role)}</p></div>`
+    `<div class="flex h-full flex-col items-center justify-between text-center border rounded-xl p-6"><div class="flex flex-col items-center">${stars}<p class="italic mb-4 text-lg">"${escapeHtml(t.quote)}"</p></div><div class="mt-auto pt-2 flex flex-col items-center"><p class="font-semibold">${escapeHtml(t.author)}</p><p class="text-sm opacity-70">${escapeHtml(t.role)}</p></div></div>`
   ).join('')
 
   const teamHtml = content.team.filter((m) => m.name).map((m) => {
@@ -166,7 +175,7 @@ export function generateHtml(
   }).join('')
 
   const contactFormBlock = buildContactFormHtml(content, accent)
-  const contactTitle = escapeHtml(content.contactSectionTitle || 'Get in Touch')
+  const contactTitle = escapeHtml(content.contactSectionTitle || 'Contact Us')
   const ctaHref = resolveStaticHref(content.ctaLink || 'contact', content)
 
   const navLinks: string[] = []
@@ -203,7 +212,7 @@ export function generateHtml(
     services: services.length ? `<section id="services" class="bg-slate-50 py-20"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold text-center mb-4">${escapeHtml(content.servicesSectionTitle)}</h2><p class="text-center text-slate-600 mb-12">${escapeHtml(content.servicesSectionSubtitle)}</p><div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">${servicesHtml}</div></div></section>` : '',
     steps: steps.length ? `<section class="py-20"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold text-center mb-12">${escapeHtml(content.stepsSectionTitle)}</h2><div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">${stepsHtml}</div></div></section>` : '',
     showcase: showcaseItems.length ? `<section id="showcase" class="bg-slate-50 py-20"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold text-center mb-4">${escapeHtml(content.showcaseSectionTitle || showcaseCfg.sectionTitle)}</h2><p class="text-center text-slate-600 mb-12">${escapeHtml(content.showcaseSectionSubtitle || showcaseCfg.sectionSubtitle)}</p><div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">${showcaseHtml}</div></div></section>` : '',
-    gallery: gallery.length ? `<section id="gallery" class="py-20"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold text-center mb-12">${escapeHtml(content.gallerySectionTitle)}</h2><div class="grid md:grid-cols-3 gap-4">${galleryHtml}</div></div></section>` : '',
+    gallery: gallery.length ? `<section id="gallery" class="py-20"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold text-center mb-12">${escapeHtml(content.gallerySectionTitle)}</h2><div class="space-y-10">${galleryHtml}</div></div></section>` : '',
     testimonials: `<section id="testimonials" class="bg-slate-50 py-20"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold text-center mb-4">${escapeHtml(content.testimonialsSectionTitle)}</h2><p class="text-center text-slate-600 mb-12">What our clients say about us</p>${testimonials.length ? `<div class="grid md:grid-cols-3 gap-6">${testimonialsHtml}</div>` : '<p class="text-center text-slate-500">Client reviews</p>'}</div></section>`,
     blog: blogPosts.length ? `<section id="blog" class="bg-slate-50 py-20"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold text-center mb-4">${escapeHtml(content.blogSectionTitle)}</h2><p class="text-center text-slate-600 mb-12">${escapeHtml(content.blogSectionSubtitle)}</p><div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">${blogHtml}</div></div></section>` : '',
     team: teamHtml ? `<section class="py-20"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold text-center mb-12">${escapeHtml(content.teamSectionTitle)}</h2><div class="grid md:grid-cols-3 gap-8">${teamHtml}</div></div></section>` : '',

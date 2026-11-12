@@ -141,7 +141,7 @@
   },
   "showcase": {
     "sectionTitle": "Stay With Us",
-    "sectionSubtitle": "Garden rooms and cottages for a restful countryside escape",
+    "sectionSubtitle": "Quiet garden rooms and family cottages in Addis Ababa",
     "navLabel": "Stay",
     "itemLabel": "Room",
     "showPrice": true,
@@ -152,47 +152,47 @@
   "defaultShowcase": [
     {
       "title": "Garden Room Stay",
-      "description": "Queen bed, private patio, and homemade breakfast every morning.",
+      "description": "Queen bed, private patio, and fresh Ethiopian breakfast every morning.",
       "image": "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=600&q=80",
-      "price": "7,980 ETB",
+      "price": "$85",
       "tag": "Room",
       "link": "contact"
     },
     {
       "title": "Family Cottage",
-      "description": "Two bedrooms, kitchenette, and fenced garden for longer stays.",
+      "description": "Two bedrooms, private kitchen, and a quiet fenced garden for families.",
       "image": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600&q=80",
-      "price": "12,100 ETB",
+      "price": "$135",
       "tag": "Cottage",
       "link": "contact"
     },
     {
-      "title": "Afternoon Tea",
-      "description": "Scones, preserves, and tea on the lawn — book for two.",
+      "title": "Garden Coffee Ceremony",
+      "description": "Freshly roasted Ethiopian buna served with snacks in our sunny garden.",
       "image": "https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=600&q=80",
-      "price": "2,090 ETB",
+      "price": "$15",
       "tag": "Experience",
       "link": "contact"
     },
     {
-      "title": "Guided Village Walk",
-      "description": "Two-hour walk with your host through lanes and local pubs.",
+      "title": "Addis City Walk",
+      "description": "Half-day guided visit to local cafes, bakeries, and historic neighborhoods.",
       "image": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&q=80",
-      "price": "1,380 ETB",
+      "price": "$20",
       "tag": "Activity",
       "link": "contact"
     },
     {
-      "title": "Picnic Basket",
-      "description": "Packed lunch with local cheese, bread, and fruit for day trips.",
+      "title": "Breakfast Basket",
+      "description": "Fresh bread, local honey, eggs, and seasonal fruit prepared for early departures.",
       "image": "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=600&q=80",
-      "price": "2,310 ETB",
-      "tag": "Add-on",
+      "price": "$18",
+      "tag": "Dining",
       "link": "contact"
     },
     {
-      "title": "Extended Stay Week",
-      "description": "Seven nights in any room type with mid-week linen refresh.",
+      "title": "Weekly Stay Offer",
+      "description": "Stay seven nights or longer with mid-week laundry and airport transfer.",
       "image": "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=600&q=80",
       "price": "Save 15%",
       "tag": "Offer",
@@ -203,28 +203,28 @@
   "contactFields": [
     {
       "key": "reservationEmail",
-      "label": "Bookings Email",
-      "placeholder": "book@gardenguesthouse.example"
+      "label": "Booking Email",
+      "placeholder": "booking@gardenguesthouse.et"
     },
     {
       "key": "phone",
-      "label": "Host Phone",
-      "placeholder": "+351 21 000 1180"
+      "label": "Phone Number",
+      "placeholder": "+251 11 552 1180"
     },
     {
       "key": "address",
-      "label": "Property Address",
-      "placeholder": "12 Garden Lane"
+      "label": "Address",
+      "placeholder": "Old Airport, Addis Ababa"
     },
     {
       "key": "hours",
       "label": "Check-in Hours",
-      "placeholder": "3pm–8pm (or by arrangement)"
+      "placeholder": "24-hour desk · Check-in 2:00 PM"
     },
     {
       "key": "email",
       "label": "Email",
-      "placeholder": "stay@gardenguesthouse.example"
+      "placeholder": "hello@gardenguesthouse.et"
     }
   ],
   "servicesLabel": "Guest Services",
@@ -245,13 +245,13 @@
   },
   "defaults": {
     "businessName": "Garden Guest House",
-    "tagline": "A quiet house in the city",
-    "heroSubtext": "Garden rooms, a family cottage, and breakfast in the courtyard. Book the room that is actually free.",
+    "tagline": "A quiet home in Addis Ababa",
+    "heroSubtext": "Garden rooms, a family cottage, and fresh Ethiopian breakfast in the courtyard every morning.",
     "heroImage": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1200&q=80",
-    "aboutTitle": "The guest house",
-    "about": "Garden Guest House is a small stay with a courtyard, a family cottage, and breakfast served at one table. Rooms are held only when the dates are free.",
+    "aboutTitle": "Our Guest House",
+    "about": "Garden Guest House is a welcoming stay in Old Airport, Addis Ababa with sunny courtyard rooms, a family cottage, and home-cooked breakfast. Every room is clean, quiet, and ready for short or extended stays.",
     "aboutImage": "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800&q=80",
-    "missionStatement": "A guest house that feels looked after.",
+    "missionStatement": "A peaceful stay in Addis Ababa that feels like home.",
     "pageVisibility": {
       "about": true,
       "services": true,
@@ -281,244 +281,279 @@
         "label": "Guest Rating"
       },
       {
-        "value": "100%",
-        "label": "Homemade Breakfast"
+        "value": "Included",
+        "label": "Daily Breakfast"
       },
       {
-        "value": "12",
-        "label": "Years Hosting"
+        "value": "15 Min",
+        "label": "To Bole Airport"
       }
     ],
     "servicesSectionTitle": "Guest Services",
-    "servicesSectionSubtitle": "Little extras that make your stay special",
+    "servicesSectionSubtitle": "Simple comforts that make every stay relaxed and easy",
     "services": [
       {
-        "title": "Farm Breakfast",
-        "description": "Eggs, bread, and jam from neighboring farms — included with every stay."
+        "title": "Fresh Daily Breakfast",
+        "description": "Eggs, local bread, honey, and fresh fruit served each morning in the courtyard."
       },
       {
-        "title": "Garden Access",
-        "description": "Herb paths, seating nooks, and evening wine on the lawn."
+        "title": "Garden Coffee Corner",
+        "description": "Sunny shaded seating and afternoon Ethiopian buna coffee service."
       },
       {
-        "title": "Local Guides",
-        "description": "Maps, pub recommendations, and day-trip ideas from your hosts."
+        "title": "Airport Pickup",
+        "description": "Reliable private car rides between Bole International Airport and the guest house."
       },
       {
-        "title": "Late Checkout",
-        "description": "Available on request so you never rush a good morning."
+        "title": "Laundry & Wi-Fi",
+        "description": "Fast reliable fiber Wi-Fi across all rooms plus same-day laundry service."
       }
     ],
     "stepsSectionTitle": "How It Works",
     "steps": [
       {
-        "title": "Consultation",
-        "description": "We learn about your goals and challenges in a discovery session."
+        "title": "Choose Your Room",
+        "description": "Compare our courtyard rooms and family cottage to find the best fit for your stay."
       },
       {
-        "title": "Strategy",
-        "description": "Our team crafts a tailored plan designed for your success."
+        "title": "Pick Your Dates",
+        "description": "Select your check-in and check-out dates and tell us if you need airport pickup."
       },
       {
-        "title": "Execution",
-        "description": "We deliver with precision, keeping you informed every step."
+        "title": "Confirm Booking",
+        "description": "Receive instant booking details and directions directly from our front desk."
       },
       {
-        "title": "Growth",
-        "description": "We measure results and optimize for continuous improvement."
+        "title": "Check In & Relax",
+        "description": "Arrive to a warm welcome, morning breakfast, and attentive hosts throughout your stay."
       }
     ],
     "showcaseSectionTitle": "Stay With Us",
-    "showcaseSectionSubtitle": "Garden rooms and cottages for a restful countryside escape",
+    "showcaseSectionSubtitle": "Quiet garden rooms and family cottages in Addis Ababa",
     "showcaseItems": [
       {
         "title": "Garden Room Stay",
-        "description": "Queen bed, private patio, and homemade breakfast every morning.",
+        "description": "Queen bed, private patio, and fresh Ethiopian breakfast every morning.",
         "image": "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=600&q=80",
-        "price": "8,000 ETB",
+        "price": "$85",
         "tag": "Room",
         "link": "contact"
       },
       {
         "title": "Family Cottage",
-        "description": "Two bedrooms, kitchenette, and fenced garden for longer stays.",
+        "description": "Two bedrooms, private kitchen, and a quiet fenced garden for families.",
         "image": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600&q=80",
-        "price": "12,100 ETB",
+        "price": "$135",
         "tag": "Cottage",
         "link": "contact"
       },
       {
-        "title": "Afternoon Tea",
-        "description": "Scones, preserves, and tea on the lawn — book for two.",
+        "title": "Garden Coffee Ceremony",
+        "description": "Freshly roasted Ethiopian buna served with snacks in our sunny garden.",
         "image": "https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=600&q=80",
-        "price": "2,100 ETB",
+        "price": "$15",
         "tag": "Experience",
         "link": "contact"
       },
       {
-        "title": "Guided Village Walk",
-        "description": "Two-hour walk with your host through lanes and local pubs.",
+        "title": "Addis City Walk",
+        "description": "Half-day guided visit to local cafes, bakeries, and historic neighborhoods.",
         "image": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&q=80",
-        "price": "1,400 ETB",
+        "price": "$20",
         "tag": "Activity",
         "link": "contact"
       },
       {
-        "title": "Picnic Basket",
-        "description": "Packed lunch with local cheese, bread, and fruit for day trips.",
+        "title": "Breakfast Basket",
+        "description": "Fresh bread, local honey, eggs, and seasonal fruit prepared for early departures.",
         "image": "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=600&q=80",
-        "price": "2,300 ETB",
-        "tag": "Add-on",
+        "price": "$18",
+        "tag": "Dining",
         "link": "contact"
       },
       {
-        "title": "Extended Stay Week",
-        "description": "Seven nights in any room type with mid-week linen refresh.",
+        "title": "Weekly Stay Offer",
+        "description": "Stay seven nights or longer with mid-week laundry and airport transfer.",
         "image": "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=600&q=80",
         "price": "Save 15%",
         "tag": "Offer",
         "link": "contact"
       }
     ],
-    "gallerySectionTitle": "Around the House",
+    "gallerySectionTitle": "Around the Guest House",
+    "galleryItems": [
+      {
+        "title": "Courtyard Queen Room",
+        "category": "Rooms",
+        "image": "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=600&q=80"
+      },
+      {
+        "title": "Sunny Loft Bedroom",
+        "category": "Rooms",
+        "image": "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=600&q=80"
+      },
+      {
+        "title": "Family Garden Cottage",
+        "category": "Garden",
+        "image": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600&q=80"
+      },
+      {
+        "title": "Morning Coffee Ceremony",
+        "category": "Dining",
+        "image": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=80"
+      },
+      {
+        "title": "Outdoor Breakfast Table",
+        "category": "Dining",
+        "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&q=80"
+      },
+      {
+        "title": "Quiet Courtyard Terrace",
+        "category": "Garden",
+        "image": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600&q=80"
+      }
+    ],
     "galleryImages": [
       "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=600&q=80",
       "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=600&q=80",
-      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600&q=80"
+      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600&q=80",
+      "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=80",
+      "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&q=80",
+      "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600&q=80"
     ],
-    "testimonialsSectionTitle": "What Guests Say",
+    "testimonialsSectionTitle": "Guest Reviews",
     "testimonials": [
       {
-        "quote": "Outstanding service and incredible results. Highly recommended!",
-        "author": "Elena Ward",
-        "role": "CEO, TechStart"
+        "quote": "A peaceful garden right inside Addis Ababa. Morning coffee on the patio made every day feel like home.",
+        "author": "Hanna Girma",
+        "role": "Family Guest"
       },
       {
-        "quote": "They transformed our business. Professional, creative, and reliable.",
-        "author": "Noah Bennett",
-        "role": "Founder, Bloom Co"
+        "quote": "Clean rooms, fast Wi-Fi for remote work, and warm hosts who helped with our airport transport.",
+        "author": "Dawit Bekele",
+        "role": "Business Traveler"
       },
       {
-        "quote": "The best decision we made this year. Exceeded every expectation.",
-        "author": "Maya Chen",
-        "role": "Director, Apex Group"
+        "quote": "We stayed in the family cottage for a week. Quiet nights, fresh breakfast, and very friendly staff.",
+        "author": "Marta Assefa",
+        "role": "Weekend Guest"
       }
     ],
     "faqSectionTitle": "Frequently Asked Questions",
     "faqs": [
       {
-        "question": "How do I get started?",
-        "answer": "Simply reach out via our contact form or give us a call. We offer a free initial consultation."
+        "question": "How do I book a room or family cottage?",
+        "answer": "Send us a message on the Contact Us page or call our reception desk. We confirm availability right away."
       },
       {
-        "question": "What are your pricing options?",
-        "answer": "We offer flexible packages tailored to your needs and budget. Contact us for a custom quote."
+        "question": "Is breakfast included in the room rate?",
+        "answer": "Yes. Every stay includes freshly prepared Ethiopian and international breakfast plus morning coffee in the garden."
       },
       {
-        "question": "How long does a typical project take?",
-        "answer": "Timelines vary by scope, but most projects are completed within 2–8 weeks."
+        "question": "Do you arrange Bole Airport pickup?",
+        "answer": "Yes, our driver can pick you up from Bole International Airport any hour of the day or night when you share your flight time."
       },
       {
-        "question": "Do you offer ongoing support?",
-        "answer": "Yes! We provide continued support and maintenance to ensure long-term success."
+        "question": "What are your check-in and check-out times?",
+        "answer": "Check-in starts at 2:00 PM and check-out is by 11:00 AM. Early check-in or late check-out can be arranged when rooms are open."
       }
     ],
-    "teamSectionTitle": "Meet the Team",
-    "blogSectionTitle": "Latest from Our Blog",
-    "blogSectionSubtitle": "Insights, tips, and updates from our team",
+    "teamSectionTitle": "Meet Our Team",
+    "blogSectionTitle": "Stories from Our Guest House",
+    "blogSectionSubtitle": "Addis Ababa travel tips, garden mornings, and local food guides",
     "newsSectionTitle": "News & Updates",
-    "newsSectionSubtitle": "Announcements, press releases, and company news",
+    "newsSectionSubtitle": "New rooms, seasonal garden menus, and guest house updates",
     "newsPosts": [
       {
-        "title": "We Are Expanding to Serve You Better",
-        "slug": "expanding-to-serve-you-better",
-        "excerpt": "New locations, extended hours, and more ways to connect with our team.",
-        "body": "We are thrilled to announce expanded service hours and a new consultation space designed around your comfort and convenience.\n\nThis investment reflects our commitment to accessibility and excellence. Thank you for being part of our journey — we cannot wait to welcome you.",
-        "image": "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80",
+        "title": "New Two-Bedroom Garden Cottage Now Open",
+        "slug": "new-garden-cottage-open",
+        "excerpt": "More space for families and longer stays in Old Airport, Addis Ababa.",
+        "body": "We have opened a bright new two-bedroom cottage surrounded by fruit trees and seating areas in our main garden.\n\nFamilies and visiting groups now have a private kitchen, living room, and direct access to morning breakfast service.",
+        "image": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&q=80",
         "author": "Selam Tadesse",
         "date": "2026-04-01"
       },
       {
-        "title": "Award Recognizes Our Commitment to Quality",
-        "slug": "award-quality-commitment",
-        "excerpt": "Industry leaders honored our team for outstanding client satisfaction.",
-        "body": "Receiving this recognition is a testament to the people behind our work — dedicated professionals who show up every day with care and craft.\n\nWe share this award with every client who trusted us with their goals. Your feedback shapes how we grow and improve.",
-        "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80",
-        "author": "Communications",
+        "title": "Morning Coffee Garden Bar Welcomes Guests Daily",
+        "slug": "morning-coffee-garden-bar",
+        "excerpt": "Freshly roasted Yirgacheffe coffee and homemade pastries served every morning.",
+        "body": "Our sunny garden veranda now hosts daily morning coffee service with beans sourced directly from small farms in southern Ethiopia.\n\nGuests can enjoy traditional jebena coffee alongside fresh bread, honey, and seasonal fruit before starting their day in the city.",
+        "image": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=80",
+        "author": "Reception Team",
         "date": "2026-03-18"
       },
       {
-        "title": "Partnership Opens New Opportunities",
-        "slug": "partnership-new-opportunities",
-        "excerpt": "Strategic collaboration brings enhanced offerings to our community.",
-        "body": "Our new partnership combines complementary strengths to deliver more value, faster turnaround, and broader expertise under one roof.\n\nStay tuned for launch events and early-access opportunities for existing clients.",
-        "image": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80",
-        "author": "Leadership",
+        "title": "24-Hour Bole Airport Transfer Service",
+        "slug": "airport-transfer-service",
+        "excerpt": "Direct, reliable pickup and drop-off for all arriving and departing guests.",
+        "body": "Traveling to Addis Ababa is easier with our dedicated guest house shuttle.\n\nShare your flight number when booking and our driver will meet you right outside the arrivals terminal.",
+        "image": "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80",
+        "author": "Guest Relations",
         "date": "2026-02-05"
       }
     ],
-    "pricingSectionTitle": "Pricing Plans",
+    "pricingSectionTitle": "Stay Packages",
     "pricing": [
       {
-        "title": "Starter",
-        "description": "Essential features for individuals and small teams getting started.",
-        "price": "1,600 ETB/mo",
+        "title": "Bed & Breakfast",
+        "description": "Garden room stay with daily breakfast, fast Wi-Fi, and coffee in the garden.",
+        "price": "$85/night",
         "tag": "Most popular",
         "featured": false
       },
       {
-        "title": "Professional",
-        "description": "Advanced tools, priority support, and integrations for growing businesses.",
-        "price": "4,350 ETB/mo",
+        "title": "Weekly Stay",
+        "description": "Seven nights for business guests or families with laundry and airport pickup included.",
+        "price": "$510/week",
         "tag": "Best value",
         "featured": true
       },
       {
-        "title": "Enterprise",
-        "description": "Custom solutions, dedicated account management, and SLA guarantees.",
-        "price": "Custom",
-        "tag": "Contact us",
+        "title": "Family Cottage",
+        "description": "Private two-bedroom cottage with kitchen access for groups and extended stays.",
+        "price": "$135/night",
+        "tag": "For families",
         "featured": false
       }
     ],
     "roomsSectionTitle": "Rooms & Cottages",
-    "roomsSectionSubtitle": "Garden rooms and a family cottage, priced per night in local currency.",
+    "roomsSectionSubtitle": "Comfortable garden rooms and a family cottage, priced per night in USD.",
     "bookingSectionTitle": "Book Your Stay",
-    "bookingSectionSubtitle": "Search dates, open a room, then finish on the checkout page.",
+    "bookingSectionSubtitle": "Choose your travel dates, select a room, and confirm your booking in minutes.",
     "roomTypes": [
       {
         "name": "Garden Room",
         "slug": "garden-room",
         "parentSlug": "",
-        "description": "A ground-floor room opening onto the courtyard and herb garden. Linens are local, and breakfast is included.",
+        "description": "A quiet ground-floor room opening onto our sunny courtyard and herb garden. Breakfast and Wi-Fi are included.",
         "shortDescription": "Courtyard · 24 m²",
-        "basePrice": "4500",
-        "currency": "ETB",
+        "basePrice": "85",
+        "currency": "USD",
         "maxAdults": "2",
         "maxChildren": "1",
         "maxOccupancy": "3",
         "bedConfiguration": "1 Queen",
         "sizeSqm": "24",
-        "amenities": "Wi-Fi, Garden patio, Breakfast included, Heated floors",
+        "amenities": "Wi-Fi, Garden patio, Breakfast included, Private bathroom",
         "image": "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=900&q=80",
         "unitCount": "3",
         "unitPrefix": "GRD-",
         "isActive": true
       },
       {
-        "name": "Attic Room",
+        "name": "Upstairs Loft Room",
         "slug": "attic-nest",
         "parentSlug": "",
-        "description": "A quiet loft under timber with a skylight and a reading chair. Best for two guests who want the house to themselves at night.",
-        "shortDescription": "Skylight loft · 20 m²",
-        "basePrice": "3800",
-        "currency": "ETB",
+        "description": "A quiet upstairs timber room overlooking the trees with a reading corner and soft natural light.",
+        "shortDescription": "Garden view · 20 m²",
+        "basePrice": "70",
+        "currency": "USD",
         "maxAdults": "2",
         "maxChildren": "0",
         "maxOccupancy": "2",
         "bedConfiguration": "1 Double",
         "sizeSqm": "20",
-        "amenities": "Wi-Fi, Skylight, Breakfast included, Reading nook",
+        "amenities": "Wi-Fi, Work desk, Breakfast included, Tea & coffee",
         "image": "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=900&q=80",
         "unitCount": "2",
         "unitPrefix": "ATC-",
@@ -528,16 +563,16 @@
         "name": "Family Cottage",
         "slug": "family-cottage",
         "parentSlug": "garden-room",
-        "description": "A small cottage with two bedrooms, a kitchenette, and a fenced patch of garden. Made for families staying more than a night in the city.",
-        "shortDescription": "2 bedrooms · Kitchenette · 45 m²",
-        "basePrice": "7200",
-        "currency": "ETB",
+        "description": "A peaceful cottage with two bedrooms, a private kitchen, and a fenced garden area built for families staying in Addis Ababa.",
+        "shortDescription": "2 bedrooms · Kitchen · 45 m²",
+        "basePrice": "135",
+        "currency": "USD",
         "maxAdults": "4",
         "maxChildren": "2",
         "maxOccupancy": "5",
         "bedConfiguration": "1 Queen + 2 Twins",
         "sizeSqm": "45",
-        "amenities": "Wi-Fi, Kitchenette, Private garden, Breakfast included, Parking",
+        "amenities": "Wi-Fi, Private kitchen, Fenced garden, Breakfast included, Parking",
         "image": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=900&q=80",
         "unitCount": "1",
         "unitPrefix": "COT-",
@@ -546,77 +581,77 @@
     ],
     "blogPosts": [
       {
-        "title": "5 Strategies to Grow Your Business This Year",
-        "slug": "5-strategies-to-grow-your-business",
-        "excerpt": "Practical steps you can take today to build momentum and reach more customers.",
-        "body": "Growing a business takes focus, consistency, and a willingness to adapt. Start by clarifying your core offer, then double down on the channels that already bring results.\n\nReview your customer journey from first touch to repeat purchase. Small improvements at each step compound into meaningful revenue gains. Finally, invest in relationships — referrals and retention often outperform cold outreach.",
-        "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
-        "author": "Yonas Gebre",
+        "title": "A Peaceful Weekend Guide to Old Airport, Addis Ababa",
+        "slug": "old-airport-addis-guide",
+        "excerpt": "Favorite local bakeries, quiet tree-lined walks, and family cafes minutes from our gate.",
+        "body": "Old Airport is one of the calmest residential neighborhoods in Addis Ababa, ideal for travelers who want clean air and quiet nights while staying close to the center.\n\nStart your morning with fresh roasted coffee under our garden trees, then walk to nearby artisanal bakeries, green parks, and weekend craft markets.",
+        "image": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=80",
+        "author": "Selamawit Kebede",
         "date": "2026-03-12"
       },
       {
-        "title": "What Clients Are Asking Us Right Now",
-        "slug": "what-clients-are-asking-us",
-        "excerpt": "A quick roundup of the most common questions we hear — and how we answer them.",
-        "body": "Every season brings a new set of priorities. Lately, clients ask about pricing transparency, faster turnaround times, and how to stand out in crowded markets.\n\nOur advice stays grounded in fundamentals: deliver exceptional value, communicate clearly, and measure what matters. When in doubt, talk to your customers — their feedback is the best roadmap.",
-        "image": "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80",
-        "author": "Meron Assefa",
+        "title": "Inside a Traditional Ethiopian Morning Coffee Ceremony",
+        "slug": "ethiopian-coffee-ceremony-guide",
+        "excerpt": "How freshly washed green beans are roasted, brewed in a clay jebena, and shared with guests.",
+        "body": "At Garden Guest House, coffee is never rushed. Every afternoon we rinse green beans from Yirgacheffe, roast them gently over charcoal, and pour three traditional rounds.\n\nGuests often gather on the veranda to meet travelers, plan day trips, and taste fresh toasted barley.",
+        "image": "https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=800&q=80",
+        "author": "Birtukan Haile",
         "date": "2026-02-28"
       },
       {
-        "title": "Behind the Scenes: How We Work",
-        "slug": "behind-the-scenes-how-we-work",
-        "excerpt": "Take a peek at our process, tools, and the principles that guide every project.",
-        "body": "We believe great outcomes come from clear goals, collaborative planning, and disciplined execution. Every engagement starts with listening — understanding where you are and where you want to go.\n\nFrom there we build a tailored plan with milestones you can track. Throughout delivery we keep communication open so there are no surprises, only steady progress toward results you can measure.",
-        "image": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80",
-        "author": "Kalkidan Tesfaye",
+        "title": "Tips for First-Time Visitors Arriving at Bole Airport",
+        "slug": "first-time-bole-airport-tips",
+        "excerpt": "SIM cards, local currency exchange, and smooth check-in tips for landing in Addis Ababa.",
+        "body": "Arriving in a new city is much easier when your ride and room are ready.\n\nIf you share your flight time before boarding, our driver waits outside arrivals with a printed sign and brings you directly to your room in fifteen minutes.",
+        "image": "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80",
+        "author": "Tewodros Bekele",
         "date": "2026-01-15"
       }
     ],
     "team": [
       {
-        "name": "James Carter",
-        "role": "Founder & CEO",
-        "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80"
-      },
-      {
-        "name": "Elena Ward",
-        "role": "Creative Director",
+        "name": "Selamawit Kebede",
+        "role": "Guesthouse Manager",
         "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
       },
       {
-        "name": "Noah Bennett",
-        "role": "Operations Lead",
-        "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80"
+        "name": "Tewodros Bekele",
+        "role": "Guest Relations Manager",
+        "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80"
+      },
+      {
+        "name": "Birtukan Haile",
+        "role": "Hospitality & Dining Manager",
+        "image": "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80"
       }
     ],
-    "ctaBannerTitle": "Reserve a room",
-    "ctaBannerText": "See real-time availability and book your garden room or cottage online.",
+    "ctaBannerTitle": "Reserve a quiet room in Addis Ababa",
+    "ctaBannerText": "See open dates and book your garden room or family cottage directly with our team.",
     "ctaText": "Book Now",
     "ctaLink": "book",
-    "email": "stay@gardenguesthouse.example",
-    "phone": "+351 21 000 1180",
-    "address": "12 Garden Lane",
+    "email": "hello@gardenguesthouse.et",
+    "phone": "+251 11 552 1180",
+    "address": "Old Airport Road, Addis Ababa",
     "hours": "Front desk 6:00–22:00",
     "instagram": "",
     "website": "",
     "linkedin": "",
     "whatsapp": "",
     "supportEmail": "",
-    "reservationEmail": "book@gardenguesthouse.example",
+    "reservationEmail": "booking@gardenguesthouse.et",
     "licenseNumber": "",
     "bookingUrl": "",
-    "contactSectionTitle": "Get in Touch",
+    "contactSectionTitle": "Contact Us",
     "contactFormTitle": "Send Us a Message",
     "contactFormUrl": "",
-    "contactFormButtonText": "Send message",
-    "city": "Lisbon",
-    "country": "Portugal",
+    "contactFormButtonText": "Send Message",
+    "city": "Addis Ababa",
+    "country": "Ethiopia",
     "starRating": "3",
     "checkInTime": "14:00",
     "checkOutTime": "11:00",
-    "propertyAmenities": "Wi-Fi, Breakfast, Garden, Parking, Generator backup",
-    "footerBlurb": "Garden rooms, breakfast, and a host on the property.",
+    "propertyAmenities": "Wi-Fi, Breakfast, Garden, Parking, Backup generator",
+    "footerBlurb": "Quiet garden rooms, daily Ethiopian breakfast, and caring local hosts.",
     "footerNote": "All rights reserved."
   }
 }

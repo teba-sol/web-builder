@@ -21,7 +21,8 @@ import { CUSTOM_COLOR_SCHEME_ID } from '../data/pickTemplate'
 import { FontPicker } from './style/FontPicker'
 import { PalettePicker } from './style/PalettePicker'
 import { HOTEL_AMENITIES, ROOM_TYPE_AMENITIES } from '../data/amenityCatalog'
-import { parseAmenities, stayCurrency } from '../data/hospitality'
+import { isHospitalityTemplate, parseAmenities, stayCurrency } from '../data/hospitality'
+import { emptyGalleryItem, getGalleryEntries } from '../utils/gallery'
 import { ImagePicker } from './ImagePicker'
 import { PageVisibilityPicker } from './PageVisibilityPicker'
 import { SectionVisibilityPicker } from './SectionVisibilityPicker'
@@ -61,6 +62,13 @@ export function ContentForm() {
   const servicesAddLabel = template?.servicesLabel
     ? `Add ${template.servicesLabel.replace(/s$/i, '')}`
     : 'Add Service'
+  const hospitality = isHospitalityTemplate(templateId)
+  const galleryEntries = getGalleryEntries(content)
+  const setGalleryEntries = (next: ReturnType<typeof getGalleryEntries>) =>
+    updateContent({
+      galleryItems: next,
+      galleryImages: next.map((item) => item.image),
+    })
 
   return (
     <EditorPanels>
@@ -114,12 +122,12 @@ export function ContentForm() {
       </EditorPanel>
 
       <FormSection title="Hero">
-        <Field label="Business Name" value={content.businessName} onChange={(v) => updateContent({ businessName: v })} />
-        <Field label="Headline / Tagline" value={content.tagline} onChange={(v) => updateContent({ tagline: v })} />
-        <Field label="Hero Subtext" value={content.heroSubtext} onChange={(v) => updateContent({ heroSubtext: v })} multiline />
+        <Field label="Business Name" value={content.businessName} onChange={(v) => updateContent({ businessName: v })} placeholder={hospitality ? 'Haile Resort Bishoftu' : 'Your business name'} />
+        <Field label="Headline / Tagline" value={content.tagline} onChange={(v) => updateContent({ tagline: v })} placeholder={hospitality ? 'Warm Ethiopian hospitality by the water' : 'Your main headline'} />
+        <Field label="Hero Subtext" value={content.heroSubtext} onChange={(v) => updateContent({ heroSubtext: v })} multiline placeholder={hospitality ? 'Comfortable rooms, local dining, and easy online booking.' : 'Short introduction under your headline'} />
         <ImagePicker label="Hero Image" value={content.heroImage} onChange={(v) => updateContent({ heroImage: v })} />
-        <Field label="Primary button text" value={content.ctaText} onChange={(v) => updateContent({ ctaText: v })} />
-        <Field label="Primary button link" value={content.ctaLink} onChange={(v) => updateContent({ ctaLink: v })} placeholder="contact" />
+        <Field label="Primary button text" value={content.ctaText} onChange={(v) => updateContent({ ctaText: v })} placeholder={hospitality ? 'Book Your Stay' : 'Contact Us'} />
+        <Field label="Primary button link" value={content.ctaLink} onChange={(v) => updateContent({ ctaLink: v })} placeholder={hospitality ? 'book' : 'contact'} />
       </FormSection>
 
       {pageOn('about') && (
@@ -140,8 +148,8 @@ export function ContentForm() {
             canRemove={listControls('stats').canRemove()}
             onRemove={() => listControls('stats').onRemove(i)}
           >
-            <Field label="Value" value={stat.value} onChange={(v) => updateListItem('stats', i, 'value', v)} placeholder="500+" />
-            <Field label="Label" value={stat.label} onChange={(v) => updateListItem('stats', i, 'label', v)} placeholder="Happy Clients" />
+            <Field label="Value" value={stat.value} onChange={(v) => updateListItem('stats', i, 'value', v)} placeholder={hospitality ? '45+' : '500+'} />
+            <Field label="Label" value={stat.label} onChange={(v) => updateListItem('stats', i, 'label', v)} placeholder={hospitality ? 'Rooms & Suites' : 'Happy Clients'} />
           </ItemCard>
         ))}
       </FormSection>
@@ -149,8 +157,8 @@ export function ContentForm() {
 
       {pageOn('services') && (
       <FormSection title={template?.servicesLabel ?? 'Services'} {...listControls('services', servicesAddLabel)}>
-        <Field label="Section Title" value={content.servicesSectionTitle} onChange={(v) => updateContent({ servicesSectionTitle: v })} />
-        <Field label="Section Subtitle" value={content.servicesSectionSubtitle} onChange={(v) => updateContent({ servicesSectionSubtitle: v })} />
+        <Field label="Section Title" value={content.servicesSectionTitle} onChange={(v) => updateContent({ servicesSectionTitle: v })} placeholder={hospitality ? 'Hotel Services' : 'What We Offer'} />
+        <Field label="Section Subtitle" value={content.servicesSectionSubtitle} onChange={(v) => updateContent({ servicesSectionSubtitle: v })} placeholder={hospitality ? 'Comfort, dining, and transport arranged with care' : 'Solutions tailored to your needs'} />
         {content.services.map((s, i) => (
           <ItemCard
             key={i}
@@ -158,8 +166,8 @@ export function ContentForm() {
             canRemove={listControls('services').canRemove()}
             onRemove={() => listControls('services').onRemove(i)}
           >
-            <Field label="Title" value={s.title} onChange={(v) => updateListItem('services', i, 'title', v)} />
-            <Field label="Description" value={s.description} onChange={(v) => updateListItem('services', i, 'description', v)} multiline />
+            <Field label="Title" value={s.title} onChange={(v) => updateListItem('services', i, 'title', v)} placeholder={hospitality ? 'Ethiopian Breakfast' : 'Service title'} />
+            <Field label="Description" value={s.description} onChange={(v) => updateListItem('services', i, 'description', v)} multiline placeholder={hospitality ? 'Fresh injera, eggs, seasonal fruit, and Ethiopian coffee each morning.' : 'Describe what is included'} />
           </ItemCard>
         ))}
       </FormSection>
@@ -185,10 +193,10 @@ export function ContentForm() {
               <option value="5">5 stars</option>
             </select>
           </label>
-          <Field label="City" value={content.city ?? ''} onChange={(v) => updateContent({ city: v })} placeholder="City" />
+          <Field label="City" value={content.city ?? ''} onChange={(v) => updateContent({ city: v })} placeholder="Addis Ababa" />
           <Field label="Country" value={content.country ?? ''} onChange={(v) => updateContent({ country: v })} placeholder="Ethiopia" />
-          <Field label="Check-in" value={content.checkInTime ?? ''} onChange={(v) => updateContent({ checkInTime: v })} placeholder="15:00" />
-          <Field label="Check-out" value={content.checkOutTime ?? ''} onChange={(v) => updateContent({ checkOutTime: v })} placeholder="11:00" />
+          <Field label="Check-in" value={content.checkInTime ?? ''} onChange={(v) => updateContent({ checkInTime: v })} placeholder="14:00" />
+          <Field label="Check-out" value={content.checkOutTime ?? ''} onChange={(v) => updateContent({ checkOutTime: v })} placeholder="12:00" />
           <AmenityTicks
             label="Hotel amenities"
             catalog={HOTEL_AMENITIES}
@@ -234,8 +242,8 @@ export function ContentForm() {
                     onChange={(e) => updateListItem('roomTypes', i, 'currency', e.target.value)}
                     className="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 focus:border-navy focus:outline-none focus:ring-2 focus:ring-navy/20"
                   >
-                    <option value="ETB">ETB</option>
                     <option value="USD">USD</option>
+                    <option value="ETB">ETB</option>
                   </select>
                 </label>
                 <Field label="Max adults" value={room.maxAdults} onChange={(v) => updateListItem('roomTypes', i, 'maxAdults', v)} />
@@ -243,7 +251,7 @@ export function ContentForm() {
                 <Field label="Size (m²)" value={room.sizeSqm} onChange={(v) => updateListItem('roomTypes', i, 'sizeSqm', v)} />
                 <Field label="Beds" value={room.bedConfiguration} onChange={(v) => updateListItem('roomTypes', i, 'bedConfiguration', v)} placeholder="1 King" />
                 <Field label="Unit count" value={room.unitCount} onChange={(v) => updateListItem('roomTypes', i, 'unitCount', v)} placeholder="4" />
-                <Field label="Unit code prefix" value={room.unitPrefix} onChange={(v) => updateListItem('roomTypes', i, 'unitPrefix', v)} placeholder="DLX-" />
+                <Field label="Unit code prefix" value={room.unitPrefix} onChange={(v) => updateListItem('roomTypes', i, 'unitPrefix', v)} placeholder="RM-" />
               </div>
               <label className="mt-2 flex items-center gap-2 text-sm">
                 <input
@@ -361,7 +369,7 @@ export function ContentForm() {
 
       {sectionOn('steps') && (
       <FormSection title="How It Works" {...listControls('steps')}>
-        <Field label="Section Title" value={content.stepsSectionTitle} onChange={(v) => updateContent({ stepsSectionTitle: v })} />
+        <Field label="Section Title" value={content.stepsSectionTitle} onChange={(v) => updateContent({ stepsSectionTitle: v })} placeholder={hospitality ? 'How Booking Works' : 'How It Works'} />
         {content.steps.map((step, i) => (
           <ItemCard
             key={i}
@@ -369,24 +377,64 @@ export function ContentForm() {
             canRemove={listControls('steps').canRemove()}
             onRemove={() => listControls('steps').onRemove(i)}
           >
-            <Field label="Title" value={step.title} onChange={(v) => updateListItem('steps', i, 'title', v)} />
-            <Field label="Description" value={step.description} onChange={(v) => updateListItem('steps', i, 'description', v)} multiline />
+            <Field label="Title" value={step.title} onChange={(v) => updateListItem('steps', i, 'title', v)} placeholder={hospitality ? 'Choose Dates & Room' : 'Step title'} />
+            <Field label="Description" value={step.description} onChange={(v) => updateListItem('steps', i, 'description', v)} multiline placeholder={hospitality ? 'Pick your check-in and check-out dates, guest count, and room type.' : 'Describe what happens in this step'} />
           </ItemCard>
         ))}
       </FormSection>
       )}
 
       {pageOn('gallery') && (
-      <FormSection title="Gallery" {...listControls('galleryImages')}>
-        <Field label="Section Title" value={content.gallerySectionTitle} onChange={(v) => updateContent({ gallerySectionTitle: v })} />
-        {content.galleryImages.map((img, i) => (
+      <FormSection
+        title="Gallery"
+        onAdd={() => {
+          if (galleryEntries.length < LIST_MAX_COUNT) {
+            setGalleryEntries([...galleryEntries, emptyGalleryItem()])
+          }
+        }}
+        addLabel="Add Photo"
+        canAdd={galleryEntries.length < LIST_MAX_COUNT}
+      >
+        <Field label="Section Title" value={content.gallerySectionTitle} onChange={(v) => updateContent({ gallerySectionTitle: v })} placeholder={hospitality ? 'Hotel Gallery' : 'Our Gallery'} />
+        {galleryEntries.map((item, i) => (
           <ItemCard
             key={i}
-            label={`Image ${i + 1}`}
-            canRemove={listControls('galleryImages').canRemove()}
-            onRemove={() => listControls('galleryImages').onRemove(i)}
+            label={item.title || `Photo ${i + 1}`}
+            canRemove={galleryEntries.length > LIST_MIN_COUNT.galleryImages}
+            onRemove={() => {
+              if (galleryEntries.length <= LIST_MIN_COUNT.galleryImages) return
+              setGalleryEntries(galleryEntries.filter((_, index) => index !== i))
+            }}
           >
-            <ImagePicker label="Photo" value={img} onChange={(v) => updateListItem('galleryImages', i, '', v)} />
+            <Field
+              label="Category"
+              value={item.category}
+              onChange={(v) => {
+                const next = [...galleryEntries]
+                next[i] = { ...next[i], category: v }
+                setGalleryEntries(next)
+              }}
+              placeholder={hospitality ? 'Rooms & Suites' : 'Category'}
+            />
+            <Field
+              label="Photo Title"
+              value={item.title}
+              onChange={(v) => {
+                const next = [...galleryEntries]
+                next[i] = { ...next[i], title: v }
+                setGalleryEntries(next)
+              }}
+              placeholder={hospitality ? 'Lake View Balcony Room' : 'Photo title'}
+            />
+            <ImagePicker
+              label="Photo"
+              value={item.image}
+              onChange={(v) => {
+                const next = [...galleryEntries]
+                next[i] = { ...next[i], image: v }
+                setGalleryEntries(next)
+              }}
+            />
           </ItemCard>
         ))}
       </FormSection>
@@ -394,7 +442,7 @@ export function ContentForm() {
 
       {sectionOn('testimonials') && (
       <FormSection title="Reviews" {...listControls('testimonials', 'Add Review')}>
-        <Field label="Section Title" value={content.testimonialsSectionTitle} onChange={(v) => updateContent({ testimonialsSectionTitle: v })} />
+        <Field label="Section Title" value={content.testimonialsSectionTitle} onChange={(v) => updateContent({ testimonialsSectionTitle: v })} placeholder={hospitality ? 'Guest Reviews' : 'What Clients Say'} />
         {content.testimonials.map((t, i) => (
           <ItemCard
             key={i}
@@ -402,9 +450,9 @@ export function ContentForm() {
             canRemove={listControls('testimonials').canRemove()}
             onRemove={() => listControls('testimonials').onRemove(i)}
           >
-            <Field label="Quote" value={t.quote} onChange={(v) => updateListItem('testimonials', i, 'quote', v)} multiline />
-            <Field label="Author" value={t.author} onChange={(v) => updateListItem('testimonials', i, 'author', v)} />
-            <Field label="Role / Company" value={t.role} onChange={(v) => updateListItem('testimonials', i, 'role', v)} />
+            <Field label="Quote" value={t.quote} onChange={(v) => updateListItem('testimonials', i, 'quote', v)} multiline placeholder={hospitality ? 'Clean rooms, warm service, and fresh Ethiopian coffee every morning.' : 'Share a guest or client review'} />
+            <Field label="Author" value={t.author} onChange={(v) => updateListItem('testimonials', i, 'author', v)} placeholder="Hanna Tadesse" />
+            <Field label="Role / Location" value={t.role} onChange={(v) => updateListItem('testimonials', i, 'role', v)} placeholder={hospitality ? 'Guest from Addis Ababa' : 'Role or company'} />
           </ItemCard>
         ))}
       </FormSection>
@@ -412,8 +460,8 @@ export function ContentForm() {
 
       {pageOn('blog') && (
         <FormSection title="Blog" {...listControls('blogPosts', 'Add Post')}>
-          <Field label="Section Title" value={content.blogSectionTitle} onChange={(v) => updateContent({ blogSectionTitle: v })} />
-          <Field label="Section Subtitle" value={content.blogSectionSubtitle} onChange={(v) => updateContent({ blogSectionSubtitle: v })} />
+          <Field label="Section Title" value={content.blogSectionTitle} onChange={(v) => updateContent({ blogSectionTitle: v })} placeholder={hospitality ? 'Travel & Stay Stories' : 'Latest from Our Blog'} />
+          <Field label="Section Subtitle" value={content.blogSectionSubtitle} onChange={(v) => updateContent({ blogSectionSubtitle: v })} placeholder={hospitality ? 'Local guides, food notes, and seasonal updates for guests' : 'Stories and updates from our team'} />
           {content.blogPosts.map((post, i) => (
             <ItemCard
               key={i}
@@ -429,11 +477,12 @@ export function ContentForm() {
                   posts[i] = { ...posts[i], title: v, slug: slugify(v) }
                   updateContent({ blogPosts: posts })
                 }}
+                placeholder={hospitality ? 'A Weekend Guide Around Lake Bishoftu' : 'Article title'}
               />
-              <Field label="Summary" value={post.excerpt} onChange={(v) => updateListItem('blogPosts', i, 'excerpt', v)} multiline rows={2} />
-              <Field label="Full Content" value={post.body} onChange={(v) => updateListItem('blogPosts', i, 'body', v)} multiline rows={6} />
+              <Field label="Summary" value={post.excerpt} onChange={(v) => updateListItem('blogPosts', i, 'excerpt', v)} multiline rows={2} placeholder="Short summary shown on cards" />
+              <Field label="Full Content" value={post.body} onChange={(v) => updateListItem('blogPosts', i, 'body', v)} multiline rows={6} placeholder="Write the full article here..." />
               <ImagePicker label="Cover Image" value={post.image} onChange={(v) => updateListItem('blogPosts', i, 'image', v)} />
-              <Field label="Author" value={post.author} onChange={(v) => updateListItem('blogPosts', i, 'author', v)} />
+              <Field label="Author" value={post.author} onChange={(v) => updateListItem('blogPosts', i, 'author', v)} placeholder="Dawit Bekele" />
               <Field label="Publish Date" value={post.date} onChange={(v) => updateListItem('blogPosts', i, 'date', v)} placeholder="2026-03-15" />
             </ItemCard>
           ))}
@@ -442,8 +491,8 @@ export function ContentForm() {
 
       {pageOn('news') && (
         <FormSection title="News" {...listControls('newsPosts', 'Add News Item')}>
-          <Field label="Section Title" value={content.newsSectionTitle} onChange={(v) => updateContent({ newsSectionTitle: v })} />
-          <Field label="Section Subtitle" value={content.newsSectionSubtitle} onChange={(v) => updateContent({ newsSectionSubtitle: v })} />
+          <Field label="Section Title" value={content.newsSectionTitle} onChange={(v) => updateContent({ newsSectionTitle: v })} placeholder="News & Updates" />
+          <Field label="Section Subtitle" value={content.newsSectionSubtitle} onChange={(v) => updateContent({ newsSectionSubtitle: v })} placeholder={hospitality ? 'Hotel announcements, seasonal offers, and events' : 'Announcements and company news'} />
           {content.newsPosts.map((post, i) => (
             <ItemCard
               key={i}
@@ -459,11 +508,12 @@ export function ContentForm() {
                   posts[i] = { ...posts[i], title: v, slug: slugify(v) }
                   updateContent({ newsPosts: posts })
                 }}
+                placeholder={hospitality ? 'New Conference Hall & Terrace Now Open' : 'News headline'}
               />
               <Field label="Summary" value={post.excerpt} onChange={(v) => updateListItem('newsPosts', i, 'excerpt', v)} multiline rows={2} />
               <Field label="Full Content" value={post.body} onChange={(v) => updateListItem('newsPosts', i, 'body', v)} multiline rows={6} />
               <ImagePicker label="Cover Image" value={post.image} onChange={(v) => updateListItem('newsPosts', i, 'image', v)} />
-              <Field label="Author" value={post.author} onChange={(v) => updateListItem('newsPosts', i, 'author', v)} />
+              <Field label="Author" value={post.author} onChange={(v) => updateListItem('newsPosts', i, 'author', v)} placeholder="Selamawit Girma" />
               <Field label="Date" value={post.date} onChange={(v) => updateListItem('newsPosts', i, 'date', v)} placeholder="2026-03-15" />
             </ItemCard>
           ))}
@@ -512,8 +562,8 @@ export function ContentForm() {
             canRemove={listControls('team').canRemove()}
             onRemove={() => listControls('team').onRemove(i)}
           >
-            <Field label="Name" value={m.name} onChange={(v) => updateListItem('team', i, 'name', v)} />
-            <Field label="Role" value={m.role} onChange={(v) => updateListItem('team', i, 'role', v)} />
+            <Field label="Name" value={m.name} onChange={(v) => updateListItem('team', i, 'name', v)} placeholder="Selamawit Girma" />
+            <Field label="Role" value={m.role} onChange={(v) => updateListItem('team', i, 'role', v)} placeholder={hospitality ? 'Front Desk Manager' : 'Role'} />
             <ImagePicker label="Photo" value={m.image} onChange={(v) => updateListItem('team', i, 'image', v)} />
           </ItemCard>
         ))}
@@ -530,8 +580,8 @@ export function ContentForm() {
             canRemove={listControls('faqs').canRemove()}
             onRemove={() => listControls('faqs').onRemove(i)}
           >
-            <Field label="Question" value={faq.question} onChange={(v) => updateListItem('faqs', i, 'question', v)} />
-            <Field label="Answer" value={faq.answer} onChange={(v) => updateListItem('faqs', i, 'answer', v)} multiline />
+            <Field label="Question" value={faq.question} onChange={(v) => updateListItem('faqs', i, 'question', v)} placeholder={hospitality ? 'What time are check-in and check-out?' : 'Question'} />
+            <Field label="Answer" value={faq.answer} onChange={(v) => updateListItem('faqs', i, 'answer', v)} multiline placeholder={hospitality ? 'Check-in starts at 2:00 PM and check-out is at 12:00 PM.' : 'Answer'} />
           </ItemCard>
         ))}
       </FormSection>
@@ -565,8 +615,8 @@ export function ContentForm() {
 
       {pageOn('contact') && (
       <FormSection title="Contact Form">
-        <Field label="Section Title" value={content.contactSectionTitle} onChange={(v) => updateContent({ contactSectionTitle: v })} />
-        <Field label="Form Section Title" value={content.contactFormTitle} onChange={(v) => updateContent({ contactFormTitle: v })} />
+        <Field label="Section Title" value={content.contactSectionTitle} onChange={(v) => updateContent({ contactSectionTitle: v })} placeholder="Contact Us" />
+        <Field label="Form Section Title" value={content.contactFormTitle} onChange={(v) => updateContent({ contactFormTitle: v })} placeholder="Send Us a Message" />
         <Field
           label="Form Link (Google Forms, Typeform, etc.)"
           value={content.contactFormUrl}

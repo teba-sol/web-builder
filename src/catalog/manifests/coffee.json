@@ -189,7 +189,7 @@
     {
       "title": "Midnight Mocha",
       "description": "72% dark chocolate, double shot, and whipped crema — indulgent and bold.",
-      "image": "https://images.unsplash.com/photo-1572442388796-11668a67e3d9?w=600&q=80",
+      "image": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=80",
       "price": "371 ETB",
       "tag": "Dark",
       "link": "contact"
@@ -197,7 +197,7 @@
     {
       "title": "Honey Cinnamon Cortado",
       "description": "Equal parts espresso and steamed milk with raw honey and Ceylon cinnamon.",
-      "image": "https://images.unsplash.com/photo-1514434758858-3e2c5c8f8c0e?w=600&q=80",
+      "image": "https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=600&q=80",
       "price": "327 ETB",
       "tag": "Seasonal",
       "link": "contact"
@@ -205,7 +205,7 @@
     {
       "title": "Cold Brew Tonic",
       "description": "18-hour steep, tonic water, and orange peel — crisp and refreshing.",
-      "image": "https://images.unsplash.com/photo-1517487881594-278fdf133cde?w=600&q=80",
+      "image": "https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=600&q=80",
       "price": "302 ETB",
       "tag": "Iced",
       "link": "contact"
@@ -213,7 +213,7 @@
     {
       "title": "Affogato Classico",
       "description": "Double ristretto poured over artisan vanilla gelato.",
-      "image": "https://images.unsplash.com/photo-1559496417-e7f25cb247b3?w=600&q=80",
+      "image": "https://images.unsplash.com/photo-1453614512568-c4024d13c247?w=600&q=80",
       "price": "412 ETB",
       "tag": "Dessert",
       "link": "contact"
@@ -375,7 +375,7 @@
       {
         "title": "Midnight Mocha",
         "description": "72% dark chocolate, double shot, and whipped crema — indulgent and bold.",
-        "image": "https://images.unsplash.com/photo-1572442388796-11668a67e3d9?w=600&q=80",
+        "image": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=80",
         "price": "371 ETB",
         "tag": "Dark",
         "link": "contact"
@@ -383,7 +383,7 @@
       {
         "title": "Honey Cinnamon Cortado",
         "description": "Equal parts espresso and steamed milk with raw honey and Ceylon cinnamon.",
-        "image": "https://images.unsplash.com/photo-1514434758858-3e2c5c8f8c0e?w=600&q=80",
+        "image": "https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=600&q=80",
         "price": "327 ETB",
         "tag": "Seasonal",
         "link": "contact"
@@ -391,7 +391,7 @@
       {
         "title": "Cold Brew Tonic",
         "description": "18-hour steep, tonic water, and orange peel — crisp and refreshing.",
-        "image": "https://images.unsplash.com/photo-1517487881594-278fdf133cde?w=600&q=80",
+        "image": "https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=600&q=80",
         "price": "302 ETB",
         "tag": "Iced",
         "link": "contact"
@@ -399,7 +399,7 @@
       {
         "title": "Affogato Classico",
         "description": "Double ristretto poured over artisan vanilla gelato.",
-        "image": "https://images.unsplash.com/photo-1559496417-e7f25cb247b3?w=600&q=80",
+        "image": "https://images.unsplash.com/photo-1453614512568-c4024d13c247?w=600&q=80",
         "price": "412 ETB",
         "tag": "Dessert",
         "link": "contact"
@@ -407,7 +407,7 @@
     ],
     "gallerySectionTitle": "Inside Origin Coffee House",
     "galleryImages": [
-      "https://images.unsplash.com/photo-1501339847302-ac711a0a6587?w=600&q=80",
+      "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=600&q=80",
       "https://images.unsplash.com/photo-1453614512568-c4024d13c247?w=600&q=80",
       "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=600&q=80"
     ],

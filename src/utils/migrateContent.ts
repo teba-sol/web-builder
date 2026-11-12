@@ -11,6 +11,7 @@ import {
   showcaseConfigByTemplate,
 } from '../data/sectionConfig'
 import type { PageVisibility, RoomTypeItem, SectionVisibility, SiteContent, TemplateId } from '../types'
+import { getGalleryEntries } from './gallery'
 import { sanitizeContentLinks } from './linkResolver'
 import { slugify } from './slugify'
 
@@ -112,9 +113,15 @@ export function migrateContent(raw: Partial<SiteContent>, templateId?: TemplateI
     showcaseItems: raw.showcaseItems?.length
       ? raw.showcaseItems
       : defaultShowcaseByTemplate[id],
-    galleryImages: raw.galleryImages?.length
-      ? raw.galleryImages
-      : merged.galleryImages,
+    galleryImages: (() => {
+      const items = raw.galleryItems?.length ? raw.galleryItems : merged.galleryItems
+      if (items?.length) return items.map((item) => item?.image || '')
+      return raw.galleryImages?.length ? raw.galleryImages : merged.galleryImages
+    })(),
+    galleryItems: getGalleryEntries({
+      galleryImages: raw.galleryImages?.length ? raw.galleryImages : merged.galleryImages,
+      galleryItems: raw.galleryItems?.length ? raw.galleryItems : merged.galleryItems,
+    }),
     blogSectionTitle: raw.blogSectionTitle || merged.blogSectionTitle,
     blogSectionSubtitle: raw.blogSectionSubtitle || merged.blogSectionSubtitle,
     blogPosts: raw.blogPosts?.length ? raw.blogPosts : merged.blogPosts,

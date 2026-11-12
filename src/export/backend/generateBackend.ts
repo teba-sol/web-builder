@@ -25,6 +25,7 @@ import { generateFilamentFiles } from './generateFilament'
 import { generateSetupFiles, generateSetupToken } from './generateSetup'
 import { FONT_OPTIONS } from '../../data/brand'
 import { isHospitalityTemplate } from '../../data/hospitality'
+import { getPopulatedGalleryEntries } from '../../utils/gallery'
 import { phpStr } from './phpUtils'
 
 export type BackendFileMap = Record<string, string>
@@ -38,7 +39,7 @@ const LIST_MODELS = [
     table: 'showcase_items',
     fields: ['title', 'description', 'image', 'price', 'tag', 'link'],
   },
-  { name: 'GalleryImage', table: 'gallery_images', fields: ['path'] },
+  { name: 'GalleryImage', table: 'gallery_images', fields: ['title', 'category', 'path'] },
   { name: 'TeamMember', table: 'team_members', fields: ['name', 'role', 'image'] },
   { name: 'Testimonial', table: 'testimonials', fields: ['quote', 'author', 'role'] },
   { name: 'BlogPost', table: 'blog_posts', fields: ['title', 'slug', 'excerpt', 'body', 'image', 'author', 'is_published', 'published_at'] },
@@ -133,7 +134,7 @@ function generateMigration(table: string, columns: string[]): string {
       if (c === 'image' || c === 'path') {
         return `$table->text('${c}')->nullable();`
       }
-      if (c === 'link' || c === 'tag') {
+      if (c === 'link' || c === 'tag' || c === 'title' || c === 'category') {
         return `$table->string('${c}')->nullable();`
       }
       return `$table->string('${c}');`
@@ -528,9 +529,11 @@ function generateSeeder(payload: SiteExportPayload): string {
         ...item,
         image: mapImage(item.image, `showcase-${i + 1}`),
       })),
-    gallery_images: c.galleryImages
-      .filter(Boolean)
-      .map((img, i) => ({ path: mapImage(img, `gallery-${i + 1}`) })),
+    gallery_images: getPopulatedGalleryEntries(c).map((item, i) => ({
+      title: item.title || null,
+      category: item.category || null,
+      path: mapImage(item.image, `gallery-${i + 1}`),
+    })),
     team: c.team
       .filter((m) => m.name)
       .map((m) => ({ ...m, image: mapImage(m.image, `team-${m.name}`) })),
