@@ -1,3 +1,4 @@
+import { clientNameError, clientEmailError } from '../utils/clientValidation'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { Building2, Check, CheckCircle2, LoaderCircle, Plus, Search, UserRound } from 'lucide-react'
@@ -42,6 +43,8 @@ export function NewSitePage() {
   const [templateQuery, setTemplateQuery] = useState('')
   const [chosenTemplateId, setChosenTemplateId] = useState('')
   const [error, setError] = useState<string | null>(null)
+  const [nameError, setNameError] = useState<string | null>(null)
+  const [emailError, setEmailError] = useState<string | null>(null)
   const [phoneError, setPhoneError] = useState<string | null>(null)
   const [savingClient, setSavingClient] = useState(false)
   const savingClientRef = useRef(false)
@@ -111,7 +114,7 @@ export function NewSitePage() {
   const selectedTemplate: TemplateMeta | undefined = templates.find((template) => template.id === chosenTemplateId && template.category === businessTypeId)
   const selectedClient = clients.find((client) => client.id === clientId)
   const clientReady = creatingClient
-    ? clientName.trim().length > 0 && clientPhone.trim().length > 0
+    ? true
     : Boolean(clientId)
 
   useEffect(() => {
@@ -134,12 +137,16 @@ export function NewSitePage() {
 
   const showExisting = () => {
     setCreatingClient(false)
+    setNameError(null)
+    setEmailError(null)
     setError(null)
     setPhoneError(null)
   }
 
   const showNew = () => {
     setCreatingClient(true)
+    setNameError(null)
+    setEmailError(null)
     setClientId('')
     setError(null)
     setPhoneError(null)
@@ -156,13 +163,15 @@ export function NewSitePage() {
       return
     }
     const name = clientName.trim()
-    if (!name) {
-      setError('Client name is required')
-      return
-    }
+    const invalidName = clientNameError(clientName)
+    const invalidEmail = clientEmailError(clientEmail)
     const invalidPhone = ethiopianPhoneError(clientPhone)
-    if (invalidPhone) {
-      setPhoneError(invalidPhone)
+    setNameError(invalidName)
+    setEmailError(invalidEmail)
+    setPhoneError(invalidPhone)
+    if (invalidName || invalidEmail || invalidPhone) {
+      const field = invalidName ? 'client-name' : invalidEmail ? 'client-email' : 'client-phone'
+      document.getElementById(field)?.focus()
       return
     }
     const phone = normalizeEthiopianPhone(clientPhone)
@@ -275,7 +284,7 @@ export function NewSitePage() {
           )}
 
           {creatingClient ? (
-            <form id="new-client-form" onSubmit={(event) => { event.preventDefault(); void continueFromClient() }} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+            <form noValidate id="new-client-form" onSubmit={(event) => { event.preventDefault(); void continueFromClient() }} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
               <div className="mb-6 flex items-start gap-4">
                 <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-navy text-white">
                   <Building2 className="h-6 w-6" />
@@ -292,34 +301,47 @@ export function NewSitePage() {
                   Client name *
                   <input
                     required
+                    id="client-name"
+                    aria-invalid={Boolean(nameError)}
+                    aria-describedby={nameError ? 'client-name-error' : undefined}
+                    onBlur={() => setNameError(clientNameError(clientName))}
                     autoComplete="organization"
                     value={clientName}
-                    onChange={(e) => setClientName(e.target.value)}
+                    onChange={(e) => { setClientName(e.target.value); if (nameError) setNameError(clientNameError(e.target.value)) }}
                     placeholder="Skylight Hotel"
-                    className={fieldClass}
+                    className={`${fieldClass}${nameError ? ' !border-red-400' : ''}`}
                   />
+                  {nameError && <span id="client-name-error" role="alert" className="mt-1 block text-xs font-normal text-red-600">{nameError}</span>}
                 </label>
                 <label className="text-sm font-medium text-slate-700">
                   Email <span className="font-normal text-slate-400">(optional)</span>
                   <input
+                    id="client-email"
+                    aria-invalid={Boolean(emailError)}
+                    aria-describedby={emailError ? 'client-email-error' : undefined}
+                    onBlur={() => setEmailError(clientEmailError(clientEmail))}
+                    autoComplete="email"
                     type="email"
                     value={clientEmail}
-                    onChange={(e) => setClientEmail(e.target.value)}
+                    onChange={(e) => { setClientEmail(e.target.value); if (emailError) setEmailError(clientEmailError(e.target.value)) }}
                     placeholder="hello@studio.et"
-                    className={fieldClass}
+                    className={`${fieldClass}${emailError ? ' !border-red-400' : ''}`}
                   />
+                  {emailError && <span id="client-email-error" role="alert" className="mt-1 block text-xs font-normal text-red-600">{emailError}</span>}
                 </label>
                 <label className="text-sm font-medium text-slate-700 sm:col-span-2">
                   Phone *
                   <input
                     required
+                    id="client-phone"
+                    onBlur={() => setPhoneError(ethiopianPhoneError(clientPhone))}
                     type="tel"
                     inputMode="tel"
                     autoComplete="tel"
                     value={clientPhone}
                     onChange={(e) => {
                       setClientPhone(e.target.value)
-                      setPhoneError(null)
+                      if (phoneError) setPhoneError(ethiopianPhoneError(e.target.value))
                     }}
                     placeholder="0911 223 344"
                     aria-invalid={phoneError ? true : undefined}
