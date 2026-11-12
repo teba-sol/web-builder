@@ -365,7 +365,9 @@ function ContactDetails({ c, t, meta, className = '' }: {
       {fields.map((field) => (
         <div key={field.key}>
           <p className={`mb-1 ${t.contactLabel}`}>{field.label}</p>
-          <p className="break-all">{c[field.key as ContactFieldKey]}</p>
+          <p className="break-all">{className.includes('pulse-contact-details') && field.key === 'bookingUrl'
+            ? <a href={resolveSiteHref('/', c.bookingUrl, c)} target="_blank" rel="noopener noreferrer">Book a class ↗</a>
+            : c[field.key as ContactFieldKey]}</p>
         </div>
       ))}
     </div>
@@ -403,7 +405,7 @@ export function ContactSectionView({
   const meta = getTemplateMeta(variant)
   if (!meta) return null
   const shell = getSectionVariants(variant).contactShell
-  const title = c.contactSectionTitle || 'Get in Touch'
+  const title = c.contactSectionTitle || 'Contact Us'
   const ctaHref = resolveSiteHref(basePath, c.ctaLink || 'contact', c)
   const form = <ContactFormWrap c={c} t={t} variant={variant} accent={accent} layout={layout} />
   const info = (
@@ -413,6 +415,22 @@ export function ContactSectionView({
     </div>
   )
   const cta = <Link to={ctaHref} className={t.navCta}>{c.ctaText}</Link>
+
+  if (variant === 'fitness') {
+    return <section id="contact" className={t.contact}>
+      <div className="pulse-contact-grid px-6">
+        <div className="min-w-0">
+          <h2 className={`mb-6 text-4xl font-black uppercase ${t.sectionTitle}`}>{title}</h2>
+          <ContactDetails c={c} t={t} meta={meta} className="pulse-contact-details" />
+          <ContactMap c={c} />
+        </div>
+        <div className="pulse-contact-form">
+          <h3 className="mb-6 text-2xl font-bold">{c.contactFormTitle}</h3>
+          {form}
+        </div>
+      </div>
+    </section>
+  }
 
   const shells: Record<string, ReactNode> = {
     'full-bleed': (
@@ -557,12 +575,10 @@ export function ContactSectionView({
     ),
     'coastal-wave': (
       <section id="contact" className={t.contact}>
-        <div className="border-b-4 border-sky-400 bg-gradient-to-b from-sky-50 to-white px-6 py-14">
-          <div className="mx-auto max-w-6xl">
-            <h2 className={`mb-2 text-3xl font-bold text-sky-950 ${t.sectionTitle}`}>{title}</h2>
-            <p className="mb-10 text-sky-700">Reach our team for bookings and local recommendations</p>
-            <div className="grid gap-12 clg:grid-cols-2">{info}{form}</div>
-          </div>
+        <div className="mx-auto max-w-6xl px-6">
+          <h2 className={`mb-2 text-3xl font-bold ${t.sectionTitle}`}>{title}</h2>
+          <p className={`mb-10 ${t.sectionSubtitle}`}>Reach our team for bookings and local recommendations</p>
+          <div className="grid gap-12 clg:grid-cols-2">{info}{form}</div>
         </div>
       </section>
     ),
@@ -593,7 +609,7 @@ export function ContactSectionView({
           <div className="grid items-start gap-12 clg:grid-cols-[1fr_1.1fr]">
             <div>
               <h2 className={`mb-4 font-serif text-3xl text-[#2d1810] ${t.sectionTitle}`}>{title}</h2>
-              <p className={`mb-8 text-[#5c3d2e] ${t.cardText}`}>Questions about beans, events, or catering? Send us a note.</p>
+              <p className={`mb-8 text-[#5c3d2e] ${t.cardText}`}>{c.contactFormTitle || 'Have a question or booking request? Send us a message.'}</p>
               {info}
             </div>
             <div>{form}</div>

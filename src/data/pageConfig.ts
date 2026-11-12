@@ -1,3 +1,4 @@
+import { getPopulatedGalleryEntries } from '../utils/gallery'
 import { getShowcaseConfig } from './sectionConfig'
 import type { PageVisibility, SiteContent, TemplateId } from '../types'
 
@@ -65,7 +66,7 @@ export function pageHasContent(key: keyof PageVisibility, content: SiteContent):
     case 'rooms': return content.roomTypes.some((r) => r.name && r.isActive)
     case 'blog': return content.blogPosts.some((p) => p.title)
     case 'news': return content.newsPosts.some((p) => p.title)
-    case 'gallery': return content.galleryImages.some(Boolean)
+    case 'gallery': return getPopulatedGalleryEntries(content).length > 0
     case 'contact': return true
     default: return true
   }

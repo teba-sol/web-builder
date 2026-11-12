@@ -1,8 +1,14 @@
-import { accentLabelColor, actionBackground } from '../utils/accentInk'
+import { flowstackHeroGrid, FLOWSTACK_COPY, FLOWSTACK_MEDIA, FLOWSTACK_IMAGE, FLOWSTACK_ACTION } from './flowstackHero'
+import { MEDICAL_CSS, medicalHeroClass } from './medicalStyles'
+import { heroContentWrapperClass } from './heroLayout'
+import { HOSPITALITY_CSS } from './booking/hospitalityTheme'
+import { FITNESS_CSS } from './fitnessStyles'
+import { accentInk, accentLabelColor, actionBackground } from '../utils/accentInk'
 import { lazy, Suspense, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { getColorSchemes } from '../data/colorSchemes'
 import { getTemplateMeta } from '../data/defaults'
+import { isHospitalityTemplate } from '../data/hospitality'
 import { getLayoutVariant, type HeroLayout, type TestimonialLayout } from '../data/layoutVariants'
 
 import { getManifest } from '../catalog/catalog'
@@ -41,7 +47,6 @@ import {
 } from './booking/BookingPages'
 import { staySkin } from './booking/hospitalitySkin'
 import { RoomPrice } from './booking/RoomPrice'
-import { isHospitalityTemplate } from '../data/hospitality'
 import { type TemplateTheme } from './themes'
 import { catalogueRoomTypes } from '../data/bookingPreview'
 import { coverPhoto } from '../data/hospitality'
@@ -143,14 +148,14 @@ export function RichTemplateLayout({
     about: <AboutSection c={c} t={t} />,
     services: <ServicesSection c={c} t={t} meta={meta?.servicesLabel} />,
     steps: visibility.steps ? <StepsSection c={c} t={t} /> : null,
-    testimonials: visibility.testimonials ? <TestimonialsSection c={c} t={t} layout={layout.testimonialLayout} /> : null,
+    testimonials: visibility.testimonials ? <TestimonialsSection c={c} t={t} layout={layout.testimonialLayout} hospitality={isHospitalityTemplate(variant)} /> : null,
     'blog-teaser': c.pageVisibility.blog ? <BlogTeaser {...layoutProps} /> : null,
     'news-teaser': c.pageVisibility.news ? <NewsTeaser {...layoutProps} /> : null,
     'services-teaser': c.pageVisibility.services ? <ServicesTeaser {...layoutProps} /> : null,
     'portfolio-teaser': c.pageVisibility.portfolio ? <PortfolioTeaser {...layoutProps} /> : null,
     'about-teaser': c.pageVisibility.about ? <AboutTeaser {...layoutProps} /> : null,
     'rooms-teaser': c.pageVisibility.rooms ? <RoomsTeaser c={c} basePath={basePath} accent={accent} variant={variant} /> : null,
-    explore: <ExploreSectionView {...layoutProps} />,
+    explore: variant === 'fitness' || isHospitalityTemplate(variant) ? null : <ExploreSectionView {...layoutProps} />,
     'blog-page': <BlogListPage {...layoutProps} />,
     'blog-post-page': <BlogPostPage {...layoutProps} slug={postSlug ?? ''} />,
     'news-page': <NewsListPage {...layoutProps} />,
@@ -164,8 +169,13 @@ export function RichTemplateLayout({
     pricing: visibility.pricing ? <PricingSection c={c} t={t} /> : null,
     team: visibility.team ? <TeamSection c={c} t={t} /> : null,
     faq: visibility.faq ? <FaqSectionView c={c} t={t} variant={variant} /> : null,
+<<<<<<< HEAD
     cta: visibility.cta ? <CtaBannerSection c={c} t={t} basePath={basePath} /> : null,
     contact: <ContactSectionView c={c} t={t} variant={variant} accent={accent} layout={layout.contactLayout} basePath={basePath} />,
+=======
+    cta: visibility.cta ? <CtaBannerSection variant={variant} accent={accent} c={c} t={t} basePath={basePath} /> : null,
+    contact: <ContactSectionView c={c} t={t} variant={variant} layout={layout.contactLayout} basePath={basePath} />,
+>>>>>>> f8609a9ed8a87d219d98e9a9c924050d9ee55964
     footer: <FooterSection c={c} t={t} navItems={navItems} basePath={basePath} />,
   }
 
@@ -184,7 +194,7 @@ export function RichTemplateLayout({
 
   if (custom || (isCloneTemplate(variant) && page !== 'home')) {
     return (
-      <div data-site-brand {...(customPalette ? { 'data-custom-palette': '' } : {})} className={`@container ${cloneClass}`}>
+      <div data-site-brand {...(isHospitalityTemplate(variant) ? { 'data-hospitality-site': '' } : {})} {...(customPalette ? { 'data-custom-palette': '' } : {})} className={`@container ${cloneClass}`}>
         {fontHref ? <link rel="stylesheet" href={fontHref} /> : null}
         {brandStyles ? <style>{brandStyles}</style> : null}
         {cloneCss ? <style>{cloneCss}</style> : null}
@@ -204,7 +214,10 @@ export function RichTemplateLayout({
   }
 
   return (
-    <div data-site-brand {...(customPalette ? { 'data-custom-palette': '' } : {})} className={`@container min-h-screen tpl-${variant} ${layout.shellClass} ${t.page} ${isCloneTemplate(variant) ? 'webtemplate-clone' : ''}`}>
+    <div data-site-brand {...(isHospitalityTemplate(variant) ? { 'data-hospitality-site': '' } : {})} {...(customPalette ? { 'data-custom-palette': '' } : {})} className={`@container min-h-screen tpl-${variant} ${layout.shellClass} ${t.page} ${isCloneTemplate(variant) ? 'webtemplate-clone' : ''}`}>
+      {variant === 'fitness' && <style>{FITNESS_CSS}</style>}
+      {variant === 'medical' && <style>{MEDICAL_CSS}</style>}
+      {isHospitalityTemplate(variant) && <style>{HOSPITALITY_CSS}</style>}
       {fontHref ? <link rel="stylesheet" href={fontHref} /> : null}
       {brandStyles ? <style>{brandStyles}</style> : null}
       {cloneCss ? <style>{cloneCss}</style> : null}
@@ -361,6 +374,59 @@ function HeroSection({ c, t, variant, heroLayout, basePath, accent }: { c: SiteC
     </>
   )
 
+  if (variant === 'saas' && !hasOverlay) {
+    return <header className={`relative isolate ${t.hero} ${t.page}`} style={{ paddingBlock: 0 }}>
+      <div className={flowstackHeroGrid(heroLayout, Boolean(c.heroImage))}>
+        <div data-hero-copy className={FLOWSTACK_COPY}>
+          <p data-part="badge" className={`mb-5 inline-block ${t.heroBadge}`}>{c.businessName}</p>
+          <h1 data-part="title" className={`mb-6 text-balance ${t.heroTitle}`}>{c.tagline}</h1>
+          <p data-part="subtitle" className={`mb-8 leading-relaxed ${t.heroText}`}>{c.heroSubtext || c.about.slice(0, 160)}</p>
+          <Link data-part="cta" data-brand-cta to={ctaHref} className={`${FLOWSTACK_ACTION} ${t.heroCta}`} style={brandCtaStyle(c)}>
+            {c.ctaText}<span aria-hidden="true">→</span>
+          </Link>
+        </div>
+        {c.heroImage && <div data-hero-media className={FLOWSTACK_MEDIA}>
+          <img data-part="image" src={c.heroImage} alt="" className={FLOWSTACK_IMAGE} fetchPriority="high" decoding="async" />
+        </div>}
+      </div>
+    </header>
+  }
+
+  if (variant === 'medical' && heroLayout !== 'immersive') {
+    return <header className={`relative isolate ${medicalHeroClass(heroLayout)} ${t.hero}`}>
+      <div className="medical-hero-layout">
+        <div className="medical-hero-copy">
+          <p data-part="badge" className={t.heroBadge}>{c.businessName}</p>
+          <h1 data-part="title" className={`medical-hero-title ${t.heroTitle}`}>{c.tagline}</h1>
+          <p data-part="subtitle" className={`medical-hero-description ${t.heroText}`}>{c.heroSubtext || c.about.slice(0, 160)}</p>
+          <Link data-part="cta" data-brand-cta to={ctaHref} className={`medical-hero-action ${t.heroCta}`} style={brandCtaStyle(c)}>
+            {c.ctaText}<span aria-hidden="true">→</span>
+          </Link>
+        </div>
+        {c.heroImage && <div className="medical-hero-media">
+          <img data-part="image" src={c.heroImage} alt="" className="medical-hero-image object-cover" fetchPriority="high" decoding="async" />
+        </div>}
+      </div>
+    </header>
+  }
+
+  if (isHospitalityTemplate(variant)) {
+    const wrapper = heroContentWrapperClass(variant, heroLayout, hasOverlay)
+      .replaceAll('sm:', 'csm:').replaceAll('lg:', 'clg:')
+    return <header className={`stay-hero relative z-0 isolate ${t.hero}`}>
+      {hasOverlay && c.heroImage && <>
+        <img data-part="image" src={c.heroImage} alt="" className="absolute inset-0 h-full w-full object-cover" />
+        <div className={`absolute inset-0 ${heroCfg?.overlayGradient || 'bg-black/30'}`} />
+      </>}
+      <div className={wrapper}>
+        <p data-part="badge" className={`mb-4 ${t.heroBadge}`}>{c.businessName}</p>
+        <h1 data-part="title" className={`mb-6 ${t.heroTitle}`}>{c.tagline}</h1>
+        <p data-part="subtitle" className={`mb-8 ${t.heroText}`}>{c.heroSubtext}</p>
+        <HeroStaySearch basePath={basePath} accent={accent} templateId={variant} />
+      </div>
+    </header>
+  }
+
   return (
     <header className={`relative z-0 isolate ${t.hero} ${heroLayout === 'immersive' && !['restaurant', 'realtor', 'photography', 'creative', 'fitness', 'noir', 'coastal', 'hotel', 'alpine', 'ryokan', 'jungle', 'vineyard', 'arcade'].includes(variant) ? 'min-h-[85vh] flex flex-col justify-center' : ''}`}>
       {hasOverlay && c.heroImage && (
@@ -416,11 +482,11 @@ function StatsSection({ c, t, variant }: { c: SiteContent; t: TemplateTheme; var
   const stats = c.stats.filter((s) => s.value)
   if (stats.length === 0) return null
   return (
-    <section className={t.stats}>
+    <section className={`${t.stats}${variant === 'fitness' ? ' pulse-trust' : isHospitalityTemplate(variant) ? ' stay-trust' : ''}`}>
       <div data-part="heading" className="mx-auto max-w-6xl px-4 csm:px-6 pb-4 text-center">
         <p className="text-sm font-semibold uppercase tracking-widest opacity-80">{isHospitalityTemplate(variant) ? 'Trusted' : 'Trust signals'}</p>
       </div>
-      <div className={`tpl-stats-inner mx-auto max-w-6xl px-4 csm:px-6 ${statsGridClass(variant)}`}>
+      <div className={`tpl-stats-inner mx-auto max-w-6xl px-4 csm:px-6 ${statsGridClass(variant)}${variant === 'fitness' ? ' pulse-trust-grid' : ''}`}>
         {stats.map((s, i) => (
           <div key={i}>
             <p className={t.statValue}>{s.value}</p>
@@ -500,7 +566,7 @@ function StepsSection({ c, t }: { c: SiteContent; t: TemplateTheme }) {
 
 function StarRating() {
   return (
-    <div className="mb-4 flex gap-0.5 text-amber-400" aria-hidden>
+    <div className="mb-4 flex w-full justify-center gap-0.5 text-amber-400" aria-hidden>
       {Array.from({ length: 5 }).map((_, i) => (
         <span key={i}>★</span>
       ))}
@@ -510,28 +576,33 @@ function StarRating() {
 
 function ReviewCard({ item, t }: { item: { quote: string; author: string; role: string }; t: TemplateTheme }) {
   return (
-    <div className={t.testimonial}>
-      <StarRating />
-      <p className={`mb-6 text-lg leading-relaxed ${t.cardText}`}>"{item.quote}"</p>
-      <p className={`font-semibold ${t.cardTitle}`}>{item.author}</p>
-      <p className={`text-sm ${t.cardText}`}>{item.role}</p>
+    <div className={`${t.testimonial} flex h-full flex-col items-center justify-between text-center`}>
+      <div className="flex w-full flex-col items-center">
+        <StarRating />
+        <p className={`mb-6 text-lg leading-relaxed ${t.cardText}`}>"{item.quote}"</p>
+      </div>
+      <div className="mt-auto flex flex-col items-center pt-2">
+        <p className={`font-semibold ${t.cardTitle}`}>{item.author}</p>
+        <p className={`text-sm ${t.cardText}`}>{item.role}</p>
+      </div>
     </div>
   )
 }
 
-function TestimonialsSection({ c, t, layout }: { c: SiteContent; t: TemplateTheme; layout: TestimonialLayout }) {
+function TestimonialsSection({ c, t, layout, hospitality }: { c: SiteContent; t: TemplateTheme; layout: TestimonialLayout; hospitality: boolean }) {
   const testimonials = c.testimonials.filter((item) => item.quote)
+  const subtitle = hospitality ? 'What our guests say about their stay' : 'What our clients say about us'
 
   return (
     <section id="testimonials" className={t.sectionAlt}>
       <div className="mx-auto max-w-6xl px-4 csm:px-6">
         <h2 className={`mb-4 text-center ${t.sectionTitle}`}>{c.testimonialsSectionTitle}</h2>
-        <p className={`mb-14 text-center ${t.sectionSubtitle}`}>What our clients say about us</p>
+        <p className={`mb-14 text-center ${t.sectionSubtitle}`}>{subtitle}</p>
         {testimonials.length === 0 ? (
-          <p className={`text-center ${t.cardText}`}>Add client reviews in the editor to showcase social proof.</p>
+          <p className={`text-center ${t.cardText}`}>Add guest or client reviews in the editor.</p>
         ) : layout === 'featured' ? (
           <div className="space-y-8">
-            <div className={`mx-auto max-w-3xl text-center ${t.testimonial}`}>
+            <div className={`${t.testimonial} mx-auto flex max-w-3xl flex-col items-center text-center`}>
               <StarRating />
               <p className={`mb-6 text-2xl leading-relaxed ${t.cardText}`}>"{testimonials[0].quote}"</p>
               <p className={`text-lg font-semibold ${t.cardTitle}`}>{testimonials[0].author}</p>
@@ -548,13 +619,11 @@ function TestimonialsSection({ c, t, layout }: { c: SiteContent; t: TemplateThem
         ) : layout === 'list' ? (
           <div className="mx-auto max-w-3xl space-y-6">
             {testimonials.map((item, i) => (
-              <div key={i} className={`${t.testimonial} flex flex-col csm:flex-row csm:items-start csm:gap-6`}>
+              <div key={i} className={`${t.testimonial} flex flex-col items-center text-center`}>
                 <StarRating />
-                <div>
-                  <p className={`mb-4 text-lg leading-relaxed ${t.cardText}`}>"{item.quote}"</p>
-                  <p className={`font-semibold ${t.cardTitle}`}>{item.author}</p>
-                  <p className={`text-sm ${t.cardText}`}>{item.role}</p>
-                </div>
+                <p className={`mb-4 text-lg leading-relaxed ${t.cardText}`}>"{item.quote}"</p>
+                <p className={`font-semibold ${t.cardTitle}`}>{item.author}</p>
+                <p className={`text-sm ${t.cardText}`}>{item.role}</p>
               </div>
             ))}
           </div>
@@ -593,14 +662,14 @@ function TeamSection({ c, t }: { c: SiteContent; t: TemplateTheme }) {
   )
 }
 
-function CtaBannerSection({ c, t, basePath }: { c: SiteContent; t: TemplateTheme; basePath: string }) {
+function CtaBannerSection({ c, t, basePath, variant, accent }: { accent: string; variant: TemplateId; c: SiteContent; t: TemplateTheme; basePath: string }) {
   const ctaHref = resolveSiteHref(basePath, c.ctaLink || 'contact', c)
   return (
-    <section className={t.ctaBanner}>
+    <section className={`${t.ctaBanner}${variant === 'fitness' ? ' pulse-cta' : ''} ${isHospitalityTemplate(variant) ? accentInk(accent) : ''}`} style={isHospitalityTemplate(variant) ? { backgroundColor: accent } : undefined}>
       <div className="mx-auto max-w-3xl px-6 text-center">
         <h2 className="text-3xl font-bold mb-4">{c.ctaBannerTitle}</h2>
         <p className="mb-8 opacity-80 text-lg">{c.ctaBannerText}</p>
-        <Link data-brand-cta to={ctaHref} className={`inline-block ${t.ctaBannerBtn}`} style={brandCtaStyle(c)}>{c.ctaText}</Link>
+        <Link data-brand-cta={isHospitalityTemplate(variant) ? undefined : ''} to={ctaHref} className={`inline-block ${t.ctaBannerBtn}`} style={isHospitalityTemplate(variant) ? { color: accentLabelColor(accent), backgroundColor: '#fff' } : brandCtaStyle(c)}>{c.ctaText}</Link>
       </div>
     </section>
   )

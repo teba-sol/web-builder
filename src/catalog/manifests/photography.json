@@ -176,7 +176,7 @@
     {
       "title": "Portrait Session",
       "description": "1-hour session, 2 outfit changes, 25 edited high-res images.",
-      "image": "https://images.unsplash.com/photo-1554048612-b6a482b22f42?w=600&q=80",
+      "image": "https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=600&q=80",
       "price": "24,750 ETB",
       "tag": "1 hour",
       "link": "contact"
@@ -265,7 +265,7 @@
     "heroImage": "https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=1200&q=80",
     "aboutTitle": "The studio",
     "about": "Lens Studio photographs the day, edits it tightly, and delivers a gallery you can share.",
-    "aboutImage": "https://images.unsplash.com/photo-1554048612-b6a482b22f42?w=800&q=80",
+    "aboutImage": "https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=800&q=80",
     "missionStatement": "Pictures that hold up after the day is over.",
     "pageVisibility": {
       "about": true,
@@ -357,7 +357,7 @@
       {
         "title": "Portrait Session",
         "description": "1-hour session, 2 outfit changes, 25 edited high-res images.",
-        "image": "https://images.unsplash.com/photo-1554048612-b6a482b22f42?w=600&q=80",
+        "image": "https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=600&q=80",
         "price": "24,750 ETB",
         "tag": "1 hour",
         "link": "contact"
@@ -398,7 +398,7 @@
     "gallerySectionTitle": "Portfolio",
     "galleryImages": [
       "https://images.unsplash.com/photo-1519741497674-611481863552?w=600&q=80",
-      "https://images.unsplash.com/photo-1520854221256-17451b1ee63b?w=600&q=80",
+      "https://images.unsplash.com/photo-1519741497674-611481863552?w=600&q=80",
       "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=600&q=80"
     ],
     "testimonialsSectionTitle": "Kind Words",

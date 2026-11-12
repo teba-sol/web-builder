@@ -1,3 +1,6 @@
+import { MEDICAL_CSS } from '../templates/medicalStyles'
+import { HOSPITALITY_CSS } from '../templates/booking/hospitalityTheme'
+import { FITNESS_CSS } from '../templates/fitnessStyles'
 import { brandCss, brandFontHref } from '../data/brand'
 import type { SiteContent } from '../types'
 import { escapeHtml } from './imageUtils'
@@ -51,6 +54,9 @@ img:not([data-brand-logo]):not([class*="object-cover"]):not([class*="object-cont
 h1, h2, h3, p { overflow-wrap: break-word; }
 @media (max-width: 640px) { h1 { font-size: clamp(1.75rem, 8vw, 2.75rem) !important; line-height: 1.15 !important; } }
 ${LAYOUT_SHELL_CSS}
+${FITNESS_CSS}
+${MEDICAL_CSS}
+${HOSPITALITY_CSS}
 ${extraCss}
 </style>
 </head>`

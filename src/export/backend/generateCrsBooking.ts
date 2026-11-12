@@ -1248,7 +1248,7 @@ class RoomTypes extends Page
     {
         $rate = (float) SiteSetting::current()->usdt_etb_rate;
         $amount = is_numeric($get('basePrice')) ? (float) $get('basePrice') : 0.0;
-        $currency = strtoupper(trim((string) ($get('currency') ?: 'ETB')));
+        $currency = strtoupper(trim((string) ($get('currency') ?: 'USD')));
         $other = RoomPrice::other($amount, $currency, $rate);
         if ($rate <= 0) {
             return 'Set the USD to ETB rate on Hotel Policy to show the other currency.';
@@ -1267,7 +1267,7 @@ class RoomTypes extends Page
             Textarea::make('description')->rows(3)->helperText('Optional.'),
             TextInput::make('basePrice')->label('Price')->numeric()->default(0)->required()->live(onBlur: true)->helperText(fn (Get $get) => $this->priceHint($get)),
             TextInput::make('discountPercent')->label('Discount %')->numeric()->default(0)->required()->minValue(0)->maxValue(100)->helperText('0 means no discount. 10 means 10% off the price.'),
-            Select::make('currency')->options(['ETB' => 'ETB', 'USD' => 'USD'])->default('ETB')->required()->live(),
+            Select::make('currency')->options(['ETB' => 'ETB', 'USD' => 'USD'])->default('USD')->required()->live(),
             TextInput::make('maxAdults')->label('Max adults')->numeric()->default(2)->required()->minValue(1),
             TextInput::make('maxChildren')->label('Max children')->numeric()->default(0)->required()->minValue(0),
             TextInput::make('bedConfiguration')->label('Beds'),
@@ -1568,7 +1568,7 @@ class RoomTypes extends Page
             $base = (float) ($type['basePrice'] ?? 0);
             $percent = (float) ($type['discountPercent'] ?? 0);
             $selling = \\App\\Support\\RoomPrice::selling($base, $percent);
-            $currency = $type['currency'] ?? 'ETB';
+            $currency = $type['currency'] ?? 'USD';
           @endphp
           <tr wire:key="type-{{ $type['id'] }}" style="border-top:1px solid #e5e7eb;">
             <td style="padding:10px;vertical-align:middle;width:88px;">
@@ -2082,7 +2082,7 @@ class ReservationResource extends Resource
                 $rate = (float) \\App\\Models\\SiteSetting::current()->usdt_etb_rate;
                 $rawId = $get('room_type_id');
                 $type = static::findType(is_string($rawId) ? $rawId : null);
-                $currency = (string) ($type['currency'] ?? 'ETB');
+                $currency = (string) ($type['currency'] ?? 'USD');
                 $amount = is_numeric($get('nightly_rate')) ? (float) $get('nightly_rate') : 0.0;
                 $other = \\App\\Support\\RoomPrice::other($amount, $currency, $rate);
                 if ($rate <= 0) {
@@ -2451,8 +2451,8 @@ class ReservationDesk
         }
         $typeChanged = $existing && (string) $existing->room_type_id !== (string) $type['id'];
         $currency = (! $existing || $typeChanged)
-            ? (string) ($type['currency'] ?? 'ETB')
-            : (string) ($existing->currency ?: ($type['currency'] ?? 'ETB'));
+            ? (string) ($type['currency'] ?? 'USD')
+            : (string) ($existing->currency ?: ($type['currency'] ?? 'USD'));
         $freeBreakfast = (bool) ($type['freeBreakfast'] ?? false);
         $wantsBreakfast = $freeBreakfast || (bool) ($data['breakfast_selected'] ?? false);
         $charge = RoomPrice::breakfastCharge(

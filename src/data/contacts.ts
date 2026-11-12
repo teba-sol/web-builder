@@ -11,7 +11,7 @@ export const emptyContacts = {
   reservationEmail: '',
   licenseNumber: '',
   bookingUrl: '',
-  contactSectionTitle: 'Get in Touch',
+  contactSectionTitle: 'Contact Us',
   contactFormTitle: 'Send Us a Message',
   contactFormUrl: '',
   contactFormButtonText: 'Send message',

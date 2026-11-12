@@ -100,11 +100,11 @@ function NativeContactForm({ c, t, variant, accent, formStyle }: { c: SiteConten
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
         <label htmlFor="contact-name" className={`mb-1.5 block ${cls.label}`}>Your Name</label>
-        <input id="contact-name" name="name" type="text" required className={cls.input} placeholder="John Smith" />
+        <input id="contact-name" name="name" type="text" required className={cls.input} placeholder="Abebe Kebede" />
       </div>
       <div>
         <label htmlFor="contact-email" className={`mb-1.5 block ${cls.label}`}>Email Address</label>
-        <input id="contact-email" name="email" type="email" required className={cls.input} placeholder="you@example.com" />
+        <input id="contact-email" name="email" type="email" required className={cls.input} placeholder="abebe@example.com" />
       </div>
       <div>
         <label htmlFor="contact-message" className={`mb-1.5 block ${cls.label}`}>Message</label>

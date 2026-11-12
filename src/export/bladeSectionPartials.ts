@@ -1,3 +1,4 @@
+import { requireManifest } from '../catalog/catalog'
 import { getSectionVariants } from '../data/sectionVariants'
 import type { SiteExportPayload } from './backend/exportPayload'
 import { accentInk } from '../utils/accentInk'
@@ -92,11 +93,11 @@ export function generateBladeSectionPartials(payload: SiteExportPayload): Record
   const contactForm = `<div class="${wrapCls}">
 @if(session('contact_success'))<div class="rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 mb-4">{{ session('contact_success') }}</div>@endif
 <form class="space-y-4" action="{{ route('contact.store') }}" method="POST">@csrf
-<div><label class="block text-sm font-medium mb-1.5">Your Name</label><input name="name" type="text" required class="${inputCls}" /></div>
-<div><label class="block text-sm font-medium mb-1.5">Email</label><input name="email" type="email" required class="${inputCls}" /></div>
-<div><label class="block text-sm font-medium mb-1.5">Phone</label><input name="phone" type="tel" class="${inputCls}" /></div>
+<div><label class="block text-sm font-medium mb-1.5">Your Name</label><input name="name" type="text" required class="${inputCls}" placeholder="Abebe Kebede" /></div>
+<div><label class="block text-sm font-medium mb-1.5">Email</label><input name="email" type="email" required class="${inputCls}" placeholder="abebe@example.com" /></div>
+<div><label class="block text-sm font-medium mb-1.5">Phone</label><input name="phone" type="tel" class="${inputCls}" placeholder="+251 91 123 4567" /></div>
 @isset($services)<div><label class="block text-sm font-medium mb-1.5">Service</label><select name="service_type" class="${inputCls}"><option value="">How can we help?</option>@foreach($services as $service)<option value="{{ $service->title }}">{{ $service->title }}</option>@endforeach</select></div>@endisset
-<div><label class="block text-sm font-medium mb-1.5">Message</label><textarea name="message" rows="5" class="${inputCls}"></textarea></div>
+<div><label class="block text-sm font-medium mb-1.5">Message</label><textarea name="message" rows="5" class="${inputCls}" placeholder="How can we help you?"></textarea></div>
 <button type="submit" class="w-full ${accentInk(accent)} px-6 py-3 rounded-lg font-semibold" style="background-color:${accent}">{{ $settings->contact_form_button_text ?: 'Send message' }}</button>
 </form></div>`
 
@@ -106,6 +107,7 @@ export function generateBladeSectionPartials(payload: SiteExportPayload): Record
     'sidebar-panel': `<section id="contact" class="py-20"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold mb-10">{{ $settings->contact_section_title }}</h2><div class="grid lg:grid-cols-[280px_1fr] gap-10"><aside class="space-y-6">${CONTACT_INFO}</aside><div>${contactForm}</div></div></div></section>`,
     'split-dark': `<section id="contact" class="bg-black text-white py-20"><div class="max-w-6xl mx-auto px-6 grid lg:grid-cols-2 gap-12"><div><h2 class="text-4xl font-black uppercase mb-6">{{ $settings->contact_section_title }}</h2><div class="grid sm:grid-cols-2 gap-6">${CONTACT_INFO}</div></div><div>${contactForm}</div></div></section>`,
     'coffee-warm': `<section id="contact" class="bg-[#faf6f0] py-20 text-[#2d1810]"><div class="max-w-6xl mx-auto px-6 grid lg:grid-cols-[1fr_1.1fr] gap-12"><div><h2 class="font-serif text-3xl text-[#2d1810] mb-4">{{ $settings->contact_section_title }}</h2><div class="grid sm:grid-cols-2 gap-6">${CONTACT_INFO}</div></div><div>${contactForm}</div></div></section>`,
+    'coastal-wave': `<section id="contact" class="border-b-4 border-sky-400 bg-gradient-to-b from-sky-50 to-white py-16 text-slate-800"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold text-slate-900 mb-10">{{ $settings->contact_section_title }}</h2><div class="grid lg:grid-cols-2 gap-12"><div class="grid sm:grid-cols-2 gap-6 text-sm">${CONTACT_INFO}</div><div>${contactForm}</div></div></div></section>`,
     'split-classic': `<section id="contact" class="py-20"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold mb-10">{{ $settings->contact_section_title }}</h2><div class="grid lg:grid-cols-2 gap-12"><div class="grid sm:grid-cols-2 gap-6 text-sm">${CONTACT_INFO}</div><div>${contactForm}</div></div></div></section>`,
   }
 
@@ -115,9 +117,16 @@ export function generateBladeSectionPartials(payload: SiteExportPayload): Record
 section[id="contact"] .${wrapCls.split(' ')[0]}{width:100%}
 </style>`
 
+  if (payload.templateId === 'fitness') {
+    const details = CONTACT_INFO.replace("@include('partials.map')", '') + `
+@if($settings->booking_url)<div><p class="mb-1 text-sm">Class booking</p><p><a href="{{ $settings->booking_url }}" target="_blank" rel="noopener noreferrer">Book a class ↗</a></p></div>@endif`
+    contactShells['split-dark'] = `<section id="contact" class="bg-black text-white py-20"><div class="pulse-contact-grid px-6"><div class="min-w-0"><h2 class="text-4xl font-black uppercase mb-6">{{ $settings->contact_section_title }}</h2><div class="pulse-contact-details">${details}</div>@include('partials.map')</div><div class="pulse-contact-form"><h3 class="text-2xl font-bold mb-6">{{ $settings->contact_form_title }}</h3>${contactForm}</div></div></section>`
+  }
   return {
     'resources/views/partials/home-faq.blade.php': faqShells[cfg.faq] ?? faqShells.stacked,
-    'resources/views/partials/home-explore.blade.php': `${exploreCss}${exploreShells[cfg.explore] ?? exploreShells['card-grid']}`,
+    'resources/views/partials/home-explore.blade.php': requireManifest(templateId).homeSections.includes('explore')
+      ? `${exploreCss}${exploreShells[cfg.explore] ?? exploreShells['card-grid']}`
+      : '',
     'resources/views/partials/home-contact.blade.php': contactShells[cfg.contactShell] ?? contactShells['split-classic'],
     'resources/views/partials/contact-form.blade.php': contactForm,
   }

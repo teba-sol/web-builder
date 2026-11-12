@@ -1,3 +1,6 @@
+import { CUSTOM_COLOR_SCHEME_ID } from '../data/pickTemplate'
+import { getTheme } from '../templates/getTheme'
+import { isHospitalityTemplate } from '../data/hospitality'
 import { actionBackground } from '../utils/accentInk'
 import { resolveBrandAccent } from '../data/brand'
 import { getColorSchemes } from '../data/colorSchemes'
@@ -5,6 +8,7 @@ import { getShowcaseConfig } from '../data/sectionConfig'
 import { canLinkToPage, getSiteNavItems, resolveStaticHref, staticPostPath, staticSitePath } from '../data/siteNav'
 import { getPageLayouts } from '../templates/pageLayouts'
 import type { BlogPostItem, NewsItem, SiteContent, TemplateId } from '../types'
+import { getPopulatedGalleryEntries, groupGalleryEntries } from '../utils/gallery'
 import { slugify } from '../utils/slugify'
 import { buildStaticHeroHtml } from './heroExport'
 import { buildStaticHomePageBody } from './homePageExport'
@@ -41,7 +45,7 @@ interface SiteHtmlContext {
 }
 
 function buildNav(ctx: SiteHtmlContext): string {
-  return buildExportNavHtml(ctx.templateId, ctx.content, ctx.accent, ctx.fromNested)
+  return buildExportNavHtml(ctx.templateId, ctx.content, ctx.accent, ctx.fromNested, ctx.colorSchemeId)
 }
 
 function buildFooter(ctx: SiteHtmlContext): string {
@@ -76,7 +80,7 @@ function wrapPage(ctx: SiteHtmlContext, title: string, body: string): string {
       } as CloneExportCtx)
     : buildNav(ctx)
   return rewriteContainerVariantsForExport(`${head}
-<body data-site-brand class="${clone ? 'bg-[var(--clone-surface)] text-[var(--clone-ink)]' : 'bg-white text-slate-800'} ${shell} ${clone ? 'webtemplate-clone' : ''}">
+<body data-site-brand${ctx.colorSchemeId === CUSTOM_COLOR_SCHEME_ID ? ' data-custom-palette' : ''}${isHospitalityTemplate(ctx.templateId) ? ' data-hospitality-site' : ''} class="${clone ? 'bg-[var(--clone-surface)] text-[var(--clone-ink)]' : isHospitalityTemplate(ctx.templateId) ? getTheme(ctx.templateId, ctx.colorSchemeId).page : ctx.templateId === 'fitness' ? 'tpl-fitness bg-black text-white' : ctx.templateId === 'medical' ? 'tpl-medical bg-white text-slate-800' : 'bg-white text-slate-800'} ${shell} ${clone ? 'webtemplate-clone' : ''}">
 ${cloneNav}
 ${body}
 ${buildFooter(ctx)}
@@ -173,6 +177,7 @@ export function buildAllSitePages(
   const heroHtml = buildStaticHeroHtml({
     templateId,
     heroLayout: layout.heroLayout,
+    colorSchemeId,
     accent: actionBackground(accent, scheme.swatches[1]),
     heroImage: hero,
     businessName: content.businessName,
@@ -242,8 +247,8 @@ ${pricingHtml ? `<section class="bg-slate-50 py-20"><div class="max-w-6xl mx-aut
       const cls = layouts.portfolio === 'case-study' ? 'mb-16 block rounded-xl border overflow-hidden' : 'block rounded-xl border overflow-hidden hover:shadow-lg'
       const itemHref = item.link?.startsWith('http') ? item.link : resolveStaticHref(item.link || 'contact', content)
       return item.link?.startsWith('http')
-        ? `<a href="${escapeHtml(item.link)}" class="${cls}">${img ? `<img src="${img}" class="w-full ${layouts.portfolio === 'case-study' ? 'aspect-[21/9]' : 'aspect-[4/3]'} object-cover" />` : ''}<div class="p-6"><h3 class="font-semibold text-lg mb-2">${escapeHtml(item.title)}</h3><p class="opacity-80">${escapeHtml(item.description)}</p>${showcaseCfg.showPrice && item.price ? `<p class="text-lg font-bold mt-2" style="color:${accent}">${escapeHtml(item.price)}</p>` : ''}</div></a>`
-        : `<a href="${itemHref}" class="${cls}">${img ? `<img src="${img}" class="w-full ${layouts.portfolio === 'case-study' ? 'aspect-[21/9]' : 'aspect-[4/3]'} object-cover" />` : ''}<div class="p-6"><h3 class="font-semibold text-lg mb-2">${escapeHtml(item.title)}</h3><p class="opacity-80">${escapeHtml(item.description)}</p>${showcaseCfg.showPrice && item.price ? `<p class="text-lg font-bold mt-2" style="color:${accent}">${escapeHtml(item.price)}</p>` : ''}</div></a>`
+        ? `<a href="${escapeHtml(item.link)}" class="${cls}${templateId === 'fitness' ? ' pulse-card' : ''}">${img ? `<img src="${img}" class="w-full ${layouts.portfolio === 'case-study' ? 'aspect-[21/9]' : 'aspect-[4/3]'} object-cover" />` : ''}<div class="p-6"><h3 class="font-semibold text-lg mb-2">${escapeHtml(item.title)}</h3><p class="opacity-80">${escapeHtml(item.description)}</p>${templateId === 'fitness' ? '<div class="pulse-card-cue">Ask about this membership <span aria-hidden="true">→</span></div>' : ''}${showcaseCfg.showPrice && item.price ? `<p class="text-lg font-bold mt-2" style="color:${accent}">${escapeHtml(item.price)}</p>` : ''}</div></a>`
+        : `<a href="${itemHref}" class="${cls}${templateId === 'fitness' ? ' pulse-card' : ''}">${img ? `<img src="${img}" class="w-full ${layouts.portfolio === 'case-study' ? 'aspect-[21/9]' : 'aspect-[4/3]'} object-cover" />` : ''}<div class="p-6"><h3 class="font-semibold text-lg mb-2">${escapeHtml(item.title)}</h3><p class="opacity-80">${escapeHtml(item.description)}</p>${templateId === 'fitness' ? '<div class="pulse-card-cue">Ask about this membership <span aria-hidden="true">→</span></div>' : ''}${showcaseCfg.showPrice && item.price ? `<p class="text-lg font-bold mt-2" style="color:${accent}">${escapeHtml(item.price)}</p>` : ''}</div></a>`
     }).join('')
     const gridCls = layouts.portfolio === 'case-study' ? 'space-y-0' : 'grid sm:grid-cols-2 lg:grid-cols-3 gap-8'
     pages['portfolio.html'] = wrapPage(ctx, `${showcaseCfg.navLabel} — ${content.businessName}`, `
@@ -251,14 +256,24 @@ ${pricingHtml ? `<section class="bg-slate-50 py-20"><div class="max-w-6xl mx-aut
   }
 
   if (pv.gallery && canLinkToPage('gallery', content)) {
-    const gallery = content.galleryImages.map((img, i) => img ? resolveImageForExport(img, `gallery-${i + 1}`, assets) : '').filter(Boolean)
-    if (gallery.length) {
-      const galleryGrid = layouts.gallery === 'rows'
-        ? gallery.map((g) => `<img src="${g}" class="w-full rounded-xl mb-6 object-cover max-h-96" />`).join('')
-        : layouts.gallery === 'masonry'
-          ? `<div class="columns-1 sm:columns-2 lg:columns-3 gap-4">${gallery.map((g) => `<img src="${g}" class="mb-4 w-full break-inside-avoid rounded-xl" />`).join('')}</div>`
-          : `<div class="grid md:grid-cols-3 gap-4">${gallery.map((g) => `<img src="${g}" class="w-full rounded-xl aspect-[4/3] object-cover" />`).join('')}</div>`
-      pages['gallery.html'] = wrapPage(ctx, `Gallery — ${content.businessName}`, `<section class="py-20"><div class="max-w-6xl mx-auto px-6"><h1 class="text-4xl font-bold text-center mb-12">${escapeHtml(content.gallerySectionTitle)}</h1>${galleryGrid}</div></section>`)
+    const entries = getPopulatedGalleryEntries(content).map((item, i) => ({
+      ...item,
+      resolved: resolveImageForExport(item.image, `gallery-${i + 1}`, assets),
+    }))
+    if (entries.length) {
+      const { groups } = groupGalleryEntries(entries.map(({ resolved, title, category }) => ({ image: resolved, title, category })))
+      const renderCard = (item: { image: string; title: string }, imgCls: string) =>
+        `<figure${layouts.gallery === 'masonry' ? ' class="mb-4 break-inside-avoid"' : ''}><img src="${item.image}" alt="${escapeHtml(item.title || content.gallerySectionTitle)}" class="${imgCls}" />${item.title ? `<figcaption class="mt-2 text-sm font-medium text-slate-700">${escapeHtml(item.title)}</figcaption>` : ''}</figure>`
+      const galleryGroupsHtml = groups.map((group) => {
+        const heading = group.category ? `<h2 class="text-2xl font-semibold mb-5">${escapeHtml(group.category)}</h2>` : ''
+        const itemsHtml = layouts.gallery === 'rows'
+          ? group.items.map((g) => renderCard(g, 'w-full rounded-xl mb-2 object-cover max-h-96')).join('<div class="mb-4"></div>')
+          : layouts.gallery === 'masonry'
+            ? `<div class="columns-1 sm:columns-2 lg:columns-3 gap-4">${group.items.map((g) => renderCard(g, 'w-full rounded-xl')).join('')}</div>`
+            : `<div class="grid md:grid-cols-3 gap-4">${group.items.map((g) => renderCard(g, 'w-full rounded-xl aspect-[4/3] object-cover')).join('')}</div>`
+        return `<div>${heading}${itemsHtml}</div>`
+      }).join('<div class="my-10"></div>')
+      pages['gallery.html'] = wrapPage(ctx, `Gallery — ${content.businessName}`, `<section class="py-20"><div class="max-w-6xl mx-auto px-6"><h1 class="text-4xl font-bold text-center mb-12">${escapeHtml(content.gallerySectionTitle)}</h1><div class="space-y-12">${galleryGroupsHtml}</div></div></section>`)
     }
   }
 

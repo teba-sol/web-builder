@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Menu, X } from 'lucide-react'
 import { BrandMark } from '../components/BrandMark'
@@ -52,6 +52,20 @@ function MobileSiteNav({
   ctaStyle: ReturnType<typeof brandCtaStyle>
 }) {
   const [open, setOpen] = useState(false)
+  const menuId = useId()
+  const toggle = useRef<HTMLButtonElement>(null)
+  useEffect(() => {
+    if (!open) return
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setOpen(false)
+        toggle.current?.focus()
+      }
+    }
+    const targetWindow = toggle.current?.ownerDocument.defaultView ?? window
+    targetWindow.addEventListener('keydown', closeOnEscape)
+    return () => targetWindow.removeEventListener('keydown', closeOnEscape)
+  }, [open])
   return (
     <nav className={`${t.nav} clg:hidden`}>
       <div className="flex items-center justify-between gap-3 px-4 py-3 csm:px-6">
@@ -61,6 +75,8 @@ function MobileSiteNav({
         <button
           type="button"
           className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-current/20"
+          ref={toggle}
+          aria-controls={menuId}
           aria-expanded={open}
           aria-label={open ? 'Close menu' : 'Open menu'}
           onClick={() => setOpen((value) => !value)}
@@ -69,7 +85,7 @@ function MobileSiteNav({
         </button>
       </div>
       {open ? (
-        <div className="space-y-1 border-t border-current/10 px-4 py-4 csm:px-6">
+        <div id={menuId} className="max-h-[75vh] space-y-1 overflow-y-auto border-t border-current/10 px-4 py-4 csm:px-6">
           {pageLinks.map((item) => (
             <Link
               key={item.page}
@@ -143,6 +159,17 @@ function renderDesktopNav({
             <div className="hidden items-center gap-8 text-xs font-semibold uppercase tracking-wider clg:flex">
               <NavLinks items={pageLinks} t={t} basePath={basePath} />
             </div>
+            <Link to={ctaHref} data-brand-cta className={t.navCta} style={ctaStyle}>{c.ctaText}</Link>
+          </div>
+        </nav>
+      )
+
+    case 'medical':
+      return (
+        <nav className={t.nav}>
+          <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-4">
+            <Link to={basePath} className="text-xl font-semibold no-underline"><BrandMark c={c} /></Link>
+            <div className="hidden gap-7 text-sm clg:flex"><NavLinks items={pageLinks} t={t} basePath={basePath} /></div>
             <Link to={ctaHref} data-brand-cta className={t.navCta} style={ctaStyle}>{c.ctaText}</Link>
           </div>
         </nav>

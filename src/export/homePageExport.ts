@@ -1,3 +1,4 @@
+import { accentInk, accentLabelColor } from '../utils/accentInk'
 import { getShowcaseConfig } from '../data/sectionConfig'
 import { canLinkToPage, resolveStaticHref, staticSitePath } from '../data/siteNav'
 import type { SiteContent, TemplateId } from '../types'
@@ -203,16 +204,16 @@ export function buildStaticHomePageBody(ctx: HomeExportContext): string {
 
   const stats = c.stats.filter((s) => s.value)
   if (sv.stats && stats.length) {
-    parts.push(`<section class="py-16 text-white" style="background-color:${accent}">
-  <div class="max-w-6xl mx-auto px-6 pb-2 text-center"><p class="text-sm font-semibold uppercase tracking-widest opacity-80">Trust signals</p></div>
-  <div class="max-w-6xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8">${stats.map((s) => `<div class="text-center"><p class="text-3xl font-bold">${escapeHtml(s.value)}</p><p class="text-sm opacity-70 mt-1">${escapeHtml(s.label)}</p></div>`).join('')}</div>
+    parts.push(`<section class="${ctx.templateId === 'fitness' ? 'pulse-trust ' : isHospitalityTemplate(ctx.templateId) ? 'stay-trust ' : ''}py-16 text-white" style="background-color:${accent}">
+  <div class="max-w-6xl mx-auto px-6 pb-2 text-center"><p class="text-sm font-semibold uppercase tracking-widest opacity-80">${isHospitalityTemplate(ctx.templateId) ? 'Trusted' : 'Trust signals'}</p></div>
+  <div class="max-w-6xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8${ctx.templateId === 'fitness' ? ' pulse-trust-grid' : ''}">${stats.map((s) => `<div class="text-center"><p class="text-3xl font-bold">${escapeHtml(s.value)}</p><p class="text-sm opacity-70 mt-1">${escapeHtml(s.label)}</p></div>`).join('')}</div>
 </section>`)
   }
 
   const services = c.services.filter((s) => s.title)
   if (pv.services && services.length && canLinkToPage('services', c)) {
     const href = resolveStaticHref('services', c, fromNested)
-    parts.push(`<section class="py-20"><div class="max-w-6xl mx-auto px-6">${sectionHeader(c.servicesSectionTitle, c.servicesSectionSubtitle, href, 'Explore all →', accent)}<div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">${services.slice(0, 4).map((s, i) => `<a href="${href}" class="block rounded-xl border p-6 hover:shadow-md"><span class="text-sm font-bold opacity-40">0${i + 1}</span><h3 class="font-semibold text-lg mt-2 mb-2">${escapeHtml(s.title)}</h3><p class="opacity-80 line-clamp-3">${escapeHtml(s.description)}</p></a>`).join('')}</div></div></section>`)
+    parts.push(`<section class="py-20"><div class="max-w-6xl mx-auto px-6">${sectionHeader(c.servicesSectionTitle, c.servicesSectionSubtitle, href, 'Explore all →', accent)}<div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">${services.slice(0, 4).map((s, i) => `<a href="${href}" class="block rounded-xl border p-6 hover:shadow-md${ctx.templateId === 'fitness' ? ' pulse-card' : ''}"><span class="text-sm font-bold opacity-40">0${i + 1}</span><h3 class="font-semibold text-lg mt-2 mb-2">${escapeHtml(s.title)}</h3><p class="opacity-80 line-clamp-3">${escapeHtml(s.description)}</p>${ctx.templateId === 'fitness' ? '<div class="pulse-card-cue">Explore programs <span aria-hidden="true">→</span></div>' : ''}</a>`).join('')}</div></div></section>`)
   }
 
   const showcaseItems = c.showcaseItems.filter((i) => i.title)
@@ -220,7 +221,7 @@ export function buildStaticHomePageBody(ctx: HomeExportContext): string {
     const href = resolveStaticHref('portfolio', c, fromNested)
     parts.push(`<section class="bg-slate-50 py-20"><div class="max-w-6xl mx-auto px-6">${sectionHeader(c.showcaseSectionTitle || showcaseCfg.sectionTitle, c.showcaseSectionSubtitle || showcaseCfg.sectionSubtitle, href, 'Explore all →', accent)}<div class="grid sm:grid-cols-3 gap-8">${showcaseItems.slice(0, 3).map((item, i) => {
       const img = item.image ? ctx.resolveImage(item.image, `showcase-teaser-${i}`) : ''
-      return `<a href="${href}" class="block rounded-xl border overflow-hidden bg-white hover:shadow-lg">${img ? `<img src="${img}" class="w-full aspect-[4/3] object-cover" />` : ''}<div class="p-6"><h3 class="font-semibold">${escapeHtml(item.title)}</h3><p class="opacity-80 line-clamp-2 mt-2">${escapeHtml(item.description)}</p></div></a>`
+      return `<a href="${href}" class="block rounded-xl border overflow-hidden bg-white hover:shadow-lg${ctx.templateId === 'fitness' ? ' pulse-card' : ''}">${img ? `<img src="${img}" class="w-full aspect-[4/3] object-cover" />` : ''}<div class="p-6"><h3 class="font-semibold">${escapeHtml(item.title)}</h3><p class="opacity-80 line-clamp-2 mt-2">${escapeHtml(item.description)}</p>${ctx.templateId === 'fitness' ? '<div class="pulse-card-cue">View memberships <span aria-hidden="true">→</span></div>' : ''}</div></a>`
     }).join('')}</div></div></section>`)
   }
 
@@ -241,10 +242,11 @@ export function buildStaticHomePageBody(ctx: HomeExportContext): string {
 
   const testimonials = c.testimonials.filter((t) => t.quote)
   if (sv.testimonials) {
+    const sub = isHospitalityTemplate(ctx.templateId) ? 'What our guests say about their stay' : 'What our clients say about us'
     const cards = testimonials.length
-      ? testimonials.slice(0, 3).map((t) => `<div class="rounded-xl border bg-white p-8"><p class="text-lg mb-6">"${escapeHtml(t.quote)}"</p><p class="font-semibold">${escapeHtml(t.author)}</p><p class="text-sm opacity-70">${escapeHtml(t.role)}</p></div>`).join('')
-      : '<p class="text-center text-slate-500 col-span-full">Client reviews</p>'
-    parts.push(`<section class="py-20"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold text-center mb-4">${escapeHtml(c.testimonialsSectionTitle)}</h2><p class="text-center text-slate-600 mb-12">What our clients say about us</p><div class="grid md:grid-cols-3 gap-6">${cards}</div></div></section>`)
+      ? testimonials.slice(0, 3).map((t) => `<div class="rounded-xl border bg-white p-8 flex h-full flex-col items-center justify-between text-center"><div class="flex flex-col items-center"><div class="mb-3 flex justify-center gap-0.5 text-amber-400">★★★★★</div><p class="text-lg mb-6">"${escapeHtml(t.quote)}"</p></div><div class="mt-auto pt-2"><p class="font-semibold">${escapeHtml(t.author)}</p><p class="text-sm opacity-70">${escapeHtml(t.role)}</p></div></div>`).join('')
+      : '<p class="text-center text-slate-500 col-span-full">Guest and client reviews</p>'
+    parts.push(`<section class="py-20"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold text-center mb-4">${escapeHtml(c.testimonialsSectionTitle)}</h2><p class="text-center text-slate-600 mb-12">${sub}</p><div class="grid md:grid-cols-3 gap-6">${cards}</div></div></section>`)
   }
 
   if (pv.about && c.about?.trim() && canLinkToPage('about', c)) {
@@ -272,7 +274,7 @@ export function buildStaticHomePageBody(ctx: HomeExportContext): string {
   }
 
   if (sv.cta && (c.ctaBannerTitle || c.ctaBannerText || c.ctaText)) {
-    parts.push(`<section class="py-20 text-white" style="background-color:${accent}"><div class="max-w-3xl mx-auto px-6 text-center"><h2 class="text-3xl font-bold mb-4">${escapeHtml(c.ctaBannerTitle)}</h2><p class="mb-8 text-lg opacity-80">${escapeHtml(c.ctaBannerText)}</p><a href="${resolveStaticHref(c.ctaLink || 'contact', c, fromNested)}" class="inline-block bg-white px-8 py-3 rounded-lg font-semibold" style="color:${accent}">${escapeHtml(c.ctaText)}</a></div></section>`)
+    parts.push(`<section class="py-20 ${isHospitalityTemplate(ctx.templateId) ? accentInk(accent) : 'text-white'}${ctx.templateId === 'fitness' ? ' pulse-cta' : ''}" style="background-color:${accent}"><div class="max-w-3xl mx-auto px-6 text-center"><h2 class="text-3xl font-bold mb-4">${escapeHtml(c.ctaBannerTitle)}</h2><p class="mb-8 text-lg opacity-80">${escapeHtml(c.ctaBannerText)}</p><a href="${resolveStaticHref(c.ctaLink || 'contact', c, fromNested)}" class="inline-block bg-white px-8 py-3 rounded-lg font-semibold" style="color:${isHospitalityTemplate(ctx.templateId) ? accentLabelColor(accent) : accent}">${escapeHtml(c.ctaText)}</a></div></section>`)
   }
 
   if (pv.contact && ctx.contactFormHtml) {

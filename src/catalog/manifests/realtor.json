@@ -184,7 +184,7 @@
     {
       "title": "Penthouse — the district",
       "description": "3 bed penthouse with 360° views, private elevator, and rooftop terrace.",
-      "image": "https://images.unsplash.com/photo-1600607687939-ce8ab6f122ef?w=600&q=80",
+      "image": "https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=600&q=80",
       "price": "15,000,000 ETB",
       "tag": "3 bed · 3,100 sqft",
       "link": "contact"
@@ -200,7 +200,7 @@
     {
       "title": "Lake Apartment — the lakeshore",
       "description": "2 bed modern condo steps from the sand, resort-style amenities.",
-      "image": "https://images.unsplash.com/photo-1600566753190-17f0baa2a6a3?w=600&q=80",
+      "image": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80",
       "price": "8,500,000 ETB",
       "tag": "2 bed · 1,450 sqft",
       "link": "contact"
@@ -365,7 +365,7 @@
       {
         "title": "Penthouse — the district",
         "description": "3 bed penthouse with 360° views, private elevator, and rooftop terrace.",
-        "image": "https://images.unsplash.com/photo-1600607687939-ce8ab6f122ef?w=600&q=80",
+        "image": "https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=600&q=80",
         "price": "15,000,000 ETB",
         "tag": "3 bed · 3,100 sqft",
         "link": "contact"
@@ -381,7 +381,7 @@
       {
         "title": "Lake Apartment — the lakeshore",
         "description": "2 bed modern condo steps from the sand, resort-style amenities.",
-        "image": "https://images.unsplash.com/photo-1600566753190-17f0baa2a6a3?w=600&q=80",
+        "image": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80",
         "price": "8,500,000 ETB",
         "tag": "2 bed · 1,450 sqft",
         "link": "contact"
@@ -405,9 +405,9 @@
     ],
     "gallerySectionTitle": "Featured Properties",
     "galleryImages": [
-      "https://images.unsplash.com/photo-1600607687939-ce8ab6f122ef?w=600&q=80",
+      "https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=600&q=80",
       "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=600&q=80",
-      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6a3?w=600&q=80"
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80"
     ],
     "testimonialsSectionTitle": "Client Testimonials",
     "testimonials": [

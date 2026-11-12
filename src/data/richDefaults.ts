@@ -56,6 +56,7 @@ export const baseRichContent: SiteContent = {
   showcaseItems: defaultShowcaseByTemplate.business,
   gallerySectionTitle: 'Our Work',
   galleryImages: ['', '', '', '', '', ''],
+  galleryItems: [],
   testimonialsSectionTitle: 'What Clients Say',
   testimonials: [
     { quote: 'Outstanding service and incredible results. Highly recommended!', author: 'Sarah Johnson', role: 'CEO, TechStart' },
@@ -173,6 +174,7 @@ export function mergeRichContent(overrides: Partial<SiteContent>): SiteContent {
     steps: overrides.steps ?? baseRichContent.steps,
     showcaseItems: overrides.showcaseItems ?? baseRichContent.showcaseItems,
     galleryImages: overrides.galleryImages ?? baseRichContent.galleryImages,
+    galleryItems: overrides.galleryItems ?? baseRichContent.galleryItems,
     testimonials: overrides.testimonials ?? baseRichContent.testimonials,
     blogPosts: overrides.blogPosts ?? baseRichContent.blogPosts,
     newsPosts: overrides.newsPosts ?? baseRichContent.newsPosts,

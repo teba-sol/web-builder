@@ -156,7 +156,10 @@
     "faq": "numbered",
     "explore": "strips",
     "contactShell": "split-dark",
-    "contactForm": "bold-outline"
+    "contactForm": "bold-outline",
+    "exploreTitle": "Train",
+    "exploreSubtitle": "Programs, schedules, results, and membership",
+    "exploreLinkLabel": "Start"
   },
   "showcase": {
     "sectionTitle": "Membership Plans",

@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "id": "coastal",
-  "name": "Harbor Resort",
-  "description": "Waterfront resort with suites, a garden wing, and online booking.",
+  "name": "Harbor Hotel",
+  "description": "Lakeside hotel with bright suites, garden wings, and direct room booking.",
   "category": "hospitality",
   "previewGradient": "from-sky-400 via-cyan-600 to-amber-200",
   "accentColor": "#0284c7",
@@ -84,8 +84,8 @@
     "teamCard": "text-center",
     "ctaBanner": "bg-gradient-to-r from-sky-600 to-cyan-600 text-white py-24 text-center",
     "ctaBannerBtn": "rounded-full bg-white px-10 py-3 font-semibold text-sky-800 hover:bg-sky-50",
-    "contact": "bg-slate-900 text-sky-50 py-20",
-    "contactLabel": "text-sky-300 text-xs uppercase tracking-wider",
+    "contact": "border-b-4 border-sky-400 bg-gradient-to-b from-sky-50 to-white text-slate-800 py-16",
+    "contactLabel": "text-sky-700 text-xs font-semibold uppercase tracking-wider",
     "footer": "py-8 text-center text-sm text-slate-400 bg-white border-t border-sky-100"
   },
   "colorSchemes": [
@@ -113,7 +113,7 @@
         "navCta": "rounded-full bg-blue-600 px-6 py-2.5 text-white hover:bg-blue-700",
         "statValue": "text-4xl font-light text-blue-700",
         "ctaBanner": "bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-24",
-        "contact": "bg-blue-950 text-blue-50 py-20"
+        "contact": "border-b-4 border-blue-400 bg-gradient-to-b from-blue-50 to-white text-slate-800 py-16"
       }
     },
     {
@@ -130,7 +130,7 @@
         "heroCta": "rounded-full bg-orange-500 px-8 py-3 text-white hover:bg-orange-600",
         "ctaBanner": "bg-gradient-to-r from-orange-500 to-rose-500 text-white py-24",
         "showcasePrice": "text-orange-600",
-        "contact": "bg-orange-950 text-orange-50 py-20"
+        "contact": "border-b-4 border-orange-400 bg-gradient-to-b from-orange-50 to-white text-slate-800 py-16"
       }
     }
   ],
@@ -141,66 +141,66 @@
     "explore": "tiles",
     "contactShell": "coastal-wave",
     "contactForm": "soft-rounded",
-    "exploreTitle": "The resort",
-    "exploreSubtitle": "Rooms, experiences, gallery, and local guides",
-    "exploreLinkLabel": "Sail to"
+    "exploreTitle": "The Resort",
+    "exploreSubtitle": "Rooms, experiences, photo gallery, and trip tips",
+    "exploreLinkLabel": "Explore"
   },
   "showcase": {
     "sectionTitle": "Suites & Experiences",
-    "sectionSubtitle": "Wake to the lake — curated stays and unforgettable coastal moments",
+    "sectionSubtitle": "Wake up by Lake Babogaya with relaxing lakefront stays and dining",
     "navLabel": "Stay",
     "itemLabel": "Experience",
     "showPrice": true,
     "priceLabel": "From / night",
     "showTag": true,
-    "tagLabel": "Includes"
+    "tagLabel": "Category"
   },
   "defaultShowcase": [
     {
       "title": "Lake View Suite",
-      "description": "Private terrace, plunge pool, and panoramic sea views — breakfast included.",
+      "description": "Private terrace, clear water view, and fresh Ethiopian breakfast included.",
       "image": "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600&q=80",
-      "price": "23,100 ETB",
+      "price": "$170",
       "tag": "Suite",
       "link": "contact"
     },
     {
-      "title": "Shore Villa",
-      "description": "Two-bedroom villa with infinity pool and personal concierge service.",
-      "image": "https://images.unsplash.com/photo-1582719508461-905c994771df?w=600&q=80",
-      "price": "48,950 ETB",
+      "title": "Lakeside Family Villa",
+      "description": "Two-bedroom private villa with shaded garden terrace and personal host assistance.",
+      "image": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600&q=80",
+      "price": "$390",
       "tag": "Villa",
       "link": "contact"
     },
     {
-      "title": "Sunset Yacht Cruise",
-      "description": "Three-hour private cruise with champagne and mezze platter.",
+      "title": "Sunset Lake Boat Ride",
+      "description": "Two-hour quiet sunset cruise across the crater lake with snacks and coffee.",
       "image": "https://images.unsplash.com/photo-1567894340315-735d7c361db0?w=600&q=80",
-      "price": "15,400 ETB",
+      "price": "$45",
       "tag": "Experience",
       "link": "contact"
     },
     {
-      "title": "Spa Ritual Package",
-      "description": "Olive oil massage, sea salt scrub, and herbal steam — 2.5 hours of bliss.",
+      "title": "Spa & Steam Package",
+      "description": "Warm stone massage, herbal steam session, and lakeside tea for total rest.",
       "image": "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600&q=80",
-      "price": "10,720 ETB",
+      "price": "$55",
       "tag": "Wellness",
       "link": "contact"
     },
     {
-      "title": "Chef's Table Dinner",
-      "description": "Seven-course tasting menu with wine pairings on our ocean-view terrace.",
+      "title": "Lakeside Terrace Dinner",
+      "description": "Fresh lake tilapia, traditional Ethiopian dishes, and warm evening service.",
       "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80",
-      "price": "9,080 ETB",
+      "price": "$35",
       "tag": "Dining",
       "link": "contact"
     },
     {
-      "title": "Coastal Room",
-      "description": "Cozy room steps from the beach — linen bedding and sea-breeze balcony.",
+      "title": "Standard Lake Room",
+      "description": "Bright room steps from the shoreline with private balcony and morning breakfast.",
       "image": "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=80",
-      "price": "11,550 ETB",
+      "price": "$115",
       "tag": "Room",
       "link": "contact"
     }
@@ -209,31 +209,31 @@
   "contactFields": [
     {
       "key": "reservationEmail",
-      "label": "Reservations",
-      "placeholder": "book@harborresort.example"
+      "label": "Booking Email",
+      "placeholder": "booking@harborhotel.et"
     },
     {
       "key": "phone",
       "label": "Phone Number",
-      "placeholder": "+33 4 93 00 4455"
+      "placeholder": "+251 11 433 4455"
     },
     {
       "key": "address",
-      "label": "Property Address",
-      "placeholder": "9 Quay Street"
+      "label": "Hotel Address",
+      "placeholder": "Babogaya Lake Road, Bishoftu"
     },
     {
       "key": "hours",
       "label": "Front Desk Hours",
-      "placeholder": "24/7"
+      "placeholder": "Open 24 hours"
     },
     {
       "key": "email",
       "label": "General Email",
-      "placeholder": "stay@harborresort.example"
+      "placeholder": "info@harborhotel.et"
     }
   ],
-  "servicesLabel": "Experiences",
+  "servicesLabel": "Hotel Services",
   "pageLayouts": {
     "blog": "magazine",
     "blogPost": "editorial",
@@ -250,14 +250,14 @@
     "grayscaleImage": false
   },
   "defaults": {
-    "businessName": "Harbor Resort",
-    "tagline": "On the water, in the harbor",
-    "heroSubtext": "Waterfront suites, a garden wing, and a jetty for the morning boats.",
+    "businessName": "Harbor Hotel",
+    "tagline": "Peaceful rooms right by the lake",
+    "heroSubtext": "Comfortable lakeside suites, green gardens, and fresh dining in Bishoftu — easy to reach from Addis Ababa.",
     "heroImage": "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1200&q=80",
-    "aboutTitle": "The resort",
-    "about": "Harbor Resort faces the water. Suites open toward the harbor, the garden wing is quieter, and the desk can book a boat before breakfast.",
-    "aboutImage": "https://images.unsplash.com/photo-1582719508461-905c994771df?w=800&q=80",
-    "missionStatement": "A resort stay with the water in front of the room.",
+    "aboutTitle": "About Harbor Hotel",
+    "about": "Harbor Hotel sits on the calm shore of Lake Babogaya in Bishoftu. Guests enjoy bright lake-view rooms, quiet garden cottages, fresh Ethiopian and continental meals, and warm service just an hour from Addis Ababa.",
+    "aboutImage": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&q=80",
+    "missionStatement": "Relaxing lakeside comfort with warm Ethiopian hospitality.",
     "pageVisibility": {
       "about": true,
       "services": true,
@@ -280,264 +280,299 @@
     "stats": [
       {
         "value": "24",
-        "label": "Suites & Villas"
+        "label": "Rooms & Villas"
       },
       {
         "value": "4.9★",
         "label": "Guest Rating"
       },
       {
-        "value": "365",
-        "label": "Days of Sunshine"
+        "value": "45 min",
+        "label": "From Addis Ababa"
       },
       {
-        "value": "1",
-        "label": "Private Beach"
+        "value": "24/7",
+        "label": "Front Desk Help"
       }
     ],
-    "servicesSectionTitle": "Resort Amenities",
-    "servicesSectionSubtitle": "Everything you need for the perfect escape",
+    "servicesSectionTitle": "Resort Services",
+    "servicesSectionSubtitle": "Simple comforts for weekend rest and family getaways",
     "services": [
       {
-        "title": "Infinity Pools",
-        "description": "Heated saltwater pools on every terrace — swim into the horizon."
+        "title": "Swimming Pool & Lawn",
+        "description": "Clean lake-facing pool with sun chairs and shade umbrellas for families."
       },
       {
-        "title": "Spa & Wellness",
-        "description": "Olive oil rituals, thalassotherapy, and sunrise yoga on the cliff."
+        "title": "Spa & Steam",
+        "description": "Traditional steam bath, massage rooms, and peaceful lakefront relaxation."
       },
       {
-        "title": "Coastal Dining",
-        "description": "Farm-to-table lakeside cuisine with a dedicated sommelier."
+        "title": "Lakeside Dining & Buna",
+        "description": "Fresh grilled tilapia, Ethiopian dishes, and traditional coffee served outdoors."
       },
       {
-        "title": "Concierge",
-        "description": "Yacht charters, island tours, and reservations arranged in minutes."
+        "title": "Boat Rides & Events",
+        "description": "Morning boat rides on the lake plus lawn setups for weddings and retreats."
       }
     ],
-    "stepsSectionTitle": "How It Works",
+    "stepsSectionTitle": "How Booking Works",
     "steps": [
       {
-        "title": "Consultation",
-        "description": "We learn about your goals and challenges in a discovery session."
+        "title": "Search Your Dates",
+        "description": "Enter check-in date, check-out date, and the number of adults and children."
       },
       {
-        "title": "Strategy",
-        "description": "Our team crafts a tailored plan designed for your success."
+        "title": "Choose a Room",
+        "description": "Compare room photos, bed sizes, included breakfast, and nightly prices in USD."
       },
       {
-        "title": "Execution",
-        "description": "We deliver with precision, keeping you informed every step."
+        "title": "Confirm Your Details",
+        "description": "Fill in your name, Ethiopian or international phone number, and any special requests."
       },
       {
-        "title": "Growth",
-        "description": "We measure results and optimize for continuous improvement."
+        "title": "Check In & Enjoy",
+        "description": "Our reception team welcomes you on arrival and helps arrange boats or meals."
       }
     ],
-    "showcaseSectionTitle": "Suites & Experiences",
-    "showcaseSectionSubtitle": "Wake to the lake — curated stays and unforgettable coastal moments",
+    "showcaseSectionTitle": "Suites & Stays",
+    "showcaseSectionSubtitle": "Wake up by the water — comfortable rooms and weekend packages",
     "showcaseItems": [
       {
-        "title": "the lake Suite",
-        "description": "Private terrace, plunge pool, and panoramic sea views — breakfast included.",
+        "title": "Lake View Suite",
+        "description": "Private balcony overlooking the water — morning breakfast included.",
         "image": "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600&q=80",
-        "price": "23,100 ETB",
+        "price": "$170",
         "tag": "Suite",
-        "link": "contact"
+        "link": "book"
       },
       {
-        "title": "Shore Villa",
-        "description": "Two-bedroom villa with infinity pool and personal concierge service.",
-        "image": "https://images.unsplash.com/photo-1582719508461-905c994771df?w=600&q=80",
-        "price": "48,950 ETB",
+        "title": "Shore Family Villa",
+        "description": "Two bedrooms with private patio and extra living space for families.",
+        "image": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600&q=80",
+        "price": "$390",
         "tag": "Villa",
-        "link": "contact"
+        "link": "book"
       },
       {
-        "title": "Sunset Yacht Cruise",
-        "description": "Three-hour private cruise with champagne and mezze platter.",
+        "title": "Morning Boat Tour",
+        "description": "Guided one-hour boat ride across the crater lake with tea or buna.",
         "image": "https://images.unsplash.com/photo-1567894340315-735d7c361db0?w=600&q=80",
-        "price": "15,400 ETB",
-        "tag": "Experience",
+        "price": "$45",
+        "tag": "Activity",
         "link": "contact"
       },
       {
-        "title": "Spa Ritual Package",
-        "description": "Olive oil massage, sea salt scrub, and herbal steam — 2.5 hours of bliss.",
+        "title": "Steam & Massage Package",
+        "description": "Full body massage and herbal steam session after your drive.",
         "image": "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600&q=80",
-        "price": "10,700 ETB",
+        "price": "$55",
         "tag": "Wellness",
         "link": "contact"
       },
       {
-        "title": "Chef's Table Dinner",
-        "description": "Seven-course tasting menu with wine pairings on our ocean-view terrace.",
+        "title": "Lakeview Dinner",
+        "description": "Fresh grilled fish or traditional platter served on the outdoor terrace.",
         "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80",
-        "price": "9,100 ETB",
+        "price": "$35",
         "tag": "Dining",
         "link": "contact"
       },
       {
-        "title": "Coastal Room",
-        "description": "Cozy room steps from the beach — linen bedding and sea-breeze balcony.",
+        "title": "Garden Junior Suite",
+        "description": "Calm room surrounded by trees, ideal for restful weekends.",
         "image": "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=80",
-        "price": "11,550 ETB",
+        "price": "$115",
         "tag": "Room",
-        "link": "contact"
+        "link": "book"
       }
     ],
-    "gallerySectionTitle": "The Property",
+    "gallerySectionTitle": "Resort Gallery",
     "galleryImages": [
-      "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600&q=80",
-      "https://images.unsplash.com/photo-1582719508461-905c994771df?w=600&q=80",
-      "https://images.unsplash.com/photo-1567894340315-735d7c361db0?w=600&q=80"
+      "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&q=80",
+      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&q=80",
+      "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80",
+      "https://images.unsplash.com/photo-1567894340315-735d7c361db0?w=800&q=80",
+      "https://images.unsplash.com/photo-1591088398332-8a7791972843?w=800&q=80",
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80"
     ],
-    "testimonialsSectionTitle": "Guest Stories",
+    "galleryItems": [
+      {
+        "category": "Rooms & Villas",
+        "title": "Lake View Suite & Balcony",
+        "image": "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&q=80"
+      },
+      {
+        "category": "Rooms & Villas",
+        "title": "Bright Bedroom Interior",
+        "image": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&q=80"
+      },
+      {
+        "category": "Dining & Coffee",
+        "title": "Outdoor Lakefront Restaurant",
+        "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80"
+      },
+      {
+        "category": "Lake & Grounds",
+        "title": "Morning Boat Jetty",
+        "image": "https://images.unsplash.com/photo-1567894340315-735d7c361db0?w=800&q=80"
+      },
+      {
+        "category": "Rooms & Villas",
+        "title": "Garden Wing Double Room",
+        "image": "https://images.unsplash.com/photo-1591088398332-8a7791972843?w=800&q=80"
+      },
+      {
+        "category": "Lake & Grounds",
+        "title": "Resort Pool & Garden Lawn",
+        "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80"
+      }
+    ],
+    "testimonialsSectionTitle": "Guest Reviews",
     "testimonials": [
       {
-        "quote": "Outstanding service and incredible results. Highly recommended!",
-        "author": "Elena Ward",
-        "role": "CEO, TechStart"
+        "quote": "Such a peaceful weekend escape from Addis Ababa. The lake breeze, clean rooms, and fresh breakfast made our family trip unforgettable.",
+        "author": "Hanna Tadesse",
+        "role": "Guest from Addis Ababa"
       },
       {
-        "quote": "They transformed our business. Professional, creative, and reliable.",
-        "author": "Noah Bennett",
-        "role": "Founder, Bloom Co"
+        "quote": "We booked our retreat online in two minutes and the staff welcomed us with warm Ethiopian coffee as soon as we arrived.",
+        "author": "Dawit Bekele",
+        "role": "Team Lead, EthioTech Group"
       },
       {
-        "quote": "The best decision we made this year. Exceeded every expectation.",
-        "author": "Maya Chen",
-        "role": "Director, Apex Group"
+        "quote": "Quiet gardens, great grilled fish by the water, and super helpful reception staff around the clock.",
+        "author": "Mekdes Alemu",
+        "role": "Weekend Guest, Adama"
       }
     ],
     "faqSectionTitle": "Frequently Asked Questions",
     "faqs": [
       {
-        "question": "How do I get started?",
-        "answer": "Simply reach out via our contact form or give us a call. We offer a free initial consultation."
+        "question": "What time are check-in and check-out?",
+        "answer": "Check-in starts at 2:00 PM and check-out is at 12:00 PM. Early check-in or late check-out is available when rooms are free."
       },
       {
-        "question": "What are your pricing options?",
-        "answer": "We offer flexible packages tailored to your needs and budget. Contact us for a custom quote."
+        "question": "Is breakfast included in the room rate?",
+        "answer": "Yes, rooms marked with Breakfast Included cover our daily Ethiopian and continental buffet with fresh coffee and fruit."
       },
       {
-        "question": "How long does a typical project take?",
-        "answer": "Timelines vary by scope, but most projects are completed within 2–8 weeks."
+        "question": "Can we drive from Addis Ababa and park inside the resort?",
+        "answer": "Yes. Bishoftu is about 45 to 60 minutes from Bole via the expressway, and guarded on-site parking is free for guests."
       },
       {
-        "question": "Do you offer ongoing support?",
-        "answer": "Yes! We provide continued support and maintenance to ensure long-term success."
+        "question": "How do payments and cancellations work?",
+        "answer": "You can reserve online and pay on arrival in USD or ETB. Look at each room card to see if free cancellation applies."
       }
     ],
-    "teamSectionTitle": "Meet the Team",
-    "blogSectionTitle": "Latest from Our Blog",
-    "blogSectionSubtitle": "Insights, tips, and updates from our team",
-    "newsSectionTitle": "News & Updates",
-    "newsSectionSubtitle": "Announcements, press releases, and company news",
+    "teamSectionTitle": "Meet Our Hospitality Team",
+    "blogSectionTitle": "Stories & Travel Guides",
+    "blogSectionSubtitle": "Things to do, local food notes, and lake tips around Bishoftu",
+    "newsSectionTitle": "Resort News",
+    "newsSectionSubtitle": "Seasonal events and updates at our lakefront property",
     "newsPosts": [
       {
-        "title": "We Are Expanding to Serve You Better",
-        "slug": "expanding-to-serve-you-better",
-        "excerpt": "New locations, extended hours, and more ways to connect with our team.",
-        "body": "We are thrilled to announce expanded service hours and a new consultation space designed around your comfort and convenience.\n\nThis investment reflects our commitment to accessibility and excellence. Thank you for being part of our journey — we cannot wait to welcome you.",
-        "image": "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80",
+        "title": "Weekend Lakeside Brunch & Traditional Coffee Every Sunday",
+        "slug": "sunday-lakeside-brunch-bishoftu",
+        "excerpt": "Join us on the garden terrace for fresh Ethiopian dishes, grilled fish, and live acoustic music.",
+        "body": "Every Sunday morning from 10:00 AM, our lakeside dining terrace opens for families and day visitors from Addis Ababa and Bishoftu.\n\nGuests enjoy fresh chechebsa, tibs, salads, tropical fruit juices, and an open coffee ceremony overlooking the crater lake. Room guests can reserve a table directly at the front desk.",
+        "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80",
         "author": "Selam Tadesse",
         "date": "2026-04-01"
       },
       {
-        "title": "Award Recognizes Our Commitment to Quality",
-        "slug": "award-quality-commitment",
-        "excerpt": "Industry leaders honored our team for outstanding client satisfaction.",
-        "body": "Receiving this recognition is a testament to the people behind our work — dedicated professionals who show up every day with care and craft.\n\nWe share this award with every client who trusted us with their goals. Your feedback shapes how we grow and improve.",
-        "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80",
-        "author": "Communications",
+        "title": "New Conference Lawn for Company Retreats & Weddings",
+        "slug": "new-conference-lawn-events",
+        "excerpt": "Host up to 80 guests outdoors with catering, sound setup, and nearby garden rooms.",
+        "body": "We have opened a shaded event lawn next to the main garden wing for team retreats, family celebrations, and lakeside weddings.\n\nOur staff handles seating, coffee breaks, buffet lunch, and group room blocks so organizers have one clear contact.",
+        "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=800&q=80",
+        "author": "Dawit Bekele",
         "date": "2026-03-18"
       },
       {
-        "title": "Partnership Opens New Opportunities",
-        "slug": "partnership-new-opportunities",
-        "excerpt": "Strategic collaboration brings enhanced offerings to our community.",
-        "body": "Our new partnership combines complementary strengths to deliver more value, faster turnaround, and broader expertise under one roof.\n\nStay tuned for launch events and early-access opportunities for existing clients.",
-        "image": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80",
-        "author": "Leadership",
+        "title": "Boat Rides & Birdwatching Tours Now Depart Daily at 7 AM",
+        "slug": "daily-morning-boat-birdwatching",
+        "excerpt": "See pelicans, kingfishers, and calm crater waters before breakfast.",
+        "body": "Guests staying overnight can now sign up at reception for our guided 7:00 AM boat trip around the lake.\n\nLife jackets and hot Ethiopian coffee flasks are provided on board so you return just in time for breakfast.",
+        "image": "https://images.unsplash.com/photo-1567894340315-735d7c361db0?w=800&q=80",
+        "author": "Meron Assefa",
         "date": "2026-02-05"
       }
     ],
-    "pricingSectionTitle": "Pricing Plans",
+    "pricingSectionTitle": "Weekend Packages",
     "pricing": [
       {
-        "title": "Starter",
-        "description": "Essential features for individuals and small teams getting started.",
-        "price": "1,600 ETB/mo",
-        "tag": "Most popular",
+        "title": "Day Pass & Pool",
+        "description": "Access to the swimming pool, lake lawn, and one welcome coffee.",
+        "price": "$20",
+        "tag": "Popular",
         "featured": false
       },
       {
-        "title": "Professional",
-        "description": "Advanced tools, priority support, and integrations for growing businesses.",
-        "price": "4,350 ETB/mo",
+        "title": "Couple Lake Escape",
+        "description": "One night in a Lake View Suite with dinner, breakfast, and steam bath.",
+        "price": "$140",
         "tag": "Best value",
         "featured": true
       },
       {
-        "title": "Enterprise",
-        "description": "Custom solutions, dedicated account management, and SLA guarantees.",
-        "price": "Custom",
-        "tag": "Contact us",
+        "title": "Family Villa Weekend",
+        "description": "Two nights in our two-bedroom Shore Villa with breakfast for four.",
+        "price": "$490",
+        "tag": "Families",
         "featured": false
       }
     ],
     "roomsSectionTitle": "Suites & Villas",
-    "roomsSectionSubtitle": "Lake suites and garden rooms, priced per night in local currency.",
-    "bookingSectionTitle": "Reserve Your Escape",
-    "bookingSectionSubtitle": "Search your lakeshore dates and reserve a room.",
+    "roomsSectionSubtitle": "Lake suites and garden rooms, priced clearly per night in USD.",
+    "bookingSectionTitle": "Book Your Stay",
+    "bookingSectionSubtitle": "Pick your Bishoftu dates, check free rooms, and reserve online.",
     "roomTypes": [
       {
         "name": "Lake View Suite",
-        "slug": "sea-view-suite",
+        "slug": "lake-view-suite",
         "parentSlug": "",
-        "description": "A bright suite with a private terrace and an open view across the lake.",
-        "shortDescription": "Lake view · Terrace · 42 m²",
-        "basePrice": "9200",
-        "currency": "ETB",
+        "description": "Bright lakeside room with a private balcony, comfortable king bed, and open water view.",
+        "shortDescription": "Lake view · Balcony · 42 m²",
+        "basePrice": "170",
+        "currency": "USD",
         "maxAdults": "2",
         "maxChildren": "1",
         "maxOccupancy": "3",
         "bedConfiguration": "1 King",
         "sizeSqm": "42",
-        "amenities": "Wi-Fi, Private terrace, Mini bar, Rain shower, Safe",
-        "image": "https://images.unsplash.com/photo-1582719508461-905c994771df?w=900&q=80",
+        "amenities": "Wi-Fi, Balcony, Mini bar, Rain shower, Safe",
+        "image": "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=900&q=80",
         "unitCount": "6",
-        "unitPrefix": "SEA-",
+        "unitPrefix": "LK-",
         "isActive": true
       },
       {
-        "name": "Lake View Suite · Plunge Pool",
-        "slug": "sea-view-plunge-pool",
-        "parentSlug": "sea-view-suite",
-        "description": "The lake suite with a small heated plunge pool on the terrace.",
-        "shortDescription": "Plunge pool · Lake view · 48 m²",
-        "basePrice": "12800",
-        "currency": "ETB",
+        "name": "Lake View Suite · Private Pool",
+        "slug": "lake-view-private-pool",
+        "parentSlug": "lake-view-suite",
+        "description": "Our Lake View Suite with a private heated plunge pool on your terrace.",
+        "shortDescription": "Private pool · Lake view · 48 m²",
+        "basePrice": "235",
+        "currency": "USD",
         "maxAdults": "2",
         "maxChildren": "1",
         "maxOccupancy": "3",
         "bedConfiguration": "1 King",
         "sizeSqm": "48",
-        "amenities": "Wi-Fi, Plunge pool, Private terrace, Mini bar, Rain shower, Safe",
+        "amenities": "Wi-Fi, Pool, Balcony, Mini bar, Rain shower, Safe",
         "image": "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=900&q=80",
         "unitCount": "3",
-        "unitPrefix": "SEA-P-",
+        "unitPrefix": "LKP-",
         "isActive": true
       },
       {
-        "name": "Shore Villa",
-        "slug": "cliff-villa",
+        "name": "Shore Family Villa",
+        "slug": "shore-villa",
         "parentSlug": "",
-        "description": "A standalone villa above the shore with a pool, outdoor dining, and room for a family.",
-        "shortDescription": "Private villa · Pool · 95 m²",
-        "basePrice": "22000",
-        "currency": "ETB",
+        "description": "Standalone family villa beside the lakeshore with two bedrooms, sitting area, and outdoor dining.",
+        "shortDescription": "Family villa · 2 bedrooms · 95 m²",
+        "basePrice": "390",
+        "currency": "USD",
         "maxAdults": "4",
         "maxChildren": "2",
         "maxOccupancy": "6",
@@ -553,10 +588,10 @@
         "name": "Garden Junior Suite",
         "slug": "garden-junior-suite",
         "parentSlug": "",
-        "description": "A quieter suite on the garden court, with morning sun and a short walk to the jetty.",
-        "shortDescription": "Garden · 36 m²",
-        "basePrice": "7800",
-        "currency": "ETB",
+        "description": "Quiet suite in the shaded garden wing, ideal for families and easy walks to the dining terrace.",
+        "shortDescription": "Garden view · 36 m²",
+        "basePrice": "145",
+        "currency": "USD",
         "maxAdults": "2",
         "maxChildren": "2",
         "maxOccupancy": "3",
@@ -571,77 +606,77 @@
     ],
     "blogPosts": [
       {
-        "title": "5 Strategies to Grow Your Business This Year",
-        "slug": "5-strategies-to-grow-your-business",
-        "excerpt": "Practical steps you can take today to build momentum and reach more customers.",
-        "body": "Growing a business takes focus, consistency, and a willingness to adapt. Start by clarifying your core offer, then double down on the channels that already bring results.\n\nReview your customer journey from first touch to repeat purchase. Small improvements at each step compound into meaningful revenue gains. Finally, invest in relationships — referrals and retention often outperform cold outreach.",
-        "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
+        "title": "A Peaceful Weekend Escape to Bishoftu’s Crater Lakes",
+        "slug": "weekend-escape-bishoftu-crater-lakes",
+        "excerpt": "How to spend two relaxing days around Lake Babogaya, Lake Hora, and Kuriftu without rushing.",
+        "body": "Just a short drive southeast of Addis Ababa, Bishoftu offers fresh air, calm crater lakes, and shady gardens away from city traffic.\n\nStart Saturday morning with freshly roasted coffee overlooking the water, take a slow boat ride before midday, and enjoy grilled local tilapia by the terrace at sunset. Staying two nights gives families plenty of time to rest without packing up early.",
+        "image": "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&q=80",
         "author": "Yonas Gebre",
         "date": "2026-03-12"
       },
       {
-        "title": "What Clients Are Asking Us Right Now",
-        "slug": "what-clients-are-asking-us",
-        "excerpt": "A quick roundup of the most common questions we hear — and how we answer them.",
-        "body": "Every season brings a new set of priorities. Lately, clients ask about pricing transparency, faster turnaround times, and how to stand out in crowded markets.\n\nOur advice stays grounded in fundamentals: deliver exceptional value, communicate clearly, and measure what matters. When in doubt, talk to your customers — their feedback is the best roadmap.",
-        "image": "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80",
+        "title": "What to Pack for a Comfortable Lake Resort Stay in Ethiopia",
+        "slug": "what-to-pack-lake-resort-ethiopia",
+        "excerpt": "Light daytime clothing, a warm sweater for evening breeze, and simple tips for every season.",
+        "body": "Bishoftu days are sunny and pleasant most of the year, especially from October to May. Bring swimwear and sunglasses for the afternoon pool, plus a light jacket for cool evenings beside the water.\n\nOur rooms include towels, robes, Wi-Fi, and power backup, so you only need comfortable shoes for morning walks around the gardens.",
+        "image": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&q=80",
         "author": "Meron Assefa",
         "date": "2026-02-28"
       },
       {
-        "title": "Behind the Scenes: How We Work",
-        "slug": "behind-the-scenes-how-we-work",
-        "excerpt": "Take a peek at our process, tools, and the principles that guide every project.",
-        "body": "We believe great outcomes come from clear goals, collaborative planning, and disciplined execution. Every engagement starts with listening — understanding where you are and where you want to go.\n\nFrom there we build a tailored plan with milestones you can track. Throughout delivery we keep communication open so there are no surprises, only steady progress toward results you can measure.",
-        "image": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80",
+        "title": "From Fresh Roasted Beans to Table: Inside Our Coffee Ritual",
+        "slug": "fresh-coffee-ritual-lakeside",
+        "excerpt": "Why guests love waking up to traditional Ethiopian coffee prepared fresh beside the garden.",
+        "body": "No Ethiopian stay is complete without unhurried coffee. Every morning and late afternoon, our hosts roast green Yirgacheffe and Guji beans over charcoal right on the terrace.\n\nServed alongside homemade ambasha and honey, it is the favorite part of the day for both visiting travelers and Addis Ababa families.",
+        "image": "https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=800&q=80",
         "author": "Kalkidan Tesfaye",
         "date": "2026-01-15"
       }
     ],
     "team": [
       {
-        "name": "James Carter",
-        "role": "Founder & CEO",
+        "name": "Biniyam Solomon",
+        "role": "Resort Manager",
         "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80"
       },
       {
-        "name": "Elena Ward",
-        "role": "Creative Director",
+        "name": "Selamawit Girma",
+        "role": "Guest Relations Manager",
         "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
       },
       {
-        "name": "Noah Bennett",
-        "role": "Operations Lead",
+        "name": "Yohannes Alemu",
+        "role": "Head Chef",
         "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80"
       }
     ],
-    "ctaBannerTitle": "Your escape awaits",
-    "ctaBannerText": "Book direct for complimentary sunset cruise and welcome champagne.",
+    "ctaBannerTitle": "Your lakeside stay is ready",
+    "ctaBannerText": "Book direct for our best nightly rates and a complimentary Ethiopian coffee welcome.",
     "ctaText": "Reserve Your Stay",
     "ctaLink": "book",
-    "email": "stay@harborresort.example",
-    "phone": "+33 4 93 00 4455",
-    "address": "9 Quay Street",
+    "email": "info@harborhotel.et",
+    "phone": "+251 11 433 4455",
+    "address": "Babogaya Lake Road, Bishoftu",
     "hours": "Front desk open 24 hours",
     "instagram": "",
     "website": "",
     "linkedin": "",
     "whatsapp": "",
     "supportEmail": "",
-    "reservationEmail": "book@harborresort.example",
+    "reservationEmail": "booking@harborhotel.et",
     "licenseNumber": "",
     "bookingUrl": "",
-    "contactSectionTitle": "Get in Touch",
+    "contactSectionTitle": "Contact Us",
     "contactFormTitle": "Send Us a Message",
     "contactFormUrl": "",
     "contactFormButtonText": "Send message",
-    "city": "Nice",
-    "country": "France",
+    "city": "Bishoftu",
+    "country": "Ethiopia",
     "starRating": "4",
     "checkInTime": "14:00",
     "checkOutTime": "12:00",
     "propertyAmenities": "Wi-Fi, Lake jetty, Restaurant, Pool, Parking, Generator backup",
-    "footerBlurb": "Suites on the water and a garden wing behind them.",
+    "footerBlurb": "Bright lakeside suites and calm gardens in Bishoftu.",
     "footerNote": "All rights reserved."
   }
 }

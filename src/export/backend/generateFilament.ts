@@ -64,6 +64,8 @@ const RESOURCE_DEFS: ResourceDef[] = [
     icon: 'heroicon-o-photo',
     label: 'Gallery',
     fields: [
+      { name: 'title', type: 'text', label: 'Title' },
+      { name: 'category', type: 'text', label: 'Category' },
       { name: 'path', type: 'image', label: 'Image' },
       { name: 'sort_order', type: 'number', label: 'Sort Order' },
     ],
@@ -172,7 +174,7 @@ function filamentField(field: ResourceDef['fields'][number]): string {
   return `${component}->label('${phpStr(field.label)}')`
 }
 
-const SELECT_FILTER_FIELDS = new Set(['tag', 'role', 'author'])
+const SELECT_FILTER_FIELDS = new Set(['tag', 'role', 'author', 'category'])
 
 function filamentTableColumn(field: ResourceDef['fields'][number]): string {
   const label = `->label('${phpStr(field.label)}')`
@@ -472,7 +474,7 @@ class StayPolicies extends Page implements HasForms
 
     public bool $amenitiesReady = false;
 
-    public string $hotelCurrency = 'ETB';
+    public string $hotelCurrency = 'USD';
 
     public function mount(): void
     {
@@ -482,8 +484,8 @@ class StayPolicies extends Page implements HasForms
         if ($options !== []) {
             try {
                 $hotel = app(${client}::class)->hotel();
-                $currency = $hotel['currency'] ?? 'ETB';
-                $this->hotelCurrency = is_string($currency) && $currency !== '' ? $currency : 'ETB';
+                $currency = $hotel['currency'] ?? 'USD';
+                $this->hotelCurrency = is_string($currency) && $currency !== '' ? $currency : 'USD';
                 $names = is_array($hotel['amenities'] ?? null) ? $hotel['amenities'] : [];
                 foreach ($names as $name) {
                     if (is_string($name) && isset($options[$name])) {

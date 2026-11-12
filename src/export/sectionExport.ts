@@ -1,3 +1,4 @@
+import { requireManifest } from '../catalog/catalog'
 import { getTemplateMeta } from '../data/defaults'
 import { getSectionVariants } from '../data/sectionVariants'
 import { getSiteNavItems, staticSitePath } from '../data/siteNav'
@@ -12,7 +13,7 @@ function contactFieldsHtml(c: SiteContent, templateId: TemplateId): string {
   if (!meta) return ''
   return meta.contactFields
     .filter((f) => c[f.key])
-    .map((f) => `<div><p class="opacity-60 mb-1 text-sm">${escapeHtml(f.label)}</p><p>${escapeHtml(c[f.key])}</p></div>`)
+    .map((f) => `<div><p class="opacity-60 mb-1 text-sm">${escapeHtml(f.label)}</p><p class="[overflow-wrap:anywhere]">${templateId === 'fitness' && f.key === 'bookingUrl' ? `<a href="${escapeHtml(c[f.key])}" target="_blank" rel="noopener noreferrer">Book a class ↗</a>` : escapeHtml(c[f.key])}</p></div>`)
     .join('')
 }
 
@@ -51,11 +52,19 @@ export function buildStyledContactFormHtml(content: SiteContent, accent: string,
 
   return `<div class="${wrap}">
     <form class="js-clone-form space-y-4" data-mode="html" action="${formUrl ? escapeHtml(formUrl) : mailTarget ? `mailto:${escapeHtml(mailTarget)}` : '#'}" method="${formUrl ? 'get' : 'post'}"${formUrl ? ' target="_blank" rel="noopener noreferrer"' : ''}>
+<<<<<<< HEAD
       <div><label class="block text-sm font-medium mb-1.5">Your Name</label><input name="name" type="text" required class="${input}" /></div>
       <div><label class="block text-sm font-medium mb-1.5">Email</label><input name="email" type="email" required class="${input}" /></div>
       <div><label class="block text-sm font-medium mb-1.5">Phone</label><input name="phone" type="tel" class="${input}" /></div>
       <div><label class="block text-sm font-medium mb-1.5">Message</label><textarea name="message" required rows="5" class="${input}"></textarea></div>
       <button type="submit" class="w-full ${buttonInk} px-6 py-3 rounded-lg font-semibold" style="background-color:${accent}">${escapeHtml(content.contactFormButtonText || 'Send message')}</button>
+=======
+      <div><label class="block text-sm font-medium mb-1.5">Your Name</label><input name="name" type="text" required class="${input}" placeholder="Abebe Kebede" /></div>
+      <div><label class="block text-sm font-medium mb-1.5">Email</label><input name="email" type="email" required class="${input}" placeholder="abebe@example.com" /></div>
+      <div><label class="block text-sm font-medium mb-1.5">Phone</label><input name="phone" type="tel" class="${input}" placeholder="+251 91 123 4567" /></div>
+      <div><label class="block text-sm font-medium mb-1.5">Message</label><textarea name="message" required rows="5" class="${input}" placeholder="How can we help you?"></textarea></div>
+      <button type="submit" class="w-full text-white px-6 py-3 rounded-lg font-semibold" style="background-color:${accent}">${escapeHtml(content.contactFormButtonText || 'Send message')}</button>
+>>>>>>> f8609a9ed8a87d219d98e9a9c924050d9ee55964
       <div class="js-form-success hidden rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-center text-xs font-semibold text-emerald-800">Message sent. We will follow up shortly.</div>
     </form>
   </div>`
@@ -102,9 +111,11 @@ export function buildExploreSectionHtml(
   accent: string,
   fromNested?: boolean,
 ): string {
+  if (templateId === 'fitness') return ''
   const items = getSiteNavItems(templateId, content).filter((i) => i.page !== 'home')
   if (!items.length) return ''
   const cfg = getSectionVariants(templateId)
+  if (!requireManifest(templateId).homeSections.includes('explore')) return ''
   const header = `<div class="mb-10"><h2 class="text-3xl font-bold">${escapeHtml(cfg.exploreTitle)}</h2><p class="mt-2 text-slate-600 max-w-2xl">${escapeHtml(cfg.exploreSubtitle)}</p></div>`
 
   switch (cfg.explore) {
@@ -132,8 +143,11 @@ export function buildContactSectionHtml(
   content: SiteContent,
   contactFormHtml: string,
 ): string {
+  if (templateId === 'fitness') {
+    return `<section id="contact" class="bg-black text-white py-20"><div class="pulse-contact-grid px-6"><div class="min-w-0"><h2 class="text-4xl font-black uppercase mb-6">${escapeHtml(content.contactSectionTitle)}</h2><div class="pulse-contact-details">${contactFieldsHtml(content, templateId)}</div>${mapEmbedHtml(content.mapUrl, content.address)}</div><div class="pulse-contact-form"><h3 class="text-2xl font-bold mb-6">${escapeHtml(content.contactFormTitle)}</h3>${contactFormHtml}</div></div></section>`
+  }
   const shell = getSectionVariants(templateId).contactShell
-  const title = escapeHtml(content.contactSectionTitle || 'Get in Touch')
+  const title = escapeHtml(content.contactSectionTitle || 'Contact Us')
   const info = `${contactFieldsHtml(content, templateId)}${mapEmbedHtml(content.mapUrl, content.address)}`
   const formTitle = escapeHtml(content.contactFormTitle)
 
@@ -153,7 +167,7 @@ export function buildContactSectionHtml(
     'coastal-wave': `<section id="contact" class="border-b-4 border-sky-400 bg-gradient-to-b from-sky-50 to-white py-16"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold text-sky-950 mb-10">${title}</h2><div class="grid lg:grid-cols-2 gap-12"><div class="grid sm:grid-cols-2 gap-6">${info}</div><div>${contactFormHtml}</div></div></div></section>`,
     'vineyard-reserve': `<section id="contact" class="bg-stone-900 text-amber-50 py-24 text-center"><div class="max-w-4xl mx-auto px-6"><p class="font-serif text-sm uppercase tracking-widest opacity-70 mb-2">Reservations</p><h2 class="font-serif text-4xl mb-10">${title}</h2><div class="mb-10 text-left grid sm:grid-cols-2 gap-6">${info}</div><div class="text-left">${contactFormHtml}</div></section>`,
     'arcade-neon': `<section id="contact" class="bg-black text-lime-300 py-20"><div class="max-w-4xl mx-auto px-6"><h2 class="text-center text-2xl font-black uppercase tracking-wider mb-8">${title}</h2><div class="rounded-xl border-2 border-lime-400/50 p-6 md:p-10">${contactFormHtml}</div><div class="mt-8 grid sm:grid-cols-2 gap-4">${info}</div></div></section>`,
-    'coffee-warm': `<section id="contact" class="bg-[#faf6f0] py-20"><div class="max-w-6xl mx-auto px-6 grid lg:grid-cols-[1fr_1.1fr] gap-12"><div><h2 class="font-serif text-3xl text-[#2d1810] mb-4">${title}</h2><p class="text-[#5c3d2e] mb-8">Questions about beans, events, or catering?</p><div class="grid sm:grid-cols-2 gap-6">${info}</div></div><div>${contactFormHtml}</div></div></section>`,
+    'coffee-warm': `<section id="contact" class="bg-[#faf6f0] py-20"><div class="max-w-6xl mx-auto px-6 grid lg:grid-cols-[1fr_1.1fr] gap-12"><div><h2 class="font-serif text-3xl text-[#2d1810] mb-4">${title}</h2><p class="text-[#5c3d2e] mb-8">${formTitle || 'Send Us a Message'}</p><div class="grid sm:grid-cols-2 gap-6">${info}</div></div><div>${contactFormHtml}</div></div></section>`,
     'split-classic': `<section id="contact" class="py-20"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold mb-10">${title}</h2><div class="grid lg:grid-cols-2 gap-12"><div><h3 class="text-xl font-semibold mb-6">${formTitle}</h3><div class="grid sm:grid-cols-2 gap-6">${info}</div></div><div>${contactFormHtml}</div></div></div></section>`,
   }
 

@@ -1,3 +1,7 @@
+import { flowstackHeroGrid, FLOWSTACK_COPY, FLOWSTACK_MEDIA, FLOWSTACK_IMAGE, FLOWSTACK_ACTION } from '../templates/flowstackHero'
+import { medicalHeroClass } from '../templates/medicalStyles'
+import { heroContentWrapperClass } from '../templates/heroLayout'
+import { getTheme } from '../templates/getTheme'
 import { exportStaySkin } from '../templates/booking/hospitalitySkin'
 import { actionBackground, accentInk } from '../utils/accentInk'
 import { requireManifest } from '../catalog/catalog'
@@ -14,62 +18,19 @@ function overlayGradient(templateId: TemplateId): string {
   return requireManifest(templateId).hero.overlayGradient
 }
 
-function headerClasses(templateId: TemplateId, heroLayout: HeroLayout): string {
-  const t = requireManifest(templateId).theme
+function headerClasses(templateId: TemplateId, heroLayout: HeroLayout, colorSchemeId?: string): string {
+  const t = getTheme(templateId, colorSchemeId)
   const immersiveExtra =
     heroLayout === 'immersive' && !requireManifest(templateId).hero.overlay
       ? 'min-h-[85vh] flex flex-col justify-center'
       : ''
-  return `relative ${t.hero} ${immersiveExtra}`.trim()
+  return `${isHospitalityTemplate(templateId) ? 'stay-hero ' : ''}relative ${t.hero} ${immersiveExtra}`.trim()
 }
 
-function contentWrapperClass(templateId: TemplateId, heroLayout: HeroLayout, hasOverlay: boolean): string {
-  const base = 'relative mx-auto max-w-6xl px-4 sm:px-6 w-full'
-  if (heroLayout === 'centered') {
-    return `${base} text-center py-24 flex flex-col items-center`
-  }
-  switch (templateId) {
-    case 'boutique':
-      return heroLayout === 'immersive' ? `${base} py-32` : base
-    case 'saas':
-    case 'medical':
-    case 'business':
-    case 'lawfirm':
-    case 'cpa':
-    case 'aureum':
-    case 'flux':
-    case 'axiom':
-    case 'helix':
-      return heroLayout === 'immersive'
-        ? `${base} py-32 text-center`
-        : `${base} grid lg:grid-cols-2 gap-12 items-center py-24`
-    case 'restaurant':
-      return `${base} pb-16 pt-28`
-    case 'realtor':
-    case 'photography':
-      return `${base} pb-16 pt-28`
-    case 'creative':
-      return base
-    case 'fitness':
-      return `${base} py-28`
-    case 'noir':
-    case 'coastal':
-    case 'vineyard':
-    case 'arcade':
-    case 'taxfighters':
-      return `${base} pb-20 pt-28`
-    case 'terra':
-      return hasOverlay
-        ? `${base} py-24`
-        : `${base} grid lg:grid-cols-2 gap-12 items-center py-24`
-    default:
-      return `${base} py-32`
-  }
-}
 
-function heroBadgeHtml(templateId: TemplateId, businessName: string, mode: 'html' | 'blade'): string {
+function heroBadgeHtml(templateId: TemplateId, businessName: string, mode: 'html' | 'blade', colorSchemeId?: string): string {
   const manifest = requireManifest(templateId)
-  const t = manifest.theme
+  const t = getTheme(templateId, colorSchemeId)
   const name = mode === 'html' ? escapeHtml(businessName) : '{{ $settings->business_name }}'
   if (manifest.hero.badge === 'established') {
     return `<p class="mb-3 ${t.heroBadge}">Est. 2010</p>`
@@ -109,6 +70,7 @@ function inlineHeroImage(
 export interface HeroExportInput {
   templateId: TemplateId
   heroLayout: HeroLayout
+  colorSchemeId?: string
   heroImage: string
   businessName: string
   tagline: string
@@ -120,7 +82,7 @@ export interface HeroExportInput {
 }
 
 function heroTextBlock(input: HeroExportInput, mode: 'html' | 'blade'): string {
-  const t = requireManifest(input.templateId).theme
+  const t = getTheme(input.templateId, input.colorSchemeId)
   const tagline = mode === 'html' ? escapeHtml(input.tagline) : '{{ $settings->tagline }}'
   const subtext = mode === 'html' ? escapeHtml(input.heroSubtext) : '{{ $settings->hero_subtext }}'
   const ctaText = mode === 'html' ? escapeHtml(input.ctaText) : '{{ $settings->cta_text }}'
@@ -129,7 +91,7 @@ function heroTextBlock(input: HeroExportInput, mode: 'html' | 'blade'): string {
       ? escapeHtml(input.ctaHref)
       : '{{ \\App\\Support\\SiteLinks::href($settings->cta_link) }}'
 
-  return `${heroBadgeHtml(input.templateId, input.businessName, mode)}
+  return `${heroBadgeHtml(input.templateId, input.businessName, mode, input.colorSchemeId)}
       <h1 class="mb-6 ${t.heroTitle}">${tagline}</h1>
       <p class="mb-8 ${t.heroText}">${subtext}</p>
       ${isHospitalityTemplate(input.templateId) ? '' : `<a href="${ctaHref}" data-brand-cta class="inline-block ${t.heroCta}">${ctaText} →</a>`}`
@@ -262,7 +224,46 @@ function buildCpaHero(input: HeroExportInput, mode: 'html' | 'blade'): string {
 </header>`
 }
 
+function buildMedicalHero(input: HeroExportInput, mode: 'html' | 'blade'): string {
+  const t = getTheme(input.templateId, input.colorSchemeId)
+  const copy = heroCopy(input, mode)
+  const media = `<div class="medical-hero-media"><img data-part="image" src="${copy.src}" alt="" class="medical-hero-image object-cover" fetchpriority="high" decoding="async" /></div>`
+  return `<header class="relative isolate ${medicalHeroClass(input.heroLayout)} ${t.hero}">
+  <div class="medical-hero-layout">
+    <div class="medical-hero-copy">
+      <p data-part="badge" class="${t.heroBadge}">${copy.name}</p>
+      <h1 data-part="title" class="medical-hero-title ${t.heroTitle}">${copy.title}</h1>
+      <p data-part="subtitle" class="medical-hero-description ${t.heroText}">${copy.subtext}</p>
+      <a data-part="cta" data-brand-cta href="${copy.ctaHref}" class="medical-hero-action ${t.heroCta}">${copy.ctaText}<span aria-hidden="true">→</span></a>
+    </div>
+    ${mode === 'blade' ? `@if($settings->hero_image)${media}@endif` : input.heroImage ? media : ''}
+  </div>
+</header>`
+}
+
+function buildFlowstackHero(input: HeroExportInput, mode: 'html' | 'blade'): string {
+  const t = getTheme(input.templateId, input.colorSchemeId)
+  const copy = heroCopy(input, mode)
+  const image = `<div data-hero-media class="${FLOWSTACK_MEDIA}"><img data-part="image" src="${copy.src}" alt="" class="${FLOWSTACK_IMAGE}" fetchpriority="high" decoding="async" /></div>`
+  // Laravel can remove its hero image after export; :has() is unnecessary when
+  // the grid's desktop columns are emitted conditionally with the image.
+  const grid = flowstackHeroGrid(input.heroLayout, mode === 'blade' || Boolean(input.heroImage))
+  return `<header class="relative isolate ${t.hero} ${t.page}" style="padding-block:0">
+  <div class="${grid}"${mode === 'blade' && input.heroLayout === 'split' ? ` @if(!$settings->hero_image) style="grid-template-columns:minmax(0,1fr)" @endif` : ''}>
+    <div data-hero-copy class="${FLOWSTACK_COPY}">
+      <p data-part="badge" class="mb-5 inline-block ${t.heroBadge}">${copy.name}</p>
+      <h1 data-part="title" class="mb-6 text-balance ${t.heroTitle}">${copy.title}</h1>
+      <p data-part="subtitle" class="mb-8 leading-relaxed ${t.heroText}">${copy.subtext}</p>
+      <a data-part="cta" data-brand-cta href="${copy.ctaHref}" class="${FLOWSTACK_ACTION} ${t.heroCta}">${copy.ctaText}<span aria-hidden="true">→</span></a>
+    </div>
+    ${mode === 'blade' ? `@if($settings->hero_image)${image}@endif` : input.heroImage ? image : ''}
+  </div>
+</header>`
+}
+
 function buildHeroHtml(input: HeroExportInput, mode: 'html' | 'blade'): string {
+  if (input.templateId === 'saas' && !heroUsesBackgroundImage(input.templateId, input.heroLayout)) return buildFlowstackHero(input, mode)
+  if (input.templateId === 'medical' && input.heroLayout !== 'immersive') return buildMedicalHero(input, mode)
   if (input.templateId === 'taxfighters') return buildTaxFightersHero(input, mode)
   if (input.templateId === 'aureum') return buildAureumHero(input, mode)
   if (input.templateId === 'flux') return buildFluxHero(input, mode)
@@ -271,7 +272,7 @@ function buildHeroHtml(input: HeroExportInput, mode: 'html' | 'blade'): string {
   if (input.templateId === 'cpa') return buildCpaHero(input, mode)
   const { templateId, heroLayout, heroImage } = input
   const hasOverlay = heroUsesBackgroundImage(templateId, heroLayout)
-  const wrapperClass = contentWrapperClass(templateId, heroLayout, hasOverlay)
+  const wrapperClass = heroContentWrapperClass(templateId, heroLayout, hasOverlay)
   const textBlock = heroTextBlock(input, mode)
   const split = usesSplitColumns(templateId, heroLayout, hasOverlay) && (mode === 'blade' || heroImage)
 
@@ -296,7 +297,7 @@ function buildHeroHtml(input: HeroExportInput, mode: 'html' | 'blade'): string {
         : `<img src="${src}" alt="" class="absolute inset-0 h-full w-full object-cover ${imgFilter}" />
     <div class="absolute inset-0 ${overlayGradient(templateId)}"></div>`
 
-    return `<header class="${headerClasses(templateId, heroLayout)}">
+    return `<header class="${headerClasses(templateId, heroLayout, input.colorSchemeId)}">
   ${imageTag}
   <div class="${wrapperClass}">
     ${inner}${hospitalitySearch(templateId, mode, input.accent)}
@@ -304,7 +305,7 @@ function buildHeroHtml(input: HeroExportInput, mode: 'html' | 'blade'): string {
 </header>`
   }
 
-  return `<header class="${headerClasses(templateId, heroLayout)}">
+  return `<header class="${headerClasses(templateId, heroLayout, input.colorSchemeId)}">
   <div class="${wrapperClass}">
     ${inner}${hospitalitySearch(templateId, mode, input.accent)}
   </div>
