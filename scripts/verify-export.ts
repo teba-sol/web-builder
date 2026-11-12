@@ -11,6 +11,7 @@ import { hasBookingFeature } from '../src/export/backend/generateBooking.ts'
 import { usesBuildauraCrs } from '../src/export/backend/generateCrsBooking.ts'
 import { buildAllSitePages } from '../src/export/buildSitePages.ts'
 import { clonePaletteCss, isCloneTemplate, resolveClonePalette } from '../src/templates/cloneTheme.ts'
+import { buildExploreSectionHtml } from '../src/export/sectionExport'
 
 function assert(condition: unknown, message: string): void {
   if (!condition) throw new Error(message)
@@ -41,6 +42,16 @@ for (const manifest of manifests) {
     assets,
   )
   assert(backend['composer.json'], `${manifest.id}: missing composer.json`)
+  const staticExplore = buildExploreSectionHtml(manifest.id, defaults, manifest.colorSchemes[0].swatches[1])
+  const bladeExplore = backend['resources/views/partials/home-explore.blade.php'] ?? ''
+  if (!manifest.homeSections.includes('explore')) {
+    assert(staticExplore === '', `${manifest.id}: removed Explore section produces no static HTML`)
+    assert(bladeExplore === '', `${manifest.id}: removed Explore section produces no Laravel content`)
+  } else {
+    assert(staticExplore.length > 0, `${manifest.id}: enabled Explore section is preserved in static HTML`)
+    assert(bladeExplore.length > 0, `${manifest.id}: enabled Explore section is preserved in Laravel`)
+    assert(!bladeExplore.includes('undefined'), `${manifest.id}: Explore labels are defined`)
+  }
   const composer = JSON.parse(backend['composer.json'] ?? '{}') as {
     config?: { policy?: { advisories?: { block?: boolean } } }
   }

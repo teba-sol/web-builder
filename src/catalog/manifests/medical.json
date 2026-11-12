@@ -170,7 +170,10 @@
     "faq": "accordion",
     "explore": "list-arrows",
     "contactShell": "intake",
-    "contactForm": "soft-rounded"
+    "contactForm": "soft-rounded",
+    "exploreTitle": "Patient Care",
+    "exploreSubtitle": "Services, providers, insurance, and appointments",
+    "exploreLinkLabel": "Learn"
   },
   "showcase": {
     "sectionTitle": "Care Programs",

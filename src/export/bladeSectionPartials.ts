@@ -1,3 +1,4 @@
+import { requireManifest } from '../catalog/catalog'
 import { getSectionVariants } from '../data/sectionVariants'
 import type { SiteExportPayload } from './backend/exportPayload'
 import { accentInk } from '../utils/accentInk'
@@ -117,7 +118,9 @@ section[id="contact"] .${wrapCls.split(' ')[0]}{width:100%}
 
   return {
     'resources/views/partials/home-faq.blade.php': faqShells[cfg.faq] ?? faqShells.stacked,
-    'resources/views/partials/home-explore.blade.php': `${exploreCss}${exploreShells[cfg.explore] ?? exploreShells['card-grid']}`,
+    'resources/views/partials/home-explore.blade.php': requireManifest(templateId).homeSections.includes('explore')
+      ? `${exploreCss}${exploreShells[cfg.explore] ?? exploreShells['card-grid']}`
+      : '',
     'resources/views/partials/home-contact.blade.php': contactShells[cfg.contactShell] ?? contactShells['split-classic'],
     'resources/views/partials/contact-form.blade.php': contactForm,
   }
