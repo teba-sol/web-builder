@@ -9,6 +9,13 @@
   --color-navy-mid: #0b3a86;
   --color-accent: #ff701f;
   --color-accent-dark: #e05f12;
+  --color-marketing-ink: #17151b;
+  --color-marketing-paper: #f3f0eb;
+  --color-marketing-violet: #a78bfa;
+  --color-marketing-lime: #d1fb73;
+  --color-marketing-muted: #a39eaa;
+  --font-marketing-display: "Manrope", Inter, sans-serif;
+  --font-marketing-editorial: "Georgia", "Times New Roman", serif;
 }
 
 /* Template layouts follow the preview/site container, not the browser chrome. */
