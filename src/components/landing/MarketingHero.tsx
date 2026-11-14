@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { ArrowDown, ArrowRight, ArrowUpRight, MoveUpRight } from 'lucide-react'
+import { ArrowDown, ArrowRight, ArrowUpRight, MoveUpRight, Plus } from 'lucide-react'
 import { getTemplateThumbnail } from '../../catalog/thumbnails'
 import type { TemplateMeta } from '../../types'
 
@@ -10,76 +10,52 @@ export function MarketingHero({ templates }: { templates: TemplateMeta[] }) {
 
   return (
     <section className="marketing-hero" aria-labelledby="marketing-hero-title">
-      <div className="marketing-hero-glow" aria-hidden="true" />
-      <div className="marketing-hero-grid" aria-hidden="true" />
+      <div className="marketing-hero-grain" aria-hidden="true" />
+      <div className="marketing-hero-orbit marketing-hero-orbit-one" aria-hidden="true" />
+      <div className="marketing-hero-orbit marketing-hero-orbit-two" aria-hidden="true" />
       <div className="marketing-hero-copy">
-        <p className="marketing-eyebrow" data-hero-line>
-          <span className="marketing-eyebrow-dot" /> YOUR IDEA, WITH ROOM TO GROW
-        </p>
+        <p className="marketing-eyebrow" data-hero-line><span className="marketing-eyebrow-dot" /> YOUR NEXT IDEA, ONLINE</p>
         <h1 id="marketing-hero-title">
-          <span data-hero-line>Your vision.</span>
-          <span data-hero-line><em>Your website.</em></span>
-          <span data-hero-line>Your way.</span>
+          <span className="hero-line-wrap"><span data-hero-line>DON&apos;T JUST</span></span>
+          <span className="hero-line-wrap hero-line-indent"><span data-hero-line>IMAGINE <em>IT.</em></span></span>
+          <span className="hero-line-wrap hero-line-last"><span data-hero-line>BUILD <i>IT.</i></span></span>
         </h1>
         <div className="marketing-hero-bottom" data-hero-line>
-          <p>Start with a design that gets you. Make it yours in a live editor, then take your website further.</p>
+          <p>Your ideas deserve more than a template. Create, customize, and launch beautiful websites with BUILDoura.</p>
           <div className="marketing-hero-actions">
-            <Link to="/signup" className="marketing-button marketing-button-primary">
-              Start building <ArrowUpRight size={17} />
-            </Link>
-            <a href="#templates" className="marketing-quiet-link">
-              Explore templates <ArrowRight size={16} />
-            </a>
+            <Link to="/signup" className="marketing-button marketing-button-primary">Start building <ArrowUpRight size={17} /></Link>
+            <a href="#templates" className="marketing-quiet-link">Explore the possibilities <ArrowRight size={16} /></a>
           </div>
         </div>
       </div>
 
-      <div className="marketing-hero-art" aria-label="A selection of BUILDoura website designs">
+      <div className="marketing-hero-art" aria-label="A collection of real BUILDoura website previews">
+        <span className="hero-art-caption" aria-hidden="true">A canvas for every kind of idea <Plus size={12} /></span>
         {supporting.map((template, index) => {
           const thumbnail = getTemplateThumbnail(template.id)
           return thumbnail ? (
-            <Link
-              key={template.id}
-              to={`/demo/${template.id}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`marketing-float-window marketing-float-window-${index}`}
-              data-float={index}
-              aria-label={`Open the ${template.name} website preview in a new tab`}
-            >
-              <span className="marketing-window-bar">
-                <span className="marketing-window-dots" aria-hidden="true"><i /><i /><i /></span>
-                <span>{template.name}</span>
-                <ArrowUpRight size={12} />
-              </span>
+            <Link key={template.id} to={`/demo/${template.id}`} target="_blank" rel="noopener noreferrer"
+              className={`marketing-float-window marketing-float-window-${index}`} data-float={index} data-depth
+              aria-label={`Open the ${template.name} website preview in a new tab`}>
+              <span className="marketing-window-bar"><span className="marketing-window-dots" aria-hidden="true"><i /><i /><i /></span><span>{template.name}</span><ArrowUpRight size={12} /></span>
               <img src={thumbnail} alt={`${template.name} website design`} loading="lazy" />
             </Link>
           ) : null
         })}
         {lead && leadThumbnail ? (
-          <Link
-            to={`/demo/${lead.id}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="marketing-hero-window"
-            data-hero-window
-            aria-label={`Open the ${lead.name} website preview in a new tab`}
-          >
-            <span className="marketing-window-bar">
-              <span className="marketing-window-dots" aria-hidden="true"><i /><i /><i /></span>
-              <span>{lead.name} / website preview</span>
-              <MoveUpRight size={13} />
-            </span>
-            <img src={leadThumbnail} alt={`${lead.name} template preview`} fetchPriority="high" />
-            <span className="marketing-preview-label"><span /> REAL TEMPLATE <b>OPEN PREVIEW <ArrowUpRight size={12} /></b></span>
+          <Link to={`/demo/${lead.id}`} target="_blank" rel="noopener noreferrer" className="marketing-hero-window" data-hero-window data-depth
+            aria-label={`Open the ${lead.name} website preview in a new tab`}>
+            <span className="marketing-window-bar"><span className="marketing-window-dots" aria-hidden="true"><i /><i /><i /></span><span>{lead.name} / live preview</span><MoveUpRight size={13} /></span>
+            <img src={leadThumbnail} alt={`${lead.name} website preview`} fetchPriority="high" />
+            <span className="marketing-preview-label"><span /> REAL WEBSITE DESIGN <b>OPEN PREVIEW <ArrowUpRight size={12} /></b></span>
           </Link>
-        ) : (
-          <div className="marketing-hero-empty">Find a design that feels like you.<Link to="/templates">Explore templates <ArrowRight size={15} /></Link></div>
-        )}
+        ) : <div className="marketing-hero-empty">Your idea starts here.<Link to="/templates">Explore designs <ArrowRight size={15} /></Link></div>}
+        <span className="hero-orbit-object hero-orbit-object-orange" data-hero-object data-depth aria-hidden="true" />
+        <span className="hero-orbit-object hero-orbit-object-blue" data-hero-object data-depth aria-hidden="true" />
+        <span className="hero-object-label" data-hero-object aria-hidden="true">01 / MAKE IT YOURS</span>
       </div>
 
-      <a className="marketing-scroll-cue" href="#proof"><ArrowDown size={14} /> Scroll to see what you can make</a>
-      <span className="marketing-hero-index" aria-hidden="true">B / 01—10</span>
+      <div className="marketing-hero-foot"><a className="marketing-scroll-cue" href="#proof"><ArrowDown size={14} /> Scroll to explore</a><span>IDEAS, MEET THE INTERNET <b>↘</b></span></div>
     </section>
   )
 }

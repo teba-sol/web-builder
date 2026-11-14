@@ -12,6 +12,7 @@ import { MarketingNavigation } from '../components/landing/MarketingNavigation'
 import { MarketingHero } from '../components/landing/MarketingHero'
 import {
   Benefits,
+  CreationTypes,
   FeatureStory,
   FinalCallToAction,
   HowItWorks,
@@ -32,7 +33,7 @@ export function LandingPage() {
   const [paused, setPaused] = useState(false)
   const motion = !reduced && !paused
   const templates = templatesForPersonalAccount(useTemplateCatalog())
-  const picks = ['restaurant', 'creative', 'photography', 'realtor'].flatMap((id) => {
+  const picks = ['restaurant', 'creative', 'boutique', 'realtor'].flatMap((id) => {
     const match = templates.find((template) => template.id === id)
     return match ? [match] : []
   })
@@ -43,7 +44,7 @@ export function LandingPage() {
     const previousTitle = document.title
     const description = document.querySelector<HTMLMetaElement>('meta[name="description"]')
     const previousDescription = description?.content
-    document.title = 'BUILDoura — Your vision. Your website. Built your way.'
+    document.title = "BUILDoura — Don’t just imagine it. Build it."
     if (description) description.content = 'Start with a beautifully designed website, make it yours in a live editor, and explore real website previews with BUILDoura.'
     return () => {
       document.title = previousTitle
@@ -52,60 +53,89 @@ export function LandingPage() {
   }, [])
 
   useGSAP(() => {
-    if (!motion || !root.current) return
+    if (!root.current) return
     const select = gsap.utils.selector(root)
-    gsap.fromTo(select('[data-hero-line]'),
-      { y: 38, opacity: 0, clipPath: 'inset(0 0 100% 0)' },
-      { y: 0, opacity: 1, clipPath: 'inset(0 0 0% 0)', duration: 0.9, stagger: 0.12, ease: 'power3.out', clearProps: 'clipPath' },
-    )
-    gsap.fromTo(select('[data-hero-window]'),
-      { y: 60, opacity: 0, rotateX: 9, rotateY: -4 },
-      { y: 0, opacity: 1, rotateX: 0, rotateY: 0, duration: 1.1, delay: 0.2, ease: 'power3.out', clearProps: 'transform' },
-    )
+
+    if (!motion) return
+
+    const entrance = gsap.timeline({ defaults: { ease: 'power3.out' } })
+    entrance
+      .fromTo(select('[data-hero-line]'),
+        { yPercent: 115, opacity: 0, rotate: 2 },
+        { yPercent: 0, opacity: 1, rotate: 0, duration: 1, stagger: 0.11, clearProps: 'transform' },
+      )
+      .fromTo(select('[data-hero-window]'),
+        { y: 100, opacity: 0, rotateX: 18, rotateY: -18, scale: 0.9 },
+        { y: 0, opacity: 1, rotateX: 0, rotateY: 0, scale: 1, duration: 1.35, clearProps: 'transform' },
+        '-=0.55',
+      )
+      .fromTo(select('[data-hero-object]'),
+        { scale: 0.6, opacity: 0, rotate: -18 },
+        { scale: 1, opacity: 1, rotate: 0, duration: 1.1, stagger: 0.08 },
+        '-=1',
+      )
+
     gsap.utils.toArray<HTMLElement>(select('[data-reveal]')).forEach((element) => {
-      gsap.fromTo(element, { y: 34, opacity: 0 }, {
-        y: 0,
-        opacity: 1,
-        duration: 0.85,
-        ease: 'power2.out',
-        scrollTrigger: { trigger: element, start: 'top 88%', once: true },
+      gsap.fromTo(element, { y: 44, opacity: 0 }, {
+        y: 0, opacity: 1, duration: 0.9, ease: 'power3.out',
+        scrollTrigger: { trigger: element, start: 'top 86%', once: true },
       })
     })
+
     gsap.utils.toArray<HTMLElement>(select('[data-stagger]')).forEach((group) => {
-      gsap.fromTo(group.children, { y: 28, opacity: 0 }, {
-        y: 0,
-        opacity: 1,
-        duration: 0.7,
-        stagger: 0.1,
-        ease: 'power2.out',
+      gsap.fromTo(group.children, { y: 32, opacity: 0 }, {
+        y: 0, opacity: 1, duration: 0.75, stagger: 0.1, ease: 'power3.out',
         scrollTrigger: { trigger: group, start: 'top 82%', once: true },
       })
     })
+
     gsap.to(select('[data-float]'), {
-      yPercent: -12,
-      rotate: (index) => index % 2 === 0 ? -4 : 4,
+      y: (index) => index % 2 ? -26 : 20,
+      rotate: (index) => index % 2 ? 3 : -2,
       ease: 'none',
       scrollTrigger: { trigger: select('.marketing-hero'), start: 'top top', end: 'bottom top', scrub: 0.8 },
     })
 
+    const hero = select('.marketing-hero')[0] as HTMLElement | undefined
+    const heroObjects = gsap.utils.toArray<HTMLElement>(select('[data-depth]'))
+    const quickX = heroObjects.map((object) => gsap.quickTo(object, 'rotateY', { duration: 0.65, ease: 'power3.out' }))
+    const quickY = heroObjects.map((object) => gsap.quickTo(object, 'rotateX', { duration: 0.65, ease: 'power3.out' }))
+    const onPointerMove = (event: PointerEvent) => {
+      if (event.pointerType === 'touch' || narrow) return
+      const bounds = hero?.getBoundingClientRect()
+      if (!bounds) return
+      const x = (event.clientX - bounds.left) / bounds.width - 0.5
+      const y = (event.clientY - bounds.top) / bounds.height - 0.5
+      heroObjects.forEach((_, index) => {
+        quickX[index](x * (index + 1) * 2.6)
+        quickY[index](-y * (index + 1) * 2.2)
+      })
+    }
+    hero?.addEventListener('pointermove', onPointerMove, { passive: true })
+
     const showcase = select('[data-showcase]')[0] as HTMLElement | undefined
     const track = select('[data-showcase-track]')[0] as HTMLElement | undefined
     if (!narrow && showcase && track) {
-      gsap.to(track, {
-        x: () => Math.min(0, window.innerWidth - track.scrollWidth - 80),
-        ease: 'none',
+      const cards = gsap.utils.toArray<HTMLElement>(select('[data-gallery-card]'))
+      const gallery = gsap.timeline({
         scrollTrigger: {
           trigger: showcase,
           start: 'top top',
-          end: () => `+=${Math.max(900, track.scrollWidth - window.innerWidth + 100)}`,
-          scrub: 0.65,
+          end: () => `+=${Math.max(1000, track.scrollWidth - window.innerWidth + 180)}`,
+          scrub: 0.7,
           pin: select('.marketing-showcase-stage')[0] as HTMLElement,
           pinSpacing: true,
           anticipatePin: 1,
           invalidateOnRefresh: true,
         },
       })
+      gallery.to(track, { x: () => Math.min(0, window.innerWidth - track.scrollWidth - 96), ease: 'none' }, 0)
+      cards.forEach((card, index) => {
+        gallery.fromTo(card, { rotateY: index % 2 ? 8 : -8, z: -60 }, { rotateY: 0, z: 0, ease: 'none' }, 0)
+      })
     }
+
+    return () => hero?.removeEventListener('pointermove', onPointerMove)
   }, { dependencies: [motion, narrow], scope: root })
 
   return (
@@ -117,6 +147,7 @@ export function LandingPage() {
           <MarketingHero templates={picks} />
           <ProofStrip />
           <TemplateShowcase templates={curated} />
+          <CreationTypes templates={templates} />
           <FeatureStory templates={picks} />
           <HowItWorks />
           <LivePreview template={picks[0]} />

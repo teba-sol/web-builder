@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowUpRight, Menu, Pause, Play } from 'lucide-react'
 import { AuraThemeToggle } from './AuraThemeToggle'
@@ -9,11 +10,20 @@ interface MarketingNavigationProps {
 }
 
 export function MarketingNavigation({ motion, reduced, onToggleMotion }: MarketingNavigationProps) {
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const updateScrolled = () => setScrolled(window.scrollY > 12)
+    updateScrolled()
+    window.addEventListener('scroll', updateScrolled, { passive: true })
+    return () => window.removeEventListener('scroll', updateScrolled)
+  }, [])
+
   return (
-    <header className="marketing-nav">
+    <header className={`marketing-nav${scrolled ? ' is-scrolled' : ''}`}>
       <Link to="/" className="marketing-brand" aria-label="Buildoura home">
         <span className="marketing-brand-mark">B</span>
-        <span>buildoura</span>
+        <span>BUILDoura</span>
       </Link>
 
       <nav aria-label="Main navigation" className="marketing-nav-links">
